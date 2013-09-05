@@ -104,6 +104,7 @@ class tabsqlitedb:
                       #'no_check_chars':u'',
                       'description':'A IME under IBus Table',
                       'layout':'us',
+                      'symbol':'',
                       'rules':'',
                       #'rules':'ce2:p11+p12+p21+p22;ce3:p11+p21+p22+p31;ca4:p11+p21+p31+p41'}
                       'least_commit_length':'0',

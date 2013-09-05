@@ -27,6 +27,9 @@ SERIAL_NUMBER = 20090218
 ### the most widely ones are "png" and "svg", letter one is recommended
 ICON = ibus-table.svg
 
+### The symbol to be displayed in IM switchers
+SYMBOL = 码
+
 ### The default name of this table, this is needed
 NAME = Table
 

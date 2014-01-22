@@ -142,7 +142,7 @@ manpage.1: manpage.sgml
           <option>--no-create-index</option>
         </term>
         <listitem>
-          <para>Do not create an index for for a database (Only for distribution purposes, a normal user should not use this flag!)</para>
+          <para>Do not create an index for a database (Only for distribution purposes, a normal user should not use this flag!)</para>
         </listitem>
       </varlistentry>
       <varlistentry>

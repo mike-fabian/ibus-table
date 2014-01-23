@@ -108,7 +108,7 @@ manpage.1: manpage.sgml
 	  <option><replaceable>database-file</replaceable></option>
         </term>
         <listitem>
-          <para><replaceable>database-file</replaceable> specifies the file which will contain the binary database for the IME.  The default is ''.</para>
+          <para><replaceable>database-file</replaceable> specifies the file name for the binary database for the IME. The default is ''. If the file name of the database is not specified, the file name of the source file before the first '.' will be appended with '.db' and that will be used as the file name of the database.</para>
         </listitem>
       </varlistentry>
         <term><option>-s</option>
@@ -125,7 +125,7 @@ manpage.1: manpage.sgml
 	  <option><replaceable>extra-words-file</replaceable></option>
         </term>
         <listitem>
-          <para><replaceable>extra-words-file</replaceable> specifies the file for the extra words for the IME.  The default is ''.</para>
+          <para><replaceable>extra-words-file</replaceable> specifies the file name for the extra words for the IME.  The default is ''.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -134,7 +134,7 @@ manpage.1: manpage.sgml
 	  <option><replaceable>pinyin-file</replaceable></option>
         </term>
         <listitem>
-          <para><replaceable>pinyin-file</replaceable> specifies the source file for the pinyin.  The default is /usr/share/ibus-table/data/pinyin_table.txt.bz2.</para>
+          <para><replaceable>pinyin-file</replaceable> specifies the source file for the pinyin.  The default is '/usr/share/ibus-table/data/pinyin_table.txt.bz2'.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -150,7 +150,7 @@ manpage.1: manpage.sgml
           <option>--create-index-only</option>
         </term>
         <listitem>
-          <para>Only create an index for an existing database.</para>
+          <para>Only create an index for an existing database. Specifying the file name of the binary database with the -n or --name option is required when this option is used.</para>
         </listitem>
       </varlistentry>
       <varlistentry>

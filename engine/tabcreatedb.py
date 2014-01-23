@@ -62,46 +62,55 @@ class InvalidTableName(Exception):
         return 'Value of NAME attribute (%s) cannot contain any of %r and must be all ascii' % (self.table_name, _invalid_keyname_chars)
 
 # we use OptionParser to parse the cmd arguments :)
-opt_parser = OptionParser()
+usage = "usage: %prog [options]"
+opt_parser = OptionParser(usage=usage)
 
 opt_parser.add_option( '-n', '--name',
-        action = 'store', dest='name',default = None,
-        help = 'set the database name we will use, default is %default')
+        action = 'store', dest='name',default = '',
+        help = "specifies the file name for the binary database for the IME. The default is '%default'. If the file name of the database is not specified, the file name of the source file before the first '.' will be appended with '.db' and that will be used as the file name of the database.")
 
 opt_parser.add_option( '-s', '--source',
-        action = 'store', dest='source', default = 'xingma.txt.bz2',
-        help = 'specifies the file which contains the source file of the IME.  The default is %default')
+        action = 'store', dest='source', default = '',
+        help = "specifies the file which contains the source of the IME.  The default is '%default'.")
 
 opt_parser.add_option( '-e', '--extra',
         action = 'store', dest='extra', default = '',
-        help = 'specifies the file for the extra words for the IME.  The default is %default')
+        help = "specifies the file name for the extra words for the IME.  The default is '%default'.")
 
 opt_parser.add_option( '-p', '--pinyin',
         action = 'store', dest='pinyin', default = '/usr/share/ibus-table/data/pinyin_table.txt.bz2',
-        help = 'specifies the source file  for the  pinyin.  The default is %default')
+        help = "specifies the source file for the  pinyin.  The default is '%default'.")
 
 opt_parser.add_option( '-o', '--no-create-index',
         action = 'store_false', dest='index', default = True,
-        help = 'do not create an index for a database (Only for distrubution purposes, a normal user should not use this flag!)')
+        help = 'Do not create an index for a database (Only for distrubution purposes, a normal user should not use this flag!)')
 
 opt_parser.add_option( '-i', '--create-index-only',
         action = 'store_true', dest='only_index', default = False,
-        help = 'only create an index for an existing database')
+        help = 'Only create an index for an existing database. Specifying the file name of the binary database with the -n or --name option is required when this option is used.')
 
 opt_parser.add_option( '-d', '--debug',
         action = 'store_true', dest='debug', default = False,
-        help = 'print extra debug messages')
-
-
+        help = 'Print extra debug messages.')
 
 opts,args = opt_parser.parse_args()
-if not opts.name and opts.only_index:
-    print 'Please give me the database you want to create index on'
-    sys.exit(2)
+if opts.only_index:
+    if not opts.name:
+        opt_parser.print_help()
+        print('\nPlease specify the file name of the database you want to create an index on!')
+        sys.exit(2)
+    if not os.path.exists(opts.name) or not os.path.isfile(opts.name):
+        opt_parser.print_help()
+        print("\nThe database file '%s' does not exist." %opts.name)
+        sys.exit(2)
 
-if not opts.name:
+if not opts.name and opts.source:
     opts.name = os.path.basename(opts.source).split('.')[0] + '.db'
 
+if not opts.name:
+    opt_parser.print_help()
+    print '\nYou need to specify the file which contains the source of the IME!'
+    sys.exit(2)
 
 def main ():
     def debug_print ( message ):

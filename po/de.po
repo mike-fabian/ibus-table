@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ibus-table 1.4.99\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2012-11-13 08:58+0100\n"
-"PO-Revision-Date: 2012-11-13 08:57+0100\n"
+"POT-Creation-Date: 2014-02-04 17:26+0100\n"
+"PO-Revision-Date: 2014-02-04 17:26+0100\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: German <trans-de@lists.fedoraproject.org>\n"
 "Language: de\n"
@@ -17,135 +17,158 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: engine/table.py:1055
+#: engine/table.py:1252
 msgid "Chinese Mode"
 msgstr "Chinesischer Modus"
 
-#: engine/table.py:1055 engine/table.py:1057
-msgid "Switch to English mode"
-msgstr "In Englischen Modus wechseln"
+#: engine/table.py:1252 engine/table.py:1254
+msgid "Switch to English mode - Right Shift"
+msgstr "In Englischen Modus wechseln - Rechte Shift Taste"
 
-#: engine/table.py:1059
+#: engine/table.py:1256
 msgid "English Mode"
 msgstr "Englischer Modus"
 
-#: engine/table.py:1059 engine/table.py:1072
-msgid "Switch to Table mode"
-msgstr "In Tabellen Modus wechseln"
+#: engine/table.py:1256
+msgid "Switch to Table mode - Right Shift"
+msgstr "In Tabellen Modus wechseln - Rechte Shift Taste"
 
-#: engine/table.py:1062
+#: engine/table.py:1260
 msgid "Full Letter"
 msgstr "Buchstaben in voller Breite"
 
-#: engine/table.py:1062
-msgid "Switch to half-width letter"
-msgstr "Wechseln zu Buchstaben in halber Breite"
+#: engine/table.py:1260
+msgid "Switch to half-width letter - Ctrl-Space"
+msgstr "Wechseln zu Buchstaben in halber Breite - Ctrl-Space"
 
-#: engine/table.py:1064
+#: engine/table.py:1262
 msgid "Half Letter"
 msgstr "Buchstaben in halber Breite"
 
-#: engine/table.py:1064
-msgid "Switch to full-width letter"
-msgstr "Wechseln zu Buchstaben in voller Breite"
+#: engine/table.py:1262
+msgid "Switch to full-width letter - Ctrl-Space"
+msgstr "Wechseln zu Buchstaben in voller Breite - Ctrl-Space"
 
-#: engine/table.py:1067
+#: engine/table.py:1266
 msgid "Full-width Punctuation"
 msgstr "Zeichensetzung in voller Breite"
 
-#: engine/table.py:1067
-msgid "Switch to half-width punctuation"
-msgstr "Wechseln zu Zeichensetzung in halber Breite"
+#: engine/table.py:1266
+msgid "Switch to half-width punctuation - Ctrl-."
+msgstr "Wechseln zu Zeichensetzung in halber Breite - Ctrl-."
 
-#: engine/table.py:1069
+#: engine/table.py:1268
 msgid "Half-width Punctuation"
 msgstr "Zeichensetzung in halber Breite"
 
-#: engine/table.py:1069
-msgid "Switch to full-width punctuation"
-msgstr "Wechseln zu Zeichensetzung in voller Breite"
+#: engine/table.py:1268
+msgid "Switch to full-width punctuation - Ctrl-."
+msgstr "Wechseln zu Zeichensetzung in voller Breite - Ctrl-."
 
-#: engine/table.py:1072
+#: engine/table.py:1272
 msgid "PinYin Mode"
 msgstr "PinYin Modus"
 
-#: engine/table.py:1074
+#: engine/table.py:1272
+msgid "Switch to Table mode - Left Shift"
+msgstr "In Tabellen Modus wechseln - Linke Shift Taste"
+
+#: engine/table.py:1274
 msgid "Table Mode"
 msgstr "Tabellenmodus"
 
-#: engine/table.py:1074
-msgid "Switch to PinYin mode"
-msgstr "Wechseln zum PinYin Modus"
+#: engine/table.py:1274
+msgid "Switch to PinYin mode - Left Shift"
+msgstr "Wechseln zum PinYin Modus - Linke Shift Taste"
 
-#: engine/table.py:1077
+#: engine/table.py:1278
 msgid "Single Char Mode"
 msgstr "Einzelzeichenmodus"
 
-#: engine/table.py:1077
-msgid "Switch to phrase mode"
-msgstr "Wechseln zum Satzmodus"
+#: engine/table.py:1278
+msgid "Switch to phrase mode - Ctrl-,"
+msgstr "Wechseln zum Satzmodus - Ctrl-,"
 
-#: engine/table.py:1079
+#: engine/table.py:1280
 msgid "Phrase Mode"
 msgstr "Satzmodus"
 
-#: engine/table.py:1079
-msgid "Switch to single char mode"
-msgstr "Wechseln zum Einzelzeichenmodus"
+#: engine/table.py:1280
+msgid "Switch to single char mode - Ctrl-,"
+msgstr "Wechseln zum Einzelzeichenmodus - Ctrl-,"
 
-#: engine/table.py:1082
+#: engine/table.py:1284
 msgid "Direct Commit Mode"
 msgstr "Direkter Commitmodus"
 
-#: engine/table.py:1082
-msgid "Switch to normal commit mode, which use space to commit"
+#: engine/table.py:1284
+msgid "Switch to normal commit mode, which use space to commit - Ctrl-/"
 msgstr ""
-"Wechseln zum normalen Commitmodus (Commit beim Tippen des Leerzeichens)"
+"Wechseln zum normalen Commitmodus (Commit beim Tippen des Leerzeichens) - "
+"Ctrl-/"
 
-#: engine/table.py:1084
+#: engine/table.py:1286
 msgid "Normal Commit Mode"
 msgstr "Normaler Commitmodus"
 
-#: engine/table.py:1084
-msgid "Switch to direct commit mode"
-msgstr "Wechseln zu direktem Commitmodus"
+#: engine/table.py:1286
+msgid "Switch to direct commit mode - Ctrl-/"
+msgstr "Wechseln zum direkten Commitmodus - Ctrl-/"
 
-#: engine/table.py:1089
+#: engine/table.py:1289
+msgid "Display candidates"
+msgstr "Kandidatenliste anzeigen"
+
+#: engine/table.py:1289
+msgid "Display the candidate list."
+msgstr "Kandidatenliste anzeigen."
+
+#: engine/table.py:1291
+msgid "Hide candidates"
+msgstr "Kandidaten verstecken"
+
+#: engine/table.py:1291
+msgid "Do not display the candidates list."
+msgstr "Kandidatenliste nicht anzeigen."
+
+#: engine/table.py:1297
 msgid "Simplified Chinese Mode"
 msgstr "Modus für vereinfachtes Chinesisch"
 
-#: engine/table.py:1089
-msgid "Switch to Traditional Chinese mode"
-msgstr "Wechseln zum Modus für traditionelles Chinesisch"
+#: engine/table.py:1297
+msgid "Switch to Traditional Chinese mode - Ctrl-;"
+msgstr "Wechseln zum Modus für traditionelles Chinesisch - Ctrl-;"
 
-#: engine/table.py:1091
+#: engine/table.py:1299
 msgid "Traditional Chinese Mode"
 msgstr "Modus für traditionelles Chinesisch"
 
-#: engine/table.py:1091
-msgid "Switch to Simplify Chinese first Big Charset Mode"
-msgstr "Wechseln zu vereinfachtem Chinesisch, Big5 Zeichensatz bevorzugt"
+#: engine/table.py:1299
+msgid "Switch to Simplify Chinese first Big Charset Mode - Ctrl-;"
+msgstr ""
+"Wechseln zu vereinfachtem Chinesisch, Big5 Zeichensatz bevorzugt - Ctrl-;"
 
-#: engine/table.py:1093
+#: engine/table.py:1301
 msgid "Simplified Chinese First Big Charset Mode"
 msgstr "Vereinfachtes Chinesisch, Big5 Zeichensatz bevorzugt"
 
-#: engine/table.py:1093
-msgid "Switch to Traditional Chinese first Big Charset Mode"
-msgstr "Wechseln zu traditionellem Chinesisch, Big5 Zeichensatz bevorzugt"
+#: engine/table.py:1301
+msgid "Switch to Traditional Chinese first Big Charset Mode - Ctrl-;"
+msgstr ""
+"Wechseln zu traditionellem Chinesisch, Big5 Zeichensatz bevorzugt - Ctrl-;"
 
-#: engine/table.py:1095
+#: engine/table.py:1303
 msgid "Traditional Chinese First Big Charset Mode"
 msgstr "Traditionelles Chinesisch, Big5 Zeichensatz bevorzugt"
 
-#: engine/table.py:1095
-msgid "Switch to Big Charset Mode"
-msgstr "Wechseln in Big5 Zeichensatzmodus"
+#: engine/table.py:1303
+msgid "Switch to Big Charset Mode - Ctrl-;"
+msgstr "Wechseln in Big5 Zeichensatzmodus - Ctrl-;"
 
-#: engine/table.py:1097
+#: engine/table.py:1305
 msgid "Big Chinese Mode"
 msgstr "Big5 Zeichensatzmodus"
 
-#: engine/table.py:1097
+#: engine/table.py:1305
 msgid "Switch to Simplified Chinese Mode"
 msgstr "Wechseln zum Modus für vereinfachtes Chinesisch"

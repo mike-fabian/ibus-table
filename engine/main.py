@@ -107,6 +107,7 @@ class IMApp:
                 if not os.access( icon, os.F_OK):
                     icon = ''
             layout = self.__factory.db.get_ime_property ("layout")
+            symbol = self.__factory.db.get_ime_property ("symbol")
             engine = IBus.EngineDesc(name=name,
                                     longname=longname,
                                     description=description,
@@ -114,7 +115,8 @@ class IMApp:
                                     license=license,
                                     author=author,
                                     icon=icon,
-                                    layout=layout)
+                                    layout=layout,
+                                    symbol=symbol)
             self.__component.add_engine(engine)
             self.__bus.register_component(self.__component)
 
@@ -218,6 +220,9 @@ def main():
             
             _layout = SubElement (_engine, 'layout')
             _layout.text = _sq_db.get_ime_property ('layout')
+
+            _symbol = SubElement (_engine, 'symbol')
+            _symbol.text = _sq_db.get_ime_property ('symbol')
 
             _desc = SubElement (_engine, 'description')
             _desc.text = _sq_db.get_ime_property ('description')

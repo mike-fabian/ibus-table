@@ -193,14 +193,6 @@ class editor(object):
                 "LookupTableOrientation"))
         if __orientation == None:
                 __orientation = self.db.get_orientation()
-        self._always_show_lookup = variant_to_value(self._config.get_value(
-                self._config_section,
-                "AlwaysShowLookup"))
-        if self._always_show_lookup == None:
-            if self.db.get_ime_property('always_show_lookup') != None:
-                self._always_show_lookup = self.db.get_ime_property('always_show_lookup').lower() == u'true'
-            else:
-                self._always_show_lookup = False
         # __page_size: lookup table page size
         # this is computed from the select_keys, so should be done after it
         __page_size = self.db.get_page_size()
@@ -304,12 +296,6 @@ class editor(object):
                 self._config_section,
                 "ChineseMode",
                 GLib.Variant.new_int32(self._chinese_mode))
-
-    def set_candidates_list_visible(self, visible):
-        if "set_candidates_list_visible" in dir(self._lookup_table):
-            self._lookup_table.set_candidates_list_visible(visible)
-        else:
-            print "Method set_candidates_list_visible not implemented in iBus. Please upgrade.\n"
 
     def clear (self):
         '''Remove data holded'''
@@ -1178,9 +1164,9 @@ class tabengine (IBus.Engine):
                 "AlwaysShowLookup"))
         if self._always_show_lookup == None:
             if self.db.get_ime_property('always_show_lookup') != None:
-                self._candidates = self.db.get_ime_property('always_show_lookup').lower() == u'true'
+                self._always_show_lookup = self.db.get_ime_property('always_show_lookup').lower() == u'true'
             else:
-                self._candidates = False
+                self._always_show_lookup = True
         
         # the commit phrases length
         self._len_list = [0]
@@ -1238,7 +1224,7 @@ class tabengine (IBus.Engine):
         self._auto_commit_property = self._new_property(u'acommit')
         self.properties.append(self._auto_commit_property)
         
-        self._always_show_lookup_property = self._new_property(u'always_show_loopup')
+        self._always_show_lookup_property = self._new_property(u'always_show_lookup')
         self.properties.append(self._always_show_lookup_property)
         
         self.register_properties (self.properties)
@@ -1256,6 +1242,7 @@ class tabengine (IBus.Engine):
     def _refresh_properties (self):
         '''Method used to update properties'''
         # taken and modified from PinYin.py :)
+        print("mike _refresh_properties()")
         if self._mode == 1: # refresh mode
             if self._status == u'CN':
                 self._set_property(self._status_property, 'chinese.svg', _('Chinese Mode'), _('Switch to English mode - Right Shift'))
@@ -1295,13 +1282,10 @@ class tabengine (IBus.Engine):
             self._set_property(self._auto_commit_property, 'ncommit.svg', _('Normal Commit Mode'), _('Switch to direct commit mode - Ctrl-/'))
         self.update_property(self._auto_commit_property)
         if self._always_show_lookup:
-            self._editor.set_candidates_list_visible(True)
-            self._set_property(self._always_show_lookup_property, 'always_show_lookup_y.svg', _('Hide candidates'), _('Do not display the candidates list.'))
+            self._set_property(self._always_show_lookup_property, 'always_show_lookup_y.svg', _('Display candidates'), _('Display the candidate list.'))
         else:
-            self._editor.set_candidates_list_visible(False)
-            self._set_property(self._always_show_lookup_property, 'always_show_lookup_n.svg', _('Display candidates'), _('Select your candidate among a list of possible key combinations.'))
+            self._set_property(self._always_show_lookup_property, 'always_show_lookup_n.svg', _('Hide candidates'), _('Do not display the candidates list.'))
         self.update_property(self._always_show_lookup_property)
-        self._editor._always_show_lookup = self._always_show_lookup
 
         # the chinese_mode:
         if self.db._is_chinese:
@@ -1331,6 +1315,7 @@ class tabengine (IBus.Engine):
 
     def do_property_activate (self, property, prop_state = IBus.PropState.UNCHECKED):
         '''Shift property'''
+        print("mike do_property_activate property=%(p)s prop_state=%(s)s\n" %{'p':property, 's': prop_state})
         if property == u"status":
             self._change_mode ()
         elif property == u'py_mode' and self._ime_py:
@@ -1368,7 +1353,9 @@ class tabengine (IBus.Engine):
                         "EnDefFullWidthPunct",
                         GLib.Variant.new_boolean(self._full_width_punct [self._mode]))
         elif property == u'always_show_lookup':
+            print("mike property candidates clicked self._always_show_lookup= %(a)s" %{'a': self._always_show_lookup})
             self._always_show_lookup = not self._always_show_lookup
+            print("mike changed self._always_show_lookup= %(a)s" %{'a': self._always_show_lookup})
             self._config.set_value( self._config_section,
                     "AlwaysShowLookup",
                     GLib.Variant.new_boolean(self._always_show_lookup))
@@ -1440,7 +1427,11 @@ class tabengine (IBus.Engine):
                                       attr.get_start_index(),
                                       attr.get_end_index())
                 i += 1
-            super(tabengine, self).update_auxiliary_text(text, True)
+            visible = True
+            if self._editor._lookup_table.get_number_of_candidates() == 0 \
+               or not self._always_show_lookup:
+                visible = False
+            super(tabengine, self).update_auxiliary_text(text, visible)
         else:
             self.hide_auxiliary_text()
             #self.update_aux_string (u'', None, False)
@@ -1448,6 +1439,9 @@ class tabengine (IBus.Engine):
     def _update_lookup_table (self):
         '''Update Lookup Table in UI'''
         if self._editor.is_empty ():
+            self.hide_lookup_table()
+            return
+        if not self._always_show_lookup:
             self.hide_lookup_table()
             return
         self.update_lookup_table(self._editor.get_lookup_table(), True)
@@ -1971,8 +1965,9 @@ class tabengine (IBus.Engine):
             self._full_width_punct[1] = value
             self._refresh_properties()
             return
-        elif name == u'AlwaysShowLookup':
-            self._editor._always_show_lookup = value
+        elif name == u'alwaysshowlookup':
+            self._always_show_lookup = value
+            self._refresh_properties()
             return
 
     # for further implementation :)

@@ -54,6 +54,7 @@ ibus-table-createdb -i -n %{_datadir}/ibus-table/tables/additional/latex.db
 %{_libdir}/pkgconfig/ibus-table.pc
 %{_datadir}/ibus-table/engine
 %{_datadir}/ibus-table/data
+%{_datadir}/ibus-table/setup
 %{_datadir}/ibus-table/tables/template.txt
 %dir %{_datadir}/ibus-table/tables
 %{_datadir}/ibus-table/icons/ibus-table.svg
@@ -77,6 +78,7 @@ ibus-table-createdb -i -n %{_datadir}/ibus-table/tables/additional/latex.db
 %dir %{_datadir}/ibus-table/icons
 %{_bindir}/ibus-engine-table
 %{_bindir}/ibus-table-createdb
+%{_bindir}/ibus-setup-table
 
 %files additional
 %defattr(-,root,root,-)

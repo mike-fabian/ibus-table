@@ -50,6 +50,7 @@ class tabsqlitedb:
         self._add_phrase_sqlstr = ''
         self.old_phrases=[]
         self.ime_property_cache = {}
+        self._user_db = user_db
         
         if filename:
             # now we are creating db
@@ -225,7 +226,7 @@ class tabsqlitedb:
         self.db.execute ('ATTACH DATABASE "%s" AS mudb;' % mudb )
         self.create_tables ("mudb")
     
-    def update_phrase (self, entry, database='user_db'):
+    def update_phrase (self, entry, database='user_db', commit=True):
         '''update phrase freqs'''
         #print entry
         _con = [ entry[-1] ] + list(entry[1:3+entry[1]]) + [entry[-3]]
@@ -236,9 +237,13 @@ class tabsqlitedb:
         #print sqlstr
         self.db.execute ( sqlstr , _con )
         # because we may update different db, we'd better commit every time.
-        self.db.commit()
+        # ??? Does it matter if we update different db?
+        if commit:
+            self.db.commit()
 
     def sync_usrdb (self):
+        if self._user_db is None:
+            return
         # we need to update the user_db
         #print 'sync userdb'
         mudata = self.db.execute ('SELECT * FROM mudb.phrases;').fetchall()
@@ -250,12 +255,18 @@ class tabsqlitedb:
         data_a = map (lambda x: (u''.join ( map(self.deparse, x[3:3+x[1]])),x[-3],0,x[-1] ), data_a)
         data_n = map (lambda x: (u''.join ( map(self.deparse, x[3:3+x[1]])),x[-3],-1,x[-1] ), data_n)
         #print data_u
-        map (self.update_phrase, data_u)
+        def update_p(entry):
+            # Don't commit yet
+            self.update_phrase(entry, commit=False)
+        map (update_p, data_u)
         #print self.db.execute('select * from user_db.phrases;').fetchall()
         map (self.u_add_phrase,data_a)
         map (self.u_add_phrase,data_n)
         self.db.commit ()
-    
+        # clear mudb
+        self.db.execute('DELETE FROM mudb.phrases;')
+        self.db.commit ()
+
     def is_chinese (self):
         __lang = self.get_ime_property ('languages')
         if __lang:

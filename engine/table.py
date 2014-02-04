@@ -33,6 +33,8 @@ from curses import ascii
 #import tabsqlitedb
 import tabdict
 import re
+import time
+import gobject
 
 patt_edit = re.compile (r'(.*)###(.*)###(.*)')
 patt_uncommit = re.compile (r'(.*)@@@(.*)')
@@ -145,6 +147,9 @@ def unichar_full_to_half (c):
         if code >= full and code < full + size:
             return unichr (half + code - full)
     return c
+
+SAVE_USER_COUNT_MAX = 16
+SAVE_USER_TIMEOUT = 30 # in seconds
 
 class KeyEvent:
     def __init__(self, keyval, is_press, state):
@@ -1186,7 +1191,15 @@ class tabengine (IBus.Engine):
         #    self._sm = None
         #self._sm_on = False
         self._on = False
+        self._save_user_count = 0
+        self._save_user_start = time.time()
+
+        self._save_user_count_max = SAVE_USER_COUNT_MAX
+        self._save_user_timeout = SAVE_USER_TIMEOUT
         self.reset ()
+
+        self.sync_timeout_id = gobject.timeout_add_seconds(1,
+                self._sync_user_db)
 
     def reset (self):
         self._editor.clear ()
@@ -1198,9 +1211,14 @@ class tabengine (IBus.Engine):
         self._update_ui ()
 
     def do_destroy(self):
+        if self.sync_timeout_id > 0:
+            gobject.source_remove(self.sync_timeout_id)
+            self.sync_timeout_id = 0
         self.reset ()
         self.do_focus_out ()
-        #self.db.sync_usrdb ()
+        if self._save_user_count > 0:
+            self.db.sync_usrdb()
+            self._save_user_count = 0
         super(tabengine,self).destroy()
 
     def _init_properties (self):
@@ -1456,6 +1474,26 @@ class tabengine (IBus.Engine):
         self._update_preedit ()
         self._update_aux ()
 
+    def _check_phrase (self, phrase, tabkey):
+        """Check the given phrase and update save user db info"""
+        self.db.check_phrase(phrase, tabkey)
+
+        if self._save_user_count <= 0:
+            self._save_user_start = time.time()
+        self._save_user_count += 1
+
+    def _sync_user_db(self):
+        """Save user db to disk"""
+        if self._save_user_count >= 0:
+            now = time.time()
+            time_delta = now - self._save_user_start
+            if (self._save_user_count > self._save_user_count_max or 
+                    time_delta >= self._save_user_timeout):
+                self.db.sync_usrdb()
+                self._save_user_count = 0
+                self._save_user_start = now
+        return True
+
     def commit_string (self,string):
         self._editor.clear ()
         self._update_ui ()
@@ -1571,22 +1609,24 @@ class tabengine (IBus.Engine):
         if key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
             return False
 
-        keychar = unichr (key.code)
-        if ascii.ispunct (key.code): # if key code is a punctation
-            if self._full_width_punct[self._mode]:
-                self.commit_string (self._convert_to_full_width (keychar))
-                return True
-            else:
-                self.commit_string (keychar)
-                return True
+        cond_letter_translate = lambda (c): \
+            self._convert_to_full_width (c) if self._full_width_letter [
+                    self._mode] else c
+        cond_punct_translate = lambda (c): \
+            self._convert_to_full_width (c) if self._full_width_punct [
+                    self._mode] else c
 
-        # then, the key code is a letter or digit
-        if self._full_width_letter[self._mode]:
-            # in full width letter mode
-            self.commit_string (self._convert_to_full_width (keychar))
-            return True
+        keychar = unichr (key.code)
+        if ascii.ispunct (key.code):
+            trans_char = cond_punct_translate (keychar)
         else:
+            trans_char = cond_letter_translate (keychar)
+
+        if trans_char == keychar:
             return False
+        else:
+            self.commit_string(trans_char)
+            return True
 
         # should not reach there
         return False
@@ -1648,22 +1688,23 @@ class tabengine (IBus.Engine):
 
         if self._editor.is_empty ():
             # we have not input anything
-            if key.code >= 32 and key.code <= 127 and ( keychar not in self._valid_input_chars ) \
-                    and (not (key.mask & (IBus.ModifierType.MOD1_MASK | IBus.ModifierType.CONTROL_MASK))):
-                if key.code == IBus.KEY_space:
-                    #self.commit_string (cond_letter_translate (keychar))
-                    # little hack to make ibus to input space in gvim :)
-                    if self._full_width_letter [self._mode]:
-                        self.commit_string (cond_letter_translate (keychar))
-                        return True
-                    else: 
-                        return False
+            if key.code >= 32 and key.code <= 127 \
+                    and ( keychar not in self._valid_input_chars ) \
+                    and (not key.mask &
+                            (IBus.ModifierType.MOD1_MASK |
+                                IBus.ModifierType.CONTROL_MASK)):
+                # Input untranslated ascii char directly
                 if ascii.ispunct (key.code):
-                    self.commit_string (cond_punct_translate (keychar))
+                    trans_char = cond_punct_translate (keychar)
+                else:
+                    trans_char = cond_letter_translate (keychar)
+
+                if trans_char == keychar:
+                    return False
+                else:
+                    self.commit_string(trans_char)
                     return True
-                if ascii.isdigit (key.code):
-                    self.commit_string (cond_letter_translate (keychar))
-                    return True
+
             elif (key.code < 32 or key.code > 127) and ( keychar not in self._valid_input_chars ) \
                     and(not self._editor._py_mode):
                 return False
@@ -1767,7 +1808,7 @@ class tabengine (IBus.Engine):
                     else:
                         self.commit_string (sp_res[1])
                     #self.add_string_len(sp_res[1])
-                    self.db.check_phrase (sp_res[1], sp_res[2])
+                    self._check_phrase (sp_res[1], sp_res[2])
                 else:
                     if sp_res[1] == u' ':
                         self.commit_string (cond_letter_translate (u" "))
@@ -1794,7 +1835,7 @@ class tabengine (IBus.Engine):
                 if sp_res[0]:
                     self.commit_string (sp_res[1])
                     #self.add_string_len(sp_res[1])
-                    self.db.check_phrase (sp_res[1],sp_res[2])
+                    self._check_phrase (sp_res[1],sp_res[2])
 
             res = self._editor.add_input ( keychar )
             if not res:
@@ -1814,7 +1855,7 @@ class tabengine (IBus.Engine):
                 if sp_res[0]:
                     self.commit_string (sp_res[1] + key_char)
                     #self.add_string_len(sp_res[1])
-                    self.db.check_phrase (sp_res[1],sp_res[2])
+                    self._check_phrase (sp_res[1],sp_res[2])
                 else:
                     self.commit_string ( key_char )
                 if reprocess_last_key == True:
@@ -1830,7 +1871,7 @@ class tabengine (IBus.Engine):
                     if sp_res[0]:
                         self.commit_string (sp_res[1])
                         #self.add_string_len(sp_res[1])
-                        self.db.check_phrase (sp_res[1], sp_res[2])
+                        self._check_phrase (sp_res[1], sp_res[2])
                         return True
             self._update_ui ()
             return True
@@ -1859,7 +1900,7 @@ class tabengine (IBus.Engine):
                     self._refresh_properties ()
                     self._update_ui ()
                 # modify freq info
-                self.db.check_phrase (commit_string, input_keys)
+                self._check_phrase (commit_string, input_keys)
             return True
 
         elif key.code <= 127:

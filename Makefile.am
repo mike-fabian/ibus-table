@@ -29,6 +29,7 @@ SUBDIRS = \
 	tables \
 	data \
 	po \
+	setup \
 	$(NULL)
 
 ACLOCAL_AMFLAGS = -I m4

@@ -65,6 +65,9 @@ AC_CONFIG_FILES([po/Makefile.in
     icons/Makefile
     tables/Makefile
     m4/Makefile
+    setup/Makefile
+    setup/ibus-setup-table
+    setup/version.py
     ibus-table.spec
     ibus-table.pc]
 )

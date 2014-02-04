@@ -1046,6 +1046,10 @@ class tabengine (IBus.Engine):
     def __init__ (self, bus, obj_path, db ):
         super(tabengine,self).__init__ (connection=bus.get_connection(),
                                         object_path=obj_path)
+        self._input_purpose = 0
+        self._has_input_purpose = False
+        if hasattr(IBus, 'InputPurpose'):
+            self._has_input_purpose = True
         self._bus = bus
         # this is the backend sql db we need for our IME
         # we receive this db from IMEngineFactory
@@ -1522,6 +1526,9 @@ class tabengine (IBus.Engine):
         Key Events include Key Press and Key Release,
         modifier means Key Pressed
         '''
+        if self._has_input_purpose and self._input_purpose in [IBus.InputPurpose.PASSWORD, IBus.InputPurpose.PIN]:
+            return False
+
         key = KeyEvent(keyval, state & IBus.ModifierType.RELEASE_MASK == 0, state)
         # ignore NumLock mask
         key.mask &= ~IBus.ModifierType.MOD2_MASK
@@ -1882,10 +1889,16 @@ class tabengine (IBus.Engine):
             self._update_ui ()
 
     def do_focus_out (self):
+        if self._has_input_purpose:
+            self._input_purpose = 0
         try:
             self._editor.clear()
         except:
             pass
+
+    def do_set_content_type(self, purpose, hints):
+        if self._has_input_purpose:
+            self._input_purpose = purpose
 
     def do_enable (self):
         self._on = True

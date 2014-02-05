@@ -1264,7 +1264,6 @@ class tabengine (IBus.Engine):
     def _refresh_properties (self):
         '''Method used to update properties'''
         # taken and modified from PinYin.py :)
-        print("mike _refresh_properties()")
         if self._mode == 1: # refresh mode
             if self._status == u'CN':
                 self._set_property(self._status_property, 'chinese.svg', _('Chinese Mode'), _('Switch to English mode - Right Shift'))
@@ -1337,7 +1336,6 @@ class tabengine (IBus.Engine):
 
     def do_property_activate (self, property, prop_state = IBus.PropState.UNCHECKED):
         '''Shift property'''
-        print("mike do_property_activate property=%(p)s prop_state=%(s)s\n" %{'p':property, 's': prop_state})
         if property == u"status":
             self._change_mode ()
         elif property == u'py_mode' and self._ime_py:
@@ -1375,9 +1373,7 @@ class tabengine (IBus.Engine):
                         "EnDefFullWidthPunct",
                         GLib.Variant.new_boolean(self._full_width_punct [self._mode]))
         elif property == u'always_show_lookup':
-            print("mike property candidates clicked self._always_show_lookup= %(a)s" %{'a': self._always_show_lookup})
             self._always_show_lookup = not self._always_show_lookup
-            print("mike changed self._always_show_lookup= %(a)s" %{'a': self._always_show_lookup})
             self._config.set_value( self._config_section,
                     "AlwaysShowLookup",
                     GLib.Variant.new_boolean(self._always_show_lookup))

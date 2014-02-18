@@ -33,8 +33,8 @@ from curses import ascii
 #import tabsqlitedb
 import tabdict
 import re
+from gi.repository import GObject
 import time
-import gobject
 
 patt_edit = re.compile (r'(.*)###(.*)###(.*)')
 patt_uncommit = re.compile (r'(.*)@@@(.*)')
@@ -1198,7 +1198,7 @@ class tabengine (IBus.Engine):
         self._save_user_timeout = SAVE_USER_TIMEOUT
         self.reset ()
 
-        self.sync_timeout_id = gobject.timeout_add_seconds(1,
+        self.sync_timeout_id = GObject.timeout_add_seconds(1,
                 self._sync_user_db)
 
     def reset (self):
@@ -1212,7 +1212,7 @@ class tabengine (IBus.Engine):
 
     def do_destroy(self):
         if self.sync_timeout_id > 0:
-            gobject.source_remove(self.sync_timeout_id)
+            GObject.source_remove(self.sync_timeout_id)
             self.sync_timeout_id = 0
         self.reset ()
         self.do_focus_out ()

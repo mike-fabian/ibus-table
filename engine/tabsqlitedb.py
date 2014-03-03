@@ -22,9 +22,9 @@
 # $Id: $
 #
 
+import sys
 import os
 import os.path as path
-from sys import stderr
 import sqlite3
 import tabdict
 import uuid
@@ -69,7 +69,7 @@ class tabsqlitedb:
             self.db.execute( 'PRAGMA temp_store = MEMORY; ' )
             self.db.execute( 'PRAGMA synchronous = OFF; ' )
         except:
-            print 'encountering error when init db'
+            print('encountering error when init db')
             pass
         # create IME property table
         self.db.executescript('CREATE TABLE IF NOT EXISTS main.ime (attr TEXT, val TEXT);')
@@ -140,7 +140,7 @@ class tabsqlitedb:
             else:
                 self.user_can_define_phrase = False
         else:
-            print 'Could not find "user_can_define_phrase" entry from database, is it a outdated database?'
+            print('Could not find "user_can_define_phrase" entry from database, is it a outdated database?')
             self.user_can_define_phrase = False
         
         self.dynamic_adjust = self.get_ime_property('dynamic_adjust')
@@ -150,7 +150,7 @@ class tabsqlitedb:
             else:
                 self.dynamic_adjust = False
         else:
-            print 'Could not find "dynamic_adjust" entry from database, is it a outdated database?'
+            print('Could not find "dynamic_adjust" entry from database, is it a outdated database?')
             self.dynamic_adjust = False
         
         self.rules = self.get_rules ()
@@ -178,12 +178,12 @@ class tabsqlitedb:
                     self.init_user_db (user_db)
                 elif desc["version"] != "0.5":
                     new_name = "%s.%d" %(user_db, os.getpid())
-                    print >> stderr, "Can not support the user db. We will rename it to %s" % new_name
+                    sys.stderr.write("Can not support the user db. We will rename it to %s\n" %new_name)
                     self.old_phrases = self.extra_user_phrases( user_db )
                     os.rename (user_db, new_name)
                     self.init_user_db (user_db)
                 elif self.get_table_phrase_len(user_db) != len(self._pt_index):
-                    print >> stderr, "user db format outdated."
+                    sys.stderr.write("user db format outdated.\n")
                     # store old user phrases
                     self.old_phrases = self.extra_user_phrases( user_db )
                     new_name = "%s.%d" %(user_db, os.getpid())
@@ -199,7 +199,7 @@ class tabsqlitedb:
         try:
             self.db.execute ('ATTACH DATABASE "%s" AS user_db;' % user_db)
         except:
-            print >> stderr, "The user database was damaged. We will recreate it!"
+            sys.stderr.write("The user database was damaged. We will recreate it!\n")
             os.rename (user_db, "%s.%d" % (user_db, os.getpid ()))
             self.init_user_db (user_db)
             self.db.execute ('ATTACH DATABASE "%s" AS user_db;' % user_db)
@@ -210,11 +210,11 @@ class tabsqlitedb:
             # the characters will be discard :(
             #chars = filter (lambda x: x[0] == 1, self.old_phrases)
             # print chars
-            phrases = filter (lambda x: x[0] > 1, self.old_phrases)
-            phrases = map(lambda x: [self.parse_phrase_to_tabkeys(x[1])]\
-                    + list(x[1:]) , phrases)
+            phrases = [x for x in self.old_phrases if x[0] > 1]
+            phrases = [[self.parse_phrase_to_tabkeys(x[1])] + list(x[1:]) for x in phrases]
  
-            map (self.u_add_phrase,phrases)
+            for x in phrases:
+                self.u_add_phrase(x)
             self.db.commit ()
 
 
@@ -232,7 +232,7 @@ class tabsqlitedb:
         #print entry
         _con = [ entry[-1] ] + list(entry[1:3+entry[1]]) + [entry[-3]]
         #print _con
-        _condition = u''.join( map(lambda x: 'AND m%d = ? ' % x, range(entry[1]) )    )
+        _condition = u''.join(['AND m%d = ? ' %x for x in range(entry[1])])
         #print _condition
         sqlstr = 'UPDATE %s.phrases SET user_freq = ? WHERE mlen = ? AND clen = ? %s AND phrase = ?;' % (database, _condition)
         #print sqlstr
@@ -249,20 +249,23 @@ class tabsqlitedb:
         #print 'sync userdb'
         mudata = self.db.execute ('SELECT * FROM mudb.phrases;').fetchall()
         #print mudata
-        data_u = filter ( lambda x: x[-2] in [1,-3], mudata)
-        data_a = filter ( lambda x: x[-2]==2, mudata)
-        data_n = filter ( lambda x: x[-2]==-2, mudata)
+        data_u = [x for x in mudata if x[-2] in [1,-3]]
+        data_a = [x for x in mudata if x[-2]==2]
+        data_n = [x for x in mudata if x[-2]==-2]
+
         #print data_a
-        data_a = map (lambda x: (u''.join ( map(self.deparse, x[3:3+x[1]])),x[-3],0,x[-1] ), data_a)
-        data_n = map (lambda x: (u''.join ( map(self.deparse, x[3:3+x[1]])),x[-3],-1,x[-1] ), data_n)
+        data_a = [(u''.join(map(self.deparse, x[3:3+x[1]])),x[-3],0,x[-1]) for x in data_a]
+        data_n = [(u''.join(map(self.deparse, x[3:3+x[1]])),x[-3],-1,x[-1]) for x in data_n]
         #print data_u
         def update_p(entry):
             # Don't commit yet
             self.update_phrase(entry, commit=False)
         map (update_p, data_u)
         #print self.db.execute('select * from user_db.phrases;').fetchall()
-        map (self.u_add_phrase,data_a)
-        map (self.u_add_phrase,data_n)
+        for x in data_a:
+            self.u_add_phrase(x)
+        for x in data_n:
+            self.u_add_phrase(x)
         self.db.commit ()
         # clear mudb
         self.db.execute('DELETE FROM mudb.phrases;')
@@ -328,7 +331,7 @@ class tabsqlitedb:
             sqlstr = 'CREATE TABLE IF NOT EXISTS %s.pinyin ( plen INTEGER, ' % database
             #for i in range(6):
             #    sqlstr += 'p%d INTEGER, ' % i 
-            sqlstr += ''.join( map (lambda x: 'p%d INTEGER, ' % x, range(7) ) )
+            sqlstr += ''.join(['p%d INTEGER, ' %x for x in range(7)])
             sqlstr += 'zi TEXT, freq INTEGER);'
             self.db.execute ( sqlstr )
 
@@ -337,7 +340,7 @@ class tabsqlitedb:
                 mlen INTEGER, clen INTEGER, ' % database
         #for i in range(self._mlen):
         #    sqlstr += 'm%d INTEGER, ' % i 
-        sqlstr += ''.join ( map (lambda x: 'm%d INTEGER, ' % x, range(self._mlen)) )
+        sqlstr += ''.join(['m%d INTEGER, ' %x for x in range(self._mlen)])
         if self._is_chinese:
             sqlstr += 'category INTEGER, '
         sqlstr += 'phrase TEXT, freq INTEGER, user_freq INTEGER);'
@@ -376,7 +379,7 @@ class tabsqlitedb:
             else:
                 self.user_can_define_phrase = False
         else:
-            print 'Could not find "user_can_define_phrase" entry from database, is it a outdated database?'
+            print('Could not find "user_can_define_phrase" entry from database, is it a outdated database?')
             self.user_can_define_phrase = False
         self.rules = self.get_rules ()
 
@@ -398,14 +401,14 @@ class tabsqlitedb:
                             rules['above'] = int(res.group(2))
                         _cms = res.group(3).split('+')
                         if len(_cms) > self._mlen:
-                            print 'rule: "%s" over max key length' % rule
+                            print('rule: "%s" over max key length' %rule)
                             break
                         for _cm in _cms:
                             cm_res = patt_p.match(_cm)
                             cms.append(( int(cm_res.group(1)),int(cm_res.group(2)) ))
                         rules[int(res.group(2))]=cms
                     else:
-                        print 'not a legal rule: "%s"'  % rule 
+                        print('not a legal rule: "%s"' %rule)
             except Exception:
                 import traceback
                 traceback.print_exc ()
@@ -418,7 +421,7 @@ class tabsqlitedb:
         if self.rules:
             max_len = self.rules["above"]
             try:
-                return map ( lambda x: len(self.rules[x]), range(2, max_len+1) )[:]
+                return [len(self.rules[x]) for x in range(2, max_len+1)][:]
             except:
                 return []
         else:
@@ -429,7 +432,7 @@ class tabsqlitedb:
             except:
                 least_commit_len = 0
             if least_commit_len > 0:
-                return range (least_commit_len, self._mlen + 1)
+                return list(range(least_commit_len, self._mlen + 1))
             else:
                 return []
     
@@ -453,7 +456,8 @@ class tabsqlitedb:
         '''Add phrases to database, phrases is a iterable object
         Like: [(tabkeys, phrase, freq ,user_freq), (tabkeys, phrase, freq, user_freq), ...]
         '''
-        map (self.add_phrase, phrases, [database]*len(phrases),[False]*len(phrases) )
+        for x in phrases:
+            self.add_phrase(x, database=database, commit=False)
         self.db.commit()
     
     def add_new_phrases (self, nphrases, database='main'):
@@ -467,7 +471,7 @@ class tabsqlitedb:
                     # we don't have this phrase
                     n_phrases.append ( (_tabkey, _ph, _freq, 0) )
             except:
-                print '\"%s\" would not been added' % _ph
+                print('\"%s\" would not been added' %_ph)
         if n_phrases:
             self.add_phrases ( n_phrases, database )
     
@@ -479,9 +483,9 @@ class tabsqlitedb:
         '''Create the sqlstr for add phrase according to self._mlen.'''
         sqlstr = 'INSERT INTO %s.phrases ( mlen, clen, '
         sql_suffix = 'VALUES ( ?, ?, '
-        mmlen = range(self._mlen)
-        sqlstr += ''.join ( map(lambda x: 'm%d, ' %x , mmlen) )
-        sql_suffix += ''.join ( map (lambda x: '?, ' , mmlen) )
+        mmlen = list(range(self._mlen))
+        sqlstr += ''.join(['m%d, ' %x for x in mmlen])
+        sql_suffix += ''.join(['?, ' for x in mmlen])
         if self._is_chinese:
             sqlstr += 'category, '
             sql_suffix += '?, '
@@ -506,12 +510,12 @@ class tabsqlitedb:
         try:
             tbks = self.parse(tabkeys)
             if len(tbks) != len(tabkeys):
-                print 'In %s %s: we parse tabkeys fail' % (phrase, tabkeys )
+                print('In %s %s: we parse tabkeys fail' %(phrase, tabkeys))
                 return
             record = [None] * (5 + self._mlen)
             record [0] = len (tabkeys)
             record [1] = len (phrase)
-            record [2: 2+len(tabkeys)] = map (lambda x: tbks[x].get_key_id(), range(0,len(tabkeys)))
+            record [2: 2+len(tabkeys)] = [tbks[x].get_key_id() for x in range(0,len(tabkeys))]
             if self._is_chinese:
                 record +=[None]
                 record[-4] = category
@@ -540,8 +544,7 @@ class tabsqlitedb:
             try:
                 gc = self.parse(gcm)
                 if len(gc) != len(gcm):
-                    error_m = u'%s %s: Can not parse goucima' % (zi, gcm )
-                    raise Exception ( error_m.encode ('utf8') )
+                    raise Exception(u'%s %s: Can not parse goucima' %(zi, gcm))
                 record = [zi]
                 for i in range(_len):
                     record.append( gc[i].get_key_id())
@@ -572,8 +575,7 @@ class tabsqlitedb:
                 pinyin_n = pinyin.replace('1','!').replace('2','@').replace('3','#').replace('4','$').replace('5','%')
                 py = self.parse(pinyin_n)
                 if len(py) != len(pinyin_n):
-                    error_m = u'%s %s: Can not parse pinyin' % (zi, pinyin )
-                    raise Exception ( error_m.encode ('utf8') )
+                    raise Exception(u'%s %s: Can not parse pinyin' %(zi, pinyin))
                 record = [None]*10
                 record [0] = len (pinyin_n)
                 for i in range(0,len(pinyin_n)):
@@ -582,7 +584,7 @@ class tabsqlitedb:
                 record [-1] = freq
                 self.db.execute (sqlstr % database, record)
             except Exception:
-                print count, ': ', zi.encode('utf8'), ' ', pinyin
+                print(count, ': ', zi, ' ', pinyin)
                 import traceback
                 traceback.print_exc()
             count += 1
@@ -661,16 +663,15 @@ class tabsqlitedb:
         # firstly, we make sure the len we used is equal or less than the max key length
         _len = min( len(tabkeys),self._mlen )
         _condition = ''
-        _condition += ''.join ( map (lambda x: 'AND m%d = ? ' %x, range(_len) ) )
+        _condition += ''.join(['AND m%d = ? ' %x for x in range(_len)])
         if onechar:
             # for some users really like to select only single characters
             _condition += 'AND clen=1 '
         if bitmask:
             # now just the bits for chinese
-            all_ints = xrange(1,5)
-            need_ints = filter (lambda x: x & bitmask, all_ints)
-            bit_condition = 'OR'.join( map(lambda x: ' category = %d ' %x,\
-                    need_ints) )
+            all_ints = range(1,5)
+            need_ints = [x for x in all_ints if x & bitmask]
+            bit_condition = 'OR'.join([' category = %d ' %x for x in need_ints])
             _condition += 'AND (%s) ' % bit_condition
 
         # you can increase the x in _len + x to include more result, but in the most case, we only need one more key result, so we don't need the extra overhead :)
@@ -687,7 +688,7 @@ class tabsqlitedb:
             SELECT * FROM mudb.phrases WHERE mlen < %(mk)d %(condition)s )
             ORDER BY mlen ASC, user_freq DESC, freq DESC, id ASC;''' % { 'mk':_len+x_len, 'condition':_condition}
             # we have redefine the __int__(self) in class tabdict.tab_key to return the key id, so we can use map to got key id :)
-            _tabkeys = map(int,tabkeys[:_len])
+            _tabkeys = list(map(int,tabkeys[:_len]))
             _tabkeys += _tabkeys + _tabkeys
             result = self.db.execute(sqlstr, _tabkeys).fetchall()
             #self.db.commit()
@@ -717,7 +718,7 @@ class tabsqlitedb:
         _condition = ''
         #for i in range(_len):
         #    _condition += 'AND p%d = ? ' % i
-        _condition += ''.join ( map (lambda x: 'AND p%d = ? ' %x, range(_len)) )
+        _condition += ''.join (['AND p%d = ? ' %x for x in range(_len)])
         # you can increase the x in _len + x to include more result, but in the most case, we only need one more key result, so we don't need the extra overhead :)
         # here we need make sure that the 3 <= plen <=7,
         # so , if if _len < 3, than we start from 3; 
@@ -735,7 +736,7 @@ class tabsqlitedb:
             sqlstr = '''SELECT * FROM main.pinyin WHERE plen < %(mk)d  %(condition)s 
                 ORDER BY plen ASC, freq DESC;''' % { 'mk':x_len, 'condition':_condition}
             # we have redefine the __int__(self) in class tabdict.tab_key to return the key id, so we can use map to got key id :)
-            _tabkeys = map(int,tabkeys[:_len])
+            _tabkeys = list(map(int,tabkeys[:_len]))
             result = self.db.execute(sqlstr, _tabkeys).fetchall()
             if len(result) > 0:
                 break
@@ -820,29 +821,28 @@ class tabsqlitedb:
     def cache_goucima (self):
         self._goucima = {}
         goucima = self.db.execute('SELECT * FROM main.goucima;').fetchall()
-        map(lambda x: self._goucima.update({x[0]:x[1:]}), goucima)
+        for x in goucima:
+            self._goucima.update({x[0]:x[1:]})
     
     def get_gcm_id (self, zi):
         '''Get goucima of given character'''
         if self._goucima:
             # we already cache the goucima
-            if not isinstance(zi,unicode):
+            if type(zi) != type(u''):
                 zi = zi.decode('utf-8')
             try:
                 gcds = self._goucima[zi]
                 return gcds
             except:
                 pass
-        sqlstr = 'SELECT %s FROM main.goucima WHERE zi =?;' % ','.join( map (lambda x: 'g%d' % x, range(self._mlen) ) )
+        sqlstr = 'SELECT %s FROM main.goucima WHERE zi =?;' % ','.join(['g%d' %x for x in range(self._mlen)])
         return self.db.execute(sqlstr,(zi,)).fetchall()[0]
 
     def parse_phrase (self, phrase):
         '''Parse phrase to get its Table code'''
         # first we make sure that we are parsing unicode string
-        try:
+        if type(phrase) != type(u''):
             phrase = unicode(phrase)
-        except:
-            phrase = phrase.decode('utf8')
         p_len = len(phrase) 
         tabkeylist = []
         if p_len < 2:
@@ -863,12 +863,12 @@ class tabsqlitedb:
             #        zi -= 1
             #    gcm = self.get_gcm_id (phrase[zi])
             #    tabkeylist.append(gcm[ma-1])
-            tabkeylist = map (lambda x: self.get_gcm_id ( phrase[x[0]-1 if x[0] > 0 else x[0]] )\
-                    [ x[1]-1 if x[1] > 0 else x[1] ], rule )
+            tabkeylist = [self.get_gcm_id(phrase[x[0]-1 if x[0] > 0 else x[0]])\
+                    [x[1]-1 if x[1] > 0 else x[1]] for x in rule]
             return [len( tabkeylist)] + [p_len]  + tabkeylist[:] + [phrase]
 
         except:
-            print "pharse pharse \"%s\" fail." % phrase.encode("utf-8")
+            print("pharse pharse \"%s\" fail." %phrase)
             #import traceback
             #traceback.print_exc ()
 
@@ -893,7 +893,7 @@ class tabsqlitedb:
         if self.user_can_define_phrase:
             self.check_phrase_internal (phrase, tabkey, database)
         else:
-            map(self.check_phrase_internal, phrase)
+            list(map(self.check_phrase_internal, phrase))
     
     def check_phrase_internal (self,phrase,tabkey=None,database='main'):
         '''Check word freq and user_freq
@@ -923,7 +923,7 @@ class tabsqlitedb:
             tabks = self.parse (tabkey)
             #print "tabks: ", tabks
             tabkids = tuple( map(int,tabks) )
-            condition = ' and '.join( map(lambda x: 'm%d = ?' % x, range( len(tabks) )) )
+            condition = ' and '.join(['m%d = ?' %x for x in range(len(tabks))])
             sqlstr = '''SELECT * FROM 
             (
                 SELECT * FROM main.phrases WHERE phrase = ? and %(cond)s
@@ -946,19 +946,21 @@ class tabsqlitedb:
         usrdb = {}
         mudb = {}
         #print "result is: ", result 
-        searchres = map ( lambda res: [ int(res[-2]), int(res[-1]),
-            [(res[1:-2],[res[:-1],res[-1]])] ], result)
+        searchres = [[int(res[-2]), int(res[-1]), [(res[1:-2],[res[:-1],res[-1]])]] for res in result]
         # for sysdb
-        reslist=filter( lambda x: not x[1], searchres )
-        map (lambda x: sysdb.update(x[2]), reslist)
+        reslist=[x for x in searchres if not x[1]]
+        for x in reslist:
+            sysdb.update(x[2])
         #print "sysdb is ", sysdb
         # for usrdb
-        reslist=filter( lambda x: ( x[0] in [0,-1] ) and x[1], searchres )
-        map (lambda x: usrdb.update(x[2]), reslist)
+        reslist=[x for x in searchres if ( x[0] in [0,-1] ) and x[1]]
+        for x in reslist:
+            usrdb.update(x[2])
         #print "usrdb is ", usrdb 
         # for mudb
-        reslist=filter( lambda x: (x[0] not in [0,-1])  and x[1], searchres )
-        map (lambda x: mudb.update(x[2]), reslist)
+        reslist=[x for x in searchres if (x[0] not in [0,-1]) and x[1]]
+        for x in reslist:
+            mudb.update(x[2])
         #print "mudb is ", mudb
         
         tabkey = ''
@@ -979,36 +981,20 @@ class tabsqlitedb:
                     # we should change the frequency of words
                     return
                 # we remove the keys contained in mudb from usrdb
-                keyout = filter (lambda k: mudb.has_key(k), usrdb.keys() )
-                map (usrdb.pop, keyout)
+                keyout = [k for k in usrdb if k in mudb]
+                list(map(usrdb.pop, keyout))
                 # we remove the keys contained in mudb and usrdb from sysdb
-                keyout = filter (lambda k: mudb.has_key(k) or usrdb.has_key(k) , sysdb.keys() )
-                map (sysdb.pop, keyout)
+                keyout = [k for k in sysdb if k in mudb or k in usrdb]
+                list(map(sysdb.pop, keyout))
                 # first mudb
-                map (lambda res: self.db.execute ( sqlstr % ''.join( map(lambda x: 'AND m%d = ? ' % x, range(res[0])) ) ,  [ mudb[res][1] + 1 ] + list( res[:2+res[0]]) + list (res[2+self._mlen:]) ) , mudb.keys())
+                for res in mudb:
+                    self.db.execute(sqlstr % ''.join(['AND m%d = ? ' %x for x in range(res[0])]), [mudb[res][1] + 1] + list(res[:2+res[0]]) + list(res[2+self._mlen:]))
                 self.db.commit()
-                # -----original for loop of above map: 
-                #for res in mudb.keys ():
-                #    _con = [ mudb[res][1] + 1 ] + list( res[:2+res[0]]) + list (res[2+self._mlen:])
-                #    _condition = ''.join( map(lambda x: 'AND m%d = ? ' % x, range(res[0])) )    
-                #    self.db.execute ( sqlstr % _condition, _con )
-                
                 # then usrdb
-                map ( lambda res: self.add_phrase ( (''.join ( map(self.deparse,res[2:2+int(res[0])] ) ),phrase,1,usrdb[res][1]+1  ), database = 'mudb') , usrdb.keys() )                
-                # -----original for loop of above map: 
-                #for res in usrdb.keys ():
-                #    #if mudb.has_key (res):
-                #    #    continue
-                #    tabkey = ''.join ( map(self.deparse,res[2:2+int(res[0])] ) )
-                #    # here we use freq 1 to denote the phrase needed update in user_db
-                #    self.add_phrase ((tabkey,phrase,1,usrdb[res][1]+1 ), database = 'mudb')
-                # last sysdb
-                map ( lambda res: self.add_phrase ( ( ''.join ( map(self.deparse,res[2:2+int(res[0])]) ),phrase,2,1 ), database = 'mudb'), sysdb.keys() )
-                # -----original for loop of above map: 
-                #for res in sysdb.keys ():
-                #    tabkey = ''.join ( map(self.deparse,res[2:2+int(res[0])]) )
-                #    # here we use freq 2 to denote the word needed addition to user_db
-                #    self.add_phrase ((tabkey,phrase,2,1), database = 'mudb')
+                for res in usrdb:
+                    self.add_phrase((''.join(map(self.deparse,res[2:2+int(res[0])])),phrase,1,usrdb[res][1]+1), database = 'mudb')
+                for res in sysdb:
+                    self.add_phrase((''.join(map(self.deparse,res[2:2+int(res[0])])),phrase,2,1), database = 'mudb')
             else:
                 # this is a phrase
                 if len (result) == 0 and self.user_can_define_phrase:
@@ -1019,20 +1005,22 @@ class tabsqlitedb:
                         # we should change the frequency of words
                         return
                     # we remove the keys contained in mudb from usrdb
-                    keyout = filter (lambda k: mudb.has_key(k), usrdb.keys() )
-                    map (usrdb.pop, keyout)
+                    keyout = [k for k in userdb if k in mudb]
+                    list(map(usrdb.pop, keyout))
                     # we remove the keys contained in mudb and usrdb from sysdb
-                    keyout = filter (lambda k: mudb.has_key(k) or usrdb.has_key(k) , sysdb.keys() )
-                    map (sysdb.pop, keyout)
+                    keyout = [k for k in sysdb if k in mudb or k in usrdb]
+                    list(map(sysdb.pop, keyout))
                     
                     # first we process mudb
-                    # the original for loop can be found above in 'len==1'
-                    map (lambda res: self.db.execute ( sqlstr % ''.join( map(lambda x: 'AND m%d = ? ' % x, range(res[0])) ) ,  [ mudb[res][1] + 1 ] + list( res[:2+res[0]]) + list (res[2+self._mlen:]) ) , mudb.keys())
+                    for res in mudb:
+                        self.db.execute(sqlstr % ''.join(['AND m%d = ? ' %x for x in range(res[0])]), [mudb[res][1] + 1] + list(res[:2+res[0]]) + list(res[2+self._mlen:]))
                     self.db.commit()
                     # then usrdb
-                    map ( lambda res: self.add_phrase ( (''.join ( map(self.deparse,res[2:2+int(res[0])] ) ),phrase,(-3 if usrdb[res][0][-1] == -1 else 1),usrdb[res][1]+1  ), database = 'mudb') , usrdb.keys() )                
+                    for res in usrdb:
+                        self.add_phrase((''.join(map(self.deparse,res[2:2+int(res[0])])),phrase,(-3 if usrdb[res][0][-1] == -1 else 1),usrdb[res][1]+1), database = 'mudb')
                     # last sysdb
-                    map ( lambda res: self.add_phrase ( ( ''.join ( map(self.deparse,res[2:2+int(res[0])]) ),phrase,2,1 ), database = 'mudb'), sysdb.keys() )
+                    for res in sysdb:
+                        self.add_phrase((''.join(map(self.deparse,res[2:2+int(res[0])])),phrase,2,1), database = 'mudb')
 
                 else:
                     # we come to here when the ime dosen't support user phrase define
@@ -1046,7 +1034,8 @@ class tabsqlitedb:
     def find_zi_code (self,zi):
         '''Check word freq and user_freq
         '''
-        zi = zi.decode('utf8')
+        if type(zi) != type(u''):
+            zi = zi.decode('utf8')
         sqlstr = '''SELECT * FROM main.phrases WHERE phrase = ?
         ORDER BY mlen ASC;
 ''' 

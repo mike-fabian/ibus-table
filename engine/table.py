@@ -25,11 +25,11 @@ __all__ = (
     "tabengine",
 )
 
+import sys
 import os
 import string
 from gi.repository import IBus
 from gi.repository import GLib
-from curses import ascii
 #import tabsqlitedb
 import tabdict
 import re
@@ -42,6 +42,43 @@ patt_uncommit = re.compile (r'(.*)@@@(.*)')
 from gettext import dgettext
 _  = lambda a : dgettext ("ibus-table", a)
 N_ = lambda a : a
+
+
+def ascii_ispunct(character):
+    '''
+    Use our own function instead of ascii.ispunct()
+    from “from curses import ascii” because the behaviour
+    of the latter is kind of weird. In Python 3.3.2 it does
+    for example:
+
+        >>> from curses import ascii
+        >>> ascii.ispunct('.')
+        True
+        >>> ascii.ispunct(u'.')
+        True
+        >>> ascii.ispunct('a')
+        False
+        >>> ascii.ispunct(u'a')
+        False
+        >>>
+        >>> ascii.ispunct(u'あ')
+        True
+        >>> ascii.ispunct('あ')
+        True
+        >>>
+
+    あ isn’t punctuation. ascii.ispunct() only really works
+    in the ascii range, it returns weird results when used
+    over the whole unicode range. Maybe we should better use
+    unicodedata.category(), which works fine to figure out
+    what is punctuation for all of unicode. But at the moment
+    I am only porting from Python2 to Python3 and just want to
+    preserve the original behaviour for the moment.
+    '''
+    if character in '''!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~''':
+        return True
+    else:
+        return False
 
 def variant_to_value(variant):
     if type(variant) != GLib.Variant:
@@ -62,7 +99,7 @@ def variant_to_value(variant):
         else:
             return variant.dup_strv()
     else:
-        print 'error: unknown variant type:', type_string
+        print('error: unknown variant type: %s' %type_string)
     return variant
 
 def argb(a, r, g, b):
@@ -138,14 +175,20 @@ def unichar_half_to_full (c):
     code = ord (c)
     for half, full, size in __half_full_table:
         if code >= half and code < half + size:
-            return unichr (full + code - half)
+            if sys.version_info >= (3,0,0):
+                return chr (full + code - half)
+            else:
+                return unichr (full + code - half)
     return c
 
 def unichar_full_to_half (c):
     code = ord (c)
     for half, full, size in __half_full_table:
         if code >= full and code < full + size:
-            return unichr (half + code - full)
+            if sys.version_info >= (3,0,0):
+                return chr (half + code - full)
+            else:
+                return unichr (half + code - full)
     return c
 
 SAVE_USER_COUNT_MAX = 16
@@ -272,9 +315,9 @@ class editor(object):
             return __db_chinese_mode
         # otherwise
         try:
-            if os.environ.has_key('LC_ALL'):
+            if 'LC_ALL' in os.environ:
                 __lc = os.environ['LC_ALL'].split('.')[0].lower()
-            elif os.environ.has_key('LC_CTYPE'):
+            elif 'LC_CTYPE' in os.environ:
                 __lc = os.environ['LC_CTYPE'].split('.')[0].lower()
             else:
                 __lc = os.environ['LANG'].split('.')[0].lower()
@@ -491,7 +534,7 @@ class editor(object):
         else:
             input_chars = self.get_input_chars ()
             if input_chars:
-                _candi = u''.join( ['###'] + map( str, input_chars) + ['###'] )
+                _candi = u''.join( ['###'] + list(map( str, input_chars)) + ['###'] )
             else:
                 _candi = u''
         if self._strings:
@@ -514,7 +557,8 @@ class editor(object):
         '''Get caret position in preedit strings'''
         self._caret = 0
         if self._cursor[0] and self._strings:
-            map (self.add_caret,self._strings[:self._cursor[0]])
+            for x in self._strings[:self._cursor[0]]:
+                self.add_caret(x)
         self._caret += self._cursor[1]
         if self._candidates[0]:
             if self._py_mode:
@@ -740,12 +784,11 @@ class editor(object):
                             # is a punctuation character or not,
                             # if is a punctuation char, then we use old manner
                             # to submit the former valid candidate
-                            if ascii.ispunct (self._chars[0][-1].encode('ascii')) \
+                            if ascii_ispunct(self._chars[0][-1]) \
                                     or len (self._chars[0][:-1]) \
                                     in self.db.pkeylens \
                                     or only_one_last \
                                     or self._auto_select:
-                                    
                                 # because we use [!@#$%] to denote [12345]
                                 # in py_mode, so we need to distinguish them
                                 ## old manner:
@@ -857,7 +900,8 @@ class editor(object):
                 looklen < len(self._candidates[0])):
             endpos = looklen + psize
             batch = self._candidates[0][looklen:endpos]
-            map(self.ap_candidate, batch)
+            for x in batch:
+                self.ap_candidate(x)
 
     def cursor_down(self):
         '''Process Arrow Down Key Event
@@ -1076,10 +1120,10 @@ class tabengine (IBus.Engine):
             else:
                 self._ime_py = False
         else:
-            print 'We could not find "pinyin_mode" entry in database, is it an outdated database?'
+            print('We could not find "pinyin_mode" entry in database, is it an outdated database?')
             self._ime_py = False
 
-        self._status = self.db.get_ime_property('status_prompt').encode('utf8')
+        self._status = self.db.get_ime_property('status_prompt')
         # now we check and update the valid input characters
         self._chars = self.db.get_ime_property('valid_input_chars')
         self._valid_input_chars = []
@@ -1323,9 +1367,13 @@ class tabengine (IBus.Engine):
             self.update_property(self._cmode_property)
 
     def _set_property (self, property, icon, label, tooltip):
+        if type(label) != type(u''):
+            label = label.decode('utf-8')
+        if type(tooltip) != type(u''):
+            tooltip = tooltip.decode('utf-8')
         property.set_icon ( u'%s%s' % (self._icon_dir, icon ) )
-        property.set_label (IBus.Text.new_from_string(unicode(label)))
-        property.set_tooltip (IBus.Text.new_from_string(unicode(tooltip)))
+        property.set_label(IBus.Text.new_from_string(label))
+        property.set_tooltip(IBus.Text.new_from_string(tooltip))
 
     def _change_mode (self):
         '''Shift input mode, TAB -> EN -> TAB
@@ -1605,15 +1653,15 @@ class tabengine (IBus.Engine):
         if key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
             return False
 
-        cond_letter_translate = lambda (c): \
+        cond_letter_translate = lambda c: \
             self._convert_to_full_width (c) if self._full_width_letter [
                     self._mode] else c
-        cond_punct_translate = lambda (c): \
+        cond_punct_translate = lambda c: \
             self._convert_to_full_width (c) if self._full_width_punct [
                     self._mode] else c
 
-        keychar = unichr (key.code)
-        if ascii.ispunct (key.code):
+        keychar = IBus.keyval_to_unicode(key.code)
+        if ascii_ispunct(key.code):
             trans_char = cond_punct_translate (keychar)
         else:
             trans_char = cond_letter_translate (keychar)
@@ -1629,9 +1677,9 @@ class tabengine (IBus.Engine):
 
     def _table_mode_process_key_event (self, key):
         '''Xingma Mode Process Key Event'''
-        cond_letter_translate = lambda (c): \
+        cond_letter_translate = lambda c: \
             self._convert_to_full_width (c) if self._full_width_letter [self._mode] else c
-        cond_punct_translate = lambda (c): \
+        cond_punct_translate = lambda c: \
             self._convert_to_full_width (c) if self._full_width_punct [self._mode] else c
 
         # We have to process the pinyin mode change key event here,
@@ -1680,7 +1728,7 @@ class tabengine (IBus.Engine):
             return True
 
         #
-        keychar = unichr (key.code)
+        keychar = IBus.keyval_to_unicode(key.code)
 
         if self._editor.is_empty ():
             # we have not input anything
@@ -1690,7 +1738,7 @@ class tabengine (IBus.Engine):
                             (IBus.ModifierType.MOD1_MASK |
                                 IBus.ModifierType.CONTROL_MASK)):
                 # Input untranslated ascii char directly
-                if ascii.ispunct (key.code):
+                if ascii_ispunct(key.code):
                     trans_char = cond_punct_translate (keychar)
                 else:
                     trans_char = cond_letter_translate (keychar)
@@ -1843,7 +1891,7 @@ class tabengine (IBus.Engine):
                     self._editor.pop_input ()
                     reprocess_last_key=True
                     key_char=''
-                elif ascii.ispunct (key.code):
+                elif ascii_ispunct(key.code):
                     key_char = cond_punct_translate (keychar)
                 else:
                     key_char = cond_letter_translate (keychar)
@@ -1910,7 +1958,7 @@ class tabengine (IBus.Engine):
             self._editor.clear ()
             if py_mode:
                 self._refresh_properties ()
-            if ascii.ispunct (key.code):
+            if ascii_ispunct(key.code):
                 self.commit_string ( commit_string + cond_punct_translate(keychar))
             else:
                 self.commit_string ( commit_string + cond_letter_translate(keychar))
@@ -1966,16 +2014,21 @@ class tabengine (IBus.Engine):
         # effect of comparing the dconf sections case insentively
         # in some locales, it would fail for example if Turkish
         # locale (tr_TR.UTF-8) is set.
-        if type(section) == type(u''):
-            # translate() does not work in Python’s internal Unicode type
-            section = section.encode('utf-8')
-        return re.sub(r'[_:]', r'-', section).translate(
-            string.maketrans(string.ascii_uppercase, string.ascii_lowercase ))
+        if sys.version_info >= (3,0,0): # Python3
+            return re.sub(r'[_:]', r'-', section).translate(
+                ''.maketrans(
+                string.ascii_uppercase,
+                string.ascii_lowercase))
+        else: # Python2
+            return re.sub(r'[_:]', r'-', section).translate(
+                string.maketrans(
+                string.ascii_uppercase,
+                string.ascii_lowercase).decode('ISO-8859-1'))
 
     def config_value_changed_cb (self, config, section, name, value):
         if self.config_section_normalize(self._config_section) != self.config_section_normalize(section):
             return
-        print "config value %(n)s for engine %(en)s changed" %{'n': name, 'en': self._name}
+        print("config value %(n)s for engine %(en)s changed" %{'n': name, 'en': self._name})
         value = variant_to_value(value)
         if name == u'autoselect':
             self._editor._auto_select = value

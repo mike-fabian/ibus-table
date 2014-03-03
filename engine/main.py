@@ -25,7 +25,6 @@ import optparse
 from gi.repository import IBus
 from gi.repository import GLib
 import re
-patt = re.compile (r'<\?.*\?>\n')
 from signal import signal, SIGTERM, SIGINT
 
 import factory
@@ -78,10 +77,10 @@ if (not options.xml) and options.debug:
     if not os.access ( os.path.expanduser('~/.ibus/tables'), os.F_OK):
         os.system ('mkdir -p ~/.ibus/tables')
     logfile = os.path.expanduser('~/.ibus/tables/debug.log')
-    sys.stdout = open (logfile,'a',0)
-    sys.stderr = open (logfile,'a',0)
+    sys.stdout = open (logfile, mode='a', buffering=1)
+    sys.stderr = open (logfile, mode='a', buffering=1)
     from time import strftime
-    print '--- ', strftime('%Y-%m-%d: %H:%M:%S'), ' ---'
+    print('--- %s ---' %strftime('%Y-%m-%d: %H:%M:%S'))
 
 if options.profile:
     import cProfile, pstats
@@ -145,7 +144,7 @@ class IMApp:
     def __bus_destroy_cb(self, bus=None):
         if self.destroied:
             return
-        print "finalizing:)"
+        print("finalizing:)")
         self.__factory.do_destroy()
         self.destroied = True
         self.__mainloop.quit()
@@ -257,10 +256,10 @@ def main():
 
         # now format the xmlout pretty
         indent (egs)
-        egsout = tostring (egs, encoding='utf8')
+        egsout = tostring (egs, encoding='utf8').decode('utf-8')
+        patt = re.compile (r'<\?.*\?>\n')
         egsout = patt.sub ('',egsout)
-        print egsout
-        
+        print('%s' %egsout)
         return 0
 
     if options.daemon :

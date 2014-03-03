@@ -103,7 +103,7 @@ class PreferencesDialog:
         self.__builder.add_from_file("ibus-table-preferences.ui")
         self.__dialog = self.__builder.get_object("dialog")
 
-        for name in OPTION_DEFAULTS.keys():
+        for name in list(OPTION_DEFAULTS.keys()):
             if name not in SCALE_WIDGETS:
                 self._build_combobox_renderer(name)
 
@@ -121,7 +121,7 @@ class PreferencesDialog:
         self.__values = self.__config.get_values(self.__config_section).unpack()
         self.__config.connect ("value-changed", self.__config_value_changed_cb)
 
-        for name in OPTION_DEFAULTS.keys():
+        for name in list(OPTION_DEFAULTS.keys()):
             #self.__config.unset(self.__config_section, name); continue
             if name in SCALE_WIDGETS:
                 self._init_hscale(name)
@@ -253,7 +253,7 @@ class PreferencesDialog:
         elif isinstance(val, str):
             var = GLib.Variant.new_string(val)
         else:
-            print >> sys.stderr, "val(%s) is not in support type." % repr(val)
+            sys.stderr.write("val(%s) is not in support type." %repr(val))
             return
 
         self.__values[name] = val

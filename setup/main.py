@@ -56,7 +56,8 @@ ibus_lib_dir = os.getenv('IBUS_TABLE_LIB_LOCATION')
 
 if not ibus_dir or not os.path.exists(ibus_dir):
     ibus_dir = "/usr/share/ibus-table/"
-    ibus_lib_dir = "/usr/lib/ibus-table"
+if not ibus_lib_dir or not os.path.exists(ibus_lib_dir):
+    ibus_lib_dir = "/usr/libexec"
 
 db_dir = os.path.join (ibus_dir, 'tables')
 icon_dir = os.path.join (ibus_dir, 'icons')

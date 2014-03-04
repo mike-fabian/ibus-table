@@ -39,7 +39,7 @@ home_ibus_dir = os.path.join(os.getenv('HOME'), ".ibus")
 if not ibus_dir or not os.path.exists(ibus_dir):
     ibus_dir = "/usr/share/ibus-table/"
 if not ibus_lib_dir or not os.path.exists(ibus_lib_dir):
-    ibus_lib_dir = "/usr/lib/ibus-table"
+    ibus_lib_dir = "/usr/libexec"
 if not home_ibus_dir or not os.path.exists(home_ibus_dir):
     home_ibus_dir = os.path.expanduser("~/.ibus")
 

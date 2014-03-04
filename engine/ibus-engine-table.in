@@ -21,10 +21,11 @@
 #
 
 prefix=@prefix@
+exec_prefix=@prefix@
 datarootdir=@datarootdir@
 datadir=@datadir@
 export IBUS_TABLE_LOCATION=@datarootdir@/ibus-table
-export IBUS_TABLE_LIB_LOCATION=@prefix@/lib/ibus-table
+export IBUS_TABLE_LIB_LOCATION=@libexecdir@
 
 for arg in $@; do
 	case $arg in

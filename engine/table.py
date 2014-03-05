@@ -1691,7 +1691,7 @@ class tabengine (IBus.Engine):
             return res
         # process commit to preedit    
         if self._match_hotkey (key, IBus.KEY_Shift_R, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK) or self._match_hotkey (key, IBus.KEY_Shift_L, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK):
-            res = self._editor.l_shift ()
+            res = self._editor.commit_to_preedit()
             self._update_ui ()
             return res
 

@@ -1542,7 +1542,10 @@ class tabengine (IBus.Engine):
         self._editor.clear ()
         self._update_ui ()
         super(tabengine,self).commit_text(IBus.Text.new_from_string(string))
-        self._prev_char = string[-1]
+        if len(string) > 0:
+            self._prev_char = string[-1]
+        else:
+            self._prev_char = None
 
     def _convert_to_full_width (self, c):
         '''convert half width character to full width'''

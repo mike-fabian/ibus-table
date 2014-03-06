@@ -1223,17 +1223,6 @@ class tabengine (IBus.Engine):
         
         # the commit phrases length
         self._len_list = [0]
-        # connect to SpeedMeter
-        #try:
-        #    bus = dbus.SessionBus()
-        #    user = os.path.basename( os.path.expanduser('~') )
-        #    self._sm_bus = bus.get_object ("org.ibus.table.SpeedMeter.%s"\
-        #            % user, "/org/ibus/table/SpeedMeter")
-        #    self._sm =  dbus.Interface(self._sm_bus,\
-        #            "org.ibus.table.SpeedMeter") 
-        #except:
-        #    self._sm = None
-        #self._sm_on = False
         self._on = False
         self._save_user_count = 0
         self._save_user_start = time.time()
@@ -1718,15 +1707,6 @@ class tabengine (IBus.Engine):
             self.do_property_activate ( u"cmode" )
             return True
 
-        # Match speedmeter shift
-        #if self._match_hotkey (key, IBus.KEY_apostrophe, IBus.ModifierType.CONTROL_MASK):
-        #    self._sm_on = not self._sm_on
-        #    if self._sm_on:
-        #        self._sm.Show ()
-        #    else:
-        #        self._sm.Hide ()
-        #    return True
-        # Ignore key release event now :)
         if key.mask & IBus.ModifierType.RELEASE_MASK:
             return True
 

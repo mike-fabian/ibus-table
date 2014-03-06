@@ -1042,7 +1042,7 @@ class editor(object):
             return False
 
     def toggle_tab_py_mode (self):
-        '''Proess Right Shift Key Event as changed between PinYin Mode and Table Mode'''
+        '''Toggle between Pinyin Mode and Table Mode'''
         self._zi = u''
         if self._chars[0]:
             self.commit_to_preedit ()
@@ -1050,7 +1050,7 @@ class editor(object):
         return True
 
     def cycle_next_cand(self):
-        """Left Alt key, cycle cursor to next candidate in the page."""
+        '''Cycle cursor to next candidate in the page.'''
         total = len(self._candidates[0])
 
         if total > 0:

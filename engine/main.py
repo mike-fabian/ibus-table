@@ -63,10 +63,12 @@ opt.add_option('--ibus', '-i',
 opt.add_option('--xml', '-x',
         action = 'store_true',dest = 'xml',default = False,
         help = 'output the engines xml part, default: %default')
-
 opt.add_option('--no-debug', '-n',
         action = 'store_false',dest = 'debug',default = True,
         help = 'redirect stdout and stderr to ~/.ibus/tables/debug.log, default: %default')
+opt.add_option('--profile', '-p',
+        action = 'store_true', dest = 'profile', default = False,
+        help = 'print profiling information into the debug log. Works only together with --debug.')
 
 (options, args) = opt.parse_args()
 #if not options.db:
@@ -81,7 +83,9 @@ if (not options.xml) and options.debug:
     from time import strftime
     print '--- ', strftime('%Y-%m-%d: %H:%M:%S'), ' ---'
 
-
+if options.profile:
+    import cProfile, pstats
+    profile = cProfile.Profile()
 
 class IMApp:
     def __init__(self, dbfile, exec_by_ibus):
@@ -130,6 +134,8 @@ class IMApp:
 
 
     def run(self):
+        if options.profile:
+            profile.enable()
         self.__mainloop.run()
         self.__bus_destroy_cb()
 
@@ -143,6 +149,16 @@ class IMApp:
         self.__factory.do_destroy()
         self.destroied = True
         self.__mainloop.quit()
+        if options.profile:
+            profile.disable()
+            p = pstats.Stats(profile)
+            p.strip_dirs()
+            p.sort_stats('cumulative')
+            p.print_stats('main', 25)
+            p.print_stats('factory', 25)
+            p.print_stats('tabdict', 25)
+            p.print_stats('tabsqlite', 25)
+            p.print_stats('table', 25)
 
 def cleanup (ima_ins):
     ima_ins.quit()

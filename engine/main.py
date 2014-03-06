@@ -188,7 +188,7 @@ def main():
         #    Elements
         dbs = os.listdir(db_dir)
         dbs = filter (lambda x: x.endswith('.db'), dbs)
-       
+
         _all_dbs = []
         for _db in dbs:
             _all_dbs.append(os.path.join (db_dir, _db))
@@ -200,16 +200,16 @@ def main():
         except OSError:
             # byo_db_dir does not exist or is not accessible
             pass
-            
+
         egs = Element('engines')
         for _db in _all_dbs:
             _sq_db = tabsqlitedb.tabsqlitedb (_db)
             _engine = SubElement (egs,'engine')
-            
+
             _name = SubElement (_engine, 'name')
             _name.text = os.path.basename(_db).replace ('.db','')
             setup_arg = "{} {}".format(setup_cmd, _name.text)
-            
+
             _longname = SubElement (_engine, 'longname')
             _longname.text = ''
             try:
@@ -220,7 +220,7 @@ def main():
                 pass
             if not _longname.text:
                 _longname.text = _name.text
-            
+
             _language = SubElement (_engine, 'language')
             _langs = _sq_db.get_ime_property ('languages')
             if _langs:
@@ -241,7 +241,7 @@ def main():
             _icon_basename = _sq_db.get_ime_property ('icon')
             if _icon_basename:
                 _icon.text = os.path.join (icon_dir, _icon_basename)
-            
+
             _layout = SubElement (_engine, 'layout')
             _layout.text = _sq_db.get_ime_property ('layout')
 

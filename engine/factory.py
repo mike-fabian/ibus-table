@@ -39,10 +39,10 @@ class EngineFactory (IBus.Factory):
         # this is the backend sql db we need for our IME
         # we need get lots of IME property from this db :)
         #self.db = tabsqlitedb.tabsqlitedb( name = database )
-        
+
         if db:
             self.dbusname = os.path.basename(db).replace('.db','')
-            udb = os.path.basename(db).replace('.db','-user.db') 
+            udb = os.path.basename(db).replace('.db','-user.db')
             self.db = tabsqlitedb.tabsqlitedb( name = db,user_db = udb )
             self.db.db.commit()
             self.dbdict = {self.dbusname:self.db}
@@ -50,13 +50,13 @@ class EngineFactory (IBus.Factory):
             self.db = None
             self.dbdict = {}
 
-        
+
         # init factory
         self.bus = bus
         super(EngineFactory,self).__init__ (connection=bus.get_connection(),
                                             object_path=IBus.PATH_FACTORY)
         self.engine_id=0
-    
+
     def do_create_engine(self, engine_name):
         engine_base_path = "/com/redhat/IBus/engines/table/%s/engine/"
         path_patt = re_compile(r'[^a-zA-Z0-9_/]')
@@ -93,7 +93,7 @@ class EngineFactory (IBus.Factory):
 
     def do_destroy (self):
         '''Destructor, which finish some task for IME'''
-        # 
+        #
         ## we need to sync the temp userdb in memory to the user_db on disk
         for _db in self.dbdict:
             self.dbdict[_db].sync_usrdb ()

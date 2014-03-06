@@ -83,7 +83,7 @@ class PreferencesDialog:
         if self.__table_name not in names:
             ret = False
             msg = _("IBus Table {} is not available").format(self.__table_name)
-            mdialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, 
+            mdialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR,
                     Gtk.ButtonsType.OK, msg)
             mdialog.props.title = "IBus Table Setup Error"
             mdialog.run()
@@ -109,7 +109,7 @@ class PreferencesDialog:
 
     def do_init(self):
         self.__config = self.__bus.get_config()
-        self.__config_section = ("engine/Table/%s" % 
+        self.__config_section = ("engine/Table/%s" %
                 self.__table_name.replace(" ", "_"))
 
         self.__init_general()

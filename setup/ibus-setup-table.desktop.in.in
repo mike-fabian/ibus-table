@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=IBus Table Setup
+Comment=Set ibus-table preferences
+Exec=${LIBEXECDIR}/ibus-setup-table
+Icon=${PKGDATADIR}/icons/chinese.svg
+NoDisplay=true
+Type=Application
+StartupNotify=true

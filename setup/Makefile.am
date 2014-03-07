@@ -27,13 +27,31 @@ setup_tabledir = $(datadir)/ibus-table/setup
 
 libexec_SCRIPTS = ibus-setup-table
 
+desktop_in_in_files = ibus-setup-table.desktop.in.in
+
+desktop_in_files = $(desktop_in_in_files:.in.in=.in)
+
+ibus-setup-table.desktop: ibus-setup-table.desktop.in.in
+	( \
+		PKGDATADIR=$(pkgdatadir); \
+		LIBEXECDIR=$(libexecdir); \
+		s=`cat $<`; \
+		eval "echo \"$${s}\""; \
+	) > $@
+
+desktopdir=$(datadir)/applications
+desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+
 CLEANFILES = \
+	$(desktop_DATA) \
+	$(desktop_in_files) \
 	*.pyc \
 	$(NULL)
 
 EXTRA_DIST = \
 	version.py.in \
 	ibus-setup-table.in \
+	$(desktop_in_in_files) \
 	$(NULL)
 
 test-table:

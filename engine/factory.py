@@ -26,7 +26,7 @@ from gi.repository import IBus
 import table
 import tabsqlitedb
 import os
-from re import compile as re_compile
+import re
 
 from gettext import dgettext
 _  = lambda a : dgettext ("ibus-table", a)
@@ -58,8 +58,9 @@ class EngineFactory (IBus.Factory):
         self.engine_id=0
 
     def do_create_engine(self, engine_name):
+        engine_name = re.sub(r'^table:', '', engine_name)
         engine_base_path = "/com/redhat/IBus/engines/table/%s/engine/"
-        path_patt = re_compile(r'[^a-zA-Z0-9_/]')
+        path_patt = re.compile(r'[^a-zA-Z0-9_/]')
         self.engine_path = engine_base_path % path_patt.sub ('_', engine_name)
         try:
             if not self.db:

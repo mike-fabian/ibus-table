@@ -104,8 +104,9 @@ class IMApp:
                                               homepage="http://code.google.com/p/ibus/",
                                               textdomain="ibus-table")
             # now we get IME info from self.__factory.db
-            name = self.__factory.db.get_ime_property ("name")
-            longname = name
+            table_name = self.__factory.db.get_ime_property ("name")
+            name = 'table:'+table_name
+            longname = table_name
             description = self.__factory.db.get_ime_property ("description")
             language = self.__factory.db.get_ime_property ("languages")
             license = self.__factory.db.get_ime_property ("credit")
@@ -117,7 +118,7 @@ class IMApp:
                     icon = ''
             layout = self.__factory.db.get_ime_property ("layout")
             symbol = self.__factory.db.get_ime_property ("symbol")
-            setup_arg = "{} {}".format(setup_cmd, name)
+            setup_arg = "{} --engine-name {}".format(setup_cmd, name)
             engine = IBus.EngineDesc(name=name,
                                         longname=longname,
                                         description=description,
@@ -207,8 +208,9 @@ def main():
             _engine = SubElement (egs,'engine')
 
             _name = SubElement (_engine, 'name')
-            _name.text = os.path.basename(_db).replace ('.db','')
-            setup_arg = "{} {}".format(setup_cmd, _name.text)
+            table_name = os.path.basename(_db).replace ('.db','')
+            _name.text = 'table:'+table_name
+            setup_arg = "{} --engine-name {}".format(setup_cmd, _name.text)
 
             _longname = SubElement (_engine, 'longname')
             _longname.text = ''
@@ -219,7 +221,7 @@ def main():
             except:
                 pass
             if not _longname.text:
-                _longname.text = _name.text
+                _longname.text = table_name
 
             _language = SubElement (_engine, 'language')
             _langs = _sq_db.get_ime_property ('languages')
@@ -251,8 +253,8 @@ def main():
             _desc = SubElement (_engine, 'description')
             _desc.text = _sq_db.get_ime_property ('description')
 
-            _desc = SubElement (_engine, 'setup')
-            _desc.text = setup_arg
+            _setup = SubElement (_engine, 'setup')
+            _setup.text = setup_arg
 
         # now format the xmlout pretty
         indent (egs)

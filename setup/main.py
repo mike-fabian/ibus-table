@@ -26,6 +26,7 @@ import locale
 import os
 import sys
 import logging as log
+import signal
 
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -279,4 +280,8 @@ def main():
     PreferencesDialog(name).run()
 
 if __name__ == "__main__":
+    # Workaround for
+    # https://bugzilla.gnome.org/show_bug.cgi?id=622084
+    # Bug 622084 - Ctrl+C does not exit gtk app
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
     main()

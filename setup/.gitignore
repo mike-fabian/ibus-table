@@ -1,2 +1,5 @@
 version.py
 ibus-setup-table
+ibus-setup-table.desktop
+__pycache__/
+*.pyc

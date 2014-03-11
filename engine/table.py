@@ -1653,7 +1653,7 @@ class tabengine (IBus.Engine):
                     self._mode] else c
 
         keychar = IBus.keyval_to_unicode(key.code)
-        if ascii_ispunct(key.code):
+        if ascii_ispunct(keychar):
             trans_char = cond_punct_translate (keychar)
         else:
             trans_char = cond_letter_translate (keychar)
@@ -1721,7 +1721,7 @@ class tabengine (IBus.Engine):
                             (IBus.ModifierType.MOD1_MASK |
                                 IBus.ModifierType.CONTROL_MASK)):
                 # Input untranslated ascii char directly
-                if ascii_ispunct(key.code):
+                if ascii_ispunct(keychar):
                     trans_char = cond_punct_translate (keychar)
                 else:
                     trans_char = cond_letter_translate (keychar)
@@ -1874,7 +1874,7 @@ class tabengine (IBus.Engine):
                     self._editor.pop_input ()
                     reprocess_last_key=True
                     key_char=''
-                elif ascii_ispunct(key.code):
+                elif ascii_ispunct(keychar):
                     key_char = cond_punct_translate (keychar)
                 else:
                     key_char = cond_letter_translate (keychar)
@@ -1941,7 +1941,7 @@ class tabengine (IBus.Engine):
             self._editor.clear ()
             if py_mode:
                 self._refresh_properties ()
-            if ascii_ispunct(key.code):
+            if ascii_ispunct(keychar):
                 self.commit_string ( commit_string + cond_punct_translate(keychar))
             else:
                 self.commit_string ( commit_string + cond_letter_translate(keychar))

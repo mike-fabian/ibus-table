@@ -25,7 +25,9 @@ import gettext
 import locale
 import os
 import sys
-import logging as log
+import signal
+import optparse
+from time import strftime
 
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -56,36 +58,74 @@ ibus_lib_dir = os.getenv('IBUS_TABLE_LIB_LOCATION')
 
 if not ibus_dir or not os.path.exists(ibus_dir):
     ibus_dir = "/usr/share/ibus-table/"
-    ibus_lib_dir = "/usr/lib/ibus-table"
+if not ibus_lib_dir or not os.path.exists(ibus_lib_dir):
+    ibus_lib_dir = "/usr/libexec"
 
 db_dir = os.path.join (ibus_dir, 'tables')
 icon_dir = os.path.join (ibus_dir, 'icons')
 setup_cmd = os.path.join(ibus_lib_dir, "ibus-setup-table")
 
+opt = optparse.OptionParser()
+opt.set_usage ('%prog [options]')
+opt.add_option('-n', '--engine-name',
+        action = 'store',type = 'string', dest = 'engine_name', default = '',
+        help = 'Set the name of the engine, for example "table:cangjie3". Default: "%default"')
+opt.add_option( '-q', '--no-debug',
+        action = 'store_false', dest = 'debug', default = True,
+        help = 'redirect stdout and stderr to ~/.ibus/tables/setup-debug.log, default: %default')
+
+(options, args) = opt.parse_args()
+
+if options.debug:
+    if not os.access ( os.path.expanduser('~/.ibus/tables/'), os.F_OK):
+        os.system ('mkdir -p ~/.ibus/tables')
+    logfile = os.path.expanduser('~/.ibus/tables/setup-debug.log')
+    sys.stdout = open(logfile, mode='a', buffering=1)
+    sys.stderr = open(logfile, mode='a', buffering=1)
+    print('--- %s ---' %strftime('%Y-%m-%d: %H:%M:%S'))
+
 class PreferencesDialog:
-    def __init__(self, table_name):
+    def __init__(self):
         locale.setlocale(locale.LC_ALL, "")
         localedir = os.getenv("IBUS_LOCALEDIR")
         gettext.bindtextdomain("ibus-table", localedir)
         gettext.bind_textdomain_codeset("ibus-table", "UTF-8")
 
-        self.__table_name = table_name
         self.__bus = IBus.Bus()
+        self.__engine_name = None
+        if options.engine_name:
+            # If the engine name is specified on the command line, use that:
+            self.__engine_name = options.engine_name
+        else:
+            # If the engine name is not specified on the command line,
+            # try to get it from the environment. This is necessary
+            # in gnome-shell on Fedora 18,19,20,... because the setup tool is
+            # called without command line options there but the
+            # environment variable IBUS_ENGINE_NAME is set:
+            if 'IBUS_ENGINE_NAME' in os.environ:
+                self.__engine_name = os.environ['IBUS_ENGINE_NAME']
+            else:
+                self.__run_message_dialog(
+                    _("IBUS_ENGINE_NAME environment variable is not set."),
+                    Gtk.MessageType.WARNING)
+        if self.__engine_name == None:
+            self.__run_message_dialog(
+                _("Cannot determine the config file for this engine. Please use the --engine-name option."),
+                Gtk.MessageType.ERROR)
+            sys.exit(1)
 
     def check_table_available(self):
-        """Check if the current table_name is avalible.
+        """Check if the current engine_name is avalible.
         Return bool"""
         names = self.__bus.list_engines()
         names = [x.get_name() for x in names]
         ret = True
 
-        if self.__table_name not in names:
+        if self.__engine_name not in names:
             ret = False
-            msg = _("IBus Table {} is not available").format(self.__table_name)
-            mdialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, 
-                    Gtk.ButtonsType.OK, msg)
-            mdialog.props.title = "IBus Table Setup Error"
-            mdialog.run()
+            self.__run_message_dialog(
+                _('IBus Table engine "{}" is not available').format(self.__engine_name),
+                Gtk.MessageType.ERROR)
         return ret
 
     def _build_combobox_renderer(self, name):
@@ -102,25 +142,25 @@ class PreferencesDialog:
         self.__builder.add_from_file("ibus-table-preferences.ui")
         self.__dialog = self.__builder.get_object("dialog")
 
-        for name in OPTION_DEFAULTS.keys():
+        for name in list(OPTION_DEFAULTS.keys()):
             if name not in SCALE_WIDGETS:
                 self._build_combobox_renderer(name)
 
     def do_init(self):
         self.__config = self.__bus.get_config()
-        self.__config_section = ("engine/Table/%s" % 
-                self.__table_name.replace(" ", "_"))
+        self.__config_section = ("engine/Table/%s" %
+                self.__engine_name.replace(" ", "_"))
 
         self.__init_general()
         self.__init_about()
 
     def __init_general(self):
         """Initialize the general notebook page"""
-        self.__dialog.set_title("IBus %s Preferences" % self.__table_name)
+        self.__dialog.set_title("IBus %s Preferences" % self.__engine_name)
         self.__values = self.__config.get_values(self.__config_section).unpack()
         self.__config.connect ("value-changed", self.__config_value_changed_cb)
 
-        for name in OPTION_DEFAULTS.keys():
+        for name in list(OPTION_DEFAULTS.keys()):
             #self.__config.unset(self.__config_section, name); continue
             if name in SCALE_WIDGETS:
                 self._init_hscale(name)
@@ -144,7 +184,7 @@ class PreferencesDialog:
         engines = self.__bus.list_engines()
         engine = None
         for e in engines:
-            if e.get_name() == self.__table_name:
+            if e.get_name() == self.__engine_name:
                 engine = e
                 break
         if engine:
@@ -252,11 +292,20 @@ class PreferencesDialog:
         elif isinstance(val, str):
             var = GLib.Variant.new_string(val)
         else:
-            print >> sys.stderr, "val(%s) is not in support type." % repr(val)
+            sys.stderr.write("val(%s) is not in support type." %repr(val))
             return
 
         self.__values[name] = val
         self.__config.set_value(self.__config_section, name, var)
+
+    def __run_message_dialog(self, message, type=Gtk.MessageType.INFO):
+        dlg = Gtk.MessageDialog(parent=None,
+                                flags=Gtk.DialogFlags.MODAL,
+                                message_type=type,
+                                buttons=Gtk.ButtonsType.OK,
+                                message_format=message)
+        dlg.run()
+        dlg.destroy()
 
     def run(self):
         ret = self.check_table_available()
@@ -268,14 +317,11 @@ class PreferencesDialog:
 
 
 def main():
-    log_level = log.INFO
-    log.basicConfig(format="%(levelname)s>> %(message)s", level=log_level)
-    if len(sys.argv) == 2:
-        name = sys.argv[1]
-    else:
-        log.error(_("Please supply a table name to setup."))
-        sys.exit(2)
-    PreferencesDialog(name).run()
+    PreferencesDialog().run()
 
 if __name__ == "__main__":
+    # Workaround for
+    # https://bugzilla.gnome.org/show_bug.cgi?id=622084
+    # Bug 622084 - Ctrl+C does not exit gtk app
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
     main()

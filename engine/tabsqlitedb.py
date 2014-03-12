@@ -208,7 +208,7 @@ class tabsqlitedb:
             # (mlen, phrase, freq, user_freq)
             # the phrases will be deparse again, and then be added
             # the characters will be discard :(
-            #chars = filter (lambda x: x[0] == 1, self.old_phrases)
+            #chars = list(filter(lambda x: x[0] == 1, self.old_phrases))
             # print chars
             phrases = [x for x in self.old_phrases if x[0] > 1]
             phrases = [[self.parse_phrase_to_tabkeys(x[1])] + list(x[1:]) for x in phrases]

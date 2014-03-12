@@ -1005,7 +1005,7 @@ class tabsqlitedb:
                         # we should change the frequency of words
                         return
                     # we remove the keys contained in mudb from usrdb
-                    keyout = [k for k in userdb if k in mudb]
+                    keyout = [k for k in usrdb if k in mudb]
                     list(map(usrdb.pop, keyout))
                     # we remove the keys contained in mudb and usrdb from sysdb
                     keyout = [k for k in sysdb if k in mudb or k in usrdb]

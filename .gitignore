@@ -16,3 +16,4 @@ ibus-table.pc
 ibus-table.spec
 /missing
 /py-compile
+ibus-table-*.tar.gz

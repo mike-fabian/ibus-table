@@ -696,16 +696,16 @@ class editor(object):
         bm_index = self._pt.index('category')
         if self._chinese_mode == 2:
             # All Chinese characters with simplified Chinese first
-            return  filter (lambda x: x[bm_index] & 1, candidates)\
-                    +filter (lambda x: x[bm_index] & (1 << 1) and \
-                            (not x[bm_index] & 1), candidates)\
-                    + filter (lambda x: x[bm_index] & (1 << 2), candidates)
+            return  list(filter(lambda x: x[bm_index] & 1, candidates))\
+                    +list(filter(lambda x: x[bm_index] & (1 << 1) and \
+                            (not x[bm_index] & 1), candidates))\
+                    + list(filter (lambda x: x[bm_index] & (1 << 2), candidates))
         elif self._chinese_mode == 3:
             # All Chinese characters with traditional Chinese first
-            return  filter (lambda x: x[bm_index] & (1 << 1), candidates)\
-                    +filter (lambda x: x[bm_index] & 1 and\
-                    (not x[bm_index] & (1<<1)) , candidates)\
-                    + filter (lambda x: x[bm_index] & (1 << 2), candidates)
+            return  list(filter (lambda x: x[bm_index] & (1 << 1), candidates))\
+                    +list(filter(lambda x: x[bm_index] & 1 and\
+                    (not x[bm_index] & (1<<1)) , candidates))\
+                    + list(filter(lambda x: x[bm_index] & (1 << 2), candidates))
 
     def update_candidates (self):
         '''Update lookuptable'''

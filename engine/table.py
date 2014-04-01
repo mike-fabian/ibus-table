@@ -31,7 +31,6 @@ import string
 from gi.repository import IBus
 from gi.repository import GLib
 #import tabsqlitedb
-import tabdict
 import re
 from gi.repository import GObject
 import time
@@ -206,14 +205,12 @@ class KeyEvent:
 
 class editor(object):
     '''Hold user inputs chars and preedit string'''
-    def __init__ (self, config, phrase_table_index,valid_input_chars, max_key_length, database, parser = tabdict.parse, deparser = tabdict.deparse, max_length = 64):
+    def __init__ (self, config, phrase_table_index,valid_input_chars, max_key_length, database, max_length = 64):
         self.db = database
         self._config = config
         engine_name = os.path.basename(self.db.filename).replace('.db', '')
         self._config_section = "engine/Table/%s" %engine_name.replace(' ','_')
         self._pt = phrase_table_index
-        self._parser = parser
-        self._deparser = deparser
         self._max_key_len = int(max_key_length)
         self._max_length = max_length
         self._valid_input_chars = valid_input_chars
@@ -374,11 +371,6 @@ class editor(object):
         self.clear_input ()
         self._u_chars = []
 
-    def set_parser (self, parser):
-        '''change input parser'''
-        self.clear ()
-        self._parser = parser
-
     def add_input (self,c):
         '''add input character'''
         if len (self._t_chars) == self._max_length:
@@ -396,7 +388,7 @@ class editor(object):
             if (not self._py_mode and ( c in self._valid_input_chars)) or\
                 (self._py_mode and (c in u'abcdefghijklmnopqrstuvwxyz!@#$%')):
                 try:
-                    self._tabkey_list += self._parser (c)
+                    self._tabkey_list += list(c)
                     self._chars[0].append (c)
                 except:
                     self._chars[1].append (c)
@@ -417,7 +409,7 @@ class editor(object):
             if (not self._chars[0]) and self._u_chars:
                 self._chars[0] = self._u_chars.pop()
                 self._chars[1] = self._chars[1][:-1]
-                self._tabkey_list = self._parser (self._chars[0])
+                self._tabkey_list = list(self._chars[0])
                 self._strings.pop (self._cursor[0] - 1 )
                 self._cursor[0] -= 1
         self._t_chars.pop()
@@ -652,12 +644,12 @@ class editor(object):
             _p_index = 8
             _fkey = 1
         if self.db._is_chinese:
-            _tbks = u''.join( map(self._deparser , candi[_fkey + len(self._tabkey_list) : _p_index-1 ] ) )
+            _tbks = u''.join(map(lambda x: x if x else '', candi[_fkey + len(self._tabkey_list) : _p_index-1 ]))
             if self._py_mode:
                 # restore tune symbol
                 _tbks = _tbks.replace('!','↑1').replace('@','↑2').replace('#','↑3').replace('$','↑4').replace('%','↑5')
         else:
-            _tbks = u''.join( map(self._deparser , candi[_fkey + len(self._tabkey_list) : _p_index ] ) )
+            _tbks = u''.join(map(lambda x: x if x else '', candi[_fkey + len(self._tabkey_list) : _p_index ]))
         _phrase = candi[_p_index]
         attrs = IBus.AttrList ()
         attrs.append(IBus.attr_foreground_new(rgb(0x19,0x73,0xa2), 0, \
@@ -1100,7 +1092,6 @@ class tabengine (IBus.Engine):
         #self.db = tabsqlitedb.tabsqlitedb( name = dbname )
         self.db = db
         # this is the parer which parse the input string to key object
-        self._parser = tabdict.parse
 
         self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
                 os.path.sep, 'icons', os.path.sep)
@@ -1120,12 +1111,7 @@ class tabengine (IBus.Engine):
 
         self._status = self.db.get_ime_property('status_prompt')
         # now we check and update the valid input characters
-        self._chars = self.db.get_ime_property('valid_input_chars')
-        self._valid_input_chars = []
-        for _c in self._chars:
-            if _c in tabdict.tab_key_list:
-                self._valid_input_chars.append(_c)
-        del self._chars
+        self._valid_input_chars = self.db.get_ime_property('valid_input_chars')
 
         # check whether we can use '=' and '-' for page_down/up
         self._page_down_keys = [IBus.KEY_Page_Down, IBus.KEY_KP_Page_Down]

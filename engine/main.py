@@ -159,7 +159,6 @@ class IMApp:
             p.sort_stats('cumulative')
             p.print_stats('main', 25)
             p.print_stats('factory', 25)
-            p.print_stats('tabdict', 25)
             p.print_stats('tabsqlite', 25)
             p.print_stats('table', 25)
 

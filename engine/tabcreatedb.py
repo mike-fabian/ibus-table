@@ -124,7 +124,7 @@ def main ():
             pass
 
     debug_print ("Processing Database")
-    db = tabsqlitedb.tabsqlitedb ( filename = opts.name)
+    db = tabsqlitedb.tabsqlitedb (filename = opts.name, create_database = True)
     #db.db.execute( 'PRAGMA synchronous = FULL; ' )
 
     def parse_source (f):

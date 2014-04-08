@@ -209,8 +209,8 @@ class editor(object):
     def __init__ (self, config, phrase_table_index,valid_input_chars, max_key_length, database, parser = tabdict.parse, deparser = tabdict.deparse, max_length = 64):
         self.db = database
         self._config = config
-        self._name = self.db.get_ime_property('name')
-        self._config_section = "engine/Table/%s" % self._name.replace(' ','_')
+        engine_name = os.path.basename(self.db.filename).replace('.db', '')
+        self._config_section = "engine/Table/%s" %engine_name.replace(' ','_')
         self._pt = phrase_table_index
         self._parser = parser
         self._deparser = deparser
@@ -1153,8 +1153,8 @@ class tabengine (IBus.Engine):
         self._ml = int(self.db.get_ime_property ('max_key_length'))
 
         # name for config section
-        self._name = self.db.get_ime_property('name')
-        self._config_section = "engine/Table/%s" % self._name.replace(' ', '_')
+        self._engine_name = os.path.basename(self.db.filename).replace('.db', '')
+        self._config_section = "engine/Table/%s" %self._engine_name.replace(' ','_')
 
         # config module
         self._config = self._bus.get_config ()
@@ -2011,7 +2011,7 @@ class tabengine (IBus.Engine):
     def config_value_changed_cb (self, config, section, name, value):
         if self.config_section_normalize(self._config_section) != self.config_section_normalize(section):
             return
-        print("config value %(n)s for engine %(en)s changed" %{'n': name, 'en': self._name})
+        print("config value %(n)s for engine %(en)s changed" %{'n': name, 'en': self._engine_name})
         value = variant_to_value(value)
         if name == u'autoselect':
             self._editor._auto_select = value

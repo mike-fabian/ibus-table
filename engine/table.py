@@ -1958,10 +1958,7 @@ class tabengine (IBus.Engine):
     def do_focus_out (self):
         if self._has_input_purpose:
             self._input_purpose = 0
-        try:
-            self._editor.clear()
-        except:
-            pass
+        self._editor.clear()
 
     def do_set_content_type(self, purpose, hints):
         if self._has_input_purpose:

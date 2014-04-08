@@ -659,21 +659,17 @@ class editor(object):
         else:
             _tbks = u''.join( map(self._deparser , candi[_fkey + len(self._tabkey_list) : _p_index ] ) )
         _phrase = candi[_p_index]
-        # further color implementation needed :)
-        # here -2 is the pos of num, -1 is the pos of . 0 is the pos of string
-        #attrs = IBus.AttrList ([IBus.AttributeForeground (0x8e2626, -2, 1)])
         attrs = IBus.AttrList ()
-        # this is the part of tabkey
         attrs.append(IBus.attr_foreground_new(rgb(0x19,0x73,0xa2), 0, \
             len(_phrase) + len(_tbks)))
-        if candi[-2] < 0:
+        if not self._py_mode and candi[-2] < 0:
             # this is a user defined phrase:
             attrs.append(IBus.attr_foreground_new(rgb(0x77,0x00,0xc3), 0, len(_phrase)))
-        elif candi[-1] > 0:
-            # this is a sys phrase used by user:
+        elif not self._py_mode and candi[-1] > 0:
+            # this is a system phrase which has already been used by the user:
             attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(_phrase)))
         else:
-            # this is a system phrase haven't been used:
+            # this is a system phrase that has not been used yet:
             attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(_phrase)))
         text = IBus.Text.new_from_string(_phrase + _tbks)
         i = 0

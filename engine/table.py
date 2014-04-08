@@ -351,7 +351,6 @@ class editor(object):
         self._t_chars = []
         self._strings = []
         self._cursor = [0,0]
-        self._py_mode = False
         self._zi = u''
         self.update_candidates
 

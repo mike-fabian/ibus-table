@@ -1845,9 +1845,7 @@ class tabengine (IBus.Engine):
         elif key.mask & IBus.ModifierType.MOD1_MASK:
             return False
 
-        elif keychar in self._valid_input_chars or \
-                ( self._editor._py_mode and \
-                    keychar in u'abcdefghijklmnopqrstuvwxyz!@#$%' ):
+        elif keychar and (keychar in self._valid_input_chars or (self._editor._py_mode and keychar in u'abcdefghijklmnopqrstuvwxyz!@#$%')):
             if self._auto_commit and ( len(self._editor._chars[0]) == self._ml \
                     or len (self._editor._chars[0]) in self.db.pkeylens )\
                     and not self._editor._py_mode:

@@ -33,6 +33,7 @@ from gi.repository import GLib
 import re
 from gi.repository import GObject
 import time
+import chinese_variants
 
 patt_edit = re.compile (r'(.*)###(.*)###(.*)')
 patt_uncommit = re.compile (r'(.*)@@@(.*)')
@@ -229,7 +230,7 @@ class editor(object):
         self._strings = []
         # self._cursor: the caret position in preedit phrases
         self._cursor = [0,0]
-        # self._candidates: hold candidates selected from database [[now],[pre]]
+        # self._candidates: hold candidates selected from database [[now],[previous]]
         self._candidates = [[],[]]
         # __orientation: lookup table orientation
         __orientation = variant_to_value(self._config.get_value(
@@ -240,7 +241,6 @@ class editor(object):
         # __page_size: lookup table page size
         # this is computed from the select_keys, so should be done after it
         __page_size = self.db.get_page_size()
-        # self._lookup_table: lookup table
         self._lookup_table = IBus.LookupTable.new(
             page_size=__page_size,
             cursor_pos=0,
@@ -320,7 +320,7 @@ class editor(object):
 
             if __lc.find('_cn') != -1:
                 return 0
-            # hk and tw is should use tc as default
+            # HK and TW should use traditional Chinese by default
             elif __lc.find('_hk') != -1 or __lc.find('_tw') != -1\
                     or __lc.find('_mo') != -1:
                 return 1
@@ -516,15 +516,11 @@ class editor(object):
     def get_preedit_strings (self):
         '''Get preedit strings'''
         if self._candidates[0]:
-            if self._py_mode:
-                _p_index = 8
-            else:
-                _p_index = self.get_index ('phrase')
-            _candi = u'###' + self._candidates[0][ int (self._lookup_table.get_cursor_pos() ) ][ _p_index ] + u'###'
+            _candi = u'###' + self._candidates[0][int(self._lookup_table.get_cursor_pos())][1] + u'###'
         else:
-            input_chars = self.get_input_chars ()
+            input_chars = self.get_input_chars()
             if input_chars:
-                _candi = u''.join( ['###'] + list(map( str, input_chars)) + ['###'] )
+                _candi = u''.join( ['###'] + list(map(str, input_chars)) + ['###'])
             else:
                 _candi = u''
         if self._strings:
@@ -539,6 +535,7 @@ class editor(object):
             return res
         else:
             return _candi
+
     def add_caret (self, addstr):
         '''add length to caret position'''
         self._caret += len(addstr)
@@ -551,14 +548,10 @@ class editor(object):
                 self.add_caret(x)
         self._caret += self._cursor[1]
         if self._candidates[0]:
-            if self._py_mode:
-                _p_index = 8
-            else:
-                _p_index = self.get_index ('phrase')
-            _candi =self._candidates[0][ int (self._lookup_table.get_cursor_pos() ) ][ _p_index ]
+            _candi =self._candidates[0][int(self._lookup_table.get_cursor_pos())][1]
         else:
-            _candi = u''.join( map( str,self.get_input_chars()) )
-        self._caret += len( _candi )
+            _candi = u''.join( map(str, self.get_input_chars()))
+        self._caret += len(_candi)
         return self._caret
 
     def arrow_left (self):
@@ -634,35 +627,28 @@ class editor(object):
             return True
         else:
             return False
-    def ap_candidate (self, candi):
+
+    def append_candidate_to_lookup_table(self, tabkeys=u'', phrase=u'', freq=0, user_freq=0):
         '''append candidate to lookup_table'''
-        if not self._py_mode:
-            _p_index = self.get_index('phrase')
-            _fkey = self.get_index('m0')
-        else:
-            _p_index = 8
-            _fkey = 1
-        if self.db._is_chinese:
-            _tbks = u''.join(map(lambda x: x if x else '', candi[_fkey + len(self._tabkey_list) : _p_index-1 ]))
-            if self._py_mode:
-                # restore tune symbol
-                _tbks = _tbks.replace('!','↑1').replace('@','↑2').replace('#','↑3').replace('$','↑4').replace('%','↑5')
-        else:
-            _tbks = u''.join(map(lambda x: x if x else '', candi[_fkey + len(self._tabkey_list) : _p_index ]))
-        _phrase = candi[_p_index]
+        if not tabkeys or not phrase:
+            return
+        remaining_tabkeys = tabkeys[len(self._tabkey_list):]
+        if self.db._is_chinese and self._py_mode:
+            # restore tune symbol
+            remaining_tabkeys = remaining_tabkeys.replace('!','↑1').replace('@','↑2').replace('#','↑3').replace('$','↑4').replace('%','↑5')
         attrs = IBus.AttrList ()
-        attrs.append(IBus.attr_foreground_new(rgb(0x19,0x73,0xa2), 0, \
-            len(_phrase) + len(_tbks)))
-        if not self._py_mode and candi[-2] < 0:
+        attrs.append(IBus.attr_foreground_new(rgb(0x19,0x73,0xa2), 0,
+                                              len(phrase) + len(remaining_tabkeys)))
+        if not self._py_mode and freq < 0:
             # this is a user defined phrase:
-            attrs.append(IBus.attr_foreground_new(rgb(0x77,0x00,0xc3), 0, len(_phrase)))
-        elif not self._py_mode and candi[-1] > 0:
+            attrs.append(IBus.attr_foreground_new(rgb(0x77,0x00,0xc3), 0, len(phrase)))
+        elif not self._py_mode and user_freq > 0:
             # this is a system phrase which has already been used by the user:
-            attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(_phrase)))
+            attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(phrase)))
         else:
             # this is a system phrase that has not been used yet:
-            attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(_phrase)))
-        text = IBus.Text.new_from_string(_phrase + _tbks)
+            attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(phrase)))
+        text = IBus.Text.new_from_string(phrase + remaining_tabkeys)
         i = 0
         while attrs.get(i) != None:
             attr = attrs.get(i)
@@ -678,19 +664,28 @@ class editor(object):
         '''Filter candidates if IME is Chinese'''
         if not self._chinese_mode in(2,3) or self._py_mode:
             return candidates[:]
-        bm_index = self._pt.index('category')
+        candidates_used_in_simplified_chinese = []
+        candidates_used_in_traditional_chinese = []
+        candidates_used_only_in_simplified_chinese = []
+        candidates_used_only_in_traditional_chinese = []
+        candidates_containing_mixture_of_simplified_and_traditional_chinese = []
+        for x in candidates:
+            if (1 << 0) & chinese_variants.detect_chinese_category(x[1]):
+                candidates_used_in_simplified_chinese.append(x)
+            if (1 << 1) & chinese_variants.detect_chinese_category(x[1]):
+                candidates_used_in_traditional_chinese.append(x)
+            if (1 << 0) & chinese_variants.detect_chinese_category(x[1]) and (not (1 << 1) & chinese_variants.detect_chinese_category(x[1])):
+                candidates_used_only_in_simplified_chinese.append(x)
+            if (1 << 1) & chinese_variants.detect_chinese_category(x[1]) and (not (1 << 0) & chinese_variants.detect_chinese_category(x[1])):
+                candidates_used_only_in_traditional_chinese.append(x)
+            if (1 << 2) & chinese_variants.detect_chinese_category(x[1]):
+                candidates_containing_mixture_of_simplified_and_traditional_chinese.append(x)
         if self._chinese_mode == 2:
-            # All Chinese characters with simplified Chinese first
-            return  list(filter(lambda x: x[bm_index] & 1, candidates))\
-                    +list(filter(lambda x: x[bm_index] & (1 << 1) and \
-                            (not x[bm_index] & 1), candidates))\
-                    + list(filter (lambda x: x[bm_index] & (1 << 2), candidates))
-        elif self._chinese_mode == 3:
-            # All Chinese characters with traditional Chinese first
-            return  list(filter (lambda x: x[bm_index] & (1 << 1), candidates))\
-                    +list(filter(lambda x: x[bm_index] & 1 and\
-                    (not x[bm_index] & (1<<1)) , candidates))\
-                    + list(filter(lambda x: x[bm_index] & (1 << 2), candidates))
+            # All characters with simplified Chinese first
+            return candidates_used_in_simplified_chinese + candidates_used_only_in_traditional_chinese + candidates_containing_mixture_of_simplified_and_traditional_chinese
+        else: # (self._chinese_mode == 3)
+            # All characters with traditional Chinese first
+            return candidates_used_only_in_traditional_chinese + candidates_used_in_simplified_chinese + candidates_containing_mixture_of_simplified_and_traditional_chinese
 
     def update_candidates (self):
         '''Update lookuptable'''
@@ -715,26 +710,26 @@ class editor(object):
                 self._lookup_table.clear()
                 self._lookup_table.set_cursor_visible(True)
                 if self._tabkey_list:
+                    tabkeys = ''.join(self._tabkey_list)
                     # here we need to consider two parts, table and pinyin
                     # first table
                     if not self._py_mode:
                         if self.db._is_chinese :
-                            bm_index = self._pt.index('category')
                             if self._chinese_mode == 0:
-                                # simplify Chinese mode
-                                self._candidates[0] = self.db.select_words(\
-                                        self._tabkey_list, self._onechar, 1 )
+                                # simplified Chinese mode
+                                self._candidates[0] = self.db.select_words(
+                                    tabkeys, self._onechar, 1)
                             elif self._chinese_mode == 1:
                                 # traditional Chinese mode
-                                self._candidates[0] = self.db.select_words(\
-                                        self._tabkey_list, self._onechar, 2 )
+                                self._candidates[0] = self.db.select_words(
+                                    tabkeys, self._onechar, 2)
                             else:
-                                self._candidates[0] = self.db.select_words(\
-                                        self._tabkey_list, self._onechar )
+                                self._candidates[0] = self.db.select_words(
+                                    tabkeys, self._onechar)
                         else:
-                            self._candidates[0] = self.db.select_words( self._tabkey_list, self._onechar )
+                            self._candidates[0] = self.db.select_words(tabkeys, self._onechar)
                     else:
-                        self._candidates[0] = self.db.select_zi(''.join(self._tabkey_list))
+                        self._candidates[0] = self.db.select_zi(tabkeys)
                     self._chars[2] = self._chars[0][:]
 
                 else:
@@ -819,18 +814,14 @@ class editor(object):
     def commit_to_preedit (self):
         '''Add selected phrase in lookup table to preedit string'''
         if self._chars[0]:
-            if not self._py_mode:
-                _p_index = self.get_index('phrase')
-            else:
-                _p_index = 8
             try:
                 if self._candidates[0]:
-                    self._strings.insert(self._cursor[0], self._candidates[0][ self.get_cursor_pos() ][_p_index])
-                    self._cursor [0] += 1
+                    self._strings.insert(self._cursor[0], self._candidates[0][self.get_cursor_pos()][1])
+                    self._cursor[0] += 1
                     if self._py_mode:
-                        self._zi = self._candidates[0][ self.get_cursor_pos() ][_p_index]
+                        self._zi = self._candidates[0][self.get_cursor_pos()][1]
                 self.over_input ()
-                self.update_candidates ()
+                self.update_candidates()
             except:
                 pass
             return True
@@ -839,16 +830,12 @@ class editor(object):
 
     def auto_commit_to_preedit (self):
         '''Add selected phrase in lookup table to preedit string'''
-        if not self._py_mode:
-            _p_index = self.get_index('phrase')
-        else:
-            _p_index = 8
         try:
-            self._u_chars.append( self._chars[0][:] )
-            self._strings.insert(self._cursor[0], self._candidates[0][ self.get_cursor_pos() ][_p_index])
-            self._cursor [0] += 1
+            self._u_chars.append(self._chars[0][:])
+            self._strings.insert(self._cursor[0], self._candidates[0][self.get_cursor_pos()][1])
+            self._cursor[0] += 1
             self.clear_input()
-            self.update_candidates ()
+            self.update_candidates()
         except:
             pass
 
@@ -886,7 +873,8 @@ class editor(object):
             endpos = looklen + psize
             batch = self._candidates[0][looklen:endpos]
             for x in batch:
-                self.ap_candidate(x)
+                self.append_candidate_to_lookup_table(
+                    tabkeys=x[0], phrase=x[1], freq=x[2], user_freq=x[3])
 
     def cursor_down(self):
         '''Process Arrow Down Key Event
@@ -1089,7 +1077,6 @@ class tabengine (IBus.Engine):
         # we receive this db from IMEngineFactory
         #self.db = tabsqlitedb.tabsqlitedb( name = dbname )
         self.db = db
-        # this is the parer which parse the input string to key object
 
         self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
                 os.path.sep, 'icons', os.path.sep)
@@ -1173,7 +1160,6 @@ class tabengine (IBus.Engine):
             self._full_width_punct[0] = False
         if self._full_width_punct[1] == None:
             self._full_width_punct[1] = self.db.get_ime_property('def_full_width_punct').lower() == u'true'
-        # some properties we will involved, Property is taken from scim.
         #self._setup_property = Property ("setup", _("Setup"))
 
         self._auto_commit = variant_to_value(self._config.get_value(
@@ -1200,7 +1186,7 @@ class tabengine (IBus.Engine):
             else:
                 self._always_show_lookup = True
 
-        # the commit phrases length
+        # the length of the commit phrases
         self._len_list = [0]
         self._on = False
         self._save_user_count = 0
@@ -1486,9 +1472,11 @@ class tabengine (IBus.Engine):
         self._update_preedit ()
         self._update_aux ()
 
-    def _check_phrase (self, phrase, tabkey):
+    def _check_phrase (self, tabkeys=u'', phrase=u''):
         """Check the given phrase and update save user db info"""
-        self.db.check_phrase(phrase, tabkey)
+        if not tabkeys or not phrase:
+            return
+        self.db.check_phrase(tabkeys=tabkeys, phrase=phrase)
 
         if self._save_user_count <= 0:
             self._save_user_start = time.time()
@@ -1814,7 +1802,7 @@ class tabengine (IBus.Engine):
                     else:
                         self.commit_string (sp_res[1])
                     #self.add_string_len(sp_res[1])
-                    self._check_phrase (sp_res[1], sp_res[2])
+                    self._check_phrase(tabkeys=sp_res[2], phrase=sp_res[1])
                 else:
                     if sp_res[1] == u' ':
                         self.commit_string (cond_letter_translate (u" "))
@@ -1839,7 +1827,7 @@ class tabengine (IBus.Engine):
                 if sp_res[0]:
                     self.commit_string (sp_res[1])
                     #self.add_string_len(sp_res[1])
-                    self._check_phrase (sp_res[1],sp_res[2])
+                    self._check_phrase (tabkeys=sp_res[2], phrase=sp_res[1])
 
             res = self._editor.add_input ( keychar )
             if not res:
@@ -1859,7 +1847,7 @@ class tabengine (IBus.Engine):
                 if sp_res[0]:
                     self.commit_string (sp_res[1] + key_char)
                     #self.add_string_len(sp_res[1])
-                    self._check_phrase (sp_res[1],sp_res[2])
+                    self._check_phrase (tabkeys=sp_res[2], phrase=sp_res[1])
                 else:
                     self.commit_string ( key_char )
                 if reprocess_last_key == True:
@@ -1875,7 +1863,7 @@ class tabengine (IBus.Engine):
                     if sp_res[0]:
                         self.commit_string (sp_res[1])
                         #self.add_string_len(sp_res[1])
-                        self._check_phrase (sp_res[1], sp_res[2])
+                        self._check_phrase (tabkeys=sp_res[2], phrase=sp_res[1])
                         return True
             self._update_ui ()
             return True
@@ -1904,7 +1892,7 @@ class tabengine (IBus.Engine):
                     self._refresh_properties ()
                     self._update_ui ()
                 # modify freq info
-                self._check_phrase (commit_string, input_keys)
+                self._check_phrase(tabkeys=input_keys, phrase=commit_string)
             return True
 
         elif key.code <= 127:

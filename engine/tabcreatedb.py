@@ -294,8 +294,8 @@ def main ():
     phrases = phrase_parser ( table)
 
     # now we add things into db
-    debug_print ('\t  add phrases into DB ')
-    db.add_phrases ( phrases )
+    debug_print('\t  add phrases into DB ')
+    db.add_phrases(phrases)
 
     if db.get_ime_property ('user_can_define_phrase').lower() == u'true':
         debug_print ('\t  get goucima of IME :)')

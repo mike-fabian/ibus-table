@@ -169,6 +169,8 @@ def main ():
         patt_yin = re.compile(r'[a-z]+[1-5]')
 
         for l in f:
+            if type(l) != type(u''):
+                l = l.decode('utf-8')
             if ( not patt_com.match(l) ) and ( not patt_blank.match(l) ):
                 res = patt_py.match(l)
                 if res:

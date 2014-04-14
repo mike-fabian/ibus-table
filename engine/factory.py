@@ -35,15 +35,11 @@ N_ = lambda a : a
 class EngineFactory (IBus.Factory):
     """Table IM Engine Factory"""
     def __init__ (self, bus, db="", icon=""):
-        # here the db should be the abs path to sql db
-        # this is the backend sql db we need for our IME
-        # we need get lots of IME property from this db :)
-        #self.db = tabsqlitedb.tabsqlitedb( name = database )
-
+        # db is the full path to the sql database
         if db:
             self.dbusname = os.path.basename(db).replace('.db','')
             udb = os.path.basename(db).replace('.db','-user.db')
-            self.db = tabsqlitedb.tabsqlitedb( name = db,user_db = udb )
+            self.db = tabsqlitedb.tabsqlitedb(filename = db, user_db = udb)
             self.db.db.commit()
             self.dbdict = {self.dbusname:self.db}
         else:
@@ -75,7 +71,7 @@ class EngineFactory (IBus.Factory):
                     if not os.path.exists(db):
                         byo_db_dir = os.path.join(os.getenv('HOME'), '.ibus/byo-tables')
                         db = os.path.join(byo_db_dir, engine_name + '.db')
-                    _sq_db = tabsqlitedb.tabsqlitedb( name = db,user_db = udb )
+                    _sq_db = tabsqlitedb.tabsqlitedb(filename = db, user_db = udb)
                     _sq_db.db.commit()
                     self.dbdict[engine_name] = _sq_db
             else:

@@ -28,6 +28,7 @@ import sys
 import signal
 import optparse
 from time import strftime
+import re
 
 from gi.repository import GLib
 from gi.repository import Gtk
@@ -149,7 +150,7 @@ class PreferencesDialog:
     def do_init(self):
         self.__config = self.__bus.get_config()
         self.__config_section = ("engine/Table/%s" %
-                self.__engine_name.replace(" ", "_"))
+                re.sub(r'^table:', '', self.__engine_name).replace(" ", "_"))
 
         self.__init_general()
         self.__init_about()

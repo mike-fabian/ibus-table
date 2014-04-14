@@ -41,27 +41,22 @@ patt_p = re.compile(r'p(-{0,1}\d)(-{0,1}\d)')
 
 class tabsqlitedb:
     '''Phrase database for tables'''
-    def __init__(self, name = 'table.db', user_db = None, filename = None ):
-        # use filename when you are creating db from source
-        # use name when you are using db
+    def __init__(self, filename = None, user_db = None, create_database = False):
         # first we use the Parse in tabdict, which transform the char(a,b,c,...) to int(1,2,3,...) to fasten the sql enquiry
         self.parse = tabdict.parse
         self.deparse = tabdict.deparse
         self._add_phrase_sqlstr = ''
         self.old_phrases=[]
         self.ime_property_cache = {}
+        self.filename = filename
         self._user_db = user_db
 
-        if filename:
-            # now we are creating db
-            self.db = sqlite3.connect( filename )
+        if create_database:
+            self.db = sqlite3.connect(self.filename)
+        elif os.path.isfile(self.filename):
+            self.db = sqlite3.connect(self.filename)
         else:
-            try:
-                os.system('cat %s > /dev/null' % name)
-            except:
-                pass
-            # open system phrase db
-            self.db = sqlite3.connect(  name )
+            print('Cannot open database file %s' %self.filename)
         try:
             self.db.execute( 'PRAGMA page_size = 8192; ' )
             self.db.execute( 'PRAGMA cache_size = 20000; ' )
@@ -161,7 +156,7 @@ class tabsqlitedb:
         #self._no_check_chars = self.get_no_check_chars()
         # for fast gouci
         self._goucima={}
-        if filename:
+        if create_database:
             # since we just creating db, we do not need userdb and mudb
             return
 

@@ -104,9 +104,9 @@ class IMApp:
                                               homepage="http://code.google.com/p/ibus/",
                                               textdomain="ibus-table")
             # now we get IME info from self.__factory.db
-            table_name = self.__factory.db.get_ime_property ("name")
-            name = 'table:'+table_name
-            longname = table_name
+            engine_name = os.path.basename(self.__factory.db.filename).replace('.db', '')
+            name = 'table:'+engine_name
+            longname = self.__factory.db.get_ime_property ("name")
             description = self.__factory.db.get_ime_property ("description")
             language = self.__factory.db.get_ime_property ("languages")
             license = self.__factory.db.get_ime_property ("credit")
@@ -208,8 +208,8 @@ def main():
             _engine = SubElement (egs,'engine')
 
             _name = SubElement (_engine, 'name')
-            table_name = os.path.basename(_db).replace ('.db','')
-            _name.text = 'table:'+table_name
+            engine_name = os.path.basename(_db).replace ('.db','')
+            _name.text = 'table:'+engine_name
             setup_arg = "{} --engine-name {}".format(setup_cmd, _name.text)
 
             _longname = SubElement (_engine, 'longname')
@@ -221,7 +221,7 @@ def main():
             except:
                 pass
             if not _longname.text:
-                _longname.text = table_name
+                _longname.text = engine_name
 
             _language = SubElement (_engine, 'language')
             _langs = _sq_db.get_ime_property ('languages')

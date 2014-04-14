@@ -209,8 +209,8 @@ class editor(object):
     def __init__ (self, config, phrase_table_index,valid_input_chars, max_key_length, database, parser = tabdict.parse, deparser = tabdict.deparse, max_length = 64):
         self.db = database
         self._config = config
-        self._name = self.db.get_ime_property('name')
-        self._config_section = "engine/Table/%s" % self._name.replace(' ','_')
+        engine_name = os.path.basename(self.db.filename).replace('.db', '')
+        self._config_section = "engine/Table/%s" %engine_name.replace(' ','_')
         self._pt = phrase_table_index
         self._parser = parser
         self._deparser = deparser
@@ -351,7 +351,6 @@ class editor(object):
         self._t_chars = []
         self._strings = []
         self._cursor = [0,0]
-        self._py_mode = False
         self._zi = u''
         self.update_candidates
 
@@ -660,21 +659,17 @@ class editor(object):
         else:
             _tbks = u''.join( map(self._deparser , candi[_fkey + len(self._tabkey_list) : _p_index ] ) )
         _phrase = candi[_p_index]
-        # further color implementation needed :)
-        # here -2 is the pos of num, -1 is the pos of . 0 is the pos of string
-        #attrs = IBus.AttrList ([IBus.AttributeForeground (0x8e2626, -2, 1)])
         attrs = IBus.AttrList ()
-        # this is the part of tabkey
         attrs.append(IBus.attr_foreground_new(rgb(0x19,0x73,0xa2), 0, \
             len(_phrase) + len(_tbks)))
-        if candi[-2] < 0:
+        if not self._py_mode and candi[-2] < 0:
             # this is a user defined phrase:
             attrs.append(IBus.attr_foreground_new(rgb(0x77,0x00,0xc3), 0, len(_phrase)))
-        elif candi[-1] > 0:
-            # this is a sys phrase used by user:
+        elif not self._py_mode and candi[-1] > 0:
+            # this is a system phrase which has already been used by the user:
             attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(_phrase)))
         else:
-            # this is a system phrase haven't been used:
+            # this is a system phrase that has not been used yet:
             attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(_phrase)))
         text = IBus.Text.new_from_string(_phrase + _tbks)
         i = 0
@@ -1153,8 +1148,8 @@ class tabengine (IBus.Engine):
         self._ml = int(self.db.get_ime_property ('max_key_length'))
 
         # name for config section
-        self._name = self.db.get_ime_property('name')
-        self._config_section = "engine/Table/%s" % self._name.replace(' ', '_')
+        self._engine_name = os.path.basename(self.db.filename).replace('.db', '')
+        self._config_section = "engine/Table/%s" %self._engine_name.replace(' ','_')
 
         # config module
         self._config = self._bus.get_config ()
@@ -1850,9 +1845,7 @@ class tabengine (IBus.Engine):
         elif key.mask & IBus.ModifierType.MOD1_MASK:
             return False
 
-        elif keychar in self._valid_input_chars or \
-                ( self._editor._py_mode and \
-                    keychar in u'abcdefghijklmnopqrstuvwxyz!@#$%' ):
+        elif keychar and (keychar in self._valid_input_chars or (self._editor._py_mode and keychar in u'abcdefghijklmnopqrstuvwxyz!@#$%')):
             if self._auto_commit and ( len(self._editor._chars[0]) == self._ml \
                     or len (self._editor._chars[0]) in self.db.pkeylens )\
                     and not self._editor._py_mode:
@@ -1959,10 +1952,7 @@ class tabengine (IBus.Engine):
     def do_focus_out (self):
         if self._has_input_purpose:
             self._input_purpose = 0
-        try:
-            self._editor.clear()
-        except:
-            pass
+        self._editor.clear()
 
     def do_set_content_type(self, purpose, hints):
         if self._has_input_purpose:
@@ -2011,7 +2001,7 @@ class tabengine (IBus.Engine):
     def config_value_changed_cb (self, config, section, name, value):
         if self.config_section_normalize(self._config_section) != self.config_section_normalize(section):
             return
-        print("config value %(n)s for engine %(en)s changed" %{'n': name, 'en': self._name})
+        print("config value %(n)s for engine %(en)s changed" %{'n': name, 'en': self._engine_name})
         value = variant_to_value(value)
         if name == u'autoselect':
             self._editor._auto_select = value

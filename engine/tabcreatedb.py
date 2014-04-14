@@ -124,7 +124,7 @@ def main ():
             pass
 
     debug_print ("Processing Database")
-    db = tabsqlitedb.tabsqlitedb ( filename = opts.name)
+    db = tabsqlitedb.tabsqlitedb (filename = opts.name, create_database = True)
     #db.db.execute( 'PRAGMA synchronous = FULL; ' )
 
     def parse_source (f):
@@ -136,7 +136,6 @@ def main ():
         patt_conf = re.compile(r'[^\t]*=[^\t]*')
         patt_table = re.compile(r'([^\t]+)\t([^\t]+)\t([^t]+)(\t.*)?$')
         patt_gouci = re.compile(r' *[^\s]+ *\t *[^\s]+ *$')
-        patt_s = re.compile(r' *([^\s]+) *\t *([\x00-\xff]{3}) *\t *[^\s]+ *$')
 
         for l in f:
             if ( not patt_com.match(l) ) and ( not patt_blank.match(l) ):
@@ -144,12 +143,31 @@ def main ():
                     if _patt.match(l):
                         _list.append(l)
                         break
+
         if not _gouci:
-            #user didn't provide goucima, so we use the longest single character encode as the goucima.
+            # The user didn’t provide goucima (goucima = 構詞碼 =
+            # “word formation keys”) in the table source, so we use
+            # the longest encoding for a single character as the
+            # goucima for that character.
+            #
+            # Example:
+            #
+            # wubi-jidian86.txt contains:
+            #
+            #     a         工      99454797
+            #     aaa	工      551000000
+            #     aaaa      工      551000000
+            #     aaad      工期    5350000
+            #     ... and more matches for compounds containing 工
+            #
+            # The longest key sequence to type 工 as a single
+            # character is “aaaa”.  Therefore, the goucima of 工 is
+            # “aaaa” (There is one other character with the same goucima
+            # in  wubi-jidian86.txt, 㠭 also has the goucima “aaaa”).
             gouci_dict = {}
             for line in _table:
-                res = patt_s.match(line)
-                if res:
+                res = patt_table.match(line)
+                if res and len(res.group(2)) == 1:
                     if res.group(2) in gouci_dict:
                         if len(res.group(1)) > len(gouci_dict[res.group(2)]):
                             gouci_dict[res.group(2)] = res.group(1)

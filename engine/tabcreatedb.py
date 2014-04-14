@@ -203,7 +203,6 @@ def main ():
         patt_com = re.compile(r'^###.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_extra = re.compile(r'(.*)\t(.*)')
-        patt_s = re.compile(r'(.*)\t([\x00-\xff]{3})\t.*')
 
         for l in f:
             if ( not patt_com.match(l) ) and ( not patt_blank.match(l) ):

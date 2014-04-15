@@ -886,7 +886,6 @@ class tabsqlitedb:
         if len(phrase) >=2:
             try:
                 wordattr = self.parse_phrase ( phrase )
-                _len = len(wordattr)
             except:
                 # if we don't have goucima:
                 return

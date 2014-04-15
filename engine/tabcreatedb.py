@@ -256,11 +256,11 @@ def main ():
             if type(l) != type(u''):
                 l = l.decode('utf-8')
             phrase, freq = l.strip().split ()
-            try:
-                _tabkey = db.parse_phrase_to_tabkeys(phrase)
-                list.append( (_tabkey,phrase,freq,0) )
-            except:
-                print('\"%s\" would not been added' %phrase)
+            _tabkey = db.parse_phrase(phrase)
+            if _tabkey:
+                list.append((_tabkey,phrase,freq,0))
+            else:
+                print('No tabkeys found for “%s”, not adding.\n' %phrase)
         return list
 
     if opts.only_index:

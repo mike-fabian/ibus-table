@@ -239,7 +239,7 @@ class tabsqlitedb:
             #chars = list(filter(lambda x: x[0] == 1, self.old_phrases))
             # print chars
             phrases = [x for x in self.old_phrases if x[0] > 1]
-            phrases = [[self.parse_phrase_to_tabkeys(x[1])] + list(x[1:]) for x in phrases]
+            phrases = [[self.parse_phrase(x[1])] + list(x[1:]) for x in phrases]
 
             for x in phrases:
                 self.u_add_phrase(x)
@@ -840,49 +840,72 @@ class tabsqlitedb:
         return self.db.execute(sqlstr,(zi,)).fetchall()[0]
 
     def parse_phrase (self, phrase):
-        '''Parse phrase to get its Table code'''
-        # first we make sure that we are parsing unicode string
+        '''Parse phrase to get its table code
+
+        Example:
+
+        Let’s assume we use wubi-jidian86. The rules in the source of
+        that table are:
+
+            RULES = ce2:p11+p12+p21+p22;ce3:p11+p21+p31+p32;ca4:p11+p21+p31+p-11
+
+        “ce2” is a rule for phrases of length 2, “ce3” is a rule
+        for phrases of length 3, “ca4” is a rule for phrases of
+        length 4 *and* for all phrases with a length greater then
+        4. “pnm” in such a rule means to use the n-th character of
+        the phrase and take the m-th character of the table code of
+        that character. I.e. “p-11” is the first character of the
+        table code of the last character in the phrase.
+
+        Let’s assume the phrase is “天下大事”. The goucima (構詞碼
+        = “word formation keys”) for these 4 characters are:
+
+            character goucima
+            天        gdi
+            下        ghi
+            大        dddd
+            事        gkvh
+
+        (If no special goucima are defined by the user, the longest
+        encoding for a single character in a table is the goucima for
+        that character).
+
+        The length of the phrase “天下大事” is 4 characters,
+        therefore the rule ca4:p11+p21+p31+p-11 applies, i.e. the
+        table code for “天下大事” is calculated by using the first,
+        second, third and last character of the phrase and taking the
+        first character of the goucima for each of these. Therefore,
+        the table code for “天下大事” is “ggdg”.
+
+        '''
         if type(phrase) != type(u''):
-            phrase = unicode(phrase)
-        p_len = len(phrase)
-        tabkeylist = []
-        if p_len < 2:
-            # phrase should not be shorter than 2
-            return []
-        #print p_len
-        try:
-            if p_len >= self.rules['above']:
-                rule = self.rules[ self.rules['above'] ]
-            elif p_len in self.rules:
-                rule = self.rules[p_len]
-            else:
-                raise Exception ('unsupport len of phrase')
-            if len(rule) > self._mlen:
-                raise Exception ('fault rule: %s' % rule)
-            #for (zi,ma) in rule:
-            #    if zi > 0:
-            #        zi -= 1
-            #    gcm = self.get_gcm_id (phrase[zi])
-            #    tabkeylist.append(gcm[ma-1])
-            tabkeylist = [self.get_gcm_id(phrase[x[0]-1 if x[0] > 0 else x[0]])\
-                    [x[1]-1 if x[1] > 0 else x[1]] for x in rule]
-            return tabkeylist[:]
-
-        except:
-            print("pharse pharse \"%s\" fail." %phrase)
-            #import traceback
-            #traceback.print_exc ()
-
-    def parse_phrase_to_tabkeys (self,phrase):
-        '''Get the Table encoding of the phrase in string form'''
-        try:
-            tabres = self.parse_phrase(phrase)
-        except:
-            tabres = None
-        if tabres:
-            tabkeys= u''.join ( map(lambda x: x if x else '', tabres) )
+            phrase = phrase.decode('UTF-8')
+        if len(phrase) < 2:
+            return u''
+        elif len(phrase) in self.rules:
+            rule = self.rules[len(phrase)]
+        elif len(phrase) > self.rules['above']:
+            rule = self.rules[self.rules['above']]
         else:
-            tabkeys= u''
+            sys.stderr.write(
+                'No rule for this phrase length. phrase=%(p)s rules=%(r)s\n'
+                %{'p': phrase, 'r': rules})
+            return u''
+        if len(rule) > self._mlen:
+            sys.stderr.write(
+                'Rule exceeds maximum key length. rule=%(r)s self._mlen=%(m)s\n'
+                %{'r': rule, 'm': self._mlen})
+            return u''
+        tabkeys = u''
+        for (zi, ma) in rule:
+            if zi > 0:
+                zi -= 1
+            if ma > 0:
+                ma -= 1
+            tabkey = self.get_gcm_id(phrase[zi])[ma]
+            if not tabkey:
+                return u''
+            tabkeys += tabkey
         return tabkeys
 
     def check_phrase (self,phrase,tabkey=None,database='main'):
@@ -905,10 +928,8 @@ class tabsqlitedb:
             if phrase in chinese_nocheck_chars:
                 return
         if len(phrase) >=2:
-            try:
-                wordattr = self.parse_phrase ( phrase )
-            except:
-                # if we don't have goucima:
+            wordattr = self.parse_phrase(phrase)
+            if not wordattr:
                 return
         if (not tabkey) or len(tabkey) > self._mlen :
             sqlstr = '''SELECT * FROM (SELECT * FROM main.phrases WHERE phrase = ?

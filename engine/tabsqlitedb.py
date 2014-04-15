@@ -845,7 +845,7 @@ class tabsqlitedb:
             #    tabkeylist.append(gcm[ma-1])
             tabkeylist = [self.get_gcm_id(phrase[x[0]-1 if x[0] > 0 else x[0]])\
                     [x[1]-1 if x[1] > 0 else x[1]] for x in rule]
-            return [len( tabkeylist)] + [p_len]  + tabkeylist[:] + [phrase]
+            return tabkeylist[:]
 
         except:
             print("pharse pharse \"%s\" fail." %phrase)
@@ -855,7 +855,7 @@ class tabsqlitedb:
     def parse_phrase_to_tabkeys (self,phrase):
         '''Get the Table encoding of the phrase in string form'''
         try:
-            tabres = self.parse_phrase (phrase) [2:-1]
+            tabres = self.parse_phrase(phrase)
         except:
             tabres = None
         if tabres:
@@ -886,7 +886,7 @@ class tabsqlitedb:
         if len(phrase) >=2:
             try:
                 wordattr = self.parse_phrase ( phrase )
-                _len = len (wordattr) -3
+                _len = len(wordattr)
             except:
                 # if we don't have goucima:
                 return
@@ -945,7 +945,7 @@ class tabsqlitedb:
 
         tabkey = ''
         if len(phrase) >=2:
-            tabkey = u''.join ( map(self.deparse,wordattr[2:2+_len]) )
+            tabkey = u''.join(map(self.deparse,wordattr))
             #for k in wordattr[2:2+_len]:
             #    tabkey += self.deparse (k)
 

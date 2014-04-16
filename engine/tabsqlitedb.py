@@ -455,21 +455,6 @@ class tabsqlitedb:
             self.add_phrase(x, database=database, commit=False)
         self.db.commit()
 
-    def add_new_phrases (self, nphrases, database='main'):
-        '''Add new phrases into db, new phrases is a object
-        of [(phrase,freq), (phrase,freq),...]'''
-        n_phrases=[]
-        for _ph, _freq in nphrases:
-            try:
-                _tabkey = self.parse_phrase_to_tabkeys(_ph)
-                if not self.check_phrase_internal (_ph, _tabkey, database):
-                    # we don't have this phrase
-                    n_phrases.append ( (_tabkey, _ph, _freq, 0) )
-            except:
-                print('\"%s\" would not been added' %_ph)
-        if n_phrases:
-            self.add_phrases ( n_phrases, database )
-
     def u_add_phrase (self,nphrase):
         '''Add a phrase to userdb'''
         self.add_phrase (nphrase,database='user_db',commit=False)
@@ -860,7 +845,7 @@ class tabsqlitedb:
             #    tabkeylist.append(gcm[ma-1])
             tabkeylist = [self.get_gcm_id(phrase[x[0]-1 if x[0] > 0 else x[0]])\
                     [x[1]-1 if x[1] > 0 else x[1]] for x in rule]
-            return [len( tabkeylist)] + [p_len]  + tabkeylist[:] + [phrase]
+            return tabkeylist[:]
 
         except:
             print("pharse pharse \"%s\" fail." %phrase)
@@ -870,7 +855,7 @@ class tabsqlitedb:
     def parse_phrase_to_tabkeys (self,phrase):
         '''Get the Table encoding of the phrase in string form'''
         try:
-            tabres = self.parse_phrase (phrase) [2:-1]
+            tabres = self.parse_phrase(phrase)
         except:
             tabres = None
         if tabres:
@@ -901,7 +886,6 @@ class tabsqlitedb:
         if len(phrase) >=2:
             try:
                 wordattr = self.parse_phrase ( phrase )
-                _len = len (wordattr) -3
             except:
                 # if we don't have goucima:
                 return
@@ -960,7 +944,7 @@ class tabsqlitedb:
 
         tabkey = ''
         if len(phrase) >=2:
-            tabkey = u''.join ( map(self.deparse,wordattr[2:2+_len]) )
+            tabkey = u''.join(map(self.deparse,wordattr))
             #for k in wordattr[2:2+_len]:
             #    tabkey += self.deparse (k)
 

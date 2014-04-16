@@ -187,8 +187,6 @@ class tabsqlitedb:
         self.startchars = self.get_start_chars ()
 
         #self._no_check_chars = self.get_no_check_chars()
-        # for fast gouci
-        self._goucima={}
         if create_database:
             # since we just creating db, we do not need userdb and mudb
             return
@@ -348,11 +346,9 @@ class tabsqlitedb:
             self.db.execute ( sqlstr )
 
             # create goucima table, this table is used in construct new phrases
-            sqlstr = 'CREATE TABLE IF NOT EXISTS %s.goucima (zi TEXT PRIMARY KEY' % database
-            for i in range(self._mlen):
-                sqlstr += ', g%d TEXT' % i
-            #sqlstr += ''.join(map (lambda x: ', g%d TEXT' % x, range(self._mlen)) )
-            sqlstr += ');'
+            sqlstr = '''
+            CREATE TABLE IF NOT EXISTS %s.goucima (zi TEXT PRIMARY KEY, goucima TEXT);
+            ''' %database
             self.db.execute ( sqlstr )
 
             # create pinyin table, this table is used in search single character for user handly
@@ -532,32 +528,24 @@ class tabsqlitedb:
             import traceback
             traceback.print_exc()
 
-    def add_goucima (self, gcms):
-        '''Add goucima into database, gcms is iterable object
-        Like gcms = [(zi,goucima),(zi,goucima), ...]
+    def add_goucima (self, goucimas):
+        '''Add goucima into database, goucimas is iterable object
+        Like goucimas = [(zi,goucima), (zi,goucima), ...]
         '''
-        count = 1
-        for zi,gcm in gcms:
-            _con = ''
-            _val = ''
-            _len = min ( len(gcm),self._mlen)
-            for i in range( _len ):
-                _con += ', g%d' % i
-                _val += ', ?'
-            sqlstr = '''INSERT INTO main.goucima ( zi %s )
-            VALUES ( ? %s );''' % (_con, _val)
-            try:
-                gc = list(gcm)
-                record = [zi]
-                for i in range(_len):
-                    record.append(str(gc[i]))
-                self.db.execute (sqlstr , record)
-
-            except Exception:
-                import traceback
-                traceback.print_exc()
-            count += 1
-        self.db.commit()
+        sqlstr = '''
+        INSERT INTO main.goucima (zi, goucima) VALUES (:zi, :goucima);
+        '''
+        sqlargs = []
+        for zi,goucima in goucimas:
+            sqlargs.append({'zi': zi, 'goucima': goucima})
+        try:
+            self.db.commit()
+            self.db.executemany(sqlstr, sqlargs)
+            self.db.commit()
+            self.db.execute('PRAGMA wal_checkpoint;')
+        except:
+            import traceback
+            traceback.print_exc()
 
     def add_pinyin (self, pinyins, database = 'main'):
         '''Add pinyin to database, pinyins is a iterable object
@@ -603,7 +591,7 @@ class tabsqlitedb:
             DROP TABLE tmp;
             CREATE TABLE tmp AS SELECT * FROM %(database)s.goucima;
             DELETE FROM %(database)s.goucima;
-            INSERT INTO %(database)s.goucima SELECT * FROM tmp ORDER BY zi,g0,g1;
+            INSERT INTO %(database)s.goucima SELECT * FROM tmp ORDER BY zi, goucima;
             DROP TABLE tmp;
             CREATE TABLE tmp AS SELECT * FROM %(database)s.pinyin;
             DELETE FROM %(database)s.pinyin;
@@ -819,25 +807,11 @@ class tabsqlitedb:
         except:
             return 0
 
-    def cache_goucima (self):
-        self._goucima = {}
-        goucima = self.db.execute('SELECT * FROM main.goucima;').fetchall()
-        for x in goucima:
-            self._goucima.update({x[0]:x[1:]})
-
-    def get_gcm_id (self, zi):
+    def get_goucima (self, zi):
         '''Get goucima of given character'''
-        if self._goucima:
-            # we already cache the goucima
-            if type(zi) != type(u''):
-                zi = zi.decode('utf-8')
-            try:
-                gcds = self._goucima[zi]
-                return gcds
-            except:
-                pass
-        sqlstr = 'SELECT %s FROM main.goucima WHERE zi =?;' % ','.join(['g%d' %x for x in range(self._mlen)])
-        return self.db.execute(sqlstr,(zi,)).fetchall()[0]
+        sqlstr = 'SELECT goucima FROM main.goucima WHERE zi = :zi;'
+        goucima = self.db.execute(sqlstr, {'zi': zi}).fetchall()[0][0]
+        return goucima
 
     def parse_phrase (self, phrase):
         '''Parse phrase to get its table code
@@ -902,7 +876,7 @@ class tabsqlitedb:
                 zi -= 1
             if ma > 0:
                 ma -= 1
-            tabkey = self.get_gcm_id(phrase[zi])[ma]
+            tabkey = self.get_goucima(phrase[zi])[ma]
             if not tabkey:
                 return u''
             tabkeys += tabkey

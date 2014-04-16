@@ -351,11 +351,12 @@ class tabsqlitedb:
             ''' %database
             self.db.execute ( sqlstr )
 
-            # create pinyin table, this table is used in search single character for user handly
-            sqlstr = 'CREATE TABLE IF NOT EXISTS %s.pinyin ( plen INTEGER, ' % database
-            sqlstr += ''.join(['p%d TEXT, ' %x for x in range(7)])
-            sqlstr += 'zi TEXT, freq INTEGER);'
-            self.db.execute ( sqlstr )
+            # Create pinyin table, this table can be convenient when the
+            # user is searching for a single character
+            sqlstr = '''
+            CREATE TABLE IF NOT EXISTS %s.pinyin (pinyin TEXT, zi TEXT, freq INTEGER);
+            ''' %database
+            self.db.execute(sqlstr)
 
         # create phrase table (mabiao)
         sqlstr = 'CREATE TABLE IF NOT EXISTS %s.phrases (id INTEGER PRIMARY KEY AUTOINCREMENT,\
@@ -549,35 +550,20 @@ class tabsqlitedb:
         '''Add pinyin to database, pinyins is a iterable object
         Like: [(zi,pinyin, freq), (zi, pinyin, freq), ...]
         '''
-        sqlstr = 'INSERT INTO %s.pinyin ( plen, '
-        sql_suffix = 'VALUES ( ?, '
-        for i in range(7):
-            sqlstr += 'p%d, ' % i
-            sql_suffix += '?, '
-        sqlstr += 'zi, freq ) '
-        sql_suffix += '?, ? );'
-        sqlstr += sql_suffix
-
-        count = 1
+        sqlstr = '''
+        INSERT INTO %s.pinyin (pinyin, zi, freq) VALUES (:pinyin, :zi, :freq);
+        ''' %database
+        count = 0
         for pinyin,zi,freq in pinyins:
+            count += 1
+            pinyin = pinyin.replace('1','!').replace('2','@').replace('3','#').replace('4','$').replace('5','%')
             try:
-                pinyin_n = pinyin.replace('1','!').replace('2','@').replace('3','#').replace('4','$').replace('5','%')
-                py = list(pinyin_n)
-                if len(py) != len(pinyin_n):
-                    raise Exception(u'%s %s: Can not parse pinyin' %(zi, pinyin))
-                record = [None]*10
-                record [0] = len (pinyin_n)
-                for i in range(0,len(pinyin_n)):
-                    record [ 1+i ] = str(py[i])
-                record [-2] = zi
-                record [-1] = freq
-                self.db.execute (sqlstr % database, record)
+                self.db.execute(sqlstr, {'pinyin': pinyin, 'zi': zi, 'freq': freq})
             except Exception:
-                print(count, ': ', zi, ' ', pinyin)
+                sys.stderr.write(
+                    'Error when inserting into pinyin table. count=%(c)s pinyin=%(p)s zi=%(z)s freq=%(f)s\n' %{'c': count, 'p': pinyin, 'z': zi, 'f': freq})
                 import traceback
                 traceback.print_exc()
-            count += 1
-
         self.db.commit()
 
     def optimize_database (self, database='main'):
@@ -593,7 +579,7 @@ class tabsqlitedb:
             DROP TABLE tmp;
             CREATE TABLE tmp AS SELECT * FROM %(database)s.pinyin;
             DELETE FROM %(database)s.pinyin;
-            INSERT INTO %(database)s.pinyin SELECT * FROM tmp ORDER BY p0,p1,p2,p3,p4,p5,plen ASC;
+            INSERT INTO %(database)s.pinyin SELECT * FROM tmp ORDER BY pinyin ASC, freq DESC;
             DROP TABLE tmp;
             '''
         tabkeystr = ''
@@ -618,9 +604,9 @@ class tabsqlitedb:
 
     def create_indexes(self, database, commit=True):
         sqlstr = '''
-            CREATE INDEX IF NOT EXISTS %(database)s.goucima_index_z ON goucima (zi);
-            CREATE INDEX IF NOT EXISTS %(database)s.pinyin_index_i ON pinyin (p0,p1,p2,p3,p4,p5,plen ASC, freq DESC);
-            ''' % { 'database':database }
+        CREATE INDEX IF NOT EXISTS %(database)s.goucima_index_z ON goucima (zi);
+        CREATE INDEX IF NOT EXISTS %(database)s.pinyin_index_i ON pinyin (pinyin ASC, freq DESC);
+        ''' %{'database':database}
 
         sqlstr_t = '''
             CREATE INDEX IF NOT EXISTS %(database)s.phrases_index_p ON phrases
@@ -693,43 +679,29 @@ class tabsqlitedb:
         result = [add2box(x) for x in result if x[1:-2] not in box_uniq]
         return result[:]
 
-    def select_zi( self, tabkeys ):
+    def select_zi(self, tabkeys):
         '''
         Get zi from database by tab_key objects
         ( which should be equal or less than 6)
         This method is called in table.py by passing UserInput held data
         Return  result[:]
         '''
-        # firstly, we make sure the len we used is equal or less than
-        # the max pinyin length 7 (include tune[1-5])
-        _len = min( len(tabkeys), 7 )
-        _condition = ''
-        #for i in range(_len):
-        #    _condition += 'AND p%d = ? ' % i
-        _condition += ''.join (['AND p%d = ? ' %x for x in range(_len)])
-        # you can increase the x in _len + x to include more result, but in the most case, we only need one more key result, so we don't need the extra overhead :)
-        # here we need make sure that the 3 <= plen <=7,
-        # so , if if _len < 3, than we start from 3;
-        #   if _len >= 3, we start from _len + 1;
-        #   if _len = 7, we start from _len
-        if _len < 7:
-            if _len < 3:
-                x_len = 3
-            else:
-                x_len = _len + 1
-        else:
-            x_len = _len
-
-        while x_len <= 8:
-            sqlstr = '''SELECT * FROM main.pinyin WHERE plen < %(mk)d  %(condition)s
-                ORDER BY plen ASC, freq DESC;''' % { 'mk':x_len, 'condition':_condition}
-            _tabkeys = list(map(str,tabkeys[:_len]))
-            result = self.db.execute(sqlstr, _tabkeys).fetchall()
-            if len(result) > 0:
-                break
-            x_len += 1
-        #self.db.commit()
-        return result[:]
+        sqlstr = '''
+        SELECT pinyin, zi, freq FROM main.pinyin WHERE pinyin LIKE :tabkeys
+        ORDER BY freq DESC, pinyin ASC
+        ;'''
+        sqlargs = {'tabkeys': tabkeys+'%%'}
+        results = self.db.execute(sqlstr, sqlargs).fetchall()
+        results = results[:20]
+        # now convert the results into a list of candidates in the format
+        # which was returned before I simplified the pinyin database table.
+        candidates = []
+        for (pinyin, zi, freq) in results:
+            candidate = [len(pinyin), None, None, None, None, None, None, None, zi, freq]
+            for i in range(0, min(7, len(pinyin))):
+                candidate[i+1] = pinyin[i]
+            candidates.append(tuple(candidate))
+        return candidates[:]
 
     def get_ime_property( self, attr ):
         '''get IME property from database, attr is the string of property,

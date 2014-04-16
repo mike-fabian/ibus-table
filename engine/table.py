@@ -736,7 +736,7 @@ class editor(object):
                         else:
                             self._candidates[0] = self.db.select_words( self._tabkey_list, self._onechar )
                     else:
-                        self._candidates[0] = self.db.select_zi( self._tabkey_list )
+                        self._candidates[0] = self.db.select_zi(''.join(self._tabkey_list))
                     self._chars[2] = self._chars[0][:]
 
                 else:

@@ -33,7 +33,10 @@ import tabsqlitedb
 
 ibus_dir = os.getenv('IBUS_TABLE_LOCATION')
 ibus_lib_dir = os.getenv('IBUS_TABLE_LIB_LOCATION')
-home_ibus_dir = os.path.join(os.getenv('HOME'), ".ibus")
+if os.getenv('HOME'):
+    home_ibus_dir = os.path.join(os.getenv('HOME'), ".ibus")
+else:
+    home_ibus_dir = ''
 
 if not ibus_dir or not os.path.exists(ibus_dir):
     ibus_dir = "/usr/share/ibus-table/"

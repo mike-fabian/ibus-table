@@ -466,10 +466,8 @@ class tabsqlitedb:
     def get_no_check_chars (self):
         '''Get the characters which engine should not change freq'''
         _chars= self.get_ime_property('no_check_chars')
-        try:
+        if type(_chars) != type(u''):
             _chars = _chars.decode('utf-8')
-        except:
-            pass
         return _chars
 
     def add_phrases (self, phrases, database = 'main'):

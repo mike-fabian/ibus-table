@@ -677,8 +677,7 @@ class editor(object):
 
     def filter_candidates (self, candidates):
         '''Filter candidates if IME is Chinese'''
-        #if self.db._is_chinese and (not self._py_mode):
-        if not self._chinese_mode in(2,3):
+        if not self._chinese_mode in(2,3) or self._py_mode:
             return candidates[:]
         bm_index = self._pt.index('category')
         if self._chinese_mode == 2:

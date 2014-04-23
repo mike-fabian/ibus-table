@@ -836,6 +836,8 @@ class tabsqlitedb:
 
     def get_goucima (self, zi):
         '''Get goucima of given character'''
+        if not zi:
+            return u''
         sqlstr = 'SELECT goucima FROM main.goucima WHERE zi = :zi;'
         goucima = self.db.execute(sqlstr, {'zi': zi}).fetchall()[0][0]
         return goucima
@@ -881,9 +883,18 @@ class tabsqlitedb:
         '''
         if type(phrase) != type(u''):
             phrase = phrase.decode('UTF-8')
-        if len(phrase) < 2:
+        # Shouldn’t this function try first whether the system database
+        # already has an entry for this phrase and if yes return it
+        # instead of constructing a new entry according to the rules?
+        # And construct a new entry only when no entry already exists
+        # in the system database??
+        if len(phrase) == 0:
             return u''
-        elif len(phrase) in self.rules:
+        if len(phrase) == 1:
+            return self.get_goucima(phrase)
+        if not self.rules:
+            return u''
+        if len(phrase) in self.rules:
             rule = self.rules[len(phrase)]
         elif len(phrase) > self.rules['above']:
             rule = self.rules[self.rules['above']]

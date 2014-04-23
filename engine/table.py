@@ -393,11 +393,9 @@ class editor(object):
         self._candidates = []
         self._candidates_previous = []
 
-    def add_input (self,c):
+    def add_input(self,c):
         '''add input character'''
         self._zi = u''
-        if self._cursor[1]:
-            self.split_phrase()
         if (len(self._chars_valid) == self._max_key_len and (not self._py_mode)) or (len(self._chars_valid) == 7 and self._py_mode ) :
             self.auto_commit_to_preedit()
             res = self.add_input (c)
@@ -414,7 +412,7 @@ class editor(object):
         res = self.update_candidates ()
         return res
 
-    def pop_input (self):
+    def pop_input(self):
         '''remove and display last input char held'''
         _c =''
         if self._chars_invalid:
@@ -425,7 +423,7 @@ class editor(object):
             self._chars_valid = self._chars_valid[:-1]
             self._tabkeys = self._tabkeys[:-1]
             if (not self._chars_valid) and self._u_chars:
-                self._chars_valid = self._u_chars.pop()
+                self._chars_valid = self._u_chars.pop(self._cursor[0] - 1)
                 self._tabkeys = self._chars_valid
                 self._strings.pop(self._cursor[0] - 1)
                 self._cursor[0] -= 1
@@ -438,93 +436,150 @@ class editor(object):
 
     def get_all_input_strings (self):
         '''Get all uncommitted input characters, used in English mode or direct commit'''
-        return  u''.join(self._u_chars) + self._chars_valid +self._chars_invalid
+        (left_tabkeys,
+         current_tabkeys,
+         right_tabkeys) = self.get_preedit_tabkeys_parts()
+        return  u''.join(left_tabkeys) + current_tabkeys + u''.join(right_tabkeys)
 
-    def split_phrase (self):
-        '''Split current phrase into two phrases'''
-        _head = u''
-        _end = u''
-        try:
-            _head = self._strings[self._cursor[0]][:self._cursor[1]]
-            _end = self._strings[self._cursor[0]][self._cursor[1]:]
-            self._strings.pop(self._cursor[0])
-            self._strings.insert(self._cursor[0],_head)
-            self._strings.insert(self._cursor[0]+1,_end)
-            self._cursor[0] +=1
-            self._cursor[1] = 0
-        except:
-            import traceback
-            traceback.print_exc()
+    def split_strings_committed_to_preedit(self, index, index_in_phrase):
+        head = self._strings[index][:index_in_phrase]
+        tail = self._strings[index][index_in_phrase:]
+        self._u_chars.pop(index)
+        self._strings.pop(index)
+        self._u_chars.insert(index, self.db.parse_phrase(head))
+        self._strings.insert(index, head)
+        self._u_chars.insert(index+1, self.db.parse_phrase(tail))
+        self._strings.insert(index+1, tail)
 
-    def remove_before_string (self):
-        '''Remove string before cursor'''
-        if self._cursor[1] != 0:
-            self.split_phrase()
-        if self._cursor[0] > 0:
-            self._strings.pop(self._cursor[0]-1)
-            self._cursor[0] -= 1
+    def remove_preedit_before_cursor(self):
+        '''Remove preëdit left of cursor'''
+        if self._chars_invalid:
+            return
+        if self.get_input_chars():
+            self.commit_to_preedit()
+        if not self._strings:
+            return
+        if self._cursor[0] <= 0:
+            return
+        self._u_chars = self._u_chars[self._cursor[0]:]
+        self._strings = self._strings[self._cursor[0]:]
+        self._cursor[0] = 0
 
-    def remove_after_string (self):
-        '''Remove string after cursor'''
-        if self._cursor[1] != 0:
-            self.split_phrase()
-        if self._cursor[0] < len(self._strings):
-            self._strings.pop(self._cursor[0])
+    def remove_preedit_after_cursor(self):
+        '''Remove preëdit right of cursor'''
+        if self._chars_invalid:
+            return
+        if self.get_input_chars():
+            self.commit_to_preedit()
+        if not self._strings:
+            return
+        if self._cursor[0] >= len(self._strings):
+            return
+        self._u_chars = self._u_chars[:self._cursor[0]]
+        self._strings = self._strings[:self._cursor[0]]
+        self._cursor[0] = len(self._strings)
 
-    def remove_before_char (self):
-        '''Remove character before cursor'''
-        if self._cursor[1] > 0:
-            _str = self._strings[ self._cursor[0] ]
-            self._strings[ self._cursor[0] ] = _str[ : self._cursor[1]-1] + _str[ self._cursor[1] :]
-            self._cursor[1] -= 1
-        else:
-            if self._cursor[0] != 0:
-                if len ( self._strings[self._cursor[0] - 1] ) == 1:
-                    self.remove_before_string()
-                else:
-                    self._strings[self._cursor[0] - 1] = self._strings[self._cursor[0] - 1][:-1]
+    def remove_preedit_character_before_cursor(self):
+        '''Remove character before cursor in strings comitted to preëdit'''
+        if self._chars_invalid:
+            return
+        if self.get_input_chars():
+            self.commit_to_preedit()
+        if not self._strings:
+            return
+        if self._cursor[0] < 1:
+            return
+        self._cursor[0] -= 1
+        self._chars_valid = self._u_chars.pop(self._cursor[0])
+        self._strings.pop(self._cursor[0])
+        self.update_candidates()
 
-    def remove_after_char (self):
-        '''Remove character after cursor'''
-        if self._cursor[1] == 0:
-            if self._cursor[0] != len( self._strings):
-                if len( self._strings[ self._cursor[0] ]) == 1:
-                    self.remove_after_string ()
-                else:
-                    self._strings[ self._cursor[0] ] = self._strings[ self._cursor[0] ][1:]
-        else:
-            if ( self._cursor[1] + 1 ) == len( self._strings[ self._cursor[0] ] ) :
-                self.split_phrase ()
-                self.remove_after_string ()
-            else:
-                string = self._strings[ self._cursor[0] ]
-                self._strings[ self._cursor[0] ] = string[:self._cursor[1]] + string[ self._cursor[1] + 1 : ]
+    def remove_preedit_character_after_cursor (self):
+        '''Remove character after cursor in strings committed to preëdit'''
+        if self._chars_invalid:
+            return
+        if self.get_input_chars():
+            self.commit_to_preedit()
+        if not self._strings:
+            return
+        if self._cursor[0] > len(self._strings) - 1:
+            return
+        self._u_chars.pop(self._cursor[0])
+        self._strings.pop(self._cursor[0])
 
-    def get_preedit_string_parts(self):
-        '''Returns a tuple of strings which are parts of the preëdit string.
+    def get_preedit_tabkeys_parts(self):
+        '''Returns the tabkeys which were used to type the parts
+        of the preëdit string.
 
         Such as “(left_of_current_edit, current_edit, right_of_current_edit)”
 
         “left_of_current_edit” and “right_of_current_edit” are
-        strings which have already been committed to preëdit, but not
-        “really” committed yet. “current_edit” is the part of the
-        preëdit string which is not committed at all.
+        strings of tabkeys which have been typed to get the phrases
+        which have already been committed to preëdit, but not
+        “really” committed yet. “current_edit” is the string of
+        tabkeys of the part of the preëdit string which is not
+        committed at all.
+
+        For example, the return value could look like:
+
+        (('gggg', 'aahw'), 'adwu', ('ijgl', 'jbus'))
+
+        See also get_preedit_string_parts() which might return something
+        like
+
+        (('王', '工具'), '其', ('漫画', '最新'))
+
+        when the wubi-jidian86 table is used.
         '''
-        left_of_current_edit = u''
+        left_of_current_edit = ()
         current_edit = u''
-        right_of_current_edit = u''
+        right_of_current_edit = ()
+        if self.get_input_chars():
+            current_edit = self.get_input_chars()
+        if self._u_chars:
+            left_of_current_edit = tuple(self._u_chars[:self._cursor[0]])
+            right_of_current_edit = tuple(self._u_chars[self._cursor[0]:])
+        return (left_of_current_edit, current_edit, right_of_current_edit)
+
+    def get_preedit_string_parts(self):
+        '''Returns the phrases which are parts of the preëdit string.
+
+        Such as “(left_of_current_edit, current_edit, right_of_current_edit)”
+
+        “left_of_current_edit” and “right_of_current_edit” are
+        tuples of strings which have already been committed to preëdit, but not
+        “really” committed yet. “current_edit” is the phrase in the part of the
+        preëdit string which is not yet committed at all.
+
+        For example, the return value could look like:
+
+        (('王', '工具'), '其', ('漫画', '最新'))
+
+        See also get_preedit_tabkeys_parts() which might return something
+        like
+
+        (('gggg', 'aahw'), 'adwu', ('ijgl', 'jbus'))
+
+        when the wubi-jidian86 table is used.
+        '''
+        left_of_current_edit = ()
+        current_edit = u''
+        right_of_current_edit = ()
         if self._candidates:
             current_edit = self._candidates[
                 int(self._lookup_table.get_cursor_pos())][1]
         elif self.get_input_chars():
                 current_edit = self.get_input_chars()
         if self._strings:
-            left_of_current_edit = u''.join(self._strings[:self._cursor[0]])
-            right_of_current_edit = u''.join(self._strings[self._cursor[0]:])
+            left_of_current_edit = tuple(self._strings[:self._cursor[0]])
+            right_of_current_edit = tuple(self._strings[self._cursor[0]:])
         return (left_of_current_edit, current_edit, right_of_current_edit)
 
     def get_preedit_string_complete(self):
-        return u''.join(self.get_preedit_string_parts())
+        (left_strings,
+         current_string,
+         right_strings) = self.get_preedit_string_parts()
+        return u''.join(left_strings) + current_string + u''.join(right_strings)
 
     def get_caret (self):
         '''Get caret position in preëdit string'''
@@ -540,79 +595,58 @@ class editor(object):
             caret += len(self.get_input_chars())
         return caret
 
-    def arrow_left (self):
-        '''Process Arrow Left Key Event.
-        Update cursor data when move caret left'''
-        if self.get_preedit_string_complete():
-            if not( self.get_input_chars () or self._u_chars ):
-                if self._cursor[1] > 0:
-                    self._cursor[1] -= 1
-                else:
-                    if self._cursor[0] > 0:
-                        self._cursor[1] = len (self._strings[self._cursor[0]-1]) - 1
-                        self._cursor[0] -= 1
-                    else:
-                        self._cursor[0] = len(self._strings)
-                        self._cursor[1] = 0
-                self.update_candidates ()
-            return True
+    def arrow_left(self):
+        '''Move cursor left in the preëdit string.'''
+        if self._chars_invalid:
+            return
+        if self.get_input_chars():
+            self.commit_to_preedit()
+        if not self._strings:
+            return
+        if self._cursor[0] <= 0:
+            return
+        if len(self._strings[self._cursor[0]-1]) <= 1:
+            self._cursor[0] -= 1
         else:
-            return False
+            self.split_strings_committed_to_preedit(self._cursor[0]-1, -1)
+        self.update_candidates()
 
-    def arrow_right (self):
-        '''Process Arrow Right Key Event.
-        Update cursor data when move caret right'''
-        if self.get_preedit_string_complete():
-            if not( self.get_input_chars () or self._u_chars ):
-                if self._cursor[1] == 0:
-                    if self._cursor[0] == len (self._strings):
-                        self._cursor[0] = 0
-                    else:
-                        self._cursor[1] += 1
-                else:
-                    self._cursor[1] += 1
-                if self._cursor[1] == len(self._strings[ self._cursor[0] ]):
-                    self._cursor[0] += 1
-                    self._cursor[1] = 0
-                self.update_candidates ()
-            return True
-        else:
-            return False
+    def arrow_right(self):
+        '''Move cursor right in the preëdit string.'''
+        if self._chars_invalid:
+            return
+        if self.get_input_chars():
+            self.commit_to_preedit()
+        if not self._strings:
+            return
+        if self._cursor[0] >= len(self._strings):
+            return
+        self._cursor[0] += 1
+        if len(self._strings[self._cursor[0]-1]) > 1:
+            self.split_strings_committed_to_preedit(self._cursor[0]-1, 1)
+        self.update_candidates()
 
-    def control_arrow_left (self):
-        '''Process Control + Arrow Left Key Event.
-        Update cursor data when move caret to string left'''
-        if self.get_preedit_string_complete():
-            if not( self.get_input_chars () or self._u_chars ):
-                if self._cursor[1] == 0:
-                    if self._cursor[0] == 0:
-                        self._cursor[0] = len (self._strings) - 1
-                    else:
-                        self._cursor[0] -= 1
-                else:
-                    self._cursor[1] = 0
-                self.update_candidates ()
-            return True
-        else:
-            return False
+    def control_arrow_left(self):
+        '''Move cursor to the beginning of the preëdit string.'''
+        if self._chars_invalid:
+            return
+        if self.get_input_chars():
+            self.commit_to_preedit()
+        if not self._strings:
+            return
+        self._cursor[0] = 0
+        self.update_candidates ()
 
-    def control_arrow_right (self):
-        '''Process Control + Arrow Right Key Event.
-        Update cursor data when move caret to string right'''
-        if self.get_preedit_string_complete():
-            if not( self.get_input_chars () or self._u_chars ):
-                if self._cursor[1] == 0:
-                    if self._cursor[0] == len (self._strings):
-                        self._cursor[0] = 1
-                    else:
-                        self._cursor[0] += 1
-                else:
-                    self._cursor[0] += 1
-                    self._cursor[1] = 0
-                self.update_candidates ()
-            return True
-        else:
-            return False
+    def control_arrow_right(self):
+        '''Move cursor to the end of the preëdit string'''
+        if self._chars_invalid:
+            return
+        if self.get_input_chars():
+            self.commit_to_preedit()
+        if not self._strings:
+            return
+        self._cursor[0] = len(self._strings)
+        self.update_candidates ()
 
     def append_candidate_to_lookup_table(self, tabkeys=u'', phrase=u'', freq=0, user_freq=0):
         '''append candidate to lookup_table'''
@@ -803,6 +837,7 @@ class editor(object):
         if self._chars_valid:
             try:
                 if self._candidates:
+                    self._u_chars.insert(self._cursor[0], self._chars_valid)
                     self._strings.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][1])
                     self._cursor[0] += 1
                     if self._py_mode:
@@ -819,7 +854,7 @@ class editor(object):
     def auto_commit_to_preedit (self):
         '''Add selected phrase in lookup table to preedit string'''
         try:
-            self._u_chars.append(self._chars_valid)
+            self._u_chars.insert(self._cursor[0], self._chars_valid)
             self._strings.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][1])
             self._cursor[0] += 1
             self.clear_input()
@@ -832,9 +867,21 @@ class editor(object):
         '''Get aux strings'''
         input_chars = self.get_input_chars ()
         if input_chars:
-            aux_string = self._chars_valid
+            aux_string = input_chars
             if debug_level > 0 and self._u_chars:
-                aux_string = repr(self._u_chars) + u' ' + self._chars_valid
+                (tabkeys_left,
+                 tabkeys_current,
+                 tabkeys_right) = self.get_preedit_tabkeys_parts()
+                (strings_left,
+                 string_current,
+                 strings_right) = self.get_preedit_string_parts()
+                aux_string = u''
+                for i in range(0, len(strings_left)):
+                    aux_string += u'('+tabkeys_left[i]+u' '+strings_left[i]+u') '
+                aux_string += input_chars
+                for i in range(0, len(strings_right)):
+                    aux_string += u' ('+tabkeys_right[i]+u' '+strings_right[i]+u')'
+
             if self._py_mode:
                 aux_string = aux_string.replace('!','1').replace('@','2').replace('#','3').replace('$','4').replace('%','5')
             return aux_string
@@ -968,51 +1015,20 @@ class editor(object):
         '''Get lookup table'''
         return self._lookup_table
 
-    def remove_char (self):
+    def remove_char(self):
         '''Process remove_char Key Event'''
         self._zi = u''
         if self.get_input_chars():
             self.pop_input ()
-            return True
-        elif self.get_preedit_string_complete():
-            self.remove_before_char ()
-            return True
-        else:
-            return False
+            return
+        self.remove_preedit_character_before_cursor()
 
-    def remove_str (self):
-        '''Process control+remove_char Key Event'''
-        self._zi = u''
-        if self.get_input_chars():
-            self.clear_input ()
-            return True
-        elif self.get_preedit_string_complete():
-            self.remove_before_string ()
-            return True
-        else:
-            return False
-
-    def delete (self):
+    def delete(self):
         '''Process delete Key Event'''
         self._zi = u''
         if self.get_input_chars():
-            return True
-        elif self.get_preedit_string_complete():
-            self.remove_after_char ()
-            return True
-        else:
-            return False
-
-    def control_delete (self):
-        '''Process control+delete Key Event'''
-        self._zi = u''
-        if self.get_input_chars ():
-            return True
-        elif self.get_preedit_string_complete():
-            self.remove_after_string ()
-            return True
-        else:
-            return False
+            return
+        self.remove_preedit_character_after_cursor()
 
     def toggle_tab_py_mode (self):
         '''Toggle between Pinyin Mode and Table Mode'''
@@ -1043,15 +1059,16 @@ class editor(object):
         return (KeyProcessResult,whethercommit,commitstring)'''
         if self._chars_invalid:
             # we have invalid input, so do not commit
-            return (False,u'')
+            return (False, u'', u'')
         if not self.is_empty():
-            istr = self.get_all_input_strings ()
-            self.commit_to_preedit ()
-            pstr = self.get_preedit_string_complete()
-            self.clear()
-            return (True,pstr,istr)
+            self.commit_to_preedit()
+        istr = self.get_all_input_strings()
+        pstr = self.get_preedit_string_complete()
+        self.clear()
+        if istr or pstr:
+            return (True, pstr, istr)
         else:
-            return (False,u'',u'')
+            return (False, u'', u'')
 
     def one_candidate (self):
         '''Return true if there is only one candidate'''
@@ -1398,10 +1415,11 @@ class tabengine (IBus.Engine):
     def _update_preedit(self):
         '''Update Preedit String in UI'''
         preedit_string_parts = self._editor.get_preedit_string_parts()
-        left_of_current_edit = preedit_string_parts[0]
+        left_of_current_edit = u''.join(preedit_string_parts[0])
         current_edit = preedit_string_parts[1]
-        right_of_current_edit = preedit_string_parts[2]
-        preedit_string_complete = u''.join(preedit_string_parts)
+        right_of_current_edit = u''.join(preedit_string_parts[2])
+        preedit_string_complete = (
+            left_of_current_edit + current_edit + right_of_current_edit)
         if not preedit_string_complete:
             super(tabengine, self).update_preedit_text(IBus.Text.new_from_string(u''), 0, False)
             return
@@ -1689,7 +1707,7 @@ class tabengine (IBus.Engine):
         #
         keychar = IBus.keyval_to_unicode(key.code)
 
-        if self._editor.is_empty():
+        if self._editor.is_empty() and not self._editor.get_preedit_string_complete():
             # This is the first character typed
             if (key.code >= 32
                 and (keychar not in self._valid_input_chars
@@ -1740,44 +1758,68 @@ class tabengine (IBus.Engine):
             return res
 
         elif key.code in (IBus.KEY_Left, IBus.KEY_KP_Left) and key.mask & IBus.ModifierType.CONTROL_MASK:
-            res = self._editor.control_arrow_left ()
-            self._update_ui ()
-            return res
+            if not self._editor.get_preedit_string_complete():
+                return False
+            else:
+                self._editor.control_arrow_left()
+                self._update_ui()
+                return True
 
         elif key.code in (IBus.KEY_Right, IBus.KEY_KP_Right) and key.mask & IBus.ModifierType.CONTROL_MASK:
-            res = self._editor.control_arrow_right ()
-            self._update_ui ()
-            return res
+            if not self._editor.get_preedit_string_complete():
+                return False
+            else:
+                self._editor.control_arrow_right()
+                self._update_ui()
+                return True
 
         elif key.code in (IBus.KEY_Left, IBus.KEY_KP_Left):
-            res = self._editor.arrow_left ()
-            self._update_ui ()
-            return res
+            if not self._editor.get_preedit_string_complete():
+                return False
+            else:
+                self._editor.arrow_left()
+                self._update_ui()
+                return True
 
         elif key.code in (IBus.KEY_Right, IBus.KEY_KP_Right):
-            res = self._editor.arrow_right ()
-            self._update_ui ()
-            return res
+            if not self._editor.get_preedit_string_complete():
+                return False
+            else:
+                self._editor.arrow_right()
+                self._update_ui()
+                return True
 
         elif key.code == IBus.KEY_BackSpace and key.mask & IBus.ModifierType.CONTROL_MASK:
-            res = self._editor.remove_str ()
-            self._update_ui ()
-            return res
+            if not self._editor.get_preedit_string_complete():
+                return False
+            else:
+                self._editor.remove_preedit_before_cursor()
+                self._update_ui()
+                return True
 
         elif key.code == IBus.KEY_BackSpace:
-            res = self._editor.remove_char ()
-            self._update_ui ()
-            return res
+            if not self._editor.get_preedit_string_complete():
+                return False
+            else:
+                self._editor.remove_char()
+                self._update_ui()
+                return True
 
         elif key.code == IBus.KEY_Delete  and key.mask & IBus.ModifierType.CONTROL_MASK:
-            res = self._editor.control_delete ()
-            self._update_ui ()
-            return res
+            if not self._editor.get_preedit_string_complete():
+                return False
+            else:
+                self._editor.remove_preedit_after_cursor()
+                self._update_ui()
+                return True
 
         elif key.code == IBus.KEY_Delete:
-            res = self._editor.delete ()
-            self._update_ui ()
-            return res
+            if not self._editor.get_preedit_string_complete():
+                return False
+            else:
+                self._editor.delete()
+                self._update_ui()
+                return True
 
         elif ( keychar in self._editor.get_select_keys() and
                 self._editor._candidates and

@@ -217,17 +217,15 @@ class editor(object):
         self._max_length = max_length
         self._valid_input_chars = valid_input_chars
         #
-        # below vals will be reset in self.clear()
+        # The values below will be reset in self.clear()
         #
-        # we hold this: [str,str,...]
         # self._chars: hold user input in table mode (valid,invalid,prevalid)
-        self._chars = [[],[],[]]
+        self._chars = [u'',u'',u'']
         #self._t_chars: hold total input for table mode for input check
-        self._t_chars = []
+        self._t_chars = u''
         # self._u_chars: hold user input but not manual comitted chars
-        self._u_chars = []
-        # self._tabkey_list: hold tab_key objects transform from user input chars
-        self._tabkey_list = []
+        self._u_chars = u''
+        self._tabkeys = u'' # the input characters typed by the user
         # self._strings: hold preedit strings
         self._strings = []
         # self._cursor: the caret position in preedit phrases
@@ -346,7 +344,7 @@ class editor(object):
     def clear (self):
         '''Remove data holded'''
         self.over_input ()
-        self._t_chars = []
+        self._t_chars = u''
         self._strings = []
         self._cursor = [0,0]
         self._zi = u''
@@ -359,8 +357,8 @@ class editor(object):
         '''
         Remove input characters held for Table mode,
         '''
-        self._chars = [[],[],[]]
-        self._tabkey_list = []
+        self._chars = [u'',u'',u'']
+        self._tabkeys = u''
         self._lookup_table.clear()
         self._lookup_table.set_cursor_visible(True)
         self._candidates = [[],[]]
@@ -370,7 +368,7 @@ class editor(object):
         Remove input characters held for Table mode,
         '''
         self.clear_input ()
-        self._u_chars = []
+        self._u_chars = u''
 
     def add_input (self,c):
         '''add input character'''
@@ -384,18 +382,15 @@ class editor(object):
             res = self.add_input (c)
             return res
         elif self._chars[1]:
-            self._chars[1].append (c)
+            self._chars[1] += c
         else:
             if (not self._py_mode and ( c in self._valid_input_chars)) or\
                 (self._py_mode and (c in u'abcdefghijklmnopqrstuvwxyz!@#$%')):
-                try:
-                    self._tabkey_list += list(c)
-                    self._chars[0].append (c)
-                except:
-                    self._chars[1].append (c)
+                self._tabkeys += c
+                self._chars[0] += c
             else:
-                self._chars[1].append (c)
-        self._t_chars.append(c)
+                self._chars[1] += c
+        self._t_chars += c
         res = self.update_candidates ()
         return res
 
@@ -403,17 +398,20 @@ class editor(object):
         '''remove and display last input char held'''
         _c =''
         if self._chars[1]:
-            _c = self._chars[1].pop ()
+            _c = self._chars[1][-1]
+            self._chars[1] = self._chars[1][:-1]
         elif self._chars[0]:
-            _c = self._chars[0].pop ()
-            self._tabkey_list.pop()
+            _c = self._chars[0][-1]
+            self._chars[0] = self._chars[0][:-1]
+            self._tabkeys = self._tabkeys[:-1]
             if (not self._chars[0]) and self._u_chars:
-                self._chars[0] = self._u_chars.pop()
+                self._chars[0] = self._u_chars[-1]
+                self._u_chars = self._u_chars[:-1]
                 self._chars[1] = self._chars[1][:-1]
-                self._tabkey_list = list(self._chars[0])
+                self._tabkeys = self._chars[0]
                 self._strings.pop (self._cursor[0] - 1 )
                 self._cursor[0] -= 1
-        self._t_chars.pop()
+        self._t_chars = self._t_chars[:-1]
         self.update_candidates ()
         return _c
 
@@ -423,12 +421,11 @@ class editor(object):
 
     def get_input_chars_string (self):
         '''Get valid input char string'''
-        return u''.join(map(str,self._t_chars))
+        return self._t_chars
 
     def get_all_input_strings (self):
-        '''Get all uncommited input characters, used in English mode or direct commit'''
-        return  u''.join( map(u''.join, self._u_chars + [self._chars[0]] \
-            + [self._chars[1]]) )
+        '''Get all uncommitted input characters, used in English mode or direct commit'''
+        return  self._u_chars + self._chars[0] +self._chars[1]
 
     def split_phrase (self):
         '''Split current phrase into two phrases'''
@@ -456,7 +453,7 @@ class editor(object):
             pass
         # if we remove all characters in preedit string, we need to clear the self._t_chars
         if self._cursor == [0,0]:
-            self._t_chars =[]
+            self._t_chars = u''
 
     def remove_after_string (self):
         '''Remove string after cursor'''
@@ -483,7 +480,7 @@ class editor(object):
                     self._strings[self._cursor[0] - 1] = self._strings[self._cursor[0] - 1][:-1]
         # if we remove all characters in preedit string, we need to clear the self._t_chars
         if self._cursor == [0,0] and not self._strings:
-            self._t_chars =[]
+            self._t_chars = u''
 
     def remove_after_char (self):
         '''Remove character after cursor'''
@@ -510,13 +507,13 @@ class editor(object):
         else:
             input_chars = self.get_input_chars()
             if input_chars:
-                _candi = u''.join( ['###'] + list(map(str, input_chars)) + ['###'])
+                _candi = '###' + input_chars + '###'
             else:
                 _candi = u''
         if self._strings:
             res = u''
             _cursor = self._cursor[0]
-            _luc = len (self._u_chars)
+            _luc = len(self._u_chars)
             if _luc:
                 _candi = _candi == u'' and u'######' or _candi
                 res =u''.join( self._strings[ : _cursor - _luc] +[u'@@@'] + self._strings[_cursor - _luc : _cursor ]  + [ _candi  ] + self._strings[ _cursor : ])
@@ -540,7 +537,7 @@ class editor(object):
         if self._candidates[0]:
             _candi =self._candidates[0][int(self._lookup_table.get_cursor_pos())][1]
         else:
-            _candi = u''.join( map(str, self.get_input_chars()))
+            _candi = self.get_input_chars()
         self._caret += len(_candi)
         return self._caret
 
@@ -622,7 +619,7 @@ class editor(object):
         '''append candidate to lookup_table'''
         if not tabkeys or not phrase:
             return
-        remaining_tabkeys = tabkeys[len(self._tabkey_list):]
+        remaining_tabkeys = tabkeys[len(self._tabkeys):]
         if self.db._is_chinese and self._py_mode:
             # restore tune symbol
             remaining_tabkeys = remaining_tabkeys.replace('!','↑1').replace('@','↑2').replace('#','↑3').replace('$','↑4').replace('%','↑5')
@@ -683,7 +680,7 @@ class editor(object):
         if self.db.startchars and ( len(self._chars[0]) == 1 )\
                 and ( len(self._chars[1]) == 0 ) \
                 and ( self._chars[0][0] not in self.db.startchars):
-            self._u_chars.append ( self._chars[0][0] )
+            self._u_chars += (self._chars[0][0])
             self._strings.insert ( self._cursor[0], self._chars[0][0] )
             self._cursor [0] += 1
             self.clear_input()
@@ -699,29 +696,19 @@ class editor(object):
                 # do enquiry
                 self._lookup_table.clear()
                 self._lookup_table.set_cursor_visible(True)
-                if self._tabkey_list:
-                    tabkeys = ''.join(self._tabkey_list)
+                if self._tabkeys:
                     # here we need to consider two parts, table and pinyin
                     # first table
                     if not self._py_mode:
-                        if self.db._is_chinese :
-                            if self._chinese_mode == 0:
-                                # simplified Chinese mode
-                                self._candidates[0] = self.db.select_words(
-                                    tabkeys, self._onechar, 1)
-                            elif self._chinese_mode == 1:
-                                # traditional Chinese mode
-                                self._candidates[0] = self.db.select_words(
-                                    tabkeys, self._onechar, 2)
-                            else:
-                                self._candidates[0] = self.db.select_words(
-                                    tabkeys, self._onechar)
+                        if self.db._is_chinese and self._chinese_mode == 0: # simplified
+                            self._candidates[0] = self.db.select_words(self._tabkeys, self._onechar, 1)
+                        elif self.db._is_chinese and self._chinese_mode == 1: #traditional
+                            self._candidates[0] = self.db.select_words(self._tabkeys, self._onechar, 2)
                         else:
-                            self._candidates[0] = self.db.select_words(tabkeys, self._onechar)
+                            self._candidates[0] = self.db.select_words(self._tabkeys, self._onechar)
                     else:
-                        self._candidates[0] = self.db.select_zi(tabkeys)
-                    self._chars[2] = self._chars[0][:]
-
+                        self._candidates[0] = self.db.select_zi(self._tabkeys)
+                    self._chars[2] = self._chars[0]
                 else:
                     self._candidates[0] =[]
                 if self._candidates[0]:
@@ -764,8 +751,8 @@ class editor(object):
                                 ## old manner:
                                 if self._py_mode:
                                     if self._chars[0][-1] in "!@#$%":
-                                        self._chars[0].pop()
-                                        self._tabkey_list.pop()
+                                        self._chars[0] = self._chars[0][:-1]
+                                        self._tabkeys = self._tabkeys[:-1]
                                         return True
 
                                 if self._candidates[1]:
@@ -789,8 +776,9 @@ class editor(object):
                             else:
                                 # this is not a punct or not a valid phrase
                                 # last time
-                                self._chars[1].append( self._chars[0].pop() )
-                                self._tabkey_list.pop()
+                                self._chars[1] += self._chars[0][-1]
+                                self._chars[0] = self._chars[0][:-1]
+                                self._tabkeys = self._tabkeys[:-1]
                         else:
                             pass
                         self._candidates[0] =[]
@@ -821,7 +809,7 @@ class editor(object):
     def auto_commit_to_preedit (self):
         '''Add selected phrase in lookup table to preedit string'''
         try:
-            self._u_chars.append(self._chars[0][:])
+            self._u_chars += self._chars[0]
             self._strings.insert(self._cursor[0], self._candidates[0][self.get_cursor_pos()][1])
             self._cursor[0] += 1
             self.clear_input()
@@ -833,8 +821,8 @@ class editor(object):
         '''Get aux strings'''
         input_chars = self.get_input_chars ()
         if input_chars:
-            #aux_string =  u' '.join( map( u''.join, self._u_chars + [self._chars[0]] ) )
-            aux_string =   u''.join (self._chars[0])
+            #aux_string =  self._u_chars + self._chars[0]
+            aux_string = self._chars[0]
             if self._py_mode:
                 aux_string = aux_string.replace('!','1').replace('@','2').replace('#','3').replace('$','4').replace('%','5')
             return aux_string
@@ -842,12 +830,11 @@ class editor(object):
         aux_string = u''
         if self._zi:
             # we have pinyin result
-            tabcodes = self.db.find_zi_code(self._zi)
-            aux_string = u' '.join(tabcodes)
+            aux_string = self.db.find_zi_code(self._zi)
         cstr = u''.join(self._strings)
         if self.db.user_can_define_phrase:
             if len (cstr ) > 1:
-                aux_string += (u'\t#: ' + self.db.parse_phrase_to_tabkeys (cstr))
+                aux_string += (u'\t#: ' + self.db.parse_phrase(cstr))
         return aux_string
 
     def fill_lookup_table(self):
@@ -944,7 +931,7 @@ class editor(object):
                 # freq of this candidate is -1, means this a user phrase
                 self.db.remove_phrase (can)
                 # make update_candidates do sql enquiry
-                self._chars[2].pop()
+                self._chars[2] = self._chars[2][:-1]
                 self.update_candidates ()
             return True
         else:

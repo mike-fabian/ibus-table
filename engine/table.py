@@ -430,10 +430,6 @@ class editor(object):
         return  u''.join( map(u''.join, self._u_chars + [self._chars[0]] \
             + [self._chars[1]]) )
 
-    def get_index(self,key):
-        '''Get the index of key in database table'''
-        return self._pt.index(key)
-
     def split_phrase (self):
         '''Split current phrase into two phrases'''
         _head = u''

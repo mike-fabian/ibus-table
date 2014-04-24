@@ -519,7 +519,8 @@ class editor(object):
             _cursor = self._cursor[0]
             _luc = len(self._u_chars)
             if _luc:
-                _candi = _candi == u'' and u'######' or _candi
+                if _candi == u'':
+                    _candi = u'######'
                 res =u''.join( self._strings[ : _cursor - _luc] +[u'@@@'] + self._strings[_cursor - _luc : _cursor ]  + [ _candi  ] + self._strings[ _cursor : ])
             else:
                 res = u''.join( self._strings[ : _cursor ] + [ _candi  ] + self._strings[ _cursor : ])

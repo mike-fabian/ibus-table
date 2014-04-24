@@ -345,12 +345,13 @@ class editor(object):
 
     def clear (self):
         '''Remove data holded'''
-        self.over_input ()
+        self.clear_input()
+        self._u_chars = u''
         self._t_chars = u''
         self._strings = []
         self._cursor = [0,0]
         self._zi = u''
-        self.update_candidates
+        self.update_candidates()
 
     def is_empty (self):
         return len(self._t_chars) == 0

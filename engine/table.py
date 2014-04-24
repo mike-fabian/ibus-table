@@ -37,6 +37,8 @@ from gi.repository import GObject
 import time
 import chinese_variants
 
+debug_level = int(0)
+
 patt_edit = re.compile (r'(.*)###(.*)###(.*)')
 patt_uncommit = re.compile (r'(.*)@@@(.*)')
 
@@ -637,7 +639,13 @@ class editor(object):
         else:
             # this is a system phrase that has not been used yet:
             attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(phrase)))
-        text = IBus.Text.new_from_string(phrase + remaining_tabkeys)
+        candidate_text = phrase + remaining_tabkeys
+        if debug_level > 0:
+            debug_text = u' ' + str(freq) + u' ' + str(user_freq)
+            candidate_text += debug_text
+            attrs.append(IBus.attr_foreground_new(
+                rgb(0x00,0xff,0x00), len(candidate_text) - len(debug_text), len(candidate_text)))
+        text = IBus.Text.new_from_string(candidate_text)
         i = 0
         while attrs.get(i) != None:
             attr = attrs.get(i)
@@ -1047,6 +1055,11 @@ class tabengine (IBus.Engine):
     def __init__ (self, bus, obj_path, db ):
         super(tabengine,self).__init__ (connection=bus.get_connection(),
                                         object_path=obj_path)
+        global debug_level
+        try:
+            debug_level = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
+        except:
+            debug_level = int(0)
         self._input_purpose = 0
         self._has_input_purpose = False
         if hasattr(IBus, 'InputPurpose'):

@@ -213,13 +213,14 @@ class editor(object):
         self._config_section = "engine/Table/%s" %engine_name.replace(' ','_')
         self._pt = phrase_table_index
         self._max_key_length = int(max_key_length)
+        self._max_key_length_pinyin = 7
         self._valid_input_chars = valid_input_chars
         #
         # The values below will be reset in self.clear_input_not_committed_to_preedit()
         self._chars_valid = u''    # valid user input in table mode
         self._chars_invalid = u''  # invalid user input in table mode
-        self._chars_valid_when_update_candidates_was_last_called = u''
-        self._tabkeys = u'' # the input characters typed by the user
+        self._chars_valid_update_candidates_last = u''
+        self._chars_invalid_update_candidates_last = u''
         # self._candidates holds the “best” candidates matching the user input
         # [(tabkeys, phrase, freq, user_freq), ...]
         self._candidates = []
@@ -389,29 +390,26 @@ class editor(object):
         '''
         self._chars_valid = u''
         self._chars_invalid = u''
-        self._chars_valid_when_update_candidates_was_last_called = u''
-        self._tabkeys = u''
+        self._chars_valid_update_candidates_last = u''
+        self._chars_invalid_update_candidates_last = u''
         self._lookup_table.clear()
         self._lookup_table.set_cursor_visible(True)
         self._candidates = []
         self._candidates_previous = []
 
     def add_input(self,c):
-        '''add input character'''
-        if (len(self._chars_valid) == self._max_key_length and (not self._py_mode)) or (len(self._chars_valid) == 7 and self._py_mode):
-            self.commit_to_preedit()
-            res = self.add_input (c)
-            return res
-        elif self._chars_invalid:
+        '''
+        Add input character and update candidates.
+
+        Returns “True” if candidates were found, “False” if not.
+        '''
+        if (self._chars_invalid
+            or (not self._py_mode and (c not in self._valid_input_chars))
+            or (self._py_mode and (c not in u'abcdefghijklmnopqrstuvwxyz!@#$%'))):
             self._chars_invalid += c
         else:
-            if (not self._py_mode and ( c in self._valid_input_chars)) or\
-                (self._py_mode and (c in u'abcdefghijklmnopqrstuvwxyz!@#$%')):
-                self._tabkeys += c
-                self._chars_valid += c
-            else:
-                self._chars_invalid += c
-        res = self.update_candidates ()
+            self._chars_valid += c
+        res = self.update_candidates()
         return res
 
     def pop_input(self):
@@ -423,10 +421,8 @@ class editor(object):
         elif self._chars_valid:
             _c = self._chars_valid[-1]
             self._chars_valid = self._chars_valid[:-1]
-            self._tabkeys = self._tabkeys[:-1]
             if (not self._chars_valid) and self._u_chars:
                 self._chars_valid = self._u_chars.pop(self._cursor_precommit - 1)
-                self._tabkeys = self._chars_valid
                 self._strings.pop(self._cursor_precommit - 1)
                 self._cursor_precommit -= 1
         self.update_candidates ()
@@ -654,7 +650,7 @@ class editor(object):
         '''append candidate to lookup_table'''
         if not tabkeys or not phrase:
             return
-        remaining_tabkeys = tabkeys[len(self._tabkeys):]
+        remaining_tabkeys = tabkeys[len(self._chars_valid):]
         if self.db._is_chinese and self._py_mode:
             # restore tune symbol
             remaining_tabkeys = remaining_tabkeys.replace('!','↑1').replace('@','↑2').replace('#','↑3').replace('$','↑4').replace('%','↑5')
@@ -716,124 +712,62 @@ class editor(object):
             return candidates_used_only_in_traditional_chinese + candidates_used_in_simplified_chinese + candidates_containing_mixture_of_simplified_and_traditional_chinese
 
     def update_candidates (self):
-        '''Update lookuptable'''
-        if self._chars_valid == self._chars_valid_when_update_candidates_was_last_called:
+        '''
+        Searches for candidates and updates the lookuptable.
+
+        Returns “True” if candidates were found and “False” if not.
+        '''
+        if (self._chars_valid == self._chars_valid_update_candidates_last
+            and
+            self._chars_invalid == self._chars_invalid_update_candidates_last):
             # The input did not change since we came here last, do nothing and leave
             # candidates and lookup table unchanged:
-            return True
-        # first check whether the IME have defined start_chars
-        if self.db.startchars and (len(self._chars_valid) == 1)\
-                and (len(self._chars_invalid) == 0) \
-                and (self._chars_valid[0] not in self.db.startchars):
-            self._u_chars.append(self._chars_valid[0])
-            self._strings.insert(self._cursor[0], self._chars_valid[0])
-            self._cursor [0] += 1
-            self.clear_input()
-        else:
-            if (self._chars_valid == self._chars_valid_when_update_candidates_was_last_called and self._candidates) \
-                    or self._chars_invalid:
-                # if no change in valid input char or we have invalid input,
-                # we do not do sql query
-                pass
+            if self._candidates:
+                return True
             else:
-                # check whether last time we have only one candidate
-                only_one_last = self.one_candidate()
-                # do enquiry
-                self._lookup_table.clear()
-                self._lookup_table.set_cursor_visible(True)
-                if self._tabkeys:
-                    # here we need to consider two parts, table and pinyin
-                    # first table
-                    if not self._py_mode:
-                        if self.db._is_chinese and self._chinese_mode == 0: # simplified
-                            self._candidates = self.db.select_words(self._tabkeys, self._onechar, 1)
-                        elif self.db._is_chinese and self._chinese_mode == 1: #traditional
-                            self._candidates = self.db.select_words(self._tabkeys, self._onechar, 2)
-                        else:
-                            self._candidates = self.db.select_words(self._tabkeys, self._onechar)
-                    else:
-                        self._candidates = self.db.select_chinese_characters_by_pinyin(
-                            tabkeys=self._tabkeys, bitmask=0xff)
-                    self._chars_valid_when_update_candidates_was_last_called = self._chars_valid
-                else:
-                    self._candidates =[]
-                if self._candidates:
-                    self._candidates = self.filter_candidates (self._candidates)
-                if self._candidates:
-                    self.fill_lookup_table()
-                else:
-                    if self._chars_valid:
-                        ## old manner:
-                        #if self._candidates_previous:
-                        #    #print self._candidates_previous
-                        #    self._candidates = self._candidates_previous
-                        #    self._candidates_previous = []
-                        #    last_input = self.pop_input ()
-                        #    self.auto_commit_to_preedit ()
-                        #    res = self.add_input( last_input )
-                        #    print res
-                        #    return res
-                        #else:
-                        #    self.pop_input ()
-                        #    self._lookup_table.clear()
-                        #    self._lookup_table.set_cursor_visible(True)
-                        #    return False
-                        ###################
-                        ## new manner, we add new char to invalid input
-                        ## chars
-                        if not self._chars_invalid:
-                            # we don't have invalid input chars
-                            # here we need to check whether the last input char
-                            # is a punctuation character or not,
-                            # if is a punctuation char, then we use old manner
-                            # to submit the former valid candidate
-                            if ascii_ispunct(self._chars_valid[-1]) \
-                                    or len (self._chars_valid[:-1]) \
-                                    in self.db.possible_tabkeys_lengths \
-                                    or only_one_last \
-                                    or self._auto_select:
-                                # because we use [!@#$%] to denote [12345]
-                                # in py_mode, so we need to distinguish them
-                                ## old manner:
-                                if self._py_mode:
-                                    if self._chars_valid[-1] in "!@#$%":
-                                        self._chars_valid = self._chars_valid[:-1]
-                                        self._tabkeys = self._tabkeys[:-1]
-                                        return True
-
-                                if self._candidates_previous:
-                                    # If there are no candidates but there were
-                                    # for previous input, we process that case
-                                    # in tabengine, (auto-select mode)
-                                    if self._auto_select:
-                                        res=False
-                                    else:
-                                        self._candidates = self._candidates_previous
-                                        self._candidates_previous = []
-                                        last_input = self.pop_input ()
-                                        self.auto_commit_to_preedit ()
-                                        res = self.add_input( last_input )
-                                    return res
-                                else:
-                                    self.pop_input ()
-                                    self._lookup_table.clear()
-                                    self._lookup_table.set_cursor_visible(True)
-                                    return False
-                            else:
-                                # this is not a punct or not a valid phrase
-                                # last time
-                                self._chars_invalid += self._chars_valid[-1]
-                                self._chars_valid = self._chars_valid[:-1]
-                                self._tabkeys = self._tabkeys[:-1]
-                        else:
-                            pass
-                        self._candidates =[]
-                    else:
-                        self._lookup_table.clear()
-                        self._lookup_table.set_cursor_visible(True)
-                self._candidates_previous = self._candidates
-
-        return True
+                return False
+        self._chars_valid_update_candidates_last = self._chars_valid
+        self._chars_invalid_update_candidates_last = self._chars_invalid
+        self._lookup_table.clear()
+        self._lookup_table.set_cursor_visible(True)
+        if self._chars_invalid or not self._chars_valid:
+            self._candidates = []
+            self._candidates_previous = self._candidates
+            return False
+        if self.db._is_chinese and self._chinese_mode == 0:
+            bitmask = (1 << 0) # simplified only
+        elif self.db._is_chinese and self._chinese_mode == 1:
+            bitmask = (1 << 1) # traditional only
+        else:
+            bitmask = 0xff     # everything
+        if self._py_mode and self.db._is_chinese:
+            self._candidates = self.db.select_chinese_characters_by_pinyin(
+                tabkeys=self._chars_valid,
+                bitmask=bitmask)
+        else:
+            self._candidates = self.db.select_words(
+                tabkeys=self._chars_valid,
+                onechar=self._onechar,
+                bitmask=bitmask)
+        if self._candidates:
+            self._candidates = self.filter_candidates(self._candidates)
+        if self._candidates:
+            self.fill_lookup_table()
+            self._candidates_previous = self._candidates
+            return True
+        # There are only valid and no invalid input characters but no
+        # matching candidates could be found from the databases. The
+        # last of self._chars_valid must have caused this.  That
+        # character is valid in the sense that it is listed in
+        # self._valid_input_chars, it is only invalid in the sense
+        # that after adding this character, no candidates could be
+        # found anymore.  Add this character to self._chars_invalid
+        # and remove it from self._chars_valid.
+        self._chars_invalid += self._chars_valid[-1]
+        self._chars_valid = self._chars_valid[:-1]
+        self._chars_valid_update_candidates_last = self._chars_valid
+        self._chars_invalid_update_candidates_last = self._chars_invalid
+        return False
 
     def commit_to_preedit(self):
         '''Add selected phrase in lookup table to preëdit string'''
@@ -1007,10 +941,11 @@ class editor(object):
             self.db.remove_phrase(tabkeys=candidate[0], phrase=candidate[1], commit=True)
             # call update_candidates() to get a new SQL query.  The
             # input has not really changed, therefore we must clear
-            # the remembered list of transliterated characters to
+            # the remembered list of characters to
             # force update_candidates() to really do something and not
             # return immediately:
-            self._chars_valid_when_update_candidates_was_last_called = u''
+            self._chars_valid_update_candidates_last = u''
+            self._chars_invalid_update_candidates_last = u''
             self.update_candidates()
             return True
         else:
@@ -1121,6 +1056,7 @@ class tabengine (IBus.Engine):
 
         self._pt = self.db.get_phrase_table_index ()
         self._max_key_length = int(self.db.get_ime_property ('max_key_length'))
+        self._max_key_length_pinyin = 7
 
         # name for config section
         self._engine_name = os.path.basename(self.db.filename).replace('.db', '')
@@ -1947,36 +1883,63 @@ class tabengine (IBus.Engine):
             if debug_level > 0:
                 sys.stderr.write('_table_mode_process_key_event() valid input: ')
                 sys.stderr.write('repr(keychar)=%(keychar)s\n' %{'keychar': keychar})
-            if (self._auto_commit
-                and (len(self._editor._chars_valid) == self._max_key_length
-                    or len(self._editor._chars_valid) in self.db.possible_tabkeys_lengths)
-                and not self._editor._py_mode):
-                self.commit_everything_unless_invalid()
+            if self._editor._py_mode:
+                if ((len(self._editor._chars_valid)
+                     == self._max_key_length_pinyin)
+                    or (len(self._editor._chars_valid) > 1
+                        and self._editor._chars_valid[-1] in '!@#$%')):
+                    if self._auto_commit:
+                        self.commit_everything_unless_invalid()
+                    else:
+                        self._editor.commit_to_preedit()
+            else:
+                if ((len(self._editor._chars_valid)
+                     == self._max_key_length)
+                    or (len(self._editor._chars_valid)
+                        in self.db.possible_tabkeys_lengths)):
+                    if self._auto_commit:
+                        self.commit_everything_unless_invalid()
+                    else:
+                        self._editor.commit_to_preedit()
             res = self._editor.add_input(keychar)
             if not res:
-                # If this input has no candidate but the previous had,
-                # we remove the last input, commit the previous candidate
-                # and reprocess the last input (auto-select mode)
-                reprocess_last_key=False
                 if self._auto_select and self._editor._candidates_previous:
+                    # Used for example for the Russian transliteration method
+                    # “translit”, which uses “auto select”.
+                    # The “translit” table contains:
+                    #
+                    #     sh ш
+                    #     shh щ
+                    #
+                    # so typing “sh” matches “ш” and “щ”. The
+                    # candidate with the shortest key sequence comes
+                    # first in the lookup table, therefore “sh ш”
+                    # is shown in the preëdit (The other candidate,
+                    # “shh щ” comes second in the lookup table and
+                    # could be selected using arrow-down. But
+                    # “translit” hides the lookup table by default).
+                    #
+                    # Now, when after typing “sh” one types “s”,
+                    # the key “shs” has no match, so add_input('s')
+                    # returns “False” and we end up here. We pop the
+                    # last character “s” which caused the match to
+                    # fail, commit first of the previous candidates,
+                    # i.e. “sh ш” and feed the “s” into the
+                    # key event handler again.
                     self._editor.pop_input()
-                    reprocess_last_key=True
-                    key_char=''
-                elif ascii_ispunct(keychar):
-                    key_char = self.cond_punct_translate(keychar)
-                else:
-                    key_char = self.cond_letter_translate(keychar)
+                    self.commit_everything_unless_invalid()
+                    return self._table_mode_process_key_event(key)
                 self.commit_everything_unless_invalid()
-                if reprocess_last_key == True:
-                    self._table_mode_process_key_event(key)
+                self._update_ui()
                 return True
             else:
-                if self._auto_commit and self._editor.one_candidate () and \
-                        (len(self._editor._chars_valid) == self._max_key_length \
-                            or not self.db._is_chinese):
+                if (self._auto_commit and self._editor.one_candidate()
+                    and
+                    (len(self._editor._chars_valid) == self._max_key_length
+                     or not self.db._is_chinese)):
                     self.commit_everything_unless_invalid()
-            self._update_ui()
-            return True
+                self._update_ui()
+                return True
 
         if key.code in self._page_down_keys and self._editor._candidates:
             res = self._editor.page_down()

@@ -222,7 +222,7 @@ class editor(object):
         # The values below will be reset in self.clear()
         self._chars_valid = u''    # valid user input in table mode
         self._chars_invalid = u''  # invalid user input in table mode
-        self._chars_prevalid = u'' # previous valid user input in table mode
+        self._chars_valid_when_update_candidates_was_last_called = u''
         #self._t_chars: hold total input for table mode for input check
         self._t_chars = u''
         # self._u_chars: hold user input but not manual comitted chars
@@ -361,7 +361,7 @@ class editor(object):
         '''
         self._chars_valid = u''
         self._chars_invalid = u''
-        self._chars_prevalid = u''
+        self._chars_valid_when_update_candidates_was_last_called = u''
         self._tabkeys = u''
         self._lookup_table.clear()
         self._lookup_table.set_cursor_visible(True)
@@ -687,6 +687,10 @@ class editor(object):
 
     def update_candidates (self):
         '''Update lookuptable'''
+        if self._chars_valid == self._chars_valid_when_update_candidates_was_last_called:
+            # The input did not change since we came here last, do nothing and leave
+            # candidates and lookup table unchanged:
+            return True
         # first check whether the IME have defined start_chars
         if self.db.startchars and (len(self._chars_valid) == 1)\
                 and (len(self._chars_invalid) == 0) \
@@ -696,7 +700,7 @@ class editor(object):
             self._cursor [0] += 1
             self.clear_input()
         else:
-            if (self._chars_valid == self._chars_prevalid and self._candidates[0]) \
+            if (self._chars_valid == self._chars_valid_when_update_candidates_was_last_called and self._candidates[0]) \
                     or self._chars_invalid:
                 # if no change in valid input char or we have invalid input,
                 # we do not do sql query
@@ -719,7 +723,7 @@ class editor(object):
                             self._candidates[0] = self.db.select_words(self._tabkeys, self._onechar)
                     else:
                         self._candidates[0] = self.db.select_zi(self._tabkeys)
-                    self._chars_prevalid = self._chars_valid
+                    self._chars_valid_when_update_candidates_was_last_called = self._chars_valid
                 else:
                     self._candidates[0] =[]
                 if self._candidates[0]:
@@ -957,7 +961,7 @@ class editor(object):
             # the remembered list of transliterated characters to
             # force update_candidates() to really do something and not
             # return immediately:
-            self._chars_prevalid = self._chars_prevalid[:-1]
+            self._chars_valid_when_update_candidates_was_last_called = u''
             self.update_candidates()
             return True
         else:

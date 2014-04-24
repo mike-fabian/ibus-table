@@ -924,26 +924,41 @@ class editor(object):
         self.commit_to_preedit ()
         return True
 
-    def remove_cand_from_userdb(self, char):
-        '''Remove the candidates in Lookup Table from user_db index.'''
+    def remove_candidate_from_user_database(self, char):
+        '''Remove a candidate displayed in the lookup table from the user database.
+
+        The candidate indicated by the selection key “char” is
+        removed, if possible.  If it is not in the user database at
+        all, nothing happens.
+
+        If this is a candidate which is also in the system database,
+        removing it from the user database only means that its user
+        frequency data is reset. It might still appear in subsequent
+        matches but with much lower priority.
+
+        If this is a candidate which is user defined and not in the system
+        database, it will not match at all anymore after removing it.
+        '''
         try:
             index = self._select_keys.index(char)
-        except ValueError:
+        except:
+            import traceback
+            traceback.print_exc()
             return False
-
         cursor_pos = self._lookup_table.get_cursor_pos()
         cursor_in_page = self._lookup_table.get_cursor_in_page()
         current_page_start = cursor_pos - cursor_in_page
         real_index = current_page_start + index
-        if  len (self._candidates[0]) > real_index:
-            # this index is valid
-            can = self._candidates[0][real_index]
-            if can[-2] < 0:
-                # freq of this candidate is -1, means this a user phrase
-                self.db.remove_phrase (can)
-                # make update_candidates do sql enquiry
-                self._chars_prevalid = self._chars_prevalid[:-1]
-                self.update_candidates ()
+        if len(self._candidates[0]) > real_index: # this index is valid
+            candidate = self._candidates[0][real_index]
+            self.db.remove_phrase(tabkeys=candidate[0], phrase=candidate[1], commit=True)
+            # call update_candidates() to get a new SQL query.  The
+            # input has not really changed, therefore we must clear
+            # the remembered list of transliterated characters to
+            # force update_candidates() to really do something and not
+            # return immediately:
+            self._chars_prevalid = self._chars_prevalid[:-1]
+            self.update_candidates()
             return True
         else:
             return False
@@ -1774,7 +1789,7 @@ class tabengine (IBus.Engine):
         elif ( keychar in self._editor.get_select_keys() and
                 self._editor._candidates[0] and
                 key.mask & IBus.ModifierType.MOD1_MASK ):
-            res = self._editor.remove_cand_from_userdb (keychar)
+            res = self._editor.remove_candidate_from_user_database(keychar)
             self._update_ui ()
             return res
 

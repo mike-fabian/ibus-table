@@ -218,9 +218,9 @@ class editor(object):
         self._valid_input_chars = valid_input_chars
         #
         # The values below will be reset in self.clear()
-        #
-        # self._chars: hold user input in table mode (valid,invalid,prevalid)
-        self._chars = [u'',u'',u'']
+        self._chars_valid = u''    # valid user input in table mode
+        self._chars_invalid = u''  # invalid user input in table mode
+        self._chars_prevalid = u'' # previous valid user input in table mode
         #self._t_chars: hold total input for table mode for input check
         self._t_chars = u''
         # self._u_chars: hold user input but not manual comitted chars
@@ -357,7 +357,9 @@ class editor(object):
         '''
         Remove input characters held for Table mode,
         '''
-        self._chars = [u'',u'',u'']
+        self._chars_valid = u''
+        self._chars_invalid = u''
+        self._chars_prevalid = u''
         self._tabkeys = u''
         self._lookup_table.clear()
         self._lookup_table.set_cursor_visible(True)
@@ -377,19 +379,19 @@ class editor(object):
         self._zi = u''
         if self._cursor[1]:
             self.split_phrase()
-        if (len (self._chars[0]) == self._max_key_len and (not self._py_mode)) or ( len (self._chars[0]) == 7 and self._py_mode ) :
+        if (len(self._chars_valid) == self._max_key_len and (not self._py_mode)) or (len(self._chars_valid) == 7 and self._py_mode ) :
             self.auto_commit_to_preedit()
             res = self.add_input (c)
             return res
-        elif self._chars[1]:
-            self._chars[1] += c
+        elif self._chars_invalid:
+            self._chars_invalid += c
         else:
             if (not self._py_mode and ( c in self._valid_input_chars)) or\
                 (self._py_mode and (c in u'abcdefghijklmnopqrstuvwxyz!@#$%')):
                 self._tabkeys += c
-                self._chars[0] += c
+                self._chars_valid += c
             else:
-                self._chars[1] += c
+                self._chars_invalid += c
         self._t_chars += c
         res = self.update_candidates ()
         return res
@@ -397,18 +399,18 @@ class editor(object):
     def pop_input (self):
         '''remove and display last input char held'''
         _c =''
-        if self._chars[1]:
-            _c = self._chars[1][-1]
-            self._chars[1] = self._chars[1][:-1]
-        elif self._chars[0]:
-            _c = self._chars[0][-1]
-            self._chars[0] = self._chars[0][:-1]
+        if self._chars_invalid:
+            _c = self._chars_invalid[-1]
+            self._chars_invalid = self._chars_invalid[:-1]
+        elif self._chars_valid:
+            _c = self._chars_valid[-1]
+            self._chars_valid = self._chars_valid[:-1]
             self._tabkeys = self._tabkeys[:-1]
-            if (not self._chars[0]) and self._u_chars:
-                self._chars[0] = self._u_chars[-1]
+            if (not self._chars_valid) and self._u_chars:
+                self._chars_valid = self._u_chars[-1]
                 self._u_chars = self._u_chars[:-1]
-                self._chars[1] = self._chars[1][:-1]
-                self._tabkeys = self._chars[0]
+                self._chars_invalid = self._chars_invalid[:-1]
+                self._tabkeys = self._chars_valid
                 self._strings.pop (self._cursor[0] - 1 )
                 self._cursor[0] -= 1
         self._t_chars = self._t_chars[:-1]
@@ -417,7 +419,7 @@ class editor(object):
 
     def get_input_chars (self):
         '''get characters held, valid and invalid'''
-        return self._chars[0] + self._chars[1]
+        return self._chars_valid + self._chars_invalid
 
     def get_input_chars_string (self):
         '''Get valid input char string'''
@@ -425,7 +427,7 @@ class editor(object):
 
     def get_all_input_strings (self):
         '''Get all uncommitted input characters, used in English mode or direct commit'''
-        return  self._u_chars + self._chars[0] +self._chars[1]
+        return  self._u_chars + self._chars_valid +self._chars_invalid
 
     def split_phrase (self):
         '''Split current phrase into two phrases'''
@@ -677,18 +679,18 @@ class editor(object):
     def update_candidates (self):
         '''Update lookuptable'''
         # first check whether the IME have defined start_chars
-        if self.db.startchars and ( len(self._chars[0]) == 1 )\
-                and ( len(self._chars[1]) == 0 ) \
-                and ( self._chars[0][0] not in self.db.startchars):
-            self._u_chars += (self._chars[0][0])
-            self._strings.insert ( self._cursor[0], self._chars[0][0] )
+        if self.db.startchars and (len(self._chars_valid) == 1)\
+                and (len(self._chars_invalid) == 0) \
+                and (self._chars_valid[0] not in self.db.startchars):
+            self._u_chars += (self._chars_valid[0])
+            self._strings.insert(self._cursor[0], self._chars_valid[0])
             self._cursor [0] += 1
             self.clear_input()
         else:
-            if (self._chars[0] == self._chars[2] and self._candidates[0]) \
-                    or self._chars[1]:
+            if (self._chars_valid == self._chars_prevalid and self._candidates[0]) \
+                    or self._chars_invalid:
                 # if no change in valid input char or we have invalid input,
-                # we do not do sql enquery
+                # we do not do sql query
                 pass
             else:
                 # check whether last time we have only one candidate
@@ -708,7 +710,7 @@ class editor(object):
                             self._candidates[0] = self.db.select_words(self._tabkeys, self._onechar)
                     else:
                         self._candidates[0] = self.db.select_zi(self._tabkeys)
-                    self._chars[2] = self._chars[0]
+                    self._chars_prevalid = self._chars_valid
                 else:
                     self._candidates[0] =[]
                 if self._candidates[0]:
@@ -716,7 +718,7 @@ class editor(object):
                 if self._candidates[0]:
                     self.fill_lookup_table()
                 else:
-                    if self._chars[0]:
+                    if self._chars_valid:
                         ## old manner:
                         #if self._candidates[1]:
                         #    #print self._candidates[1]
@@ -735,14 +737,14 @@ class editor(object):
                         ###################
                         ## new manner, we add new char to invalid input
                         ## chars
-                        if not self._chars[1]:
+                        if not self._chars_invalid:
                             # we don't have invalid input chars
                             # here we need to check whether the last input char
                             # is a punctuation character or not,
                             # if is a punctuation char, then we use old manner
                             # to submit the former valid candidate
-                            if ascii_ispunct(self._chars[0][-1]) \
-                                    or len (self._chars[0][:-1]) \
+                            if ascii_ispunct(self._chars_valid[-1]) \
+                                    or len (self._chars_valid[:-1]) \
                                     in self.db.pkeylens \
                                     or only_one_last \
                                     or self._auto_select:
@@ -750,8 +752,8 @@ class editor(object):
                                 # in py_mode, so we need to distinguish them
                                 ## old manner:
                                 if self._py_mode:
-                                    if self._chars[0][-1] in "!@#$%":
-                                        self._chars[0] = self._chars[0][:-1]
+                                    if self._chars_valid[-1] in "!@#$%":
+                                        self._chars_valid = self._chars_valid[:-1]
                                         self._tabkeys = self._tabkeys[:-1]
                                         return True
 
@@ -776,8 +778,8 @@ class editor(object):
                             else:
                                 # this is not a punct or not a valid phrase
                                 # last time
-                                self._chars[1] += self._chars[0][-1]
-                                self._chars[0] = self._chars[0][:-1]
+                                self._chars_invalid += self._chars_valid[-1]
+                                self._chars_valid = self._chars_valid[:-1]
                                 self._tabkeys = self._tabkeys[:-1]
                         else:
                             pass
@@ -791,7 +793,7 @@ class editor(object):
 
     def commit_to_preedit (self):
         '''Add selected phrase in lookup table to preedit string'''
-        if self._chars[0]:
+        if self._chars_valid:
             try:
                 if self._candidates[0]:
                     self._strings.insert(self._cursor[0], self._candidates[0][self.get_cursor_pos()][1])
@@ -809,7 +811,7 @@ class editor(object):
     def auto_commit_to_preedit (self):
         '''Add selected phrase in lookup table to preedit string'''
         try:
-            self._u_chars += self._chars[0]
+            self._u_chars += self._chars_valid
             self._strings.insert(self._cursor[0], self._candidates[0][self.get_cursor_pos()][1])
             self._cursor[0] += 1
             self.clear_input()
@@ -821,8 +823,8 @@ class editor(object):
         '''Get aux strings'''
         input_chars = self.get_input_chars ()
         if input_chars:
-            #aux_string =  self._u_chars + self._chars[0]
-            aux_string = self._chars[0]
+            #aux_string =  self._u_chars + self._chars_valid
+            aux_string = self._chars_valid
             if self._py_mode:
                 aux_string = aux_string.replace('!','1').replace('@','2').replace('#','3').replace('$','4').replace('%','5')
             return aux_string
@@ -931,7 +933,7 @@ class editor(object):
                 # freq of this candidate is -1, means this a user phrase
                 self.db.remove_phrase (can)
                 # make update_candidates do sql enquiry
-                self._chars[2] = self._chars[2][:-1]
+                self._chars_prevalid = self._chars_prevalid[:-1]
                 self.update_candidates ()
             return True
         else:
@@ -994,7 +996,7 @@ class editor(object):
     def toggle_tab_py_mode (self):
         '''Toggle between Pinyin Mode and Table Mode'''
         self._zi = u''
-        if self._chars[0]:
+        if self._chars_valid:
             self.commit_to_preedit ()
         self._py_mode = not (self._py_mode)
         return True
@@ -1018,7 +1020,7 @@ class editor(object):
     def space (self):
         '''Process space Key Event
         return (KeyProcessResult,whethercommit,commitstring)'''
-        if self._chars[1]:
+        if self._chars_invalid:
             # we have invalid input, so do not commit
             return (False,u'')
         if self._t_chars :
@@ -1795,9 +1797,9 @@ class tabengine (IBus.Engine):
             return False
 
         elif keychar and (keychar in self._valid_input_chars or (self._editor._py_mode and keychar in u'abcdefghijklmnopqrstuvwxyz!@#$%')):
-            if self._auto_commit and ( len(self._editor._chars[0]) == self._ml \
-                    or len (self._editor._chars[0]) in self.db.pkeylens )\
-                    and not self._editor._py_mode:
+            if self._auto_commit and (len(self._editor._chars_valid) == self._ml \
+                or len(self._editor._chars_valid) in self.db.pkeylens)\
+                and not self._editor._py_mode:
                 # it is time to direct commit
                 sp_res = self._editor.space ()
                 #return (whethercommit,commitstring)
@@ -1832,7 +1834,7 @@ class tabengine (IBus.Engine):
                 return True
             else:
                 if self._auto_commit and self._editor.one_candidate () and \
-                        (len(self._editor._chars[0]) == self._ml \
+                        (len(self._editor._chars_valid) == self._ml \
                             or not self.db._is_chinese):
                     # it is time to direct commit
                     sp_res = self._editor.space ()

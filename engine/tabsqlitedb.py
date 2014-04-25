@@ -362,13 +362,10 @@ class tabsqlitedb:
         return len(self.get_select_keys().split(','))
 
     def get_select_keys (self):
-        ret = None
-        try:
-            ret = self.get_ime_property("select_keys")
-        finally:
-            if ret is None:
-                ret = "1,2,3,4,5,6,7,8,9,0"
-        return ret
+        ret = self.get_ime_property("select_keys")
+        if ret:
+            return ret
+        return "1,2,3,4,5,6,7,8,9,0"
 
     def get_orientation (self):
         try:

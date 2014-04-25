@@ -483,10 +483,7 @@ class tabsqlitedb:
 
     def get_start_chars (self):
         '''return possible start chars of IME'''
-        try:
-            return self.get_ime_property('start_chars')
-        except:
-            return ''
+        return self.get_ime_property('start_chars')
 
     def get_no_check_chars (self):
         '''Get the characters which engine should not change freq'''

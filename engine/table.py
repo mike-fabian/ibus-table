@@ -414,8 +414,9 @@ class editor(object):
                 self._u_chars = self._u_chars[:-1]
                 self._chars_invalid = self._chars_invalid[:-1]
                 self._tabkeys = self._chars_valid
-                self._strings.pop (self._cursor[0] - 1 )
-                self._cursor[0] -= 1
+                if self._strings:
+                    self._strings.pop(self._cursor[0] - 1)
+                    self._cursor[0] -= 1
         self._t_chars = self._t_chars[:-1]
         self.update_candidates ()
         return _c

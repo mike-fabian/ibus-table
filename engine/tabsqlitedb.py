@@ -97,7 +97,6 @@ class tabsqlitedb:
     '''
     def __init__(self, filename = None, user_db = None, create_database = False):
         self.old_phrases=[]
-        self.ime_property_cache = {}
         self.filename = filename
         self._user_db = user_db
 
@@ -122,53 +121,57 @@ class tabsqlitedb:
             print('Error while initializing database.')
         # create IME property table
         self.db.executescript('CREATE TABLE IF NOT EXISTS main.ime (attr TEXT, val TEXT);')
-        # make sure we have values in ime table.
-        if not self.db.execute('SELECT val FROM main.ime \
-            WHERE attr="name";').fetchall():
-            ime_keys={'name':'',
-                      'name.zh_cn':'',
-                      'name.zh_hk':'',
-                      'name.zh_tw':'',
-                      'author':'somebody',
-                      'uuid':'%s' % uuid.uuid4(),
-                      'serial_number':'%s' % time.strftime('%Y%m%d'),
-                      'icon':'ibus-table.svg',
-                      'license':'LGPL',
-                      'languages':'',
-                      'language_filter':'',
-                      'valid_input_chars':'abcdefghijklmnopqrstuvwxyz',
-                      'max_key_length':'4',
-            #          'commit_keys':'space',
-            #          'forward_keys':'Return',
-                      'select_keys':'1,2,3,4,5,6,7,8,9,0',
-                      'page_up_keys':'Page_Up,minus',
-                      'page_down_keys':'Page_Down,equal',
-                      'status_prompt':'',
-                      'def_full_width_punct':'TRUE',
-                      'def_full_width_letter':'FALSE',
-                      'user_can_define_phrase':'FALSE',
-                      'pinyin_mode':'FALSE',
-                      'dynamic_adjust':'FALSE',
-                      'auto_select':'false',
-                      'auto_commit':'false',
-                      #'no_check_chars':u'',
-                      'description':'A IME under IBus Table',
-                      'layout':'us',
-                      'symbol':'',
-                      'rules':'',
-                      #'rules':'ce2:p11+p12+p21+p22;ce3:p11+p21+p22+p31;ca4:p11+p21+p31+p41'}
-                      'least_commit_length':'0',
-                      'start_chars':'',
-                      'orientation':'1',
-                      'always_show_lookup':'true'
-                      # we use this entry for those IME, which don't
-                      # have rules to build up phrase, but still need
-                      # auto commit to preedit
-                      }
-            # inital the attribute in ime table, which should be updated from mabiao
-            for _name in ime_keys:
-                sqlstr = 'INSERT INTO main.ime (attr,val) VALUES (?,?);'
-                self.db.execute( sqlstr, (_name,ime_keys[_name]) )
+        # Initalize missing attributes in the ime table with some
+        # default values, they should be updated using the attributes
+        # found in the source when creating a system database with
+        # tabcreatedb.py
+        default_ime_attributes = {
+            'name':'',
+            'name.zh_cn':'',
+            'name.zh_hk':'',
+            'name.zh_tw':'',
+            'author':'somebody',
+            'uuid':'%s' % uuid.uuid4(),
+            'serial_number':'%s' % time.strftime('%Y%m%d'),
+            'icon':'ibus-table.svg',
+            'license':'LGPL',
+            'languages':'',
+            'language_filter':'',
+            'valid_input_chars':'abcdefghijklmnopqrstuvwxyz',
+            'max_key_length':'4',
+            # 'commit_keys':'space',
+            # 'forward_keys':'Return',
+            'select_keys':'1,2,3,4,5,6,7,8,9,0',
+            'page_up_keys':'Page_Up,minus',
+            'page_down_keys':'Page_Down,equal',
+            'status_prompt':'',
+            'def_full_width_punct':'TRUE',
+            'def_full_width_letter':'FALSE',
+            'user_can_define_phrase':'FALSE',
+            'pinyin_mode':'FALSE',
+            'dynamic_adjust':'FALSE',
+            'auto_select':'false',
+            'auto_commit':'false',
+            # 'no_check_chars':u'',
+            'description':'A IME under IBus Table',
+            'layout':'us',
+            'symbol':'',
+            'rules':'',
+            # 'rules':'ce2:p11+p12+p21+p22;ce3:p11+p21+p22+p31;ca4:p11+p21+p31+p41'}
+            'least_commit_length':'0',
+            'start_chars':'',
+            'orientation':'1',
+            'always_show_lookup':'true'
+            # we use this entry for those IME, which don't
+            # have rules to build up phrase, but still need
+            # auto commit to preedit
+        }
+        select_sqlstr = 'SELECT val FROM main.ime WHERE attr = :attr;'
+        insert_sqlstr = 'INSERT INTO main.ime (attr, val) VALUES (:attr, :val);'
+        for attr in default_ime_attributes:
+            sqlargs = {'attr': attr, 'val': default_ime_attributes[attr]}
+            if not self.db.execute(select_sqlstr, sqlargs).fetchall():
+                self.db.execute(insert_sqlstr, sqlargs)
         # shared variables in this class:
         self._mlen = int ( self.get_ime_property ("max_key_length") )
         self._is_chinese = self.is_chinese()
@@ -401,22 +404,21 @@ class tabsqlitedb:
         self.db.commit()
 
     def update_ime (self, attrs):
-        '''Update attributes in ime table, attrs is a iterable object
+        '''Update or insert attributes in ime table, attrs is a iterable object
         Like [(attr,val), (attr,val), ...]
         '''
-        sqlstr = 'UPDATE main.ime SET val = ? WHERE attr = ?;'
+        select_sqlstr = 'SELECT val from main.ime WHERE attr = :attr'
+        update_sqlstr = 'UPDATE main.ime SET val = :val WHERE attr = :attr;'
+        insert_sqlstr = 'INSERT INTO main.ime (attr, val) VALUES (:attr, :val);'
         for attr,val in attrs:
-            _sqlstr = 'SELECT * from main.ime WHERE attr = ?'
-            res = self.db.execute( _sqlstr, (attr,) ).fetchall()
-            if res:
-                self.db.execute(sqlstr,(val,attr))
+            sqlargs = {'attr': attr, 'val': val}
+            if self.db.execute(select_sqlstr, sqlargs).fetchall():
+                self.db.execute(update_sqlstr, sqlargs)
             else:
-                #print '"',attr,'"'," didn't in ime property now!"
-                pass
-        # then flush previous cache
-        self.ime_property_cache = {}
+                self.db.execute(insert_sqlstr, sqlargs)
+        self.db.commit()
         # we need to update some self variables now.
-        self._mlen = int (self.get_ime_property ('max_key_length' ))
+        self._mlen = int(self.get_ime_property('max_key_length'))
         self._is_chinese = self.is_chinese()
         self._phrase_table_column_names = ['id', 'tabkeys', 'phrase','freq','user_freq']
         self.user_can_define_phrase = self.get_ime_property('user_can_define_phrase')
@@ -428,9 +430,7 @@ class tabsqlitedb:
         else:
             print('Could not find "user_can_define_phrase" entry from database, is it a outdated database?')
             self.user_can_define_phrase = False
-        self.rules = self.get_rules ()
-
-        self.db.commit()
+        self.rules = self.get_rules()
 
     def get_rules (self):
         '''Get phrase construct rules'''
@@ -704,17 +704,19 @@ class tabsqlitedb:
         return self.best_candidates(phrase_frequencies)
 
     def get_ime_property( self, attr ):
-        '''get IME property from database, attr is the string of property,
-        which should be str.lower() :)
-        '''
-        if not attr in self.ime_property_cache:
-            sqlstr = 'SELECT val FROM main.ime WHERE attr = ?'
-            _result = self.db.execute( sqlstr, (attr,)).fetchall()
-            if _result:
-                self.ime_property_cache[attr] = _result[0][0]
-            else:
-                self.ime_property_cache[attr] = None
-        return self.ime_property_cache[attr]
+        '''get the IME property named “attr” from the database'''
+        attr = attr.lower()
+        sqlstr = 'SELECT val FROM main.ime WHERE attr = :attr;'
+        sqlargs  = {'attr': attr}
+        try:
+            result = self.db.execute(sqlstr, sqlargs).fetchall()
+        except:
+            import traceback
+            traceback.print_exc
+            return u''
+        if result:
+            return result[0][0]
+        return u''
 
     def get_phrase_table_index (self):
         '''get a list of phrase table columns name'''

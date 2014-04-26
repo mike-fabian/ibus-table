@@ -1472,6 +1472,14 @@ class tabengine (IBus.Engine):
 
     def _update_lookup_table (self):
         '''Update Lookup Table in UI'''
+        if len(self._editor._candidates[0]) == 0:
+            # Also make sure to hide lookup table if there are
+            # no candidates to display. On f17, this makes no
+            # difference but gnome-shell in f18 will display
+            # an empty suggestion popup if the number of candidates
+            # is zero!
+            self.hide_lookup_table()
+            return
         if self._editor.is_empty ():
             self.hide_lookup_table()
             return

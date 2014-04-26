@@ -197,8 +197,7 @@ class tabsqlitedb:
             self.dynamic_adjust = False
 
         self.rules = self.get_rules ()
-        self.pkeylens = []
-        self.pkeylens = self.phrase_keys_len ()
+        self.possible_tabkeys_lengths = self.get_possible_tabkeys_lengths()
         self.startchars = self.get_start_chars ()
 
         if create_database:
@@ -463,14 +462,29 @@ class tabsqlitedb:
         else:
             return ""
 
-    def phrase_keys_len (self):
-        '''Return the phrase possible key length'''
+    def get_possible_tabkeys_lengths(self):
+        '''Return a list of the possible lengths for tabkeys in this table.
+
+        Example:
+
+        If the table source has rules like:
+
+            RULES = ce2:p11+p12+p21+p22;ce3:p11+p21+p22+p31;ca4:p11+p21+p31+p41
+
+        self._rules will be set to
+
+            self._rules={2: [(1, 1), (1, 2), (2, 1), (2, 2)], 3: [(1, 1), (1, 2), (2, 1), (3, 1)], 4: [(1, 1), (2, 1), (3, 1), (-1, 1)], 'above': 4}
+
+        and then this function returns “[4, 4, 4]”
+
+        Or, if the table source has no RULES but LEAST_COMMIT_LENGTH=2
+        and MAX_KEY_LENGTH = 4, then it returns “[2, 3, 4]”
+
+        I cannot find any tables which use LEAST_COMMIT_LENGTH though.
+        '''
         if self.rules:
             max_len = self.rules["above"]
-            try:
-                return [len(self.rules[x]) for x in range(2, max_len+1)][:]
-            except:
-                return []
+            return [len(self.rules[x]) for x in range(2, max_len+1)][:]
         else:
             try:
                 least_commit_len = int(self.get_ime_property('least_commit_length'))

@@ -760,7 +760,7 @@ class editor(object):
                             # to submit the former valid candidate
                             if ascii_ispunct(self._chars_valid[-1]) \
                                     or len (self._chars_valid[:-1]) \
-                                    in self.db.pkeylens \
+                                    in self.db.possible_tabkeys_lengths \
                                     or only_one_last \
                                     or self._auto_select:
                                 # because we use [!@#$%] to denote [12345]
@@ -1841,7 +1841,7 @@ class tabengine (IBus.Engine):
 
         elif keychar and (keychar in self._valid_input_chars or (self._editor._py_mode and keychar in u'abcdefghijklmnopqrstuvwxyz!@#$%')):
             if self._auto_commit and (len(self._editor._chars_valid) == self._ml \
-                or len(self._editor._chars_valid) in self.db.pkeylens)\
+                or len(self._editor._chars_valid) in self.db.possible_tabkeys_lengths)\
                 and not self._editor._py_mode:
                 # it is time to direct commit
                 sp_res = self._editor.space ()

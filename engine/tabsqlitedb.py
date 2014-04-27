@@ -93,7 +93,10 @@ class tabsqlitedb:
            been used. “freq” is equal to 0 for all combinations of
            “tabkeys” and “phrase” where an entry for that phrase is
            already in the system database which starts with the same
-           “tabkeys”
+           “tabkeys”.
+           For combinations of “tabkeys” and “phrase” which do not exist
+           at all in the system database, “freq” is equal to -1 to
+           indidated that this is a user defined phrase.
     '''
     def __init__(self, filename = None, user_db = None, create_database = False):
         self.old_phrases=[]

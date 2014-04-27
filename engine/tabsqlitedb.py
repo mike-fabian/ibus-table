@@ -100,9 +100,7 @@ class tabsqlitedb:
         self.filename = filename
         self._user_db = user_db
 
-        if create_database:
-            self.db = sqlite3.connect(self.filename)
-        elif os.path.isfile(self.filename):
+        if create_database or os.path.isfile(self.filename):
             self.db = sqlite3.connect(self.filename)
         else:
             print('Cannot open database file %s' %self.filename)
@@ -200,12 +198,13 @@ class tabsqlitedb:
         self.possible_tabkeys_lengths = self.get_possible_tabkeys_lengths()
         self.startchars = self.get_start_chars ()
 
-        if create_database:
-            # since we just creating db, we do not need userdb and mudb
+        if not user_db or create_database:
+            # No user database requested or we are
+            # just creating the system database and
+            # we do not need a user database for that
             return
 
-        # user database:
-        if user_db != None:
+        if user_db != ":memory:":
             home_path = os.getenv("HOME")
             tables_path = path.join(home_path, ".ibus",  "tables")
             if not path.isdir(tables_path):
@@ -258,8 +257,6 @@ class tabsqlitedb:
                 except:
                     import traceback
                     traceback.print_exc()
-        else:
-            user_db = ":memory:"
 
         # open user phrase database
         try:

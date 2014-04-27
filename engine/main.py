@@ -208,7 +208,7 @@ def main():
 
         egs = Element('engines')
         for _db in _all_dbs:
-            _sq_db = tabsqlitedb.tabsqlitedb (_db)
+            _sq_db = tabsqlitedb.tabsqlitedb (_db, user_db=None)
             _engine = SubElement (egs,'engine')
 
             _name = SubElement (_engine, 'name')

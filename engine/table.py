@@ -276,6 +276,9 @@ class editor(object):
         if self._chinese_mode == None:
             self._chinese_mode = self.get_chinese_mode()
 
+        # If auto select is true, then the first candidate phrase will
+        # be selected automatically during typing. Auto select is true
+        # by default for the stroke5 table for example.
         self._auto_select = variant_to_value(self._config.get_value(
                 self._config_section,
                 "AutoSelect"))
@@ -1182,6 +1185,9 @@ class tabengine (IBus.Engine):
         if self._auto_commit == None:
             self._auto_commit = self.db.get_ime_property('auto_commit').lower() == u'true'
 
+        # If auto select is true, then the first candidate phrase will
+        # be selected automatically during typing. Auto select is true
+        # by default for the stroke5 table for example.
         self._auto_select = variant_to_value(self._config.get_value(
                 self._config_section,
                 "AutoSelect"))

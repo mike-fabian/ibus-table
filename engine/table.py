@@ -232,8 +232,10 @@ class editor(object):
         self._strings = []
         # self._cursor: the caret position in preedit phrases
         self._cursor = [0,0]
-        # self._candidates: hold candidates selected from database [[now],[previous]]
-        self._candidates = [[],[]]
+        # self._candidates holds the “best” candidates matching the user input
+        # [(tabkeys, phrase, freq, user_freq), ...]
+        self._candidates = []
+        self._candidate_previous = []
         # __orientation: lookup table orientation
         __orientation = variant_to_value(self._config.get_value(
                 self._config_section,
@@ -369,7 +371,8 @@ class editor(object):
         self._tabkeys = u''
         self._lookup_table.clear()
         self._lookup_table.set_cursor_visible(True)
-        self._candidates = [[],[]]
+        self._candidates = []
+        self._candidates_previous = []
 
     def over_input (self):
         '''
@@ -511,8 +514,8 @@ class editor(object):
 
     def get_preedit_strings (self):
         '''Get preedit strings'''
-        if self._candidates[0]:
-            _candi = u'###' + self._candidates[0][int(self._lookup_table.get_cursor_pos())][1] + u'###'
+        if self._candidates:
+            _candi = u'###' + self._candidates[int(self._lookup_table.get_cursor_pos())][1] + u'###'
         else:
             input_chars = self.get_input_chars()
             if input_chars:
@@ -544,8 +547,8 @@ class editor(object):
             for x in self._strings[:self._cursor[0]]:
                 self.add_caret(x)
         self._caret += self._cursor[1]
-        if self._candidates[0]:
-            _candi =self._candidates[0][int(self._lookup_table.get_cursor_pos())][1]
+        if self._candidates:
+            _candi =self._candidates[int(self._lookup_table.get_cursor_pos())][1]
         else:
             _candi = self.get_input_chars()
         self._caret += len(_candi)
@@ -705,7 +708,7 @@ class editor(object):
             self._cursor [0] += 1
             self.clear_input()
         else:
-            if (self._chars_valid == self._chars_valid_when_update_candidates_was_last_called and self._candidates[0]) \
+            if (self._chars_valid == self._chars_valid_when_update_candidates_was_last_called and self._candidates) \
                     or self._chars_invalid:
                 # if no change in valid input char or we have invalid input,
                 # we do not do sql query
@@ -721,27 +724,27 @@ class editor(object):
                     # first table
                     if not self._py_mode:
                         if self.db._is_chinese and self._chinese_mode == 0: # simplified
-                            self._candidates[0] = self.db.select_words(self._tabkeys, self._onechar, 1)
+                            self._candidates = self.db.select_words(self._tabkeys, self._onechar, 1)
                         elif self.db._is_chinese and self._chinese_mode == 1: #traditional
-                            self._candidates[0] = self.db.select_words(self._tabkeys, self._onechar, 2)
+                            self._candidates = self.db.select_words(self._tabkeys, self._onechar, 2)
                         else:
-                            self._candidates[0] = self.db.select_words(self._tabkeys, self._onechar)
+                            self._candidates = self.db.select_words(self._tabkeys, self._onechar)
                     else:
-                        self._candidates[0] = self.db.select_zi(self._tabkeys)
+                        self._candidates = self.db.select_zi(self._tabkeys)
                     self._chars_valid_when_update_candidates_was_last_called = self._chars_valid
                 else:
-                    self._candidates[0] =[]
-                if self._candidates[0]:
-                    self._candidates[0] = self.filter_candidates (self._candidates[0])
-                if self._candidates[0]:
+                    self._candidates =[]
+                if self._candidates:
+                    self._candidates = self.filter_candidates (self._candidates)
+                if self._candidates:
                     self.fill_lookup_table()
                 else:
                     if self._chars_valid:
                         ## old manner:
-                        #if self._candidates[1]:
-                        #    #print self._candidates[1]
-                        #    self._candidates[0] = self._candidates[1]
-                        #    self._candidates[1] = []
+                        #if self._candidates_previous:
+                        #    #print self._candidates_previous
+                        #    self._candidates = self._candidates_previous
+                        #    self._candidates_previous = []
                         #    last_input = self.pop_input ()
                         #    self.auto_commit_to_preedit ()
                         #    res = self.add_input( last_input )
@@ -775,15 +778,15 @@ class editor(object):
                                         self._tabkeys = self._tabkeys[:-1]
                                         return True
 
-                                if self._candidates[1]:
+                                if self._candidates_previous:
                                     # If there are no candidates but there were
                                     # for previous input, we process that case
                                     # in tabengine, (auto-select mode)
                                     if self._auto_select:
                                         res=False
                                     else:
-                                        self._candidates[0] = self._candidates[1]
-                                        self._candidates[1] = []
+                                        self._candidates = self._candidates_previous
+                                        self._candidates_previous = []
                                         last_input = self.pop_input ()
                                         self.auto_commit_to_preedit ()
                                         res = self.add_input( last_input )
@@ -801,11 +804,11 @@ class editor(object):
                                 self._tabkeys = self._tabkeys[:-1]
                         else:
                             pass
-                        self._candidates[0] =[]
+                        self._candidates =[]
                     else:
                         self._lookup_table.clear()
                         self._lookup_table.set_cursor_visible(True)
-                self._candidates[1] = self._candidates[0]
+                self._candidates_previous = self._candidates
 
         return True
 
@@ -813,11 +816,11 @@ class editor(object):
         '''Add selected phrase in lookup table to preedit string'''
         if self._chars_valid:
             try:
-                if self._candidates[0]:
-                    self._strings.insert(self._cursor[0], self._candidates[0][self.get_cursor_pos()][1])
+                if self._candidates:
+                    self._strings.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][1])
                     self._cursor[0] += 1
                     if self._py_mode:
-                        self._zi = self._candidates[0][self.get_cursor_pos()][1]
+                        self._zi = self._candidates[self.get_cursor_pos()][1]
                 self.over_input ()
                 self.update_candidates()
             except:
@@ -830,7 +833,7 @@ class editor(object):
         '''Add selected phrase in lookup table to preedit string'''
         try:
             self._u_chars += self._chars_valid
-            self._strings.insert(self._cursor[0], self._candidates[0][self.get_cursor_pos()][1])
+            self._strings.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][1])
             self._cursor[0] += 1
             self.clear_input()
             self.update_candidates()
@@ -866,9 +869,9 @@ class editor(object):
         looklen = self._lookup_table.get_number_of_candidates()
         psize = self._lookup_table.get_page_size()
         if (self._lookup_table.get_cursor_pos() + psize >= looklen and
-                looklen < len(self._candidates[0])):
+                looklen < len(self._candidates)):
             endpos = looklen + psize
-            batch = self._candidates[0][looklen:endpos]
+            batch = self._candidates[looklen:endpos]
             for x in batch:
                 self.append_candidate_to_lookup_table(
                     tabkeys=x[0], phrase=x[1], freq=x[2], user_freq=x[3])
@@ -880,7 +883,7 @@ class editor(object):
 
         res = self._lookup_table.cursor_down()
         self.update_candidates ()
-        if not res and self._candidates[0]:
+        if not res and self._candidates:
             return True
         return res
 
@@ -889,7 +892,7 @@ class editor(object):
         Move Lookup Table cursor up'''
         res = self._lookup_table.cursor_up()
         self.update_candidates ()
-        if not res and self._candidates[0]:
+        if not res and self._candidates:
             return True
         return res
 
@@ -899,7 +902,7 @@ class editor(object):
         self.fill_lookup_table()
         res = self._lookup_table.page_down()
         self.update_candidates ()
-        if not res and self._candidates[0]:
+        if not res and self._candidates:
             return True
         return res
 
@@ -908,7 +911,7 @@ class editor(object):
         move Lookup Table page up'''
         res = self._lookup_table.page_up()
         self.update_candidates ()
-        if not res and self._candidates[0]:
+        if not res and self._candidates:
             return True
         return res
 
@@ -926,7 +929,7 @@ class editor(object):
         cursor_in_page = self._lookup_table.get_cursor_in_page()
         current_page_start = cursor_pos - cursor_in_page
         real_index = current_page_start + index
-        if real_index >= len (self._candidates[0]):
+        if real_index >= len (self._candidates):
             # the index given is out of range we do not commit anything
             return False
         self._lookup_table.set_cursor_pos(real_index)
@@ -958,8 +961,8 @@ class editor(object):
         cursor_in_page = self._lookup_table.get_cursor_in_page()
         current_page_start = cursor_pos - cursor_in_page
         real_index = current_page_start + index
-        if len(self._candidates[0]) > real_index: # this index is valid
-            candidate = self._candidates[0][real_index]
+        if len(self._candidates) > real_index: # this index is valid
+            candidate = self._candidates[real_index]
             self.db.remove_phrase(tabkeys=candidate[0], phrase=candidate[1], commit=True)
             # call update_candidates() to get a new SQL query.  The
             # input has not really changed, therefore we must clear
@@ -1036,7 +1039,7 @@ class editor(object):
 
     def cycle_next_cand(self):
         '''Cycle cursor to next candidate in the page.'''
-        total = len(self._candidates[0])
+        total = len(self._candidates)
 
         if total > 0:
             page_size = self._lookup_table.get_page_size()
@@ -1068,7 +1071,7 @@ class editor(object):
 
     def one_candidate (self):
         '''Return true if there is only one candidate'''
-        return len(self._candidates[0]) == 1
+        return len(self._candidates) == 1
 
 
 ########################
@@ -1478,7 +1481,7 @@ class tabengine (IBus.Engine):
 
     def _update_lookup_table (self):
         '''Update Lookup Table in UI'''
-        if len(self._editor._candidates[0]) == 0:
+        if len(self._editor._candidates) == 0:
             # Also make sure to hide lookup table if there are
             # no candidates to display. On f17, this makes no
             # difference but gnome-shell in f18 will display
@@ -1800,14 +1803,14 @@ class tabengine (IBus.Engine):
             return res
 
         elif ( keychar in self._editor.get_select_keys() and
-                self._editor._candidates[0] and
+                self._editor._candidates and
                 key.mask & IBus.ModifierType.CONTROL_MASK ):
             res = self._editor.select_key (keychar)
             self._update_ui ()
             return res
 
         elif ( keychar in self._editor.get_select_keys() and
-                self._editor._candidates[0] and
+                self._editor._candidates and
                 key.mask & IBus.ModifierType.MOD1_MASK ):
             res = self._editor.remove_candidate_from_user_database(keychar)
             self._update_ui ()
@@ -1863,7 +1866,7 @@ class tabengine (IBus.Engine):
                 # we remove the last input, commit the previous candidate
                 # and reprocess the last input (auto-select mode)
                 reprocess_last_key=False
-                if self._auto_select and self._editor._candidates[1]:
+                if self._auto_select and self._editor._candidates_previous:
                     self._editor.pop_input ()
                     reprocess_last_key=True
                     key_char=''
@@ -1897,18 +1900,18 @@ class tabengine (IBus.Engine):
             return True
 
         elif key.code in self._page_down_keys \
-                and self._editor._candidates[0]:
+                and self._editor._candidates:
             res = self._editor.page_down()
             self._update_ui ()
             return res
 
         elif key.code in self._page_up_keys \
-                and self._editor._candidates[0]:
+                and self._editor._candidates:
             res = self._editor.page_up ()
             self._update_ui ()
             return res
 
-        elif keychar in self._editor.get_select_keys() and self._editor._candidates[0]:
+        elif keychar in self._editor.get_select_keys() and self._editor._candidates:
             input_keys = self._editor.get_all_input_strings ()
             res = self._editor.select_key (keychar)
             if res:
@@ -1924,7 +1927,7 @@ class tabengine (IBus.Engine):
             return True
 
         elif key.code <= 127:
-            if not self._editor._candidates[0]:
+            if not self._editor._candidates:
                 commit_string = self._editor.get_all_input_strings ()
             else:
                 self._editor.commit_to_preedit ()

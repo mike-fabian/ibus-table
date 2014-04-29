@@ -849,8 +849,9 @@ class editor(object):
         '''Get aux strings'''
         input_chars = self.get_input_chars ()
         if input_chars:
-            #aux_string =  self._u_chars + self._chars_valid
             aux_string = self._chars_valid
+            if debug_level > 0 and self._u_chars:
+                aux_string = repr(self._u_chars) + u' ' + self._chars_valid
             if self._py_mode:
                 aux_string = aux_string.replace('!','1').replace('@','2').replace('#','3').replace('$','4').replace('%','5')
             return aux_string
@@ -1482,7 +1483,6 @@ class tabengine (IBus.Engine):
             super(tabengine, self).update_auxiliary_text(text, visible)
         else:
             self.hide_auxiliary_text()
-            #self.update_aux_string (u'', None, False)
 
     def _update_lookup_table (self):
         '''Update Lookup Table in UI'''

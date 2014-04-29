@@ -338,6 +338,8 @@ class editor(object):
                 else:
                     return -1
         except:
+            import traceback
+            traceback.print_exc()
             return -1
 
     def change_chinese_mode (self):
@@ -452,7 +454,8 @@ class editor(object):
             self._cursor[0] +=1
             self._cursor[1] = 0
         except:
-            pass
+            import traceback
+            traceback.print_exc()
 
     def remove_before_string (self):
         '''Remove string before cursor'''
@@ -824,7 +827,8 @@ class editor(object):
                 self.over_input ()
                 self.update_candidates()
             except:
-                pass
+                import traceback
+                traceback.print_exc()
             return True
         else:
             return False
@@ -838,7 +842,8 @@ class editor(object):
             self.clear_input()
             self.update_candidates()
         except:
-            pass
+            import traceback
+            traceback.print_exc()
 
     def get_aux_strings (self):
         '''Get aux strings'''

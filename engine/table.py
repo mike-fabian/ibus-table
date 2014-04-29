@@ -943,11 +943,9 @@ class editor(object):
         Commit a candidate in the lookup table which was selected
         by typing a selection key
         '''
-        try:
-            index = self._select_keys.index(char)
-        except ValueError:
+        if char not in self._select_keys:
             return False
-
+        index = self._select_keys.index(char)
         cursor_pos = self._lookup_table.get_cursor_pos()
         cursor_in_page = self._lookup_table.get_cursor_in_page()
         current_page_start = cursor_pos - cursor_in_page
@@ -974,12 +972,9 @@ class editor(object):
         If this is a candidate which is user defined and not in the system
         database, it will not match at all anymore after removing it.
         '''
-        try:
-            index = self._select_keys.index(char)
-        except:
-            import traceback
-            traceback.print_exc()
+        if char not in self._select_keys:
             return False
+        index = self._select_keys.index(char)
         cursor_pos = self._lookup_table.get_cursor_pos()
         cursor_in_page = self._lookup_table.get_cursor_in_page()
         current_page_start = cursor_pos - cursor_in_page

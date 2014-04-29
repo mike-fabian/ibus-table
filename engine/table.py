@@ -489,8 +489,6 @@ class editor(object):
         if self._cursor[0] > 0:
             self._strings.pop(self._cursor[0]-1)
             self._cursor[0] -= 1
-        else:
-            pass
         # if we remove all characters in preedit string, we need to clear the self._t_chars
         if self._cursor == [0,0]:
             self._t_chars = u''
@@ -499,9 +497,7 @@ class editor(object):
         '''Remove string after cursor'''
         if self._cursor[1] != 0:
             self.split_phrase()
-        if self._cursor[0] >= len (self._strings):
-            pass
-        else:
+        if self._cursor[0] < len(self._strings):
             self._strings.pop(self._cursor[0])
 
     def remove_before_char (self):
@@ -511,9 +507,7 @@ class editor(object):
             self._strings[ self._cursor[0] ] = _str[ : self._cursor[1]-1] + _str[ self._cursor[1] :]
             self._cursor[1] -= 1
         else:
-            if self._cursor[0] == 0:
-                pass
-            else:
+            if self._cursor[0] != 0:
                 if len ( self._strings[self._cursor[0] - 1] ) == 1:
                     self.remove_before_string()
                 else:
@@ -525,9 +519,7 @@ class editor(object):
     def remove_after_char (self):
         '''Remove character after cursor'''
         if self._cursor[1] == 0:
-            if self._cursor[0] == len ( self._strings):
-                pass
-            else:
+            if self._cursor[0] != len( self._strings):
                 if len( self._strings[ self._cursor[0] ]) == 1:
                     self.remove_after_string ()
                 else:

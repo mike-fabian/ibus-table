@@ -209,14 +209,13 @@ class KeyEvent:
 
 class editor(object):
     '''Hold user inputs chars and preedit string'''
-    def __init__ (self, config, phrase_table_index,valid_input_chars, max_key_length, database, max_length = 64):
+    def __init__ (self, config, phrase_table_index,valid_input_chars, max_key_length, database):
         self.db = database
         self._config = config
         engine_name = os.path.basename(self.db.filename).replace('.db', '')
         self._config_section = "engine/Table/%s" %engine_name.replace(' ','_')
         self._pt = phrase_table_index
         self._max_key_len = int(max_key_length)
-        self._max_length = max_length
         self._valid_input_chars = valid_input_chars
         #
         # The values below will be reset in self.clear()
@@ -411,8 +410,6 @@ class editor(object):
 
     def add_input (self,c):
         '''add input character'''
-        if len (self._t_chars) == self._max_length:
-            return True
         self._zi = u''
         if self._cursor[1]:
             self.split_phrase()

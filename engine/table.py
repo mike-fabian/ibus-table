@@ -225,10 +225,36 @@ class editor(object):
         self._chars_valid_when_update_candidates_was_last_called = u''
         #self._t_chars: hold total input for table mode for input check
         self._t_chars = u''
-        # self._u_chars: hold user input but not manual comitted chars
-        self._u_chars = u''
         self._tabkeys = u'' # the input characters typed by the user
-        # self._strings: hold preedit strings
+        # self._u_chars: holds the user input of the phrases which
+        # have been automatically committed to preedit (but not yet
+        # “really” committed).
+        self._u_chars = []
+        # self._strings: holds the phrases which have been
+        # automatically committed to preedit (but not yet “really”
+        # committed).
+        #
+        # self._u_chars and self._strings should always have the same
+        # length, if I understand it correctly.
+        #
+        # Example when using the wubi-jidian86 table:
+        #
+        # self._u_chars = ['gaaa', 'gggg', 'ihty']
+        # self._strings = ['形式', '王', '小']
+        #
+        # I.e. after typing 'gaaa', '形式' is in the preedit and
+        # both self._u_chars and self._strings are empty. When typing
+        # another 'g', the maximum key length of the wubi table (which is 4)
+        # is exceeded and '形式' is automatically committed to the preedit
+        # (but not yet “really” committed, i.e. not yet committed into
+        # the application). The key 'gaaa' and the matching phrase '形式'
+        # are stored in self._u_chars and self._strings respectively
+        # and 'gaaa' is removed from self._chars_valid. Now self._chars_valid
+        # contains only the 'g' which starts a new search for candidates ...
+        # When removing the 'g' with backspace, the 'gaaa' is moved
+        # back from self._u_chars into self._chars_valid again and
+        # the same candidate list is shown as before the last 'g' had
+        # been entered.
         self._strings = []
         # self._cursor: the caret position in preedit phrases
         self._cursor = [0,0]
@@ -353,8 +379,8 @@ class editor(object):
     def clear (self):
         '''Remove data holded'''
         self.clear_input()
-        self._u_chars = u''
         self._t_chars = u''
+        self._u_chars = []
         self._strings = []
         self._cursor = [0,0]
         self._zi = u''
@@ -381,7 +407,7 @@ class editor(object):
         Remove input characters held for Table mode,
         '''
         self.clear_input ()
-        self._u_chars = u''
+        self._u_chars = []
 
     def add_input (self,c):
         '''add input character'''
@@ -418,8 +444,7 @@ class editor(object):
             self._chars_valid = self._chars_valid[:-1]
             self._tabkeys = self._tabkeys[:-1]
             if (not self._chars_valid) and self._u_chars:
-                self._chars_valid = self._u_chars[-1]
-                self._u_chars = self._u_chars[:-1]
+                self._chars_valid = self._u_chars.pop()
                 self._chars_invalid = self._chars_invalid[:-1]
                 self._tabkeys = self._chars_valid
                 if self._strings:
@@ -439,7 +464,7 @@ class editor(object):
 
     def get_all_input_strings (self):
         '''Get all uncommitted input characters, used in English mode or direct commit'''
-        return  self._u_chars + self._chars_valid +self._chars_invalid
+        return  u''.join(self._u_chars) + self._chars_valid +self._chars_invalid
 
     def split_phrase (self):
         '''Split current phrase into two phrases'''
@@ -706,7 +731,7 @@ class editor(object):
         if self.db.startchars and (len(self._chars_valid) == 1)\
                 and (len(self._chars_invalid) == 0) \
                 and (self._chars_valid[0] not in self.db.startchars):
-            self._u_chars += (self._chars_valid[0])
+            self._u_chars.append(self._chars_valid[0])
             self._strings.insert(self._cursor[0], self._chars_valid[0])
             self._cursor [0] += 1
             self.clear_input()
@@ -836,7 +861,7 @@ class editor(object):
     def auto_commit_to_preedit (self):
         '''Add selected phrase in lookup table to preedit string'''
         try:
-            self._u_chars += self._chars_valid
+            self._u_chars.append(self._chars_valid)
             self._strings.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][1])
             self._cursor[0] += 1
             self.clear_input()

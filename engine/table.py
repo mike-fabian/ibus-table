@@ -545,16 +545,12 @@ class editor(object):
         else:
             return _candi
 
-    def add_caret (self, addstr):
-        '''add length to caret position'''
-        self._caret += len(addstr)
-
     def get_caret (self):
         '''Get caret position in preedit strings'''
         self._caret = 0
         if self._cursor[0] and self._strings:
             for x in self._strings[:self._cursor[0]]:
-                self.add_caret(x)
+                self._caret += len(x)
         self._caret += self._cursor[1]
         if self._candidates:
             _candi =self._candidates[int(self._lookup_table.get_cursor_pos())][1]

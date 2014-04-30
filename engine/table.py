@@ -455,10 +455,6 @@ class editor(object):
         '''get characters held, valid and invalid'''
         return self._chars_valid + self._chars_invalid
 
-    def get_input_chars_string (self):
-        '''Get valid input char string'''
-        return self._t_chars
-
     def get_all_input_strings (self):
         '''Get all uncommitted input characters, used in English mode or direct commit'''
         return  u''.join(self._u_chars) + self._chars_valid +self._chars_invalid

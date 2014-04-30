@@ -396,13 +396,6 @@ class editor(object):
         self._candidates = []
         self._candidates_previous = []
 
-    def over_input (self):
-        '''
-        Remove input characters held for Table mode,
-        '''
-        self.clear_input ()
-        self._u_chars = []
-
     def add_input (self,c):
         '''add input character'''
         self._zi = u''
@@ -823,7 +816,7 @@ class editor(object):
                     self._cursor[0] += 1
                     if self._py_mode:
                         self._zi = self._candidates[self.get_cursor_pos()][1]
-                self.over_input ()
+                self.clear_input ()
                 self.update_candidates()
             except:
                 import traceback
@@ -999,7 +992,7 @@ class editor(object):
         '''Process control+remove_char Key Event'''
         self._zi = u''
         if self.get_input_chars():
-            self.over_input ()
+            self.clear_input ()
             return True
         elif self.get_preedit_strings ():
             self.remove_before_string ()

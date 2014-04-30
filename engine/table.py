@@ -39,9 +39,6 @@ import chinese_variants
 
 debug_level = int(0)
 
-patt_edit = re.compile (r'(.*)###(.*)###(.*)')
-patt_uncommit = re.compile (r'(.*)@@@(.*)')
-
 from gettext import dgettext
 _  = lambda a : dgettext ("ibus-table", a)
 N_ = lambda a : a
@@ -1427,44 +1424,44 @@ class tabengine (IBus.Engine):
         _str = self._editor.get_preedit_strings ()
         if _str == u'':
             super(tabengine, self).update_preedit_text(IBus.Text.new_from_string(u''), 0, False)
-        else:
-            attrs = IBus.AttrList()
-            res = patt_edit.match (_str)
-            if res:
-                _str = u''
-                ures = patt_uncommit.match (res.group(1))
-                if ures:
-                    _str=u''.join (ures.groups())
-                    lc = len (ures.group(1) )
-                    lu = len (ures.group(2) )
-                    attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),0,lc))
-                    attrs.append(IBus.attr_foreground_new(rgb(0x08,0x95,0xa2),lc,lu))
-                    lg1 = len (_str)
-                else:
-                    _str += res.group (1)
-                    lg1 = len ( res.group(1) )
-                    attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),0,lg1))
-                _str += res.group(2)
-                _str += res.group(3)
-                lg2 = len ( res.group(2) )
-                lg3 = len ( res.group(3) )
-                attrs.append(IBus.attr_foreground_new(rgb(0x0e,0x0e,0xa0),lg1,lg2))
-                attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),lg1+lg2,lg3))
+            return
+        attrs = IBus.AttrList()
+        pattern_edit = re.compile(r'(.*)###(.*)###(.*)')
+        res = pattern_edit.match(_str)
+        if res:
+            _str = u''
+            pattern_uncommit = re.compile(r'(.*)@@@(.*)')
+            ures = pattern_uncommit.match(res.group(1))
+            if ures:
+                _str=u''.join(ures.groups())
+                lc = len(ures.group(1))
+                lu = len(ures.group(2))
+                attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),0,lc))
+                attrs.append(IBus.attr_foreground_new(rgb(0x08,0x95,0xa2),lc,lu))
+                lg1 = len(_str)
             else:
-                attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),0,len(_str)))
-            # because ibus now can only insert preedit into txt, so...
-            attrs = IBus.AttrList()
-            attrs.append(IBus.attr_underline_new(IBus.AttrUnderline.SINGLE, 0, len(_str)))
-            text = IBus.Text.new_from_string(_str)
-            i = 0
-            while attrs.get(i) != None:
-                attr = attrs.get(i)
-                text.append_attribute(attr.get_attr_type(),
-                                      attr.get_value(),
-                                      attr.get_start_index(),
-                                      attr.get_end_index())
-                i += 1
-            super(tabengine, self).update_preedit_text(text, self._editor.get_caret(), True)
+                _str += res.group(1)
+                lg1 = len(res.group(1))
+                attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),0,lg1))
+            _str += res.group(2)
+            _str += res.group(3)
+            lg2 = len(res.group(2))
+            lg3 = len(res.group(3))
+            attrs.append(IBus.attr_foreground_new(rgb(0x0e,0x0e,0xa0),lg1,lg2))
+            attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),lg1+lg2,lg3))
+        else:
+            attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),0,len(_str)))
+        attrs.append(IBus.attr_underline_new(IBus.AttrUnderline.SINGLE, 0, len(_str)))
+        text = IBus.Text.new_from_string(_str)
+        i = 0
+        while attrs.get(i) != None:
+            attr = attrs.get(i)
+            text.append_attribute(attr.get_attr_type(),
+                                  attr.get_value(),
+                                  attr.get_start_index(),
+                                  attr.get_end_index())
+            i += 1
+        super(tabengine, self).update_preedit_text(text, self._editor.get_caret(), True)
 
     def _update_aux (self):
         '''Update Aux String in UI'''

@@ -279,8 +279,6 @@ class editor(object):
         self._py_mode = False
         # self._zi: the last Zi commit to preedit
         self._zi = u''
-        # self._caret: caret position in lookup_table
-        self._caret = 0
         # self._onechar: whether we only select single character
         self._onechar = variant_to_value(self._config.get_value(
                 self._config_section,
@@ -546,18 +544,18 @@ class editor(object):
             return _candi
 
     def get_caret (self):
-        '''Get caret position in preedit strings'''
-        self._caret = 0
+        '''Get caret position in preëdit string'''
+        caret = 0
         if self._cursor[0] and self._strings:
             for x in self._strings[:self._cursor[0]]:
-                self._caret += len(x)
-        self._caret += self._cursor[1]
+                caret += len(x)
+        caret += self._cursor[1]
         if self._candidates:
-            _candi =self._candidates[int(self._lookup_table.get_cursor_pos())][1]
+            caret += len(
+                self._candidates[int(self._lookup_table.get_cursor_pos())][1])
         else:
-            _candi = self.get_input_chars()
-        self._caret += len(_candi)
-        return self._caret
+            caret += len(self.get_input_chars())
+        return caret
 
     def arrow_left (self):
         '''Process Arrow Left Key Event.

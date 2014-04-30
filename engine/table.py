@@ -439,7 +439,6 @@ class editor(object):
             self._tabkeys = self._tabkeys[:-1]
             if (not self._chars_valid) and self._u_chars:
                 self._chars_valid = self._u_chars.pop()
-                self._chars_invalid = self._chars_invalid[:-1]
                 self._tabkeys = self._chars_valid
                 if self._strings:
                     self._strings.pop(self._cursor[0] - 1)

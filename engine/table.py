@@ -511,29 +511,31 @@ class editor(object):
                 string = self._strings[ self._cursor[0] ]
                 self._strings[ self._cursor[0] ] = string[:self._cursor[1]] + string[ self._cursor[1] + 1 : ]
 
-    def get_preedit_strings (self):
-        '''Get preedit strings'''
+    def get_preedit_string_parts(self):
+        '''Returns a tuple of strings which are parts of the preëdit string.
+
+        Such as “(left_of_current_edit, current_edit, right_of_current_edit)”
+
+        “left_of_current_edit” and “right_of_current_edit” are
+        strings which have already been committed to preëdit, but not
+        “really” committed yet. “current_edit” is the part of the
+        preëdit string which is not committed at all.
+        '''
+        left_of_current_edit = u''
+        current_edit = u''
+        right_of_current_edit = u''
         if self._candidates:
-            _candi = u'###' + self._candidates[int(self._lookup_table.get_cursor_pos())][1] + u'###'
-        else:
-            input_chars = self.get_input_chars()
-            if input_chars:
-                _candi = '###' + input_chars + '###'
-            else:
-                _candi = u''
+            current_edit = self._candidates[
+                int(self._lookup_table.get_cursor_pos())][1]
+        elif self.get_input_chars():
+                current_edit = self.get_input_chars()
         if self._strings:
-            res = u''
-            _cursor = self._cursor[0]
-            _luc = len(self._u_chars)
-            if _luc:
-                if _candi == u'':
-                    _candi = u'######'
-                res =u''.join( self._strings[ : _cursor - _luc] +[u'@@@'] + self._strings[_cursor - _luc : _cursor ]  + [ _candi  ] + self._strings[ _cursor : ])
-            else:
-                res = u''.join( self._strings[ : _cursor ] + [ _candi  ] + self._strings[ _cursor : ])
-            return res
-        else:
-            return _candi
+            left_of_current_edit = u''.join(self._strings[:self._cursor[0]])
+            right_of_current_edit = u''.join(self._strings[self._cursor[0]:])
+        return (left_of_current_edit, current_edit, right_of_current_edit)
+
+    def get_preedit_string_complete(self):
+        return u''.join(self.get_preedit_string_parts())
 
     def get_caret (self):
         '''Get caret position in preëdit string'''
@@ -552,7 +554,7 @@ class editor(object):
     def arrow_left (self):
         '''Process Arrow Left Key Event.
         Update cursor data when move caret left'''
-        if self.get_preedit_strings ():
+        if self.get_preedit_string_complete():
             if not( self.get_input_chars () or self._u_chars ):
                 if self._cursor[1] > 0:
                     self._cursor[1] -= 1
@@ -571,7 +573,7 @@ class editor(object):
     def arrow_right (self):
         '''Process Arrow Right Key Event.
         Update cursor data when move caret right'''
-        if self.get_preedit_strings ():
+        if self.get_preedit_string_complete():
             if not( self.get_input_chars () or self._u_chars ):
                 if self._cursor[1] == 0:
                     if self._cursor[0] == len (self._strings):
@@ -591,7 +593,7 @@ class editor(object):
     def control_arrow_left (self):
         '''Process Control + Arrow Left Key Event.
         Update cursor data when move caret to string left'''
-        if self.get_preedit_strings ():
+        if self.get_preedit_string_complete():
             if not( self.get_input_chars () or self._u_chars ):
                 if self._cursor[1] == 0:
                     if self._cursor[0] == 0:
@@ -608,7 +610,7 @@ class editor(object):
     def control_arrow_right (self):
         '''Process Control + Arrow Right Key Event.
         Update cursor data when move caret to string right'''
-        if self.get_preedit_strings ():
+        if self.get_preedit_string_complete():
             if not( self.get_input_chars () or self._u_chars ):
                 if self._cursor[1] == 0:
                     if self._cursor[0] == len (self._strings):
@@ -982,7 +984,7 @@ class editor(object):
         if self.get_input_chars():
             self.pop_input ()
             return True
-        elif self.get_preedit_strings ():
+        elif self.get_preedit_string_complete():
             self.remove_before_char ()
             return True
         else:
@@ -994,7 +996,7 @@ class editor(object):
         if self.get_input_chars():
             self.clear_input ()
             return True
-        elif self.get_preedit_strings ():
+        elif self.get_preedit_string_complete():
             self.remove_before_string ()
             return True
         else:
@@ -1005,7 +1007,7 @@ class editor(object):
         self._zi = u''
         if self.get_input_chars():
             return True
-        elif self.get_preedit_strings ():
+        elif self.get_preedit_string_complete():
             self.remove_after_char ()
             return True
         else:
@@ -1016,7 +1018,7 @@ class editor(object):
         self._zi = u''
         if self.get_input_chars ():
             return True
-        elif self.get_preedit_strings ():
+        elif self.get_preedit_string_complete():
             self.remove_after_string ()
             return True
         else:
@@ -1056,7 +1058,7 @@ class editor(object):
             # user has input sth
             istr = self.get_all_input_strings ()
             self.commit_to_preedit ()
-            pstr = self.get_preedit_strings ()
+            pstr = self.get_preedit_string_complete()
             self.clear()
             return (True,pstr,istr)
         else:
@@ -1404,40 +1406,35 @@ class tabengine (IBus.Engine):
     #        self.start_helper ("96c07b6f-0c3d-4403-ab57-908dd9b8d513")
         # at last invoke default method
 
-    def _update_preedit (self):
+    def _update_preedit(self):
         '''Update Preedit String in UI'''
-        _str = self._editor.get_preedit_strings ()
-        if _str == u'':
+        preedit_string_parts = self._editor.get_preedit_string_parts()
+        left_of_current_edit = preedit_string_parts[0]
+        current_edit = preedit_string_parts[1]
+        right_of_current_edit = preedit_string_parts[2]
+        preedit_string_complete = u''.join(preedit_string_parts)
+        if not preedit_string_complete:
             super(tabengine, self).update_preedit_text(IBus.Text.new_from_string(u''), 0, False)
             return
+        color_left = rgb(0xf9, 0x0f, 0x0f) # bright red
+        color_right = rgb(0x1e, 0xdc, 0x1a) # light green
         attrs = IBus.AttrList()
-        pattern_edit = re.compile(r'(.*)###(.*)###(.*)')
-        res = pattern_edit.match(_str)
-        if res:
-            _str = u''
-            pattern_uncommit = re.compile(r'(.*)@@@(.*)')
-            ures = pattern_uncommit.match(res.group(1))
-            if ures:
-                _str=u''.join(ures.groups())
-                lc = len(ures.group(1))
-                lu = len(ures.group(2))
-                attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),0,lc))
-                attrs.append(IBus.attr_foreground_new(rgb(0x08,0x95,0xa2),lc,lu))
-                lg1 = len(_str)
-            else:
-                _str += res.group(1)
-                lg1 = len(res.group(1))
-                attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),0,lg1))
-            _str += res.group(2)
-            _str += res.group(3)
-            lg2 = len(res.group(2))
-            lg3 = len(res.group(3))
-            attrs.append(IBus.attr_foreground_new(rgb(0x0e,0x0e,0xa0),lg1,lg2))
-            attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),lg1+lg2,lg3))
-        else:
-            attrs.append(IBus.attr_foreground_new(rgb(0x1b,0x3f,0x03),0,len(_str)))
-        attrs.append(IBus.attr_underline_new(IBus.AttrUnderline.SINGLE, 0, len(_str)))
-        text = IBus.Text.new_from_string(_str)
+        attrs.append(
+            IBus.attr_foreground_new(
+                color_left,
+                0,
+                len(left_of_current_edit)))
+        attrs.append(
+            IBus.attr_foreground_new(
+                color_right,
+                len(left_of_current_edit) + len(current_edit),
+                len(preedit_string_complete)))
+        attrs.append(
+            IBus.attr_underline_new(
+                IBus.AttrUnderline.SINGLE,
+                0,
+                len(preedit_string_complete)))
+        text = IBus.Text.new_from_string(preedit_string_complete)
         i = 0
         while attrs.get(i) != None:
             attr = attrs.get(i)
@@ -1734,7 +1731,7 @@ class tabengine (IBus.Engine):
         elif key.code in (IBus.KEY_Return, IBus.KEY_KP_Enter):
             if self._auto_select:
                 self._editor.commit_to_preedit ()
-                commit_string = self._editor.get_preedit_strings () + os.linesep
+                commit_string = self._editor.get_preedit_string_complete() + os.linesep
             else:
                 commit_string = self._editor.get_all_input_strings ()
             self.commit_string (commit_string)
@@ -1742,7 +1739,7 @@ class tabengine (IBus.Engine):
 
         elif key.code in (IBus.KEY_Tab, IBus.KEY_KP_Tab) and self._auto_select:
             self._editor.commit_to_preedit ()
-            self.commit_string (self._editor.get_preedit_strings ())
+            self.commit_string(self._editor.get_preedit_string_complete())
 
         elif key.code in (IBus.KEY_Down, IBus.KEY_KP_Down) :
             res = self._editor.cursor_down ()
@@ -1908,7 +1905,7 @@ class tabengine (IBus.Engine):
             res = self._editor.select_key (keychar)
             if res:
                 o_py = self._editor._py_mode
-                commit_string = self._editor.get_preedit_strings ()
+                commit_string = self._editor.get_preedit_string_complete()
                 self.commit_string (commit_string)
                 #self.add_string_len(commit_string)
                 if o_py != self._editor._py_mode:
@@ -1923,7 +1920,7 @@ class tabengine (IBus.Engine):
                 commit_string = self._editor.get_all_input_strings ()
             else:
                 self._editor.commit_to_preedit ()
-                commit_string = self._editor.get_preedit_strings ()
+                commit_string = self._editor.get_preedit_string_complete()
             # we need to take care of the py_mode here :)
             py_mode = self._editor._py_mode
             self._editor.clear ()

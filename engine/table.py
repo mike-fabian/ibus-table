@@ -219,8 +219,6 @@ class editor(object):
         self._chars_valid = u''    # valid user input in table mode
         self._chars_invalid = u''  # invalid user input in table mode
         self._chars_valid_when_update_candidates_was_last_called = u''
-        #self._t_chars: hold total input for table mode for input check
-        self._t_chars = u''
         self._tabkeys = u'' # the input characters typed by the user
         # self._u_chars: holds the user input of the phrases which
         # have been automatically committed to preedit (but not yet
@@ -373,15 +371,14 @@ class editor(object):
     def clear (self):
         '''Remove data holded'''
         self.clear_input()
-        self._t_chars = u''
         self._u_chars = []
         self._strings = []
         self._cursor = [0,0]
         self._zi = u''
         self.update_candidates()
 
-    def is_empty (self):
-        return len(self._t_chars) == 0
+    def is_empty(self):
+        return u'' == self._chars_valid + self._chars_invalid
 
     def clear_input (self):
         '''
@@ -414,7 +411,6 @@ class editor(object):
                 self._chars_valid += c
             else:
                 self._chars_invalid += c
-        self._t_chars += c
         res = self.update_candidates ()
         return res
 
@@ -433,7 +429,6 @@ class editor(object):
                 self._tabkeys = self._chars_valid
                 self._strings.pop(self._cursor[0] - 1)
                 self._cursor[0] -= 1
-        self._t_chars = self._t_chars[:-1]
         self.update_candidates ()
         return _c
 
@@ -468,9 +463,6 @@ class editor(object):
         if self._cursor[0] > 0:
             self._strings.pop(self._cursor[0]-1)
             self._cursor[0] -= 1
-        # if we remove all characters in preedit string, we need to clear the self._t_chars
-        if self._cursor == [0,0]:
-            self._t_chars = u''
 
     def remove_after_string (self):
         '''Remove string after cursor'''
@@ -491,9 +483,6 @@ class editor(object):
                     self.remove_before_string()
                 else:
                     self._strings[self._cursor[0] - 1] = self._strings[self._cursor[0] - 1][:-1]
-        # if we remove all characters in preedit string, we need to clear the self._t_chars
-        if self._cursor == [0,0] and not self._strings:
-            self._t_chars = u''
 
     def remove_after_char (self):
         '''Remove character after cursor'''
@@ -1054,8 +1043,7 @@ class editor(object):
         if self._chars_invalid:
             # we have invalid input, so do not commit
             return (False,u'')
-        if self._t_chars :
-            # user has input sth
+        if not self.is_empty():
             istr = self.get_all_input_strings ()
             self.commit_to_preedit ()
             pstr = self.get_preedit_string_complete()
@@ -1601,7 +1589,7 @@ class tabengine (IBus.Engine):
     def _process_key_event (self, key):
         '''Internal method to process key event'''
         # Match mode switch hotkey
-        if not self._editor._t_chars and ( self._match_hotkey (key, IBus.KEY_Shift_L, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
+        if self._editor.is_empty() and (self._match_hotkey(key, IBus.KEY_Shift_L, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
             self._change_mode ()
             return True
 

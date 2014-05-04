@@ -906,8 +906,9 @@ class editor(object):
 
     def select_key(self, char):
         '''
-        Commit a candidate in the lookup table which was selected
-        by typing a selection key
+        Commit a candidate which was selected by typing a selection key
+        from the lookup table to the preedit. Does not yet “really”
+        commit the candidate, only to the preedit.
         '''
         if char not in self._select_keys:
             return False

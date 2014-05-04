@@ -1688,19 +1688,18 @@ class tabengine (IBus.Engine):
         #
         keychar = IBus.keyval_to_unicode(key.code)
 
-        if self._editor.is_empty ():
-            # we have not input anything
-            if key.code >= 32 and key.code <= 127 \
-                    and ( keychar not in self._valid_input_chars ) \
-                    and (not key.mask &
+        if self._editor.is_empty():
+            # This is the first character typed
+            if (key.code >= 32
+                and (keychar not in self._valid_input_chars
+                     or (self.db.startchars and keychar not in self.db.startchars))
+                and (not key.mask &
                             (IBus.ModifierType.MOD1_MASK |
-                                IBus.ModifierType.CONTROL_MASK)):
-                # Input untranslated ascii char directly
+                                IBus.ModifierType.CONTROL_MASK))):
                 if ascii_ispunct(keychar):
                     trans_char = cond_punct_translate (keychar)
                 else:
                     trans_char = cond_letter_translate (keychar)
-
                 if trans_char == keychar:
                     return False
                 else:

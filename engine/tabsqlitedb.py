@@ -655,8 +655,12 @@ class tabsqlitedb:
         if commit:
             self.db.commit()
 
-    def best_candidates(self, phrase_frequencies):
-        return sorted(phrase_frequencies,
+    def best_candidates(self, candidates):
+        '''
+        candidates is an array containing something like:
+        [(tabkeys, phrase, freq, user_freq), ...]
+        '''
+        return sorted(candidates,
                       key=lambda x: (
                           -1*x[3],   # user_freq descending
                           -1*x[2],   # freq descending
@@ -684,15 +688,34 @@ class tabsqlitedb:
         )
         ''' % {'one_char_condition': one_char_condition}
         sqlargs = {'tabkeys': tabkeys+'%%'}
-        phrase_frequencies = []
-        if not bitmask:
-            phrase_frequencies = self.db.execute(sqlstr, sqlargs).fetchall()
+        unfiltered_results = self.db.execute(sqlstr, sqlargs).fetchall()
+        if not bitmask or bitmask == 0xff:
+            results = unfiltered_results
         else:
-            results = self.db.execute(sqlstr, sqlargs).fetchall()
-            for result in results:
+            results = []
+            for result in unfiltered_results:
                 if bitmask & chinese_variants.detect_chinese_category(result[1]):
-                    phrase_frequencies.append(result)
-        best = self.best_candidates(phrase_frequencies)
+                    results.append(result)
+        # merge matches from the system database and from the user
+        # database to avoid duplicates in the candidate list for
+        # example, if we have the result ('aaaa', '工', 551000000, 0)
+        # from the system database and ('aaaa', '工', 0, 5) from the
+        # user database, these should be merged into one match
+        # ('aaaa', '工', 551000000, 5).
+        phrase_frequencies = {}
+        for result in results:
+            key = (result[0], result[1])
+            if key not in phrase_frequencies:
+                phrase_frequencies[key] = result
+            else:
+                phrase_frequencies.update([(
+                    key,
+                    key +
+                    (
+                        max(result[2], phrase_frequencies[key][2]),
+                        max(result[3], phrase_frequencies[key][3]))
+                )])
+        best = self.best_candidates(phrase_frequencies.values())
         return best
 
     def select_zi(self, tabkeys, bitmask=0xff):
@@ -710,7 +733,7 @@ class tabsqlitedb:
         # which was returned before I simplified the pinyin database table.
         phrase_frequencies = []
         for (pinyin, zi, freq) in results:
-            if not bitmask:
+            if not bitmask or bitmask == 0xff:
                 phrase_frequencies.append(tuple([pinyin, zi, freq, 0]))
             else:
                 if bitmask & chinese_variants.detect_chinese_category(zi):

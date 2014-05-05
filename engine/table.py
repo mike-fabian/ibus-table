@@ -622,9 +622,10 @@ class editor(object):
         if self.db._is_chinese and self._py_mode:
             # restore tune symbol
             remaining_tabkeys = remaining_tabkeys.replace('!','↑1').replace('@','↑2').replace('#','↑3').replace('$','↑4').replace('%','↑5')
+        candidate_text = phrase + u' ' + remaining_tabkeys
         attrs = IBus.AttrList ()
-        attrs.append(IBus.attr_foreground_new(rgb(0x19,0x73,0xa2), 0,
-                                              len(phrase) + len(remaining_tabkeys)))
+        attrs.append(IBus.attr_foreground_new(
+            rgb(0x19,0x73,0xa2), 0, len(candidate_text)))
         if not self._py_mode and freq < 0:
             # this is a user defined phrase:
             attrs.append(IBus.attr_foreground_new(rgb(0x77,0x00,0xc3), 0, len(phrase)))
@@ -634,7 +635,6 @@ class editor(object):
         else:
             # this is a system phrase that has not been used yet:
             attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(phrase)))
-        candidate_text = phrase + remaining_tabkeys
         if debug_level > 0:
             debug_text = u' ' + str(freq) + u' ' + str(user_freq)
             candidate_text += debug_text

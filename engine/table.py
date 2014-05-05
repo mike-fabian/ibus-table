@@ -842,7 +842,7 @@ class editor(object):
         aux_string = u''
         if self._zi:
             # we have pinyin result
-            aux_string = self.db.find_zi_code(self._zi)
+            aux_string = u' '.join(self.db.find_zi_code(self._zi))
         cstr = u''.join(self._strings)
         if self.db.user_can_define_phrase:
             if len (cstr ) > 1:

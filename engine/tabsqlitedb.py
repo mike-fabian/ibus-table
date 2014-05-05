@@ -989,16 +989,27 @@ class tabsqlitedb:
                      self.add_phrase(tabkeys=tabkeys, phrase=phrase, freq=-1, user_freq=1, database='user_db')
 
     def find_zi_code (self, phrase):
-        '''Check word freq and user_freq
+        '''
+        Return the list of possible tabkeys for a phrase.
+
+        For example, if “phrase” is “你” and the table is wubi-jidian.86.txt,
+        the result will be ['wq', 'wqi', 'wqiy'] because that table
+        contains the following 3 lines matching that phrase exactly:
+
+        wq	你	597727619
+        wqi	你	1490000000
+        wqiy	你	1490000000
         '''
         if type(phrase) != type(u''):
             phrase = phrase.decode('utf8')
         sqlstr = '''
         SELECT tabkeys FROM main.phrases WHERE phrase = :phrase
+        ORDER by length(tabkeys) ASC;
         '''
         sqlargs = {'phrase': phrase}
-        result = self.db.execute(sqlstr, sqlargs).fetchall()
-        return result[0]
+        results = self.db.execute(sqlstr, sqlargs).fetchall()
+        list_of_possible_tabkeys = [x[0] for x in results]
+        return list_of_possible_tabkeys
 
     def remove_phrase (self, tabkeys=u'', phrase=u'', database='user_db', commit=True):
         '''Remove phrase from database

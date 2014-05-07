@@ -1809,7 +1809,6 @@ class tabengine (IBus.Engine):
                         self.commit_string ("%s " %sp_res[1])
                     else:
                         self.commit_string (sp_res[1])
-                    #self.add_string_len(sp_res[1])
                     self._check_phrase(tabkeys=sp_res[2], phrase=sp_res[1])
                 else:
                     if sp_res[1] == u' ':
@@ -1834,7 +1833,6 @@ class tabengine (IBus.Engine):
                 #return (whethercommit,commitstring)
                 if sp_res[0]:
                     self.commit_string (sp_res[1])
-                    #self.add_string_len(sp_res[1])
                     self._check_phrase (tabkeys=sp_res[2], phrase=sp_res[1])
 
             res = self._editor.add_input ( keychar )
@@ -1854,7 +1852,6 @@ class tabengine (IBus.Engine):
                 sp_res = self._editor.space ()
                 if sp_res[0]:
                     self.commit_string (sp_res[1] + key_char)
-                    #self.add_string_len(sp_res[1])
                     self._check_phrase (tabkeys=sp_res[2], phrase=sp_res[1])
                 else:
                     self.commit_string ( key_char )
@@ -1870,7 +1867,6 @@ class tabengine (IBus.Engine):
                     #return (whethercommit,commitstring)
                     if sp_res[0]:
                         self.commit_string (sp_res[1])
-                        #self.add_string_len(sp_res[1])
                         self._check_phrase (tabkeys=sp_res[2], phrase=sp_res[1])
                         return True
             self._update_ui ()
@@ -1895,7 +1891,6 @@ class tabengine (IBus.Engine):
                 o_py = self._editor._py_mode
                 commit_string = self._editor.get_preedit_string_complete()
                 self.commit_string (commit_string)
-                #self.add_string_len(commit_string)
                 if o_py != self._editor._py_mode:
                     self._refresh_properties ()
                     self._update_ui ()

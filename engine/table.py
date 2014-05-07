@@ -837,7 +837,7 @@ class editor(object):
         if self._chars_valid:
             try:
                 if self._candidates:
-                    self._u_chars.insert(self._cursor[0], self._chars_valid)
+                    self._u_chars.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][0])
                     self._strings.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][1])
                     self._cursor[0] += 1
                     if self._py_mode:
@@ -854,7 +854,7 @@ class editor(object):
     def auto_commit_to_preedit (self):
         '''Add selected phrase in lookup table to preedit string'''
         try:
-            self._u_chars.insert(self._cursor[0], self._chars_valid)
+            self._u_chars.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][0])
             self._strings.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][1])
             self._cursor[0] += 1
             self.clear_input()

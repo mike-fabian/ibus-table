@@ -250,8 +250,10 @@ class editor(object):
         # the same candidate list is shown as before the last 'g' had
         # been entered.
         self._strings = []
-        # self._cursor: the caret position in preedit phrases
-        self._cursor = [0,0]
+        # self._cursor_precommit: The cursor
+        # position inthe array of strings which have already been
+        # committed to preëdit but not yet “really” committed.
+        self._cursor_precommit = 0
         # self._candidates holds the “best” candidates matching the user input
         # [(tabkeys, phrase, freq, user_freq), ...]
         self._candidates = []
@@ -373,7 +375,7 @@ class editor(object):
         self.clear_input()
         self._u_chars = []
         self._strings = []
-        self._cursor = [0,0]
+        self._cursor_precommit = 0
         self._zi = u''
         self.update_candidates()
 
@@ -423,10 +425,10 @@ class editor(object):
             self._chars_valid = self._chars_valid[:-1]
             self._tabkeys = self._tabkeys[:-1]
             if (not self._chars_valid) and self._u_chars:
-                self._chars_valid = self._u_chars.pop(self._cursor[0] - 1)
+                self._chars_valid = self._u_chars.pop(self._cursor_precommit - 1)
                 self._tabkeys = self._chars_valid
-                self._strings.pop(self._cursor[0] - 1)
-                self._cursor[0] -= 1
+                self._strings.pop(self._cursor_precommit - 1)
+                self._cursor_precommit -= 1
         self.update_candidates ()
         return _c
 
@@ -459,11 +461,11 @@ class editor(object):
             self.commit_to_preedit()
         if not self._strings:
             return
-        if self._cursor[0] <= 0:
+        if self._cursor_precommit <= 0:
             return
-        self._u_chars = self._u_chars[self._cursor[0]:]
-        self._strings = self._strings[self._cursor[0]:]
-        self._cursor[0] = 0
+        self._u_chars = self._u_chars[self._cursor_precommit:]
+        self._strings = self._strings[self._cursor_precommit:]
+        self._cursor_precommit = 0
 
     def remove_preedit_after_cursor(self):
         '''Remove preëdit right of cursor'''
@@ -473,11 +475,11 @@ class editor(object):
             self.commit_to_preedit()
         if not self._strings:
             return
-        if self._cursor[0] >= len(self._strings):
+        if self._cursor_precommit >= len(self._strings):
             return
-        self._u_chars = self._u_chars[:self._cursor[0]]
-        self._strings = self._strings[:self._cursor[0]]
-        self._cursor[0] = len(self._strings)
+        self._u_chars = self._u_chars[:self._cursor_precommit]
+        self._strings = self._strings[:self._cursor_precommit]
+        self._cursor_precommit = len(self._strings)
 
     def remove_preedit_character_before_cursor(self):
         '''Remove character before cursor in strings comitted to preëdit'''
@@ -487,11 +489,11 @@ class editor(object):
             self.commit_to_preedit()
         if not self._strings:
             return
-        if self._cursor[0] < 1:
+        if self._cursor_precommit < 1:
             return
-        self._cursor[0] -= 1
-        self._chars_valid = self._u_chars.pop(self._cursor[0])
-        self._strings.pop(self._cursor[0])
+        self._cursor_precommit -= 1
+        self._chars_valid = self._u_chars.pop(self._cursor_precommit)
+        self._strings.pop(self._cursor_precommit)
         self.update_candidates()
 
     def remove_preedit_character_after_cursor (self):
@@ -502,10 +504,10 @@ class editor(object):
             self.commit_to_preedit()
         if not self._strings:
             return
-        if self._cursor[0] > len(self._strings) - 1:
+        if self._cursor_precommit > len(self._strings) - 1:
             return
-        self._u_chars.pop(self._cursor[0])
-        self._strings.pop(self._cursor[0])
+        self._u_chars.pop(self._cursor_precommit)
+        self._strings.pop(self._cursor_precommit)
 
     def get_preedit_tabkeys_parts(self):
         '''Returns the tabkeys which were used to type the parts
@@ -537,8 +539,8 @@ class editor(object):
         if self.get_input_chars():
             current_edit = self.get_input_chars()
         if self._u_chars:
-            left_of_current_edit = tuple(self._u_chars[:self._cursor[0]])
-            right_of_current_edit = tuple(self._u_chars[self._cursor[0]:])
+            left_of_current_edit = tuple(self._u_chars[:self._cursor_precommit])
+            right_of_current_edit = tuple(self._u_chars[self._cursor_precommit:])
         return (left_of_current_edit, current_edit, right_of_current_edit)
 
     def get_preedit_string_parts(self):
@@ -571,8 +573,8 @@ class editor(object):
         elif self.get_input_chars():
                 current_edit = self.get_input_chars()
         if self._strings:
-            left_of_current_edit = tuple(self._strings[:self._cursor[0]])
-            right_of_current_edit = tuple(self._strings[self._cursor[0]:])
+            left_of_current_edit = tuple(self._strings[:self._cursor_precommit])
+            right_of_current_edit = tuple(self._strings[self._cursor_precommit:])
         return (left_of_current_edit, current_edit, right_of_current_edit)
 
     def get_preedit_string_complete(self):
@@ -584,10 +586,9 @@ class editor(object):
     def get_caret (self):
         '''Get caret position in preëdit string'''
         caret = 0
-        if self._cursor[0] and self._strings:
-            for x in self._strings[:self._cursor[0]]:
+        if self._cursor_precommit and self._strings:
+            for x in self._strings[:self._cursor_precommit]:
                 caret += len(x)
-        caret += self._cursor[1]
         if self._candidates:
             caret += len(
                 self._candidates[int(self._lookup_table.get_cursor_pos())][1])
@@ -603,12 +604,12 @@ class editor(object):
             self.commit_to_preedit()
         if not self._strings:
             return
-        if self._cursor[0] <= 0:
+        if self._cursor_precommit <= 0:
             return
-        if len(self._strings[self._cursor[0]-1]) <= 1:
-            self._cursor[0] -= 1
+        if len(self._strings[self._cursor_precommit-1]) <= 1:
+            self._cursor_precommit -= 1
         else:
-            self.split_strings_committed_to_preedit(self._cursor[0]-1, -1)
+            self.split_strings_committed_to_preedit(self._cursor_precommit-1, -1)
         self.update_candidates()
 
     def arrow_right(self):
@@ -619,11 +620,11 @@ class editor(object):
             self.commit_to_preedit()
         if not self._strings:
             return
-        if self._cursor[0] >= len(self._strings):
+        if self._cursor_precommit >= len(self._strings):
             return
-        self._cursor[0] += 1
-        if len(self._strings[self._cursor[0]-1]) > 1:
-            self.split_strings_committed_to_preedit(self._cursor[0]-1, 1)
+        self._cursor_precommit += 1
+        if len(self._strings[self._cursor_precommit-1]) > 1:
+            self.split_strings_committed_to_preedit(self._cursor_precommit-1, 1)
         self.update_candidates()
 
     def control_arrow_left(self):
@@ -634,7 +635,7 @@ class editor(object):
             self.commit_to_preedit()
         if not self._strings:
             return
-        self._cursor[0] = 0
+        self._cursor_precommit = 0
         self.update_candidates ()
 
     def control_arrow_right(self):
@@ -645,7 +646,7 @@ class editor(object):
             self.commit_to_preedit()
         if not self._strings:
             return
-        self._cursor[0] = len(self._strings)
+        self._cursor_precommit = len(self._strings)
         self.update_candidates ()
 
     def append_candidate_to_lookup_table(self, tabkeys=u'', phrase=u'', freq=0, user_freq=0):
@@ -837,9 +838,9 @@ class editor(object):
         if self._chars_valid:
             try:
                 if self._candidates:
-                    self._u_chars.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][0])
-                    self._strings.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][1])
-                    self._cursor[0] += 1
+                    self._u_chars.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][0])
+                    self._strings.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][1])
+                    self._cursor_precommit += 1
                     if self._py_mode:
                         self._zi = self._candidates[self.get_cursor_pos()][1]
                 self.clear_input ()
@@ -854,9 +855,9 @@ class editor(object):
     def auto_commit_to_preedit (self):
         '''Add selected phrase in lookup table to preedit string'''
         try:
-            self._u_chars.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][0])
-            self._strings.insert(self._cursor[0], self._candidates[self.get_cursor_pos()][1])
-            self._cursor[0] += 1
+            self._u_chars.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][0])
+            self._strings.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][1])
+            self._cursor_precommit += 1
             self.clear_input()
             self.update_candidates()
         except:

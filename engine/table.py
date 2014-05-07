@@ -1810,9 +1810,6 @@ class tabengine (IBus.Engine):
                     else:
                         self.commit_string (sp_res[1])
                     self._check_phrase(tabkeys=sp_res[2], phrase=sp_res[1])
-                else:
-                    if sp_res[1] == u' ':
-                        self.commit_string (cond_letter_translate (u" "))
                 if o_py != self._editor._py_mode:
                     self._refresh_properties ()
                     self._update_ui ()

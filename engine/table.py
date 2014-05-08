@@ -1854,7 +1854,6 @@ class tabengine (IBus.Engine):
                 self._update_ui ()
                 return res
             else:
-                o_py = self._editor._py_mode
                 sp_res = self._editor.space ()
                 #return (KeyProcessResult,whethercommit,commitstring)
                 if sp_res[0]:
@@ -1863,9 +1862,6 @@ class tabengine (IBus.Engine):
                     else:
                         self.commit_string (sp_res[1])
                     self._check_phrase(tabkeys=sp_res[2], phrase=sp_res[1])
-                if o_py != self._editor._py_mode:
-                    self._refresh_properties ()
-                    self._update_ui ()
                 return True
         # now we ignore all else hotkeys
         elif key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
@@ -1938,12 +1934,8 @@ class tabengine (IBus.Engine):
             input_keys = self._editor.get_all_input_strings ()
             res = self._editor.select_key (keychar)
             if res:
-                o_py = self._editor._py_mode
                 commit_string = self._editor.get_preedit_string_complete()
                 self.commit_string (commit_string)
-                if o_py != self._editor._py_mode:
-                    self._refresh_properties ()
-                    self._update_ui ()
                 # modify freq info
                 self._check_phrase(tabkeys=input_keys, phrase=commit_string)
             return True
@@ -1954,11 +1946,7 @@ class tabengine (IBus.Engine):
             else:
                 self._editor.commit_to_preedit ()
                 commit_string = self._editor.get_preedit_string_complete()
-            # we need to take care of the py_mode here :)
-            py_mode = self._editor._py_mode
-            self._editor.clear ()
-            if py_mode:
-                self._refresh_properties ()
+            self._editor.clear()
             if ascii_ispunct(keychar):
                 self.commit_string ( commit_string + cond_punct_translate(keychar))
             else:

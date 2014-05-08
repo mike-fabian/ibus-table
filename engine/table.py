@@ -1039,13 +1039,6 @@ class editor(object):
             return
         self.remove_preedit_character_after_cursor()
 
-    def toggle_tab_py_mode (self):
-        '''Toggle between Pinyin Mode and Table Mode'''
-        if self._chars_valid:
-            self.commit_to_preedit ()
-        self._py_mode = not (self._py_mode)
-        return True
-
     def cycle_next_cand(self):
         '''Cycle cursor to next candidate in the page.'''
         total = len(self._candidates)
@@ -1373,7 +1366,7 @@ class tabengine (IBus.Engine):
         if property == u"status":
             self._change_mode ()
         elif property == u'py_mode' and self._ime_py:
-            self._editor.toggle_tab_py_mode ()
+            self.toggle_tab_py_mode()
         elif property == u'onechar':
             self._editor._onechar = not self._editor._onechar
             self._config.set_value(self._config_section,
@@ -1532,6 +1525,13 @@ class tabengine (IBus.Engine):
                 self._save_user_start = now
         return True
 
+    def toggle_tab_py_mode(self):
+        '''Toggle between Pinyin Mode and Table Mode'''
+        self._editor.commit_to_preedit()
+        self._editor._py_mode = not (self._editor._py_mode)
+        self._refresh_properties()
+        self._update_ui()
+
     def commit_string (self,string):
         self._editor.clear ()
         self._update_ui ()
@@ -1682,10 +1682,8 @@ class tabengine (IBus.Engine):
         # We have to process the pinyin mode change key event here,
         # because we ignore all Release event below.
         if self._match_hotkey (key, IBus.KEY_Shift_R, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK) and self._ime_py:
-            res = self._editor.toggle_tab_py_mode ()
-            self._refresh_properties ()
-            self._update_ui ()
-            return res
+            self.toggle_tab_py_mode()
+            return True
         # process commit to preedit
         if self._match_hotkey (key, IBus.KEY_Shift_R, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK) or self._match_hotkey (key, IBus.KEY_Shift_L, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK):
             res = self._editor.commit_to_preedit()

@@ -1462,11 +1462,11 @@ class tabengine (IBus.Engine):
 
     def _update_aux (self):
         '''Update Aux String in UI'''
-        _ic = self._editor.get_aux_strings ()
-        if _ic:
+        aux_string = self._editor.get_aux_strings()
+        if aux_string:
             attrs = IBus.AttrList()
-            attrs.append(IBus.attr_foreground_new(rgb(0x95,0x15,0xb5),0, len(_ic)))
-            text = IBus.Text.new_from_string(_ic)
+            attrs.append(IBus.attr_foreground_new(rgb(0x95,0x15,0xb5),0, len(aux_string)))
+            text = IBus.Text.new_from_string(aux_string)
             i = 0
             while attrs.get(i) != None:
                 attr = attrs.get(i)
@@ -1476,7 +1476,7 @@ class tabengine (IBus.Engine):
                                       attr.get_end_index())
                 i += 1
             visible = True
-            if not _ic or not self._always_show_lookup:
+            if not aux_string or not self._always_show_lookup:
                 visible = False
             super(tabengine, self).update_auxiliary_text(text, visible)
         else:

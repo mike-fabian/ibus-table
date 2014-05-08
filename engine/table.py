@@ -1963,7 +1963,6 @@ class tabengine (IBus.Engine):
             return True
         return False
 
-    # below for initial test
     def do_focus_in (self):
         if self._on:
             self.register_properties (self.properties)
@@ -1985,7 +1984,6 @@ class tabengine (IBus.Engine):
 
     def do_disable (self):
         self._on = False
-
 
     def do_page_up (self):
         if self._editor.page_up ():

@@ -1469,8 +1469,7 @@ class tabengine (IBus.Engine):
                                       attr.get_end_index())
                 i += 1
             visible = True
-            if self._editor._lookup_table.get_number_of_candidates() == 0 \
-               or not self._always_show_lookup:
+            if not _ic or not self._always_show_lookup:
                 visible = False
             super(tabengine, self).update_auxiliary_text(text, visible)
         else:

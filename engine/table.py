@@ -277,8 +277,6 @@ class editor(object):
         self.init_select_keys()
         # self._py_mode: whether in pinyin mode
         self._py_mode = False
-        # self._zi: the last Zi commit to preedit
-        self._zi = u''
         # self._onechar: whether we only select single character
         self._onechar = variant_to_value(self._config.get_value(
                 self._config_section,
@@ -376,7 +374,6 @@ class editor(object):
         self._u_chars = []
         self._strings = []
         self._cursor_precommit = 0
-        self._zi = u''
         self.update_candidates()
 
     def is_empty(self):
@@ -397,7 +394,6 @@ class editor(object):
 
     def add_input(self,c):
         '''add input character'''
-        self._zi = u''
         if (len(self._chars_valid) == self._max_key_len and (not self._py_mode)) or (len(self._chars_valid) == 7 and self._py_mode ) :
             self.auto_commit_to_preedit()
             res = self.add_input (c)
@@ -841,8 +837,6 @@ class editor(object):
                     self._u_chars.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][0])
                     self._strings.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][1])
                     self._cursor_precommit += 1
-                    if self._py_mode:
-                        self._zi = self._candidates[self.get_cursor_pos()][1]
                 self.clear_input ()
                 self.update_candidates()
             except:
@@ -887,13 +881,29 @@ class editor(object):
                 aux_string = aux_string.replace('!','1').replace('@','2').replace('#','3').replace('$','4').replace('%','5')
             return aux_string
 
+        # There are no input strings at the moment. But there could
+        # be stuff committed to the preëdit. If there is something
+        # committed to the preëdit, show some information in the
+        # auxiliary text.
+        #
+        # For the character at the position of the cursor in the
+        # preëdit, show a list of possible input key sequences which
+        # could be used to type that character at the left side of the
+        # auxiliary text.
+        #
+        # If the preëdit is longer than one character, show the input
+        # key sequence which will be defined for the complete current
+        # contents of the preëdit, if the preëdit is committed.
         aux_string = u''
-        if self._zi:
-            # we have pinyin result
-            aux_string = u' '.join(self.db.find_zi_code(self._zi))
+        if self._strings:
+            if self._cursor_precommit >= len(self._strings):
+                char = self._strings[-1][0]
+            else:
+                char = self._strings[self._cursor_precommit][0]
+            aux_string = u' '.join(self.db.find_zi_code(char))
         cstr = u''.join(self._strings)
         if self.db.user_can_define_phrase:
-            if len (cstr ) > 1:
+            if len(cstr) > 1:
                 aux_string += (u'\t#: ' + self.db.parse_phrase(cstr))
         return aux_string
 
@@ -1018,7 +1028,6 @@ class editor(object):
 
     def remove_char(self):
         '''Process remove_char Key Event'''
-        self._zi = u''
         if self.get_input_chars():
             self.pop_input ()
             return
@@ -1026,14 +1035,12 @@ class editor(object):
 
     def delete(self):
         '''Process delete Key Event'''
-        self._zi = u''
         if self.get_input_chars():
             return
         self.remove_preedit_character_after_cursor()
 
     def toggle_tab_py_mode (self):
         '''Toggle between Pinyin Mode and Table Mode'''
-        self._zi = u''
         if self._chars_valid:
             self.commit_to_preedit ()
         self._py_mode = not (self._py_mode)

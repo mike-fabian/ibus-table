@@ -1463,6 +1463,10 @@ class tabengine (IBus.Engine):
     def _update_aux (self):
         '''Update Aux String in UI'''
         aux_string = self._editor.get_aux_strings()
+        if len(self._editor._candidates) > 0:
+            aux_string += u' (%d / %d)' %(
+                self._editor._lookup_table.get_cursor_pos() +1,
+                self._editor._lookup_table.get_number_of_candidates())
         if aux_string:
             attrs = IBus.AttrList()
             attrs.append(IBus.attr_foreground_new(rgb(0x95,0x15,0xb5),0, len(aux_string)))

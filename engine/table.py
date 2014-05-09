@@ -1605,13 +1605,13 @@ class tabengine (IBus.Engine):
         return False
 
     def do_candidate_clicked(self, index, button, state):
-        input_keys = self._editor.get_all_input_strings()
-        res = self._editor.commit_to_preedit_current_page(index)
-        if res:
+        if self._editor.commit_to_preedit_current_page(index): # commits to preëdit
+            input_keys = self._editor.get_all_input_strings()
             commit_string = self._editor.get_preedit_string_complete()
             self.commit_string(commit_string)
             self._check_phrase(tabkeys=input_keys, phrase=commit_string)
-        return res
+            return True
+        return False
 
     def do_process_key_event(self, keyval, keycode, state):
         '''Process Key Events
@@ -1942,9 +1942,8 @@ class tabengine (IBus.Engine):
             return res
 
         elif keychar in self._editor.get_select_keys() and self._editor._candidates:
-            input_keys = self._editor.get_all_input_strings ()
-            res = self._editor.select_key (keychar)
-            if res:
+            if self._editor.select_key(keychar): # commits to preëdit
+                input_keys = self._editor.get_all_input_strings()
                 commit_string = self._editor.get_preedit_string_complete()
                 self.commit_string (commit_string)
                 # modify freq info

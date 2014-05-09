@@ -432,13 +432,6 @@ class editor(object):
         '''get characters held, valid and invalid'''
         return self._chars_valid + self._chars_invalid
 
-    def get_all_input_strings (self):
-        '''Get all uncommitted input characters, used in English mode or direct commit'''
-        (left_tabkeys,
-         current_tabkeys,
-         right_tabkeys) = self.get_preedit_tabkeys_parts()
-        return  u''.join(left_tabkeys) + current_tabkeys + u''.join(right_tabkeys)
-
     def split_strings_committed_to_preedit(self, index, index_in_phrase):
         head = self._strings[index][:index_in_phrase]
         tail = self._strings[index][index_in_phrase:]
@@ -539,6 +532,13 @@ class editor(object):
             right_of_current_edit = tuple(self._u_chars[self._cursor_precommit:])
         return (left_of_current_edit, current_edit, right_of_current_edit)
 
+    def get_preedit_tabkeys_complete(self):
+        '''Returns the tabkeys which belong to the parts of the preëdit string as a single string'''
+        (left_tabkeys,
+         current_tabkeys,
+         right_tabkeys) = self.get_preedit_tabkeys_parts()
+        return  u''.join(left_tabkeys) + current_tabkeys + u''.join(right_tabkeys)
+
     def get_preedit_string_parts(self):
         '''Returns the phrases which are parts of the preëdit string.
 
@@ -574,6 +574,7 @@ class editor(object):
         return (left_of_current_edit, current_edit, right_of_current_edit)
 
     def get_preedit_string_complete(self):
+        '''Returns the phrases which are parts of the preëdit string as a single string'''
         (left_strings,
          current_string,
          right_strings) = self.get_preedit_string_parts()
@@ -1067,7 +1068,7 @@ class editor(object):
             return (False, u'', u'')
         if not self.is_empty():
             self.commit_to_preedit()
-        istr = self.get_all_input_strings()
+        istr = self.get_preedit_tabkeys_complete()
         pstr = self.get_preedit_string_complete()
         self.clear()
         if istr or pstr:
@@ -1606,7 +1607,7 @@ class tabengine (IBus.Engine):
 
     def do_candidate_clicked(self, index, button, state):
         if self._editor.commit_to_preedit_current_page(index): # commits to preëdit
-            input_keys = self._editor.get_all_input_strings()
+            input_keys = self._editor.get_preedit_tabkeys_complete()
             commit_string = self._editor.get_preedit_string_complete()
             self.commit_string(commit_string)
             self._check_phrase(tabkeys=input_keys, phrase=commit_string)
@@ -1761,7 +1762,7 @@ class tabengine (IBus.Engine):
                 self._editor.commit_to_preedit ()
                 commit_string = self._editor.get_preedit_string_complete() + os.linesep
             else:
-                commit_string = self._editor.get_all_input_strings ()
+                commit_string = self._editor.get_preedit_tabkeys_complete ()
             self.commit_string (commit_string)
             return True
 
@@ -1943,7 +1944,7 @@ class tabengine (IBus.Engine):
 
         elif keychar in self._editor.get_select_keys() and self._editor._candidates:
             if self._editor.select_key(keychar): # commits to preëdit
-                input_keys = self._editor.get_all_input_strings()
+                input_keys = self._editor.get_preedit_tabkeys_complete()
                 commit_string = self._editor.get_preedit_string_complete()
                 self.commit_string (commit_string)
                 # modify freq info
@@ -1952,7 +1953,7 @@ class tabengine (IBus.Engine):
 
         elif key.code <= 127:
             if not self._editor._candidates:
-                commit_string = self._editor.get_all_input_strings ()
+                commit_string = self._editor.get_preedit_tabkeys_complete()
             else:
                 self._editor.commit_to_preedit ()
                 commit_string = self._editor.get_preedit_string_complete()

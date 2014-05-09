@@ -829,22 +829,35 @@ class editor(object):
 
         return True
 
-    def commit_to_preedit (self):
-        '''Add selected phrase in lookup table to preedit string'''
-        if self._chars_valid:
-            try:
-                if self._candidates:
-                    self._u_chars.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][0])
-                    self._strings.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][1])
-                    self._cursor_precommit += 1
-                self.clear_input ()
-                self.update_candidates()
-            except:
-                import traceback
-                traceback.print_exc()
-            return True
-        else:
+    def commit_to_preedit(self):
+        '''Add selected phrase in lookup table to preëdit string'''
+        if not self._chars_valid:
             return False
+        if self._candidates:
+            self._u_chars.insert(self._cursor_precommit,
+                                 self._candidates[self.get_cursor_pos()][0])
+            self._strings.insert(self._cursor_precommit,
+                                 self._candidates[self.get_cursor_pos()][1])
+            self._cursor_precommit += 1
+        self.clear_input()
+        self.update_candidates()
+        return True
+
+    def commit_to_preedit_current_page(self, index):
+        '''
+        Commits the candidate at position “index” in the current
+        page of the lookup table to the preëdit. Does not yet “really”
+        commit the candidate, only to the preëdit.
+        '''
+        cursor_pos = self._lookup_table.get_cursor_pos()
+        cursor_in_page = self._lookup_table.get_cursor_in_page()
+        current_page_start = cursor_pos - cursor_in_page
+        real_index = current_page_start + index
+        if real_index >= len(self._candidates):
+            # the index given is out of range we do not commit anything
+            return False
+        self._lookup_table.set_cursor_pos(real_index)
+        return self.commit_to_preedit()
 
     def auto_commit_to_preedit (self):
         '''Add selected phrase in lookup table to preedit string'''
@@ -970,17 +983,8 @@ class editor(object):
         '''
         if char not in self._select_keys:
             return False
-        index = self._select_keys.index(char)
-        cursor_pos = self._lookup_table.get_cursor_pos()
-        cursor_in_page = self._lookup_table.get_cursor_in_page()
-        current_page_start = cursor_pos - cursor_in_page
-        real_index = current_page_start + index
-        if real_index >= len (self._candidates):
-            # the index given is out of range we do not commit anything
-            return False
-        self._lookup_table.set_cursor_pos(real_index)
-        self.commit_to_preedit ()
-        return True
+        return self.commit_to_preedit_current_page(
+            self._select_keys.index(char))
 
     def remove_candidate_from_user_database(self, char):
         '''Remove a candidate displayed in the lookup table from the user database.
@@ -1599,6 +1603,15 @@ class tabengine (IBus.Engine):
                 return True
 
         return False
+
+    def do_candidate_clicked(self, index, button, state):
+        input_keys = self._editor.get_all_input_strings()
+        res = self._editor.commit_to_preedit_current_page(index)
+        if res:
+            commit_string = self._editor.get_preedit_string_complete()
+            self.commit_string(commit_string)
+            self._check_phrase(tabkeys=input_keys, phrase=commit_string)
+        return res
 
     def do_process_key_event(self, keyval, keycode, state):
         '''Process Key Events

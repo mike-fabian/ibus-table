@@ -668,10 +668,12 @@ class tabsqlitedb:
                           x[0]       # tabkeys alphabetical
                       ))[:100]
 
-    def select_words(self, tabkeys, onechar=False, bitmask=0xff):
+    def select_words(self, tabkeys=u'', onechar=False, bitmask=0xff):
         '''
         Get matching phrases for tabkeys from the database.
         '''
+        if not tabkeys:
+            return []
         one_char_condition = ''
         if onechar:
             # for some users really like to select only single characters
@@ -718,11 +720,13 @@ class tabsqlitedb:
         best = self.best_candidates(phrase_frequencies.values())
         return best
 
-    def select_zi(self, tabkeys, bitmask=0xff):
+    def select_chinese_characters_by_pinyin(self, tabkeys=u'', bitmask=0xff):
         '''
         Get Chinese characters matching the pinyin given by tabkeys
         from the database.
         '''
+        if not tabkeys:
+            return []
         sqlstr = '''
         SELECT pinyin, zi, freq FROM main.pinyin WHERE pinyin LIKE :tabkeys
         ORDER BY freq DESC, pinyin ASC

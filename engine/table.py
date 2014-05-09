@@ -748,7 +748,8 @@ class editor(object):
                         else:
                             self._candidates = self.db.select_words(self._tabkeys, self._onechar)
                     else:
-                        self._candidates = self.db.select_zi(self._tabkeys)
+                        self._candidates = self.db.select_chinese_characters_by_pinyin(
+                            tabkeys=self._tabkeys, bitmask=0xff)
                     self._chars_valid_when_update_candidates_was_last_called = self._chars_valid
                 else:
                     self._candidates =[]

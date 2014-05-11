@@ -215,11 +215,16 @@ class editor(object):
         self._max_key_len = int(max_key_length)
         self._valid_input_chars = valid_input_chars
         #
-        # The values below will be reset in self.clear()
+        # The values below will be reset in self.clear_input_not_committed_to_preedit()
         self._chars_valid = u''    # valid user input in table mode
         self._chars_invalid = u''  # invalid user input in table mode
         self._chars_valid_when_update_candidates_was_last_called = u''
         self._tabkeys = u'' # the input characters typed by the user
+        # self._candidates holds the “best” candidates matching the user input
+        # [(tabkeys, phrase, freq, user_freq), ...]
+        self._candidates = []
+        self._candidates_previous = []
+
         # self._u_chars: holds the user input of the phrases which
         # have been automatically committed to preedit (but not yet
         # “really” committed).
@@ -254,10 +259,7 @@ class editor(object):
         # position inthe array of strings which have already been
         # committed to preëdit but not yet “really” committed.
         self._cursor_precommit = 0
-        # self._candidates holds the “best” candidates matching the user input
-        # [(tabkeys, phrase, freq, user_freq), ...]
-        self._candidates = []
-        self._candidate_previous = []
+
         # __orientation: lookup table orientation
         __orientation = variant_to_value(self._config.get_value(
                 self._config_section,
@@ -368,9 +370,11 @@ class editor(object):
                 "ChineseMode",
                 GLib.Variant.new_int32(self._chinese_mode))
 
-    def clear (self):
-        '''Remove data holded'''
-        self.clear_input()
+    def clear_all_input_and_preedit(self):
+        '''
+        Clear all input, whether committed to preëdit or not.
+        '''
+        self.clear_input_not_committed_to_preedit()
         self._u_chars = []
         self._strings = []
         self._cursor_precommit = 0
@@ -379,9 +383,9 @@ class editor(object):
     def is_empty(self):
         return u'' == self._chars_valid + self._chars_invalid
 
-    def clear_input (self):
+    def clear_input_not_committed_to_preedit(self):
         '''
-        Remove input characters held for Table mode,
+        Clear the input which has not yet been committed to preëdit.
         '''
         self._chars_valid = u''
         self._chars_invalid = u''
@@ -841,7 +845,7 @@ class editor(object):
             self._strings.insert(self._cursor_precommit,
                                  self._candidates[self.get_cursor_pos()][1])
             self._cursor_precommit += 1
-        self.clear_input()
+        self.clear_input_not_committed_to_preedit()
         self.update_candidates()
         return True
 
@@ -867,7 +871,7 @@ class editor(object):
             self._u_chars.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][0])
             self._strings.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][1])
             self._cursor_precommit += 1
-            self.clear_input()
+            self.clear_input_not_committed_to_preedit()
             self.update_candidates()
         except:
             import traceback
@@ -1071,7 +1075,7 @@ class editor(object):
             self.commit_to_preedit()
         istr = self.get_preedit_tabkeys_complete()
         pstr = self.get_preedit_string_complete()
-        self.clear()
+        self.clear_all_input_and_preedit()
         if istr or pstr:
             return (True, pstr, istr)
         else:
@@ -1231,7 +1235,7 @@ class tabengine (IBus.Engine):
                 self._sync_user_db)
 
     def reset (self):
-        self._editor.clear ()
+        self._editor.clear_all_input_and_preedit()
         self._double_quotation_state = False
         self._single_quotation_state = False
         self._prev_key = None
@@ -1539,7 +1543,7 @@ class tabengine (IBus.Engine):
         self._update_ui()
 
     def commit_string (self,string):
-        self._editor.clear ()
+        self._editor.clear_all_input_and_preedit()
         self._update_ui ()
         super(tabengine,self).commit_text(IBus.Text.new_from_string(string))
         if len(string) > 0:
@@ -1958,7 +1962,7 @@ class tabengine (IBus.Engine):
             else:
                 self._editor.commit_to_preedit ()
                 commit_string = self._editor.get_preedit_string_complete()
-            self._editor.clear()
+            self._editor.clear_all_input_and_preedit()
             if ascii_ispunct(keychar):
                 self.commit_string ( commit_string + cond_punct_translate(keychar))
             else:
@@ -1976,7 +1980,7 @@ class tabengine (IBus.Engine):
     def do_focus_out (self):
         if self._has_input_purpose:
             self._input_purpose = 0
-        self._editor.clear()
+        self._editor.clear_all_input_and_preedit()
 
     def do_set_content_type(self, purpose, hints):
         if self._has_input_purpose:

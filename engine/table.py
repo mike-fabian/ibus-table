@@ -1657,6 +1657,18 @@ class tabengine (IBus.Engine):
         else:
             return self._english_mode_process_key_event (key)
 
+    def cond_letter_translate(self, char):
+        if self._full_width_letter[self._mode]:
+            return self._convert_to_full_width(char)
+        else:
+            return char
+
+    def cond_punct_translate(self, char):
+        if self._full_width_punct[self._mode]:
+            return self._convert_to_full_width(char)
+        else:
+            return char
+
     def _english_mode_process_key_event (self, key):
         '''English Mode Process Key Event'''
         # Ignore key release event
@@ -1669,18 +1681,11 @@ class tabengine (IBus.Engine):
         if key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
             return False
 
-        cond_letter_translate = lambda c: \
-            self._convert_to_full_width (c) if self._full_width_letter [
-                    self._mode] else c
-        cond_punct_translate = lambda c: \
-            self._convert_to_full_width (c) if self._full_width_punct [
-                    self._mode] else c
-
         keychar = IBus.keyval_to_unicode(key.code)
         if ascii_ispunct(keychar):
-            trans_char = cond_punct_translate (keychar)
+            trans_char = self.cond_punct_translate(keychar)
         else:
-            trans_char = cond_letter_translate (keychar)
+            trans_char = self.cond_letter_translate(keychar)
 
         if trans_char == keychar:
             return False
@@ -1693,10 +1698,6 @@ class tabengine (IBus.Engine):
 
     def _table_mode_process_key_event (self, key):
         '''Xingma Mode Process Key Event'''
-        cond_letter_translate = lambda c: \
-            self._convert_to_full_width (c) if self._full_width_letter [self._mode] else c
-        cond_punct_translate = lambda c: \
-            self._convert_to_full_width (c) if self._full_width_punct [self._mode] else c
 
         # We have to process the pinyin mode change key event here,
         # because we ignore all Release event below.
@@ -1744,9 +1745,9 @@ class tabengine (IBus.Engine):
                             (IBus.ModifierType.MOD1_MASK |
                                 IBus.ModifierType.CONTROL_MASK))):
                 if ascii_ispunct(keychar):
-                    trans_char = cond_punct_translate (keychar)
+                    trans_char = self.cond_punct_translate(keychar)
                 else:
-                    trans_char = cond_letter_translate (keychar)
+                    trans_char = self.cond_letter_translate(keychar)
                 if trans_char == keychar:
                     return False
                 else:
@@ -1909,9 +1910,9 @@ class tabengine (IBus.Engine):
                     reprocess_last_key=True
                     key_char=''
                 elif ascii_ispunct(keychar):
-                    key_char = cond_punct_translate (keychar)
+                    key_char = self.cond_punct_translate(keychar)
                 else:
-                    key_char = cond_letter_translate (keychar)
+                    key_char = self.cond_letter_translate(keychar)
                 sp_res = self._editor.space ()
                 if sp_res[0]:
                     self.commit_string (sp_res[1] + key_char)
@@ -1964,9 +1965,9 @@ class tabengine (IBus.Engine):
                 commit_string = self._editor.get_preedit_string_complete()
             self._editor.clear_all_input_and_preedit()
             if ascii_ispunct(keychar):
-                self.commit_string ( commit_string + cond_punct_translate(keychar))
+                self.commit_string(commit_string + self.cond_punct_translate(keychar))
             else:
-                self.commit_string ( commit_string + cond_letter_translate(keychar))
+                self.commit_string(commit_string + self.cond_letter_translate(keychar))
 
             return True
         return False

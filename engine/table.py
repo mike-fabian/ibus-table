@@ -1674,27 +1674,20 @@ class tabengine (IBus.Engine):
         # Ignore key release event
         if key.mask & IBus.ModifierType.RELEASE_MASK:
             return True
-
         if key.code >= 128:
             return False
         # we ignore all hotkeys here
         if key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
             return False
-
         keychar = IBus.keyval_to_unicode(key.code)
         if ascii_ispunct(keychar):
             trans_char = self.cond_punct_translate(keychar)
         else:
             trans_char = self.cond_letter_translate(keychar)
-
         if trans_char == keychar:
             return False
-        else:
-            self.commit_string(trans_char)
-            return True
-
-        # should not reach there
-        return False
+        self.commit_string(trans_char)
+        return True
 
     def _table_mode_process_key_event (self, key):
         '''Xingma Mode Process Key Event'''

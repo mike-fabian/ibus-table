@@ -1669,8 +1669,7 @@ class tabengine (IBus.Engine):
         else:
             return char
 
-    def _english_mode_process_key_event (self, key):
-        '''English Mode Process Key Event'''
+    def _english_mode_process_key_event(self, key):
         # Ignore key release event
         if key.mask & IBus.ModifierType.RELEASE_MASK:
             return True
@@ -1689,8 +1688,7 @@ class tabengine (IBus.Engine):
         self.commit_string(trans_char)
         return True
 
-    def _table_mode_process_key_event (self, key):
-        '''Xingma Mode Process Key Event'''
+    def _table_mode_process_key_event(self, key):
 
         # We have to process the pinyin mode change key event here,
         # because we ignore all Release event below.

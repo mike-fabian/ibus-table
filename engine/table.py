@@ -212,7 +212,7 @@ class editor(object):
         engine_name = os.path.basename(self.db.filename).replace('.db', '')
         self._config_section = "engine/Table/%s" %engine_name.replace(' ','_')
         self._pt = phrase_table_index
-        self._max_key_len = int(max_key_length)
+        self._max_key_length = int(max_key_length)
         self._valid_input_chars = valid_input_chars
         #
         # The values below will be reset in self.clear_input_not_committed_to_preedit()
@@ -398,7 +398,7 @@ class editor(object):
 
     def add_input(self,c):
         '''add input character'''
-        if (len(self._chars_valid) == self._max_key_len and (not self._py_mode)) or (len(self._chars_valid) == 7 and self._py_mode ) :
+        if (len(self._chars_valid) == self._max_key_length and (not self._py_mode)) or (len(self._chars_valid) == 7 and self._py_mode):
             self.auto_commit_to_preedit()
             res = self.add_input (c)
             return res
@@ -1148,7 +1148,7 @@ class tabengine (IBus.Engine):
                     pagedown_prop.split(",")]
 
         self._pt = self.db.get_phrase_table_index ()
-        self._ml = int(self.db.get_ime_property ('max_key_length'))
+        self._max_key_length = int(self.db.get_ime_property ('max_key_length'))
 
         # name for config section
         self._engine_name = os.path.basename(self.db.filename).replace('.db', '')
@@ -1158,7 +1158,7 @@ class tabengine (IBus.Engine):
         self._config = self._bus.get_config ()
         self._config.connect ("value-changed", self.config_value_changed_cb)
         # Containers we used:
-        self._editor = editor(self._config, self._pt, self._valid_input_chars, self._ml, self.db)
+        self._editor = editor(self._config, self._pt, self._valid_input_chars, self._max_key_length, self.db)
 
         # some other vals we used:
         # self._prev_key: hold the key event last time.
@@ -1880,9 +1880,10 @@ class tabengine (IBus.Engine):
             return False
 
         elif keychar and (keychar in self._valid_input_chars or (self._editor._py_mode and keychar in u'abcdefghijklmnopqrstuvwxyz!@#$%')):
-            if self._auto_commit and (len(self._editor._chars_valid) == self._ml \
-                or len(self._editor._chars_valid) in self.db.possible_tabkeys_lengths)\
-                and not self._editor._py_mode:
+            if (self._auto_commit
+                and (len(self._editor._chars_valid) == self._max_key_length
+                    or len(self._editor._chars_valid) in self.db.possible_tabkeys_lengths)
+                and not self._editor._py_mode):
                 # it is time to direct commit
                 sp_res = self._editor.space ()
                 #return (whethercommit,commitstring)
@@ -1915,7 +1916,7 @@ class tabengine (IBus.Engine):
                 return True
             else:
                 if self._auto_commit and self._editor.one_candidate () and \
-                        (len(self._editor._chars_valid) == self._ml \
+                        (len(self._editor._chars_valid) == self._max_key_length \
                             or not self.db._is_chinese):
                     # it is time to direct commit
                     sp_res = self._editor.space ()

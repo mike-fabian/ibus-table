@@ -1955,7 +1955,6 @@ class tabengine (IBus.Engine):
             else:
                 self._editor.commit_to_preedit ()
                 commit_string = self._editor.get_preedit_string_complete()
-            self._editor.clear_all_input_and_preedit()
             if ascii_ispunct(keychar):
                 self.commit_string(commit_string + self.cond_punct_translate(keychar))
             else:

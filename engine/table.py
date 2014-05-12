@@ -1688,42 +1688,51 @@ class tabengine (IBus.Engine):
         return True
 
     def _table_mode_process_key_event(self, key):
-
         # We have to process the pinyin mode change key event here,
         # because we ignore all Release event below.
-        if self._match_hotkey (key, IBus.KEY_Shift_R, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK) and self._ime_py:
+        if (self._ime_py
+            and self._match_hotkey(
+                key, IBus.KEY_Shift_R,
+                IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
             self.toggle_tab_py_mode()
             return True
         # process commit to preedit
-        if self._match_hotkey (key, IBus.KEY_Shift_R, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK) or self._match_hotkey (key, IBus.KEY_Shift_L, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK):
+        if (self._match_hotkey(
+                key, IBus.KEY_Shift_R,
+                IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+            or self._match_hotkey(
+                key, IBus.KEY_Shift_L,
+                IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
             res = self._editor.commit_to_preedit()
-            self._update_ui ()
+            self._update_ui()
             return res
 
         # Left ALT key to cycle candidates in the current page.
-        if self._match_hotkey (key, IBus.KEY_Alt_L, IBus.ModifierType.MOD1_MASK | IBus.ModifierType.RELEASE_MASK):
-            res = self._editor.cycle_next_cand ()
-            self._update_ui ()
+        if self._match_hotkey(
+                key, IBus.KEY_Alt_L,
+                IBus.ModifierType.MOD1_MASK | IBus.ModifierType.RELEASE_MASK):
+            res = self._editor.cycle_next_cand()
+            self._update_ui()
             return res
 
         # Match single char mode switch hotkey
-        if self._match_hotkey (key, IBus.KEY_comma, IBus.ModifierType.CONTROL_MASK):
-            self.do_property_activate ( u"onechar" )
+        if self._match_hotkey(key, IBus.KEY_comma, IBus.ModifierType.CONTROL_MASK):
+            self.do_property_activate (u"onechar")
             return True
+
         # Match direct commit mode switch hotkey
-        if self._match_hotkey (key, IBus.KEY_slash, IBus.ModifierType.CONTROL_MASK):
-            self.do_property_activate ( u"acommit" )
+        if self._match_hotkey(key, IBus.KEY_slash, IBus.ModifierType.CONTROL_MASK):
+            self.do_property_activate(u"acommit")
             return True
 
         # Match Chinese mode shift
-        if self._match_hotkey (key, IBus.KEY_semicolon, IBus.ModifierType.CONTROL_MASK):
-            self.do_property_activate ( u"cmode" )
+        if self._match_hotkey(key, IBus.KEY_semicolon, IBus.ModifierType.CONTROL_MASK):
+            self.do_property_activate(u"cmode")
             return True
 
         if key.mask & IBus.ModifierType.RELEASE_MASK:
             return True
 
-        #
         keychar = IBus.keyval_to_unicode(key.code)
 
         if self._editor.is_empty() and not self._editor.get_preedit_string_complete():
@@ -1743,40 +1752,59 @@ class tabengine (IBus.Engine):
                 else:
                     self.commit_string(trans_char)
                     return True
-
-            elif (key.code < 32 or key.code > 127) and ( keychar not in self._valid_input_chars ) \
-                    and(not self._editor._py_mode):
+            elif key.code < 32 and (keychar not in self._valid_input_chars):
                 return False
 
         if key.code == IBus.KEY_Escape:
-            self.reset ()
-            self._update_ui ()
+            self.reset()
+            self._update_ui()
             return True
 
-        elif key.code in (IBus.KEY_Return, IBus.KEY_KP_Enter):
+        if key.code in (IBus.KEY_Return, IBus.KEY_KP_Enter):
             if self._auto_select:
-                self._editor.commit_to_preedit ()
+                self._editor.commit_to_preedit()
                 commit_string = self._editor.get_preedit_string_complete() + os.linesep
             else:
                 commit_string = self._editor.get_preedit_tabkeys_complete ()
-            self.commit_string (commit_string)
+            self.commit_string(commit_string)
             return True
 
-        elif key.code in (IBus.KEY_Tab, IBus.KEY_KP_Tab) and self._auto_select:
-            self._editor.commit_to_preedit ()
+        if key.code in (IBus.KEY_Tab, IBus.KEY_KP_Tab) and self._auto_select:
+            # Used for example for the Russian transliteration method
+            # “translit”, which uses “auto select”. If for example
+            # a file with the name “шшш” exists and one types in
+            # a bash shell:
+            #
+            #     “ls sh”
+            #
+            # the “sh” is converted to “ш” and one sees
+            #
+            #     “ls ш”
+            #
+            # in the shell where the “ш” is still in preëdit
+            # because “shh” would be converted to “щ”, i.e. there
+            # is more than one candidate and the input method is still
+            # waiting whether one more “h” will be typed or not. But
+            # if the next character typed is a Tab, the preëdit is
+            # committed here and “False” is returned to pass the Tab
+            # character through to the bash to complete the file name
+            # to “шшш”.
+            self._editor.commit_to_preedit()
             self.commit_string(self._editor.get_preedit_string_complete())
+            return False
 
-        elif key.code in (IBus.KEY_Down, IBus.KEY_KP_Down) :
-            res = self._editor.cursor_down ()
-            self._update_ui ()
+        if key.code in (IBus.KEY_Down, IBus.KEY_KP_Down) :
+            res = self._editor.cursor_down()
+            self._update_ui()
             return res
 
-        elif key.code in (IBus.KEY_Up, IBus.KEY_KP_Up):
-            res = self._editor.cursor_up ()
-            self._update_ui ()
+        if key.code in (IBus.KEY_Up, IBus.KEY_KP_Up):
+            res = self._editor.cursor_up()
+            self._update_ui()
             return res
 
-        elif key.code in (IBus.KEY_Left, IBus.KEY_KP_Left) and key.mask & IBus.ModifierType.CONTROL_MASK:
+        if (key.code in (IBus.KEY_Left, IBus.KEY_KP_Left)
+            and key.mask & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
                 return False
             else:
@@ -1784,7 +1812,8 @@ class tabengine (IBus.Engine):
                 self._update_ui()
                 return True
 
-        elif key.code in (IBus.KEY_Right, IBus.KEY_KP_Right) and key.mask & IBus.ModifierType.CONTROL_MASK:
+        if (key.code in (IBus.KEY_Right, IBus.KEY_KP_Right)
+            and key.mask & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
                 return False
             else:
@@ -1792,7 +1821,7 @@ class tabengine (IBus.Engine):
                 self._update_ui()
                 return True
 
-        elif key.code in (IBus.KEY_Left, IBus.KEY_KP_Left):
+        if key.code in (IBus.KEY_Left, IBus.KEY_KP_Left):
             if not self._editor.get_preedit_string_complete():
                 return False
             else:
@@ -1800,7 +1829,7 @@ class tabengine (IBus.Engine):
                 self._update_ui()
                 return True
 
-        elif key.code in (IBus.KEY_Right, IBus.KEY_KP_Right):
+        if key.code in (IBus.KEY_Right, IBus.KEY_KP_Right):
             if not self._editor.get_preedit_string_complete():
                 return False
             else:
@@ -1808,7 +1837,7 @@ class tabengine (IBus.Engine):
                 self._update_ui()
                 return True
 
-        elif key.code == IBus.KEY_BackSpace and key.mask & IBus.ModifierType.CONTROL_MASK:
+        if key.code == IBus.KEY_BackSpace and key.mask & IBus.ModifierType.CONTROL_MASK:
             if not self._editor.get_preedit_string_complete():
                 return False
             else:
@@ -1816,7 +1845,7 @@ class tabengine (IBus.Engine):
                 self._update_ui()
                 return True
 
-        elif key.code == IBus.KEY_BackSpace:
+        if key.code == IBus.KEY_BackSpace:
             if not self._editor.get_preedit_string_complete():
                 return False
             else:
@@ -1824,7 +1853,7 @@ class tabengine (IBus.Engine):
                 self._update_ui()
                 return True
 
-        elif key.code == IBus.KEY_Delete  and key.mask & IBus.ModifierType.CONTROL_MASK:
+        if key.code == IBus.KEY_Delete  and key.mask & IBus.ModifierType.CONTROL_MASK:
             if not self._editor.get_preedit_string_complete():
                 return False
             else:
@@ -1832,7 +1861,7 @@ class tabengine (IBus.Engine):
                 self._update_ui()
                 return True
 
-        elif key.code == IBus.KEY_Delete:
+        if key.code == IBus.KEY_Delete:
             if not self._editor.get_preedit_string_complete():
                 return False
             else:
@@ -1840,54 +1869,57 @@ class tabengine (IBus.Engine):
                 self._update_ui()
                 return True
 
-        elif ( keychar in self._editor.get_select_keys() and
-                self._editor._candidates and
-                key.mask & IBus.ModifierType.CONTROL_MASK ):
-            res = self._editor.select_key (keychar)
-            self._update_ui ()
+        if (keychar in self._editor.get_select_keys()
+            and self._editor._candidates
+            and key.mask & IBus.ModifierType.CONTROL_MASK):
+            res = self._editor.select_key(keychar)
+            self._update_ui()
             return res
 
-        elif ( keychar in self._editor.get_select_keys() and
-                self._editor._candidates and
-                key.mask & IBus.ModifierType.MOD1_MASK ):
+        if (keychar in self._editor.get_select_keys()
+            and self._editor._candidates
+            and key.mask & IBus.ModifierType.MOD1_MASK):
             res = self._editor.remove_candidate_from_user_database(keychar)
-            self._update_ui ()
+            self._update_ui()
             return res
 
-        elif key.code == IBus.KEY_space:
+        if key.code == IBus.KEY_space:
             # if space is one of "page_down_keys" change to next page
-            #  on lookup page
+            # on lookup page
             if IBus.KEY_space in self._page_down_keys:
                 res = self._editor.page_down()
-                self._update_ui ()
+                self._update_ui()
                 return res
             else:
                 if self.commit_everything_unless_invalid():
                     if self._editor._auto_select:
                         self.commit_string(u' ')
                 return True
-        # now we ignore all else hotkeys
-        elif key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
+
+        # now we ignore all other hotkeys
+        if key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
             return False
 
-        elif key.mask & IBus.ModifierType.MOD1_MASK:
+        if key.mask & IBus.ModifierType.MOD1_MASK:
             return False
 
-        elif keychar and (keychar in self._valid_input_chars or (self._editor._py_mode and keychar in u'abcdefghijklmnopqrstuvwxyz!@#$%')):
+        if (keychar
+            and (keychar in self._valid_input_chars
+                 or (self._editor._py_mode
+                     and keychar in u'abcdefghijklmnopqrstuvwxyz!@#$%'))):
             if (self._auto_commit
                 and (len(self._editor._chars_valid) == self._max_key_length
                     or len(self._editor._chars_valid) in self.db.possible_tabkeys_lengths)
                 and not self._editor._py_mode):
                 self.commit_everything_unless_invalid()
-
-            res = self._editor.add_input ( keychar )
+            res = self._editor.add_input(keychar)
             if not res:
                 # If this input has no candidate but the previous had,
                 # we remove the last input, commit the previous candidate
                 # and reprocess the last input (auto-select mode)
                 reprocess_last_key=False
                 if self._auto_select and self._editor._candidates_previous:
-                    self._editor.pop_input ()
+                    self._editor.pop_input()
                     reprocess_last_key=True
                     key_char=''
                 elif ascii_ispunct(keychar):
@@ -1903,28 +1935,26 @@ class tabengine (IBus.Engine):
                         (len(self._editor._chars_valid) == self._max_key_length \
                             or not self.db._is_chinese):
                     self.commit_everything_unless_invalid()
-            self._update_ui ()
+            self._update_ui()
             return True
 
-        elif key.code in self._page_down_keys \
-                and self._editor._candidates:
+        if key.code in self._page_down_keys and self._editor._candidates:
             res = self._editor.page_down()
-            self._update_ui ()
+            self._update_ui()
             return res
 
-        elif key.code in self._page_up_keys \
-                and self._editor._candidates:
-            res = self._editor.page_up ()
-            self._update_ui ()
+        if key.code in self._page_up_keys and self._editor._candidates:
+            res = self._editor.page_up()
+            self._update_ui()
             return res
 
-        elif keychar in self._editor.get_select_keys() and self._editor._candidates:
+        if keychar in self._editor.get_select_keys() and self._editor._candidates:
             if self._editor.select_key(keychar): # commits to preëdit
                 self.commit_string(self._editor.get_preedit_string_complete(),
                                    tabkeys=self._editor.get_preedit_tabkeys_complete())
             return True
 
-        elif key.code <= 127:
+        if key.code <= 127:
             if not self._editor._candidates:
                 commit_string = self._editor.get_preedit_tabkeys_complete()
             else:

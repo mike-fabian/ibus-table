@@ -1065,22 +1065,6 @@ class editor(object):
         else:
             return False
 
-    def space (self):
-        '''Process space Key Event
-        return (KeyProcessResult,whethercommit,commitstring)'''
-        if self._chars_invalid:
-            # we have invalid input, so do not commit
-            return (False, u'', u'')
-        if not self.is_empty():
-            self.commit_to_preedit()
-        istr = self.get_preedit_tabkeys_complete()
-        pstr = self.get_preedit_string_complete()
-        self.clear_all_input_and_preedit()
-        if istr or pstr:
-            return (True, pstr, istr)
-        else:
-            return (False, u'', u'')
-
     def one_candidate (self):
         '''Return true if there is only one candidate'''
         return len(self._candidates) == 1
@@ -1552,6 +1536,22 @@ class tabengine (IBus.Engine):
             self._prev_char = None
         self._check_phrase(tabkeys=tabkeys, phrase=phrase)
 
+    def commit_everything_unless_invalid(self):
+        '''
+        Commits the current input to the preëdit and then
+        commits the preëdit to the application unless there are
+        invalid input characters.
+
+        Returns “True” if something was committed, “False” if not.
+        '''
+        if self._editor._chars_invalid:
+            return False
+        if not self._editor.is_empty():
+            self._editor.commit_to_preedit()
+        self.commit_string(self._editor.get_preedit_string_complete(),
+                           tabkeys=self._editor.get_preedit_tabkeys_complete())
+        return True
+
     def _convert_to_full_width (self, c):
         '''convert half width character to full width'''
 
@@ -1862,13 +1862,9 @@ class tabengine (IBus.Engine):
                 self._update_ui ()
                 return res
             else:
-                sp_res = self._editor.space ()
-                #return (KeyProcessResult,whethercommit,commitstring)
-                if sp_res[0]:
+                if self.commit_everything_unless_invalid():
                     if self._editor._auto_select:
-                        self.commit_string ("%s " %sp_res[1], tabkeys=sp_res[2])
-                    else:
-                        self.commit_string (sp_res[1], tabkeys=sp_res[2])
+                        self.commit_string(u' ')
                 return True
         # now we ignore all else hotkeys
         elif key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
@@ -1882,11 +1878,7 @@ class tabengine (IBus.Engine):
                 and (len(self._editor._chars_valid) == self._max_key_length
                     or len(self._editor._chars_valid) in self.db.possible_tabkeys_lengths)
                 and not self._editor._py_mode):
-                # it is time to direct commit
-                sp_res = self._editor.space ()
-                #return (whethercommit,commitstring)
-                if sp_res[0]:
-                    self.commit_string (sp_res[1], tabkeys=sp_res[2])
+                self.commit_everything_unless_invalid()
 
             res = self._editor.add_input ( keychar )
             if not res:
@@ -1902,11 +1894,7 @@ class tabengine (IBus.Engine):
                     key_char = self.cond_punct_translate(keychar)
                 else:
                     key_char = self.cond_letter_translate(keychar)
-                sp_res = self._editor.space ()
-                if sp_res[0]:
-                    self.commit_string (sp_res[1] + key_char, tabkeys=sp_res[2])
-                else:
-                    self.commit_string ( key_char )
+                self.commit_everything_unless_invalid()
                 if reprocess_last_key == True:
                     self._table_mode_process_key_event(key)
                 return True
@@ -1914,12 +1902,7 @@ class tabengine (IBus.Engine):
                 if self._auto_commit and self._editor.one_candidate () and \
                         (len(self._editor._chars_valid) == self._max_key_length \
                             or not self.db._is_chinese):
-                    # it is time to direct commit
-                    sp_res = self._editor.space ()
-                    #return (whethercommit,commitstring)
-                    if sp_res[0]:
-                        self.commit_string (sp_res[1], tabkeys=sp_res[2])
-                        return True
+                    self.commit_everything_unless_invalid()
             self._update_ui ()
             return True
 

@@ -1542,14 +1542,15 @@ class tabengine (IBus.Engine):
         self._refresh_properties()
         self._update_ui()
 
-    def commit_string (self,string):
+    def commit_string (self, phrase, tabkeys=u''):
         self._editor.clear_all_input_and_preedit()
-        self._update_ui ()
-        super(tabengine,self).commit_text(IBus.Text.new_from_string(string))
-        if len(string) > 0:
-            self._prev_char = string[-1]
+        self._update_ui()
+        super(tabengine,self).commit_text(IBus.Text.new_from_string(phrase))
+        if len(phrase) > 0:
+            self._prev_char = phrase[-1]
         else:
             self._prev_char = None
+        self._check_phrase(tabkeys=tabkeys, phrase=phrase)
 
     def _convert_to_full_width (self, c):
         '''convert half width character to full width'''
@@ -1612,10 +1613,8 @@ class tabengine (IBus.Engine):
 
     def do_candidate_clicked(self, index, button, state):
         if self._editor.commit_to_preedit_current_page(index): # commits to preëdit
-            input_keys = self._editor.get_preedit_tabkeys_complete()
-            commit_string = self._editor.get_preedit_string_complete()
-            self.commit_string(commit_string)
-            self._check_phrase(tabkeys=input_keys, phrase=commit_string)
+            self.commit_string(self._editor.get_preedit_string_complete(),
+                               tabkeys=self._editor.get_preedit_tabkeys_complete())
             return True
         return False
 
@@ -1867,10 +1866,9 @@ class tabengine (IBus.Engine):
                 #return (KeyProcessResult,whethercommit,commitstring)
                 if sp_res[0]:
                     if self._editor._auto_select:
-                        self.commit_string ("%s " %sp_res[1])
+                        self.commit_string ("%s " %sp_res[1], tabkeys=sp_res[2])
                     else:
-                        self.commit_string (sp_res[1])
-                    self._check_phrase(tabkeys=sp_res[2], phrase=sp_res[1])
+                        self.commit_string (sp_res[1], tabkeys=sp_res[2])
                 return True
         # now we ignore all else hotkeys
         elif key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
@@ -1888,8 +1886,7 @@ class tabengine (IBus.Engine):
                 sp_res = self._editor.space ()
                 #return (whethercommit,commitstring)
                 if sp_res[0]:
-                    self.commit_string (sp_res[1])
-                    self._check_phrase (tabkeys=sp_res[2], phrase=sp_res[1])
+                    self.commit_string (sp_res[1], tabkeys=sp_res[2])
 
             res = self._editor.add_input ( keychar )
             if not res:
@@ -1907,8 +1904,7 @@ class tabengine (IBus.Engine):
                     key_char = self.cond_letter_translate(keychar)
                 sp_res = self._editor.space ()
                 if sp_res[0]:
-                    self.commit_string (sp_res[1] + key_char)
-                    self._check_phrase (tabkeys=sp_res[2], phrase=sp_res[1])
+                    self.commit_string (sp_res[1] + key_char, tabkeys=sp_res[2])
                 else:
                     self.commit_string ( key_char )
                 if reprocess_last_key == True:
@@ -1922,8 +1918,7 @@ class tabengine (IBus.Engine):
                     sp_res = self._editor.space ()
                     #return (whethercommit,commitstring)
                     if sp_res[0]:
-                        self.commit_string (sp_res[1])
-                        self._check_phrase (tabkeys=sp_res[2], phrase=sp_res[1])
+                        self.commit_string (sp_res[1], tabkeys=sp_res[2])
                         return True
             self._update_ui ()
             return True
@@ -1942,11 +1937,8 @@ class tabengine (IBus.Engine):
 
         elif keychar in self._editor.get_select_keys() and self._editor._candidates:
             if self._editor.select_key(keychar): # commits to preëdit
-                input_keys = self._editor.get_preedit_tabkeys_complete()
-                commit_string = self._editor.get_preedit_string_complete()
-                self.commit_string (commit_string)
-                # modify freq info
-                self._check_phrase(tabkeys=input_keys, phrase=commit_string)
+                self.commit_string(self._editor.get_preedit_string_complete(),
+                                   tabkeys=self._editor.get_preedit_tabkeys_complete())
             return True
 
         elif key.code <= 127:

@@ -171,24 +171,24 @@ __half_full_table = [
     (0xFFED, 0x25A0, 1),
     (0xFFEE, 0x25CB, 1)]
 
-def unichar_half_to_full (c):
-    code = ord (c)
+def unichar_half_to_full(c):
+    code = ord(c)
     for half, full, size in __half_full_table:
         if code >= half and code < half + size:
             if sys.version_info >= (3,0,0):
-                return chr (full + code - half)
+                return chr(full + code - half)
             else:
-                return unichr (full + code - half)
+                return unichr(full + code - half)
     return c
 
-def unichar_full_to_half (c):
-    code = ord (c)
+def unichar_full_to_half(c):
+    code = ord(c)
     for half, full, size in __half_full_table:
         if code >= full and code < full + size:
             if sys.version_info >= (3,0,0):
-                return chr (half + code - full)
+                return chr(half + code - full)
             else:
-                return unichr (half + code - full)
+                return unichr(half + code - full)
     return c
 
 SAVE_USER_COUNT_MAX = 16
@@ -1552,24 +1552,24 @@ class tabengine (IBus.Engine):
                            tabkeys=self._editor.get_preedit_tabkeys_complete())
         return True
 
-    def _convert_to_full_width (self, c):
-        '''convert half width character to full width'''
+    def _convert_to_full_width(self, c):
+        '''Convert half width character to full width'''
 
-        # This function picks up punctuations that are not comply to the
-        # unicode convesion formula in unichar_half_to_full (c).
+        # This function handles punctuation that does not comply to the
+        # Unicode convesion formula in unichar_half_to_full(c).
         # For ".", "\"", "'"; there are even variations under specific
         # cases. This function should be more abstracted by extracting
         # that to another handling function later on.
-        special_punct_dict = {u"<": u"\u300a",
-                               u">": u"\u300b",
-                               u"[": u"\u300c",
-                               u"]": u"\u300d",
-                               u"{": u"\u300e",
-                               u"}": u"\u300f",
-                               u"\\": u"\u3001",
-                               u"^": u"\u2026\u2026",
-                               u"_": u"\u2014\u2014",
-                               u"$": u"\uffe5"
+        special_punct_dict = {u"<": u"《", # 《 U+300A LEFT DOUBLE ANGLE BRACKET
+                               u">": u"》", # 》 U+300B RIGHT DOUBLE ANGLE BRACKET
+                               u"[": u"「", # 「 U+300C LEFT CORNER BRACKET
+                               u"]": u"」", # 」U+300D RIGHT CORNER BRACKET
+                               u"{": u"『", # 『 U+300E LEFT WHITE CORNER BRACKET
+                               u"}": u"』", # 』U+300F RIGHT WHITE CORNER BRACKET
+                               u"\\": u"、", # 、 U+3001 IDEOGRAPHIC COMMA
+                               u"^": u"……", # … U+2026 HORIZONTAL ELLIPSIS
+                               u"_": u"——", # — U+2014 EM DASH
+                               u"$": u"￥" # ￥ U+FFE5 FULLWIDTH YEN SIGN
                                }
 
         # special puncts w/o further conditions
@@ -1581,25 +1581,25 @@ class tabengine (IBus.Engine):
 
         # special puncts w/ further conditions
         if c == u".":
-            if self._prev_char and self._prev_char.isdigit () \
-                and self._prev_key and chr (self._prev_key.code) == self._prev_char:
+            if self._prev_char and self._prev_char.isdigit() \
+                and self._prev_key and chr(self._prev_key.code) == self._prev_char:
                 return u"."
             else:
-                return u"\u3002"
+                return u"。" # 。U+3002 IDEOGRAPHIC FULL STOP
         elif c == u"\"":
             self._double_quotation_state = not self._double_quotation_state
             if self._double_quotation_state:
-                return u"\u201c"
+                return u"“" # “ U+201C LEFT DOUBLE QUOTATION MARK
             else:
-                return u"\u201d"
+                return u"”" # ” U+201D RIGHT DOUBLE QUOTATION MARK
         elif c == u"'":
             self._single_quotation_state = not self._single_quotation_state
             if self._single_quotation_state:
-                return u"\u2018"
+                return u"‘" # ‘ U+2018 LEFT SINGLE QUOTATION MARK
             else:
-                return u"\u2019"
+                return u"’" # ’ U+2019 RIGHT SINGLE QUOTATION MARK
 
-        return unichar_half_to_full (c)
+        return unichar_half_to_full(c)
 
     def _match_hotkey (self, key, code, mask):
 

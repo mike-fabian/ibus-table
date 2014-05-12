@@ -1420,6 +1420,7 @@ class tabengine (IBus.Engine):
             return
         color_left = rgb(0xf9, 0x0f, 0x0f) # bright red
         color_right = rgb(0x1e, 0xdc, 0x1a) # light green
+        color_invalid = rgb(0xff, 0x00, 0xff) # magenta
         attrs = IBus.AttrList()
         attrs.append(
             IBus.attr_foreground_new(
@@ -1431,6 +1432,14 @@ class tabengine (IBus.Engine):
                 color_right,
                 len(left_of_current_edit) + len(current_edit),
                 len(preedit_string_complete)))
+        if self._editor._chars_invalid:
+            attrs.append(
+                IBus.attr_foreground_new(
+                    color_invalid,
+                    len(left_of_current_edit) + len(current_edit)
+                    - len(self._editor._chars_invalid),
+                    len(left_of_current_edit) + len(current_edit)
+                    ))
         attrs.append(
             IBus.attr_underline_new(
                 IBus.AttrUnderline.SINGLE,

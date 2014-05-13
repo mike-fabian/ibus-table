@@ -1753,12 +1753,11 @@ class tabengine (IBus.Engine):
         # This is the first character typed, if it is invalid
         # input, handle it immediately here, if it is valid, continue.
         if self._editor.is_empty() and not self._editor.get_preedit_string_complete():
-            if (key.code >= 32
-                and (keychar not in self._valid_input_chars
-                     or (self.db.startchars and keychar not in self.db.startchars))
+            if ((keychar not in self._valid_input_chars
+                 or (self.db.startchars and keychar not in self.db.startchars))
                 and (not key.mask &
-                            (IBus.ModifierType.MOD1_MASK |
-                                IBus.ModifierType.CONTROL_MASK))):
+                     (IBus.ModifierType.MOD1_MASK |
+                      IBus.ModifierType.CONTROL_MASK))):
                 if ascii_ispunct(keychar):
                     trans_char = self.cond_punct_translate(keychar)
                 else:
@@ -1768,8 +1767,6 @@ class tabengine (IBus.Engine):
                 else:
                     self.commit_string(trans_char)
                     return True
-            elif key.code < 32 and (keychar not in self._valid_input_chars):
-                return False
 
         if key.code == IBus.KEY_Escape:
             self.reset()

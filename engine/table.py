@@ -1687,6 +1687,8 @@ class tabengine (IBus.Engine):
         if key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
             return False
         keychar = IBus.keyval_to_unicode(key.code)
+        if type(keychar) != type(u''):
+            keychar = keychar.decode('UTF-8')
         if ascii_ispunct(keychar):
             trans_char = self.cond_punct_translate(keychar)
         else:
@@ -1743,9 +1745,14 @@ class tabengine (IBus.Engine):
             return True
 
         keychar = IBus.keyval_to_unicode(key.code)
+        if type(keychar) != type(u''):
+            keychar = keychar.decode('UTF-8')
 
+        # Section to handle leading invalid input:
+        #
+        # This is the first character typed, if it is invalid
+        # input, handle it immediately here, if it is valid, continue.
         if self._editor.is_empty() and not self._editor.get_preedit_string_complete():
-            # This is the first character typed
             if (key.code >= 32
                 and (keychar not in self._valid_input_chars
                      or (self.db.startchars and keychar not in self.db.startchars))
@@ -1912,6 +1919,36 @@ class tabengine (IBus.Engine):
         if key.mask & IBus.ModifierType.MOD1_MASK:
             return False
 
+        # Section to handle valid input characters:
+        #
+        # All keys which could possibly conflict with the valid input
+        # characters should be checked below this section. These are
+        # SELECT_KEYS, PAGE_UP_KEYS and PAGE_DOWN_KEYS.
+        #
+        # For example, consider a table has
+        #
+        #     SELECT_KEYS = 1,2,3,4,5,6,7,8,9,0
+        #
+        # and
+        #
+        #     VALID_INPUT_CHARS = 0123456789abcdef
+        #
+        # (Currently the cns11643 table has this, for example)
+        #
+        # Then the digit “1” could be interpreted either as an input
+        # character or as a select key but of course not both. If the
+        # meaning as a select key or page down key were preferred,
+        # this would make some input impossible which probably makes
+        # the whole input method useless. If the meaning as an input
+        # character is preferred, this makes selection using that key
+        # impossible.  Making selection by key impossible is not nice
+        # either, but it is not a complete show stopper as there are
+        # still other possibilities to select, for example using the
+        # arrow-up/arrow-down keys or click with the mouse.
+        #
+        # Of course one should maybe consider fixing the conflict
+        # between the keys by using different SELECT_KEYS and/or
+        # PAGE_UP_KEYS/PAGE_DOWN_KEYS in that table ...
         if (keychar
             and (keychar in self._valid_input_chars
                  or (self._editor._py_mode
@@ -1963,18 +2000,35 @@ class tabengine (IBus.Engine):
                                    tabkeys=self._editor.get_preedit_tabkeys_complete())
             return True
 
-        if key.code <= 127:
+        # Section to handle trailing invalid input:
+        #
+        # If the key has still not been handled when this point is
+        # reached, it cannot be a valid input character. Neither can
+        # it be a select key nor a page-up/page-down key. Adding this
+        # key to the tabkeys and search for matching candidates in the
+        # table would thus be pointless.
+        #
+        # So we commit all pending input immediately and then commit
+        # this invalid input character as well, possibly converted to
+        # fullwidth or halfwidth.
+        if keychar:
             if not self._editor._candidates:
-                commit_string = self._editor.get_preedit_tabkeys_complete()
+                self.commit_string(self._editor.get_preedit_tabkeys_complete())
             else:
-                self._editor.commit_to_preedit ()
-                commit_string = self._editor.get_preedit_string_complete()
+                self._editor.commit_to_preedit()
+                self.commit_string(self._editor.get_preedit_string_complete())
             if ascii_ispunct(keychar):
-                self.commit_string(commit_string + self.cond_punct_translate(keychar))
+                self.commit_string(self.cond_punct_translate(keychar))
             else:
-                self.commit_string(commit_string + self.cond_letter_translate(keychar))
-
+                self.commit_string(self.cond_letter_translate(keychar))
             return True
+
+        # What kind of key was this??
+        #
+        #     keychar = IBus.keyval_to_unicode(key.code)
+        #
+        # returned no result. So whatever this was, we cannot handle it,
+        # just pass it through to the application by returning “False”.
         return False
 
     def do_focus_in (self):

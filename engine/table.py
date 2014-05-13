@@ -1699,6 +1699,9 @@ class tabengine (IBus.Engine):
         return True
 
     def _table_mode_process_key_event(self, key):
+        if debug_level > 0:
+            sys.stderr.write('_table_mode_process_key_event() ')
+            sys.stderr.write('repr(key)=%(key)s\n' %{'key': key})
         # We have to process the pinyin mode change key event here,
         # because we ignore all Release event below.
         if (self._ime_py
@@ -1758,6 +1761,9 @@ class tabengine (IBus.Engine):
                 and (not key.mask &
                      (IBus.ModifierType.MOD1_MASK |
                       IBus.ModifierType.CONTROL_MASK))):
+                if debug_level > 0:
+                    sys.stderr.write('_table_mode_process_key_event() leading invalid input: ')
+                    sys.stderr.write('repr(keychar)=%(keychar)s\n' %{'keychar': keychar})
                 if ascii_ispunct(keychar):
                     trans_char = self.cond_punct_translate(keychar)
                 else:
@@ -1950,6 +1956,9 @@ class tabengine (IBus.Engine):
             and (keychar in self._valid_input_chars
                  or (self._editor._py_mode
                      and keychar in u'abcdefghijklmnopqrstuvwxyz!@#$%'))):
+            if debug_level > 0:
+                sys.stderr.write('_table_mode_process_key_event() valid input: ')
+                sys.stderr.write('repr(keychar)=%(keychar)s\n' %{'keychar': keychar})
             if (self._auto_commit
                 and (len(self._editor._chars_valid) == self._max_key_length
                     or len(self._editor._chars_valid) in self.db.possible_tabkeys_lengths)
@@ -2009,6 +2018,9 @@ class tabengine (IBus.Engine):
         # this invalid input character as well, possibly converted to
         # fullwidth or halfwidth.
         if keychar:
+            if debug_level > 0:
+                sys.stderr.write('_table_mode_process_key_event() trailing invalid input: ')
+                sys.stderr.write('repr(keychar)=%(keychar)s\n' %{'keychar': keychar})
             if not self._editor._candidates:
                 self.commit_string(self._editor.get_preedit_tabkeys_complete())
             else:

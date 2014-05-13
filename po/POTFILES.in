@@ -1,5 +1,7 @@
-./engine/table.py
-./engine/main.py
-./engine/tabsqlitedb.py
-./engine/tabcreatedb.py
-./engine/factory.py
+engine/table.py
+engine/main.py
+engine/tabsqlitedb.py
+engine/tabcreatedb.py
+engine/factory.py
+setup/main.py
+setup/ibus-table-preferences.ui

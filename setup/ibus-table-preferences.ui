@@ -515,7 +515,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
-                        <property name="label" translatable="yes">&lt;big&gt;&lt;b&gt;IBus Table %s&lt;/b&gt;&lt;/big&gt;</property>
+                        <property name="label" translatable="no">&lt;big&gt;&lt;b&gt;IBus Table %s&lt;/b&gt;&lt;/big&gt;</property>
                         <property name="use_markup">True</property>
                         <property name="selectable">True</property>
                       </object>
@@ -546,7 +546,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Copyright (c) 2009-2012 Peng Huang&lt;/small&gt;</property>
+                        <property name="label" translatable="no">&lt;small&gt;Copyright (c) 2009-2012 Peng Huang&lt;/small&gt;</property>
                         <property name="use_markup">True</property>
                         <property name="wrap">True</property>
                         <property name="selectable">True</property>
@@ -593,7 +593,7 @@ Seán de Búrca
                     </child>
                     <child>
                       <object class="GtkLinkButton" id="linkbutton1">
-                        <property name="label" translatable="yes">http://ibus.googlecode.com</property>
+                        <property name="label" translatable="no">http://ibus.googlecode.com</property>
                         <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -635,7 +635,7 @@ Seán de Búrca
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">label</property>
+                            <property name="label" translatable="no">Name of the engine</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>

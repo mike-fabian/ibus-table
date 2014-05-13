@@ -125,7 +125,7 @@ class PreferencesDialog:
         if self.__engine_name not in names:
             ret = False
             self.__run_message_dialog(
-                _('IBus Table engine "{}" is not available').format(self.__engine_name),
+                _('IBus Table engine %s is not available') %self.__engine_name,
                 Gtk.MessageType.ERROR)
         return ret
 
@@ -157,7 +157,8 @@ class PreferencesDialog:
 
     def __init_general(self):
         """Initialize the general notebook page"""
-        self.__dialog.set_title("IBus %s Preferences" % self.__engine_name)
+        self.__dialog.set_title(_("IBus Table %s Preferences")
+                                %re.sub(r'^table:', '', self.__engine_name))
         self.__values = self.__config.get_values(self.__config_section).unpack()
         self.__config.connect ("value-changed", self.__config_value_changed_cb)
 
@@ -174,7 +175,7 @@ class PreferencesDialog:
         # page About
         self.__name_version = self.__builder.get_object("NameVersion")
         self.__name_version.set_markup(
-                _("<big><b>IBus Table %s</b></big>") % version.get_version())
+                "<big><b>IBus Table %s</b></big>" %version.get_version())
 
         img_fname = os.path.join(icon_dir, "ibus-table.svg")
         if os.path.exists(img_fname):
@@ -193,8 +194,7 @@ class PreferencesDialog:
             if not longname:
                 longname = engine.get_name()
             w = self.__builder.get_object("TableNameVersion")
-            w.set_markup(_("<b>%s</b>") %
-                    (longname))
+            w.set_markup("<b>%s</b>" %longname)
             icon_path = engine.get_icon()
             if icon_path and os.path.exists(icon_path):
                 from gi.repository import GdkPixbuf

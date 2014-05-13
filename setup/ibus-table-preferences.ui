@@ -565,12 +565,20 @@
                         <property name="hexpand">True</property>
                         <property name="label" translatable="yes">&lt;small&gt;
 &lt;b&gt;Authors:&lt;/b&gt;
+Yuwei YU (‘acevery’)
 Peng Huang
 BYVoid
 Peng Wu
 
 &lt;b&gt;Contributors:&lt;/b&gt;
-koterpilla, Zerng07
+koterpilla
+Zerng07
+Caius ‘kaio’ Chance
+Mike FABIAN
+Bernard Nauwelaerts
+Xiaojun Ma
+mozbugbox
+Seán de Búrca
 &lt;/small&gt;</property>
                         <property name="use_markup">True</property>
                         <property name="justify">center</property>

@@ -36,6 +36,8 @@ import re
 import ibus_table_location
 import chinese_variants
 
+debug_level = int(0)
+
 database_version = '1.00'
 
 patt_r = re.compile(r'c([ea])(\d):(.*)')
@@ -126,6 +128,11 @@ class tabsqlitedb:
     '''
     def __init__(
             self, filename = None, user_db = None, create_database = False):
+        global debug_level
+        try:
+            debug_level = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
+        except (TypeError, ValueError):
+            debug_level = int(0)
         self.old_phrases = []
         self.filename = filename
         self._user_db = user_db
@@ -408,6 +415,12 @@ class tabsqlitedb:
             self, tabkeys=u'', phrase=u'',
             user_freq=0, database='user_db', commit=True):
         '''update phrase freqs'''
+        if debug_level > 1:
+            sys.stderr.write(
+                'update_phrase() tabkeys=%(t)s phrase=%(p)s '
+                % {'t': tabkeys, 'p': phrase}
+                + 'user_freq=%(u)s database=%(d)s\n'
+                % {'u': user_freq, 'd': database})
         if not tabkeys or not phrase:
             return
         sqlstr = '''
@@ -623,6 +636,9 @@ class tabsqlitedb:
         “phrases” argument does not contain duplicates.
 
         '''
+        if debug_level > 1:
+            sys.stderr.write("add_phrases() len(phrases)=%s\n"
+                             %len(phrases))
         insert_sqlstr = '''
         INSERT INTO %(database)s.phrases
         (tabkeys, phrase, freq, user_freq)
@@ -645,6 +661,12 @@ class tabsqlitedb:
         '''Add phrase to database, phrase is a object of
         (tabkeys, phrase, freq ,user_freq)
         '''
+        if debug_level > 1:
+            sys.stderr.write(
+                'add_phrase tabkeys=%(t)s phrase=%(p)s '
+                % {'t': tabkeys, 'p': phrase}
+                + 'freq=%(f)s user_freq=%(u)s\n'
+                % {'f': freq, 'u': user_freq})
         if not tabkeys or not phrase:
             return
         select_sqlstr = '''
@@ -656,6 +678,13 @@ class tabsqlitedb:
         if results:
             # there is already such a phrase, i.e. add_phrase was called
             # in error, do nothing to avoid duplicate entries.
+            if debug_level > 1:
+                sys.stderr.write(
+                    'add_phrase() '
+                    + 'select_sqlstr=%(sql)s select_sqlargs=%(arg)s '
+                    % {'sql': select_sqlstr, 'arg': select_sqlargs}
+                    + 'already there!: results=%(r)s \n'
+                    % {'r': results})
             return
 
         insert_sqlstr = '''
@@ -668,6 +697,10 @@ class tabsqlitedb:
             'phrase': phrase,
             'freq': freq,
             'user_freq': user_freq}
+        if debug_level > 1:
+            sys.stderr.write(
+                'add_phrase() insert_sqlstr=%(sql)s insert_sqlargs=%(arg)s\n'
+                % {'sql': insert_sqlstr, 'arg': insert_sqlargs})
         try:
             self.db.execute (insert_sqlstr, insert_sqlargs)
             if commit:
@@ -749,6 +782,8 @@ class tabsqlitedb:
         We do not use any indexes at the moment, therefore this
         function does nothing.
         '''
+        if debug_level > 1:
+            sys.stderr.write("drop_indexes()\n")
         return
 
     def create_indexes(self, database, commit=True):
@@ -763,6 +798,8 @@ class tabsqlitedb:
         If some index turns out to be very useful in future, it could
         be created here (and dropped in “drop_indexes()”).
         '''
+        if debug_level > 1:
+            sys.stderr.write("create_indexes()\n")
         return
 
     def big5_code(self, phrase):
@@ -908,6 +945,8 @@ class tabsqlitedb:
             typed_tabkeys=tabkeys,
             candidates=phrase_frequencies.values(),
             chinese_mode=chinese_mode)
+        if debug_level > 1:
+            sys.stderr.write("select_words() best=%s\n" %repr(best))
         return best
 
     def select_chinese_characters_by_pinyin(
@@ -1041,6 +1080,8 @@ class tabsqlitedb:
             goucima = results[0][0]
         else:
             goucima = u''
+        if debug_level > 1:
+            sys.stderr.write("get_goucima() goucima=%s\n" %goucima)
         return goucima
 
     def parse_phrase (self, phrase):
@@ -1082,6 +1123,10 @@ class tabsqlitedb:
         the table code for “天下大事” is “ggdg”.
 
         '''
+        if debug_level > 1:
+            sys.stderr.write(
+                'parse_phrase() phrase=%(p)s rules%(r)s\n'
+                % {'p': phrase, 'r': self.rules})
         if type(phrase) != type(u''):
             phrase = phrase.decode('UTF-8')
         # Shouldn’t this function try first whether the system database
@@ -1119,6 +1164,8 @@ class tabsqlitedb:
             if not tabkey:
                 return u''
             tabkeys += tabkey
+        if debug_level > 1:
+            sys.stderr.write("parse_phrase() tabkeys=%s\n" %tabkeys)
         return tabkeys
 
     def is_in_system_database(self, tabkeys=u'', phrase=u''):
@@ -1126,6 +1173,10 @@ class tabsqlitedb:
         Checks whether “phrase” can be matched in the system database
         with a key sequence *starting* with “tabkeys”.
         '''
+        if debug_level > 1:
+            sys.stderr.write(
+                'is_in_system_database() tabkeys=%(t)s phrase=%(p)s\n'
+                % {'t': tabkeys, 'p': phrase})
         if not tabkeys or not phrase:
             return False
         sqlstr = '''
@@ -1134,12 +1185,22 @@ class tabsqlitedb:
         '''
         sqlargs = {'tabkeys': tabkeys+'%%', 'phrase': phrase}
         results = self.db.execute(sqlstr, sqlargs).fetchall()
+        if debug_level > 1:
+            sys.stderr.write(
+                'is_in_system_database() tabkeys=%(t)s phrase=%(p)s '
+                % {'t': tabkeys, 'p': phrase}
+                + 'results=%(r)s\n'
+                % {'r': results})
         if results:
             return True
         else:
             return False
 
     def user_frequency(self, tabkeys=u'', phrase=u''):
+        if debug_level > 1:
+            sys.stderr.write(
+                'user_frequency() tabkeys=%(t)s phrase=%(p)s\n'
+                % {'t': tabkeys, 'p': phrase})
         if not tabkeys or not phrase:
             return 0
         sqlstr = '''
@@ -1148,6 +1209,8 @@ class tabsqlitedb:
         '''
         sqlargs = {'tabkeys': tabkeys, 'phrase': phrase}
         result = self.db.execute(sqlstr, sqlargs).fetchall()
+        if debug_level > 1:
+            sys.stderr.write("user_frequency() result=%s\n" %result)
         if result:
             return result[0][0]
         else:
@@ -1161,6 +1224,10 @@ class tabsqlitedb:
         a user defined phrase to the user database if it is not yet
         there.
         '''
+        if debug_level > 1:
+            sys.stderr.write(
+                'check_phrase_internal() tabkey=%(t)s phrase=%(p)s\n'
+                % {'t': tabkeys, 'p': phrase})
         if type(phrase) != type(u''):
             phrase = phrase.decode('utf8')
         if type(tabkeys) != type(u''):

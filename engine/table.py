@@ -1935,8 +1935,8 @@ class tabengine (IBus.Engine):
             else:
                 if (self._auto_commit and self._editor.one_candidate()
                     and
-                    (len(self._editor._chars_valid) == self._max_key_length
-                     or not self.db._is_chinese)):
+                    (self._editor._chars_valid
+                     == self._editor._candidates[0][0])):
                     self.commit_everything_unless_invalid()
                 self._update_ui()
                 return True

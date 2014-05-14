@@ -399,7 +399,7 @@ class editor(object):
     def add_input(self,c):
         '''add input character'''
         if (len(self._chars_valid) == self._max_key_length and (not self._py_mode)) or (len(self._chars_valid) == 7 and self._py_mode):
-            self.auto_commit_to_preedit()
+            self.commit_to_preedit()
             res = self.add_input (c)
             return res
         elif self._chars_invalid:
@@ -864,18 +864,6 @@ class editor(object):
             return False
         self._lookup_table.set_cursor_pos(real_index)
         return self.commit_to_preedit()
-
-    def auto_commit_to_preedit (self):
-        '''Add selected phrase in lookup table to preedit string'''
-        try:
-            self._u_chars.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][0])
-            self._strings.insert(self._cursor_precommit, self._candidates[self.get_cursor_pos()][1])
-            self._cursor_precommit += 1
-            self.clear_input_not_committed_to_preedit()
-            self.update_candidates()
-        except:
-            import traceback
-            traceback.print_exc()
 
     def get_aux_strings (self):
         '''Get aux strings'''

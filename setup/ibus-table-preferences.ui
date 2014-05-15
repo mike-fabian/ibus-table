@@ -710,13 +710,13 @@ Seán de Búrca
         <col id="0" translatable="yes">Traditional Chinese</col>
       </row>
       <row>
-        <col id="0" translatable="yes">Big Charset, SC First</col>
+        <col id="0" translatable="yes">Simplified Chinese before traditional</col>
       </row>
       <row>
-        <col id="0" translatable="yes">Big Charset, TC First</col>
+        <col id="0" translatable="yes">Traditional Chinese before simplified</col>
       </row>
       <row>
-        <col id="0" translatable="yes">Big Charset</col>
+        <col id="0" translatable="yes">All Chinese characters</col>
       </row>
     </data>
   </object>

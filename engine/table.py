@@ -291,7 +291,8 @@ class editor(object):
         #   2 means to show all characters but show simplified Chinese first
         #   3 means to show all characters but show traditional Chinese first
         #   4 means to show all characters
-        # we use LC_CTYPE or LANG to determine which one to use
+        # we use LC_CTYPE or LANG to determine which one to use if
+        # no default comes from the config.
         self._chinese_mode = variant_to_value(self._config.get_value(
                 self._config_section,
                 "ChineseMode"))
@@ -1018,8 +1019,8 @@ class tabengine (IBus.Engine):
 
         self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
                 os.path.sep, 'icons', os.path.sep)
-        # self._ime_py: True / False this IME support pinyin mode
-        self._ime_py = self.db.get_ime_property ('pinyin_mode')
+        # self._ime_py: Indicates whether this table supports pinyin mode
+        self._ime_py = self.db.get_ime_property('pinyin_mode')
         if self._ime_py:
             if self._ime_py.lower() == u'true':
                 self._ime_py = True
@@ -1183,8 +1184,9 @@ class tabengine (IBus.Engine):
         self._punct_property = self._new_property(u'punct')
         self.properties.append(self._punct_property)
 
-        self._py_property = self._new_property('py_mode')
-        self.properties.append(self._py_property)
+        if self._ime_py:
+            self._py_property = self._new_property('py_mode')
+            self.properties.append(self._py_property)
 
         self._onechar_property = self._new_property(u'onechar')
         self.properties.append(self._onechar_property)
@@ -1210,62 +1212,156 @@ class tabengine (IBus.Engine):
     def _refresh_properties (self):
         '''Method used to update properties'''
         # taken and modified from PinYin.py :)
-        if self._input_mode == 1: # refresh mode
-            if self._status == u'CN':
-                self._set_property(self._status_property, 'chinese.svg', _('Chinese Mode'), _('Switch to English mode - Right Shift'))
+        if self._input_mode == 1:
+            if self.db._is_chinese:
+                self._set_property(
+                    self._status_property,
+                    'chinese.svg',
+                    _('Chinese input'),
+                    _('Switch to “Direct input” (Left Shift)'))
             else:
-                self._set_property(self._status_property, 'ibus-table.svg', self._status, _('Switch to English mode - Right Shift'))
+                self._set_property(
+                    self._status_property,
+                    'ibus-table.svg',
+                    self._status,
+                    _('Switch to “Direct input” (Left Shift)'))
         else:
-            self._set_property(self._status_property, 'english.svg', _('English Mode'), _('Switch to Table mode - Right Shift'))
+            if self.db.is_chinese:
+                self._set_property(
+                    self._status_property,
+                    'english.svg',
+                    _('Direct input'),
+                    _('Switch to “Chinese input” (Left Shift)'))
+            else:
+                self._set_property(
+                    self._status_property,
+                    'english.svg',
+                    _('Direct input'),
+                    _('Switch to %s (“Table input”) (Left Shift)') %self._status)
         self.update_property(self._status_property)
 
         if self._full_width_letter[self._input_mode]:
-            self._set_property(self._letter_property, 'full-letter.svg', _('Full Letter'), _('Switch to half-width letter - Ctrl-Space'))
+            self._set_property(
+                self._letter_property,
+                'full-letter.svg',
+                _('Fullwidth letters'),
+                _('Switch to “Halfwidth letters” (Shift-Space)'))
         else:
-            self._set_property(self._letter_property, 'half-letter.svg', _('Half Letter'), _('Switch to full-width letter - Ctrl-Space'))
+            self._set_property(
+                self._letter_property,
+                'half-letter.svg',
+                _('Halfwidth letters'),
+                _('Switch to “Fullwidth letters” (Shift-Space)'))
         self.update_property(self._letter_property)
 
         if self._full_width_punct[self._input_mode]:
-            self._set_property(self._punct_property, 'full-punct.svg', _('Full-width Punctuation'), _('Switch to half-width punctuation - Ctrl-.'))
+            self._set_property(
+                self._punct_property,
+                'full-punct.svg',
+                _('Fullwidth punctuation'),
+                _('Switch to “Halfwidth punctuation” (Ctrl-.)'))
         else:
-            self._set_property(self._punct_property, 'half-punct.svg', _('Half-width Punctuation'), _('Switch to full-width punctuation - Ctrl-.'))
+            self._set_property(
+                self._punct_property,
+                'half-punct.svg',
+                _('Halfwidth punctuation'),
+                _('Switch to “Fullwidth punctuation” (Ctrl-.)'))
         self.update_property(self._punct_property)
 
-        if self._editor._py_mode:
-            self._set_property(self._py_property, 'py-mode.svg', _('PinYin Mode'), _('Switch to Table mode - Left Shift'))
-        else:
-            self._set_property(self._py_property, 'tab-mode.svg', _('Table Mode'), _('Switch to PinYin mode - Left Shift'))
-        self.update_property(self._py_property)
+        if self._ime_py:
+            if self._editor._py_mode:
+                self._set_property(
+                    self._py_property,
+                    'py-mode.svg',
+                    _('Pinyin mode'),
+                    _('Switch to “Table mode” (Right Shift)'))
+            else:
+                self._set_property(
+                    self._py_property,
+                    'tab-mode.svg',
+                    _('Table mode'),
+                    _('Switch to “Pinyin mode” (Right Shift)'))
+            self.update_property(self._py_property)
 
         if self._editor._onechar:
-            self._set_property(self._onechar_property, 'onechar.svg', _('Single Char Mode'), _('Switch to phrase mode - Ctrl-,'))
+            self._set_property(
+                self._onechar_property,
+                'onechar.svg',
+                _('Single character mode'),
+                _('Switch to “Phrase mode” (Ctrl-,)'))
         else:
-            self._set_property(self._onechar_property, 'phrase.svg', _('Phrase Mode'), _('Switch to single char mode - Ctrl-,'))
+            self._set_property(
+                self._onechar_property,
+                'phrase.svg',
+                _('Phrase mode'),
+                _('Switch to “Single character mode” (Ctrl-,)'))
         self.update_property(self._onechar_property)
 
         if self._auto_commit:
-            self._set_property(self._auto_commit_property, 'acommit.svg', _('Direct Commit Mode'), _('Switch to normal commit mode, which use space to commit - Ctrl-/'))
+            self._set_property(
+                self._auto_commit_property,
+                'acommit.svg',
+                _('Direct commit mode'),
+                _('Switch to “Normal commit mode” (uses space to commit) (Ctrl-/)'))
         else:
-            self._set_property(self._auto_commit_property, 'ncommit.svg', _('Normal Commit Mode'), _('Switch to direct commit mode - Ctrl-/'))
+            self._set_property(
+                self._auto_commit_property,
+                'ncommit.svg',
+                _('Normal commit mode'),
+                _('Switch to “Direct commit mode” (Ctrl-/)'))
         self.update_property(self._auto_commit_property)
+
         if self._always_show_lookup:
-            self._set_property(self._always_show_lookup_property, 'always_show_lookup_y.svg', _('Display candidates'), _('Display the candidate list.'))
+            self._set_property(
+                self._always_show_lookup_property,
+                'always_show_lookup_y.svg',
+                _('Display candidates'),
+                _('Switch to “Hide candidates”'))
         else:
-            self._set_property(self._always_show_lookup_property, 'always_show_lookup_n.svg', _('Hide candidates'), _('Do not display the candidates list.'))
+            self._set_property(
+                self._always_show_lookup_property,
+                'always_show_lookup_n.svg',
+                _('Hide candidates'),
+                _('Switch to “Display candidates”'))
         self.update_property(self._always_show_lookup_property)
 
-        # the chinese_mode:
+        # The Chinese_mode:
+        #   0 means to show simplified Chinese only
+        #   1 means to show traditional Chinese only
+        #   2 means to show all characters but show simplified Chinese first
+        #   3 means to show all characters but show traditional Chinese first
+        #   4 means to show all characters
         if self.db._is_chinese:
             if self._editor._chinese_mode == 0:
-                self._set_property(self._cmode_property, 'sc-mode.svg', _('Simplified Chinese Mode'), _('Switch to Traditional Chinese mode - Ctrl-;'))
+                self._set_property(
+                    self._cmode_property,
+                    'sc-mode.svg',
+                    _('Simplified Chinese'),
+                    _('Switch to “Traditional Chinese” (Ctrl-;)'))
             elif self._editor._chinese_mode == 1:
-                self._set_property(self._cmode_property, 'tc-mode.svg', _('Traditional Chinese Mode'), _('Switch to Simplify Chinese first Big Charset Mode - Ctrl-;'))
+                self._set_property(
+                    self._cmode_property,
+                    'tc-mode.svg',
+                    _('Traditional Chinese'),
+                    _('Switch to “Simplified Chinese before traditional” (Ctrl-;)'))
             elif self._editor._chinese_mode == 2:
-                self._set_property(self._cmode_property, 'scb-mode.svg', _('Simplified Chinese First Big Charset Mode'), _('Switch to Traditional Chinese first Big Charset Mode - Ctrl-;'))
+                self._set_property(
+                    self._cmode_property,
+                    'scb-mode.svg',
+                    _('Simplified Chinese before traditional'),
+                    _('Switch to “Traditional Chinese before simplified” (Ctrl-;)'))
             elif self._editor._chinese_mode == 3:
-                self._set_property(self._cmode_property, 'tcb-mode.svg', _('Traditional Chinese First Big Charset Mode'), _('Switch to Big Charset Mode - Ctrl-;'))
+                self._set_property(
+                    self._cmode_property,
+                    'tcb-mode.svg',
+                    _('Traditional Chinese before simplified'),
+                    _('Switch to “All Chinese characters” (Ctrl-;)'))
             elif self._editor._chinese_mode == 4:
-                self._set_property(self._cmode_property, 'cb-mode.svg', _('Big Chinese Mode'), _('Switch to Simplified Chinese Mode'))
+                self._set_property(
+                    self._cmode_property,
+                    'cb-mode.svg',
+                    _('All Chinese characters'),
+                    _('Switch to “Simplified Chinese”'))
             self.update_property(self._cmode_property)
 
     def _set_property (self, property, icon, label, tooltip):

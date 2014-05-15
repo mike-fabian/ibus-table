@@ -95,7 +95,7 @@
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Language:</property>
+                                    <property name="label" translatable="yes">Input mode:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -198,12 +198,12 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="comboboxlanguage">
+                                  <object class="GtkComboBox" id="comboboxinputmode">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
-                                    <property name="model">liststoreLanguage</property>
+                                    <property name="model">liststoreInputMode</property>
                                     <property name="button_sensitivity">on</property>
                                   </object>
                                   <packing>
@@ -720,17 +720,17 @@ Seán de Búrca
       </row>
     </data>
   </object>
-  <object class="GtkListStore" id="liststoreLanguage">
+  <object class="GtkListStore" id="liststoreInputMode">
     <columns>
-      <!-- column-name Language -->
+      <!-- column-name InputMode -->
       <column type="gchararray"/>
     </columns>
     <data>
       <row>
-        <col id="0" translatable="yes">Chinese</col>
+        <col id="0" translatable="yes">Direct input</col>
       </row>
       <row>
-        <col id="0" translatable="yes">English</col>
+        <col id="0" translatable="yes">Table input</col>
       </row>
     </data>
   </object>

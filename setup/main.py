@@ -39,7 +39,7 @@ import version
 _ = lambda a : gettext.dgettext("ibus-table", a)
 
 OPTION_DEFAULTS = {
-    "language": False,
+    "inputmode": 1,
     "chinesemode": 0,
     "tabdeffullwidthletter": False,
     "tabdeffullwidthpunct": False,

@@ -1018,9 +1018,6 @@ class tabengine (IBus.Engine):
 
         self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
                 os.path.sep, 'icons', os.path.sep)
-        # 0 = english input mode
-        # 1 = table input mode
-        self._mode = 1
         # self._ime_py: True / False this IME support pinyin mode
         self._ime_py = self.db.get_ime_property ('pinyin_mode')
         if self._ime_py:
@@ -1066,7 +1063,17 @@ class tabengine (IBus.Engine):
         self._editor = editor(self._config, self._valid_input_chars,
                               self._max_key_length, self.db)
 
-        # some other vals we used:
+        # 0 = Direct input, i.e. table input OFF (aka “English input mode”),
+        #     most characters are just passed through to the application
+        #     (but some fullwidth ↔ halfwidth conversion may be done even
+        #     in this mode, depending on the settings)
+        # 1 = Table input ON (aka “Table input mode”, “Chinese mode”)
+        self._input_mode = variant_to_value(self._config.get_value(
+            self._config_section,
+            "inputmode"))
+        if self._input_mode == None:
+            self._input_mode = 1
+
         # self._prev_key: hold the key event last time.
         self._prev_key = None
         self._prev_char = None
@@ -1203,7 +1210,7 @@ class tabengine (IBus.Engine):
     def _refresh_properties (self):
         '''Method used to update properties'''
         # taken and modified from PinYin.py :)
-        if self._mode == 1: # refresh mode
+        if self._input_mode == 1: # refresh mode
             if self._status == u'CN':
                 self._set_property(self._status_property, 'chinese.svg', _('Chinese Mode'), _('Switch to English mode - Right Shift'))
             else:
@@ -1212,13 +1219,13 @@ class tabengine (IBus.Engine):
             self._set_property(self._status_property, 'english.svg', _('English Mode'), _('Switch to Table mode - Right Shift'))
         self.update_property(self._status_property)
 
-        if self._full_width_letter[self._mode]:
+        if self._full_width_letter[self._input_mode]:
             self._set_property(self._letter_property, 'full-letter.svg', _('Full Letter'), _('Switch to half-width letter - Ctrl-Space'))
         else:
             self._set_property(self._letter_property, 'half-letter.svg', _('Half Letter'), _('Switch to full-width letter - Ctrl-Space'))
         self.update_property(self._letter_property)
 
-        if self._full_width_punct[self._mode]:
+        if self._full_width_punct[self._input_mode]:
             self._set_property(self._punct_property, 'full-punct.svg', _('Full-width Punctuation'), _('Switch to half-width punctuation - Ctrl-.'))
         else:
             self._set_property(self._punct_property, 'half-punct.svg', _('Half-width Punctuation'), _('Switch to full-width punctuation - Ctrl-.'))
@@ -1270,17 +1277,16 @@ class tabengine (IBus.Engine):
         property.set_label(IBus.Text.new_from_string(label))
         property.set_tooltip(IBus.Text.new_from_string(tooltip))
 
-    def _change_mode (self):
-        '''Shift input mode, TAB -> EN -> TAB
-        '''
-        self._mode = int (not self._mode)
-        self.reset ()
-        self._update_ui ()
+    def _change_input_mode(self):
+        '''Toggle the input mode between direct input and table input'''
+        self._input_mode = int(not self._input_mode)
+        self.reset()
+        self._update_ui()
 
     def do_property_activate (self, property, prop_state = IBus.PropState.UNCHECKED):
         '''Shift property'''
         if property == u"status":
-            self._change_mode ()
+            self._change_input_mode()
         elif property == u'py_mode' and self._ime_py:
             self.toggle_tab_py_mode()
         elif property == u'onechar':
@@ -1295,26 +1301,26 @@ class tabengine (IBus.Engine):
                     "AutoCommit",
                     GLib.Variant.new_boolean(self._auto_commit))
         elif property == u'letter':
-            self._full_width_letter [self._mode] = not self._full_width_letter [self._mode]
-            if self._mode:
+            self._full_width_letter [self._input_mode] = not self._full_width_letter [self._input_mode]
+            if self._input_mode:
                 self._config.set_value(self._config_section,
                         "TabDefFullWidthLetter",
-                        GLib.Variant.new_boolean(self._full_width_letter [self._mode]))
+                        GLib.Variant.new_boolean(self._full_width_letter [self._input_mode]))
             else:
                 self._config.set_value(self._config_section,
                         "EnDefFullWidthLetter",
-                        GLib.Variant.new_boolean(self._full_width_letter [self._mode]))
+                        GLib.Variant.new_boolean(self._full_width_letter [self._input_mode]))
 
         elif property == u'punct':
-            self._full_width_punct [self._mode] = not self._full_width_punct [self._mode]
-            if self._mode:
+            self._full_width_punct [self._input_mode] = not self._full_width_punct [self._input_mode]
+            if self._input_mode:
                 self._config.set_value(self._config_section,
                         "TabDefFullWidthPunct",
-                        GLib.Variant.new_boolean(self._full_width_punct [self._mode]))
+                        GLib.Variant.new_boolean(self._full_width_punct [self._input_mode]))
             else:
                 self._config.set_value(self._config_section,
                         "EnDefFullWidthPunct",
-                        GLib.Variant.new_boolean(self._full_width_punct [self._mode]))
+                        GLib.Variant.new_boolean(self._full_width_punct [self._input_mode]))
         elif property == u'always_show_lookup':
             self._always_show_lookup = not self._always_show_lookup
             self._config.set_value( self._config_section,
@@ -1507,7 +1513,7 @@ class tabengine (IBus.Engine):
         if c in special_punct_dict.keys():
             if c in [u"\\", u"^", u"_", u"$"]:
                 return special_punct_dict[c]
-            elif self._mode:
+            elif self._input_mode:
                 return special_punct_dict[c]
 
         # special puncts w/ further conditions
@@ -1569,7 +1575,7 @@ class tabengine (IBus.Engine):
         '''Internal method to process key event'''
         # Match mode switch hotkey
         if self._editor.is_empty() and (self._match_hotkey(key, IBus.KEY_Shift_L, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
-            self._change_mode ()
+            self._change_input_mode()
             return True
 
         # Match full half letter mode switch hotkey
@@ -1582,19 +1588,19 @@ class tabengine (IBus.Engine):
             self.do_property_activate ("punct")
             return True
 
-        if self._mode:
+        if self._input_mode:
             return self._table_mode_process_key_event (key)
         else:
             return self._english_mode_process_key_event (key)
 
     def cond_letter_translate(self, char):
-        if self._full_width_letter[self._mode]:
+        if self._full_width_letter[self._input_mode]:
             return self._convert_to_full_width(char)
         else:
             return char
 
     def cond_punct_translate(self, char):
-        if self._full_width_punct[self._mode]:
+        if self._full_width_punct[self._input_mode]:
             return self._convert_to_full_width(char)
         else:
             return char
@@ -2043,13 +2049,18 @@ class tabengine (IBus.Engine):
                 string.ascii_uppercase,
                 string.ascii_lowercase).decode('ISO-8859-1'))
 
-    def config_value_changed_cb (self, config, section, name, value):
+    def config_value_changed_cb(self, config, section, name, value):
         if self.config_section_normalize(self._config_section) != self.config_section_normalize(section):
             return
         print("config value %(n)s for engine %(en)s changed" %{'n': name, 'en': self._engine_name})
         value = variant_to_value(value)
+        if name == u'inputmode':
+            self._input_mode = value
+            self._refresh_properties()
+            return
         if name == u'autoselect':
             self._editor._auto_select = value
+            self._auto_select = value
             self._refresh_properties()
             return
         if name == u'autocommit':
@@ -2069,10 +2080,10 @@ class tabengine (IBus.Engine):
             self._refresh_properties()
             return
         elif name == u'lookuptableorientation':
-            self._editor._lookup_table.set_orientation (value)
+            self._editor._lookup_table.set_orientation(value)
             return
         elif name == u'lookuptableselectkeys':
-            self._editor.set_select_keys (value)
+            self._editor.set_select_keys(value)
             return
         elif name == u'onechar':
             self._editor._onechar = value

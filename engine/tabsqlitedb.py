@@ -224,15 +224,12 @@ class tabsqlitedb:
                         sys.stderr.write("The user database %(udb)s seems to be incompatible.\n" %{'udb': user_db})
                         if desc == None:
                             sys.stderr.write("There is no version information in the database.\n")
-                            self.old_phrases = self.extract_user_phrases(user_db, very_old_database = True)
+                            self.old_phrases = self.extract_user_phrases(user_db, old_database_version = "0.0")
                         elif desc["version"] != database_version:
                             sys.stderr.write("The version of the database does not match (too old or too new?).\n")
                             sys.stderr.write("ibus-table wants version=%s\n" %database_version)
                             sys.stderr.write("But the  database actually has version=%s\n" %desc["version"])
-                            if desc["version"] < "1.00":
-                                self.old_phrases = self.extract_user_phrases(user_db, very_old_database = True)
-                            else:
-                                self.old_phrases = self.extract_user_phrases(user_db, very_old_database = False)
+                            self.old_phrases = self.extract_user_phrases(user_db, old_database_version = desc["version"])
                         elif self.get_number_of_columns_of_phrase_table(user_db) != len(self._phrase_table_column_names):
                             sys.stderr.write("The number of columns of the database does not match.\n")
                             sys.stderr.write("ibus-table expects %(col)s columns.\n"
@@ -300,7 +297,7 @@ class tabsqlitedb:
             sqlargs = []
             for x in self.old_phrases:
                 sqlargs.append(
-                    {'tabkeys': x[0], 'phrase': x[1], 'freq': 0, 'user_freq': x[2]})
+                    {'tabkeys': x[0], 'phrase': x[1], 'freq': x[2], 'user_freq': x[3]})
             sqlstr = '''
             INSERT INTO user_db.phrases (tabkeys, phrase, freq, user_freq)
             VALUES (:tabkeys, :phrase, :freq, :user_freq)
@@ -1046,16 +1043,23 @@ class tabsqlitedb:
         if commit:
             self.db.commit()
 
-    def extract_user_phrases(self, database_file='', very_old_database=False):
+    def extract_user_phrases(self, database_file='', old_database_version="0.0"):
         '''extract user phrases from database'''
         sys.stderr.write("Trying to recover the phrases from the old, incompatible database.\n")
         try:
             db = sqlite3.connect(database_file)
             db.execute('PRAGMA wal_checkpoint;')
-            if not very_old_database:
+            if old_database_version >= "1.00":
                 phrases = db.execute(
-                    'SELECT tabkeys, phrase, sum(user_freq) FROM phrases GROUP BY tabkeys, phrase;').fetchall()
+                    '''
+                    SELECT tabkeys, phrase, freq, sum(user_freq) FROM phrases
+                    GROUP BY tabkeys, phrase, freq;
+                    '''
+                ).fetchall()
                 db.close()
+                phrases = sorted(phrases, key=lambda x: (x[0], x[1], x[2], x[3]))
+                sys.stderr.write("Recovered phrases from the old database: phrases=%s\n"
+                                 %repr(phrases))
                 return phrases[:]
             else:
                 # database is very old, it may still use many columns
@@ -1064,16 +1068,31 @@ class tabsqlitedb:
                 # from the system database instead.
                 phrases = []
                 results = db.execute(
-                    'SELECT phrase, sum(user_freq) FROM phrases GROUP BY phrase;').fetchall()
+                    'SELECT phrase, sum(user_freq) FROM phrases GROUP BY phrase;'
+                ).fetchall()
                 for result in results:
                     sqlstr = '''
-                    SELECT tabkeys FROM main.phrases WHERE phrase = :phrase ORDER BY len(tabkeys) DESC;
+                    SELECT tabkeys FROM main.phrases WHERE phrase = :phrase
+                    ORDER BY length(tabkeys) DESC;
                     '''
                     sqlargs = {'phrase': result[0]}
-                    tabkeys = self.db.execute(sqlstr, sqlargs).fetchall()[0]
-                    if tabkeys:
-                        phrases.append((tabkeys, result[0], result[1]))
+                    tabkeys_results = self.db.execute(sqlstr, sqlargs).fetchall()
+                    if tabkeys_results:
+                        phrases.append((tabkeys_results[0][0], result[0], 0, result[1]))
+                    else:
+                        # No tabkeys for that phrase could not be
+                        # found in the system database.  Try to get
+                        # tabkeys by calling self.parse_phrase(), that
+                        # might return something if the table has
+                        # rules to construct user defined phrases:
+                        tabkeys = self.parse_phrase(result[0])
+                        if tabkeys:
+                            # for user defined phrases, the “freq” column is -1:
+                            phrases.append((tabkeys, result[0], -1, result[1]))
                 db.close()
+                phrases = sorted(phrases, key=lambda x: (x[0], x[1], x[2], x[3]))
+                sys.stderr.write("Recovered phrases from the very old database: phrases=%s\n"
+                                 %repr(phrases))
                 return phrases[:]
         except:
             import traceback

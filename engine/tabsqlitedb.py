@@ -756,10 +756,6 @@ class tabsqlitedb:
             return result[0][0]
         return u''
 
-    def get_phrase_table_index (self):
-        '''get a list of phrase table columns name'''
-        return self._phrase_table_column_names[:]
-
     def generate_userdb_desc (self):
         try:
             sqlstring = 'CREATE TABLE IF NOT EXISTS user_db.desc (name PRIMARY KEY, value);'

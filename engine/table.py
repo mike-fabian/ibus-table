@@ -206,12 +206,11 @@ class KeyEvent:
 
 class editor(object):
     '''Hold user inputs chars and preedit string'''
-    def __init__ (self, config, phrase_table_index,valid_input_chars, max_key_length, database):
+    def __init__ (self, config, valid_input_chars, max_key_length, database):
         self.db = database
         self._config = config
         engine_name = os.path.basename(self.db.filename).replace('.db', '')
         self._config_section = "engine/Table/%s" %engine_name.replace(' ','_')
-        self._pt = phrase_table_index
         self._max_key_length = int(max_key_length)
         self._max_key_length_pinyin = 7
         self._valid_input_chars = valid_input_chars
@@ -1054,7 +1053,6 @@ class tabengine (IBus.Engine):
             self._page_down_keys = [IBus.keyval_from_name(x) for x in
                     pagedown_prop.split(",")]
 
-        self._pt = self.db.get_phrase_table_index ()
         self._max_key_length = int(self.db.get_ime_property ('max_key_length'))
         self._max_key_length_pinyin = 7
 
@@ -1065,8 +1063,8 @@ class tabengine (IBus.Engine):
         # config module
         self._config = self._bus.get_config ()
         self._config.connect ("value-changed", self.config_value_changed_cb)
-        # Containers we used:
-        self._editor = editor(self._config, self._pt, self._valid_input_chars, self._max_key_length, self.db)
+        self._editor = editor(self._config, self._valid_input_chars,
+                              self._max_key_length, self.db)
 
         # some other vals we used:
         # self._prev_key: hold the key event last time.

@@ -1855,67 +1855,61 @@ class tabengine (IBus.Engine):
             and key.mask & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
                 return False
-            else:
-                self._editor.control_arrow_left()
-                self._update_ui()
-                return True
+            self._editor.control_arrow_left()
+            self._update_ui()
+            return True
 
         if (key.code in (IBus.KEY_Right, IBus.KEY_KP_Right)
             and key.mask & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
                 return False
-            else:
-                self._editor.control_arrow_right()
-                self._update_ui()
-                return True
+            self._editor.control_arrow_right()
+            self._update_ui()
+            return True
 
         if key.code in (IBus.KEY_Left, IBus.KEY_KP_Left):
             if not self._editor.get_preedit_string_complete():
                 return False
-            else:
-                self._editor.arrow_left()
-                self._update_ui()
-                return True
+            self._editor.arrow_left()
+            self._update_ui()
+            return True
 
         if key.code in (IBus.KEY_Right, IBus.KEY_KP_Right):
             if not self._editor.get_preedit_string_complete():
                 return False
-            else:
-                self._editor.arrow_right()
-                self._update_ui()
-                return True
+            self._editor.arrow_right()
+            self._update_ui()
+            return True
 
-        if key.code == IBus.KEY_BackSpace and key.mask & IBus.ModifierType.CONTROL_MASK:
+        if (key.code == IBus.KEY_BackSpace
+            and key.mask & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
                 return False
-            else:
-                self._editor.remove_preedit_before_cursor()
-                self._update_ui()
-                return True
+            self._editor.remove_preedit_before_cursor()
+            self._update_ui()
+            return True
 
         if key.code == IBus.KEY_BackSpace:
             if not self._editor.get_preedit_string_complete():
                 return False
-            else:
-                self._editor.remove_char()
-                self._update_ui()
-                return True
+            self._editor.remove_char()
+            self._update_ui()
+            return True
 
-        if key.code == IBus.KEY_Delete  and key.mask & IBus.ModifierType.CONTROL_MASK:
+        if (key.code == IBus.KEY_Delete
+            and key.mask & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
                 return False
-            else:
-                self._editor.remove_preedit_after_cursor()
-                self._update_ui()
-                return True
+            self._editor.remove_preedit_after_cursor()
+            self._update_ui()
+            return True
 
         if key.code == IBus.KEY_Delete:
             if not self._editor.get_preedit_string_complete():
                 return False
-            else:
-                self._editor.delete()
-                self._update_ui()
-                return True
+            self._editor.delete()
+            self._update_ui()
+            return True
 
         if (keychar in self._editor.get_select_keys()
             and self._editor._candidates

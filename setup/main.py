@@ -113,12 +113,12 @@ class PreferencesDialog:
                     Gtk.MessageType.WARNING)
         if self.__engine_name == None:
             self.__run_message_dialog(
-                _("Cannot determine the config file for this engine. Please use the --engine-name option."),
+                _("Cannot determine the engine name. Please use the --engine-name option."),
                 Gtk.MessageType.ERROR)
             sys.exit(1)
 
     def check_table_available(self):
-        """Check if the current engine_name is avalible.
+        """Check if the current engine_name is available.
         Return bool"""
         names = self.__bus.list_engines()
         names = [x.get_name() for x in names]

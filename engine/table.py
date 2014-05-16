@@ -2197,15 +2197,3 @@ class tabengine (IBus.Engine):
             self._refresh_properties()
             return
 
-    # for further implementation :)
-    @classmethod
-    def CONFIG_VALUE_CHANGED(cls, bus, section, name, value):
-        config = bus.get_config()
-        if section != self._config_section:
-            return
-
-    @classmethod
-    def CONFIG_RELOADED(cls, bus):
-        config = bus.get_config()
-        if section != self._config_section:
-            return

@@ -260,23 +260,26 @@ class editor(object):
         # committed to preëdit but not yet “really” committed.
         self._cursor_precommit = 0
 
-        # __orientation: lookup table orientation
-        __orientation = variant_to_value(self._config.get_value(
-                self._config_section,
-                "LookupTableOrientation"))
-        if __orientation == None:
-                __orientation = self.db.get_orientation()
-        # __page_size: lookup table page size
-        # this is computed from the select_keys, so should be done after it
-        __page_size = self.db.get_page_size()
-        self._lookup_table = IBus.LookupTable.new(
-            page_size=__page_size,
-            cursor_pos=0,
-            cursor_visible=True,
-            round=True)
-        self._lookup_table.set_orientation (__orientation)
-        # self._select_keys: a list of chars for select keys
-        self.init_select_keys()
+        select_keys_csv = variant_to_value(self._config.get_value(
+            self._config_section,
+            "LookupTableSelectKeys"))
+        if select_keys_csv == None:
+            select_keys_csv = self.db.get_select_keys()
+        self._select_keys = [x.strip() for x in select_keys_csv.split(",")]
+        self._page_size = variant_to_value(self._config.get_value(
+            self._config_section,
+            "lookuptablepagesize"))
+        if self._page_size == None or self._page_size > len(self._select_keys):
+            self._page_size = len(self._select_keys)
+        self._orientation = variant_to_value(self._config.get_value(
+            self._config_section,
+            "LookupTableOrientation"))
+        if self._orientation == None:
+            self._orientation = self.db.get_orientation()
+        self._lookup_table = self.get_new_lookup_table(
+            page_size = self._page_size,
+            select_keys = self._select_keys,
+            orientation = self._orientation)
         # self._py_mode: whether in pinyin mode
         self._py_mode = False
         # self._onechar: whether we only select single character
@@ -311,21 +314,20 @@ class editor(object):
             else:
                 self._auto_select = False
 
-    def init_select_keys(self):
-        # __select_keys: lookup table select keys/labels
-        __select_keys = variant_to_value(self._config.get_value(
-                self._config_section,
-                "LookupTableSelectKeys"))
-        if __select_keys == None:
-            __select_keys = self.db.get_select_keys()
-        if __select_keys:
-            self.set_select_keys(__select_keys)
-
-    def set_select_keys(self, astring):
-        """astring: select keys setting. e.g. 1,2,3,4,5,6,7,8,9"""
-        self._select_keys = [x.strip() for x in astring.split(",")]
-        for x in self._select_keys:
-            self._lookup_table.append_label(IBus.Text.new_from_string("{}.".format(x)))
+    def get_new_lookup_table(self, page_size=10, select_keys='1234567890', orientation=True):
+        if page_size < 1:
+            page_size = 1
+        if page_size > len(select_keys):
+            page_size = len(select_keys)
+        lookup_table = IBus.LookupTable.new(
+            page_size=page_size,
+            cursor_pos=0,
+            cursor_visible=True,
+            round=True)
+        for key in select_keys:
+            lookup_table.append_label(IBus.Text.new_from_string("%s." %key))
+        lookup_table.set_orientation(orientation)
+        return lookup_table
 
     def get_select_keys(self):
         """@return: a list of chars as select keys: ["1", "2", ...]"""
@@ -2175,7 +2177,17 @@ class tabengine (IBus.Engine):
             self._refresh_properties()
             return
         elif name == u'lookuptableorientation':
+            self._editor._orientation = value
             self._editor._lookup_table.set_orientation(value)
+            return
+        elif name == u'lookuptablepagesize':
+            if value >= 1 and value <= len(self._editor._select_keys):
+                self._editor._page_size = value
+                self._editor._lookup_table = self._editor.get_new_lookup_table(
+                    page_size = self._editor._page_size,
+                    select_keys = self._editor._select_keys,
+                    orientation = self._editor._orientation)
+                self.reset()
             return
         elif name == u'lookuptableselectkeys':
             self._editor.set_select_keys(value)

@@ -357,9 +357,6 @@ class tabsqlitedb:
         except:
             return -1
 
-    def get_page_size (self):
-        return len(self.get_select_keys().split(','))
-
     def get_select_keys (self):
         ret = self.get_ime_property("select_keys")
         if ret:

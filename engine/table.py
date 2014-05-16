@@ -1838,11 +1838,15 @@ class tabengine (IBus.Engine):
             return False
 
         if key.code in (IBus.KEY_Down, IBus.KEY_KP_Down) :
+            if not self._editor.get_preedit_string_complete():
+                return False
             res = self._editor.cursor_down()
             self._update_ui()
             return res
 
         if key.code in (IBus.KEY_Up, IBus.KEY_KP_Up):
+            if not self._editor.get_preedit_string_complete():
+                return False
             res = self._editor.cursor_up()
             self._update_ui()
             return res

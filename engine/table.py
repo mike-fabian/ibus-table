@@ -363,14 +363,6 @@ class editor(object):
             traceback.print_exc()
             return -1
 
-    def change_chinese_mode (self):
-        if self._chinese_mode != -1:
-            self._chinese_mode = (self._chinese_mode +1 ) % 5
-        self._config.set_value (
-                self._config_section,
-                "ChineseMode",
-                GLib.Variant.new_int32(self._chinese_mode))
-
     def clear_all_input_and_preedit(self):
         '''
         Clear all input, whether committed to preëdit or not.
@@ -1168,8 +1160,8 @@ class tabengine (IBus.Engine):
             self._save_user_count = 0
         super(tabengine,self).destroy()
 
-    def _init_properties (self):
-        self.properties= IBus.PropList ()
+    def _init_properties(self):
+        self.properties= IBus.PropList()
 
         self._status_property = self._new_property(u'status')
         self.properties.append(self._status_property)
@@ -1197,8 +1189,8 @@ class tabengine (IBus.Engine):
         self._always_show_lookup_property = self._new_property(u'always_show_lookup')
         self.properties.append(self._always_show_lookup_property)
 
-        self.register_properties (self.properties)
-        self._refresh_properties ()
+        self.register_properties(self.properties)
+        self._refresh_properties()
 
     def _new_property (self, key):
         '''Creates new IBus.Property and returns'''
@@ -1373,59 +1365,76 @@ class tabengine (IBus.Engine):
         property.set_label(IBus.Text.new_from_string(label))
         property.set_tooltip(IBus.Text.new_from_string(tooltip))
 
-    def _change_input_mode(self):
-        '''Toggle the input mode between direct input and table input'''
-        self._input_mode = int(not self._input_mode)
-        self.reset()
-        self._update_ui()
-
-    def do_property_activate (self, property, prop_state = IBus.PropState.UNCHECKED):
+    def do_property_activate(self, property, prop_state = IBus.PropState.UNCHECKED):
         '''Shift property'''
         if property == u"status":
-            self._change_input_mode()
+            self._input_mode = int(not self._input_mode)
+            self.reset()
+            # Not saved to config on purpose. In the setup tool one
+            # can select whether “Table input” or “Direct input” should
+            # be the default when the input method starts. But when
+            # changing this input mode using the property menu, the change
+            # is not remembered.
         elif property == u'py_mode' and self._ime_py:
-            self.toggle_tab_py_mode()
+            self._editor.commit_to_preedit()
+            self._editor._py_mode = not self._editor._py_mode
+            self._update_ui()
+            # Not saved to config on purpose.
         elif property == u'onechar':
             self._editor._onechar = not self._editor._onechar
-            self._config.set_value(self._config_section,
-                    "OneChar",
-                    GLib.Variant.new_boolean(self._editor._onechar))
-
+            self._config.set_value(
+                self._config_section,
+                "OneChar",
+                GLib.Variant.new_boolean(self._editor._onechar))
         elif property == u'acommit':
             self._auto_commit = not self._auto_commit
-            self._config.set_value( self._config_section,
-                    "AutoCommit",
-                    GLib.Variant.new_boolean(self._auto_commit))
+            self._config.set_value(
+                self._config_section,
+                "AutoCommit",
+                GLib.Variant.new_boolean(self._auto_commit))
         elif property == u'letter':
-            self._full_width_letter [self._input_mode] = not self._full_width_letter [self._input_mode]
+            self._full_width_letter[self._input_mode] = not self._full_width_letter[self._input_mode]
             if self._input_mode:
-                self._config.set_value(self._config_section,
-                        "TabDefFullWidthLetter",
-                        GLib.Variant.new_boolean(self._full_width_letter [self._input_mode]))
+                self._config.set_value(
+                    self._config_section,
+                    "TabDefFullWidthLetter",
+                    GLib.Variant.new_boolean(
+                        self._full_width_letter[self._input_mode]))
             else:
-                self._config.set_value(self._config_section,
-                        "EnDefFullWidthLetter",
-                        GLib.Variant.new_boolean(self._full_width_letter [self._input_mode]))
-
+                self._config.set_value(
+                    self._config_section,
+                    "EnDefFullWidthLetter",
+                    GLib.Variant.new_boolean(
+                        self._full_width_letter[self._input_mode]))
         elif property == u'punct':
-            self._full_width_punct [self._input_mode] = not self._full_width_punct [self._input_mode]
+            self._full_width_punct[self._input_mode] = not self._full_width_punct[self._input_mode]
             if self._input_mode:
-                self._config.set_value(self._config_section,
-                        "TabDefFullWidthPunct",
-                        GLib.Variant.new_boolean(self._full_width_punct [self._input_mode]))
+                self._config.set_value(
+                    self._config_section,
+                    "TabDefFullWidthPunct",
+                    GLib.Variant.new_boolean(
+                        self._full_width_punct[self._input_mode]))
             else:
-                self._config.set_value(self._config_section,
-                        "EnDefFullWidthPunct",
-                        GLib.Variant.new_boolean(self._full_width_punct [self._input_mode]))
+                self._config.set_value(
+                    self._config_section,
+                    "EnDefFullWidthPunct",
+                    GLib.Variant.new_boolean(
+                        self._full_width_punct[self._input_mode]))
         elif property == u'always_show_lookup':
             self._always_show_lookup = not self._always_show_lookup
-            self._config.set_value( self._config_section,
-                    "AlwaysShowLookup",
-                    GLib.Variant.new_boolean(self._always_show_lookup))
+            self._config.set_value(
+                self._config_section,
+                "AlwaysShowLookup",
+                GLib.Variant.new_boolean(self._always_show_lookup))
         elif property == u'cmode':
-            self._editor.change_chinese_mode()
-            self.reset()
-        self._refresh_properties ()
+            if self._editor._chinese_mode != -1:
+                self._editor._chinese_mode = (self._editor._chinese_mode+1) % 5
+                self._config.set_value(
+                    self._config_section,
+                    "ChineseMode",
+                    GLib.Variant.new_int32(self._editor._chinese_mode))
+                self.reset()
+        self._refresh_properties()
     #    elif property == "setup":
             # Need implementation
     #        self.start_helper ("96c07b6f-0c3d-4403-ab57-908dd9b8d513")
@@ -1552,13 +1561,6 @@ class tabengine (IBus.Engine):
                 self._save_user_start = now
         return True
 
-    def toggle_tab_py_mode(self):
-        '''Toggle between Pinyin Mode and Table Mode'''
-        self._editor.commit_to_preedit()
-        self._editor._py_mode = not (self._editor._py_mode)
-        self._refresh_properties()
-        self._update_ui()
-
     def commit_string (self, phrase, tabkeys=u''):
         self._editor.clear_all_input_and_preedit()
         self._update_ui()
@@ -1671,7 +1673,7 @@ class tabengine (IBus.Engine):
         '''Internal method to process key event'''
         # Match mode switch hotkey
         if self._editor.is_empty() and (self._match_hotkey(key, IBus.KEY_Shift_L, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
-            self._change_input_mode()
+            self.do_property_activate("status")
             return True
 
         # Match full half letter mode switch hotkey
@@ -1732,7 +1734,7 @@ class tabengine (IBus.Engine):
             and self._match_hotkey(
                 key, IBus.KEY_Shift_R,
                 IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
-            self.toggle_tab_py_mode()
+            self.do_property_activate(u"py_mode")
             return True
         # process commit to preedit
         if (self._match_hotkey(

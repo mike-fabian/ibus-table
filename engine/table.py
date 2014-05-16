@@ -1140,13 +1140,12 @@ class tabengine (IBus.Engine):
         self.sync_timeout_id = GObject.timeout_add_seconds(1,
                 self._sync_user_db)
 
-    def reset (self):
+    def reset(self):
         self._editor.clear_all_input_and_preedit()
         self._double_quotation_state = False
         self._single_quotation_state = False
         self._prev_key = None
-        #self._editor._onechar = False
-        self._init_properties ()
+        self._init_properties()
         self._update_ui ()
 
     def do_destroy(self):

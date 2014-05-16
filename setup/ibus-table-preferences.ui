@@ -150,6 +150,36 @@
                                   </packing>
                                 </child>
                                 <child>
+                                  <object class="GtkComboBox" id="comboboxendeffullwidthletter">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreEnDefFullWidthLetter</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">4</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxendeffullwidthpunct">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreEnDefFullWidthPunct</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">5</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
                                   <object class="GtkLabel" id="label7">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
@@ -172,7 +202,7 @@
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Letter width:</property>
+                                    <property name="label" translatable="yes">Table input letter width:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -188,11 +218,43 @@
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Punctuation width:</property>
+                                    <property name="label" translatable="yes">Table input punctuation width:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
                                     <property name="top_attach">3</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label15">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Direct input letter width:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">4</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label16">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Direct input punctuation width:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">5</property>
                                     <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
@@ -793,6 +855,34 @@ Seán de Búrca
   <object class="GtkListStore" id="liststoreTabDefFullWidthPunct">
     <columns>
       <!-- column-name TabDefFullWidthPunct -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Half</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Full</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststoreEnDefFullWidthLetter">
+    <columns>
+      <!-- column-name EnDefFullWidthLetter -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Half</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Full</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststoreEnDefFullWidthPunct">
+    <columns>
+      <!-- column-name EnDefFullWidthPunct -->
       <column type="gchararray"/>
     </columns>
     <data>

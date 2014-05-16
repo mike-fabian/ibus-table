@@ -43,6 +43,8 @@ OPTION_DEFAULTS = {
     "chinesemode": 0,
     "tabdeffullwidthletter": False,
     "tabdeffullwidthpunct": False,
+    "endeffullwidthletter": False,
+    "endeffullwidthpunct": False,
     "lookuptableorientation": True,
     "lookuptablepagesize": 6,
     "onechar": False,

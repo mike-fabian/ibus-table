@@ -111,18 +111,18 @@ class IMApp:
             # now we get IME info from self.__factory.db
             engine_name = os.path.basename(self.__factory.db.filename).replace('.db', '')
             name = 'table:'+engine_name
-            longname = self.__factory.db.get_ime_property ("name")
-            description = self.__factory.db.get_ime_property ("description")
-            language = self.__factory.db.get_ime_property ("languages")
-            license = self.__factory.db.get_ime_property ("credit")
-            author = self.__factory.db.get_ime_property ("author")
-            icon = self.__factory.db.get_ime_property ("icon")
+            longname = self.__factory.db.ime_properties.get("name")
+            description = self.__factory.db.ime_properties.get("description")
+            language = self.__factory.db.ime_properties.get("languages")
+            license = self.__factory.db.ime_properties.get("credit")
+            author = self.__factory.db.ime_properties.get("author")
+            icon = self.__factory.db.ime_properties.get("icon")
             if icon:
                 icon = os.path.join (icon_dir, icon)
                 if not os.access( icon, os.F_OK):
                     icon = ''
-            layout = self.__factory.db.get_ime_property ("layout")
-            symbol = self.__factory.db.get_ime_property ("symbol")
+            layout = self.__factory.db.ime_properties.get("layout")
+            symbol = self.__factory.db.ime_properties.get("symbol")
             setup_arg = "{} --engine-name {}".format(setup_cmd, name)
             engine = IBus.EngineDesc(name=name,
                                         longname=longname,
@@ -220,15 +220,15 @@ def main():
             _longname.text = ''
             try:
                 _locale = getdefaultlocale()[0].lower()
-                _longname.text = _sq_db.get_ime_property ( \
-                    '.'.join(['name',_locale]) )
+                _longname.text = _sq_db.ime_properties.get(
+                    '.'.join(['name',_locale]))
             except:
                 pass
             if not _longname.text:
                 _longname.text = engine_name
 
             _language = SubElement (_engine, 'language')
-            _langs = _sq_db.get_ime_property ('languages')
+            _langs = _sq_db.ime_properties.get('languages')
             if _langs:
                 _langs = _langs.split (',')
                 if len (_langs) == 1:
@@ -238,24 +238,24 @@ def main():
                     _language.text = _langs[0].strip().split('_')[0]
 
             _license = SubElement (_engine, 'license')
-            _license.text = _sq_db.get_ime_property ('license')
+            _license.text = _sq_db.ime_properties.get('license')
 
             _author = SubElement (_engine, 'author')
-            _author.text  = _sq_db.get_ime_property ('author')
+            _author.text  = _sq_db.ime_properties.get('author')
 
             _icon = SubElement (_engine, 'icon')
-            _icon_basename = _sq_db.get_ime_property ('icon')
+            _icon_basename = _sq_db.ime_properties.get('icon')
             if _icon_basename:
                 _icon.text = os.path.join (icon_dir, _icon_basename)
 
             _layout = SubElement (_engine, 'layout')
-            _layout.text = _sq_db.get_ime_property ('layout')
+            _layout.text = _sq_db.ime_properties.get('layout')
 
             _symbol = SubElement (_engine, 'symbol')
-            _symbol.text = _sq_db.get_ime_property ('symbol')
+            _symbol.text = _sq_db.ime_properties.get('symbol')
 
             _desc = SubElement (_engine, 'description')
-            _desc.text = _sq_db.get_ime_property ('description')
+            _desc.text = _sq_db.ime_properties.get('description')
 
             _setup = SubElement (_engine, 'setup')
             _setup.text = setup_arg

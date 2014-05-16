@@ -300,13 +300,13 @@ def main ():
     debug_print('\t  add phrases into DB ')
     db.add_phrases(phrases)
 
-    if db.get_ime_property ('user_can_define_phrase').lower() == u'true':
+    if db.ime_properties.get('user_can_define_phrase').lower() == u'true':
         debug_print ('\t  get goucima of IME :)')
         goucima = goucima_parser (gouci)
         debug_print ('\t  add goucima into DB ')
         db.add_goucima ( goucima )
 
-    if db.get_ime_property ('pinyin_mode').lower() == u'true':
+    if db.ime_properties.get('pinyin_mode').lower() == u'true':
         debug_print ('\tLoad pinyin source \"%s\"' % opts.pinyin)
         _bz2p = patt_s.match(opts.pinyin)
         if _bz2p:
@@ -323,7 +323,7 @@ def main ():
     debug_print ("Optimizing database ")
     db.optimize_database ()
 
-    if db.get_ime_property ('user_can_define_phrase').lower() == u'true' and opts.extra:
+    if db.ime_properties.get('user_can_define_phrase').lower() == u'true' and opts.extra:
         debug_print( '\tPreparing for adding extra words' )
         db.create_indexes ('main')
         debug_print ('\tLoad extra words source \"%s\"' % opts.extra)

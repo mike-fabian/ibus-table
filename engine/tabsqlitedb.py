@@ -71,6 +71,28 @@ chinese_nocheck_chars=u"“”‘’《》〈〉〔〕「」『』【】〖〗�
     u"ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩ"\
     u"ㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ"
 
+class ImeProperties:
+    def __init__(self, db=None):
+        '''
+        “db” is the handle of the sqlite3 database file obtained by
+        sqlite3.connect().
+        '''
+        self.ime_property_cache = {}
+        sqlstr = 'SELECT attr, val FROM main.ime;'
+        try:
+            results = db.execute(sqlstr).fetchall()
+        except:
+            import traceback
+            traceback.print_exc()
+        for result in results:
+            self.ime_property_cache[result[0]] = result[1]
+
+    def get(self, key):
+        if key in self.ime_property_cache:
+            return self.ime_property_cache[key]
+        else:
+            return None
+
 class tabsqlitedb:
     '''Phrase database for tables
 
@@ -146,11 +168,11 @@ class tabsqlitedb:
             'page_up_keys':'Page_Up,minus',
             'page_down_keys':'Page_Down,equal',
             'status_prompt':'',
-            'def_full_width_punct':'TRUE',
-            'def_full_width_letter':'FALSE',
-            'user_can_define_phrase':'FALSE',
-            'pinyin_mode':'FALSE',
-            'dynamic_adjust':'FALSE',
+            'def_full_width_punct':'true',
+            'def_full_width_letter':'false',
+            'user_can_define_phrase':'false',
+            'pinyin_mode':'false',
+            'dynamic_adjust':'false',
             'auto_select':'false',
             'auto_commit':'false',
             # 'no_check_chars':u'',
@@ -161,7 +183,7 @@ class tabsqlitedb:
             # 'rules':'ce2:p11+p12+p21+p22;ce3:p11+p21+p22+p31;ca4:p11+p21+p31+p41'}
             'least_commit_length':'0',
             'start_chars':'',
-            'orientation':'1',
+            'orientation':'true',
             'always_show_lookup':'true'
             # we use this entry for those IME, which don't
             # have rules to build up phrase, but still need
@@ -173,11 +195,12 @@ class tabsqlitedb:
             sqlargs = {'attr': attr, 'val': default_ime_attributes[attr]}
             if not self.db.execute(select_sqlstr, sqlargs).fetchall():
                 self.db.execute(insert_sqlstr, sqlargs)
+        self.ime_properties = ImeProperties(self.db)
         # shared variables in this class:
-        self._mlen = int ( self.get_ime_property ("max_key_length") )
+        self._mlen = int(self.ime_properties.get("max_key_length"))
         self._is_chinese = self.is_chinese()
         self._phrase_table_column_names = ['id', 'tabkeys', 'phrase','freq','user_freq']
-        self.user_can_define_phrase = self.get_ime_property('user_can_define_phrase')
+        self.user_can_define_phrase = self.ime_properties.get('user_can_define_phrase')
         if self.user_can_define_phrase:
             if self.user_can_define_phrase.lower() == u'true' :
                 self.user_can_define_phrase = True
@@ -187,7 +210,7 @@ class tabsqlitedb:
             print('Could not find "user_can_define_phrase" entry from database, is it an outdated database?')
             self.user_can_define_phrase = False
 
-        self.dynamic_adjust = self.get_ime_property('dynamic_adjust')
+        self.dynamic_adjust = self.ime_properties.get('dynamic_adjust')
         if self.dynamic_adjust:
             if self.dynamic_adjust.lower() == u'true' :
                 self.dynamic_adjust = True
@@ -341,7 +364,7 @@ class tabsqlitedb:
         self.db.execute('PRAGMA wal_checkpoint;')
 
     def is_chinese (self):
-        __lang = self.get_ime_property ('languages')
+        __lang = self.ime_properties.get('languages')
         if __lang:
             __langs = __lang.split(',')
             for _l in __langs:
@@ -352,20 +375,20 @@ class tabsqlitedb:
     def get_chinese_mode (self):
         try:
             __dict = {'cm0':0,'cm1':1,'cm2':2,'cm3':3,'cm4':4}
-            __filt = self.get_ime_property ('language_filter')
+            __filt = self.ime_properties.get('language_filter')
             return __dict[__filt]
         except:
             return -1
 
     def get_select_keys (self):
-        ret = self.get_ime_property("select_keys")
+        ret = self.ime_properties.get("select_keys")
         if ret:
             return ret
         return "1,2,3,4,5,6,7,8,9,0"
 
     def get_orientation (self):
         try:
-            return int( self.get_ime_property ('orientation') )
+            return int(self.ime_properties.get('orientation'))
         except:
             return 1
 
@@ -399,6 +422,8 @@ class tabsqlitedb:
     def update_ime (self, attrs):
         '''Update or insert attributes in ime table, attrs is a iterable object
         Like [(attr,val), (attr,val), ...]
+
+        This is called only by tabcreatedb.py.
         '''
         select_sqlstr = 'SELECT val from main.ime WHERE attr = :attr'
         update_sqlstr = 'UPDATE main.ime SET val = :val WHERE attr = :attr;'
@@ -410,11 +435,13 @@ class tabsqlitedb:
             else:
                 self.db.execute(insert_sqlstr, sqlargs)
         self.db.commit()
-        # we need to update some self variables now.
-        self._mlen = int(self.get_ime_property('max_key_length'))
+        # update ime properties cache:
+        self.ime_properties = ImeProperties(self.db)
+        # The self variables used by tabcreatedb.py need to be updated now:
+        self._mlen = int(self.ime_properties.get('max_key_length'))
         self._is_chinese = self.is_chinese()
         self._phrase_table_column_names = ['id', 'tabkeys', 'phrase','freq','user_freq']
-        self.user_can_define_phrase = self.get_ime_property('user_can_define_phrase')
+        self.user_can_define_phrase = self.ime_properties.get('user_can_define_phrase')
         if self.user_can_define_phrase:
             if self.user_can_define_phrase.lower() == u'true' :
                 self.user_can_define_phrase = True
@@ -430,7 +457,7 @@ class tabsqlitedb:
         rules={}
         if self.user_can_define_phrase:
             try:
-                _rules = self.get_ime_property ('rules')
+                _rules = self.ime_properties.get('rules')
                 if _rules:
                     _rules = _rules.strip().split(';')
                 for rule in _rules:
@@ -481,7 +508,7 @@ class tabsqlitedb:
             return [len(self.rules[x]) for x in range(2, max_len+1)][:]
         else:
             try:
-                least_commit_len = int(self.get_ime_property('least_commit_length'))
+                least_commit_len = int(self.ime_properties.get('least_commit_length'))
             except:
                 least_commit_len = 0
             if least_commit_len > 0:
@@ -491,11 +518,11 @@ class tabsqlitedb:
 
     def get_start_chars (self):
         '''return possible start chars of IME'''
-        return self.get_ime_property('start_chars')
+        return self.ime_properties.get('start_chars')
 
     def get_no_check_chars (self):
         '''Get the characters which engine should not change freq'''
-        _chars= self.get_ime_property('no_check_chars')
+        _chars= self.ime_properties.get('no_check_chars')
         if type(_chars) != type(u''):
             _chars = _chars.decode('utf-8')
         return _chars
@@ -737,21 +764,6 @@ class tabsqlitedb:
                 if bitmask & chinese_variants.detect_chinese_category(zi):
                     phrase_frequencies.append(tuple([pinyin, zi, freq, 0]))
         return self.best_candidates(phrase_frequencies)
-
-    def get_ime_property( self, attr ):
-        '''get the IME property named “attr” from the database'''
-        attr = attr.lower()
-        sqlstr = 'SELECT val FROM main.ime WHERE attr = :attr;'
-        sqlargs  = {'attr': attr}
-        try:
-            result = self.db.execute(sqlstr, sqlargs).fetchall()
-        except:
-            import traceback
-            traceback.print_exc
-            return u''
-        if result:
-            return result[0][0]
-        return u''
 
     def generate_userdb_desc (self):
         try:

@@ -309,8 +309,8 @@ class editor(object):
                 self._config_section,
                 "AutoSelect"))
         if self._auto_select == None:
-            if self.db.get_ime_property('auto_select') != None:
-                self._auto_select = self.db.get_ime_property('auto_select').lower() == u'true'
+            if self.db.ime_properties.get('auto_select') != None:
+                self._auto_select = self.db.ime_properties.get('auto_select').lower() == u'true'
             else:
                 self._auto_select = False
 
@@ -1014,7 +1014,7 @@ class tabengine (IBus.Engine):
         self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
                 os.path.sep, 'icons', os.path.sep)
         # self._ime_py: Indicates whether this table supports pinyin mode
-        self._ime_py = self.db.get_ime_property('pinyin_mode')
+        self._ime_py = self.db.ime_properties.get('pinyin_mode')
         if self._ime_py:
             if self._ime_py.lower() == u'true':
                 self._ime_py = True
@@ -1024,9 +1024,9 @@ class tabengine (IBus.Engine):
             print('We could not find "pinyin_mode" entry in database, is it an outdated database?')
             self._ime_py = False
 
-        self._status = self.db.get_ime_property('status_prompt')
+        self._status = self.db.ime_properties.get('status_prompt')
         # now we check and update the valid input characters
-        self._valid_input_chars = self.db.get_ime_property('valid_input_chars')
+        self._valid_input_chars = self.db.ime_properties.get('valid_input_chars')
 
         # check whether we can use '=' and '-' for page_down/up
         self._page_down_keys = [IBus.KEY_Page_Down, IBus.KEY_KP_Page_Down]
@@ -1036,8 +1036,8 @@ class tabengine (IBus.Engine):
             self._page_down_keys.append (IBus.KEY_equal)
             self._page_up_keys.append (IBus.KEY_minus)
 
-        pageup_prop = self.db.get_ime_property('page_up_keys')
-        pagedown_prop = self.db.get_ime_property('page_down_keys')
+        pageup_prop = self.db.ime_properties.get('page_up_keys')
+        pagedown_prop = self.db.ime_properties.get('page_down_keys')
         if pageup_prop is not None:
             self._page_up_keys = [IBus.keyval_from_name(x) for x in
                     pageup_prop.split(",")]
@@ -1045,7 +1045,7 @@ class tabengine (IBus.Engine):
             self._page_down_keys = [IBus.keyval_from_name(x) for x in
                     pagedown_prop.split(",")]
 
-        self._max_key_length = int(self.db.get_ime_property ('max_key_length'))
+        self._max_key_length = int(self.db.ime_properties.get('max_key_length'))
         self._max_key_length_pinyin = 7
 
         # name for config section
@@ -1087,7 +1087,7 @@ class tabengine (IBus.Engine):
         if self._full_width_letter[0] == None:
             self._full_width_letter[0] = False
         if self._full_width_letter[1] == None:
-            self._full_width_letter[1] = self.db.get_ime_property('def_full_width_letter').lower() == u'true'
+            self._full_width_letter[1] = self.db.ime_properties.get('def_full_width_letter').lower() == u'true'
         self._full_width_punct = [
             variant_to_value(self._config.get_value(
                     self._config_section,
@@ -1099,14 +1099,14 @@ class tabengine (IBus.Engine):
         if self._full_width_punct[0] == None:
             self._full_width_punct[0] = False
         if self._full_width_punct[1] == None:
-            self._full_width_punct[1] = self.db.get_ime_property('def_full_width_punct').lower() == u'true'
+            self._full_width_punct[1] = self.db.ime_properties.get('def_full_width_punct').lower() == u'true'
         #self._setup_property = Property ("setup", _("Setup"))
 
         self._auto_commit = variant_to_value(self._config.get_value(
                 self._config_section,
                 "AutoCommit"))
         if self._auto_commit == None:
-            self._auto_commit = self.db.get_ime_property('auto_commit').lower() == u'true'
+            self._auto_commit = self.db.ime_properties.get('auto_commit').lower() == u'true'
 
         # If auto select is true, then the first candidate phrase will
         # be selected automatically during typing. Auto select is true
@@ -1115,8 +1115,8 @@ class tabengine (IBus.Engine):
                 self._config_section,
                 "AutoSelect"))
         if self._auto_select == None:
-            if self.db.get_ime_property('auto_select') != None:
-                self._auto_select = self.db.get_ime_property('auto_select').lower() == u'true'
+            if self.db.ime_properties.get('auto_select') != None:
+                self._auto_select = self.db.ime_properties.get('auto_select').lower() == u'true'
             else:
                 self._auto_select = False
 
@@ -1124,8 +1124,8 @@ class tabengine (IBus.Engine):
                 self._config_section,
                 "AlwaysShowLookup"))
         if self._always_show_lookup == None:
-            if self.db.get_ime_property('always_show_lookup') != None:
-                self._always_show_lookup = self.db.get_ime_property('always_show_lookup').lower() == u'true'
+            if self.db.ime_properties.get('always_show_lookup') != None:
+                self._always_show_lookup = self.db.ime_properties.get('always_show_lookup').lower() == u'true'
             else:
                 self._always_show_lookup = True
 

@@ -199,7 +199,6 @@ class tabsqlitedb:
         # shared variables in this class:
         self._mlen = int(self.ime_properties.get("max_key_length"))
         self._is_chinese = self.is_chinese()
-        self._phrase_table_column_names = ['id', 'tabkeys', 'phrase','freq','user_freq']
         self.user_can_define_phrase = self.ime_properties.get('user_can_define_phrase')
         if self.user_can_define_phrase:
             if self.user_can_define_phrase.lower() == u'true' :
@@ -241,9 +240,10 @@ class tabsqlitedb:
             else:
                 try:
                     desc = self.get_database_desc(user_db)
+                    phrase_table_column_names = ['id', 'tabkeys', 'phrase','freq','user_freq']
                     if desc == None \
                         or desc["version"] != database_version \
-                        or self.get_number_of_columns_of_phrase_table(user_db) != len(self._phrase_table_column_names):
+                        or self.get_number_of_columns_of_phrase_table(user_db) != len(phrase_table_column_names):
                         sys.stderr.write("The user database %(udb)s seems to be incompatible.\n" %{'udb': user_db})
                         if desc == None:
                             sys.stderr.write("There is no version information in the database.\n")
@@ -253,10 +253,10 @@ class tabsqlitedb:
                             sys.stderr.write("ibus-table wants version=%s\n" %database_version)
                             sys.stderr.write("But the  database actually has version=%s\n" %desc["version"])
                             self.old_phrases = self.extract_user_phrases(user_db, old_database_version = desc["version"])
-                        elif self.get_number_of_columns_of_phrase_table(user_db) != len(self._phrase_table_column_names):
+                        elif self.get_number_of_columns_of_phrase_table(user_db) != len(phrase_table_column_names):
                             sys.stderr.write("The number of columns of the database does not match.\n")
                             sys.stderr.write("ibus-table expects %(col)s columns.\n"
-                                %{'col': len(self._phrase_table_column_names)})
+                                             %{'col': len(phrase_table_column_names)})
                             sys.stderr.write("But the database actually has %(col)s columns.\n"
                                 %{'col': self.get_number_of_columns_of_phrase_table(user_db)})
                             sys.stderr.write("But the versions of the databases are identical.\n")
@@ -440,7 +440,6 @@ class tabsqlitedb:
         # The self variables used by tabcreatedb.py need to be updated now:
         self._mlen = int(self.ime_properties.get('max_key_length'))
         self._is_chinese = self.is_chinese()
-        self._phrase_table_column_names = ['id', 'tabkeys', 'phrase','freq','user_freq']
         self.user_can_define_phrase = self.ime_properties.get('user_can_define_phrase')
         if self.user_can_define_phrase:
             if self.user_can_define_phrase.lower() == u'true' :

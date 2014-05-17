@@ -36,6 +36,9 @@ from gi.repository import IBus
 
 import version
 
+sys.path = [sys.path[0]+'/../engine'] + sys.path
+import tabsqlitedb
+
 _ = lambda a : gettext.dgettext("ibus-table", a)
 
 OPTION_DEFAULTS = {
@@ -130,6 +133,37 @@ class PreferencesDialog:
                 _('IBus Table engine %s is not available') %self.__engine_name,
                 Gtk.MessageType.ERROR)
         return ret
+
+    def get_default_options_from_database(self):
+        self.tabsqlitedb = tabsqlitedb.tabsqlitedb(
+            filename = os.path.join(
+                db_dir,
+                re.sub(r'^table:', '', self.__engine_name)+'.db'),
+            user_db = None,
+            create_database = False)
+        language_filter = self.tabsqlitedb.ime_properties.get('language_filter')
+        if language_filter in ['cm0', 'cm1', 'cm2', 'cm3', 'cm4']:
+            OPTION_DEFAULTS['chinesemode'] = int(language_filter[-1])
+        def_full_width_punct = self.tabsqlitedb.ime_properties.get('def_full_width_punct')
+        if (def_full_width_punct
+            and type(def_full_width_punct) == type(u'')
+            and def_full_width_punct.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['tabdeffullwidthpunct'] = def_full_width_punct.lower() == u'true'
+            OPTION_DEFAULTS['endeffullwidthpunct'] = def_full_width_punct.lower() == u'true'
+        def_full_width_letter = self.tabsqlitedb.ime_properties.get('def_full_width_letter')
+        if (def_full_width_letter
+            and type(def_full_width_letter) == type(u'')
+            and def_full_width_letter.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['tabdeffullwidthletter'] = def_full_width_letter.lower() == u'true'
+            OPTION_DEFAULTS['endeffullwidthletter'] = def_full_width_letter.lower() == u'true'
+        select_keys_csv = self.tabsqlitedb.ime_properties.get('select_keys')
+        if select_keys_csv: # select_keys_csv is something like: "1,2,3,4,5,6,7,8,9,0"
+            OPTION_DEFAULTS['lookuptablepagesize'] = len(select_keys_csv.split(","))
+        auto_commit = self.tabsqlitedb.ime_properties.get('auto_commit')
+        if (auto_commit
+            and type(auto_commit) == type(u'')
+            and auto_commit.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['autocommit'] = auto_commit.lower() == u'true'
 
     def _build_combobox_renderer(self, name):
         """setup cell renderer for combobox"""
@@ -314,6 +348,7 @@ class PreferencesDialog:
         ret = self.check_table_available()
         if not ret:
             return 0
+        self.get_default_options_from_database()
         GLib.idle_add(self.do_init)
         self.load_builder()
         return self.__dialog.run()

@@ -89,7 +89,7 @@
                                 <property name="row_homogeneous">True</property>
                                 <property name="column_homogeneous">True</property>
                                 <child>
-                                  <object class="GtkLabel" id="label2">
+                                  <object class="GtkLabel" id="labelinputmode">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -180,7 +180,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="label7">
+                                  <object class="GtkLabel" id="labelchinesemode">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -196,7 +196,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="label8">
+                                  <object class="GtkLabel" id="labeltabdeffullwidthletter">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -212,7 +212,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="label9">
+                                  <object class="GtkLabel" id="labeltabdeffullwidthpunct">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -228,7 +228,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="label15">
+                                  <object class="GtkLabel" id="labelendeffullwidthletter">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -244,7 +244,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="label16">
+                                  <object class="GtkLabel" id="labelendeffullwidthpunct">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -280,7 +280,7 @@
                           </object>
                         </child>
                         <child type="label">
-                          <object class="GtkLabel" id="label4">
+                          <object class="GtkLabel" id="labelinitialstatesection">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">&lt;b&gt;Inital state&lt;/b&gt;</property>
@@ -349,7 +349,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="label10">
+                                  <object class="GtkLabel" id="labellookuptableorientation">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -365,13 +365,13 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="label11">
+                                  <object class="GtkLabel" id="labellookuptablepagesize">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Number of candidates:</property>
+                                    <property name="label" translatable="yes">Page size:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
@@ -385,10 +385,10 @@
                           </object>
                         </child>
                         <child type="label">
-                          <object class="GtkLabel" id="label5">
+                          <object class="GtkLabel" id="labelcandidatelistsection">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Candidates&lt;/b&gt;</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Candidate list&lt;/b&gt;</property>
                             <property name="use_markup">True</property>
                           </object>
                         </child>
@@ -482,7 +482,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="label12">
+                                  <object class="GtkLabel" id="labelonechar">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -498,7 +498,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="label17">
+                                  <object class="GtkLabel" id="labelautoselect">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -514,7 +514,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="label13">
+                                  <object class="GtkLabel" id="labelautocommit">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -530,7 +530,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel" id="label14">
+                                  <object class="GtkLabel" id="labelspacekeybehavior">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hexpand">True</property>
@@ -550,7 +550,7 @@
                           </object>
                         </child>
                         <child type="label">
-                          <object class="GtkLabel" id="label6">
+                          <object class="GtkLabel" id="labeldetailssection">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">&lt;b&gt;Details&lt;/b&gt;</property>
@@ -570,7 +570,7 @@
               </object>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="label1">
+              <object class="GtkLabel" id="labelsettingstab">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Settings</property>
@@ -753,7 +753,7 @@ Seán de Búrca
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="label3">
+              <object class="GtkLabel" id="labelabouttab">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">About</property>

@@ -190,6 +190,11 @@ class PreferencesDialog:
         if IBus.KEY_space in self._commit_keys:
             OPTION_DEFAULTS['spacekeybehavior'] = False
 
+    def __restore_defaults(self):
+        for name in OPTION_DEFAULTS:
+            value = OPTION_DEFAULTS[name]
+            self.__set_value(name, value)
+
     def _build_combobox_renderer(self, name):
         """setup cell renderer for combobox"""
         __combobox = self.__builder.get_object("combobox%s" % name)
@@ -229,6 +234,7 @@ class PreferencesDialog:
                 self._init_hscale(name)
             else:
                 self._init_combobox(name)
+        self._init_button('restoredefaults')
         return
 
     def __init_about(self):
@@ -294,6 +300,16 @@ class PreferencesDialog:
             val = OPTION_DEFAULTS[name]
         __hscale.set_value(val)
         __hscale.connect("value-changed", self.__value_changed_cb, name)
+
+    def _init_button(self, name):
+        """Initialize the button to restored the default settings"""
+        __button = self.__builder.get_object("button%s" %name)
+        __button.connect("clicked", self.__button_clicked_cb, name)
+
+    def __button_clicked_cb(self, widget, name):
+        """Button clicked handler"""
+        if name == 'restoredefaults':
+            self.__restore_defaults()
 
     def __changed_cb(self, widget, name):
         """Combobox changed handler"""

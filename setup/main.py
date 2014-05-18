@@ -51,6 +51,7 @@ OPTION_DEFAULTS = {
     "lookuptableorientation": True,
     "lookuptablepagesize": 6,
     "onechar": False,
+    "autoselect": False,
     "autocommit": False,
     "spacekeybehavior": False,
 }
@@ -159,6 +160,11 @@ class PreferencesDialog:
         select_keys_csv = self.tabsqlitedb.ime_properties.get('select_keys')
         if select_keys_csv: # select_keys_csv is something like: "1,2,3,4,5,6,7,8,9,0"
             OPTION_DEFAULTS['lookuptablepagesize'] = len(select_keys_csv.split(","))
+        auto_select = self.tabsqlitedb.ime_properties.get('auto_select')
+        if (auto_select
+            and type(auto_select) == type(u'')
+            and auto_select.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['autoselect'] = auto_select.lower() == u'true'
         auto_commit = self.tabsqlitedb.ime_properties.get('auto_commit')
         if (auto_commit
             and type(auto_commit) == type(u'')

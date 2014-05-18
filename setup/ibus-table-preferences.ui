@@ -437,6 +437,21 @@
                                   </packing>
                                 </child>
                                 <child>
+                                  <object class="GtkComboBox" id="comboboxautoselect">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreAutoSelect</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">1</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
                                   <object class="GtkComboBox" id="comboboxautocommit">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
@@ -446,7 +461,7 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="top_attach">1</property>
+                                    <property name="top_attach">2</property>
                                     <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
@@ -461,7 +476,7 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="top_attach">2</property>
+                                    <property name="top_attach">3</property>
                                     <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
@@ -483,6 +498,22 @@
                                   </packing>
                                 </child>
                                 <child>
+                                  <object class="GtkLabel" id="label17">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Auto select:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">1</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
                                   <object class="GtkLabel" id="label13">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
@@ -493,7 +524,7 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
-                                    <property name="top_attach">1</property>
+                                    <property name="top_attach">2</property>
                                     <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
@@ -509,7 +540,7 @@
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
-                                    <property name="top_attach">2</property>
+                                    <property name="top_attach">3</property>
                                     <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
@@ -744,6 +775,20 @@ Seán de Búrca
     <action-widgets>
       <action-widget response="0">button1</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkListStore" id="liststoreAutoSelect">
+    <columns>
+      <!-- column-name AutoSelect -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">No</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Yes</col>
+      </row>
+    </data>
   </object>
   <object class="GtkListStore" id="liststoreAutoCommit">
     <columns>

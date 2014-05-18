@@ -1028,22 +1028,6 @@ class tabengine (IBus.Engine):
         # now we check and update the valid input characters
         self._valid_input_chars = self.db.ime_properties.get('valid_input_chars')
 
-        # check whether we can use '=' and '-' for page_down/up
-        self._page_down_keys = [IBus.KEY_Page_Down, IBus.KEY_KP_Page_Down]
-        self._page_up_keys = [IBus.KEY_Page_Up, IBus.KEY_KP_Page_Up]
-        if '=' not in self._valid_input_chars \
-                and '-' not in self._valid_input_chars:
-            self._page_down_keys.append (IBus.KEY_equal)
-            self._page_up_keys.append (IBus.KEY_minus)
-
-        pageup_prop = self.db.ime_properties.get('page_up_keys')
-        pagedown_prop = self.db.ime_properties.get('page_down_keys')
-        if pageup_prop is not None:
-            self._page_up_keys = [IBus.keyval_from_name(x) for x in
-                    pageup_prop.split(",")]
-        if pagedown_prop is not None:
-            self._page_down_keys = [IBus.keyval_from_name(x) for x in
-                    pagedown_prop.split(",")]
 
         self._max_key_length = int(self.db.ime_properties.get('max_key_length'))
         self._max_key_length_pinyin = 7
@@ -1057,6 +1041,77 @@ class tabengine (IBus.Engine):
         self._config.connect ("value-changed", self.config_value_changed_cb)
         self._editor = editor(self._config, self._valid_input_chars,
                               self._max_key_length, self.db)
+
+        self._page_up_keys = [
+            IBus.KEY_Page_Up,
+            IBus.KEY_KP_Page_Up,
+            IBus.KEY_minus
+        ]
+        self._page_down_keys = [
+            IBus.KEY_Page_Down,
+            IBus.KEY_KP_Page_Down,
+            IBus.KEY_equal
+        ]
+        # If page up or page down keys are defined in the database,
+        # use the values from the database instead of the above
+        # hardcoded defaults:
+        page_up_keys_csv = self.db.ime_properties.get('page_up_keys')
+        page_down_keys_csv = self.db.ime_properties.get('page_down_keys')
+        if page_up_keys_csv:
+            self._page_up_keys = [
+                IBus.keyval_from_name(x)
+                for x in page_up_keys_csv.split(',')]
+        if page_down_keys_csv:
+            self._page_down_keys = [
+                IBus.keyval_from_name(x)
+                for x in page_down_keys_csv.split(',')]
+        # Remove keys from the page up/down keys if they are needed
+        # for input (for example, '=' or '-' could well be needed for
+        # input. Input is more important):
+        for character in self._valid_input_chars:
+            keyval = IBus.unicode_to_keyval(character)
+            if keyval in self._page_up_keys:
+                self._page_up_keys.remove(keyval)
+            if keyval in self._page_down_keys:
+                self._page_down_keys.remove(keyval)
+        self._commit_keys = [IBus.KEY_space]
+        # If commit keys are are defined in the database, use the
+        # value from the database instead of the above hardcoded
+        # default:
+        commit_keys_csv = self.db.ime_properties.get('commit_keys')
+        if commit_keys_csv:
+            self._commit_keys = [
+                IBus.keyval_from_name(x)
+                for x in commit_keys_csv.split(',')]
+        # If commit keys conflict with page up/down keys, remove them
+        # from the page up/down keys (They cannot really be used for
+        # both at the same time. Theoretically, keys from the page
+        # up/down keys could still be used to commit when the number
+        # of candidates is 0 because then there is nothing to
+        # page. But that would be only confusing):
+        for keyval in self._commit_keys:
+            if keyval in self._page_up_keys:
+                self._page_up_keys.remove(keyval)
+            if keyval in self._page_down_keys:
+                self._page_down_keys.remove(keyval)
+        # Finally, check the user setting, i.e. the config value
+        # “spacekeybehavior” and let the user have the last word
+        # how to use the space key:
+        spacekeybehavior = variant_to_value(self._config.get_value(
+            self._config_section,
+            "spacekeybehavior"))
+        if spacekeybehavior == True:
+            # space is used as a page down key and not as a commit key:
+            if IBus.KEY_space not in self._page_down_keys:
+                self._page_down_keys.append(IBus.KEY_space)
+            if IBus.KEY_space in self._commit_keys:
+                self._commit_keys.remove(IBus.KEY_space)
+        if spacekeybehavior == False:
+            # space is used as a commit key and not used as a page down key:
+            if IBus.KEY_space in self._page_down_keys:
+                self._page_down_keys.remove(IBus.KEY_space)
+            if IBus.KEY_space not in self._commit_keys:
+                self._commit_keys.append(IBus.KEY_space)
 
         # 0 = Direct input, i.e. table input OFF (aka “English input mode”),
         #     most characters are just passed through to the application
@@ -1927,19 +1982,6 @@ class tabengine (IBus.Engine):
             self._update_ui()
             return res
 
-        if key.code == IBus.KEY_space:
-            # if space is one of "page_down_keys" change to next page
-            # on lookup page
-            if IBus.KEY_space in self._page_down_keys:
-                res = self._editor.page_down()
-                self._update_ui()
-                return res
-            else:
-                if self.commit_everything_unless_invalid():
-                    if self._editor._auto_select:
-                        self.commit_string(u' ')
-                return True
-
         # now we ignore all other hotkeys
         if key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
             return False
@@ -1951,7 +1993,7 @@ class tabengine (IBus.Engine):
         #
         # All keys which could possibly conflict with the valid input
         # characters should be checked below this section. These are
-        # SELECT_KEYS, PAGE_UP_KEYS and PAGE_DOWN_KEYS.
+        # SELECT_KEYS, PAGE_UP_KEYS, PAGE_DOWN_KEYS, and COMMIT_KEYS.
         #
         # For example, consider a table has
         #
@@ -2041,6 +2083,12 @@ class tabengine (IBus.Engine):
                     self.commit_everything_unless_invalid()
                 self._update_ui()
                 return True
+
+        if key.code in self._commit_keys:
+            if self.commit_everything_unless_invalid():
+                if self._editor._auto_select:
+                    self.commit_string(u' ')
+            return True
 
         if key.code in self._page_down_keys and self._editor._candidates:
             res = self._editor.page_down()
@@ -2164,23 +2212,23 @@ class tabengine (IBus.Engine):
             self._auto_commit = value
             self._refresh_properties()
             return
-        elif name == u'chinesemode':
+        if name == u'chinesemode':
             self._editor._chinese_mode = value
             self._refresh_properties()
             return
-        elif name == u'endeffullwidthletter':
+        if name == u'endeffullwidthletter':
             self._full_width_letter[0] = value
             self._refresh_properties()
             return
-        elif name == u'endeffullwidthpunct':
+        if name == u'endeffullwidthpunct':
             self._full_width_punct[0] = value
             self._refresh_properties()
             return
-        elif name == u'lookuptableorientation':
+        if name == u'lookuptableorientation':
             self._editor._orientation = value
             self._editor._lookup_table.set_orientation(value)
             return
-        elif name == u'lookuptablepagesize':
+        if name == u'lookuptablepagesize':
             if value >= 1 and value <= len(self._editor._select_keys):
                 self._editor._page_size = value
                 self._editor._lookup_table = self._editor.get_new_lookup_table(
@@ -2189,23 +2237,37 @@ class tabengine (IBus.Engine):
                     orientation = self._editor._orientation)
                 self.reset()
             return
-        elif name == u'lookuptableselectkeys':
+        if name == u'lookuptableselectkeys':
             self._editor.set_select_keys(value)
             return
-        elif name == u'onechar':
+        if name == u'onechar':
             self._editor._onechar = value
             self._refresh_properties()
             return
-        elif name == u'tabdeffullwidthletter':
+        if name == u'tabdeffullwidthletter':
             self._full_width_letter[1] = value
             self._refresh_properties()
             return
-        elif name == u'tabdeffullwidthpunct':
+        if name == u'tabdeffullwidthpunct':
             self._full_width_punct[1] = value
             self._refresh_properties()
             return
-        elif name == u'alwaysshowlookup':
+        if name == u'alwaysshowlookup':
             self._always_show_lookup = value
             self._refresh_properties()
+            return
+        if name == u'spacekeybehavior':
+            if value == True:
+                # space is used as a page down key and not as a commit key:
+                if IBus.KEY_space not in self._page_down_keys:
+                    self._page_down_keys.append(IBus.KEY_space)
+                if IBus.KEY_space in self._commit_keys:
+                    self._commit_keys.remove(IBus.KEY_space)
+            if value == False:
+                # space is used as a commit key and not used as a page down key:
+                if IBus.KEY_space in self._page_down_keys:
+                    self._page_down_keys.remove(IBus.KEY_space)
+                if IBus.KEY_space not in self._commit_keys:
+                    self._commit_keys.append(IBus.KEY_space)
             return
 

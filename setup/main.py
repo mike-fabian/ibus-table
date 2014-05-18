@@ -170,6 +170,25 @@ class PreferencesDialog:
             and type(auto_commit) == type(u'')
             and auto_commit.lower() in [u'true', u'false']):
             OPTION_DEFAULTS['autocommit'] = auto_commit.lower() == u'true'
+        # if space is a page down key, set the option
+        # “spacekeybehavior” to “True”:
+        page_down_keys_csv = self.tabsqlitedb.ime_properties.get('page_down_keys')
+        if page_down_keys_csv:
+            self._page_down_keys = [
+                IBus.keyval_from_name(x)
+                for x in page_down_keys_csv.split(',')]
+        if IBus.KEY_space in self._page_down_keys:
+            OPTION_DEFAULTS['spacekeybehavior'] = True
+        # if space is a commit key, set the option
+        # “spacekeybehavior” to “False” (overrides if space is
+        # also a page down key):
+        commit_keys_csv = self.tabsqlitedb.ime_properties.get('commit_keys')
+        if commit_keys_csv:
+            self._commit_keys = [
+                IBus.keyval_from_name(x)
+                for x in commit_keys_csv.split(',')]
+        if IBus.KEY_space in self._commit_keys:
+            OPTION_DEFAULTS['spacekeybehavior'] = False
 
     def _build_combobox_renderer(self, name):
         """setup cell renderer for combobox"""

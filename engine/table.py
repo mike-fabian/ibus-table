@@ -2229,13 +2229,24 @@ class tabengine (IBus.Engine):
             self._editor._lookup_table.set_orientation(value)
             return
         if name == u'lookuptablepagesize':
-            if value >= 1 and value <= len(self._editor._select_keys):
-                self._editor._page_size = value
-                self._editor._lookup_table = self._editor.get_new_lookup_table(
-                    page_size = self._editor._page_size,
-                    select_keys = self._editor._select_keys,
-                    orientation = self._editor._orientation)
-                self.reset()
+            if value > len(self._editor._select_keys):
+                value = len(self._editor._select_keys)
+                self._config.set_value(
+                    self._config_section,
+                    'lookuptablepagesize',
+                    GLib.Variant.new_int32(value))
+            if value < 1:
+                value = 1
+                self._config.set_value(
+                    self._config_section,
+                    'lookuptablepagesize',
+                    GLib.Variant.new_int32(value))
+            self._editor._page_size = value
+            self._editor._lookup_table = self._editor.get_new_lookup_table(
+                page_size = self._editor._page_size,
+                select_keys = self._editor._select_keys,
+                orientation = self._editor._orientation)
+            self.reset()
             return
         if name == u'lookuptableselectkeys':
             self._editor.set_select_keys(value)

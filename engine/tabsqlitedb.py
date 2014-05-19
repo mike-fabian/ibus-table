@@ -72,12 +72,14 @@ chinese_nocheck_chars=u"“”‘’《》〈〉〔〕「」『』【】〖〗�
     u"ㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ"
 
 class ImeProperties:
-    def __init__(self, db=None):
+    def __init__(self, db=None, default_properties={}):
         '''
         “db” is the handle of the sqlite3 database file obtained by
         sqlite3.connect().
         '''
-        self.ime_property_cache = {}
+        if not db:
+            return None
+        self.ime_property_cache = default_properties
         sqlstr = 'SELECT attr, val FROM main.ime;'
         try:
             results = db.execute(sqlstr).fetchall()
@@ -148,21 +150,21 @@ class tabsqlitedb:
         # default values, they should be updated using the attributes
         # found in the source when creating a system database with
         # tabcreatedb.py
-        default_ime_attributes = {
+        self._default_ime_attributes = {
             'name':'',
             'name.zh_cn':'',
             'name.zh_hk':'',
             'name.zh_tw':'',
             'author':'somebody',
-            'uuid':'%s' % uuid.uuid4(),
-            'serial_number':'%s' % time.strftime('%Y%m%d'),
+            'uuid':'%s' %uuid.uuid4(),
+            'serial_number':'%s' %time.strftime('%Y%m%d'),
             'icon':'ibus-table.svg',
             'license':'LGPL',
             'languages':'',
             'language_filter':'',
             'valid_input_chars':'abcdefghijklmnopqrstuvwxyz',
             'max_key_length':'4',
-            # 'commit_keys':'space',
+            'commit_keys':'space',
             # 'forward_keys':'Return',
             'select_keys':'1,2,3,4,5,6,7,8,9,0',
             'page_up_keys':'Page_Up,minus',
@@ -188,13 +190,21 @@ class tabsqlitedb:
             # have rules to build up phrase, but still need
             # auto commit to preedit
         }
-        select_sqlstr = 'SELECT val FROM main.ime WHERE attr = :attr;'
-        insert_sqlstr = 'INSERT INTO main.ime (attr, val) VALUES (:attr, :val);'
-        for attr in default_ime_attributes:
-            sqlargs = {'attr': attr, 'val': default_ime_attributes[attr]}
-            if not self.db.execute(select_sqlstr, sqlargs).fetchall():
-                self.db.execute(insert_sqlstr, sqlargs)
-        self.ime_properties = ImeProperties(self.db)
+        if create_database:
+            select_sqlstr = '''
+            SELECT val FROM main.ime WHERE attr = :attr;'''
+            insert_sqlstr = '''
+            INSERT INTO main.ime (attr, val) VALUES (:attr, :val);'''
+            for attr in self._default_ime_attributes:
+                sqlargs = {
+                    'attr': attr,
+                    'val': self._default_ime_attributes[attr]
+                }
+                if not self.db.execute(select_sqlstr, sqlargs).fetchall():
+                    self.db.execute(insert_sqlstr, sqlargs)
+        self.ime_properties = ImeProperties(
+            db=self.db,
+            default_properties=self._default_ime_attributes)
         # shared variables in this class:
         self._mlen = int(self.ime_properties.get("max_key_length"))
         self._is_chinese = self.is_chinese()
@@ -435,7 +445,9 @@ class tabsqlitedb:
                 self.db.execute(insert_sqlstr, sqlargs)
         self.db.commit()
         # update ime properties cache:
-        self.ime_properties = ImeProperties(self.db)
+        self.ime_properties = ImeProperties(
+            db=self.db,
+            default_properties=self._default_ime_attributes)
         # The self variables used by tabcreatedb.py need to be updated now:
         self._mlen = int(self.ime_properties.get('max_key_length'))
         self._is_chinese = self.is_chinese()

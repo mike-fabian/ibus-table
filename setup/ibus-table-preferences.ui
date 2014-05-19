@@ -271,6 +271,16 @@
                                   <object class="GtkComboBox" id="comboboxchinesemode">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">“Simplified Chinese” shows only characters 
+used in simplified Chinese. “Traditional Chinese”
+shows only characters used in traditional Chinese.
+“Simplified Chinese before traditional” shows all
+characters but puts the simplified characters higher
+up in the candidate list. “Traditional Chinese before
+simplified” puts the traditional characters higher up
+in the candidate list. “All characters” just shows all
+matches without any particular filtering on traditional
+versus simplified Chinese.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreChineseMode</property>
@@ -286,6 +296,8 @@
                                   <object class="GtkComboBox" id="comboboxtabdeffullwidthletter">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether to use fullwidth or halfwidth
+letters in table input mode.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreTabDefFullWidthLetter</property>
@@ -301,6 +313,8 @@
                                   <object class="GtkComboBox" id="comboboxtabdeffullwidthpunct">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether to use fullwidth or halfwidth
+punctuation in table input mode.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreTabDefFullWidthPunct</property>
@@ -316,6 +330,8 @@
                                   <object class="GtkComboBox" id="comboboxendeffullwidthletter">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether to use fullwidth or halfwidth
+letters in direct input mode.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreEnDefFullWidthLetter</property>
@@ -331,6 +347,8 @@
                                   <object class="GtkComboBox" id="comboboxendeffullwidthpunct">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether to use fullwidth or halfwidth
+punctuation in direct input mode.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreEnDefFullWidthPunct</property>
@@ -426,6 +444,12 @@
                                   <object class="GtkComboBox" id="comboboxinputmode">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">“Direct input” is almost the same as if the
+input method were off, i.e. not used at all, most
+characters just get passed to the application.
+But some conversion between fullwidth and
+halfwidth may still happen in direct input mode.
+“Table input” means the input method is on.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreInputMode</property>
@@ -483,6 +507,8 @@
                                   <object class="GtkComboBox" id="comboboxlookuptableorientation">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether the lookup table showing the candidates
+should be vertical or horizontal.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreLookupTableOrientation</property>
@@ -498,6 +524,10 @@
                                   <object class="GtkHScale" id="hscalelookuptablepagesize">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="tooltip_text" translatable="yes">The maximum number of candidates in
+one page of the lookup table. You can switch
+pages in the lookup table using the page up/down
+keys or the arrow up/down keys.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="adjustment">adjustmentLookupTablePageSize</property>
@@ -588,6 +618,10 @@
                                   <object class="GtkComboBox" id="comboboxonechar">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">If this is set to “single char”, only single
+character candidates will be shown. If it is
+set to “Phrase” candidates consisting of
+several characters may be shown.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreOneChar</property>
@@ -603,6 +637,16 @@
                                   <object class="GtkComboBox" id="comboboxautoselect">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">If set to “Yes”, this does the following 4 things:
+1) When typing “Return”, commit the 
+   candidate + line-feed
+2) When tying Tab, commit the candidate
+3) When committing using a commit key, commit
+   the candidate + " "
+4) If typing the next character matches no candidates,
+   commit the first candidate of the previous match.
+   (Mostly needed for non-Chinese input methods like
+   the Russian “translit”)</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreAutoSelect</property>
@@ -618,6 +662,15 @@
                                   <object class="GtkComboBox" id="comboboxautocommit">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Committing with the commit keys or with the mouse
+always commits to the application. This option is about
+“automatic” commits which may happen when
+one just continues typing input without committing
+manually. From time to time, “automatic” commits will
+happen then.
+“Direct” means such “automatic” commits go directly
+into the application, “Normal” means they get committed
+to preëdit.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreAutoCommit</property>
@@ -633,6 +686,10 @@
                                   <object class="GtkComboBox" id="comboboxspacekeybehavior">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">If you choose the space key to do “Next page”,
+ you can only commit using the selection keys
+(i.e. the labels in front of the candidates in the
+lookup table) or using the mouse.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreSpaceKeyBehavior</property>
@@ -734,7 +791,9 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Restore defaults as specified in the database for this engine.</property>
                         <property name="margin_top">6</property>
+                        <property name="relief">half</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>

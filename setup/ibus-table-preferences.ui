@@ -9,6 +9,20 @@
     <property name="step_increment">1</property>
     <property name="page_increment">3</property>
   </object>
+  <object class="GtkListStore" id="liststoreAlwaysShowLookup">
+    <columns>
+      <!-- column-name AlwaysShowLookup -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">No</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Yes</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkListStore" id="liststoreAutoCommit">
     <columns>
       <!-- column-name AutoCommit -->
@@ -515,7 +529,7 @@ should be vertical or horizontal.</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="top_attach">0</property>
+                                    <property name="top_attach">1</property>
                                     <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
@@ -536,7 +550,7 @@ keys or the arrow up/down keys.</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
-                                    <property name="top_attach">1</property>
+                                    <property name="top_attach">2</property>
                                     <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
@@ -552,7 +566,7 @@ keys or the arrow up/down keys.</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
-                                    <property name="top_attach">0</property>
+                                    <property name="top_attach">1</property>
                                     <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>
@@ -568,7 +582,43 @@ keys or the arrow up/down keys.</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>
-                                    <property name="top_attach">1</property>
+                                    <property name="top_attach">2</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelalwaysshowlookup">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Show candidate list</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxalwaysshowlookup">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether candidate lists should be shown or hidden.
+For Chinese input methods one usually wants the
+candidate lists to be shown. But for some non-Chinese
+input methods like the Russian “translit”, hiding the
+candidate lists is better.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreAlwaysShowLookup</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
                                     <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>

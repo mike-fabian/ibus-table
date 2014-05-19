@@ -48,6 +48,7 @@ OPTION_DEFAULTS = {
     "tabdeffullwidthpunct": False,
     "endeffullwidthletter": False,
     "endeffullwidthpunct": False,
+    "alwaysshowlookup": True,
     "lookuptableorientation": True,
     "lookuptablepagesize": 6,
     "onechar": False,
@@ -157,6 +158,11 @@ class PreferencesDialog:
             and def_full_width_letter.lower() in [u'true', u'false']):
             OPTION_DEFAULTS['tabdeffullwidthletter'] = def_full_width_letter.lower() == u'true'
             OPTION_DEFAULTS['endeffullwidthletter'] = def_full_width_letter.lower() == u'true'
+        always_show_lookup = self.tabsqlitedb.ime_properties.get('always_show_lookup')
+        if (always_show_lookup
+            and type(always_show_lookup) == type(u'')
+            and always_show_lookup.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['alwaysshowlookup'] = always_show_lookup.lower() == u'true'
         select_keys_csv = self.tabsqlitedb.ime_properties.get('select_keys')
         if select_keys_csv: # select_keys_csv is something like: "1,2,3,4,5,6,7,8,9,0"
             OPTION_DEFAULTS['lookuptablepagesize'] = len(select_keys_csv.split(","))

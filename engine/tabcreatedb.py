@@ -247,8 +247,6 @@ def main ():
                 attr,val = l.strip().split('==')
             attr = attr.strip().lower()
             val = val.strip()
-            if attr == 'name' and not gconf_valid_keyname(val):
-                raise InvalidTableName(val)
             yield (attr,val)
 
     def extra_parser (f):

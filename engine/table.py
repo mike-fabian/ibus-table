@@ -1184,15 +1184,13 @@ class tabengine (IBus.Engine):
             else:
                 self._always_show_lookup = True
 
-        # the length of the commit phrases
-        self._len_list = [0]
         self._on = False
         self._save_user_count = 0
         self._save_user_start = time.time()
 
         self._save_user_count_max = SAVE_USER_COUNT_MAX
         self._save_user_timeout = SAVE_USER_TIMEOUT
-        self.reset ()
+        self.reset()
 
         self.sync_timeout_id = GObject.timeout_add_seconds(1,
                 self._sync_user_db)

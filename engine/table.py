@@ -1010,7 +1010,7 @@ class tabengine (IBus.Engine):
         # we receive this db from IMEngineFactory
         #self.db = tabsqlitedb.tabsqlitedb( name = dbname )
         self.db = db
-
+        self._setup_pid = 0
         self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
                 os.path.sep, 'icons', os.path.sep)
         # self._ime_py: Indicates whether this table supports pinyin mode
@@ -1155,7 +1155,6 @@ class tabengine (IBus.Engine):
             self._full_width_punct[0] = False
         if self._full_width_punct[1] == None:
             self._full_width_punct[1] = self.db.ime_properties.get('def_full_width_punct').lower() == u'true'
-        #self._setup_property = Property ("setup", _("Setup"))
 
         self._auto_commit = variant_to_value(self._config.get_value(
                 self._config_section,
@@ -1243,17 +1242,24 @@ class tabengine (IBus.Engine):
         self._always_show_lookup_property = self._new_property(u'always_show_lookup')
         self.properties.append(self._always_show_lookup_property)
 
+        self._setup_property = self._new_property(
+            key = u'setup',
+            label = _('Setup'),
+            icon = 'gtk-preferences',
+            tooltip = _('Configure ibus-table'))
+        self.properties.append(self._setup_property)
+
         self.register_properties(self.properties)
         self._refresh_properties()
 
-    def _new_property (self, key):
-        '''Creates new IBus.Property and returns'''
+    def _new_property(self, key, label=None, icon=None, tooltip=None, sensitive=True, visible=True):
+        '''Creates a new IBus.Property and returns it'''
         return IBus.Property(key=key,
-                             label=None,
-                             icon=None,
-                             tooltip=None,
-                             sensitive=True,
-                             visible=True)
+                             label=label,
+                             icon=icon,
+                             tooltip=tooltip,
+                             sensitive=sensitive,
+                             visible=visible)
 
     def _refresh_properties (self):
         '''Method used to update properties'''
@@ -1488,11 +1494,28 @@ class tabengine (IBus.Engine):
                     "ChineseMode",
                     GLib.Variant.new_int32(self._editor._chinese_mode))
                 self.reset()
+        elif property == "setup":
+                self._start_setup()
         self._refresh_properties()
-    #    elif property == "setup":
-            # Need implementation
-    #        self.start_helper ("96c07b6f-0c3d-4403-ab57-908dd9b8d513")
-        # at last invoke default method
+
+    def _start_setup(self):
+        if self._setup_pid != 0:
+            pid, state = os.waitpid(self._setup_pid, os.P_NOWAIT)
+            if pid != self._setup_pid:
+                # If the last setup tool started from here is still
+                # running the pid returned by the above os.waitpid()
+                # is 0. In that case just return, don’t start a
+                # second setup tool.
+                return
+            self._setup_pid = 0
+        setup_cmd = os.path.join(
+            os.getenv('IBUS_TABLE_LIB_LOCATION'),
+            'ibus-setup-table')
+        self._setup_pid = os.spawnl(
+            os.P_NOWAIT,
+            setup_cmd,
+            'ibus-setup-table',
+            '--engine-name table:%s' %self._engine_name)
 
     def _update_preedit(self):
         '''Update Preedit String in UI'''

@@ -743,7 +743,10 @@ class editor(object):
                 tabkeys=self._chars_valid,
                 onechar=self._onechar,
                 bitmask=bitmask)
-        if self._candidates:
+        if (self._candidates
+            and self.db._is_chinese
+            and self._chinese_mode in (2,3)
+            and not self._py_mode):
             self._candidates = self.filter_candidates(self._candidates)
         if self._candidates:
             self.fill_lookup_table()

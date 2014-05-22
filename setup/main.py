@@ -36,16 +36,23 @@ from gi.repository import IBus
 
 import version
 
+sys.path = [sys.path[0]+'/../engine'] + sys.path
+import tabsqlitedb
+
 _ = lambda a : gettext.dgettext("ibus-table", a)
 
 OPTION_DEFAULTS = {
-    "language": False,
+    "inputmode": 1,
     "chinesemode": 0,
     "tabdeffullwidthletter": False,
     "tabdeffullwidthpunct": False,
+    "endeffullwidthletter": False,
+    "endeffullwidthpunct": False,
+    "alwaysshowlookup": True,
     "lookuptableorientation": True,
     "lookuptablepagesize": 6,
     "onechar": False,
+    "autoselect": False,
     "autocommit": False,
     "spacekeybehavior": False,
 }
@@ -111,12 +118,12 @@ class PreferencesDialog:
                     Gtk.MessageType.WARNING)
         if self.__engine_name == None:
             self.__run_message_dialog(
-                _("Cannot determine the config file for this engine. Please use the --engine-name option."),
+                _("Cannot determine the engine name. Please use the --engine-name option."),
                 Gtk.MessageType.ERROR)
             sys.exit(1)
 
     def check_table_available(self):
-        """Check if the current engine_name is avalible.
+        """Check if the current engine_name is available.
         Return bool"""
         names = self.__bus.list_engines()
         names = [x.get_name() for x in names]
@@ -125,9 +132,74 @@ class PreferencesDialog:
         if self.__engine_name not in names:
             ret = False
             self.__run_message_dialog(
-                _('IBus Table engine "{}" is not available').format(self.__engine_name),
+                _('IBus Table engine %s is not available') %self.__engine_name,
                 Gtk.MessageType.ERROR)
         return ret
+
+    def get_default_options_from_database(self):
+        self.tabsqlitedb = tabsqlitedb.tabsqlitedb(
+            filename = os.path.join(
+                db_dir,
+                re.sub(r'^table:', '', self.__engine_name)+'.db'),
+            user_db = None,
+            create_database = False)
+        language_filter = self.tabsqlitedb.ime_properties.get('language_filter')
+        if language_filter in ['cm0', 'cm1', 'cm2', 'cm3', 'cm4']:
+            OPTION_DEFAULTS['chinesemode'] = int(language_filter[-1])
+        def_full_width_punct = self.tabsqlitedb.ime_properties.get('def_full_width_punct')
+        if (def_full_width_punct
+            and type(def_full_width_punct) == type(u'')
+            and def_full_width_punct.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['tabdeffullwidthpunct'] = def_full_width_punct.lower() == u'true'
+            OPTION_DEFAULTS['endeffullwidthpunct'] = def_full_width_punct.lower() == u'true'
+        def_full_width_letter = self.tabsqlitedb.ime_properties.get('def_full_width_letter')
+        if (def_full_width_letter
+            and type(def_full_width_letter) == type(u'')
+            and def_full_width_letter.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['tabdeffullwidthletter'] = def_full_width_letter.lower() == u'true'
+            OPTION_DEFAULTS['endeffullwidthletter'] = def_full_width_letter.lower() == u'true'
+        always_show_lookup = self.tabsqlitedb.ime_properties.get('always_show_lookup')
+        if (always_show_lookup
+            and type(always_show_lookup) == type(u'')
+            and always_show_lookup.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['alwaysshowlookup'] = always_show_lookup.lower() == u'true'
+        select_keys_csv = self.tabsqlitedb.ime_properties.get('select_keys')
+        if select_keys_csv: # select_keys_csv is something like: "1,2,3,4,5,6,7,8,9,0"
+            OPTION_DEFAULTS['lookuptablepagesize'] = len(select_keys_csv.split(","))
+        auto_select = self.tabsqlitedb.ime_properties.get('auto_select')
+        if (auto_select
+            and type(auto_select) == type(u'')
+            and auto_select.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['autoselect'] = auto_select.lower() == u'true'
+        auto_commit = self.tabsqlitedb.ime_properties.get('auto_commit')
+        if (auto_commit
+            and type(auto_commit) == type(u'')
+            and auto_commit.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['autocommit'] = auto_commit.lower() == u'true'
+        # if space is a page down key, set the option
+        # “spacekeybehavior” to “True”:
+        page_down_keys_csv = self.tabsqlitedb.ime_properties.get('page_down_keys')
+        if page_down_keys_csv:
+            self._page_down_keys = [
+                IBus.keyval_from_name(x)
+                for x in page_down_keys_csv.split(',')]
+        if IBus.KEY_space in self._page_down_keys:
+            OPTION_DEFAULTS['spacekeybehavior'] = True
+        # if space is a commit key, set the option
+        # “spacekeybehavior” to “False” (overrides if space is
+        # also a page down key):
+        commit_keys_csv = self.tabsqlitedb.ime_properties.get('commit_keys')
+        if commit_keys_csv:
+            self._commit_keys = [
+                IBus.keyval_from_name(x)
+                for x in commit_keys_csv.split(',')]
+        if IBus.KEY_space in self._commit_keys:
+            OPTION_DEFAULTS['spacekeybehavior'] = False
+
+    def __restore_defaults(self):
+        for name in OPTION_DEFAULTS:
+            value = OPTION_DEFAULTS[name]
+            self.__set_value(name, value)
 
     def _build_combobox_renderer(self, name):
         """setup cell renderer for combobox"""
@@ -157,7 +229,8 @@ class PreferencesDialog:
 
     def __init_general(self):
         """Initialize the general notebook page"""
-        self.__dialog.set_title("IBus %s Preferences" % self.__engine_name)
+        self.__dialog.set_title(_("IBus Table %s Preferences")
+                                %re.sub(r'^table:', '', self.__engine_name))
         self.__values = self.__config.get_values(self.__config_section).unpack()
         self.__config.connect ("value-changed", self.__config_value_changed_cb)
 
@@ -167,6 +240,7 @@ class PreferencesDialog:
                 self._init_hscale(name)
             else:
                 self._init_combobox(name)
+        self._init_button('restoredefaults')
         return
 
     def __init_about(self):
@@ -174,7 +248,7 @@ class PreferencesDialog:
         # page About
         self.__name_version = self.__builder.get_object("NameVersion")
         self.__name_version.set_markup(
-                _("<big><b>IBus Table %s</b></big>") % version.get_version())
+                "<big><b>IBus Table %s</b></big>" %version.get_version())
 
         img_fname = os.path.join(icon_dir, "ibus-table.svg")
         if os.path.exists(img_fname):
@@ -193,8 +267,7 @@ class PreferencesDialog:
             if not longname:
                 longname = engine.get_name()
             w = self.__builder.get_object("TableNameVersion")
-            w.set_markup(_("<b>%s</b>") %
-                    (longname))
+            w.set_markup("<b>%s</b>" %longname)
             icon_path = engine.get_icon()
             if icon_path and os.path.exists(icon_path):
                 from gi.repository import GdkPixbuf
@@ -233,6 +306,16 @@ class PreferencesDialog:
             val = OPTION_DEFAULTS[name]
         __hscale.set_value(val)
         __hscale.connect("value-changed", self.__value_changed_cb, name)
+
+    def _init_button(self, name):
+        """Initialize the button to restored the default settings"""
+        __button = self.__builder.get_object("button%s" %name)
+        __button.connect("clicked", self.__button_clicked_cb, name)
+
+    def __button_clicked_cb(self, widget, name):
+        """Button clicked handler"""
+        if name == 'restoredefaults':
+            self.__restore_defaults()
 
     def __changed_cb(self, widget, name):
         """Combobox changed handler"""
@@ -312,6 +395,7 @@ class PreferencesDialog:
         ret = self.check_table_available()
         if not ret:
             return 0
+        self.get_default_options_from_database()
         GLib.idle_add(self.do_init)
         self.load_builder()
         return self.__dialog.run()

@@ -5,6 +5,8 @@
 # ibus-table - The Tables engine for IBus
 #
 # Copyright (c) 2008-2009 Yu Yuwei <acevery@gmail.com>
+# Copyright (c) 2009-2014 Caius "kaio" CHANCE <me@kaio.net>
+# Copyright (c) 2012-2014 Mike FABIAN <mfabian@redhat.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -19,8 +21,6 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-#
-# $Id: $
 #
 
 import os
@@ -124,8 +124,9 @@ def main ():
             pass
 
     debug_print ("Processing Database")
-    db = tabsqlitedb.tabsqlitedb (filename = opts.name, create_database = True)
-    #db.db.execute( 'PRAGMA synchronous = FULL; ' )
+    db = tabsqlitedb.tabsqlitedb(filename = opts.name,
+                                 user_db = None,
+                                 create_database = True)
 
     def parse_source (f):
         _attri = []
@@ -246,8 +247,6 @@ def main ():
                 attr,val = l.strip().split('==')
             attr = attr.strip().lower()
             val = val.strip()
-            if attr == 'name' and not gconf_valid_keyname(val):
-                raise InvalidTableName(val)
             yield (attr,val)
 
     def extra_parser (f):
@@ -256,11 +255,11 @@ def main ():
             if type(l) != type(u''):
                 l = l.decode('utf-8')
             phrase, freq = l.strip().split ()
-            try:
-                _tabkey = db.parse_phrase_to_tabkeys(phrase)
-                list.append( (_tabkey,phrase,freq,0) )
-            except:
-                print('\"%s\" would not been added' %phrase)
+            _tabkey = db.parse_phrase(phrase)
+            if _tabkey:
+                list.append((_tabkey,phrase,freq,0))
+            else:
+                print('No tabkeys found for “%s”, not adding.\n' %phrase)
         return list
 
     if opts.only_index:
@@ -296,16 +295,16 @@ def main ():
     phrases = phrase_parser ( table)
 
     # now we add things into db
-    debug_print ('\t  add phrases into DB ')
-    db.add_phrases ( phrases )
+    debug_print('\t  add phrases into DB ')
+    db.add_phrases(phrases)
 
-    if db.get_ime_property ('user_can_define_phrase').lower() == u'true':
+    if db.ime_properties.get('user_can_define_phrase').lower() == u'true':
         debug_print ('\t  get goucima of IME :)')
         goucima = goucima_parser (gouci)
         debug_print ('\t  add goucima into DB ')
         db.add_goucima ( goucima )
 
-    if db.get_ime_property ('pinyin_mode').lower() == u'true':
+    if db.ime_properties.get('pinyin_mode').lower() == u'true':
         debug_print ('\tLoad pinyin source \"%s\"' % opts.pinyin)
         _bz2p = patt_s.match(opts.pinyin)
         if _bz2p:
@@ -322,7 +321,7 @@ def main ():
     debug_print ("Optimizing database ")
     db.optimize_database ()
 
-    if db.get_ime_property ('user_can_define_phrase').lower() == u'true' and opts.extra:
+    if db.ime_properties.get('user_can_define_phrase').lower() == u'true' and opts.extra:
         debug_print( '\tPreparing for adding extra words' )
         db.create_indexes ('main')
         debug_print ('\tLoad extra words source \"%s\"' % opts.extra)
@@ -334,8 +333,6 @@ def main ():
         debug_print ('\tParsing extra words source file ')
         extraline = parse_extra (extra_s)
         debug_print ('\tPreparing extra words lines')
-        db.cache_goucima()
-        debug_print ('\t  Goucima has been cache to memory')
         extrawds = extra_parser (extraline)
         debug_print( '\t  we have %d extra phrases from source' % len(extrawds))
         # first get the entry of original phrases from

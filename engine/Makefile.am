@@ -30,7 +30,6 @@ engine_table_PYTHON = \
 	main.py \
 	table.py \
 	tabcreatedb.py \
-	tabdict.py \
 	tabsqlitedb.py \
 	$(NULL)
 engine_table_DATA = \

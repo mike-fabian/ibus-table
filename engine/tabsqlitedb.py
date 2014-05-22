@@ -4,6 +4,8 @@
 # ibus-table - The Tables engine for IBus
 #
 # Copyright (c) 2008-2009 Yu Yuwei <acevery@gmail.com>
+# Copyright (c) 2009-2014 Caius "kaio" CHANCE <me@kaio.net>
+# Copyright (c) 2012-2014 Mike FABIAN <mfabian@redhat.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -19,255 +21,359 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
-# $Id: $
-#
 
 import sys
+if sys.version_info < (3,0,0):
+    reload (sys)
+    sys.setdefaultencoding('utf-8')
 import os
 import os.path as path
 import sqlite3
-import tabdict
 import uuid
 import time
 import re
 import chinese_variants
 
+database_version = '1.00'
+
 patt_r = re.compile(r'c([ea])(\d):(.*)')
 patt_p = re.compile(r'p(-{0,1}\d)(-{0,1}\d)')
 
-# first make some number index we will used :)
-#(MLEN, CLEN, M0, M1, M2, M3, M4, PHRASE, FREQ, USER_FREQ) = range (0,10)
+chinese_nocheck_chars=u"“”‘’《》〈〉〔〕「」『』【】〖〗（）［］｛｝"\
+    u"．。，、；：？！…—·ˉˇ¨々～‖∶＂＇｀｜"\
+    u"⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛"\
+    u"АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЁ"\
+    u"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ"\
+    u"⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛"\
+    u"㎎㎏㎜㎝㎞㎡㏄㏎㏑㏒㏕"\
+    u"ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ"\
+    u"⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇"\
+    u"€＄￠￡￥"\
+    u"¤→↑←↓↖↗↘↙"\
+    u"ァアィイゥウェエォオカガキギクグケゲコゴサザシジ"\
+    u"スズセゼソゾタダチヂッツヅテデトドナニヌネノハバパ"\
+    u"ヒビピフブプヘベペホボポマミムメモャヤュユョヨラ"\
+    u"リルレロヮワヰヱヲンヴヵヶーヽヾ"\
+    u"ぁあぃいぅうぇえぉおかがきぎぱくぐけげこごさざしじ"\
+    u"すずせぜそぞただちぢっつづてでとどなにぬねのはば"\
+    u"ひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらり"\
+    u"るれろゎわゐゑをん゛゜ゝゞ"\
+    u"勹灬冫艹屮辶刂匚阝廾丨虍彐卩钅冂冖宀疒肀丿攵凵犭"\
+    u"亻彡饣礻扌氵纟亠囗忄讠衤廴尢夂丶"\
+    u"āáǎàōóǒòêēéěèīíǐìǖǘǚǜüūúǔù"\
+    u"＋－＜＝＞±×÷∈∏∑∕√∝∞∟∠∣∥∧∨∩∪∫∮"\
+    u"∴∵∶∷∽≈≌≒≠≡≤≥≦≧≮≯⊕⊙⊥⊿℃°‰"\
+    u"♂♀§№☆★○●◎◇◆□■△▲※〓＃＆＠＼＾＿￣"\
+    u"абвгдежзийклмнопрстуфхцчшщъыьэюяё"\
+    u"ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹβγδεζηαικλμνξοπρστυφθψω"\
+    u"①②③④⑤⑥⑦⑧⑨⑩①②③④⑤⑥⑦⑧⑨⑩"\
+    u"㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩"\
+    u"ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩ"\
+    u"ㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ"
 
+class ImeProperties:
+    def __init__(self, db=None, default_properties={}):
+        '''
+        “db” is the handle of the sqlite3 database file obtained by
+        sqlite3.connect().
+        '''
+        if not db:
+            return None
+        self.ime_property_cache = default_properties
+        sqlstr = 'SELECT attr, val FROM main.ime;'
+        try:
+            results = db.execute(sqlstr).fetchall()
+        except:
+            import traceback
+            traceback.print_exc()
+        for result in results:
+            self.ime_property_cache[result[0]] = result[1]
+
+    def get(self, key):
+        if key in self.ime_property_cache:
+            return self.ime_property_cache[key]
+        else:
+            return None
 
 class tabsqlitedb:
-    '''Phrase database for tables'''
+    '''Phrase database for tables
+
+    The phrases table in the database has columns with the names:
+
+    “id”, “tabkeys”, “phrase”, “freq”, “user_freq”
+
+    There are 2 databases, sysdb, userdb.
+
+    sysdb: System database for the input method, for example something
+           like /usr/share/ibus-table/tables/wubi-jidian86.db
+           “user_freq” is always 0 in a system database.  “freq”
+           is some number in a system database indicating a frequency
+           of use of that phrase relative to the other phrases in that
+           database.
+
+    user_db: Database on disk where the phrases used or defined by the
+           user are stored. “user_freq” is a counter which counts how
+           many times that combination of “tabkeys” and “phrase” has
+           been used. “freq” is equal to 0 for all combinations of
+           “tabkeys” and “phrase” where an entry for that phrase is
+           already in the system database which starts with the same
+           “tabkeys”.
+           For combinations of “tabkeys” and “phrase” which do not exist
+           at all in the system database, “freq” is equal to -1 to
+           indidated that this is a user defined phrase.
+    '''
     def __init__(self, filename = None, user_db = None, create_database = False):
-        # first we use the Parse in tabdict, which transform the char(a,b,c,...) to int(1,2,3,...) to fasten the sql enquiry
-        self.parse = tabdict.parse
-        self.deparse = tabdict.deparse
-        self._add_phrase_sqlstr = ''
         self.old_phrases=[]
-        self.ime_property_cache = {}
         self.filename = filename
         self._user_db = user_db
 
-        if create_database:
-            self.db = sqlite3.connect(self.filename)
-        elif os.path.isfile(self.filename):
+        if create_database or os.path.isfile(self.filename):
             self.db = sqlite3.connect(self.filename)
         else:
             print('Cannot open database file %s' %self.filename)
         try:
-            self.db.execute( 'PRAGMA page_size = 8192; ' )
-            self.db.execute( 'PRAGMA cache_size = 20000; ' )
-            # increase the cache size to speedup sqlite enquiry
-            self.db.execute( 'PRAGMA temp_store = MEMORY; ' )
-            self.db.execute( 'PRAGMA synchronous = OFF; ' )
+            self.db.execute('PRAGMA encoding = "UTF-8";')
+            self.db.execute('PRAGMA case_sensitive_like = true;')
+            self.db.execute('PRAGMA page_size = 4096;')
+            # 20000 pages should be enough to cache the whole database
+            self.db.execute('PRAGMA cache_size = 20000;')
+            self.db.execute('PRAGMA temp_store = MEMORY;')
+            self.db.execute('PRAGMA journal_size_limit = 1000000;')
+            self.db.execute('PRAGMA synchronous = NORMAL;')
         except:
-            print('encountering error when init db')
-            pass
+            import traceback
+            traceback.print_exc()
+            print('Error while initializing database.')
         # create IME property table
         self.db.executescript('CREATE TABLE IF NOT EXISTS main.ime (attr TEXT, val TEXT);')
-        # make sure we have values in ime table.
-        if not self.db.execute('SELECT val FROM main.ime \
-            WHERE attr="name";').fetchall():
-            ime_keys={'name':'',
-                      'name.zh_cn':'',
-                      'name.zh_hk':'',
-                      'name.zh_tw':'',
-                      'author':'somebody',
-                      'uuid':'%s' % uuid.uuid4(),
-                      'serial_number':'%s' % time.strftime('%Y%m%d'),
-                      'icon':'ibus-table.svg',
-                      'license':'LGPL',
-                      'languages':'',
-                      'language_filter':'',
-                      'valid_input_chars':'abcdefghijklmnopqrstuvwxyz',
-                      'max_key_length':'4',
-            #          'commit_keys':'space',
-            #          'forward_keys':'Return',
-                      'select_keys':'1,2,3,4,5,6,7,8,9,0',
-                      'page_up_keys':'Page_Up,minus',
-                      'page_down_keys':'Page_Down,equal',
-                      'status_prompt':'',
-                      'def_full_width_punct':'TRUE',
-                      'def_full_width_letter':'FALSE',
-                      'user_can_define_phrase':'FALSE',
-                      'pinyin_mode':'FALSE',
-                      'dynamic_adjust':'FALSE',
-                      'auto_select':'false',
-                      'auto_commit':'false',
-                      #'no_check_chars':u'',
-                      'description':'A IME under IBus Table',
-                      'layout':'us',
-                      'symbol':'',
-                      'rules':'',
-                      #'rules':'ce2:p11+p12+p21+p22;ce3:p11+p21+p22+p31;ca4:p11+p21+p31+p41'}
-                      'least_commit_length':'0',
-                      'start_chars':'',
-                      'orientation':'1',
-                      'always_show_lookup':'true'
-                      # we use this entry for those IME, which don't
-                      # have rules to build up phrase, but still need
-                      # auto commit to preedit
-                      }
-            # inital the attribute in ime table, which should be updated from mabiao
-            for _name in ime_keys:
-                sqlstr = 'INSERT INTO main.ime (attr,val) VALUES (?,?);'
-                self.db.execute( sqlstr, (_name,ime_keys[_name]) )
-        # share variables in this class:
-        self._mlen = int ( self.get_ime_property ("max_key_length") )
-        # for chinese
+        # Initalize missing attributes in the ime table with some
+        # default values, they should be updated using the attributes
+        # found in the source when creating a system database with
+        # tabcreatedb.py
+        self._default_ime_attributes = {
+            'name':'',
+            'name.zh_cn':'',
+            'name.zh_hk':'',
+            'name.zh_tw':'',
+            'author':'somebody',
+            'uuid':'%s' %uuid.uuid4(),
+            'serial_number':'%s' %time.strftime('%Y%m%d'),
+            'icon':'ibus-table.svg',
+            'license':'LGPL',
+            'languages':'',
+            'language_filter':'',
+            'valid_input_chars':'abcdefghijklmnopqrstuvwxyz',
+            'max_key_length':'4',
+            'commit_keys':'space',
+            # 'forward_keys':'Return',
+            'select_keys':'1,2,3,4,5,6,7,8,9,0',
+            'page_up_keys':'Page_Up,minus',
+            'page_down_keys':'Page_Down,equal',
+            'status_prompt':'',
+            'def_full_width_punct':'true',
+            'def_full_width_letter':'false',
+            'user_can_define_phrase':'false',
+            'pinyin_mode':'false',
+            'dynamic_adjust':'false',
+            'auto_select':'false',
+            'auto_commit':'false',
+            # 'no_check_chars':u'',
+            'description':'A IME under IBus Table',
+            'layout':'us',
+            'symbol':'',
+            'rules':'',
+            'least_commit_length':'0',
+            'start_chars':'',
+            'orientation':'true',
+            'always_show_lookup':'true'
+            # we use this entry for those IME, which don't
+            # have rules to build up phrase, but still need
+            # auto commit to preedit
+        }
+        if create_database:
+            select_sqlstr = '''
+            SELECT val FROM main.ime WHERE attr = :attr;'''
+            insert_sqlstr = '''
+            INSERT INTO main.ime (attr, val) VALUES (:attr, :val);'''
+            for attr in self._default_ime_attributes:
+                sqlargs = {
+                    'attr': attr,
+                    'val': self._default_ime_attributes[attr]
+                }
+                if not self.db.execute(select_sqlstr, sqlargs).fetchall():
+                    self.db.execute(insert_sqlstr, sqlargs)
+        self.ime_properties = ImeProperties(
+            db=self.db,
+            default_properties=self._default_ime_attributes)
+        # shared variables in this class:
+        self._mlen = int(self.ime_properties.get("max_key_length"))
         self._is_chinese = self.is_chinese()
-        # for fast add word
-        self._set_add_phrase_sqlstr()
-        #(ID, MLEN, CLEN, M0, M1, M2, M3, M4, CATEGORY, PHRASE, FREQ, USER_FREQ) = range (0,12)
-        self._pt_index = ['id', 'mlen', 'clen']
-        for i in range(self._mlen):
-            self._pt_index.append ('m%d' %i)
-        if self._is_chinese:
-            self._pt_index += ['category']
-        self._pt_index += ['phrase','freq','user_freq']
-        self.user_can_define_phrase = self.get_ime_property('user_can_define_phrase')
+        self.user_can_define_phrase = self.ime_properties.get('user_can_define_phrase')
         if self.user_can_define_phrase:
             if self.user_can_define_phrase.lower() == u'true' :
                 self.user_can_define_phrase = True
             else:
                 self.user_can_define_phrase = False
         else:
-            print('Could not find "user_can_define_phrase" entry from database, is it a outdated database?')
+            print('Could not find "user_can_define_phrase" entry from database, is it an outdated database?')
             self.user_can_define_phrase = False
 
-        self.dynamic_adjust = self.get_ime_property('dynamic_adjust')
+        self.dynamic_adjust = self.ime_properties.get('dynamic_adjust')
         if self.dynamic_adjust:
             if self.dynamic_adjust.lower() == u'true' :
                 self.dynamic_adjust = True
             else:
                 self.dynamic_adjust = False
         else:
-            print('Could not find "dynamic_adjust" entry from database, is it a outdated database?')
+            print('Could not find "dynamic_adjust" entry from database, is it an outdated database?')
             self.dynamic_adjust = False
 
         self.rules = self.get_rules ()
-        self.pkeylens = []
-        self.pkeylens = self.phrase_keys_len ()
+        self.possible_tabkeys_lengths = self.get_possible_tabkeys_lengths()
         self.startchars = self.get_start_chars ()
 
-        #self._no_check_chars = self.get_no_check_chars()
-        # for fast gouci
-        self._goucima={}
-        if create_database:
-            # since we just creating db, we do not need userdb and mudb
+        if not user_db or create_database:
+            # No user database requested or we are
+            # just creating the system database and
+            # we do not need a user database for that
             return
 
-        # user database:
-        if user_db != None:
-            home_path = os.getenv ("HOME")
-            tables_path = path.join (home_path, ".ibus",  "tables")
-            user_db = path.join (tables_path, user_db)
-            if not path.isdir (tables_path):
-                os.makedirs (tables_path)
-            try:
-                desc = self.get_database_desc (user_db)
-                if desc == None :
-                    self.init_user_db (user_db)
-                elif desc["version"] != "0.5":
-                    new_name = "%s.%d" %(user_db, os.getpid())
-                    sys.stderr.write("Can not support the user db. We will rename it to %s\n" %new_name)
-                    self.old_phrases = self.extra_user_phrases( user_db )
-                    os.rename (user_db, new_name)
-                    self.init_user_db (user_db)
-                elif self.get_table_phrase_len(user_db) != len(self._pt_index):
-                    sys.stderr.write("user db format outdated.\n")
-                    # store old user phrases
-                    self.old_phrases = self.extra_user_phrases( user_db )
-                    new_name = "%s.%d" %(user_db, os.getpid())
-                    os.rename (user_db, new_name)
-                    self.init_user_db (user_db)
-            except:
-                import traceback
-                traceback.print_exc()
-        else:
-            user_db = ":memory:"
+        if user_db != ":memory:":
+            home_path = os.getenv("HOME")
+            tables_path = path.join(home_path, ".ibus",  "tables")
+            if not path.isdir(tables_path):
+                os.makedirs(tables_path)
+            user_db = path.join(tables_path, user_db)
+            if not path.exists(user_db):
+                sys.stderr.write("The user database %(udb)s does not exist yet.\n" %{'udb': user_db})
+            else:
+                try:
+                    desc = self.get_database_desc(user_db)
+                    phrase_table_column_names = ['id', 'tabkeys', 'phrase','freq','user_freq']
+                    if desc == None \
+                        or desc["version"] != database_version \
+                        or self.get_number_of_columns_of_phrase_table(user_db) != len(phrase_table_column_names):
+                        sys.stderr.write("The user database %(udb)s seems to be incompatible.\n" %{'udb': user_db})
+                        if desc == None:
+                            sys.stderr.write("There is no version information in the database.\n")
+                            self.old_phrases = self.extract_user_phrases(user_db, old_database_version = "0.0")
+                        elif desc["version"] != database_version:
+                            sys.stderr.write("The version of the database does not match (too old or too new?).\n")
+                            sys.stderr.write("ibus-table wants version=%s\n" %database_version)
+                            sys.stderr.write("But the  database actually has version=%s\n" %desc["version"])
+                            self.old_phrases = self.extract_user_phrases(user_db, old_database_version = desc["version"])
+                        elif self.get_number_of_columns_of_phrase_table(user_db) != len(phrase_table_column_names):
+                            sys.stderr.write("The number of columns of the database does not match.\n")
+                            sys.stderr.write("ibus-table expects %(col)s columns.\n"
+                                             %{'col': len(phrase_table_column_names)})
+                            sys.stderr.write("But the database actually has %(col)s columns.\n"
+                                %{'col': self.get_number_of_columns_of_phrase_table(user_db)})
+                            sys.stderr.write("But the versions of the databases are identical.\n")
+                            sys.stderr.write("This should never happen!\n")
+                            self.old_phrases = None
+                        from time import strftime
+                        timestamp = strftime('-%Y-%m-%d_%H:%M:%S')
+                        sys.stderr.write("Renaming the incompatible database to \"%(name)s\".\n" %{'name': user_db+timestamp})
+                        if os.path.exists(user_db):
+                            os.rename(user_db, user_db+timestamp)
+                        if os.path.exists(user_db+'-shm'):
+                            os.rename(user_db+'-shm', user_db+'-shm'+timestamp)
+                        if os.path.exists(user_db+'-wal'):
+                            os.rename(user_db+'-wal', user_db+'-wal'+timestamp)
+                        sys.stderr.write("Creating a new, empty database \"%(name)s\".\n"  %{'name': user_db})
+                        self.init_user_db(user_db)
+                        sys.stderr.write("If user phrases were successfully recovered from the old,\n")
+                        sys.stderr.write("incompatible database, they will be used to initialize the new database.\n")
+                    else:
+                        sys.stderr.write("Compatible database %(db)s found.\n" %{'db': user_db})
+                except:
+                    import traceback
+                    traceback.print_exc()
 
         # open user phrase database
         try:
-            self.db.execute ('ATTACH DATABASE "%s" AS user_db;' % user_db)
+            sys.stderr.write("Connect to the database %(name)s.\n" %{'name': user_db})
+            self.db.execute('ATTACH DATABASE "%s" AS user_db;' % user_db)
+            self.db.execute('PRAGMA user_db.encoding = "UTF-8";')
+            self.db.execute('PRAGMA user_db.case_sensitive_like = true;')
+            self.db.execute('PRAGMA user_db.page_size = 4096; ')
+            self.db.execute('PRAGMA user_db.cache_size = 20000;')
+            self.db.execute('PRAGMA user_db.temp_store = MEMORY;')
+            self.db.execute('PRAGMA user_db.journal_mode = WAL;')
+            self.db.execute('PRAGMA user_db.journal_size_limit = 1000000;')
+            self.db.execute('PRAGMA user_db.synchronous = NORMAL;')
         except:
-            sys.stderr.write("The user database was damaged. We will recreate it!\n")
-            os.rename (user_db, "%s.%d" % (user_db, os.getpid ()))
-            self.init_user_db (user_db)
-            self.db.execute ('ATTACH DATABASE "%s" AS user_db;' % user_db)
-        self.create_tables ("user_db")
+            sys.stderr.write("Could not open the database %(name)s.\n" %{'name': user_db})
+            from time import strftime
+            timestamp = strftime('-%Y-%m-%d_%H:%M:%S')
+            sys.stderr.write("Renaming the incompatible database to \"%(name)s\".\n" %{'name': user_db+timestamp})
+            if os.path.exists(user_db):
+                os.rename(user_db, user_db+timestamp)
+            if os.path.exists(user_db+'-shm'):
+                os.rename(user_db+'-shm', user_db+'-shm'+timestamp)
+            if os.path.exists(user_db+'-wal'):
+                os.rename(user_db+'-wal', user_db+'-wal'+timestamp)
+            sys.stderr.write("Creating a new, empty database \"%(name)s\".\n" %{'name': user_db})
+            self.init_user_db(user_db)
+            self.db.execute('ATTACH DATABASE "%s" AS user_db;' % user_db)
+            self.db.execute('PRAGMA user_db.encoding = "UTF-8";')
+            self.db.execute('PRAGMA user_db.case_sensitive_like = true;')
+            self.db.execute('PRAGMA user_db.page_size = 4096; ')
+            self.db.execute('PRAGMA user_db.cache_size = 20000;')
+            self.db.execute('PRAGMA user_db.temp_store = MEMORY;')
+            self.db.execute('PRAGMA user_db.journal_mode = WAL;')
+            self.db.execute('PRAGMA user_db.journal_size_limit = 1000000;')
+            self.db.execute('PRAGMA user_db.synchronous = NORMAL;')
+        self.create_tables("user_db")
         if self.old_phrases:
-            # (mlen, phrase, freq, user_freq)
-            # the phrases will be deparse again, and then be added
-            # the characters will be discard :(
-            #chars = list(filter(lambda x: x[0] == 1, self.old_phrases))
-            # print chars
-            phrases = [x for x in self.old_phrases if x[0] > 1]
-            phrases = [[self.parse_phrase_to_tabkeys(x[1])] + list(x[1:]) for x in phrases]
-
-            for x in phrases:
-                self.u_add_phrase(x)
+            sqlargs = []
+            for x in self.old_phrases:
+                sqlargs.append(
+                    {'tabkeys': x[0], 'phrase': x[1], 'freq': x[2], 'user_freq': x[3]})
+            sqlstr = '''
+            INSERT INTO user_db.phrases (tabkeys, phrase, freq, user_freq)
+            VALUES (:tabkeys, :phrase, :freq, :user_freq)
+            '''
+            try:
+                self.db.executemany(sqlstr, sqlargs)
+            except:
+                import traceback
+                traceback.print_exec()
             self.db.commit ()
-
+            self.db.execute('PRAGMA wal_checkpoint;')
 
         # try create all tables in user database
         self.create_indexes ("user_db",commit=False)
         self.generate_userdb_desc ()
 
-        # attach mudb for working process
-        mudb = ":memory:"
-        self.db.execute ('ATTACH DATABASE "%s" AS mudb;' % mudb )
-        self.create_tables ("mudb")
-
-    def update_phrase (self, entry, database='user_db', commit=True):
+    def update_phrase (self, tabkeys=u'', phrase=u'', user_freq=0, database='user_db', commit=True):
         '''update phrase freqs'''
-        #print entry
-        _con = [ entry[-1] ] + list(entry[1:3+entry[1]]) + [entry[-3]]
-        #print _con
-        _condition = u''.join(['AND m%d = ? ' %x for x in range(entry[1])])
-        #print _condition
-        sqlstr = 'UPDATE %s.phrases SET user_freq = ? WHERE mlen = ? AND clen = ? %s AND phrase = ?;' % (database, _condition)
-        #print sqlstr
-        self.db.execute ( sqlstr , _con )
-        # because we may update different db, we'd better commit every time.
-        # ??? Does it matter if we update different db?
-        if commit:
-            self.db.commit()
+        if not tabkeys or not phrase:
+            return
+        sqlstr = '''
+        UPDATE %s.phrases SET user_freq = :user_freq
+        WHERE tabkeys = :tabkeys AND phrase = :phrase
+        ;''' %database
+        sqlargs = {'user_freq': user_freq, 'tabkeys': tabkeys, 'phrase': phrase}
+        try:
+            self.db.execute(sqlstr, sqlargs)
+            if commit:
+                self.db.commit()
+        except:
+            import traceback
+            traceback.print_exc()
 
     def sync_usrdb (self):
+        '''
+        Trigger a checkpoint operation.
+        '''
         if self._user_db is None:
             return
-        # we need to update the user_db
-        #print 'sync userdb'
-        mudata = self.db.execute ('SELECT * FROM mudb.phrases;').fetchall()
-        #print mudata
-        data_u = [x for x in mudata if x[-2] in [1,-3]]
-        data_a = [x for x in mudata if x[-2]==2]
-        data_n = [x for x in mudata if x[-2]==-2]
-
-        #print data_a
-        data_a = [(u''.join(map(self.deparse, x[3:3+x[1]])),x[-3],0,x[-1]) for x in data_a]
-        data_n = [(u''.join(map(self.deparse, x[3:3+x[1]])),x[-3],-1,x[-1]) for x in data_n]
-        #print data_u
-        def update_p(entry):
-            # Don't commit yet
-            self.update_phrase(entry, commit=False)
-        map (update_p, data_u)
-        #print self.db.execute('select * from user_db.phrases;').fetchall()
-        for x in data_a:
-            self.u_add_phrase(x)
-        for x in data_n:
-            self.u_add_phrase(x)
-        self.db.commit ()
-        # clear mudb
-        self.db.execute('DELETE FROM mudb.phrases;')
-        self.db.commit ()
+        self.db.commit()
+        self.db.execute('PRAGMA wal_checkpoint;')
 
     def is_chinese (self):
-        __lang = self.get_ime_property ('languages')
+        __lang = self.ime_properties.get('languages')
         if __lang:
             __langs = __lang.split(',')
             for _l in __langs:
@@ -278,96 +384,74 @@ class tabsqlitedb:
     def get_chinese_mode (self):
         try:
             __dict = {'cm0':0,'cm1':1,'cm2':2,'cm3':3,'cm4':4}
-            __filt = self.get_ime_property ('language_filter')
+            __filt = self.ime_properties.get('language_filter')
             return __dict[__filt]
         except:
             return -1
 
-    def get_page_size (self):
-        return len(self.get_select_keys().split(','))
-
     def get_select_keys (self):
-        ret = None
-        try:
-            ret = self.get_ime_property("select_keys")
-        finally:
-            if ret is None:
-                ret = "1,2,3,4,5,6,7,8,9,0"
-        return ret
+        ret = self.ime_properties.get("select_keys")
+        if ret:
+            return ret
+        return "1,2,3,4,5,6,7,8,9,0"
 
     def get_orientation (self):
         try:
-            return int( self.get_ime_property ('orientation') )
+            return int(self.ime_properties.get('orientation'))
         except:
             return 1
 
     def create_tables (self, database):
         '''Create tables that contain all phrase'''
-
-        try:
-            self.db.execute( 'PRAGMA cache_size = 20000; ' )
-            # increase the cache size to speedup sqlite enquiry
-        except:
-            pass
         if database == 'main':
-            # create  ikeys table
-            sqlstr = 'CREATE TABLE IF NOT EXISTS %s.ikeys (ikey TEXT PRIMARY KEY, id INTEGER);' % database
-            self.db.execute ( sqlstr )
+            sqlstr = '''
+            CREATE TABLE IF NOT EXISTS %s.ikeys
+            (ikey TEXT PRIMARY KEY, id INTEGER);
+            ''' % database
+            self.db.execute (sqlstr)
+            sqlstr = '''
+            CREATE TABLE IF NOT EXISTS %s.goucima
+            (zi TEXT PRIMARY KEY, goucima TEXT);
+            ''' %database
+            self.db.execute (sqlstr)
+            sqlstr = '''
+            CREATE TABLE IF NOT EXISTS %s.pinyin
+            (pinyin TEXT, zi TEXT, freq INTEGER);
+            ''' %database
+            self.db.execute(sqlstr)
 
-            # create goucima table, this table is used in construct new phrases
-            sqlstr = 'CREATE TABLE IF NOT EXISTS %s.goucima (zi TEXT PRIMARY KEY' % database
-            for i in range(self._mlen):
-                sqlstr += ', g%d INTEGER' % i
-            #sqlstr += ''.join(map (lambda x: ', g%d INTEGER' % x, range(self._mlen)) )
-            sqlstr += ');'
-            self.db.execute ( sqlstr )
-
-            # create pinyin table, this table is used in search single character for user handly
-            sqlstr = 'CREATE TABLE IF NOT EXISTS %s.pinyin ( plen INTEGER, ' % database
-            #for i in range(6):
-            #    sqlstr += 'p%d INTEGER, ' % i
-            sqlstr += ''.join(['p%d INTEGER, ' %x for x in range(7)])
-            sqlstr += 'zi TEXT, freq INTEGER);'
-            self.db.execute ( sqlstr )
-
-        # create phrase table (mabiao)
-        sqlstr = 'CREATE TABLE IF NOT EXISTS %s.phrases (id INTEGER PRIMARY KEY AUTOINCREMENT,\
-                mlen INTEGER, clen INTEGER, ' % database
-        #for i in range(self._mlen):
-        #    sqlstr += 'm%d INTEGER, ' % i
-        sqlstr += ''.join(['m%d INTEGER, ' %x for x in range(self._mlen)])
-        if self._is_chinese:
-            sqlstr += 'category INTEGER, '
-        sqlstr += 'phrase TEXT, freq INTEGER, user_freq INTEGER);'
-        self.db.execute ( sqlstr )
+        sqlstr = '''
+        CREATE TABLE IF NOT EXISTS %s.phrases
+        (id INTEGER PRIMARY KEY, tabkeys TEXT, phrase TEXT,
+        freq INTEGER, user_freq INTEGER);
+        ''' % database
+        self.db.execute (sqlstr)
         self.db.commit()
 
     def update_ime (self, attrs):
-        '''Update attributes in ime table, attrs is a iterable object
+        '''Update or insert attributes in ime table, attrs is a iterable object
         Like [(attr,val), (attr,val), ...]
+
+        This is called only by tabcreatedb.py.
         '''
-        sqlstr = 'UPDATE main.ime SET val = ? WHERE attr = ?;'
+        select_sqlstr = 'SELECT val from main.ime WHERE attr = :attr'
+        update_sqlstr = 'UPDATE main.ime SET val = :val WHERE attr = :attr;'
+        insert_sqlstr = 'INSERT INTO main.ime (attr, val) VALUES (:attr, :val);'
         for attr,val in attrs:
-            _sqlstr = 'SELECT * from main.ime WHERE attr = ?'
-            res = self.db.execute( _sqlstr, (attr,) ).fetchall()
-            if res:
-                self.db.execute(sqlstr,(val,attr))
+            sqlargs = {'attr': attr, 'val': val}
+            if self.db.execute(select_sqlstr, sqlargs).fetchall():
+                self.db.execute(update_sqlstr, sqlargs)
             else:
-                #print '"',attr,'"'," didn't in ime property now!"
-                pass
-        # then flush previous cache
-        self.ime_property_cache = {}
-        # we need to update some self variables now.
-        self._mlen = int (self.get_ime_property ('max_key_length' ))
+                self.db.execute(insert_sqlstr, sqlargs)
+        self.db.commit()
+        # update ime properties cache:
+        self.ime_properties = ImeProperties(
+            db=self.db,
+            default_properties=self._default_ime_attributes)
+        # The self variables used by tabcreatedb.py need to be updated now:
+        self._mlen = int(self.ime_properties.get('max_key_length'))
         self._is_chinese = self.is_chinese()
-        self._set_add_phrase_sqlstr()
-        self._pt_index = ['id', 'mlen', 'clen']
-        for i in range(self._mlen):
-            self._pt_index.append ('m%d' %i)
-        if self._is_chinese:
-            self._pt_index += ['category']
-        self._pt_index += ['phrase','freq','user_freq']
-        self.user_can_define_phrase = self.get_ime_property('user_can_define_phrase')
+        self.user_can_define_phrase = self.ime_properties.get('user_can_define_phrase')
         if self.user_can_define_phrase:
             if self.user_can_define_phrase.lower() == u'true' :
                 self.user_can_define_phrase = True
@@ -376,16 +460,14 @@ class tabsqlitedb:
         else:
             print('Could not find "user_can_define_phrase" entry from database, is it a outdated database?')
             self.user_can_define_phrase = False
-        self.rules = self.get_rules ()
-
-        self.db.commit()
+        self.rules = self.get_rules()
 
     def get_rules (self):
         '''Get phrase construct rules'''
         rules={}
         if self.user_can_define_phrase:
             try:
-                _rules = self.get_ime_property ('rules')
+                _rules = self.ime_properties.get('rules')
                 if _rules:
                     _rules = _rules.strip().split(';')
                 for rule in _rules:
@@ -411,19 +493,32 @@ class tabsqlitedb:
         else:
             return ""
 
-    def phrase_keys_len (self):
-        '''Return the phrase possible key length'''
+    def get_possible_tabkeys_lengths(self):
+        '''Return a list of the possible lengths for tabkeys in this table.
+
+        Example:
+
+        If the table source has rules like:
+
+            RULES = ce2:p11+p12+p21+p22;ce3:p11+p21+p22+p31;ca4:p11+p21+p31+p41
+
+        self._rules will be set to
+
+            self._rules={2: [(1, 1), (1, 2), (2, 1), (2, 2)], 3: [(1, 1), (1, 2), (2, 1), (3, 1)], 4: [(1, 1), (2, 1), (3, 1), (-1, 1)], 'above': 4}
+
+        and then this function returns “[4, 4, 4]”
+
+        Or, if the table source has no RULES but LEAST_COMMIT_LENGTH=2
+        and MAX_KEY_LENGTH = 4, then it returns “[2, 3, 4]”
+
+        I cannot find any tables which use LEAST_COMMIT_LENGTH though.
+        '''
         if self.rules:
             max_len = self.rules["above"]
-            try:
-                return [len(self.rules[x]) for x in range(2, max_len+1)][:]
-            except:
-                return []
+            return [len(self.rules[x]) for x in range(2, max_len+1)][:]
         else:
-            # we try to findout whether we have least commit len
-            # in ime table
             try:
-                least_commit_len = int(self.get_ime_property('least_commit_length'))
+                least_commit_len = int(self.ime_properties.get('least_commit_length'))
             except:
                 least_commit_len = 0
             if least_commit_len > 0:
@@ -433,142 +528,111 @@ class tabsqlitedb:
 
     def get_start_chars (self):
         '''return possible start chars of IME'''
-        try:
-            return self.get_ime_property('start_chars')
-        except:
-            return ''
+        return self.ime_properties.get('start_chars')
 
     def get_no_check_chars (self):
         '''Get the characters which engine should not change freq'''
-        _chars= self.get_ime_property('no_check_chars')
-        try:
+        _chars= self.ime_properties.get('no_check_chars')
+        if type(_chars) != type(u''):
             _chars = _chars.decode('utf-8')
-        except:
-            pass
         return _chars
 
     def add_phrases (self, phrases, database = 'main'):
-        '''Add phrases to database, phrases is a iterable object
-        Like: [(tabkeys, phrase, freq ,user_freq), (tabkeys, phrase, freq, user_freq), ...]
+        '''Add many phrases to database fast. Used by tabcreatedb.py when
+        creating the system database from scratch.
+
+        “phrases” is a iterable object which looks like:
+
+            [(tabkeys, phrase, freq ,user_freq), (tabkeys, phrase, freq, user_freq), ...]
+
+        This function does not check whether phrases are already
+        there.  As this function is only used while creating the
+        system database, it is not really necessary to check whether
+        phrases are already there because the database is initially
+        empty anyway. And the caller should take care that the
+        “phrases” argument does not contain duplicates.
+
         '''
-        for x in phrases:
-            self.add_phrase(x, database=database, commit=False)
+        insert_sqlstr = '''
+        INSERT INTO %(database)s.phrases
+        (tabkeys, phrase, freq, user_freq)
+        VALUES (:tabkeys, :phrase, :freq, :user_freq);
+        ''' %{'database': database}
+        insert_sqlargs = []
+        for (tabkeys, phrase, freq, user_freq) in phrases:
+             insert_sqlargs.append({'tabkeys': tabkeys, 'phrase': phrase, 'freq': freq, 'user_freq': user_freq})
+        self.db.executemany(insert_sqlstr, insert_sqlargs)
         self.db.commit()
+        self.db.execute('PRAGMA wal_checkpoint;')
 
-    def u_add_phrase (self,nphrase):
-        '''Add a phrase to userdb'''
-        self.add_phrase (nphrase,database='user_db',commit=False)
-
-    def _set_add_phrase_sqlstr(self):
-        '''Create the sqlstr for add phrase according to self._mlen.'''
-        sqlstr = 'INSERT INTO %s.phrases ( mlen, clen, '
-        sql_suffix = 'VALUES ( ?, ?, '
-        mmlen = list(range(self._mlen))
-        sqlstr += ''.join(['m%d, ' %x for x in mmlen])
-        sql_suffix += ''.join(['?, ' for x in mmlen])
-        if self._is_chinese:
-            sqlstr += 'category, '
-            sql_suffix += '?, '
-        sqlstr += 'phrase, freq, user_freq) '
-        sql_suffix += '?, ?, ? );'
-        sqlstr += sql_suffix
-        self._add_phrase_sqlstr = sqlstr
-
-    def add_phrase (self, aphrase, database = 'main',commit=True):
+    def add_phrase(self, tabkeys=u'', phrase=u'', freq=0, user_freq=0, database='main',commit=True):
         '''Add phrase to database, phrase is a object of
         (tabkeys, phrase, freq ,user_freq)
         '''
-        sqlstr = self._add_phrase_sqlstr
+        if not tabkeys or not phrase:
+            return
+        select_sqlstr = '''
+        SELECT * FROM %(database)s.phrases
+        WHERE tabkeys = :tabkeys AND phrase = :phrase;
+        ''' %{'database': database}
+        select_sqlargs = {'tabkeys': tabkeys, 'phrase': phrase}
+        results = self.db.execute(select_sqlstr, select_sqlargs).fetchall()
+        if results:
+            # there is already such a phrase, i.e. add_phrase was called
+            # in error, do nothing to avoid duplicate entries.
+            return
+
+        insert_sqlstr = '''
+        INSERT INTO %(database)s.phrases
+        (tabkeys, phrase, freq, user_freq)
+        VALUES (:tabkeys, :phrase, :freq, :user_freq);
+        ''' %{'database': database}
+        insert_sqlargs = {'tabkeys': tabkeys, 'phrase': phrase, 'freq': freq, 'user_freq': user_freq}
         try:
-            tabkeys,phrase,freq,user_freq = aphrase
-        except:
-            tabkeys,phrase,freq = aphrase
-            user_freq = 0
-        # now we will set the category bits if this is chinese
-        if self._is_chinese:
-            category = chinese_variants.detect_chinese_category(phrase)
-        try:
-            tbks = self.parse(tabkeys)
-            if len(tbks) != len(tabkeys):
-                print('In %s %s: we parse tabkeys fail' %(phrase, tabkeys))
-                return
-            record = [None] * (5 + self._mlen)
-            record [0] = len (tabkeys)
-            record [1] = len (phrase)
-            record [2: 2+len(tabkeys)] = [tbks[x].get_key_id() for x in range(0,len(tabkeys))]
-            if self._is_chinese:
-                record +=[None]
-                record[-4] = category
-            record[-3:] = phrase, freq, user_freq
-            self.db.execute (sqlstr % database, record)
+            self.db.execute (insert_sqlstr, insert_sqlargs)
             if commit:
                 self.db.commit()
-        except Exception:
+        except:
             import traceback
             traceback.print_exc()
 
-    def add_goucima (self, gcms):
-        '''Add goucima into database, gcms is iterable object
-        Like gcms = [(zi,goucima),(zi,goucima), ...]
+    def add_goucima (self, goucimas):
+        '''Add goucima into database, goucimas is iterable object
+        Like goucimas = [(zi,goucima), (zi,goucima), ...]
         '''
-        count = 1
-        for zi,gcm in gcms:
-            _con = ''
-            _val = ''
-            _len = min ( len(gcm),self._mlen)
-            for i in range( _len ):
-                _con += ', g%d' % i
-                _val += ', ?'
-            sqlstr = '''INSERT INTO main.goucima ( zi %s )
-            VALUES ( ? %s );''' % (_con, _val)
-            try:
-                gc = self.parse(gcm)
-                if len(gc) != len(gcm):
-                    raise Exception(u'%s %s: Can not parse goucima' %(zi, gcm))
-                record = [zi]
-                for i in range(_len):
-                    record.append( gc[i].get_key_id())
-                self.db.execute (sqlstr , record)
-
-            except Exception:
-                import traceback
-                traceback.print_exc()
-            count += 1
-        self.db.commit()
+        sqlstr = '''
+        INSERT INTO main.goucima (zi, goucima) VALUES (:zi, :goucima);
+        '''
+        sqlargs = []
+        for zi,goucima in goucimas:
+            sqlargs.append({'zi': zi, 'goucima': goucima})
+        try:
+            self.db.commit()
+            self.db.executemany(sqlstr, sqlargs)
+            self.db.commit()
+            self.db.execute('PRAGMA wal_checkpoint;')
+        except:
+            import traceback
+            traceback.print_exc()
 
     def add_pinyin (self, pinyins, database = 'main'):
         '''Add pinyin to database, pinyins is a iterable object
         Like: [(zi,pinyin, freq), (zi, pinyin, freq), ...]
         '''
-        sqlstr = 'INSERT INTO %s.pinyin ( plen, '
-        sql_suffix = 'VALUES ( ?, '
-        for i in range(7):
-            sqlstr += 'p%d, ' % i
-            sql_suffix += '?, '
-        sqlstr += 'zi, freq ) '
-        sql_suffix += '?, ? );'
-        sqlstr += sql_suffix
-
-        count = 1
+        sqlstr = '''
+        INSERT INTO %s.pinyin (pinyin, zi, freq) VALUES (:pinyin, :zi, :freq);
+        ''' %database
+        count = 0
         for pinyin,zi,freq in pinyins:
+            count += 1
+            pinyin = pinyin.replace('1','!').replace('2','@').replace('3','#').replace('4','$').replace('5','%')
             try:
-                pinyin_n = pinyin.replace('1','!').replace('2','@').replace('3','#').replace('4','$').replace('5','%')
-                py = self.parse(pinyin_n)
-                if len(py) != len(pinyin_n):
-                    raise Exception(u'%s %s: Can not parse pinyin' %(zi, pinyin))
-                record = [None]*10
-                record [0] = len (pinyin_n)
-                for i in range(0,len(pinyin_n)):
-                    record [ 1+i ] = py[i].get_key_id()
-                record [-2] = zi
-                record [-1] = freq
-                self.db.execute (sqlstr % database, record)
+                self.db.execute(sqlstr, {'pinyin': pinyin, 'zi': zi, 'freq': freq})
             except Exception:
-                print(count, ': ', zi, ' ', pinyin)
+                sys.stderr.write(
+                    'Error when inserting into pinyin table. count=%(c)s pinyin=%(p)s zi=%(z)s freq=%(f)s\n' %{'c': count, 'p': pinyin, 'z': zi, 'f': freq})
                 import traceback
                 traceback.print_exc()
-            count += 1
-
         self.db.commit()
 
     def optimize_database (self, database='main'):
@@ -576,21 +640,18 @@ class tabsqlitedb:
             CREATE TABLE tmp AS SELECT * FROM %(database)s.phrases;
             DELETE FROM %(database)s.phrases;
             INSERT INTO %(database)s.phrases SELECT * FROM tmp ORDER BY
-            %(tabkeystr)s mlen ASC, user_freq DESC, freq DESC, id ASC;
+            tabkeys ASC, phrase ASC, user_freq DESC, freq DESC, id ASC;
             DROP TABLE tmp;
             CREATE TABLE tmp AS SELECT * FROM %(database)s.goucima;
             DELETE FROM %(database)s.goucima;
-            INSERT INTO %(database)s.goucima SELECT * FROM tmp ORDER BY zi,g0,g1;
+            INSERT INTO %(database)s.goucima SELECT * FROM tmp ORDER BY zi, goucima;
             DROP TABLE tmp;
             CREATE TABLE tmp AS SELECT * FROM %(database)s.pinyin;
             DELETE FROM %(database)s.pinyin;
-            INSERT INTO %(database)s.pinyin SELECT * FROM tmp ORDER BY p0,p1,p2,p3,p4,p5,plen ASC;
+            INSERT INTO %(database)s.pinyin SELECT * FROM tmp ORDER BY pinyin ASC, freq DESC;
             DROP TABLE tmp;
-            '''
-        tabkeystr = ''
-        for i in range(self._mlen):
-            tabkeystr +='m%d, ' % i
-        self.db.executescript (sqlstr % {'database':database,'tabkeystr':tabkeystr })
+            ''' %{'database':database}
+        self.db.executescript (sqlstr)
         self.db.executescript ("VACUUM;")
         self.db.commit()
 
@@ -602,151 +663,124 @@ class tabsqlitedb:
             DROP INDEX IF EXISTS %(database)s.phrases_index_p;
             DROP INDEX IF EXISTS %(database)s.phrases_index_i;
             VACUUM;
-            ''' % { 'database':database }
+            ''' %{'database':database}
 
-        self.db.executescript (sqlstr)
+        self.db.executescript(sqlstr)
         self.db.commit()
 
     def create_indexes(self, database, commit=True):
-        sqlstr = '''
-            CREATE INDEX IF NOT EXISTS %(database)s.goucima_index_z ON goucima (zi);
-            CREATE INDEX IF NOT EXISTS %(database)s.pinyin_index_i ON pinyin (p0,p1,p2,p3,p4,p5,plen ASC, freq DESC);
-            ''' % { 'database':database }
-
-        sqlstr_t = '''
-            CREATE INDEX IF NOT EXISTS %(database)s.phrases_index_p ON phrases
-            (%(tabkeystr)s mlen ASC, freq DESC, id ASC);
-            CREATE INDEX IF NOT EXISTS %(database)s.phrases_index_i ON phrases (phrase, mlen ASC);
-            '''
-        tabkeystr = ''
-        for i in range(self._mlen):
-            tabkeystr +='m%d,' % i
         if database == 'main':
-            sqlstr = sqlstr_t % {'database':database,'tabkeystr':tabkeystr } + sqlstr
-        else:
-            sqlstr = sqlstr_t % {'database':database,'tabkeystr':tabkeystr }
+            sqlstr = '''
+            CREATE INDEX IF NOT EXISTS %(database)s.goucima_index_z ON goucima (zi);
+            CREATE INDEX IF NOT EXISTS %(database)s.pinyin_index_i ON pinyin (pinyin ASC, freq DESC);
+            ''' %{'database':database}
+            self.db.executescript (sqlstr)
+
+        sqlstr = '''
+        CREATE INDEX IF NOT EXISTS %(database)s.phrases_index_p ON phrases
+        (tabkeys ASC, freq DESC, id ASC);
+        CREATE INDEX IF NOT EXISTS %(database)s.phrases_index_i ON phrases
+        (phrase ASC);
+        ''' %{'database': database}
         self.db.executescript (sqlstr)
         if commit:
             self.db.commit()
 
-    def compare (self,x,y):
-        return cmp (x[1], y[1]) or -(cmp (x[-1], y[-1])) \
-                or -(cmp (x[-2], y[-2])) or (cmp (x[0], y[0]))
+    def best_candidates(self, candidates):
+        '''
+        candidates is an array containing something like:
+        [(tabkeys, phrase, freq, user_freq), ...]
+        '''
+        return sorted(candidates,
+                      key=lambda x: (
+                          -1*x[3],   # user_freq descending
+                          -1*x[2],   # freq descending
+                          len(x[0]), # len(tabkeys) ascending
+                          x[0]       # tabkeys alphabetical
+                      ))[:100]
 
-    def select_words( self, tabkeys, onechar=False, bitmask=0 ):
+    def select_words(self, tabkeys=u'', onechar=False, bitmask=0xff):
         '''
-        Get phrases from database by tab_key objects
-        ( which should be equal or less than the max key length)
-        This method is called in table.py by passing UserInput held data
-        Return result[:]
+        Get matching phrases for tabkeys from the database.
         '''
-        # firstly, we make sure the len we used is equal or less than the max key length
-        _len = min( len(tabkeys),self._mlen )
-        _condition = ''
-        _condition += ''.join(['AND m%d = ? ' %x for x in range(_len)])
+        if not tabkeys:
+            return []
+        one_char_condition = ''
         if onechar:
             # for some users really like to select only single characters
-            _condition += 'AND clen=1 '
-        if bitmask:
-            # now just the bits for chinese
-            all_ints = range(1,5)
-            need_ints = [x for x in all_ints if x & bitmask]
-            bit_condition = 'OR'.join([' category = %d ' %x for x in need_ints])
-            _condition += 'AND (%s) ' % bit_condition
+            one_char_condition = ' AND length(phrase)=1 '
 
-        # you can increase the x in _len + x to include more result, but in the most case, we only need one more key result, so we don't need the extra overhead :)
-        # we start search for 1 key more, if nothing, then 2 key more and so on
-        # this is the max len we need to add into the select cause.
-        w_len = self._mlen - _len +1
-        # we start from 2, because it is < in the sqlite select, which need 1 more.
-        x_len = 2
-        while x_len <= w_len + 1:
-            sqlstr = '''SELECT * FROM (SELECT * FROM main.phrases WHERE mlen < %(mk)d  %(condition)s
+        sqlstr = '''
+        SELECT tabkeys, phrase, freq, user_freq FROM
+        (
+            SELECT tabkeys, phrase, freq, user_freq FROM main.phrases
+            WHERE tabkeys LIKE :tabkeys %(one_char_condition)s
             UNION ALL
-            SELECT * FROM user_db.phrases WHERE mlen < %(mk)d %(condition)s
-            UNION ALL
-            SELECT * FROM mudb.phrases WHERE mlen < %(mk)d %(condition)s )
-            ORDER BY mlen ASC, user_freq DESC, freq DESC, id ASC;''' % { 'mk':_len+x_len, 'condition':_condition}
-            # we have redefine the __int__(self) in class tabdict.tab_key to return the key id, so we can use map to got key id :)
-            _tabkeys = list(map(int,tabkeys[:_len]))
-            _tabkeys += _tabkeys + _tabkeys
-            result = self.db.execute(sqlstr, _tabkeys).fetchall()
-            #self.db.commit()
-            # if we find word, we stop this while,
-            if len(result) >0:
-                break
-            x_len += 1
-
-        # Remove duplicated entries other than different id,freq,user_freq
-        box_uniq = set()
-        def add2box(x):
-            box_uniq.add(x[1:-2])
-            return x
-        result = [add2box(x) for x in result if x[1:-2] not in box_uniq]
-        return result[:]
-
-    def select_zi( self, tabkeys ):
-        '''
-        Get zi from database by tab_key objects
-        ( which should be equal or less than 6)
-        This method is called in table.py by passing UserInput held data
-        Return  result[:]
-        '''
-        # firstly, we make sure the len we used is equal or less than
-        # the max pinyin length 7 (include tune[1-5])
-        _len = min( len(tabkeys), 7 )
-        _condition = ''
-        #for i in range(_len):
-        #    _condition += 'AND p%d = ? ' % i
-        _condition += ''.join (['AND p%d = ? ' %x for x in range(_len)])
-        # you can increase the x in _len + x to include more result, but in the most case, we only need one more key result, so we don't need the extra overhead :)
-        # here we need make sure that the 3 <= plen <=7,
-        # so , if if _len < 3, than we start from 3;
-        #   if _len >= 3, we start from _len + 1;
-        #   if _len = 7, we start from _len
-        if _len < 7:
-            if _len < 3:
-                x_len = 3
-            else:
-                x_len = _len + 1
+            SELECT tabkeys, phrase, freq, user_freq FROM user_db.phrases
+            WHERE tabkeys LIKE :tabkeys %(one_char_condition)s
+        )
+        ''' % {'one_char_condition': one_char_condition}
+        sqlargs = {'tabkeys': tabkeys+'%%'}
+        unfiltered_results = self.db.execute(sqlstr, sqlargs).fetchall()
+        if not bitmask or bitmask == 0xff:
+            results = unfiltered_results
         else:
-            x_len = _len
-
-        while x_len <= 8:
-            sqlstr = '''SELECT * FROM main.pinyin WHERE plen < %(mk)d  %(condition)s
-                ORDER BY plen ASC, freq DESC;''' % { 'mk':x_len, 'condition':_condition}
-            # we have redefine the __int__(self) in class tabdict.tab_key to return the key id, so we can use map to got key id :)
-            _tabkeys = list(map(int,tabkeys[:_len]))
-            result = self.db.execute(sqlstr, _tabkeys).fetchall()
-            if len(result) > 0:
-                break
-            x_len += 1
-        #self.db.commit()
-        return result[:]
-
-    def get_ime_property( self, attr ):
-        '''get IME property from database, attr is the string of property,
-        which should be str.lower() :)
-        '''
-        if not attr in self.ime_property_cache:
-            sqlstr = 'SELECT val FROM main.ime WHERE attr = ?'
-            _result = self.db.execute( sqlstr, (attr,)).fetchall()
-            if _result:
-                self.ime_property_cache[attr] = _result[0][0]
+            results = []
+            for result in unfiltered_results:
+                if bitmask & chinese_variants.detect_chinese_category(result[1]):
+                    results.append(result)
+        # merge matches from the system database and from the user
+        # database to avoid duplicates in the candidate list for
+        # example, if we have the result ('aaaa', '工', 551000000, 0)
+        # from the system database and ('aaaa', '工', 0, 5) from the
+        # user database, these should be merged into one match
+        # ('aaaa', '工', 551000000, 5).
+        phrase_frequencies = {}
+        for result in results:
+            key = (result[0], result[1])
+            if key not in phrase_frequencies:
+                phrase_frequencies[key] = result
             else:
-                self.ime_property_cache[attr] = None
-        return self.ime_property_cache[attr]
+                phrase_frequencies.update([(
+                    key,
+                    key +
+                    (
+                        max(result[2], phrase_frequencies[key][2]),
+                        max(result[3], phrase_frequencies[key][3]))
+                )])
+        best = self.best_candidates(phrase_frequencies.values())
+        return best
 
-    def get_phrase_table_index (self):
-        '''get a list of phrase table columns name'''
-        return self._pt_index[:]
+    def select_chinese_characters_by_pinyin(self, tabkeys=u'', bitmask=0xff):
+        '''
+        Get Chinese characters matching the pinyin given by tabkeys
+        from the database.
+        '''
+        if not tabkeys:
+            return []
+        sqlstr = '''
+        SELECT pinyin, zi, freq FROM main.pinyin WHERE pinyin LIKE :tabkeys
+        ORDER BY freq DESC, pinyin ASC
+        ;'''
+        sqlargs = {'tabkeys': tabkeys+'%%'}
+        results = self.db.execute(sqlstr, sqlargs).fetchall()
+        # now convert the results into a list of candidates in the format
+        # which was returned before I simplified the pinyin database table.
+        phrase_frequencies = []
+        for (pinyin, zi, freq) in results:
+            if not bitmask or bitmask == 0xff:
+                phrase_frequencies.append(tuple([pinyin, zi, freq, 0]))
+            else:
+                if bitmask & chinese_variants.detect_chinese_category(zi):
+                    phrase_frequencies.append(tuple([pinyin, zi, freq, 0]))
+        return self.best_candidates(phrase_frequencies)
 
     def generate_userdb_desc (self):
         try:
             sqlstring = 'CREATE TABLE IF NOT EXISTS user_db.desc (name PRIMARY KEY, value);'
             self.db.executescript (sqlstring)
             sqlstring = 'INSERT OR IGNORE INTO user_db.desc  VALUES (?, ?);'
-            self.db.execute (sqlstring, ('version', '0.5'))
+            self.db.execute (sqlstring, ('version', database_version))
             sqlstring = 'INSERT OR IGNORE INTO user_db.desc  VALUES (?, DATETIME("now", "localtime"));'
             self.db.execute (sqlstring, ("create-time", ))
             self.db.commit ()
@@ -754,13 +788,18 @@ class tabsqlitedb:
             import traceback
             traceback.print_exc ()
 
-    def init_user_db (self,db_file):
-        if not path.exists (db_file):
-            db = sqlite3.connect (db_file)
+    def init_user_db(self,db_file):
+        if not path.exists(db_file):
+            db = sqlite3.connect(db_file)
+            db.execute('PRAGMA encoding = "UTF-8";')
+            db.execute('PRAGMA case_sensitive_like = true;')
             db.execute('PRAGMA page_size = 4096;')
-            db.execute( 'PRAGMA cache_size = 20000;' )
-            db.execute( 'PRAGMA temp_store = MEMORY; ' )
-            db.execute( 'PRAGMA synchronous = OFF; ' )
+            # 20000 pages should be enough to cache the whole database
+            db.execute('PRAGMA cache_size = 20000;')
+            db.execute('PRAGMA temp_store = MEMORY;')
+            db.execute('PRAGMA journal_mode = WAL;')
+            db.execute('PRAGMA journal_size_limit = 1000000;')
+            db.execute('PRAGMA synchronous = NORMAL;')
             db.commit()
 
     def get_database_desc (self, db_file):
@@ -768,28 +807,41 @@ class tabsqlitedb:
             return None
         try:
             db = sqlite3.connect (db_file)
-            db.execute('PRAGMA page_size = 4096;')
-            db.execute( 'PRAGMA cache_size = 20000;' )
-            db.execute( 'PRAGMA temp_store = MEMORY; ' )
-            db.execute( 'PRAGMA synchronous = OFF; ' )
             desc = {}
             for row in db.execute ("SELECT * FROM desc;").fetchall():
                 desc [row[0]] = row[1]
-            self.db.commit()
+            db.close()
             return desc
         except:
             return None
 
-    def get_table_phrase_len(self, db_file):
-        table_patt = re.compile(r'.*\((.*)\)')
+    def get_number_of_columns_of_phrase_table(self, db_file):
+        '''
+        Get the number of columns in the 'phrases' table in
+        the database in db_file.
+
+        Determines the number of columns by parsing this:
+
+        sqlite> select sql from sqlite_master where name='phrases';
+        CREATE TABLE phrases
+                (id INTEGER PRIMARY KEY, tabkeys TEXT, phrase TEXT,
+                freq INTEGER, user_freq INTEGER)
+        sqlite>
+
+        This result could be on a single line, as above, or on multiple
+        lines.
+        '''
         if not path.exists (db_file):
             return 0
         try:
             db = sqlite3.connect (db_file)
-            tp_res = db.execute("select sql from sqlite_master\
-                    where name='phrases';").fetchall()
-            self.db.commit()
-            res = table_patt.match(tp_res[0][0])
+            tp_res = db.execute(
+                "select sql from sqlite_master where name='phrases';"
+            ).fetchall()
+            # Remove possible line breaks from the string where we
+            # want to match:
+            str = ' '.join(tp_res[0][0].splitlines())
+            res = re.match(r'.*\((.*)\)', str)
             if res:
                 tp = res.group(1).split(',')
                 return len(tp)
@@ -798,295 +850,266 @@ class tabsqlitedb:
         except:
             return 0
 
-    def cache_goucima (self):
-        self._goucima = {}
-        goucima = self.db.execute('SELECT * FROM main.goucima;').fetchall()
-        for x in goucima:
-            self._goucima.update({x[0]:x[1:]})
-
-    def get_gcm_id (self, zi):
+    def get_goucima (self, zi):
         '''Get goucima of given character'''
-        if self._goucima:
-            # we already cache the goucima
-            if type(zi) != type(u''):
-                zi = zi.decode('utf-8')
-            try:
-                gcds = self._goucima[zi]
-                return gcds
-            except:
-                pass
-        sqlstr = 'SELECT %s FROM main.goucima WHERE zi =?;' % ','.join(['g%d' %x for x in range(self._mlen)])
-        return self.db.execute(sqlstr,(zi,)).fetchall()[0]
+        if not zi:
+            return u''
+        sqlstr = 'SELECT goucima FROM main.goucima WHERE zi = :zi;'
+        goucima = self.db.execute(sqlstr, {'zi': zi}).fetchall()[0][0]
+        return goucima
 
     def parse_phrase (self, phrase):
-        '''Parse phrase to get its Table code'''
-        # first we make sure that we are parsing unicode string
+        '''Parse phrase to get its table code
+
+        Example:
+
+        Let’s assume we use wubi-jidian86. The rules in the source of
+        that table are:
+
+            RULES = ce2:p11+p12+p21+p22;ce3:p11+p21+p31+p32;ca4:p11+p21+p31+p-11
+
+        “ce2” is a rule for phrases of length 2, “ce3” is a rule
+        for phrases of length 3, “ca4” is a rule for phrases of
+        length 4 *and* for all phrases with a length greater then
+        4. “pnm” in such a rule means to use the n-th character of
+        the phrase and take the m-th character of the table code of
+        that character. I.e. “p-11” is the first character of the
+        table code of the last character in the phrase.
+
+        Let’s assume the phrase is “天下大事”. The goucima (構詞碼
+        = “word formation keys”) for these 4 characters are:
+
+            character goucima
+            天        gdi
+            下        ghi
+            大        dddd
+            事        gkvh
+
+        (If no special goucima are defined by the user, the longest
+        encoding for a single character in a table is the goucima for
+        that character).
+
+        The length of the phrase “天下大事” is 4 characters,
+        therefore the rule ca4:p11+p21+p31+p-11 applies, i.e. the
+        table code for “天下大事” is calculated by using the first,
+        second, third and last character of the phrase and taking the
+        first character of the goucima for each of these. Therefore,
+        the table code for “天下大事” is “ggdg”.
+
+        '''
         if type(phrase) != type(u''):
-            phrase = unicode(phrase)
-        p_len = len(phrase)
-        tabkeylist = []
-        if p_len < 2:
-            # phrase should not be shorter than 2
-            return []
-        #print p_len
-        try:
-            if p_len >= self.rules['above']:
-                rule = self.rules[ self.rules['above'] ]
-            elif p_len in self.rules:
-                rule = self.rules[p_len]
-            else:
-                raise Exception ('unsupport len of phrase')
-            if len(rule) > self._mlen:
-                raise Exception ('fault rule: %s' % rule)
-            #for (zi,ma) in rule:
-            #    if zi > 0:
-            #        zi -= 1
-            #    gcm = self.get_gcm_id (phrase[zi])
-            #    tabkeylist.append(gcm[ma-1])
-            tabkeylist = [self.get_gcm_id(phrase[x[0]-1 if x[0] > 0 else x[0]])\
-                    [x[1]-1 if x[1] > 0 else x[1]] for x in rule]
-            return tabkeylist[:]
-
-        except:
-            print("pharse pharse \"%s\" fail." %phrase)
-            #import traceback
-            #traceback.print_exc ()
-
-    def parse_phrase_to_tabkeys (self,phrase):
-        '''Get the Table encoding of the phrase in string form'''
-        try:
-            tabres = self.parse_phrase(phrase)
-        except:
-            tabres = None
-        if tabres:
-            tabkeys= u''.join ( map(self.deparse, tabres) )
+            phrase = phrase.decode('UTF-8')
+        # Shouldn’t this function try first whether the system database
+        # already has an entry for this phrase and if yes return it
+        # instead of constructing a new entry according to the rules?
+        # And construct a new entry only when no entry already exists
+        # in the system database??
+        if len(phrase) == 0:
+            return u''
+        if len(phrase) == 1:
+            return self.get_goucima(phrase)
+        if not self.rules:
+            return u''
+        if len(phrase) in self.rules:
+            rule = self.rules[len(phrase)]
+        elif len(phrase) > self.rules['above']:
+            rule = self.rules[self.rules['above']]
         else:
-            tabkeys= u''
+            sys.stderr.write(
+                'No rule for this phrase length. phrase=%(p)s rules=%(r)s\n'
+                %{'p': phrase, 'r': rules})
+            return u''
+        if len(rule) > self._mlen:
+            sys.stderr.write(
+                'Rule exceeds maximum key length. rule=%(r)s self._mlen=%(m)s\n'
+                %{'r': rule, 'm': self._mlen})
+            return u''
+        tabkeys = u''
+        for (zi, ma) in rule:
+            if zi > 0:
+                zi -= 1
+            if ma > 0:
+                ma -= 1
+            tabkey = self.get_goucima(phrase[zi])[ma]
+            if not tabkey:
+                return u''
+            tabkeys += tabkey
         return tabkeys
 
-    def check_phrase (self,phrase,tabkey=None,database='main'):
-        # if IME didn't support user define phrase,
-        # we divide user input phrase into characters,
-        # and then check its frequence
-        if type(phrase) != type(u''):
-            phrase = phrase.decode('utf8')
-        if self.user_can_define_phrase:
-            self.check_phrase_internal (phrase, tabkey, database)
+    def is_in_system_database(self, tabkeys=u'', phrase=u''):
+        '''
+        Checks whether “phrase” can be matched in the system database
+        with a key sequence *starting* with “tabkeys”.
+        '''
+        if not tabkeys or not phrase:
+            return False
+        sqlstr = '''
+        SELECT * FROM main.phrases
+        WHERE tabkeys LIKE :tabkeys AND phrase = :phrase;
+        '''
+        sqlargs = {'tabkeys': tabkeys+'%%', 'phrase': phrase}
+        results = self.db.execute(sqlstr, sqlargs).fetchall()
+        if results:
+            return True
         else:
-            list(map(self.check_phrase_internal, phrase))
+            return False
 
-    def check_phrase_internal (self,phrase,tabkey=None,database='main'):
-        '''Check word freq and user_freq
+    def user_frequency(self, tabkeys=u'', phrase=u''):
+        if not tabkeys or not phrase:
+            return 0
+        sqlstr = '''
+        SELECT sum(user_freq) FROM user_db.phrases
+        WHERE tabkeys = :tabkeys AND phrase = :phrase GROUP BY tabkeys, phrase;
+        '''
+        sqlargs = {'tabkeys': tabkeys, 'phrase': phrase}
+        result = self.db.execute(sqlstr, sqlargs).fetchall()
+        if result:
+            return result[0][0]
+        else:
+            return 0;
+
+    def check_phrase(self, tabkeys=u'', phrase=u''):
+        '''Adjust user_freq in user database if necessary.
+
+        Also, if the phrase is not in the system database, and it is a
+        Chinese table, and defining user phrases is allowed, add it as
+        a user defined phrase to the user database if it is not yet
+        there.
         '''
         if type(phrase) != type(u''):
             phrase = phrase.decode('utf8')
-        if self._is_chinese:
-            if phrase in tabdict.chinese_nocheck_chars:
+        if type(tabkeys) != type(u''):
+            tabkeys = tabkeys.decode('utf8')
+        if not tabkeys or not phrase:
+            return
+        if self._is_chinese and phrase in chinese_nocheck_chars:
                 return
-        if len(phrase) >=2:
-            try:
-                wordattr = self.parse_phrase ( phrase )
-            except:
-                # if we don't have goucima:
-                return
-        if (not tabkey) or len(tabkey) > self._mlen :
-            sqlstr = '''SELECT * FROM (SELECT * FROM main.phrases WHERE phrase = ?
-            UNION ALL SELECT * FROM user_db.phrases WHERE phrase = ?
-            UNION ALL SELECT * FROM mudb.phrases WHERE phrase = ?)
-            ORDER BY user_freq DESC, freq DESC, id ASC;
-            '''
-            result = self.db.execute(sqlstr, (phrase,phrase,phrase)).fetchall()
+        if not self.dynamic_adjust:
+             if not self.user_can_define_phrase or not self.is_chinese:
+                 return
+             tabkeys = self.parse_phrase(phrase)
+             if not tabkeys:
+                 return # no tabkeys could be constructed from the rules in the table
+             if self.is_in_system_database(tabkeys=tabkeys, phrase=phrase):
+                 return # if it is in the system database, it does not need to be defined
+             if self.user_frequency(tabkeys=tabkeys, phrase=phrase) > 0:
+                 return # if it is in the user database, it has been defined before
+             # add this user defined phrase to the user database:
+             self.add_phrase(tabkeys=tabkeys, phrase=phrase, freq=-1, user_freq=1, database='user_db')
         else:
-            # we are using this to check whether the tab-key and phrase is in db
-            #print "tabkey: ", tabkey
-            tabks = self.parse (tabkey)
-            #print "tabks: ", tabks
-            tabkids = tuple( map(int,tabks) )
-            condition = ' and '.join(['m%d = ?' %x for x in range(len(tabks))])
-            sqlstr = '''SELECT * FROM
-            (
-                SELECT * FROM main.phrases WHERE phrase = ? and %(cond)s
-                UNION ALL SELECT * FROM user_db.phrases WHERE phrase = ? and %(cond)s
-                UNION ALL SELECT * FROM mudb.phrases WHERE phrase = ? and %(cond)s
-            )
-            ORDER BY user_freq DESC, freq DESC, id ASC;
-            ''' % {'cond':condition}
-            #print sqlstr
-            result = self.db.execute(sqlstr, ((phrase,)+tabkids)*3 ).fetchall()
-            if not bool(result):
-                sqlstr = '''SELECT * FROM (SELECT * FROM main.phrases WHERE phrase = ?
-                UNION ALL SELECT * FROM user_db.phrases WHERE phrase = ?
-                UNION ALL SELECT * FROM mudb.phrases WHERE phrase = ?)
-                ORDER BY user_freq DESC, freq DESC, id ASC;
-                '''
-                result = self.db.execute(sqlstr, (phrase,phrase,phrase)).fetchall()
+             if self.is_in_system_database(tabkeys=tabkeys, phrase=phrase):
+                 user_freq = self.user_frequency(tabkeys=tabkeys, phrase=phrase)
+                 if user_freq > 0:
+                     self.update_phrase(tabkeys=tabkeys, phrase=phrase, user_freq=user_freq+1)
+                 else:
+                     self.add_phrase(tabkeys=tabkeys, phrase=phrase, freq=0, user_freq=1, database='user_db')
+             else:
+                 if not self.user_can_define_phrase or not self.is_chinese:
+                     return
+                 tabkeys = self.parse_phrase(phrase)
+                 if not tabkeys:
+                     return # no tabkeys could be constructed from the rules in the table
+                 user_freq = self.user_frequency(tabkeys=tabkeys, phrase=phrase)
+                 if user_freq > 0:
+                     self.update_phrase(tabkeys=tabkeys, phrase=phrase, user_freq=user_freq+1)
+                 else:
+                     self.add_phrase(tabkeys=tabkeys, phrase=phrase, freq=-1, user_freq=1, database='user_db')
 
-        sysdb = {}
-        usrdb = {}
-        mudb = {}
-        #print "result is: ", result
-        searchres = [[int(res[-2]), int(res[-1]), [(res[1:-2],[res[:-1],res[-1]])]] for res in result]
-        # for sysdb
-        reslist=[x for x in searchres if not x[1]]
-        for x in reslist:
-            sysdb.update(x[2])
-        #print "sysdb is ", sysdb
-        # for usrdb
-        reslist=[x for x in searchres if ( x[0] in [0,-1] ) and x[1]]
-        for x in reslist:
-            usrdb.update(x[2])
-        #print "usrdb is ", usrdb
-        # for mudb
-        reslist=[x for x in searchres if (x[0] not in [0,-1]) and x[1]]
-        for x in reslist:
-            mudb.update(x[2])
-        #print "mudb is ", mudb
-
-        tabkey = ''
-        if len(phrase) >=2:
-            tabkey = u''.join(map(self.deparse,wordattr))
-            #for k in wordattr[2:2+_len]:
-            #    tabkey += self.deparse (k)
-
-        if self._is_chinese:
-            sqlstr = 'UPDATE mudb.phrases SET user_freq = ? WHERE mlen = ? AND clen = ? %s AND category = ? AND phrase = ?;'
-        else:
-            sqlstr = 'UPDATE mudb.phrases SET user_freq = ? WHERE mlen = ? AND clen = ? %s AND phrase = ?;'
-
-        try:
-            if len(phrase) == 1:
-                # this is a character
-                if not self.dynamic_adjust:
-                    # we should change the frequency of words
-                    return
-                # we remove the keys contained in mudb from usrdb
-                keyout = [k for k in usrdb if k in mudb]
-                list(map(usrdb.pop, keyout))
-                # we remove the keys contained in mudb and usrdb from sysdb
-                keyout = [k for k in sysdb if k in mudb or k in usrdb]
-                list(map(sysdb.pop, keyout))
-                # first mudb
-                for res in mudb:
-                    self.db.execute(sqlstr % ''.join(['AND m%d = ? ' %x for x in range(res[0])]), [mudb[res][1] + 1] + list(res[:2+res[0]]) + list(res[2+self._mlen:]))
-                self.db.commit()
-                # then usrdb
-                for res in usrdb:
-                    self.add_phrase((''.join(map(self.deparse,res[2:2+int(res[0])])),phrase,1,usrdb[res][1]+1), database = 'mudb')
-                for res in sysdb:
-                    self.add_phrase((''.join(map(self.deparse,res[2:2+int(res[0])])),phrase,2,1), database = 'mudb')
-            else:
-                # this is a phrase
-                if len (result) == 0 and self.user_can_define_phrase:
-                    # this is a new phrase, we add it into user_db
-                    self.add_phrase ( (tabkey,phrase,-2,1), database = 'mudb')
-                elif len (result) > 0:
-                    if not self.dynamic_adjust:
-                        # we should change the frequency of words
-                        return
-                    # we remove the keys contained in mudb from usrdb
-                    keyout = [k for k in usrdb if k in mudb]
-                    list(map(usrdb.pop, keyout))
-                    # we remove the keys contained in mudb and usrdb from sysdb
-                    keyout = [k for k in sysdb if k in mudb or k in usrdb]
-                    list(map(sysdb.pop, keyout))
-
-                    # first we process mudb
-                    for res in mudb:
-                        self.db.execute(sqlstr % ''.join(['AND m%d = ? ' %x for x in range(res[0])]), [mudb[res][1] + 1] + list(res[:2+res[0]]) + list(res[2+self._mlen:]))
-                    self.db.commit()
-                    # then usrdb
-                    for res in usrdb:
-                        self.add_phrase((''.join(map(self.deparse,res[2:2+int(res[0])])),phrase,(-3 if usrdb[res][0][-1] == -1 else 1),usrdb[res][1]+1), database = 'mudb')
-                    # last sysdb
-                    for res in sysdb:
-                        self.add_phrase((''.join(map(self.deparse,res[2:2+int(res[0])])),phrase,2,1), database = 'mudb')
-
-                else:
-                    # we come to here when the ime dosen't support user phrase define
-                    pass
-
-            #self.db.commit()
-        except:
-            import traceback
-            traceback.print_exc ()
-
-    def find_zi_code (self,zi):
-        '''Check word freq and user_freq
+    def find_zi_code (self, phrase):
         '''
-        if type(zi) != type(u''):
-            zi = zi.decode('utf8')
-        sqlstr = '''SELECT * FROM main.phrases WHERE phrase = ?
-        ORDER BY mlen ASC;
-'''
-        result = self.db.execute(sqlstr, (zi,)).fetchall()
-        #self.db.commit()
-        codes = []
-        try:
-            if result:
-                for _res in result:
-                    tabkey = u''
-                    for i in range ( int ( _res[1] ) ):
-                        tabkey += self.deparse ( _res[3+i] )
-                    codes.append(tabkey)
-        except:
-            import traceback
-            traceback.print_exc ()
-        return codes[:]
+        Return the list of possible tabkeys for a phrase.
 
-    def remove_phrase (self,phrase,database='user_db'):
-        '''Remove phrase from database, default is from user_db
-        phrase should be the a row of select * result from database
-        Like (id, mlen,clen,m0,m1,m2,m3,phrase,freq,user_freq)
+        For example, if “phrase” is “你” and the table is wubi-jidian.86.txt,
+        the result will be ['wq', 'wqi', 'wqiy'] because that table
+        contains the following 3 lines matching that phrase exactly:
+
+        wq	你	597727619
+        wqi	你	1490000000
+        wqiy	你	1490000000
         '''
-        _ph = list(phrase[:-2])
-        _condition = ''
-        for i in range(_ph[1]):
-            _condition += 'AND m%d = ? ' % i
-        nn =_ph.count(None)
-        if nn:
-            for i in range(nn):
-                _ph.remove(None)
-        if self._is_chinese:
-            msqlstr= 'SELECT * FROM %(database)s.phrases WHERE mlen = ? and clen = ? %(condition)s AND category = ? AND phrase = ? ;' % { 'database':database, 'condition':_condition }
+        if type(phrase) != type(u''):
+            phrase = phrase.decode('utf8')
+        sqlstr = '''
+        SELECT tabkeys FROM main.phrases WHERE phrase = :phrase
+        ORDER by length(tabkeys) ASC;
+        '''
+        sqlargs = {'phrase': phrase}
+        results = self.db.execute(sqlstr, sqlargs).fetchall()
+        list_of_possible_tabkeys = [x[0] for x in results]
+        return list_of_possible_tabkeys
+
+    def remove_phrase (self, tabkeys=u'', phrase=u'', database='user_db', commit=True):
+        '''Remove phrase from database
+        '''
+        if not phrase:
+            return
+        if tabkeys:
+            delete_sqlstr = '''
+            DELETE FROM %(database)s.phrases
+            WHERE tabkeys = :tabkeys AND phrase = :phrase;
+            ''' %{'database': database}
         else:
-            msqlstr= 'SELECT * FROM %(database)s.phrases WHERE mlen = ? and clen = ? %(condition)s AND phrase = ? ;' % { 'database':database, 'condition':_condition }
-        if self.db.execute(msqlstr, _ph[1:]).fetchall():
-            if self._is_chinese:
-                sqlstr = 'DELETE FROM %(database)s.phrases WHERE mlen = ? AND clen =? %(condition)s AND category = ? AND phrase = ?  ;' % { 'database':database, 'condition':_condition }
-            else:
-                sqlstr = 'DELETE FROM %(database)s.phrases WHERE mlen = ? AND clen =? %(condition)s AND phrase = ?  ;' % { 'database':database, 'condition':_condition }
-            self.db.execute(sqlstr,_ph[1:])
+            delete_sqlstr = '''
+            DELETE FROM %(database)s.phrases
+            WHERE phrase = :phrase;
+            ''' %{'database': database}
+        delete_sqlargs = {'tabkeys': tabkeys, 'phrase': phrase}
+        self.db.execute(delete_sqlstr, delete_sqlargs)
+        if commit:
             self.db.commit()
 
-        if self._is_chinese:
-            msqlstr= 'SELECT * FROM mudb.phrases WHERE mlen = ? and clen = ? %(condition)s AND category = ? AND phrase = ? ;' % { 'condition':_condition }
-        else:
-            msqlstr= 'SELECT * FROM mudb.phrases WHERE mlen = ? and clen = ? %(condition)s AND phrase = ? ;' % { 'condition':_condition }
-        if self.db.execute(msqlstr, _ph[1:]).fetchall():
-            if self._is_chinese:
-                sqlstr = 'DELETE FROM mudb.phrases WHERE mlen = ? AND clen =? %(condition)s AND category = ? AND phrase = ?  ;' % {  'condition':_condition }
-            else:
-                sqlstr = 'DELETE FROM mudb.phrases WHERE mlen = ? AND clen =? %(condition)s AND phrase = ?  ;' % {  'condition':_condition }
-            self.db.execute(sqlstr,_ph[1:])
-            self.db.commit()
-
-    def extra_user_phrases(self, udb, only_defined=False):
+    def extract_user_phrases(self, database_file='', old_database_version="0.0"):
         '''extract user phrases from database'''
+        sys.stderr.write("Trying to recover the phrases from the old, incompatible database.\n")
         try:
-            db = sqlite3.connect(udb)
+            db = sqlite3.connect(database_file)
+            db.execute('PRAGMA wal_checkpoint;')
+            if old_database_version >= "1.00":
+                phrases = db.execute(
+                    '''
+                    SELECT tabkeys, phrase, freq, sum(user_freq) FROM phrases
+                    GROUP BY tabkeys, phrase, freq;
+                    '''
+                ).fetchall()
+                db.close()
+                phrases = sorted(phrases, key=lambda x: (x[0], x[1], x[2], x[3]))
+                sys.stderr.write("Recovered phrases from the old database: phrases=%s\n"
+                                 %repr(phrases))
+                return phrases[:]
+            else:
+                # database is very old, it may still use many columns
+                # of type INTEGER for the tabkeys. Therefore, ignore
+                # the tabkeys in the database and try to get them
+                # from the system database instead.
+                phrases = []
+                results = db.execute(
+                    'SELECT phrase, sum(user_freq) FROM phrases GROUP BY phrase;'
+                ).fetchall()
+                for result in results:
+                    sqlstr = '''
+                    SELECT tabkeys FROM main.phrases WHERE phrase = :phrase
+                    ORDER BY length(tabkeys) DESC;
+                    '''
+                    sqlargs = {'phrase': result[0]}
+                    tabkeys_results = self.db.execute(sqlstr, sqlargs).fetchall()
+                    if tabkeys_results:
+                        phrases.append((tabkeys_results[0][0], result[0], 0, result[1]))
+                    else:
+                        # No tabkeys for that phrase could not be
+                        # found in the system database.  Try to get
+                        # tabkeys by calling self.parse_phrase(), that
+                        # might return something if the table has
+                        # rules to construct user defined phrases:
+                        tabkeys = self.parse_phrase(result[0])
+                        if tabkeys:
+                            # for user defined phrases, the “freq” column is -1:
+                            phrases.append((tabkeys, result[0], -1, result[1]))
+                db.close()
+                phrases = sorted(phrases, key=lambda x: (x[0], x[1], x[2], x[3]))
+                sys.stderr.write("Recovered phrases from the very old database: phrases=%s\n"
+                                 %repr(phrases))
+                return phrases[:]
         except:
-            return None
-        if only_defined:
-            _phrases = db.execute(\
-                    "SELECT clen, phrase, freq, sum(user_freq)\
-                    FROM phrases \
-                    WHERE freq=-1 AND mlen != 0 \
-                    GROUP BY clen,phrase;").fetchall()
-        else:
-            _phrases = db.execute(\
-                    "SELECT clen, phrase, freq, sum(user_freq)\
-                    FROM phrases\
-                    WHERE mlen !=0 \
-                    GROUP BY clen,phrase;").fetchall()
-        db.commit()
-        return _phrases[:]
+            import traceback
+            traceback.print_exc()
+            return []

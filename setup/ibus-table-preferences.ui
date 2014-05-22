@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkAdjustment" id="adjustmentLookupTablePageSize">
     <property name="lower">1</property>
     <property name="upper">10</property>
@@ -8,672 +9,19 @@
     <property name="step_increment">1</property>
     <property name="page_increment">3</property>
   </object>
-  <object class="GtkDialog" id="dialog">
-    <property name="width_request">400</property>
-    <property name="can_focus">False</property>
-    <property name="border_width">5</property>
-    <property name="resizable">False</property>
-    <property name="window_position">center-always</property>
-    <property name="icon_name">gtk-preferences</property>
-    <property name="type_hint">normal</property>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="dialog-vbox1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="dialog-action_area1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="button1">
-                <property name="label">gtk-close</property>
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
-                <property name="use_stock">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkNotebook" id="notebook1">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <child>
-              <object class="GtkAlignment" id="alignment1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="top_padding">12</property>
-                <property name="bottom_padding">12</property>
-                <property name="left_padding">12</property>
-                <property name="right_padding">12</property>
-                <child>
-                  <object class="GtkGrid" id="grid_vbox1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkFrame" id="frame1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="label_xalign">0</property>
-                        <property name="shadow_type">none</property>
-                        <child>
-                          <object class="GtkAlignment" id="alignment2">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="top_padding">6</property>
-                            <property name="left_padding">12</property>
-                            <child>
-                              <object class="GtkGrid" id="grid1">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="row_spacing">6</property>
-                                <property name="column_spacing">12</property>
-                                <property name="row_homogeneous">True</property>
-                                <property name="column_homogeneous">True</property>
-                                <child>
-                                  <object class="GtkLabel" id="label2">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Language:</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">0</property>
-                                    <property name="top_attach">0</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkComboBox" id="comboboxchinesemode">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="model">liststoreChineseMode</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">1</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkComboBox" id="comboboxtabdeffullwidthletter">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="model">liststoreTabDefFullWidthLetter</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">2</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkComboBox" id="comboboxtabdeffullwidthpunct">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="model">liststoreTabDefFullWidthPunct</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">3</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="label7">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Chinese Mode:</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">0</property>
-                                    <property name="top_attach">1</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="label8">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Half/full width:</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">0</property>
-                                    <property name="top_attach">2</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="label9">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Punctuations:</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">0</property>
-                                    <property name="top_attach">3</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkComboBox" id="comboboxlanguage">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="model">liststoreLanguage</property>
-                                    <property name="button_sensitivity">on</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">0</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child type="label">
-                          <object class="GtkLabel" id="label4">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Inital State&lt;/b&gt;</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkFrame" id="frame2">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="label_xalign">0</property>
-                        <property name="shadow_type">none</property>
-                        <child>
-                          <object class="GtkAlignment" id="alignment3">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="top_padding">6</property>
-                            <property name="left_padding">12</property>
-                            <child>
-                              <object class="GtkGrid" id="grid3">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="row_spacing">6</property>
-                                <property name="column_spacing">12</property>
-                                <property name="row_homogeneous">True</property>
-                                <property name="column_homogeneous">True</property>
-                                <child>
-                                  <object class="GtkComboBox" id="comboboxlookuptableorientation">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="model">liststoreLookupTableOrientation</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">0</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkHScale" id="hscalelookuptablepagesize">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="adjustment">adjustmentLookupTablePageSize</property>
-                                    <property name="digits">0</property>
-                                    <property name="value_pos">left</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">1</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="label10">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Orientation:</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">0</property>
-                                    <property name="top_attach">0</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="label11">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Number:</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">0</property>
-                                    <property name="top_attach">1</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child type="label">
-                          <object class="GtkLabel" id="label5">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Candidates&lt;/b&gt;</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">1</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkFrame" id="frame3">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="label_xalign">0</property>
-                        <property name="shadow_type">none</property>
-                        <child>
-                          <object class="GtkAlignment" id="alignment4">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="top_padding">6</property>
-                            <property name="left_padding">12</property>
-                            <child>
-                              <object class="GtkGrid" id="grid2">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="row_spacing">6</property>
-                                <property name="column_spacing">12</property>
-                                <property name="row_homogeneous">True</property>
-                                <property name="column_homogeneous">True</property>
-                                <child>
-                                  <object class="GtkComboBox" id="comboboxonechar">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="model">liststoreOneChar</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">0</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkComboBox" id="comboboxautocommit">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="model">liststoreAutoCommit</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">1</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkComboBox" id="comboboxspacekeybehavior">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="model">liststoreSpaceKeyBehavior</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">2</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="label12">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Compose:</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">0</property>
-                                    <property name="top_attach">0</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="label13">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Commit Mode:</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">0</property>
-                                    <property name="top_attach">1</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkLabel" id="label14">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="vexpand">True</property>
-                                    <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Space Key:</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">0</property>
-                                    <property name="top_attach">2</property>
-                                    <property name="width">1</property>
-                                    <property name="height">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child type="label">
-                          <object class="GtkLabel" id="label6">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">&lt;b&gt;Details&lt;/b&gt;</property>
-                            <property name="use_markup">True</property>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">2</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Settings</property>
-              </object>
-              <packing>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkAlignment" id="alignment5">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkGrid" id="grid_vbox7">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <child>
-                      <object class="GtkImage" id="image_about">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="hexpand">True</property>
-                        <property name="pixel_size">32</property>
-                        <property name="icon_name">gtk-about</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">0</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="NameVersion">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="label" translatable="yes">&lt;big&gt;&lt;b&gt;IBus Table %s&lt;/b&gt;&lt;/big&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="selectable">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">1</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="LongDescription">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="label" translatable="yes">Table input method for IBus</property>
-                        <property name="selectable">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">2</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="Copyright">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="label" translatable="yes">&lt;small&gt;Copyright (c) 2009-2012 Peng Huang&lt;/small&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="wrap">True</property>
-                        <property name="selectable">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">3</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="Authors">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="hexpand">True</property>
-                        <property name="label" translatable="yes">&lt;small&gt;
-&lt;b&gt;Authors:&lt;/b&gt;
-Peng Huang
-BYVoid
-Peng Wu
-
-&lt;b&gt;Contributors:&lt;/b&gt;
-koterpilla, Zerng07
-&lt;/small&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="justify">center</property>
-                        <property name="selectable">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">5</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLinkButton" id="linkbutton1">
-                        <property name="label" translatable="yes">http://ibus.googlecode.com</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="hexpand">True</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="relief">none</property>
-                        <property name="uri">http://ibus.googlecode.com</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">4</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkGrid" id="grid4">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">center</property>
-                        <child>
-                          <object class="GtkImage" id="TableNameImage">
-                            <property name="width_request">32</property>
-                            <property name="height_request">32</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">0</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="TableNameVersion">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
-                            <property name="label" translatable="yes">label</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="top_attach">0</property>
-                            <property name="width">1</property>
-                            <property name="height">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">6</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="label3">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">About</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-    <action-widgets>
-      <action-widget response="0">button1</action-widget>
-    </action-widgets>
+  <object class="GtkListStore" id="liststoreAlwaysShowLookup">
+    <columns>
+      <!-- column-name AlwaysShowLookup -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">No</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Yes</col>
+      </row>
+    </data>
   </object>
   <object class="GtkListStore" id="liststoreAutoCommit">
     <columns>
@@ -686,6 +34,20 @@ koterpilla, Zerng07
       </row>
       <row>
         <col id="0" translatable="yes">Direct</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststoreAutoSelect">
+    <columns>
+      <!-- column-name AutoSelect -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">No</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Yes</col>
       </row>
     </data>
   </object>
@@ -702,27 +64,55 @@ koterpilla, Zerng07
         <col id="0" translatable="yes">Traditional Chinese</col>
       </row>
       <row>
-        <col id="0" translatable="yes">Big Charset, SC First</col>
+        <col id="0" translatable="yes">Simplified Chinese before traditional</col>
       </row>
       <row>
-        <col id="0" translatable="yes">Big Charset, TC First</col>
+        <col id="0" translatable="yes">Traditional Chinese before simplified</col>
       </row>
       <row>
-        <col id="0" translatable="yes">Big Charset</col>
+        <col id="0" translatable="yes">All Chinese characters</col>
       </row>
     </data>
   </object>
-  <object class="GtkListStore" id="liststoreLanguage">
+  <object class="GtkListStore" id="liststoreEnDefFullWidthLetter">
     <columns>
-      <!-- column-name Language -->
+      <!-- column-name EnDefFullWidthLetter -->
       <column type="gchararray"/>
     </columns>
     <data>
       <row>
-        <col id="0" translatable="yes">Chinese</col>
+        <col id="0" translatable="yes">Half</col>
       </row>
       <row>
-        <col id="0" translatable="yes">English</col>
+        <col id="0" translatable="yes">Full</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststoreEnDefFullWidthPunct">
+    <columns>
+      <!-- column-name EnDefFullWidthPunct -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Half</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Full</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="liststoreInputMode">
+    <columns>
+      <!-- column-name InputMode -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Direct input</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Table input</col>
       </row>
     </data>
   </object>
@@ -795,5 +185,881 @@ koterpilla, Zerng07
         <col id="0" translatable="yes">Full</col>
       </row>
     </data>
+  </object>
+  <object class="GtkDialog" id="dialog">
+    <property name="width_request">400</property>
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center-always</property>
+    <property name="icon_name">gtk-preferences</property>
+    <property name="type_hint">normal</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="button1">
+                <property name="label">gtk-close</property>
+                <property name="use_action_appearance">False</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkNotebook" id="notebook1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <child>
+              <object class="GtkAlignment" id="alignment1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="top_padding">12</property>
+                <property name="bottom_padding">12</property>
+                <property name="left_padding">12</property>
+                <property name="right_padding">12</property>
+                <child>
+                  <object class="GtkGrid" id="grid_vbox1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkFrame" id="frame1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label_xalign">0</property>
+                        <property name="shadow_type">none</property>
+                        <child>
+                          <object class="GtkAlignment" id="alignment2">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="top_padding">6</property>
+                            <property name="left_padding">12</property>
+                            <child>
+                              <object class="GtkGrid" id="grid1">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="row_spacing">6</property>
+                                <property name="column_spacing">12</property>
+                                <property name="row_homogeneous">True</property>
+                                <property name="column_homogeneous">True</property>
+                                <child>
+                                  <object class="GtkLabel" id="labelinputmode">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Input mode:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxchinesemode">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">“Simplified Chinese” shows only characters 
+used in simplified Chinese. “Traditional Chinese”
+shows only characters used in traditional Chinese.
+“Simplified Chinese before traditional” shows all
+characters but puts the simplified characters higher
+up in the candidate list. “Traditional Chinese before
+simplified” puts the traditional characters higher up
+in the candidate list. “All characters” just shows all
+matches without any particular filtering on traditional
+versus simplified Chinese.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreChineseMode</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">1</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxtabdeffullwidthletter">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether to use fullwidth or halfwidth
+letters in table input mode.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreTabDefFullWidthLetter</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">2</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxtabdeffullwidthpunct">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether to use fullwidth or halfwidth
+punctuation in table input mode.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreTabDefFullWidthPunct</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">3</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxendeffullwidthletter">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether to use fullwidth or halfwidth
+letters in direct input mode.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreEnDefFullWidthLetter</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">4</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxendeffullwidthpunct">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether to use fullwidth or halfwidth
+punctuation in direct input mode.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreEnDefFullWidthPunct</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">5</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelchinesemode">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Chinese mode:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">1</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labeltabdeffullwidthletter">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Table input letter width:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">2</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labeltabdeffullwidthpunct">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Table input punctuation width:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">3</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelendeffullwidthletter">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Direct input letter width:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">4</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelendeffullwidthpunct">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Direct input punctuation width:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">5</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxinputmode">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">“Direct input” is almost the same as if the
+input method were off, i.e. not used at all, most
+characters just get passed to the application.
+But some conversion between fullwidth and
+halfwidth may still happen in direct input mode.
+“Table input” means the input method is on.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreInputMode</property>
+                                    <property name="button_sensitivity">on</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="labelinitialstatesection">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Inital state&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFrame" id="frame2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label_xalign">0</property>
+                        <property name="shadow_type">none</property>
+                        <child>
+                          <object class="GtkAlignment" id="alignment3">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="top_padding">6</property>
+                            <property name="left_padding">12</property>
+                            <child>
+                              <object class="GtkGrid" id="grid3">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="row_spacing">6</property>
+                                <property name="column_spacing">12</property>
+                                <property name="row_homogeneous">True</property>
+                                <property name="column_homogeneous">True</property>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxlookuptableorientation">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether the lookup table showing the candidates
+should be vertical or horizontal.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreLookupTableOrientation</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">1</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkHScale" id="hscalelookuptablepagesize">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="tooltip_text" translatable="yes">The maximum number of candidates in
+one page of the lookup table. You can switch
+pages in the lookup table using the page up/down
+keys or the arrow up/down keys.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="adjustment">adjustmentLookupTablePageSize</property>
+                                    <property name="digits">0</property>
+                                    <property name="value_pos">left</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">2</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labellookuptableorientation">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Orientation:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">1</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labellookuptablepagesize">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Page size:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">2</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelalwaysshowlookup">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Show candidate list</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxalwaysshowlookup">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Whether candidate lists should be shown or hidden.
+For Chinese input methods one usually wants the
+candidate lists to be shown. But for some non-Chinese
+input methods like the Russian “translit”, hiding the
+candidate lists is better.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreAlwaysShowLookup</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="labelcandidatelistsection">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Candidate list&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">1</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFrame" id="frame3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label_xalign">0</property>
+                        <property name="shadow_type">none</property>
+                        <child>
+                          <object class="GtkAlignment" id="alignment4">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="top_padding">6</property>
+                            <property name="left_padding">12</property>
+                            <child>
+                              <object class="GtkGrid" id="grid2">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="row_spacing">6</property>
+                                <property name="column_spacing">12</property>
+                                <property name="row_homogeneous">True</property>
+                                <property name="column_homogeneous">True</property>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxonechar">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">If this is set to “single char”, only single
+character candidates will be shown. If it is
+set to “Phrase” candidates consisting of
+several characters may be shown.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreOneChar</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxautoselect">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">If set to “Yes”, this does the following 4 things:
+1) When typing “Return”, commit the 
+   candidate + line-feed
+2) When tying Tab, commit the candidate
+3) When committing using a commit key, commit
+   the candidate + " "
+4) If typing the next character matches no candidates,
+   commit the first candidate of the previous match.
+   (Mostly needed for non-Chinese input methods like
+   the Russian “translit”)</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreAutoSelect</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">1</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxautocommit">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Committing with the commit keys or with the mouse
+always commits to the application. This option is about
+“automatic” commits which may happen when
+one just continues typing input without committing
+manually. From time to time, “automatic” commits will
+happen then.
+“Direct” means such “automatic” commits go directly
+into the application, “Normal” means they get committed
+to preëdit.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreAutoCommit</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">2</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxspacekeybehavior">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">If you choose the space key to do “Next page”,
+ you can only commit using the selection keys
+(i.e. the labels in front of the candidates in the
+lookup table) or using the mouse.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreSpaceKeyBehavior</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">3</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelonechar">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Compose:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelautoselect">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Auto select:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">1</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelautocommit">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Commit mode:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">2</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelspacekeybehavior">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Behavior of space key:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">3</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="labeldetailssection">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Details&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">2</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="buttonrestoredefaults">
+                        <property name="label" translatable="yes">Restore defaults</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Restore defaults as specified in the database for this engine.</property>
+                        <property name="margin_top">6</property>
+                        <property name="relief">half</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">3</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="labelsettingstab">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Settings</property>
+              </object>
+              <packing>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkAlignment" id="alignment5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkGrid" id="grid_vbox7">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <child>
+                      <object class="GtkImage" id="image_about">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="pixel_size">32</property>
+                        <property name="icon_name">gtk-about</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="NameVersion">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label">&lt;big&gt;&lt;b&gt;IBus Table %s&lt;/b&gt;&lt;/big&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="selectable">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">1</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="LongDescription">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label" translatable="yes">Table input method for IBus</property>
+                        <property name="selectable">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">2</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="Copyright">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label">&lt;small&gt;Copyright (c) 2009-2012 Peng Huang&lt;/small&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="wrap">True</property>
+                        <property name="selectable">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">3</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="Authors">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label" translatable="yes">&lt;small&gt;
+&lt;b&gt;Authors:&lt;/b&gt;
+Yuwei YU (‘acevery’)
+Peng Huang
+BYVoid
+Peng Wu
+
+&lt;b&gt;Contributors:&lt;/b&gt;
+koterpilla
+Zerng07
+Caius ‘kaio’ Chance
+Mike FABIAN
+Bernard Nauwelaerts
+Xiaojun Ma
+mozbugbox
+Seán de Búrca
+&lt;/small&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="justify">center</property>
+                        <property name="selectable">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">5</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLinkButton" id="linkbutton1">
+                        <property name="label">http://ibus.googlecode.com</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="relief">none</property>
+                        <property name="uri">http://ibus.googlecode.com</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">4</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkGrid" id="grid4">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">center</property>
+                        <child>
+                          <object class="GtkImage" id="TableNameImage">
+                            <property name="width_request">32</property>
+                            <property name="height_request">32</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="TableNameVersion">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xalign">0</property>
+                            <property name="label">Name of the engine</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
+                            <property name="width">1</property>
+                            <property name="height">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">6</property>
+                        <property name="width">1</property>
+                        <property name="height">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="labelabouttab">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">About</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">button1</action-widget>
+    </action-widgets>
   </object>
 </interface>

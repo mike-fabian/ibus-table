@@ -27,6 +27,10 @@ datadir=@datadir@
 export IBUS_TABLE_LOCATION=@datarootdir@/ibus-table
 export IBUS_TABLE_LIB_LOCATION=@libexecdir@
 
+# Set this variable to something > 0 to get more debug output.
+# (Debug output may show up in the log file and/or in the lookup table):
+# export IBUS_TABLE_DEBUG_LEVEL=1
+#
 # Set this to something if you want benchmarking (The profiling output
 # will appear in the debug long when "ibus restart" is executed):
 # export IBUS_TABLE_PROFILE=yes

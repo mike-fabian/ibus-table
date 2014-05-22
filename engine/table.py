@@ -703,7 +703,7 @@ class editor(object):
             return candidates_used_in_simplified_chinese + candidates_used_only_in_traditional_chinese + candidates_containing_mixture_of_simplified_and_traditional_chinese
         else: # (self._chinese_mode == 3)
             # All characters with traditional Chinese first
-            return candidates_used_only_in_traditional_chinese + candidates_used_in_simplified_chinese + candidates_containing_mixture_of_simplified_and_traditional_chinese
+            return candidates_used_in_traditional_chinese + candidates_used_only_in_simplified_chinese + candidates_containing_mixture_of_simplified_and_traditional_chinese
 
     def update_candidates (self):
         '''

@@ -747,7 +747,29 @@ class editor(object):
             and self.db._is_chinese
             and self._chinese_mode in (2,3)
             and not self._py_mode):
-            self._candidates = self.filter_candidates(self._candidates)
+            # In self._candidates, the candidates where the typed
+            # characters matched the tabkeys in the database
+            # *completely* are before all candidates where the typed
+            # characters matched only the beginning of the tabkeys in
+            # the database.  Do not destroy this property of
+            # self._candidates when filtering for Chinese mode 2 (All
+            # characters with simplified Chinese first) or Chinese
+            # mode 3 (All characters with traditional Chinese first).
+            # Having the exact matches first is more important than
+            # the distinction between simplified and traditional.
+            # Therefore, we do this filtering separately for the
+            # exact matches and the completion matches and then
+            # add the results together again:
+            candidates_exact_match = []
+            candidates_completion_match = []
+            for candidate in self._candidates:
+                if self._chars_valid == candidate[0]:
+                    candidates_exact_match.append(candidate)
+                else:
+                    candidates_completion_match.append(candidate)
+            self._candidates = (
+                self.filter_candidates(candidates_exact_match)
+                + self.filter_candidates(candidates_completion_match))
         if self._candidates:
             self.fill_lookup_table()
             self._candidates_previous = self._candidates

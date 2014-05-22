@@ -185,7 +185,8 @@ class tabsqlitedb:
             'least_commit_length':'0',
             'start_chars':'',
             'orientation':'true',
-            'always_show_lookup':'true'
+            'always_show_lookup':'true',
+            'char_prompts':'{}'
             # we use this entry for those IME, which don't
             # have rules to build up phrase, but still need
             # auto commit to preedit

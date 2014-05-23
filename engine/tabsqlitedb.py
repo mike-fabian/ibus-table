@@ -405,11 +405,6 @@ class tabsqlitedb:
         '''Create tables that contain all phrase'''
         if database == 'main':
             sqlstr = '''
-            CREATE TABLE IF NOT EXISTS %s.ikeys
-            (ikey TEXT PRIMARY KEY, id INTEGER);
-            ''' % database
-            self.db.execute (sqlstr)
-            sqlstr = '''
             CREATE TABLE IF NOT EXISTS %s.goucima
             (zi TEXT PRIMARY KEY, goucima TEXT);
             ''' %database

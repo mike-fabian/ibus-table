@@ -1364,7 +1364,7 @@ U+5408	kZVariant	U+95A4
 U+540A	kSemanticVariant	U+5F14<kLau,kMatthews,kMeyerWempe
 U+540B	kSpecializedSemanticVariant	U+5BF8
 U+540C	kSemanticVariant	U+4EDD<kLau,kMatthews,kMeyerWempe
-U+540C	kTraditionalVariant	U+8855
+U+540C	kTraditionalVariant	U+540C U+8855
 U+540C	kZVariant	U+4EDD
 U+540E	kSimplifiedVariant	U+540E
 U+540E	kTraditionalVariant	U+540E U+5F8C

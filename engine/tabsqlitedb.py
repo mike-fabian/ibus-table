@@ -699,7 +699,8 @@ class tabsqlitedb:
                           -1*x[3],   # user_freq descending
                           -1*x[2],   # freq descending
                           len(x[0]), # len(tabkeys) ascending
-                          x[0]       # tabkeys alphabetical
+                          x[0],      # tabkeys alphabetical
+                          ord(x[1][0]) # Unicode codepoint of first character of phrase
                       ))[:100]
 
     def select_words(self, tabkeys=u'', onechar=False, bitmask=0xff):

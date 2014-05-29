@@ -262,6 +262,32 @@ def main ():
                 print('No tabkeys found for “%s”, not adding.\n' %phrase)
         return list
 
+    def get_char_prompts(f):
+        '''
+        Returns something like
+
+        ("char_prompts", "{'a': '日', 'b': '日', 'c': '金', ...}")
+
+        i.e. the attribute name "char_prompts" and as its value
+        the string representation of a Python dictionary.
+        '''
+        char_prompts = {}
+        start = False
+        for l in f:
+            if type(l) != type(u''):
+                l = l.decode('utf-8')
+            if re.match(r'^BEGIN_CHAR_PROMPTS_DEFINITION', l):
+                start = True
+                continue
+            if not start:
+                continue
+            if re.match(r'^END_CHAR_PROMPTS_DEFINITION', l):
+                break
+            match = re.search(r'^(?P<char>[^\s]+)[\s]+(?P<prompt>[^\s]+)', l)
+            if match:
+                char_prompts[match.group('char')] = match.group('prompt')
+        return ("char_prompts", repr(char_prompts))
+
     if opts.only_index:
         debug_print ('Only create Indexes')
         debug_print ( "Optimizing database " )
@@ -277,18 +303,21 @@ def main ():
     patt_s = re.compile( r'.*\.bz2' )
     _bz2s = patt_s.match(opts.source)
     if _bz2s:
-        source = bz2.BZ2File ( opts.source, "r" )
+        source = bz2.BZ2File(opts.source, "r").read()
     else:
-        source = open(opts.source, mode='r', encoding='UTF-8')
+        source = open(opts.source, mode='r', encoding='UTF-8').read()
+    source = source.replace('\r\n', '\n')
+    source = source.split('\n')
     # first get config line and table line and goucima line respectively
     debug_print ('\tParsing table source file ')
     attri,table,gouci =  parse_source ( source )
 
-    debug_print ('\t  get attribute of IME :)')
-    attributes = attribute_parser ( attri )
-    debug_print ('\t  add attributes into DB ')
-    db.update_ime ( attributes )
-    db.create_tables ('main')
+    debug_print('\t  get attribute of IME :)')
+    attributes = list(attribute_parser(attri))
+    attributes.append(get_char_prompts(source))
+    debug_print('\t  add attributes into DB ')
+    db.update_ime( attributes )
+    db.create_tables('main')
 
     # second, we use generators for database generating:
     debug_print ('\t  get phrases of IME :)')

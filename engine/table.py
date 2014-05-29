@@ -260,6 +260,8 @@ class editor(object):
         # committed to preëdit but not yet “really” committed.
         self._cursor_precommit = 0
 
+        self._prompt_characters = eval(self.db.ime_properties.get('char_prompts'))
+
         select_keys_csv = variant_to_value(self._config.get_value(
             self._config_section,
             "LookupTableSelectKeys"))
@@ -648,6 +650,8 @@ class editor(object):
         if self.db._is_chinese and self._py_mode:
             # restore tune symbol
             remaining_tabkeys = remaining_tabkeys.replace('!','↑1').replace('@','↑2').replace('#','↑3').replace('$','↑4').replace('%','↑5')
+        for char in self._prompt_characters:
+            remaining_tabkeys = remaining_tabkeys.replace(char, self._prompt_characters[char])
         candidate_text = phrase + u' ' + remaining_tabkeys
         attrs = IBus.AttrList ()
         attrs.append(IBus.attr_foreground_new(
@@ -703,7 +707,7 @@ class editor(object):
             return candidates_used_in_simplified_chinese + candidates_used_only_in_traditional_chinese + candidates_containing_mixture_of_simplified_and_traditional_chinese
         else: # (self._chinese_mode == 3)
             # All characters with traditional Chinese first
-            return candidates_used_only_in_traditional_chinese + candidates_used_in_simplified_chinese + candidates_containing_mixture_of_simplified_and_traditional_chinese
+            return candidates_used_in_traditional_chinese + candidates_used_only_in_simplified_chinese + candidates_containing_mixture_of_simplified_and_traditional_chinese
 
     def update_candidates (self):
         '''
@@ -743,8 +747,33 @@ class editor(object):
                 tabkeys=self._chars_valid,
                 onechar=self._onechar,
                 bitmask=bitmask)
-        if self._candidates:
-            self._candidates = self.filter_candidates(self._candidates)
+        if (self._candidates
+            and self.db._is_chinese
+            and self._chinese_mode in (2,3)
+            and not self._py_mode):
+            # In self._candidates, the candidates where the typed
+            # characters matched the tabkeys in the database
+            # *completely* are before all candidates where the typed
+            # characters matched only the beginning of the tabkeys in
+            # the database.  Do not destroy this property of
+            # self._candidates when filtering for Chinese mode 2 (All
+            # characters with simplified Chinese first) or Chinese
+            # mode 3 (All characters with traditional Chinese first).
+            # Having the exact matches first is more important than
+            # the distinction between simplified and traditional.
+            # Therefore, we do this filtering separately for the
+            # exact matches and the completion matches and then
+            # add the results together again:
+            candidates_exact_match = []
+            candidates_completion_match = []
+            for candidate in self._candidates:
+                if self._chars_valid == candidate[0]:
+                    candidates_exact_match.append(candidate)
+                else:
+                    candidates_completion_match.append(candidate)
+            self._candidates = (
+                self.filter_candidates(candidates_exact_match)
+                + self.filter_candidates(candidates_completion_match))
         if self._candidates:
             self.fill_lookup_table()
             self._candidates_previous = self._candidates
@@ -814,6 +843,8 @@ class editor(object):
 
             if self._py_mode:
                 aux_string = aux_string.replace('!','1').replace('@','2').replace('#','3').replace('$','4').replace('%','5')
+            for char in self._prompt_characters:
+                aux_string = aux_string.replace(char, self._prompt_characters[char])
             return aux_string
 
         # There are no input strings at the moment. But there could
@@ -840,6 +871,8 @@ class editor(object):
         if self.db.user_can_define_phrase:
             if len(cstr) > 1:
                 aux_string += (u'\t#: ' + self.db.parse_phrase(cstr))
+        for char in self._prompt_characters:
+            aux_string = aux_string.replace(char, self._prompt_characters[char])
         return aux_string
 
     def fill_lookup_table(self):
@@ -1523,6 +1556,8 @@ class tabengine (IBus.Engine):
         left_of_current_edit = u''.join(preedit_string_parts[0])
         current_edit = preedit_string_parts[1]
         right_of_current_edit = u''.join(preedit_string_parts[2])
+        for char in self._editor._prompt_characters:
+            current_edit = current_edit.replace(char, self._editor._prompt_characters[char])
         preedit_string_complete = (
             left_of_current_edit + current_edit + right_of_current_edit)
         if not preedit_string_complete:

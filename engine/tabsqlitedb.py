@@ -185,7 +185,8 @@ class tabsqlitedb:
             'least_commit_length':'0',
             'start_chars':'',
             'orientation':'true',
-            'always_show_lookup':'true'
+            'always_show_lookup':'true',
+            'char_prompts':'{}'
             # we use this entry for those IME, which don't
             # have rules to build up phrase, but still need
             # auto commit to preedit
@@ -404,11 +405,6 @@ class tabsqlitedb:
     def create_tables (self, database):
         '''Create tables that contain all phrase'''
         if database == 'main':
-            sqlstr = '''
-            CREATE TABLE IF NOT EXISTS %s.ikeys
-            (ikey TEXT PRIMARY KEY, id INTEGER);
-            ''' % database
-            self.db.execute (sqlstr)
             sqlstr = '''
             CREATE TABLE IF NOT EXISTS %s.goucima
             (zi TEXT PRIMARY KEY, goucima TEXT);
@@ -686,13 +682,20 @@ class tabsqlitedb:
         if commit:
             self.db.commit()
 
-    def best_candidates(self, candidates):
+    def best_candidates(self, typed_tabkeys=u'', candidates=[]):
         '''
-        candidates is an array containing something like:
+        “candidates” is an array containing something like:
         [(tabkeys, phrase, freq, user_freq), ...]
+
+        “typed_tabkeys” is key sequence the user really typed, which
+        maybe only the beginning part of the “tabkeys” in a matched
+        candidate.
         '''
         return sorted(candidates,
                       key=lambda x: (
+                          - int(
+                              len(typed_tabkeys) == len(x[0])
+                          ), # exact length matches first!
                           -1*x[3],   # user_freq descending
                           -1*x[2],   # freq descending
                           len(x[0]), # len(tabkeys) ascending
@@ -748,7 +751,9 @@ class tabsqlitedb:
                         max(result[2], phrase_frequencies[key][2]),
                         max(result[3], phrase_frequencies[key][3]))
                 )])
-        best = self.best_candidates(phrase_frequencies.values())
+        best = self.best_candidates(
+            typed_tabkeys=tabkeys,
+            candidates=phrase_frequencies.values())
         return best
 
     def select_chinese_characters_by_pinyin(self, tabkeys=u'', bitmask=0xff):
@@ -773,7 +778,9 @@ class tabsqlitedb:
             else:
                 if bitmask & chinese_variants.detect_chinese_category(zi):
                     phrase_frequencies.append(tuple([pinyin, zi, freq, 0]))
-        return self.best_candidates(phrase_frequencies)
+        return self.best_candidates(
+            typed_tabkeys=tabkeys,
+            candidates=phrase_frequencies)
 
     def generate_userdb_desc (self):
         try:

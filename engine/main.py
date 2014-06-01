@@ -254,6 +254,9 @@ def main():
             _symbol = SubElement (_engine, 'symbol')
             _symbol.text = _sq_db.ime_properties.get('symbol')
 
+            _symbol = SubElement (_engine, 'symbol')
+            _symbol.text = _sq_db.get_ime_property ('symbol')
+
             _desc = SubElement (_engine, 'description')
             _desc.text = _sq_db.ime_properties.get('description')
 

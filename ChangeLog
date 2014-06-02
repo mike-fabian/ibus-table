@@ -1,3 +1,3142 @@
+commit 78564ac272fa3aca313d383a39073fcfa78375c7
+Author: Caius "kaio" Chance <caius.chance@gmail.com>
+Date:   Mon Jun 2 22:19:05 2014 +1000
+
+    Revert "Merge branch 'master' into 1.7"
+    
+    This reverts commit 109872fdb45dc625906e0039efc0897dd9c64ca5, reversing
+    changes made to 3d8ec4f62c77fd67882ea32075777b9d01c55864.
+
+commit 109872fdb45dc625906e0039efc0897dd9c64ca5
+Merge: 3d8ec4f a414433
+Author: Caius "kaio" Chance <caius.chance@gmail.com>
+Date:   Sun Jun 1 22:49:58 2014 +1000
+
+    Merge branch 'master' into 1.7
+    
+    Conflicts:
+    	engine/main.py
+    	engine/tabsqlitedb.py
+
+commit 3d8ec4f62c77fd67882ea32075777b9d01c55864
+Merge: 7600acb 063a61a
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Fri May 30 08:46:49 2014 +1000
+
+    Merge pull request #36 from mike-fabian/use-unicode-code-point-as-a-last-sort-key
+    
+    Use Unicode code point as a last sort key
+
+commit 7600acb8dd81dfe703f3637646e9ed2518dd33b2
+Merge: 217b8c5 39e44a2
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Fri May 30 08:46:09 2014 +1000
+
+    Merge pull request #35 from mike-fabian/exact-matches-at-the-top-and-support-prompts-for-cangjie
+    
+    Exact matches at the top and support prompts for cangjie
+
+commit 063a61ae9923de14ce880a1a444af81cff22e00e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 28 18:38:31 2014 +0200
+
+    Add the Unicode code point of the first character of the phrase as a last ditch sort key for the candidates
+    
+    In some cases, where there are several matches for *exactly* the same
+    input sequences *and* the system frequencies are also the same
+    for example
+    
+        bmr	同	1000
+        bmr	𦚈	1000
+    
+    in cangjie5.txt, instead of getting the order randomly, use the
+    Unicode code point as a last ditch sort key. Some defined order is
+    better than random. On top of that, this puts characters with code
+    points above the BMP *after* characters with code points in the
+    BMP. Usually this is the right thing to do because the characters from
+    the BMP are usually more common. Should this not be the case and the
+    character above the BMP really is the more common one, the system
+    frequency should be added to reflect this.
+    
+    This does not always help: In cangjie5.txt there are also cases where
+    *exactly* the same input sequences matches different characters which
+    are all in the BMP, for example:
+    
+        bmso	豚	1000
+        bmso	冢	1000
+        bmso	䐁	1000
+    
+        dhe	皮	1000
+        dhe	板	1000
+    
+    But sorting the characters in the BMP to the top if all other sort
+    keys are the same is better than nothing.
+
+commit 9598e12ef26407edad1241921eb7750b561d9d2e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 28 18:18:58 2014 +0200
+
+    Fix bug in Unihan_Variants.txt, 同 is both simplified *and* traditional Chinese
+
+commit 0d929b3aaaa486383857fd3a1fb085c1b4bd6d67
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 28 18:16:28 2014 +0200
+
+    Add a test case to make sure 同 is detected as both simplified *and* traditional Chinese
+
+commit 93e4781d91e94be3327bf2dae4be4b8859e41bff
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 28 18:01:29 2014 +0200
+
+    Update Unihan_Variants.txt from “2011-08-08 Unicode 6.1.0” to “2013-02-25 Unicode 6.3.0”
+    
+    And regenerate engine/chinese_variants.py.
+
+commit cce4212c91a69d76d4dc2af7f4b54e1134fe94c0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 28 17:52:55 2014 +0200
+
+    Add __pycache__/ to tools/.gitignore
+
+commit 39e44a2e2a98de1546f6ad30453f11ae6d7bcd63
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 22 17:50:42 2014 +0200
+
+    Support prompt characters
+    
+    Some tables, e.g. cangjie5.txt contain prompt character definitions:
+    
+    BEGIN_CHAR_PROMPTS_DEFINITION
+    a 日
+    b 月
+    c 金
+    ...
+    
+    Read these when creating a database and save it to the database.
+    
+    When typing, show these prompts instead of showing the typed Latin
+    characters in the auxiliary text, the preëdit, or in the candidate
+    list for the remaining keys to type to complete a match.
+
+commit 0351a5bb44ba9ab19425fdd783fda67c7d2bbc4e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 23 17:13:46 2014 +0200
+
+    Don’t create an “ikeys” table
+    
+    The “ikeys” table created in tabsqlitedb.py is apparently never
+    used anywhere.
+
+commit f795793bdaa28d06787c334b2acf7e9ad6223501
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 23 00:35:28 2014 +0200
+
+    Put exact matches always at the top of the candidate list
+    
+    Change the filtering in Chinese mode 2 (All characters with simplified
+    Chinese first) and Chinese mode 3 (All characters with traditional
+    Chinese first) to keep that property of the candidate list.  I.e.
+    keep the exact matches on top and the completion matches below and do
+    the Chinese filtering for mode 2 and 3 separately for the exact
+    matches and the completion matches.
+    
+    Sees also https://bugzilla.redhat.com/show_bug.cgi?id=1050753#c2
+    
+    Bo-Yin Yang> 1. Any character which has that precise key sequence as
+    Bo-Yin Yang> the encoding must be listed ahead of any other
+    Bo-Yin Yang> character. That is, if 同 and U+26688 are the two (and
+    Bo-Yin Yang> the only two) Chinese characters whose encodings are
+    Bo-Yin Yang> "bmr", then input of bmr must list 同 and U+26688 as the
+    Bo-Yin Yang> first two characters in the preedit window for choice of
+    Bo-Yin Yang> characters, no matter how unlikely to appear 同 and might
+    Bo-Yin Yang> be deemed by the data table.  That the encoding matches
+    Bo-Yin Yang> the input sequence must outweigh any other factor in the
+    Bo-Yin Yang> AI.
+
+commit 409a8d96c2d0a7ec0f902ae25e8c55d829387af8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 23 00:04:10 2014 +0200
+
+    Don’t try to call filter_candidates() if it is not necessary
+
+commit 60bc283ee7065542f0ac865dc9604d6bf1c4369e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 23 00:02:17 2014 +0200
+
+    Fix typo in the filtering for chinese mode 3 (All characters with traditional Chinese first)
+
+commit 217b8c5055cd51deb4fb139d2e39239ae9be852f
+Merge: 081f61e 2392853
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Thu May 22 17:50:24 2014 +1000
+
+    Merge pull request #34 from mike-fabian/remove-tabdict-and-other-improvements-and-bugfixes
+    
+    Remove tabdict and other improvements and bugfixes
+
+commit 23928535f74e5a5f22ec5d97cf887ff89ac6e53b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 13 10:20:40 2014 +0200
+
+    Update Chinese .po files
+    
+    (Only to get the changed strings from the source synced with the .po
+    files, I did neither change nor add any translations).
+
+commit 7d8c023d2ce029c381259b4ccff88dfdaf027161
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 13 08:55:43 2014 +0200
+
+    Update German translation
+
+commit e55172224a6e44211c32db25e883f23ef9f067a5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 20 20:34:15 2014 +0200
+
+    Add a “setup” property
+    
+    Apparently that was planned already, there was a comment which
+    said “Need implementation”.
+    
+    I also think it is a good idea, especially under Gnome3 the setup for
+    the input methods is quite difficult to reach, one has to start the
+    “gnome-control-centre” first, then go to the “region” part, then
+    to the input method, then click on the cogwheel icon. That is quite
+    inconvenient if the setup is used regularly.
+    
+    If one wanted to reduce the number of entries in the properties, I
+    think it would be better to remove other properties which are probably
+    not used all the time and are available in the setup anyway.  I guess
+    the properties “Phrase mode/Single character mode”, “Direct commit
+    mode/Normal commit mode” and “Display candidates/Hide candidates”
+    are probably very rarely used and it might be good enough if they are
+    accessible only in the setup tool.
+
+commit cec4f3f5f75b1846349eb5a81b81560911a1a177
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 20 10:33:17 2014 +0200
+
+    Do not check whether the name in “NAME = ...” is a valid gconf key
+    
+    It is not used as a gconf key anyway. We use the basename of the table
+    file as the gconf key, i.e. for
+    
+        /usr/share/ibus-table/tables/wubi-jidian86.db
+    
+    the gconf key is “wubi-jidian86”. The gconf key should be more or
+    less constant, it should not change often. If it changes during an
+    update, the old user settings may be lost.
+    
+       NAME =
+    
+    in the table source is more suitable for display to the user,
+    here one can write a nice, user readable string.
+    
+    In the lastest master of ibus-table-chinese, wubi-jidian86.txt contains:
+    
+        NAME = WuBi-Jidian (JiShuag) 86
+        NAME.zh_CN = 极点五笔（极爽字库）86
+        NAME.zh_TW = 極點五筆（極爽字庫）86
+        NAME.zh_HK = 極點五筆（極爽字庫）86
+    
+    which made tabcreatedb.py fail because it checked whether
+    NAME is a valid gconf key. But we do not need that check.
+
+commit c5ec35f96c176f99a3d54d1acaf72534993ce968
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 20 06:35:22 2014 +0200
+
+    Remove unused variable
+
+commit 55ccd674daaffb2e394748fdea0aa6daad29f0b7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 19 20:59:59 2014 +0200
+
+    Add option to the setup tool to show or hide the candidate list
+    
+    Already exists as a property and as a setting in the databases,
+    should be in the setup tool as well.
+
+commit 91b22f1238b91df253d48c99131726feaf9c6aa3
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 19 17:38:52 2014 +0200
+
+    Add tooltips to the widgets in the setup tool
+
+commit 196bbba3777475a096e913552be87cd313aab6ca
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 19 16:42:01 2014 +0200
+
+    Don’t try to write attributes into the system database unless the system database is created
+    
+    If the system database already exists, the user usually does not have
+    write permissions there, so do not try to write into the system
+    database in that case.
+
+commit 354becc353c42a28612df03a520af4432eef65a2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 19 12:29:33 2014 +0200
+
+    If the dconf key “lookuptablepagesize” changes to an invalid value, reset it to a valid value
+    
+    If the user sets the dconf key “lookuptablepagesize” to a value < 1
+    or > len(self._editor._select_keys), set it to a valid value again in
+    the callback handler for dconf key changes.
+    
+    After this change, if the user tries to move the slider for the lookup
+    table page size in the setup tool to 10 for a table like “stroke5”
+    which has only 9 select keys (SELECT_KEYS = 1,2,3,4,5,6,7,8,9), the
+    dconf key is set to 9 again and the slider moves back to 9.
+
+commit 0e97323ea267e81b8139db4074db63f9373acbee
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 18 22:24:24 2014 +0200
+
+    Add an option to the setup tool to restore the defaults from the database
+    
+    Useful if one messes up the input method by choosing weird options
+    and wants to return to sane defaults.
+
+commit d7308655d5d293f7bd760a1675ef430d3c1e2ac1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 19 08:26:22 2014 +0200
+
+    Add *~ to .gitignore
+
+commit e0860a2d8ae1134cfef9227a6ca3fa4ca64a8268
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 18 20:15:12 2014 +0200
+
+    Make the option in the setup tool to use “space” as a commit or page down key work
+    
+    And some more improvements in the handling of commit and page up/down keys.
+    
+    In future we might want to introduce separate options for commit keys
+    and page up/down keys in the setup tool instead of the option for the
+    space key behaviour. But this commit makes the existing option work
+    which is enough for the moment.
+
+commit 57c98a3349282189e8bb23330610e752cc854488
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 18 20:13:08 2014 +0200
+
+    Remove useless comment
+
+commit cce4419f154e3117958da7f1e471c2a9d2314575
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 18 07:15:03 2014 +0200
+
+    Make the ids of the labels and the comboboxes more consistent in the setup ui
+    
+    If a combobox has id="comboboxfoo", give the label for that
+    combobox id="labelfoo" to make it easier to find which label
+    is used for which combobox when editing the English texts of
+    the labels.
+
+commit 3cf6393af76d4d634fc5a5ae4281a21d1123bcc1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 18 06:39:20 2014 +0200
+
+    Add “auto_select” option to setup tool
+    
+    This option has a very misleading name. It does not really automatically
+    select anything.
+    
+    When set to “True” does the following things:
+    
+    1) commit the matched phrase and a line feed instead of the tabkeys
+       and no line feed when Return is typed (apparently Chinese input
+       methods like Wubi want to insert the tabkeys instead of the phrase
+       on Return, this is used as a quick way to insert one Latin word
+       without having to switch to direct input mode or another input
+       method. But for non-Chinese input methods like the Russian
+       “translit”, this makes of course no sense).
+    
+    2) commit the matched phrase when Tab is typed
+    
+    3) When committing by typing Space, commit the phrase followed by a
+       “ ” instead of only the phrase.
+    
+    4) if typing a valid input character has the result that there are no
+       candidates anymore, but there were candidates before typing that
+       character, pop that character from the input again, commit the
+       first of the previous candidates and then reprocess the input
+       character.  This is also mainly needed for non-Chinese input
+       methods like the Russian “translit”. The “translit” table
+       contains:
+    
+         sh ш
+         shh щ
+    
+       so typing “sh” matches “ш” and “щ”. The
+       candidate with the shortest key sequence comes
+       first in the lookup table, therefore “sh ш”
+       is shown in the preëdit (The other candidate,
+       “shh щ” comes second in the lookup table and
+       could be selected using arrow-down. But
+       “translit” hides the lookup table by default).
+    
+       Now, when after typing “sh” one types “s”,
+       the key “shs” has no match, so add_input('s')
+       returns “False” and we end up here. We pop the
+       last character “s” which caused the match to
+       fail, commit first of the previous candidates,
+       i.e. “sh ш” and feed the “s” into the
+       key event handler again.
+    
+    Maybe this option should be renamed because the name is really misleading?
+    Maybe even split it in several options, maybe even a separate option
+    for each of 1), 2), 3), and 4)?
+
+commit 727736b4a2821ed30d15a091652694e49e7918c2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat May 17 19:54:59 2014 +0200
+
+    Make the setup tool get the default from the database for settings which are not yet set in dconf
+    
+    The setup tool gets the the values for the options to
+    show when it starts up from the following 3 places now:
+    
+       1) dconf setting for this table
+       2) database of this table
+       3) Python dictionary OPTION_DEFAULTS in main.py of setup.
+    
+    So it prefers dconf settings, then the database, and finally the
+    hardcoded values in the setup tool itself.
+    
+    Before this change it did fall back immediately to the hardcoded
+    values OPTION_DEFAULTS if a setting was not yet set in dconf.
+    I.e. it showed exactly the same defaults for all tables.
+    
+    But the defaults in the databases of the tables are usually there for
+    a reason and they should of course be presented to the user before he
+    first changes something in the setup tool.
+
+commit f461e78fabc1e58d728bd2d7d5a5cb1d64424463
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat May 17 06:26:45 2014 +0200
+
+    Rename self._phrase_table_column_names to phrase_table_column_names
+    
+    It is only used locally when trying to open the user database
+    to check whether the existing user database is incompatible.
+
+commit 9878c8da66a0132174bbc2e9c83aec51e012c4a4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 16 22:59:48 2014 +0200
+
+    Add a class to cache the ime properties
+    
+    It isn’t really necessary for speed, I removed the original property
+    cache because it barely matters and the original code for the property
+    cache was a bit ugly.  But this new code taken from
+    ibus-typing-booster looks quite nice.
+
+commit 34a9cd9a5893c4aea08625feed52230f0bce49a7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 16 22:09:32 2014 +0200
+
+    Fix typos in a docstring and in an error message
+
+commit d7111e64ada3224df4a9315e05f1975777bbacd8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 16 13:53:22 2014 +0200
+
+    Fix changing the number of candidates using the setup tool
+
+commit cdaa74331fa4ad96ba6b9becdd2db90138840cce
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 16 11:22:47 2014 +0200
+
+    Remove unused code to handle config changes
+    
+    config changes are handled in config_value_changed_cb(),
+    this stuff is not used.
+
+commit 236a9349167c095f06c9162f445670da12270461
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 16 11:20:07 2014 +0200
+
+    Improve coding style in key event handler
+
+commit 9527b265b7f4a46c220a9f223108fce93560ec86
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 16 11:15:41 2014 +0200
+
+    Fix arrow-up and arrow-down keys in Table mode when preëdit is empty
+    
+    In that case, the arrow up and down keys should be passed to the application,
+    for example arrow-up is useful to get the last command in bash.
+
+commit 83c1b00deea7e8aa120cea194af0773a5a2f7a13
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 16 09:19:54 2014 +0200
+
+    Remove commented out line resetting self._editor_onechar in reset()
+    
+    The “onechar” option is even remembered in the config, it makes no
+    sense to reset it in reset(). It was commented out of course already,
+    but better remove it completely there to avoid confusion.
+
+commit 64c653cf37cb625764ad3d7b6e32e07aa0b0a707
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 16 09:16:36 2014 +0200
+
+    Clean up code in do_property_activate
+
+commit 8551d2b393aac81a90e3f5078393d24d9bdc651c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 16 07:29:30 2014 +0200
+
+    Add options to setup for fullwidth and halfwidth mode for direct input mode
+    
+    There are such options for “Table input” already but not for
+    “Direct input”.  But even for “Direct input”, when the fullwidth
+    or halfwidth mode is changed using the property menu, the change is
+    saved to the config and remembered, just as for “Table input”. There
+    seems to be no reason for this is kind of “asymmetric” behaviour.
+    So I added these options for “Direct mode” to the setup as well.
+
+commit d78936826897f17367d9581f62f90f126af44108
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 15 16:52:39 2014 +0200
+
+    Improve texts in properties and setup
+    
+    - show “Table mode” ↔ “Pinyin mode” property only when the table
+      really has a pinyin mode.
+    
+    - fix wrong key bindings mentioned in tooltip texts of properties.
+    
+    - improve texts of properties and in the setup tool.
+
+commit ed07db95f301c30440974b062624862cca310922
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 15 14:25:00 2014 +0200
+
+    Fix the combobox in the setup tool to switch between direct input and table input
+    
+    The combobox in the setup tool which was labelled “Language:”
+    and had the values “Chinese” and “English” did not do anything at all.
+    
+    Fix this and improve the names of the label, the options, and the variables
+    to reflect better what it does.
+
+commit 7ec547dade8d5cd60ec149b93057a78c0accab3b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 15 10:48:51 2014 +0200
+
+    Remove unused variable self._pt and unused function tabsqlitedb.get_phrase_table_index()
+    
+    Not needed anymore. After the database redesign, the number of columns
+    does not depend on the table anymore, it is the same for all tables.
+
+commit f3c77c8978e2c88dce4b4c162809d8defb62dcfc
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 15 09:03:43 2014 +0200
+
+    Improve the code to recover user data from old, incompatible user databases
+    
+    Recover not only the frequency of phrases which are in the system
+    database but also the frequency of user defined phrases.
+    
+    Code for upgrading from very old databases tested by upgrading from
+    a user database from ibus-table-1.5.0.20140416-1.fc20.
+
+commit 39e4f964a427015704a24ae609e39bda39e9d331
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 14 22:13:45 2014 +0200
+
+    When auto_commit is used and there is only one candidate, commit only when the typed characters match the tabkeys of the candidate completely
+    
+    Much better for non-Chinese tables like “latex”, “ipa-x-sampa”, ...
+    
+    For example, consider that “latex” table contains the following
+    lines matching “\al”:
+    
+        \alpha α
+        \aleph ℵ
+    
+    And the default for the “latex” table is to use auto_commit.
+    That means that with the old code, after typing “\alp”,
+    only the single candidate
+    
+        \alpha α
+    
+    matched and was committed immediately. That is annoying because this
+    makes it necessary to look at the screen. It is easy to remember that
+    “\alpha” means α in LaTeX and if these are commited only when typed
+    completely, one does not have to look at the screen to type α. It is
+    much harder to remember how many characters of \alpha one has to type
+    to get a unique match. Of course committing at “\alp” already saves
+    two key strokes. But even with the new code one can save a few
+    keystrokes if one looks at the screen: Just type “\al”, notice that
+    α is the first candidate, then commit it with space.
+    
+    The new code also avoids the distinction between Chinese/non-Chinese here:
+    In a Chinese table, when
+    
+        len(self._editor._chars_valid) == self._max_key_length
+    
+    *and* there is only one candidate, it follows that the tabkeys
+    for this candidate have been typed completely. That means
+    one can just as well do the same check as for non-Chinese tables,
+    i.e.
+    
+       self._editor._chars_valid == self._editor._candidates[0][0]
+    
+    instead of checking whether the maximum key length is reached.
+
+commit 6af47dc416842e3ecabc170c23006ddb215c106e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 24 18:31:25 2014 +0200
+
+    Rewrite update_candidates()
+    
+    - simplify code in update_candidates()
+    
+    - remember both the valid and invalid characters when update_candidates()
+      was last called and return immediately only when *both* are unchanged
+      (Fixes a problem when removing invalid characters with backspace).
+    
+    - simplify add_input()
+    
+    - simplify section to handle valid input characters in key event handler
+    
+    - remove self._tabkeys, it is *always* identical to self._chars_valid
+
+commit 33aa9594a8da5022aee256528fcd40ec4e4e0199
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 14 09:56:55 2014 +0200
+
+    auto_commit_to_preedit() is not needed
+    
+    There is no significant difference between auto_commit_to_preedit()
+    and commit_to_preedit().
+    
+    The only difference seems to be that auto_commit_to_preedit() tries to
+    commit even when self._chars_valid is empty and even when
+    self._candidates is empty. But in that case it will just fail with an
+    “index out of range” error. To catch this, auto_commit_to_preedit()
+    uses a “try: ... except: ...”  instead of checking whether
+    self._candidates is empty like commit_to_preedit() does, that seems
+    to be the only real difference.
+
+commit c8eb0e31a375b81f083ae750cbcaf152235299ea
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 13 19:32:01 2014 +0200
+
+    Print some debug output in _table_mode_process_key_event()
+
+commit c60350c184622e283d6bfe296eb2db39f09d3a65
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 13 19:11:02 2014 +0200
+
+    Remove redundant code when processing leading invalid input
+
+commit be3be5d02ddd491f16be93e94753064d9321d1c9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 13 17:09:47 2014 +0200
+
+    Fix handling of invalid trailing input
+    
+    - Improve documentation of _table_mode_process_key_event()
+    
+    - If invalid input characters came after some valid input characters,
+      the old code committed the valid input and then the invalid
+      character only if the key code of the invalid input was <= 127.
+      Consider for example, for the cns11643 table, the valid input is
+      “0123456789abcdef”.  The Chinese character “一” has the table
+      key “14421” in cns11643, it is the first character in that table
+      with a key starting with “1442”.
+    
+      Both “A” and “☺” are invalid input for the cns11643 table. But
+      as “A” has a key code <= 127, it would be committed after
+      committing pending input whereas “☺” which has a key code > 127
+      would be passed through to the application.
+      Therefore, typing “1442A” would commit “一A” but
+      typing “1442☺” would pass “☹” to the application and keep
+      “1442” in preedit, so the user sees “☺1442”.
+    
+      This makes no sense at all, instead of checking for <= 127, *all*
+      typed keys where “IBus.keyval_to_unicode(key.code)”
+      returns a result should be treated the same way here. Then
+      typing “1442☺” commits “一☺”.
+    
+    - The added lines:
+    
+          if type(keychar) != type(u''):
+              keychar = keychar.decode('UTF-8')
+    
+      are only for Python2 compatibility, they do nothing for Python3.
+      (Maybe I should give up trying to keep Python2 compatibility?)
+
+commit 97b51bb779c55026b317ebdd52d4d0f0c24918f5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 13 10:00:50 2014 +0200
+
+    Improve wording of the label for the behaviour of the space key
+    
+    And use more consistent upper-case/lower-case spelling
+
+commit 614f7b03ea0df3df2781746557c7254441dad59a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 13 09:28:32 2014 +0200
+
+    Mark 4 strings in the setup UI which should not be translated as untranslatable
+
+commit e40c0c9800be7f964bed5c4c72cb82db196a9ce8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 13 08:51:39 2014 +0200
+
+    Mark one string translatable and mark two others as untranslatable in main.py
+    
+    It does not make sense to translate "<big><b>IBus Table %s</b></big>"
+    and "<b>%s</b>" but "IBus %s Preferences" can be translated.
+
+commit 83218dd2d4d07bf3f657ba969e627f233abd1b4a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 13 08:47:52 2014 +0200
+
+    Improve three labels in the setup tool:
+    
+    “Half/full width:” → “Letter width:”
+    
+    (The combobox already says “Half/Full”, no need to repeat that in the label,
+    better indicate that this is for letters, not for punctuation).
+    
+    “Punctuations:” → “Punctuation width”
+    
+    (“punctuation” is uncountable).
+    
+    “Number:”　→ “Number of candidates:”
+
+commit 075602335e0a1f0216588842a2ef886246e0afbf
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 13 08:23:58 2014 +0200
+
+    Add setup/main.py and setup/ibus-table-preferences.ui to POTFILES.in
+
+commit c267d7321b5f77dbaeb6e76e5c82911a498fbb92
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 13 07:45:07 2014 +0200
+
+    Add names to “Contributors:” section in “About”
+
+commit f67e2dbacd77a1a840098ef887414c57401449c8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 12 17:52:48 2014 +0200
+
+    Colour invalid characters in preëdit magenta
+
+commit 7b16cc73ab02beebb5882058c06cd14ec38940b0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 12 17:35:08 2014 +0200
+
+    Improve readability _convert_to_full_width()
+    
+    Use the Unicode characters directly. For example, use
+    
+        u"￥"
+    
+    instead of
+    
+        u"\uffe5"
+
+commit d8e9543bac0427c6c079ebda186c28a48d1b7479
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 12 16:38:47 2014 +0200
+
+    Improve readability in _table_mode_process_key_event()
+    
+    - Try not to use extremely long lines so much
+    - more consistent use of parentheses
+    - No need to check for “and(not self._editor._py_mode)” in
+      “if key.code <32 ...”, pinyin mode does surely not use
+      key codes < 32 either.
+    - document why the Tab key is passed through to the application
+      when auto select is used.
+    
+    Don’t use a very long chain of
+    
+        if ...:
+            ...
+    	return True
+            ...
+    	return False
+        elif ...:
+            ...  <- jumps to the final “return False” here
+        elif ...:
+            ...
+    	return True
+        elif ...:
+            ...
+            return True
+        return False
+    
+    rather use
+    
+        if ...:
+            ...
+    	return True
+            ...
+    	return False
+        if ...:
+            ...
+            return False
+        if ...:
+            ...
+            return True
+        if ...:
+            ...
+            return True
+        return False
+    
+    That makes it easier to see immediately what is returned without
+    always having to remember that there is a final “return False” at
+    the end.
+
+commit 47d8ef00794c4bb4c0f2cb7fddcff530c35d8da9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 12 10:43:39 2014 +0200
+
+    Simplify code to commit everything in the key event handler
+    
+    There was a function space() which was not only used when committing
+    by typing space but also in other cases. This function was hard too
+    read, had a weird return value and the documentation was wrong.  I
+    think the new code is better readable.
+
+commit 4e0e598fce01909bf0531ddfb596049d90937c04
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 12 05:23:18 2014 +0200
+
+    _check_phrase() can be called in commit_string()
+    
+    Makes the code a bit shorter and more readable.
+
+commit b9cc9547bed5831c92827c11127cc584675d18a0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 12 05:06:20 2014 +0200
+
+    _editor.clear_all_input_and_preedit() not needed here
+    
+    It is called by commit_string() already.
+
+commit 32fb67b28cba59a22bbebe550a36b95567a7a0dd
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 11 20:42:31 2014 +0200
+
+    Rename tabengine._ml and editor._max_key_len to tabengine._max_key_length and editor._max_key_length
+    
+    self._ml is not so readable.
+
+commit b64be0e575bb1d280c95c420d58166e338169f18
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 11 17:39:13 2014 +0200
+
+    Remove function documentation which only repeats the function name
+
+commit de4d6b60ad1f49521b6aafe5e5d7b4fbc82547a0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 11 17:23:00 2014 +0200
+
+    Remove unreachable code in _english_mode_process_key_event()
+
+commit a9924b24e713aa4a1193ffb5f04b91c6c803ce9f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 11 17:10:37 2014 +0200
+
+    Don’t repeat the definitions of cond_letter_translate() and cond_punct_translate()
+    
+    The same functions cond_letter_translate() and cond_punct_translate()
+    are defined both in _english_mode_process_key_event() and
+    _table_mode_process_key_event().
+    
+    As they are exactly the same, it makes more sense to define these
+    function in one place.
+
+commit 44f12df6375df59f6916fa02fec691b6d206fb1e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 11 16:43:59 2014 +0200
+
+    Rename editor.clear() to editor.clear_all_input_and_preedit() and editor.clear_input() to editor.clear_input_not_committed_to_preedit()
+    
+    Make it more obvious what the different clear...() functions do.
+    
+    Also fix a typo: self._candidate_previous -> self._candidates_previous
+
+commit 559a4b399565f847351ef992e0a556a98c4bfefa
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 9 19:17:03 2014 +0200
+
+    rename tabsqlitedb.select_zi() to tabsqlitedb.select_chinese_characters_by_pinyin()
+
+commit d9c868670912cefdeffae5af9266d4eb986d3f2e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 9 18:49:15 2014 +0200
+
+    Rename get_all_input_strings() to get_preedit_tabkeys_complete()
+    
+    To get the strings (= phrases) in the preëdit as parts are complete
+    there are:
+    
+        get_preedit_string_parts()
+        get_preedit_string_complete()
+    
+    For the functions to get the typed key sequences belonging
+    to phrases in the preëdit, there were:
+    
+        get_preedit_tabkeys_parts()
+        get_all_input_strings()
+    
+    which is a bit inconsistent. Better make it
+    
+        get_preedit_tabkeys_parts()
+        get_preedit_tabkeys_complete()
+    
+    then the naming is more symmetric and it also describes better what it
+    actually does (Because if strings in the preëdit have been
+    split, get_preedit_tabkeys_complete() does not necessarily return the
+    exact key sequence the user typed as the key sequences for the split
+    phrases will have been recalculated)
+
+commit 889dc948c6211f2ed694e2500703ca926d81dcf6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 9 18:28:12 2014 +0200
+
+    Committing with the mouse or by typing Control+Number should not define new abbreviations
+    
+    I avoided defining new abbreviations when committing by typing
+    “space” already, see:
+    
+        commit 56796c39c92697d4fcd233e42ebe8f208f0e1324
+        Author: Mike FABIAN <mfabian@redhat.com>
+        Date:   Wed May 7 14:07:56 2014 +0200
+    
+            Don’t define new abbreviations automatically
+    
+            For example, the latex table system database contains:
+    
+                \alpha|α|0|0
+    
+            If one types “\alp” and then selects the candidate “α”
+            from the lookup table, do *not* automatically create
+            (or update) an abbreviated entry
+    
+                \alp|α|0|1
+    
+            in the user database, instead create (or update) an entry using the
+            full length of the tabkeys:
+    
+                \alpha|α|0|1
+    
+            Creating shortcuts automatically like this is useful in
+            ibus-typing-booster but it seems useless and confusing in ibus-table.
+    
+    but it didn’t work when committing using Control+Number because
+    the code for Control+Number got the input key sequence *before*
+    committing to preedit and at this point it may not yet be the complete
+    input key sequence of a candidate. During commit to preëdit, the
+    really typed input key sequence is replaced by the input key sequence
+    of the selected candidate, which may be longer.
+    
+    Committing with the mouse inherited this error from the code copied
+    from committing with Control+Number.
+
+commit 694aa04ed256fafd13e66accd3a0526e5ed19fc5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 9 17:56:18 2014 +0200
+
+    Commit candidate clicked on with the mouse
+
+commit d19a2768ec09e5c038db512846678518c98f8daa
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 8 18:08:07 2014 +0200
+
+    Move toggle_tab_py_mode() method from class editor to class tabengine
+    
+    It seems to me it fits better there, because it is nice if it also
+    calls the _refresh_properties() and _update_ui() methods of the class
+    tabengine.
+
+commit d977c064a5e21bfc06c4f813d4cfe8a7e103f40f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 8 17:46:14 2014 +0200
+
+    There is no need to check for differences in pinyin mode before and after commit_string() or editor.clear()
+    
+    commit_string() calls editor.clear() and clear() used to switch
+    off pinyin mode. But we stopped doing that, see:
+    
+        commit 059061e3e76761dca6853610580c9c2549918fbb
+        Author: Mike FABIAN <mfabian@redhat.com>
+        Date:   Tue Apr 8 16:34:58 2014 +0200
+    
+    	Don’t switch off pinyin mode in clear()
+    
+    	clear() is called in do_focus_out().  And do_focus_out() is called
+    	after clicking into the gnome menu to switch to pinyin mode.  This
+    	makes it almost impossible to enable pinyin mode and keep it when
+    	pinyin mode is switched off in clear().
+    
+    Therefore, there is no need to check whether the pinyin mode has
+    changed after commit_string() or editor.clear() anymore.
+
+commit 636aa6604003264cb0e26b77da9c8abb0f67e88b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 8 16:43:28 2014 +0200
+
+    Show number of candidates and number of current candidate in the auxiliary text
+
+commit 64a1fcc13018d19079060dcc04646a08070744d6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 8 16:34:10 2014 +0200
+
+    Better variable name _ic -> aux_string in _update_aux()
+
+commit 2abd1c56ac3dddb6ff0a2e05595a601f9dba438a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 8 16:29:37 2014 +0200
+
+    Remove meaningless comment
+
+commit 5c14c84d665fa9cd6a0b93ec516f0a18eb47194e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 8 16:09:57 2014 +0200
+
+    Show the list of possible input key sequences for characters in the preëdit not only for pinyin
+    
+    If there are no input strings at the moment but there are strings
+    committed to preëdit, some information about these may be shown in the
+    auxiliary text.
+    
+    If the last character committed to preëdit was typed by using pinyin
+    mode, a list of possible input sequences how this character could be
+    typed using the current table (e.g. wubi-jidian86) was shown.  This
+    way, one can type a character using pinyin, commit it to preëdit and
+    then see which table input key sequences could have been used to type
+    the same character.
+    
+    It doesn’t really make sense to limit this to the last typed
+    character and only if it has been typed using pinyin. Showing these
+    table codes always is better.
+
+commit 75483fd33d139a8ccabfbe42b286a09b4e8e2f78
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 8 15:01:31 2014 +0200
+
+    Do not hide the auxiliary text when there are no candidates, it might contain useful information
+    
+    The auxiliary text may contain useful information even when there are
+    no candidates.
+    
+    For example, when committing a few characters to
+    preëdit to define a user defined phrase, the auxiliary text shows
+    what key sequence will be defined for that phrase.
+    For example, when wubi-jidian86 is used and the phrase
+    
+        “王不各”
+    
+    is commited to preëdit and no further input is currently there, the
+    auxiliary text shows
+    
+        “#: ggtk”
+    
+    Here “ggtk” is the key sequence which will be defined for that phrase,
+    i.e. in future one can type “ggtk” to input “王不各”.
+    
+    The auxiliary text also shows the table keys if the last character
+    committed to preëdit has been typed using pinyin. For example,
+    if one uses wubi-jidian86 and has forgotten the table codes for
+    
+        你
+    
+    one can type it using pinyin by switching to pinyin mode (with the menu
+    or the right shift key), type “ni + Shift + 3” to get 你, commit it
+    to preëdit by selecting it with Control+Number in the lookup table,
+    then the wubi-jidian86 table codes for 你 are displayed in the auxiliary
+    text:
+    
+        wq wqi wqiy
+
+commit f7430ef738e3a236019a2a8f3a8bea98cb6ebee1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 7 22:44:06 2014 +0200
+
+    Use an integer self._cursor_precommit instead of an array self._cursor[]
+    
+    self._cursor[1] is never used anymore after my rewrite of the cursor
+    movement code because I split the strings committed to preëdit already
+    when the cursor is moved and not in add_input() anymore, so there is
+    no need to keep track of a second cursor position.
+
+commit 7c6eb47bb0e9db76d1c21433e812f1cc7b0bd5b7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 7 14:07:56 2014 +0200
+
+    Don’t define new abbreviations automatically
+    
+    For example, the latex table system database contains:
+    
+        \alpha|α|0|0
+    
+    If one types “\alp” and then selects the candidate “α”
+    from the lookup table, do *not* automatically create
+    (or update) an abbreviated entry
+    
+        \alp|α|0|1
+    
+    in the user database, instead create (or update) an entry using the
+    full length of the tabkeys:
+    
+        \alpha|α|0|1
+    
+    Creating shortcuts automatically like this is useful in
+    ibus-typing-booster but it seems useless and confusing in ibus-table.
+
+commit fe807080c31ca0b09ff46aaee6c9575c2e9bb1c9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 23 16:03:25 2014 +0200
+
+    Fix cursor movements in the strings committed to preëdit
+    
+    Rewrite most of the code for cursor movements in the preëdit because
+    it did not work at all.
+    
+    The old non-working code tried to use wrap around when the cursor
+    reached the ends of the preëdit. I think that is confusing
+    and implemented it without wrap around.
+    
+    When there are strings committed to preëdit and a space is typed
+    while the current input is empty, the preëdit should be committed
+    (this was broken).
+
+commit 940e629c2fae386ea0f1532325c6a971b703cdf0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 7 09:29:41 2014 +0200
+
+    Remove useless “else:” when committing using space
+    
+    editor.space never returns (False, u' ', ...) so this “else:”
+    part can never be reached.
+
+commit 193d2bbd20492e05f29290995aac0fe4ea73ad09
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 7 09:26:15 2014 +0200
+
+    Remove comments mentioning self.add_string_len() because there is no such function anymore
+
+commit b7946d48de07ae6b6cca0d80519130d94b245337
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 5 21:27:38 2014 +0200
+
+    Fix find_zi_code, it should return a list of possible tabkeys for a phrase
+    
+    The documentation “Check word freq and user_freq” was very misleading.
+    
+    Actually it should return a list of possible tabkeys for a phrase.
+    For example, if “phrase” is “你” and the table is wubi-jidian.86.txt,
+    the result will be ['wq', 'wqi', 'wqiy'] because that table
+    contains the following 3 lines matching that phrase exactly:
+    
+    wq	你	597727619
+    wqi	你	1490000000
+    wqiy	你	1490000000
+
+commit b55980f79ab6eb36ece9560b4c04b9bee5a21bce
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 5 16:30:25 2014 +0200
+
+    Add one space between the phrase and the remaining tabkeys in the lookup table
+    
+    Easier to read.
+
+commit 49be55f44ceb1d12c9e8d45d17163b0998234eeb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 5 16:06:04 2014 +0200
+
+    Merge matches from the system database and the user database
+    
+    To avoid duplicates in the candidate list.
+    
+    For example, if we have the result ('aaaa', '工', 551000000, 0) from
+    the system database and ('aaaa', '工', 0, 5) from the user database,
+    these should be merged into one match ('aaaa', '工', 551000000, 5).
+
+commit bfe7932dc50f413ae7804e4f923acd08247264ac
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 4 19:17:36 2014 +0200
+
+    Improve documentation of select_key()
+
+commit e831737780d3284cfcea41ec5183ffdd38f03746
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 4 18:45:17 2014 +0200
+
+    Handle start characters correctly
+    
+    Some tables (currently the “latex” table is the only one I know of)
+    have special “start characters”. For example, in the latex table,
+    the start character is “\”, i.e. every key in that table starts with
+    a “\”, if the first character typed is anything else but “\”, no
+    match is possible and therefore the typed character should be directly
+    committed or directly passed to the application without attempting
+    a match in the table.
+
+commit 77aee36498f6f17a28193de60b87fc28c33d0dba
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 2 11:38:39 2014 +0200
+
+    Remove self._t_chars
+    
+    self._t_chars seems to be just self._chars_valid + self._chars_invalid
+    (possibly + u''.join(self._u_chars)?? Anyway, there is no need
+    to have yet another variable for the same stuff. It is error prone
+    to correctly keep it in sync with the other variables containing
+    the same information.
+
+commit 754175b068c111211d6dad76e990f8e88ad173ec
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 1 18:59:03 2014 +0200
+
+    Rewrite _update_preedit() and get_preedit_strings()
+    
+    Instead of returning a complicated string in get_preedit_strings() and
+    parse it again into parts using regular expressions in
+    _update_preedit(), rather return a tuple of the parts
+    _update_preedit() needs.
+    
+    Rename the function returning these parts from get_preedit_strings()
+    to get_preedit_string_parts() and add a function
+    get_preedit_string_complete() which joins these parts and is used
+    where the distinction of the parts is not necessary.
+
+commit ab4bb95fb873febc52aa69cf2ad0f1cbc3c91fc0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 30 16:33:02 2014 +0200
+
+    over_input() should not clear self._u_chars[]
+    
+    It does this only to cause a weird side effect in
+    get_preedit_strings().  But that is quite nonsensical, get_predit_strings()
+    and _update_preedit() should be rewritten not to depend on this.
+    
+    Clearing only self._u_chars[] but not self._strings[] makes these
+    two arrays have different lengths, but they should always have
+    the same length.
+    
+    if clearing self._u_chars[] is removed from over_input(),
+    over_input() becomes useless as it only calls clear_input() now
+    and it can be removed.
+
+commit 2c10c727e2ee3ecfa92afe372f9f3ea424eee740
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 30 09:26:06 2014 +0200
+
+    self._strings and self._u_chars should always have the same length
+    
+    As self._strings and self._u_chars *always* should have the same
+    length, there is no need to check “if self._strings” before
+    self._strings.pop() if self._u_chars is already known to be not
+    empty. Of course the extra check doesn’t hurt, but if self._strings
+    and self._u_chars ever happen to have a different length, I want it to
+    fail and then figure out how this could happen.
+
+commit 73b836dd0212aac3dbe1be3d4d6f877e6382acd6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 30 09:46:22 2014 +0200
+
+    self._caret is never used outside of get_caret(), it should not be a member variable
+    
+    A local variable in get_caret() is enough and makes the code
+    better readable.
+
+commit 4ced4cde39213d265b20e45a743069d1f697d55b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 30 09:21:06 2014 +0200
+
+    Remove useless function add_caret()
+    
+    Only used once and it only adds the length of a string to self._caret,
+    I think it is more readable to do that directly.
+
+commit d1b2489bbf72092c258ad76d74d23c9d8ba527f5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 30 08:43:31 2014 +0200
+
+    Remove useless line in pop_input()
+    
+        self._chars_invalid = self._chars_invalid[:-1]
+    
+    does nothing there because it is in the “else:”
+    part of “if self._chars_invalid:”.
+
+commit af666b23c45e453bef07b2a2076e8849f0935d85
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 30 07:46:37 2014 +0200
+
+    Improve readability of _update_preedit() and enable colours
+
+commit 2d1292994f5a133b5ad4a9a0cad7fb7f27315339
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 30 07:49:27 2014 +0200
+
+    Remove unused function get_input_chars_string()
+
+commit 947f550135ab924e7fe722f6d4b68bb1cce523fd
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 29 17:26:34 2014 +0200
+
+    Remove arbitrary limit max_length = 64 in editor class
+
+commit b8a78e00cb18eb2d948c4865a068537dec18445b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 29 17:24:47 2014 +0200
+
+    Remove useless uses of try: ... except:
+
+commit d1b76b3d388a879c543dc875cd4de43719fb27b5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 29 16:57:58 2014 +0200
+
+    Remove useless “pass”
+
+commit 021ed36dccf2c936cef580d376bd303e599237f9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 29 15:09:01 2014 +0200
+
+    self._u_chars needs to be an array of strings
+    
+    self._u_chars needs to be an array of strings, not a simple string
+    because it needs to hold the key sequences which were used when the
+    phrases in self._strings were automatically committed.
+
+commit 6d072baab9f33d2daa4adc8b7437c73cb5d558d2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 29 14:53:09 2014 +0200
+
+    Add debug information about self._u_chars into the aux strings
+
+commit a2f716ca1f238f4f78e90bf5c199e81c48b7a9fb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 29 14:08:56 2014 +0200
+
+    Don’t use “pass” so much after “except:”
+    
+    Better print a backtrack to the debug log.  It is better to at least
+    see in the debug log what went wrong.
+
+commit 72cbde05efbc3b8c2e5fd847c00a2739fc7970d6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 28 15:35:59 2014 +0200
+
+    Split _candidates[[],[]] into two arrays _candidates[] and _candidates_previous[]
+    
+    Makes the code more readable.
+
+commit 45eb8d275d9dae573cd632e2efdc8e065c9f3fb1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 28 13:59:28 2014 +0200
+
+    Add comments about the meaning of “auto select” in the source code
+
+commit 288a1ccdf2a6b033e4977e1a526f7dfc08c43422
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Apr 27 06:10:13 2014 +0200
+
+    Improve documentation of tabsqlite
+
+commit 4600fc5b2c5dd129400650556b5dac7289c3836f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Apr 27 06:01:25 2014 +0200
+
+    Don’t try to open a user database if user_db = None in __init__() of tabsqlitedb
+    
+    If an in-memory user database is wanted, tabsqlitedb now needs to be
+    constructed with user_db=':memory:', user_db=None now really means
+    that no user database at all is needed. No user database is needed for
+    example when creating a system database file or when just listing
+    information about engines with
+    
+        /usr/libexec/ibus-engine-table --xml
+
+commit 51ea61a8b8df101019c7fd0e43c427dc69b918f6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Apr 26 06:31:09 2014 +0200
+
+    Rename phrase_keys_len() to get_possible_tabkeys_lengths() and pkeylens to possible_tabkeys_lengths
+    
+    Also document it a bit and remove a useless try: ... except:
+
+commit 1ff41d6bae3ebc9014d17d12320f1c058daf7a3a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Apr 26 06:29:34 2014 +0200
+
+    Make sure the lookup table is hidden if there are no candidates to display
+
+commit 99d54e2ddb171f523ddbf73872617b40e05012b0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Apr 25 17:46:13 2014 +0200
+
+    Improve code readability when writing and reading the ime properties
+    
+    Remove property cache, the performance benefit of this is completely
+    negligible.
+
+commit 81ec0d8c8319da908d684ec05443557bc4c0ea8d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Apr 25 14:05:43 2014 +0200
+
+    Simplify get_start_chars()
+
+commit 93826f6508231a87eb93c8feba591eee849bd949
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Apr 25 14:02:43 2014 +0200
+
+    Simplify get_select_keys()
+
+commit f124f3fbcbdd778a80c99e8dc8ac90f3fc67205e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Apr 25 11:40:45 2014 +0200
+
+    Don’t use self._strings.pop() in pop_input() if self._strings is already empty
+
+commit 3d88a387de029616415d19236d2fb9b21894c8a8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 24 17:01:10 2014 +0200
+
+    Minor code cleanup
+
+commit 9b6359328ac0df9a37c32776672c708edc635161
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 24 16:30:37 2014 +0200
+
+    Rename self._chars_valid to self._chars_valid_when_update_candidates_was_last_called
+    
+    Long name, but this makes the purpose of that variable clear.
+    It is used *only* to make update_candidates() return fast when
+    nothing has really changed.
+    
+    If the users input characters have not changed, usually no update_candidates()
+    is necessary, but there are some exceptional cases for example when
+    deleting a candidate from the user database when the candidate
+    list changes while the user input has not changed. In these exceptional
+    cases, an update of the lookup table needs to be forced.
+
+commit 1357f7468d9cd0dfa4adde7af623d614c0ae71f7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 24 14:03:59 2014 +0200
+
+    Fix remove_cand_from_userdb() and rename it to remove_candidate_from_user_database()
+    
+    After the database redesign, tabsqlitedb.remove_phrase() takes
+    named arguments “tabkeys” and “phrase” instead of a complete candidate
+    as an array.
+    
+    Also, instead of deleting a candidate from the user database only
+    if it is user defined and thus not in the system database (candidates
+    which have freq=-1 in the user database are user defined), delete
+    the candidate always, if it is in the user database at all.
+    
+    This way, the user can not only use this function to remove user defined
+    candidates but also to lower the priority of candidates which are
+    already in the system database and have aquired a high priority by
+    being used. Removing these candidates from the user database lowers
+    their priority again.
+
+commit f6980e0d4a4c1176a5c4d3a88fcc979eac016b18
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 24 10:18:29 2014 +0200
+
+    Small code readability improvement
+
+commit f89ecce98ae919c7f4077632c24c31fa0d216f3d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 24 09:52:11 2014 +0200
+
+    Introduce an environment variable IBUS_TABLE_DEBUG_LEVEL for debugging
+    
+    Currently, if this variable is set to a number > 0,
+    system frequency and user frequency data is shown in the lookup table.
+
+commit 79f12fcbbb9969f3b5f152407cafff350b4eb83b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 24 09:02:59 2014 +0200
+
+    Instead of an array self._chars = [u'',u'',u''] use three separate strings
+    
+    Using self._chars_valid, self._chars_invalid, and self._chars_prevalid
+    instead of self._chars[0], self._chars[1], self._chars[2] makes the
+    code more readable because one does not have to remember what the
+    indices 0, 1, 2 mean.
+
+commit 45823c5f7e0956d7070190f38236531ee4ddef29
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 23 17:45:27 2014 +0200
+
+    Use strings instead of lists for the input characters typed by the user
+    
+    Makes the code more readable, avoids many complicated statements
+    with join, list, map, ...
+    
+    The only places where it looks slightly less readable with strings
+    is
+    
+        c = a[-1]
+        a = a[:-1]
+    
+    when a is a string instead of
+    
+        c = a.pop()
+    
+    when a is a list.
+
+commit cd55dd5f2f0e79e4a5138858bdbab9a7590a6401
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 24 05:37:45 2014 +0200
+
+    Remove unused function get_index()
+
+commit 313fee39a613c0d0391e636ea1d53b9cf8565208
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 23 16:57:49 2014 +0200
+
+    Update copyright texts in headers
+
+commit 364307af21d3a15ab811acfdf81896ffd9038953
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 23 17:44:41 2014 +0200
+
+    Remove unused functions get_invalid_input_chars() and get_invalid_input_string()
+
+commit 4fa966bc0651500bec38061ce4b33e22a15407dd
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 10 11:36:59 2014 +0200
+
+    Change the design of the database
+    
+    The old database used columns like
+    
+        id|mlen|clen|m0|m1|m2|m3|m4|category|phrase|freq|user_freq
+    
+    where “m0”, “m1”, “m2”, “m3”, “m4” did hold individual
+    characters of the input string which was therefore limited to a fixed
+    maximum (could be different for each table). In this case the maximum
+    is 5 characters. “mlen” was the length of the input string actually
+    used, for example if the input string was “adlt”, then “mlen = 3”,
+    “m0 = a”, “m1 = d”, “m2 = l”, “m3 = t”, and “m4 = None”.
+    “clen” was the length of the Chinese phrase matching this input
+    string, for example, if “adlt” is the input string for the Chinese
+    phrase “苦力”, then “clen = 2”. “category” was a bitmask
+    indicating whether that Chinese phrase is simplified Chinese,
+    traditional Chinese, used in both variants of Chinese, or is a mixture
+    of simplified and traditional Chinese. Non-Chinese tables lacked that
+    “category” column.
+    
+    I.e. in this example the database row in system database for the old
+    design would have looked like:
+    
+        345|4|2|a|d|l|t|None|1|苦力|3600000|0
+    
+    (“345” is an abitrary row-id)
+    
+    The new database now uses only:
+    
+        id|tabkeys|phrase|freq|user_freq
+    
+    “tabkeys” is the combination of “m0” ... “m4”, it is of type TEXT
+    and has no artificial limit (except the limit imposed by sqlite, which
+    is huge). So the row in the above example would look like this in
+    the new database design:
+    
+        345|adlt|苦力|3600000|0
+    
+    “mlen” and “clen” have been removed, they just duplicate
+    information, the lengths can be calculated easily when
+    needed. “category” has been removed as well, it can be calculated
+    fast and easy at runtime, there is no need to save this at build time
+    into the system database. Omitting “category” also makes the columns
+    used in Chinese and non-Chinese databases identical, avoiding lots of
+    special cases for Chinese and non-Chinese in the code.
+
+commit f973563cf3283a7adcff66c68068c2be3739a8a8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 23 16:51:30 2014 +0200
+
+    Remove useless “$Id: $” from comments in the file headers
+    
+    This is not used by git, it was only useful for older version
+    control systems.
+
+commit 7cbf9e8a773c5d37bcad92f50b2f55d6a480c330
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 17 09:40:56 2014 +0200
+
+    Don’t filter candidates in pinyin mode
+    
+    I may change that again later, but currently the format of the
+    candidate tuples in pinyin mode is different from the format in
+    non-pinyin mode which makes this filtering fail. Therefore, pinyin
+    mode would not work at all at the moment if Chinese mode 2 or 3 is
+    selected.
+
+commit 4b392e8c2723c5f20e4d13da5770204c53b9baa6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 16 17:07:38 2014 +0200
+
+    Simplify pinyin table
+
+commit 385e6df95830837cc0338d6bc7de5e32679a20a4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 17 13:04:56 2014 +0200
+
+    Don’t use try: and except: to decide whether to decode  from UTF-8 in get_no_check_chars()
+
+commit ff310fb1f07eead2383461b22e6443dc93d78ef0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 16 08:49:16 2014 +0200
+
+    Simplify goucima database table and remove goucima cache
+    
+    The goucima cache is not really used anyway. Only in tabcreatedb.py
+    db.cache_goucima() is called, but then not used there either.
+
+commit f5d77946d7acefdf89bb583036378354015c1071
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 15 17:29:11 2014 +0200
+
+    Remove parse_phrase_to_tabkeys() and simplify parse_phrase()
+
+commit 117d2d3e3f68845940b146011b137a6acef7956f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 1 17:51:16 2014 +0200
+
+    Remove tabdict
+    
+    Do not translate the typed characters into integers with tabdict.
+    Use the characters themselves instead.
+    
+    Translating characters to integers doesn’t make anything faster,
+    just more complicated.
+    
+    Even if a translation to integers were desirable, why use a custom
+    table and not the Unicode code points? A custom table always
+    needs to be extended when more characters are allowed as valid
+    input characters.
+
+commit 081f61e5dc886dd8c897a9f4a2f5b75b7cb81cd6
+Merge: 1347342 3f031f7
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Wed Apr 16 19:06:33 2014 +1000
+
+    Merge pull request #33 from mike-fabian/do-not-fail-when-home-is-not-set
+    
+    Do not fail when home is not set
+
+commit 3f031f799256bee9cf93800d7b844310e825fb6f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 16 09:28:44 2014 +0200
+
+    Do not fail when the environment variable HOME is not set
+    
+    Resolves: rhbz#1088138 - [abrt] ibus-table: posixpath.py:83:join:TypeError: unsupported operand type(s) for +=: 'NoneType' and 'str'
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1088138
+
+commit 5f6cc149803dd876fb773d8653cc30d2424cd25f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 15 16:57:28 2014 +0200
+
+    Remove unused code
+
+commit 52af130ae18d84b6611834a298d4c8a92c76621c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 15 16:36:51 2014 +0200
+
+    Return only tabkeylist in parse_phrase()
+    
+    The other stuff returned is never used, just thrown away.
+
+commit f0dbeb54d65d72451b1c56d91677a1edf6c08703
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 14 13:14:44 2014 +0200
+
+    Remove unused function add_new_phrases()
+
+commit e24302cc9e85786c044fc1dc0b79c3a7d724c3c5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 14 11:21:52 2014 +0200
+
+    remove unused regular expression in parse_extra() in tabcreatedb.py
+    
+    This regular expression would not work with Python3 anymore.
+    But it is not used anyway, so it can be just removed.
+
+commit 1347342cc71a719a168526e62d19d859bb5b0d97
+Merge: ccb4b1b bd30def
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Mon Apr 14 19:02:28 2014 +1000
+
+    Merge pull request #32 from mike-fabian/fix-pinyin-mode-and-dconf-usage
+    
+    Fix pinyin mode and dconf usage
+
+commit bd30def611453ffbb065964006fe5a5c2ad525a0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 14 09:11:28 2014 +0200
+
+    Fix goucima parsing from the source, broken by Python3 port
+    
+    This regular expression:
+    
+        patt_s = re.compile(r' *([^\s]+) *\t *([\x00-\xff]{3}) *\t *[^\s]+ *$')
+    
+    which tries to match single Chinese characters as a sequence of 3
+    bytes does not match anymore after the Python3 port because Python
+    strings are always unicode now and each Chinese character is thus a
+    single character in a string.
+
+commit 599601db7fed46b6e21c227b62ec9145199ecef2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 9 16:03:07 2014 +0200
+
+    If keychar is empty, do not treat it as valid input
+    
+    This makes typing the right shift key toggle between pinyin mode and
+    table mode, as intended.
+    
+    In Python
+    
+        >>> '' in 'abc'
+        True
+    
+    Therefore, “keychar in self._valid_input_char” is True even if
+    keychar is empty. But if keychar is empty, one should not treat it
+    as valid input.
+    
+    This problem occured when pressing Shift-Right, it was treated
+    as valid input and the following traceback was seen:
+    
+    Traceback (most recent call last):
+      File "/local/mfabian/src/ibus-table/engine/table.py", line 1596, in do_process_key_event
+        result = self._process_key_event (key)
+      File "/local/mfabian/src/ibus-table/engine/table.py", line 1618, in _process_key_event
+        return self._table_mode_process_key_event (key)
+      File "/local/mfabian/src/ibus-table/engine/table.py", line 1856, in _table_mode_process_key_event
+        res = self._editor.add_input ( keychar )
+      File "/local/mfabian/src/ibus-table/engine/table.py", line 398, in add_input
+        res = self.update_candidates ()
+      File "/local/mfabian/src/ibus-table/engine/table.py", line 804, in update_candidates
+        self.pop_input ()
+      File "/local/mfabian/src/ibus-table/engine/table.py", line 409, in pop_input
+        self._tabkey_list.pop()
+    IndexError: pop from empty list
+
+commit 2c145910964141a66724412e04d446c0298f0f6c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 8 17:51:12 2014 +0200
+
+    Don’t try to colour system phrases and user phrases differently in pinyin mode
+    
+    In pinyin mode, there are no user defined phrases.  Therefore, the
+    array holding a candidate does not have two integers at the end, only
+    one. candi[-2] is already the phrase, i.e. the chinese character in
+    pinyin mode, not an integer specifying a frequency.
+    
+    Resolves: rhbz#1084684 - [abrt] ibus-table: table.py:670:ap_candidate:TypeError: unorderable types: str() < int()
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1084684
+
+commit f463ca439467ff29270fa09cd108fa8f02304385
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 8 16:46:21 2014 +0200
+
+    Don’t use “try:” to call self._editor.clear() in do_focus_out()
+    
+    Why should self._editor.clear() ever fail? If problems can
+    occur there, they should be handled properly there.
+
+commit 059061e3e76761dca6853610580c9c2549918fbb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 8 16:34:58 2014 +0200
+
+    Don’t switch off pinyin mode in clear()
+    
+    clear() is called in do_focus_out().  And do_focus_out() is called
+    after clicking into the gnome menu to switch to pinyin mode.  This
+    makes it almost impossible to enable pinyin mode and keep it when
+    pinyin mode is switched off in clear().
+
+commit 00a41b813adba4155f19a84706702f693c3e987c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 8 11:16:16 2014 +0200
+
+    Make usage of engine name and dconf key consistent
+    
+    The setup tool did write to a different dconf key than the
+    engine.
+    
+    Make this consistent. If the file name of the table is
+    
+        /usr/share/ibus-table/tables/wubi-jidian86.db
+    
+    use
+    
+       table:wubi-jidian
+    
+    as the ibus engine name (listed by “ibus list-engine” and used
+    in the environment variable IBUS_ENGINE_NAME).
+    
+    As the dconf key, use:
+    
+        /desktop/ibus/engine/table/wubi-jidian86
+    
+    The name found in the source of the table (i.e. in wubi-jidian86.txt
+    in the source package of ibus-table-chinese), which looks like
+    
+        ### The default name of this table
+        NAME = WuBi-Jidian (JiShuag) 86
+    
+    should not be used for the dconf key or the engine name, it should
+    only be used for display in the user interface.
+
+commit ccb4b1bc4a778381e013ef64838dc8292e61d436
+Merge: 3255f48 8842b41
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Thu Apr 10 22:13:35 2014 +1000
+
+    Merge pull request #31 from mike-fabian/fix-regression-caused-by-python3-port-causing-the-build-of-ibus-table-chinese-to-fail
+    
+    Fix a regression caused by the Python3 port in tabcreatedb.py
+
+commit 8842b411e32a7c10dce22ee578974bc37ee8081c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Apr 1 18:18:11 2014 +0200
+
+    Fix a regression caused by the Python3 port in tabcreatedb.py
+    
+    This fixes the build of ibus-table-chinese.
+
+commit 3255f48cb6cdd6311ca9ae0dadaee349b6f6ce72
+Merge: cd317b7 0df841f
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Sat Mar 15 21:22:16 2014 +1000
+
+    Merge pull request #30 from mike-fabian/fix-bug1072940-comment18
+    
+    filter returns a “filter object” in Python3, not a list directly as in Python2
+
+commit 0df841f416f6bac13630c8eb6b6f711d312436a5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Mar 12 15:04:30 2014 +0100
+
+    filter returns a “filter object” in Python3, not a list directly as in Python2
+    
+    Fixes https://bugzilla.redhat.com/show_bug.cgi?id=1072940#c18
+
+commit cd317b7d473eb94554e79fe91f5417a4f9074b60
+Merge: 1c437bf 19ee83e
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Wed Mar 12 22:12:34 2014 +1000
+
+    Merge pull request #29 from mike-fabian/fix-setup-tool-for-use-with-gnome
+    
+    Fix setup tool for use with gnome
+
+commit 19ee83e6d762d71f4fde8cebd59735e4f0b31529
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Mar 12 07:31:47 2014 +0100
+
+    Add generated .tar.gz to .gitignore
+
+commit 4bb405e984934980940758d58c4e112ae7be3dd6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Mar 12 07:18:22 2014 +0100
+
+    Fix a spelling error in a variable name, a regression introduced by the Python3 port
+
+commit 5d1e95aeb9b75583e9caa841f27c68ec5765814b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Mar 11 13:25:12 2014 +0100
+
+    Fix regression introduced by the Python3 port
+    
+    ascii.ispunct() from “from curses import ascii” can take
+    both characters  or integers as the argument.
+    
+    My replacement ascii_ispunct() takes only a character.
+
+commit 0f6561fea4c2ca9aa90106e4529bc8d32a2a261c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Mar 7 12:46:00 2014 +0100
+
+    Add a .desktop file and make the setup tool work with Gnome
+    
+    Previously, the setup tool could be called from the command
+    line, for example:
+    
+        /usr/libexec/ibus-setup-table cangjie3
+        /usr/libexec/ibus-setup-table wubi-jidian86
+        ...
+    
+    But it could not be called from “gnome-control-center region”,
+    not setup icon did appear for the ibus-table engines.
+    
+    To make this work, a desktop files
+    
+        /usr/share/applications/ibus-setup-{...}.desktop
+    
+    need to be added where {...} is the engine name up to the first “:”
+    character. When the engine names are just the table names
+    (“cangjie3”, “wubi-jidian86”, ...), each table would need to
+    supply its own .desktop file
+    
+        /usr/share/applications/ibus-setup-cangjie3.desktop
+        /usr/share/applications/ibus-setup-wubi-jidian86.desktop
+        ...
+    
+    That is not nice, especially as many tables are in different rpm packages.
+    It is better to have just a single .desktop file
+    
+        /usr/share/applications/ibus-setup-table.desktop
+    
+    This can be used for all engines if the ibus engine names are changed like:
+    
+        cangjie3 → table:cangjie3
+        wubi-jidian86 → table:wubi-jidian86
+        ...
+    
+    because only the part before the first “:” in the ibus engine name
+    is used by gnome to decide which desktop file to use.
+    
+    The desktop file contains a line like:
+    
+        Exec=/usr/libexec/ibus-setup-table
+    
+    and the setup tool is is called by Gnome without any command line
+    arguments. But Gnome sets the enviromnent variable IBUS_ENGINE_NAME
+    to the engine name when calling the setup tool.
+    
+    So I changed the setup tool to work like this:
+    
+        IBUS_ENGINE_NAME=table:cangjie3 /usr/libexec/ibus-setup-table
+    
+    or
+    
+        /usr/libexec/ibus-setup-table --engine-name table:cangjie
+    
+    (The command line option is preferred over the environment variable
+    when both are given).
+
+commit 491a83fad777e3c451ba1bdecc8a0452d71176fa
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Mar 7 14:56:36 2014 +0100
+
+    Make it possible to interrupt the setup tool with Control-C from the command line
+
+commit 668469998fafc4be52b6a51a290f8e998caa8034
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Mar 7 12:46:57 2014 +0100
+
+    add autogenerated files table.xml and ibus-table-createdb.1 to .gitignore
+
+commit c295c6f9a1d7de2e82ee92b4a38499af6f54ff8c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Mar 6 14:29:14 2014 +0100
+
+    add autogenerated files version.py ibus-setup-table to setup/.gitignore
+
+commit 7284a2b96d1b3905a29b28034feffbf16941bac3
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Mar 6 14:26:52 2014 +0100
+
+    Remove trailing whitespace and fix some spelling mistakes in comments
+
+commit 0adf55500aac6cda98e43f08561f59c78b254080
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Mar 6 08:46:09 2014 +0100
+
+    Correct description of toggle_tab_py_mode() and cycle_next_cand()
+
+commit 72cd5718c8e912ba14be220e5be7421bede02303
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Mar 6 08:33:45 2014 +0100
+
+    Fix spelling mistake in variable name
+
+commit 29666688c03590f285307aface392071f0b1f800
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Mar 6 08:37:52 2014 +0100
+
+    Remove unused speedmeter code which has already been commented  out
+
+commit f7e9ae9b96aa79fb71e30c6a4c004e3833f87b9c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Mar 5 16:35:41 2014 +0100
+
+    Don’t try to set _prev_char in commit_string() when an empty string is committed
+    
+    Without this fix one can produce a backtrace by using “wubi-haifeng86”
+    and typing “dkl” followed by “Shift” and “Space”.
+    
+    After “Shift” the preëdit is empty and “Space” commits and empty string
+    then. This leads to the following backtrace:
+    
+    Traceback (most recent call last):
+      File "/local/mfabian/src/ibus-table/engine/table.py", line 1589, in do_process_key_event
+        result = self._process_key_event (key)
+      File "/local/mfabian/src/ibus-table/engine/table.py", line 1611, in _process_key_event
+        return self._table_mode_process_key_event (key)
+      File "/local/mfabian/src/ibus-table/engine/table.py", line 1824, in _table_mode_process_key_event
+        self.commit_string (sp_res[1])
+      File "/local/mfabian/src/ibus-table/engine/table.py", line 1516, in commit_string
+        self._prev_char = string[-1]
+    IndexError: string index out of range
+
+commit 053a37ad1f19f5affd02befbe2af52adac1e46d7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Mar 5 16:19:34 2014 +0100
+
+    use editor.commit_to_preedit() instead of deleted editor.l_shift ()
+    
+    Resolves: rhbz#1072940 - Left Shift stopped work for ibus-table-1.5.0.20140218-1.fc20.noarch
+    See also: https://bugzilla.redhat.com/show_bug.cgi?id=1072940
+    
+    Was broken by:
+    
+    https://github.com/kaio/ibus-table/commit/fb11d92439fe4bd55fcad480d3998a17434f6870
+    
+    commit fb11d92439fe4bd55fcad480d3998a17434f6870
+    Author: Caius "kaio" CHANCE <me@kaio.net>
+    Date:   Mon May 6 21:05:35 2013 +1000
+    
+        Issue #17:
+        Removed excessive instance creation of IBusLookupTable in editor class.
+        Removed
+
+commit 0ebecfd0c97966f6c9d0b462cc93868f0a8f4077
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Mar 3 17:15:54 2014 +0100
+
+    Port ibus-table from Python2 to Python3
+    
+    I kept it working with Python2 for the moment, but in the long run
+    it is probably not worth the maintenance effort to keep it working
+    with Python2.
+    
+    - I added stuff like
+    
+         if type(s) != type(u''):
+             s = s.decode('UTF-8')
+    
+      for compatibility with Python2.
+    
+      http://docs.python.org/3/whatsnew/3.3.html says:
+    
+      > • The u'unicode' syntax is accepted again for str objects.
+    
+      So the above compatibility hack does not work for Python3 < 3.3.
+    
+    - define our own compatibility function
+    
+        def ascii_ispunct(character):
+            if character in '''!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~''':
+                return True
+            else:
+                return False
+      instead of using ascii.ispunct() from “from curses import ascii”
+      to get the intended behaviour both in Python2 and Python3:
+    
+        $ python3
+        Python 3.3.2 (default, Feb 19 2014, 14:35:19)
+        [GCC 4.8.2 20131212 (Red Hat 4.8.2-7)] on linux
+        Type "help", "copyright", "credits" or "license" for more information.
+        >>> from curses import ascii
+        >>> ascii.ispunct('.')
+        True
+        >>> ascii.ispunct('a')
+        False
+        >>> ascii.ispunct('☺')
+        True
+        >>> ascii.ispunct(u'a')
+        False
+        >>> ascii.ispunct(u'☺')
+        True
+        >>> ascii.ispunct(u'あ')
+        True
+        >>>
+    
+        $ python2
+        Python 2.7.5 (default, Feb 19 2014, 13:47:28)
+        [GCC 4.8.2 20131212 (Red Hat 4.8.2-7)] on linux2
+        Type "help", "copyright", "credits" or "license" for more information.
+        >>> from curses import ascii
+        >>> ascii.ispunct('.')
+        True
+        >>> ascii.ispunct('a')
+        False
+        >>> ascii.ispunct('☺')
+        Traceback (most recent call last):
+          File "<stdin>", line 1, in <module>
+          File "/usr/lib64/python2.7/curses/ascii.py", line 63, in ispunct
+            def ispunct(c): return _ctoi(c) != 32 and not isalnum(c)
+          File "/usr/lib64/python2.7/curses/ascii.py", line 50, in _ctoi
+            return ord(c)
+        TypeError: ord() expected a character, but string of length 3 found
+        >>> ascii.ispunct(u'a')
+        True
+        >>> ascii.ispunct(u'☺')
+        True
+        >>> ascii.ispunct(u'あ')
+        True
+        >>> ascii.ispunct(u'a'.encode('ascii'))
+        False
+        >>>
+    
+    Python3
+
+commit e52f7dfcf4c63024f3ab98084d7ddffeb5a8abdf
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Mar 6 07:49:32 2014 +0100
+
+    Add profiling support
+    
+    Write profiling information into the debug log when started with
+    “--profile”.
+    
+    The profiling information appears automatically in the debug log after
+    “ibus restart” when profiling is enabled.
+
+commit 893b999bee1de649dd1864b551e43974e42808e8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Mar 3 13:15:08 2014 +0100
+
+    Use @PYTHON@ instead of just 'python' in ibus-setup-table.in
+    
+    To get it replaced by the correct python interpreter when
+    doing something like:
+    
+    PYTHON=python3 ./configure
+
+commit 18797b2f515c1669c89ff59fd0ab5050b741974f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Mar 4 13:57:01 2014 +0100
+
+    Fix directory for setup tool
+    
+    It is in /usr/libexec/ibus-setup-table on Fedora.
+
+commit 1c437bf6896874903a6c0b1b496b93b54790bcbc
+Merge: fc6ce51 16a4f1c
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Mon Mar 3 21:21:53 2014 +1000
+
+    Merge pull request #27 from mike-fabian/fix-saving-database-periodically-for-gobject-introspection-and-a-patch-from-leftmostcat
+    
+    Fix saving database periodically for gobject introspection and a patch from leftmostcat
+
+commit 16a4f1c5691f20141fba2ecf363b66945012defb
+Author: Seán de Búrca <leftmostcat@gmail.com>
+Date:   Wed Sep 4 23:41:15 2013 -0600
+
+    Allow tables to specify a symbol for display
+
+commit cca58cc8ab2e6bff3081454b6028bb6c0ac798bf
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 18 20:15:13 2014 +0100
+
+    Fix the commit “Save user database periodically to avoid data loss” to use gobject introspection
+    
+    This fixes the following commit to use gobject introspection:
+    
+    commit 5d88bb3fef806f4feaef239e4fd78970e19d115a
+    Author: mozbugbox <mozbugbox@yahoo.com.au>
+    Date:   Sun Oct 28 19:32:22 2012 +0800
+    
+        Save user database periodically to avoid data loss
+    
+        Periodically sync mudb content to usrdb so we don't loss user created
+        phrase and freq when crash.
+    
+        Currently the interval is set to 16 input ops or 30 seconds between
+        saving.
+
+commit fc6ce511c7eb483e8bee8e9cf5bb2b8f9e3881f8
+Merge: f68e73c c888c5d
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Tue Feb 4 22:46:44 2014 -0800
+
+    Merge pull request #26 from mike-fabian/update-german-translations
+    
+    Update german translations
+
+commit c888c5d68d0fc03b9306520bec1528b168da0740
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Feb 3 11:14:27 2014 +0100
+
+    Update German translations
+
+commit 0ac3e535dd41db916ceebe73ef84b4e6fb7b98b6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Feb 5 05:42:16 2014 +0100
+
+    Remove print statements for debugging
+    
+    I forgot to remove them in
+    
+    commit 7919d0326f1516164ea94b69137c88625b767f88
+    Author: Mike FABIAN <mfabian@redhat.com>
+    Date:   Tue Feb 4 15:52:45 2014 +0100
+    
+        Make the property “Display Candidates/Hide Candidates” actually work
+
+commit f68e73c982dba42a984cd5cb7c497efb458b1b14
+Merge: 9404fa6 0632dc9
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Tue Feb 4 15:20:32 2014 -0800
+
+    Merge pull request #20 from mozbugbox/ascii-with-empty-canadidate
+    
+    Ascii with empty canadidate
+
+commit a4144337912c6e9fce1e321b2b0d1b94db89d689
+Merge: c01120b 20913ab
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Tue Feb 4 15:18:38 2014 -0800
+
+    Merge pull request #21 from leftmostcat/master
+    
+    Allow tables to specify a symbol for display
+
+commit 9404fa6a9729d1b89524f7454bb7b6f4a3c43586
+Merge: fe11a0c c5a60f6
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Tue Feb 4 15:16:32 2014 -0800
+
+    Merge pull request #25 from mike-fabian/add-check-for-input-purpose-for-passwords
+    
+    Add check for input purpose for gnome-shell password dialog
+
+commit fe11a0c32124618a35f21bcc5d31c7c54d9b6477
+Merge: 1d2f442 7919d03
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Tue Feb 4 14:55:23 2014 -0800
+
+    Merge pull request #24 from mike-fabian/make-hide-candidates-work
+    
+    Make the property “Display Candidates/Hide Candidates” actually work
+
+commit 1d2f442be9754759339bdde90b6d492f67012bf5
+Merge: d782b07 076bb39
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Tue Feb 4 14:55:03 2014 -0800
+
+    Merge pull request #23 from mike-fabian/print-usage-message-when-tabcreate-is-called-without-options
+    
+    Print usage message when tabcreate is called without options
+
+commit c5a60f60578f681059e821f476e8e9f61102718d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 4 16:20:11 2014 +0100
+
+    Add check for input purpose for gnome-shell password dialog
+    
+    Resolves: rhbz#1061345 - ibus-table shows entered text in password fields
+    (See: https://bugzilla.redhat.com/show_bug.cgi?id=1061345)
+
+commit 7919d0326f1516164ea94b69137c88625b767f88
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 4 15:52:45 2014 +0100
+
+    Make the property “Display Candidates/Hide Candidates” actually work
+    
+    - There is no set_candidates_list_visible() in ibus 1.5.5.
+      use hide_lookup_table() instead to hide the candidates if requested
+    - also hide the auxiliary text if hiding of the candidates is requested
+    - make changing of that property by changing the gconf key work
+      (name == u'AlwaysShowLookup' won’t work it needs to be all lower case)
+    - There was a typo here: “self._new_property(u'always_show_loopup')”
+      (“lookup”, not “loopup”)
+    - The property menus show the current state, not the state which will
+      be switched to when the menu entry is pressed. For example,
+      one property says “Half-width punctuation” when half-width punctuation
+      is in use, clicking it switches to full-width punctuation and
+      then the menu displays “Full-width punctuation”. The property menu
+      for displaying and hiding candidates did that reversed. Make it
+      behave like the other property menus do.
+
+commit 076bb390705d2b8477323236dd997032fdb48db5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jan 23 23:26:57 2014 +0100
+
+    When tabcreatedb.py is called without any options, print a usage message
+    
+    Do not just show a cryptic backtrace.
+    
+    Resolves: rhbz#1049760
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1049760
+
+commit d67c3f032fe4fa493de334bf1b5d4907293409e9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 22 12:11:18 2014 +0100
+
+    Fix typo in ibus-table-createdb man-page
+    
+    "for for" -> "for"
+
+commit 20913ab847d393dfbce07fcac8b5538a5b351605
+Author: Seán de Búrca <leftmostcat@gmail.com>
+Date:   Wed Sep 4 23:41:15 2013 -0600
+
+    Allow tables to specify a symbol for display
+
+commit 0632dc94931f73cffa99b3163c2cf7b15e48111a
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sat May 18 20:21:34 2013 +0800
+
+    Remove accidentally added engine/* files
+    
+    Somehow, the engine directory was added. clean it up.
+
+commit 2413853c1a2ffc708250d2548cafe95792b22678
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sat May 18 20:04:03 2013 +0800
+
+    remove vim backup files
+
+commit 05a065b34970cdeb71c2e3f80312e6d0be967b19
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sat May 18 19:56:41 2013 +0800
+
+    Update setup to dconf with lower case options
+
+commit acd03a472215d43dc17bed4a2b9dbe29f7aa5817
+Merge: 4d18a67 d782b07
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sat May 18 17:55:30 2013 +0800
+
+    Merge remote-tracking branch 'kaio/1.7' into ascii-with-empty-canadidate
+    
+    Conflicts:
+    	engine/table.py
+
+commit 4d18a67d8b0bc0fbe0999f330769707611d11eea
+Merge: cd11209 2467638
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sat May 18 17:46:20 2013 +0800
+
+    Merge remote-tracking branch 'kaio/1.7' into ascii-with-empty-canadidate
+    
+    Conflicts:
+    	engine/main.py
+    	engine/table.py
+
+commit d782b07861c40b22aafa81aa779f4eb76ed08fce
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Mon May 6 22:21:01 2013 +1000
+
+    Indent 4 spaces on README to support MarkDown on wiki page.
+
+commit 6f0702c742cd8ef30f375a3db28552b6e9bb9338
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Mon May 6 21:43:08 2013 +1000
+
+    Removed unused commented-out code.
+
+commit ba990fe42d0ebab241f35a1f4f7cd1e1a911cc3f
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Mon May 6 21:37:15 2013 +1000
+
+    Clear all input when "focus-out" (switch to another window/input-fields, etc).
+
+commit cb6e11a222f44e985e0632f81c4b2622e25d215a
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Mon May 6 21:17:06 2013 +1000
+
+    Fixed mis-refactor of cursor_up as cursor_down in editor class.
+
+commit fb11d92439fe4bd55fcad480d3998a17434f6870
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Mon May 6 21:05:35 2013 +1000
+
+    Issue #17:
+    Removed excessive instance creation of IBusLookupTable in editor class.
+    Removed
+
+commit 24676389e9f218b7972283493096acd3e1a13f8e
+Merge: 763f181 d246000
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Sun May 5 21:14:19 2013 +1000
+
+    Merge branch 'rename_editor_func_from_key_combo_to_behavioral_naming_base' into 1.7
+
+commit d246000eb6686316026572fb65888ad29337dcf4
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Sun May 5 20:48:31 2013 +1000
+
+    Renamed funcs in editor class from keyboard-input based to behavior based.
+
+commit 763f181149dff0b84dc0dde0bb334903e40c0b8b
+Merge: 79fa67e d70d66f
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Thu May 2 14:41:26 2013 +1000
+
+    Issue #14: Merge branch 'refactor_convert_to_full_width' into 1.7
+
+commit d70d66f25f8a4e9be1bfd6558dfde11a40bf4202
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Thu May 2 14:35:21 2013 +1000
+
+    Added back unicode string spec to condition check in _convert_to_full_width (self, c).
+
+commit 2554d6091f413975dd4886b89c5d57776603f955
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Thu May 2 14:26:02 2013 +1000
+
+    WIP: Removed excessive condition check.
+
+commit 24091c51a67e8b134b7db3dbe613990fdc44ab6f
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Thu May 2 14:21:23 2013 +1000
+
+    WIP: Combined two dicts into single dict. Simplified the condition checks.
+
+commit f748d5e51ad4b2c68c5d883b4819860389458c85
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Thu May 2 11:15:16 2013 +1000
+
+    WIP: Extracted more condition checks to dict.
+
+commit 7e826b7d4e7b30bdbcfe867be2ca744e22380142
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Thu May 2 10:22:12 2013 +1000
+
+    WIP: Jump right to later half of conditions when _mode isn't true.
+
+commit a2e6215d1fcf07aba6f03bc4b88bffee1a785884
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Thu May 2 09:40:05 2013 +1000
+
+    WIP: Removed excessive condition check on char eligiblity.
+
+commit 79fa67e529dff3562580f16c5138ff4c54309eb7
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Wed May 1 21:31:46 2013 +1000
+
+    Extract repeating code from _init_properties(self) to _new_property(self,key).
+
+commit c01120bb6856445327270b2e53ca36099196a326
+Merge: 9745b53 a42c1d3
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Mon Apr 29 20:26:36 2013 +1000
+
+    Merge remote-tracking branch 'bernardn/master' into 1.6
+    
+    Conflicts:
+    	engine/table.py
+
+commit 9745b5384c3328cd7db994baab7301f6367b5ee4
+Merge: 764a8c7 757a88e
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Sun Apr 28 22:05:24 2013 +1000
+
+    Merge remote-tracking branch 'origin/master' into 1.6
+
+commit 757a88e4eee512e478c6692f39b8e346a95aba5a
+Merge: 7a3f0d9 04e3be2
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Sun Apr 28 05:04:07 2013 -0700
+
+    Merge pull request #7 from luolimao/master
+    
+    Explicit python2 for compatibility
+
+commit 764a8c7251a9078bda22c544796c77b81ec2d581
+Merge: 68f25cb 367c146
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Sun Apr 28 21:25:56 2013 +1000
+
+    Merge remote-tracking branch 'anthonywong/master' into 1.6
+
+commit 68f25cb5c82dc87bd18b84afc9146435c9490944
+Merge: b7da6e8 02ddfba
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Sun Apr 28 21:12:43 2013 +1000
+
+    Merge remote-tracking branch 'mozbugbox/tooltip-show-hotkey' into 1.6
+    
+    Conflicts:
+    	engine/table.py
+
+commit b7da6e8a66a455fc0ed9270fe1f2c0638c1b1211
+Author: Anthony Wong <anthony.wong@ubuntu.com>
+Date:   Tue Dec 4 00:39:06 2012 +0800
+
+    Catch exception when reading ~/.ibus/byo-tables so the process won't halt.
+    
+    Conflicts:
+    	engine/main.py
+
+commit 5f274590b27068cc3dca08899a8831aa38f647e6
+Merge: e32bda3 f5e8e37
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Sun Apr 28 20:36:52 2013 +1000
+
+    Merge remote-tracking branch 'bernardn/auto_select_two_candidates_inputs' into 1.6
+
+commit e32bda3276868d140d74a9f4291b4bb475a2215d
+Merge: ea2795b 5d34900
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Thu Apr 25 21:51:36 2013 +1000
+
+    Merge remote-tracking branch 'bernardn/candidates_list_visible' into 1.6
+    
+    Conflicts:
+    	engine/table.py
+
+commit ea2795bdcd5ab6d67e865f3e5fc715096d59d0a6
+Merge: c029e9f 99b16e2
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Fri Apr 19 02:03:58 2013 -0700
+
+    Merge pull request #12 from mike-fabian/add-man-page-and-apply-autoselect-dconf-value-immediately
+    
+    Add man page and apply autoselect dconf value immediately
+
+commit 99b16e2159ba4234f4f804fe10348c9f3b2a8000
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 18 12:10:50 2013 +0200
+
+    Add man page for ibus-table-createdb
+    
+    See https://bugzilla.redhat.com/show_bug.cgi?id=948454
+
+commit 5d34900e60b4abd582b69feb3d843fe2e4cee695
+Author: Bernard Nauwelaerts <bernard.nauwelaerts@credoc.be>
+Date:   Mon Mar 25 17:10:47 2013 +0100
+
+    Add always_show_lookup property
+
+commit f5e8e371d6738385e7a97b0f62994947c116a137
+Author: Bernard Nauwelaerts <bernard.nauwelaerts@credoc.be>
+Date:   Mon Mar 25 12:22:51 2013 +0100
+
+    auto_select : commit when enter key pressed.
+
+commit ef81ce4ec029f3b03bda347e0e469d94d101937e
+Author: Bernard Nauwelaerts <bernard.nauwelaerts@credoc.be>
+Date:   Mon Mar 25 11:24:47 2013 +0100
+
+    auto_select : commit when tab key pressed.
+
+commit 3b78b86df6171ac4add0c4df7d7ae5eeb18a7e91
+Author: Bernard Nauwelaerts <bernard.nauwelaerts@credoc.be>
+Date:   Mon Mar 25 11:23:51 2013 +0100
+
+    auto_select : commit previous entry when the last one has also candidates.
+
+commit c2fbde2fc7dcb0b2b09c8300ae079240ec790266
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Mar 5 07:37:43 2013 +0100
+
+    Apply change in autoselect dconf value immediately
+    
+    Changing the other dconf values was applied immediately but
+    this did not yet work for the “autoselect” option, recently
+    added by Bernard Nauwelaerts.
+
+commit 458420dda7e4a353b4d912641d12bda1731f01f0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Mar 5 06:44:55 2013 +0100
+
+    Fix typos in comment
+
+commit c029e9f132a044265b92822e01e95df6165b9cd5
+Merge: d31c8d9 9497457
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Sun Feb 17 01:26:48 2013 -0800
+
+    Merge pull request #10 from mike-fabian/mike-collected-changes-on-kaio-1.6-branch
+    
+    Mike collected changes on kaio 1.6 branch
+
+commit 949745757b8028c40c30d9fb8f230536faacb98b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Feb 4 19:33:59 2013 +0100
+
+    Support uppercase umlauts
+    
+    Needed for translit.txt and translit-ua.txt. This should be solved in
+    a better, more generic way. But at the moment this patch is better
+    than nothing.
+
+commit 9eb482d08c541ed042a3946be8c9a4a343b532b4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jan 10 11:37:59 2013 +0100
+
+    Changes in dconf values now get applied immediately
+    
+    Changing values of dconf keys for example with
+    
+       dconf write /desktop/ibus/engine/table/cangjie3/chinesemode 3
+    
+    was not applied immediately to the ibus-table engine, only
+    when changing to a different input method and back this
+    change was applied.
+    
+    This commit fixes this problem.
+
+commit 3b7a3530c42766b801cded26b3bc269222c3fb0a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Feb 14 18:21:57 2013 +0100
+
+    Preedit needs to be updated on page-up and page-down
+    
+    When paging through the lookup table, the preedit needs to be updated
+    to show the phrase selected by the cursor in the lookup table. Before
+    this patch, the preedit was not updated and when commiting the
+    character selected in the lookup table suddenly replaced the character
+    in the preedit. This differed from the behaviour when moving through
+    the lookup table with the arrow-up and arrow-down keys.
+    Using page-up and page-down or the arrow icons at the bottom
+    of the lookup table should also update the preedit just like it
+    is done when the arrow-up and arrow-down keys are used.
+
+commit a42c1d351e3b1264186f99e5d0febc784063ffb9
+Author: bnauwelaerts <bnauwelaerts@cli0189.fednot.be>
+Date:   Thu Feb 7 10:30:23 2013 +0100
+
+    Defaults _auto_select to False for tables that doesnt contain this attribute
+
+commit 3d03bd8f8c558392db42897370cef65bdbad57bd
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 5 09:11:17 2013 +0100
+
+    Fall back to auto_select = False if neither dconf nor the table have a value for auto_select
+
+commit 2baa9c3ff258c0623b4777f2c537467339cdcef6
+Author: bnauwelaerts <bnauwelaerts@cli0189.fednot.be>
+Date:   Sat Feb 2 17:22:40 2013 +0100
+
+    Update cmode pproperty in chinese mode only
+
+commit a55783887e757f02078143c2d12031a33c9e9223
+Author: bnauwelaerts <bnauwelaerts@cli0189.fednot.be>
+Date:   Sat Feb 2 13:03:48 2013 +0100
+
+    Add auto_select functionality to select the first phrase when typing. Useful for Cyrillic transliteration.
+
+commit a85b8b90c21cafc13079c17b35cf021dbf0a6475
+Author: bnauwelaerts <bnauwelaerts@cli0189.fednot.be>
+Date:   Sat Feb 2 17:22:40 2013 +0100
+
+    Update cmode pproperty in chinese mode only
+
+commit f0f4ee216788fd901c3ef91c90f9ce4bede88862
+Author: bnauwelaerts <bnauwelaerts@cli0189.fednot.be>
+Date:   Sat Feb 2 13:03:48 2013 +0100
+
+    Add auto_select functionality to select the first phrase when typing. Useful for Cyrillic transliteration.
+
+commit 03cba776da99b05218c2b1c86f3e93d3373f253e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 30 07:41:54 2013 +0100
+
+    Fix typo, thanks to Mathieu Bridon
+
+commit 5b434df882093a3def36585582c84950ce7e3b52
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 28 15:15:10 2013 +0100
+
+    add engine/chinese_variants.py to engine/Makefile.am
+    
+    Needed by
+    
+    commit f17e9b3aecea7b6646da689a466341936bce1ee3
+    Author: Mike FABIAN <mfabian@redhat.com>
+    Date:   Thu Jan 24 17:37:27 2013 +0100
+    
+        Improve detection of simplified and traditional Chinese
+
+commit 04e3be2bb27cf4e088e7c41f01356f10b29660ce
+Author: Limao Luo <luolimao@gmail.com>
+Date:   Sun Jan 27 12:19:41 2013 -0500
+
+    explicitly call python2 in shebang line for more portability
+
+commit f17e9b3aecea7b6646da689a466341936bce1ee3
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jan 24 17:37:27 2013 +0100
+
+    Improve detection of simplified and traditional Chinese
+    
+    Resolves:  #857967 https://bugzilla.redhat.com/show_bug.cgi?id=857967
+    
+    see also http://code.google.com/p/ibus/issues/detail?id=1492
+    “unable to write 晞 with any of the two Wubi input methods”
+    晞 (wubi code = JQDH) cannot be written.
+    
+    - add a script generate-chinese-variants.py which parses
+      Unihan_Variants.txt from the Unihan database and generates another
+      Python script.  The generated Python script contains a hash table
+      with information which characters are simplified, which
+      characters are traditional and which characters are both and
+      a small function using that hash table to detect whether a string
+      is traditional or simplified Chinese or both.
+    - use the generated script and function in tabsqlitedb.py instead
+      of the old way to distinguish between simplified and tradtional
+      Chinese which used test encoding to legacy encodings like gb2312
+      and big5hkscs.
+    
+    The new way of simplified/traditional detection should give
+    better results. 晞 from issue 1492 is now classified as both
+    traditional and simplified Chinese, not only traditional as it
+    was with the old detection code.
+
+commit 1c316e066f88f9555de5407f00b4be0b076fd42c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jan 24 12:47:19 2013 +0100
+
+    Make comments about _chinese_mode clearer
+    
+    There was one obvious typo and the comments did not explain
+    the meaning of _chinese_mode clearly.
+
+commit d31c8d94eb05a33c9eaf6c79b24cdb0b289bba76
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Wed Jan 16 07:54:56 2013 +1000
+
+    Fixed release flag check for if timestamp is suffixed.
+
+commit 7a3f0d9d75fd36575a5e581830c4a57b07b2e7ad
+Author: Caius "kaio" CHANCE <me@kaio.net>
+Date:   Wed Jan 16 07:45:35 2013 +1000
+
+    Update author list.
+
+commit e663a176bf797cc523be7541e0dc7318eef7466e
+Merge: dca5eda 0b8bec0
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Wed Jan 9 14:44:25 2013 -0800
+
+    Merge pull request #4 from mike-fabian/mike-fix-typo-in-chinese-mode-variable
+    
+    Mike fix typo in chinese mode variable
+
+commit dca5edae81cc70d82099e9ccdca38052523196f9
+Merge: ea29e27 5ecc6d9
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Wed Jan 9 14:42:31 2013 -0800
+
+    Merge pull request #3 from mike-fabian/mike-make-cursor-in-lookup-table-visible
+    
+    Make cursor in lookup table always visible
+
+commit 0b8bec02a2f510e91f1ecd4febd67fe0132e4414
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 9 16:59:13 2013 +0100
+
+    When detecting the Chinese mode from the environment, also check LC_ALL
+    
+    LC_ALL has even higher priority then LC_CTYPE and should be checked
+    first.
+
+commit 9e963b5c813090ca389f78740e60965104944d93
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 9 16:53:20 2013 +0100
+
+    Fix typo in self._chinese_mode variable
+    
+    When porting to GObjectIntrospection, I made a typing mistake
+    in the self._chinese_mode variable. This caused a problem when
+    the dconf key for “chinesemode” was not yet set. Then the property
+    for selecting the Chinese mode in the ibus menu was empty and
+    and selecting the empty line with the mouse just caused an error.
+    
+    This commit fixes this.
+
+commit 5ecc6d941cbce800c96438c8c57bb8dc6fcf4525
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 8 17:53:09 2013 +0100
+
+    Make cursor in lookup table always visible
+    
+    The cursor in the lookup table was always visible before porting to
+    GObjectIntrospection. So it should behave the same way after porting.
+
+commit ea29e278c90b55f910e656f1b192df288e59d563
+Merge: b899a0a 526b8cf
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Tue Jan 8 00:04:24 2013 -0800
+
+    Merge pull request #2 from mike-fabian/mike-porting
+    
+    Finished Xiaojun Ma’s work of porting to Gobject Introspection.
+
+commit 526b8cf4e395dd8c6333b3ed4185596b1196fad8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 7 01:49:09 2013 +0100
+
+    finish porting to gi
+
+commit 6d78cab7069d7873b90391a75aa5d2d15220913a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 7 01:50:14 2013 +0100
+
+    add *.pyc to .gitignore
+
+commit ca049a01f21852586e5ebf894513a6e7a0539ba2
+Author: Ma Xiaojun <damage3025@gmail.com>
+Date:   Tue Nov 20 23:33:11 2012 -0600
+
+    start porting to gi
+
+commit b899a0a33f015606b43ee2b63eb999dadfbb3a0e
+Merge: 52ec65d 12abcdb
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Thu Jan 3 17:06:11 2013 +1000
+
+    Merge remote-tracking branch 'mike-fabian/some-fixes-for-rel20121101' into 1.5.0
+
+commit 367c14657c203528dac72c085b10129c4a03f9f4
+Author: Anthony Wong <anthony.wong@ubuntu.com>
+Date:   Tue Dec 4 00:39:06 2012 +0800
+
+    Catch exception when reading ~/.ibus/byo-tables so the process won't halt.
+
+commit 52ec65d94b69f8f4e06325a7cb18f0d8ed4f707a
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Fri Nov 30 17:48:03 2012 +1000
+
+    Patch for regression of select_keys option on table sources. (bochecha)
+
+commit cd1120969f4a5cb1269f69b349f89b3b1c434e59
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Wed Nov 21 01:04:13 2012 +0800
+
+    Direct input ascii char for English mode on empty
+    
+    Do the same input untranslated ascii directly when panel is empty for
+    the English mode.
+
+commit 7a7c6fe600a917b989c514c1014047bf7c35e34f
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Tue Nov 20 23:53:15 2012 +0800
+
+    Input untranslated ascii directly when panel is empty
+    
+    Some applications only accept directly input ascii as command input.
+    Character fed through xim commit will not work as intent.
+    
+    When there were no candidates, we treated all the un-translated
+    (b/w half/full width) ascii chars as direct input chars.
+
+commit 5c5a2415680af7dee99e9bbce84872ba570ee1a4
+Merge: b40c6f3 aadfdb0
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sun Nov 18 23:44:41 2012 +0800
+
+    Merge remote-tracking branch 'kaio/ibus-setup-table-639' into save-user-db
+    
+    Conflicts:
+    	engine/main.py
+
+commit b40c6f3c595498e55222ca126c2e808cabe145ee
+Merge: d5b9f9c d1b8d13
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sun Nov 18 21:44:22 2012 +0800
+
+    Merge remote-tracking branch 'kaio/1.5.0' into save-user-db
+    
+    Conflicts:
+    	engine/main.py
+
+commit 12abcdbdc55aa1f25fcbe725ce70765b8519674e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 13 10:24:13 2012 +0100
+
+    Do not fail if the ~/.ibus/byo-tables/ directory does not exist
+    
+    “/usr/libexec/ibus-engine-table --xml” aborted with an error
+    if ~/.ibus/byo-tables did not exist.
+
+commit 325158739a399c1137d48562bcee1550bd96953f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 13 09:02:38 2012 +0100
+
+    Add some generated files to .gitignore
+
+commit 7fa914591d2f5be7b93100f7d5ef3798b1a41399
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 13 08:34:54 2012 +0100
+
+    Add German translation
+
+commit 8099bc679dfb78f874d77a4188e34d572edae3b6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 13 08:32:24 2012 +0100
+
+    update zh_??.po files
+
+commit ab19e1a63f73040bd7f423923b0e886d8c87bd54
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 13 07:59:07 2012 +0100
+
+    Fix marking of translatable strings for gettext
+    
+    was broken in:
+    
+    commit 6d2ab577c41c9b07a84c049137c8184bb67f5e30
+    Author: Caius 'kaio' Chance <me@kaio.net>
+    Date:   Fri Oct 5 10:40:47 2012 +1000
+    
+        Refactor _refresh_properties() function.
+
+commit d1b8d136a4371c77b377f9c4276c7783dc69df52
+Merge: af0eb0a 37802fc
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Mon Nov 12 02:51:06 2012 +1000
+
+    Merge remote-tracking branch 'mozbugbox/tools' into rel201212
+
+commit af0eb0a549a803d9bbfa297251bea2f3cf8ee440
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Thu Nov 1 21:03:16 2012 +0800
+
+    Left ALT key to cycle candidates in the current page
+
+commit aadfdb095e313cc2446c1feb99f51cdaae40468d
+Merge: 56036a6 001ee4a
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Mon Nov 12 01:55:55 2012 +1000
+
+    Merge branch 'master' into ibus-setup-table-639
+    
+    Conflicts:
+    	engine/main.py
+
+commit 001ee4acf2dc01e3b8291dbdb110bce005e4d0e8
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Mon Nov 12 01:00:34 2012 +1000
+
+    Corrected release checking in configure.ac.
+
+commit d5b9f9caeb6cd5b0686590070d73ea8ac660b24b
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Thu Nov 1 12:22:16 2012 +0800
+
+    Sync user db on engine destroy
+
+commit b3e9a57f3dd8ac291adf3478a81ae8181e958e24
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sun Oct 28 23:30:54 2012 +0800
+
+    Avoid flashing by moving combobox renderer creation to front
+
+commit f78dffa470607b1137c629bac3f6ba01061acb47
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sun Oct 28 19:36:16 2012 +0800
+
+    Update debian/ content
+
+commit 5d88bb3fef806f4feaef239e4fd78970e19d115a
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sun Oct 28 19:32:22 2012 +0800
+
+    Save user database periodically to avoid data loss
+    
+    Periodically sync mudb content to usrdb so we don't loss user created
+    phrase and freq when crash.
+    
+    Currently the interval is set to 16 input ops or 30 seconds between
+    saving.
+
+commit 06ea923b4dc989e7e18f14718a634c5712141207
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sun Oct 28 19:29:43 2012 +0800
+
+    Speedup sync_usrdb()
+    
+     * Remove unneeded commits
+     * Clear in-memory mudb content once synced
+     * return immediately if user_db is None (which means use in-memory db)
+
+commit 37802fc37ad8f559ffa16bcb4c59f3afa4f1e2a4
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sat Oct 20 15:38:37 2012 +0800
+
+    Skip None entries when print keyboard value.
+
+commit c642db82e2588a6b913a090c2b7ed0ed1cd220c4
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sat Oct 13 15:23:09 2012 +0800
+
+    Add a tool to dump ibus table database
+    
+    ibus-table-query is a handy tool to see what's in the phrase table
+    database.
+    
+        $ ./ibus-table-query -t wubi-haifeng86 aeq
+        Using table: /usr/share/ibus-table/tables/wubi-haifeng86.db
+        mlen clen m0   m1   m2   m3   category  user_freq freq      phrase
+        ==================================================================
+        4    2    a|1  e|5  q|17 d|4  3         0         2292000   菜肴
+        4    2    a|1  e|5  q|17 c|3  3         0         552200    菜色
+        4    2    a|1  e|5  q|17 n|14 1         0         1266000   菜馆
+        4    2    a|1  e|5  q|17 y|25 3         0         6350000   菜鸟
+        4    1    a|1  e|5  q|17 k|11 2         0         1000      葋[U+844B]
+    
+        $ ./ibus-table-query -t wubi-haifeng86 菜
+        Using table: /usr/share/ibus-table/tables/wubi-haifeng86.db
+        mlen clen m0   m1   m2   m3   category  user_freq freq      phrase
+        ==================================================================
+        2    1    a|1  e|5            3         0         1132      菜[U+83DC]
+        3    1    a|1  e|5  s|19      3         0         1132      菜[U+83DC]
+        4    1    a|1  e|5  s|19 u|21 3         0         1132      菜[U+83DC]
+
+commit bf91ed7464043b26fb9dbf4e33be220cb8dd09eb
+Merge: d4e9471 b60898c
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Fri Oct 12 07:56:49 2012 +1000
+
+    Merge branch 'byo-table-db-614' into rel20121101
+
+commit b60898c58d4195cbfbd46f2de7b9adac9fb6cbc5
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Fri Oct 12 07:54:18 2012 +1000
+
+    Improved naming of variables related to user provided (BYO) tables.
+
+commit cf17aa8d474f0f11141c9cf1a93bf2c1ca3cb1ae
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Fri Oct 12 00:08:06 2012 +1000
+
+    (WIP) Add database load in factory when it is not located in system table path, but in user's home directory. Path checking is still a dirty hack but worked at this stage. Need some tidy-up.
+
+commit 56036a6a755d133a65f56f08494b04de82ce73f2
+Merge: d4e9471 7689c95
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Thu Oct 11 22:07:40 2012 +1000
+
+    Merge remote-tracking branch 'mozbugbox/ibus-setup-table' into ibus-setup-table
+
+commit 7689c958238c18c86972cc7964d4cf7d26a29e51
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Thu Oct 11 16:25:53 2012 +0800
+
+    Setup: Add table information to About page
+
+commit e05c13fecc7957433066e34027864f7fc6db66e7
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Thu Oct 11 15:35:30 2012 +0800
+
+    Add an ibus-table-setup to set ibus table engine
+    
+    The setup app can be accessed from:
+      ibus Preferences -> Input Method -> select a method -> Preferences
+    
+    The code and ui were adapted from
+    
+     * ibus-setup-pinyin
+     * https://github.com/maxiaojun/ibus-table-setup
+
+commit d4e9471570481dd22a9a28e1473813ed4cf57582
+Merge: e24b74a 87e2bf7
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Thu Oct 11 10:29:14 2012 +1000
+
+    Merge branch 'space-key-for-lookup-next-page-861' into rel20121101
+
+commit 87e2bf7288aae20a46cc76939a110b511fd60b79
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Thu Oct 11 10:24:31 2012 +1000
+
+    Recognize space key as page_down/next-page, if a table specified it as one of the page_down_keys.
+
+commit e24b74a7243a946dff4639d9c686ac72d57e114e
+Merge: 7419897 eadb7bf
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Wed Oct 10 13:25:13 2012 +1000
+
+    Merge branch 'page-size-from-table' into rel20121101
+
+commit eadb7bf9a833978a152d3537a73223ec45701025
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Wed Oct 10 13:23:37 2012 +1000
+
+    Add fallback of lookup page size, determined by number of candidate select keys.
+
+commit 741989758a9f858897586158db18893a2bc0bab9
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Tue Oct 9 00:11:45 2012 +0800
+
+    Add a "." to candidate label text
+
+commit 2ad241d7a32357b4783217be3035eb2597c30611
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Mon Oct 8 17:26:24 2012 +0800
+
+    Make select_keys actually functional
+    
+    Tables can actually use the SELECT_KEYS setting to make select
+    keys non-integer. Useful for Four Corner Input like IM.
+
+commit 02ddfba26e47bdffc5a6a22d299d06d49d7bc1ea
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sun Oct 7 17:12:14 2012 +0800
+
+    Add button hotkey info to the input panel tooltip text
+
+commit 1c3d1d6be632539cbe05e5f7a51a907f4706285b
+Merge: 4f9689c b9cec4c
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Sun Oct 7 18:20:08 2012 +1000
+
+    Merge branch 'lookup-orient-from-table-1475' into rel20121101
+
+commit b9cec4cef0d1ebf72a6922fd3c3a29315c0fd4eb
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Sun Oct 7 18:17:34 2012 +1000
+
+    Get default lookup orientation per table from table sources.
+
+commit 56bd4621e5f8713f790e5de0ed7b7740113bee1d
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Sat Oct 6 22:48:49 2012 +1000
+
+    WIP to get table .db files in user home directory. Path in factory.py also needs changes.
+
+commit 4f9689c395b78b22ae391d2e786f53670893bb20
+Merge: 1925a75 97cee5a
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Sat Oct 6 18:16:29 2012 +1000
+
+    Merge branch 'page-size-from-table' into rel20121101
+
+commit 1925a759c148147d508fb483a2b475cc2b3e931c
+Merge: 0d7670d 6d2ab57
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Sat Oct 6 18:16:11 2012 +1000
+
+    Merge branch 'refactor-set-property' into rel20121101
+
+commit 0d7670d32c86cd63a4f98beb05e095348607cb58
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Sat Oct 6 18:15:11 2012 +1000
+
+    Update ChangeLog.
+
+commit 97cee5a8324ce2aca99f3465cc37a507bd8bbcf5
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Sat Oct 6 17:35:09 2012 +1000
+
+    Add page_size property for the tables.
+
+commit 6d2ab577c41c9b07a84c049137c8184bb67f5e30
+Author: Caius 'kaio' Chance <me@kaio.net>
+Date:   Fri Oct 5 10:40:47 2012 +1000
+
+    Refactor _refresh_properties() function.
+
 commit f118dba1b194a6adb6c4854da74d2fa297f077e7
 Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Wed Oct 3 17:11:46 2012 +1000

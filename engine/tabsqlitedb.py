@@ -694,8 +694,8 @@ class tabsqlitedb:
         return sorted(candidates,
                       key=lambda x: (
                           - int(
-                              len(typed_tabkeys) == len(x[0])
-                          ), # exact length matches first!
+                              typed_tabkeys == x[0]
+                          ), # exact matches first!
                           -1*x[3],   # user_freq descending
                           -1*x[2],   # freq descending
                           len(x[0]), # len(tabkeys) ascending
@@ -703,7 +703,7 @@ class tabsqlitedb:
                           ord(x[1][0]) # Unicode codepoint of first character of phrase
                       ))[:100]
 
-    def select_words(self, tabkeys=u'', onechar=False, bitmask=0xff):
+    def select_words(self, tabkeys=u'', onechar=False, bitmask=0xff, single_wildcard_char=u'?', multi_wildcard_char=u'*', auto_wildcard=True):
         '''
         Get matching phrases for tabkeys from the database.
         '''
@@ -724,7 +724,14 @@ class tabsqlitedb:
             WHERE tabkeys LIKE :tabkeys %(one_char_condition)s
         )
         ''' % {'one_char_condition': one_char_condition}
-        sqlargs = {'tabkeys': tabkeys+'%%'}
+        tabkeys_for_like = tabkeys
+        if single_wildcard_char:
+            tabkeys_for_like = tabkeys_for_like.replace(single_wildcard_char, '_')
+        if multi_wildcard_char:
+            tabkeys_for_like = tabkeys_for_like.replace(multi_wildcard_char, '%%')
+        if auto_wildcard:
+            tabkeys_for_like += '%%'
+        sqlargs = {'tabkeys': tabkeys_for_like}
         unfiltered_results = self.db.execute(sqlstr, sqlargs).fetchall()
         if not bitmask or bitmask == 0xff:
             results = unfiltered_results

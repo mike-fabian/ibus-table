@@ -28,45 +28,6 @@ import sqlite3
 
 TABLE_DIR = "/usr/share/ibus-table/tables/"
 
-tab_dict = {
-    'a':1, 'b':2, 'c':3, 'd':4, 'e':5,
-    'f':6, 'g':7, 'h':8, 'i':9, 'j':10,
-    'k':11, 'l':12, 'm':13, 'n':14, 'o':15,
-    'p':16, 'q':17, 'r':18, 's':19, 't':20,
-    'u':21, 'v':22, 'w':23, 'x':24, 'y':25,
-    'z':26, "'":27, ';':28, '`':29, '~':30,
-    '!':31, '@':32, '#':33, '$':34, '%':35,
-    '^':36, '&':37, '*':38, '(':39, ')':40,
-    '-':41, '_':42, '=':43, '+':44, '[':45,
-    ']':46, '{':47, '}':48, '|':49, '/':50,
-    ':':51, '"':52,  '<':53, '>':54, ',':55,
-    '.':56, '?':57, '\\':58, 'A':59, 'B':60,
-    'C':61, 'D':62, 'E':63, 'F':64, 'G':65,
-    'H':66, 'I':67, 'J':68, 'K':69, 'L':70,
-    'M':71, 'N':72, 'O':73, 'P':74, 'Q':75,
-    'R':76, 'S':77, 'T':78, 'U':79, 'V':80,
-    'W':81, 'X':82, 'Y':83, 'Z':84, '0':85,
-    '1':86, '2':87, '3':88, '4':89, '5':90,
-    '6':91, '7':92, '8':93, '9':94,
-    # for translit
-    'ä':95,
-    'ö':96,
-    'ü':97
-    }
-
-def is_keys(keys):
-    ret = True
-    for i in keys:
-        if i not in tab_dict:
-            ret = False
-            break
-    return ret
-
-def parse_keys(keys):
-    """Give a string of chars, return a list of integer from tab_dict"""
-    ikeys = [tab_dict.get(x, -1) for x in keys]
-    return ikeys
-
 def list_tables(cursor):
     """List sql tables in a given sqlite database"""
     tables = cursor.execute("SELECT * FROM sqlite_master WHERE type='table';")
@@ -84,14 +45,15 @@ def get_table_sql(cursor, name):
 
 def get_table_path(name):
     """Given a filename, return the full path to the ibus table sqlite file."""
-    table_path = None
     if name.startswith("/"):
         if os.path.exists(name):
-            table_path = name
+            return name
+        else:
+            return None
     else:
         tablename = None
         for fname in os.listdir(TABLE_DIR):
-            if fname.startswith(name):
+            if fname.startswith(name) and fname.endswith('.db'):
                 tablename = fname
                 break
         if not tablename or (
@@ -102,26 +64,20 @@ def get_table_path(name):
             if not tablename:
                 print("No table: {}".format(name))
                 sys.exit(2)
-        table_path = os.path.join(TABLE_DIR, tablename)
-    return table_path
+        return os.path.join(TABLE_DIR, tablename)
 
-def query_keys(cursor, keys):
-    if is_keys(keys):
-        cond = ["m{} = ?".format(x) for x in range(len(keys))]
-        log.debug("Condition: {}".format(cond))
-        _condition = "AND ".join(cond)
-        ikeys = parse_keys(keys)
-    else:
-        cond = ["phrase = ?".format(x) for x in range(len(keys))]
-        _condition = "AND ".join(cond)
-        ikeys = [keys]
-
-    sqlstr = '''SELECT * FROM (SELECT * FROM main.phrases WHERE %(condition)s)
-        ORDER BY phrase ASC, freq DESC;''' % {'condition':_condition}
+def query_keys(cursor, tabkeys):
+    sqlstr = '''
+    SELECT tabkeys, phrase, freq, user_freq FROM main.phrases
+    WHERE tabkeys LIKE :tabkeys
+    ORDER BY phrase ASC, freq DESC;
+    '''
+    sqlargs = {'tabkeys': tabkeys+'%%'}
     log.debug("sqlstr: {}".format(sqlstr))
+    log.debug("sqlargs: {}".format(sqlargs))
 
-    result = cursor.execute(sqlstr, ikeys)
-    return result
+    result = cursor.execute(sqlstr, sqlargs)
+    return list(result)
 
 def print_result(table_sql, result):
     """@result: sqlite execute result.
@@ -130,26 +86,19 @@ def print_result(table_sql, result):
     pidx = table_sql.find("(") + 1
     pidx2 = table_sql.find(")", pidx)
     headers = [x.split()[0] for x in table_sql[pidx:pidx2].split(",")][1:]
-    headers[-1], headers[-3] = headers[-3], headers[-1]
-    format_str = "{}{}{}".format("{:5s}"*2, "{:5s}"*(len(headers)-6), "{:10s}"*4)
+    format_str = "{}".format("{:16s}"*4)
     headers = format_str.format(*headers)
     print(headers)
     print("="*len(headers.rstrip()))
-
-    tab_dict_rev = {v: k for k,v in tab_dict.items()}
     for row in result:
         row = list(row)
-        for i in range(3, len(row) - 4):
-            if row[i]:
-                row[i] = "{}|{: <2}".format(tab_dict_rev.get(row[i]), row[i])
         if sys.version_info >= (3,0,0): # Python3
-            row_str = [str(x).strip() if x is not None else " " for x in row]
+            row_str = [str(x).strip() for x in row]
         else:
-            row_str = [unicode(x).strip() if x is not None else " " for x in row]
-        row_str[-1], row_str[-3] = row_str[-3], row_str[-1]
-        if len(row_str[-1]) == 1:
-            row_str[-1] += "[U+{:X}]".format(ord(row_str[-1]))
-        line = format_str.format(*row_str[1:])
+            row_str = [unicode(x).strip() for x in row]
+        if len(row_str[1]) == 1:
+            row_str[1] += "[U+{:X}]".format(ord(row_str[1]))
+        line = format_str.format(*row_str)
         print(line)
 
 def parse_args():
@@ -178,7 +127,7 @@ def main():
 
     table_path = get_table_path(table_prefix)
     if not table_path:
-        print('Table "{}" does not exists'.format(table_prefix))
+        print('Table "{}" does not exist.'.format(table_prefix))
         sys.exit(1)
     print("Using table: {}".format(table_path))
     log.debug("table path: {}".format(table_path))

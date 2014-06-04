@@ -206,7 +206,7 @@ class KeyEvent:
 
 class editor(object):
     '''Hold user inputs chars and preedit string'''
-    def __init__ (self, config, valid_input_chars, single_wildcard_char, multi_wildcard_char, auto_wildcard, max_key_length, database):
+    def __init__ (self, config, valid_input_chars, pinyin_valid_input_chars, single_wildcard_char, multi_wildcard_char, auto_wildcard, max_key_length, database):
         self.db = database
         self._config = config
         engine_name = os.path.basename(self.db.filename).replace('.db', '')
@@ -214,6 +214,7 @@ class editor(object):
         self._max_key_length = int(max_key_length)
         self._max_key_length_pinyin = 7
         self._valid_input_chars = valid_input_chars
+        self._pinyin_valid_input_chars = pinyin_valid_input_chars
         self._single_wildcard_char = single_wildcard_char
         self._multi_wildcard_char = multi_wildcard_char
         self._auto_wildcard = auto_wildcard
@@ -404,7 +405,7 @@ class editor(object):
         '''
         if (self._chars_invalid
             or (not self._py_mode and (c not in self._valid_input_chars))
-            or (self._py_mode and (c not in u'abcdefghijklmnopqrstuvwxyz!@#$%'))):
+            or (self._py_mode and (c not in self._pinyin_valid_input_chars))):
             self._chars_invalid += c
         else:
             self._chars_valid += c
@@ -763,7 +764,10 @@ class editor(object):
         if self._py_mode and self.db._is_chinese:
             self._candidates = self.db.select_chinese_characters_by_pinyin(
                 tabkeys=self._chars_valid,
-                bitmask=bitmask)
+                bitmask=bitmask,
+                single_wildcard_char=self._single_wildcard_char,
+                multi_wildcard_char=self._multi_wildcard_char,
+                auto_wildcard=self._auto_wildcard)
         else:
             self._candidates = self.db.select_words(
                 tabkeys=self._chars_valid,
@@ -1085,6 +1089,7 @@ class tabengine (IBus.Engine):
         self._status = self.db.ime_properties.get('status_prompt')
         # now we check and update the valid input characters
         self._valid_input_chars = self.db.ime_properties.get('valid_input_chars')
+        self._pinyin_valid_input_chars = u'abcdefghijklmnopqrstuvwxyz!@#$%'
         self._single_wildcard_char = self.db.ime_properties.get('single_wildcard_char')
         if not self._single_wildcard_char:
             self._single_wildcard_char = '?'
@@ -1094,6 +1099,8 @@ class tabengine (IBus.Engine):
 
         self._valid_input_chars += self._single_wildcard_char
         self._valid_input_chars += self._multi_wildcard_char
+        self._pinyin_valid_input_chars += self._single_wildcard_char
+        self._pinyin_valid_input_chars += self._multi_wildcard_char
         self._auto_wildcard = self.db.ime_properties.get('auto_wildcard')
         if self._auto_wildcard and self._auto_wildcard.lower() == u'false':
             self._auto_wildcard = False
@@ -1110,11 +1117,14 @@ class tabengine (IBus.Engine):
         # config module
         self._config = self._bus.get_config ()
         self._config.connect ("value-changed", self.config_value_changed_cb)
-        self._editor = editor(self._config, self._valid_input_chars,
+        self._editor = editor(self._config,
+                              self._valid_input_chars,
+                              self._pinyin_valid_input_chars,
                               self._single_wildcard_char,
                               self._multi_wildcard_char,
                               self._auto_wildcard,
-                              self._max_key_length, self.db)
+                              self._max_key_length,
+                              self.db)
 
         self._page_up_keys = [
             IBus.KEY_Page_Up,
@@ -2119,7 +2129,7 @@ class tabengine (IBus.Engine):
         if (keychar
             and (keychar in self._valid_input_chars
                  or (self._editor._py_mode
-                     and keychar in u'abcdefghijklmnopqrstuvwxyz!@#$%'))):
+                     and keychar in self._pinyin_valid_input_chars))):
             if debug_level > 0:
                 sys.stderr.write('_table_mode_process_key_event() valid input: ')
                 sys.stderr.write('repr(keychar)=%(keychar)s\n' %{'keychar': keychar})

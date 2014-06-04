@@ -764,7 +764,7 @@ class tabsqlitedb:
             candidates=phrase_frequencies.values())
         return best
 
-    def select_chinese_characters_by_pinyin(self, tabkeys=u'', bitmask=0xff):
+    def select_chinese_characters_by_pinyin(self, tabkeys=u'', bitmask=0xff, single_wildcard_char=u'?', multi_wildcard_char=u'*', auto_wildcard=True):
         '''
         Get Chinese characters matching the pinyin given by tabkeys
         from the database.
@@ -775,7 +775,13 @@ class tabsqlitedb:
         SELECT pinyin, zi, freq FROM main.pinyin WHERE pinyin LIKE :tabkeys
         ORDER BY freq DESC, pinyin ASC
         ;'''
-        sqlargs = {'tabkeys': tabkeys+'%%'}
+        tabkeys_for_like = tabkeys
+        if single_wildcard_char:
+            tabkeys_for_like = tabkeys_for_like.replace(single_wildcard_char, '_')
+        if multi_wildcard_char:
+            tabkeys_for_like = tabkeys_for_like.replace(multi_wildcard_char, '%%')
+        tabkeys_for_like += '%%'
+        sqlargs = {'tabkeys': tabkeys_for_like}
         results = self.db.execute(sqlstr, sqlargs).fetchall()
         # now convert the results into a list of candidates in the format
         # which was returned before I simplified the pinyin database table.

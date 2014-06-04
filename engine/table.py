@@ -872,8 +872,10 @@ class editor(object):
 
             if self._py_mode:
                 aux_string = aux_string.replace('!','1').replace('@','2').replace('#','3').replace('$','4').replace('%','5')
-            for char in self._prompt_characters:
-                aux_string = aux_string.replace(char, self._prompt_characters[char])
+            else:
+                for char in self._prompt_characters:
+                    aux_string = aux_string.replace(
+                        char, self._prompt_characters[char])
             return aux_string
 
         # There are no input strings at the moment. But there could

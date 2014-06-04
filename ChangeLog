@@ -1,3 +1,89 @@
+commit 21448804bd27a77e9385406b2064d762311624a1
+Merge: 8ded23b c9f6a2b
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Wed Jun 4 22:19:34 2014 +1000
+
+    Merge pull request #38 from mike-fabian/add-support-for-wildcards
+    
+    Add support for wildcards
+
+commit c9f6a2bfe833da6f6a3d67546a89e0cefd886d83
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jun 4 12:45:19 2014 +0200
+
+    Don’t show the prompt characters defined in the table in pinyin mode in the auxiliary text
+
+commit 407d96f5e776f3543590fb2b459410892d64611b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jun 4 12:29:55 2014 +0200
+
+    Add wildcard support also to pinyin mode
+    
+    The wildcards used are the same as for table mode. I.e. if
+    the table defines:
+    
+        MULTI_WILDCARD_CHAR = *
+        SINGLE_WILDCARD_CHAR = ?
+    
+    the same wildcards are used for pinyin as well.
+    
+    The AUTO_WILDCARD in the table is ignored for pinyin mode though, it
+    is always treated as AUTO_WILDCARD = TRUE for pinyin mode, FALSE
+    does not make any sense for pinyin mode.
+
+commit 42b68588fbf8a94892f4767f5a0180d987243d31
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 3 16:43:04 2014 +0200
+
+    Add support for wildcards
+    
+    The options
+    
+    AUTO_WILDCARD, MULTI_WILDCARD_CHAR, and SINGLE_WILDCARD_CHAR
+    are now read from the table and used.
+    
+    The defaults are:
+    
+        AUTO_WILDCARD = TRUE
+        MULTI_WILDCARD_CHAR = *
+        SINGLE_WILDCARD_CHAR = ?
+    
+    Now one can use wildcards as in the following example for cangjie5:
+    “cangjie5.txt” contains:
+    
+        sqsf	馬	1000
+    
+    Now typing something like “s*f” or “s?sf” will match 馬.
+    
+    If AUTO_WILDCARD = TRUE, a multi wildcard character will always
+    be appended to the user input, for example typing “s” will
+    match like “s*”. Until now, ibus-table was always working like that.
+    Now it is possible to set AUTO_WILDCARD = FALSE to avoid that
+    automatic final wildcard and get only exact matches. This is
+    very rarely useful though, take care with that option, in most
+    cases this should be TRUE!
+
+commit 8ded23bf3744468f6bf2867912c350e042a2e6dc
+Merge: 834b1db 58ab974
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Tue Jun 3 16:57:15 2014 +1000
+
+    Merge pull request #37 from mike-fabian/adapt-ibus-table-query-to-the-new-database-format
+    
+    Adapt ibus table query to the new database format
+
+commit 58ab974582df90cee45579cf3419034be07ccdb1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 2 22:29:02 2014 +0200
+
+    Adapt tools/ibus-table-query to work with the new database format
+
+commit 834b1db8b481cd82d647f00758c45f7bf95940fd
+Author: Caius "kaio" Chance <caius.chance@gmail.com>
+Date:   Mon Jun 2 22:34:24 2014 +1000
+
+    Update version number and authors contacts.
+
 commit 78564ac272fa3aca313d383a39073fcfa78375c7
 Author: Caius "kaio" Chance <caius.chance@gmail.com>
 Date:   Mon Jun 2 22:19:05 2014 +1000

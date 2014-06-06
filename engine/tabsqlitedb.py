@@ -652,35 +652,26 @@ class tabsqlitedb:
         self.db.commit()
 
     def drop_indexes(self, database):
-        '''Drop the index in database to reduce it's size'''
-        sqlstr = '''
-            DROP INDEX IF EXISTS %(database)s.goucima_index_z;
-            DROP INDEX IF EXISTS %(database)s.pinyin_index_i;
-            DROP INDEX IF EXISTS %(database)s.phrases_index_p;
-            DROP INDEX IF EXISTS %(database)s.phrases_index_i;
-            VACUUM;
-            ''' %{'database':database}
+        '''Drop the indexes in the database to reduce its size
 
-        self.db.executescript(sqlstr)
-        self.db.commit()
+        We do not use any indexes at the moment, therefore this
+        function does nothing.
+        '''
+        return
 
     def create_indexes(self, database, commit=True):
-        if database == 'main':
-            sqlstr = '''
-            CREATE INDEX IF NOT EXISTS %(database)s.goucima_index_z ON goucima (zi);
-            CREATE INDEX IF NOT EXISTS %(database)s.pinyin_index_i ON pinyin (pinyin ASC, freq DESC);
-            ''' %{'database':database}
-            self.db.executescript (sqlstr)
+        '''Create indexes for the database.
 
-        sqlstr = '''
-        CREATE INDEX IF NOT EXISTS %(database)s.phrases_index_p ON phrases
-        (tabkeys ASC, freq DESC, id ASC);
-        CREATE INDEX IF NOT EXISTS %(database)s.phrases_index_i ON phrases
-        (phrase ASC);
-        ''' %{'database': database}
-        self.db.executescript (sqlstr)
-        if commit:
-            self.db.commit()
+        We do not use any indexes at the moment, therefore
+        this function does nothing. We used indexes before,
+        but benchmarking showed that none of them was really
+        speeding anything up, therefore we deleted all of them
+        to get much smaller databases (about half the size).
+
+        If some index turns out to be very useful in future, it could
+        be created here (and dropped in “drop_indexes()”).
+        '''
+        return
 
     def best_candidates(self, typed_tabkeys=u'', candidates=[]):
         '''

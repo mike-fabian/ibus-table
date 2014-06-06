@@ -673,7 +673,7 @@ class tabsqlitedb:
         '''
         return
 
-    def best_candidates(self, typed_tabkeys=u'', candidates=[]):
+    def best_candidates(self, typed_tabkeys=u'', candidates=[], chinese_mode=-1):
         '''
         “candidates” is an array containing something like:
         [(tabkeys, phrase, freq, user_freq), ...]
@@ -682,6 +682,25 @@ class tabsqlitedb:
         maybe only the beginning part of the “tabkeys” in a matched
         candidate.
         '''
+        maximum_number_of_candidates = 100
+        if chinese_mode in (2, 3) and self._is_chinese:
+            if chinese_mode == 2:
+                bitmask = (1 << 0) # used in simplified Chinese
+            else:
+                bitmask = (1 << 1) # used in traditional Chinese
+            return sorted(candidates,
+                          key=lambda x: (
+                              - int(
+                                  typed_tabkeys == x[0]
+                              ), # exact matches first!
+                              -1*x[3],   # user_freq descending
+                              # prefer characters used in the desired Chinese variant:
+                              -(bitmask & chinese_variants.detect_chinese_category(x[1])),
+                              -1*x[2],   # freq descending
+                              len(x[0]), # len(tabkeys) ascending
+                              x[0],      # tabkeys alphabetical
+                              ord(x[1][0]) # Unicode codepoint of first character of phrase
+                          ))[:maximum_number_of_candidates]
         return sorted(candidates,
                       key=lambda x: (
                           - int(
@@ -692,9 +711,9 @@ class tabsqlitedb:
                           len(x[0]), # len(tabkeys) ascending
                           x[0],      # tabkeys alphabetical
                           ord(x[1][0]) # Unicode codepoint of first character of phrase
-                      ))[:100]
+                      ))[:maximum_number_of_candidates]
 
-    def select_words(self, tabkeys=u'', onechar=False, bitmask=0xff, single_wildcard_char=u'?', multi_wildcard_char=u'*', auto_wildcard=True):
+    def select_words(self, tabkeys=u'', onechar=False, chinese_mode=-1, single_wildcard_char=u'?', multi_wildcard_char=u'*', auto_wildcard=True):
         '''
         Get matching phrases for tabkeys from the database.
         '''
@@ -724,7 +743,12 @@ class tabsqlitedb:
             tabkeys_for_like += '%%'
         sqlargs = {'tabkeys': tabkeys_for_like}
         unfiltered_results = self.db.execute(sqlstr, sqlargs).fetchall()
-        if not bitmask or bitmask == 0xff:
+        bitmask = None
+        if chinese_mode == 0:
+            bitmask = (1 << 0) # simplified only
+        elif chinese_mode == 1:
+            bitmask = (1 << 1) # traditional only
+        if not bitmask:
             results = unfiltered_results
         else:
             results = []
@@ -752,10 +776,11 @@ class tabsqlitedb:
                 )])
         best = self.best_candidates(
             typed_tabkeys=tabkeys,
-            candidates=phrase_frequencies.values())
+            candidates=phrase_frequencies.values(),
+            chinese_mode=chinese_mode)
         return best
 
-    def select_chinese_characters_by_pinyin(self, tabkeys=u'', bitmask=0xff, single_wildcard_char=u'?', multi_wildcard_char=u'*', auto_wildcard=True):
+    def select_chinese_characters_by_pinyin(self, tabkeys=u'', chinese_mode=-1, single_wildcard_char=u'?', multi_wildcard_char=u'*', auto_wildcard=True):
         '''
         Get Chinese characters matching the pinyin given by tabkeys
         from the database.
@@ -776,16 +801,22 @@ class tabsqlitedb:
         results = self.db.execute(sqlstr, sqlargs).fetchall()
         # now convert the results into a list of candidates in the format
         # which was returned before I simplified the pinyin database table.
+        bitmask = None
+        if chinese_mode == 0:
+            bitmask = (1 << 0) # simplified only
+        elif chinese_mode == 1:
+            bitmask = (1 << 1) # traditional only
         phrase_frequencies = []
         for (pinyin, zi, freq) in results:
-            if not bitmask or bitmask == 0xff:
+            if not bitmask:
                 phrase_frequencies.append(tuple([pinyin, zi, freq, 0]))
             else:
                 if bitmask & chinese_variants.detect_chinese_category(zi):
                     phrase_frequencies.append(tuple([pinyin, zi, freq, 0]))
         return self.best_candidates(
             typed_tabkeys=tabkeys,
-            candidates=phrase_frequencies)
+            candidates=phrase_frequencies,
+            chinese_mode=chinese_mode)
 
     def generate_userdb_desc (self):
         try:

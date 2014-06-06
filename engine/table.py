@@ -705,33 +705,6 @@ class editor(object):
         self._lookup_table.append_candidate (text)
         self._lookup_table.set_cursor_visible(True)
 
-    def filter_candidates (self, candidates):
-        '''Filter candidates if IME is Chinese'''
-        if not self._chinese_mode in(2,3) or self._py_mode:
-            return candidates[:]
-        candidates_used_in_simplified_chinese = []
-        candidates_used_in_traditional_chinese = []
-        candidates_used_only_in_simplified_chinese = []
-        candidates_used_only_in_traditional_chinese = []
-        candidates_containing_mixture_of_simplified_and_traditional_chinese = []
-        for x in candidates:
-            if (1 << 0) & chinese_variants.detect_chinese_category(x[1]):
-                candidates_used_in_simplified_chinese.append(x)
-            if (1 << 1) & chinese_variants.detect_chinese_category(x[1]):
-                candidates_used_in_traditional_chinese.append(x)
-            if (1 << 0) & chinese_variants.detect_chinese_category(x[1]) and (not (1 << 1) & chinese_variants.detect_chinese_category(x[1])):
-                candidates_used_only_in_simplified_chinese.append(x)
-            if (1 << 1) & chinese_variants.detect_chinese_category(x[1]) and (not (1 << 0) & chinese_variants.detect_chinese_category(x[1])):
-                candidates_used_only_in_traditional_chinese.append(x)
-            if (1 << 2) & chinese_variants.detect_chinese_category(x[1]):
-                candidates_containing_mixture_of_simplified_and_traditional_chinese.append(x)
-        if self._chinese_mode == 2:
-            # All characters with simplified Chinese first
-            return candidates_used_in_simplified_chinese + candidates_used_only_in_traditional_chinese + candidates_containing_mixture_of_simplified_and_traditional_chinese
-        else: # (self._chinese_mode == 3)
-            # All characters with traditional Chinese first
-            return candidates_used_in_traditional_chinese + candidates_used_only_in_simplified_chinese + candidates_containing_mixture_of_simplified_and_traditional_chinese
-
     def update_candidates (self):
         '''
         Searches for candidates and updates the lookuptable.
@@ -755,16 +728,10 @@ class editor(object):
             self._candidates = []
             self._candidates_previous = self._candidates
             return False
-        if self.db._is_chinese and self._chinese_mode == 0:
-            bitmask = (1 << 0) # simplified only
-        elif self.db._is_chinese and self._chinese_mode == 1:
-            bitmask = (1 << 1) # traditional only
-        else:
-            bitmask = 0xff     # everything
         if self._py_mode and self.db._is_chinese:
             self._candidates = self.db.select_chinese_characters_by_pinyin(
                 tabkeys=self._chars_valid,
-                bitmask=bitmask,
+                chinese_mode=self._chinese_mode,
                 single_wildcard_char=self._single_wildcard_char,
                 multi_wildcard_char=self._multi_wildcard_char,
                 auto_wildcard=self._auto_wildcard)
@@ -772,37 +739,10 @@ class editor(object):
             self._candidates = self.db.select_words(
                 tabkeys=self._chars_valid,
                 onechar=self._onechar,
-                bitmask=bitmask,
+                chinese_mode=self._chinese_mode,
                 single_wildcard_char=self._single_wildcard_char,
                 multi_wildcard_char=self._multi_wildcard_char,
                 auto_wildcard=self._auto_wildcard)
-        if (self._candidates
-            and self.db._is_chinese
-            and self._chinese_mode in (2,3)
-            and not self._py_mode):
-            # In self._candidates, the candidates where the typed
-            # characters matched the tabkeys in the database
-            # *completely* are before all candidates where the typed
-            # characters matched only the beginning of the tabkeys in
-            # the database.  Do not destroy this property of
-            # self._candidates when filtering for Chinese mode 2 (All
-            # characters with simplified Chinese first) or Chinese
-            # mode 3 (All characters with traditional Chinese first).
-            # Having the exact matches first is more important than
-            # the distinction between simplified and traditional.
-            # Therefore, we do this filtering separately for the
-            # exact matches and the completion matches and then
-            # add the results together again:
-            candidates_exact_match = []
-            candidates_completion_match = []
-            for candidate in self._candidates:
-                if self._chars_valid == candidate[0]:
-                    candidates_exact_match.append(candidate)
-                else:
-                    candidates_completion_match.append(candidate)
-            self._candidates = (
-                self.filter_candidates(candidates_exact_match)
-                + self.filter_candidates(candidates_completion_match))
         if self._candidates:
             self.fill_lookup_table()
             self._candidates_previous = self._candidates

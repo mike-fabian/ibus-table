@@ -1,3 +1,225 @@
+commit a6f9c22dead6992d15b15cd356d86fbfd14ac629
+Merge: b07c6ea e18f708
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Sat Jun 7 23:41:12 2014 +1000
+
+    Merge pull request #40 from mike-fabian/better-sorting-in-the-mixed-chinese-modes
+    
+    Better sorting in the mixed chinese modes
+
+commit e18f708fd9439e51ee115b578931f624852b53af
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jun 6 20:43:22 2014 +0200
+
+    Better sorting of the lookup table in the mixed Chinese modes
+    
+    In the mixed Chinese modes 2 and 3 (simplified Chinese first and
+    traditional Chinese first), the filtering for simplified and traditional
+    was done as a last step filtering the candidate list already sorted
+    using the sort keys:
+    
+        - exact match?
+        - user frequency
+        - system frequency
+        - length of input sequence
+        - alphabetical order of input sequence
+        - Unicode code point of first character of matched phrase
+    
+    But this simplified and traditional filtering is basically just
+    another sort key. Doing this after the main sorting of the candidate
+    list is inefficient and does not give nice results either. It is
+    better to do all of the sorting in one place.
+    
+    The sort key for the desired Chinese variant (traditional or simplified)
+    should have higher priority than the system frequency but lower
+    priority than the user frequency. If the user selects a certain variant
+    often, it should be preferred in future.
+    
+    An example for the behaviour after this commit is applied:
+    
+    wubi-jidian86.txt contains the following matches for 語
+    (as a single character):
+    
+        ygkg	語	204000000
+    
+    It contains the following matches for 语 (as a single character):
+    
+        ygk	语	234000000
+        ygkg	语	234000000
+    
+    And the following matches for the input sequence “ygkg”:
+    
+        ygkg	語	204000000
+        ygkg	语	234000000
+        ygkg	𢌐	0
+        ygkg	𣄟	0
+        ygkg	𩐕	0
+    
+    After this commit, typing “ygkg” gives the following results in the
+    lookup table (when all user frequencies are 0. For testing this
+    can be achieved by removing the user database):
+    
+    Chinese mode 0, “simplified Chinese only”:
+    ==========================================
+    
+    ygkg (1/4)
+    1. 语 234000000 0
+    2. 𢌐 0 0
+    3. 𣄟 0 0
+    4. 𩐕 0 0
+    
+    Chinese mode 1, “traditional Chinese only”:
+    ===========================================
+    
+    ygkg (1/4)
+    1. 語 204000000 0
+    2. 𢌐 0 0
+    3. 𣄟 0 0
+    4. 𩐕 0 0
+    
+    Chinese mode 2, “simplified Chinese before traditional”:
+    ========================================================
+    
+    ygkg (1/5)
+    1. 语 234000000 0
+    2. 𢌐 0 0
+    3. 𣄟 0 0
+    4. 𩐕 0 0
+    5. 語 204000000 0
+    
+    Chinese mode 3, “traditional Chinese before simplified”:
+    ========================================================
+    
+    ygkg (1/5)
+    1. 語 204000000 0
+    2. 𢌐 0 0
+    3. 𣄟 0 0
+    4. 𩐕 0 0
+    5. 语 234000000 0
+    
+    Chinese mode 4, “All Chinese characters”:
+    =========================================
+    
+    ygkg (1/5)
+    1. 语 234000000 0
+    2. 語 204000000 0
+    3. 𢌐 0 0
+    4. 𣄟 0 0
+    5. 𩐕 0 0
+
+commit b07c6ea38c6e60d82ffb96c0fd9c52103ab5b51b
+Merge: 9d94221 9c6840b
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Sat Jun 7 01:48:08 2014 +1000
+
+    Merge pull request #39 from mike-fabian/do-not-create-useless-indexes
+    
+    Do not create useless indexes
+
+commit 9c6840ba52cd2320f4ceb03f7be99b9ae705b9fe
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jun 6 10:44:30 2014 +0200
+
+    Do not create useless indexes
+    
+    Resolves: rhbz#1105465 - Please avoid to create sqlite table index in ibus-table
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1105465
+    
+    Most of indexes which were created were not helpful at all because
+    most queries are done using the SQL “LIKE” operator which does
+    not benefit from indexes.
+    
+    And the SELECT statements which do not use “LIKE” are not doing anything
+    where speed is critical. So we could not find a benefit in any
+    of the existing indexes. Benchmarking showed no significant difference
+    between having the indexes or not having them.
+    
+    I changed the functions create_indexes() and drop_indexes() to do
+    nothing, if we ever find that some index is really useful, we can
+    easily add it again.
+    
+    Not creating the indexes saves a lot of space:
+    
+    Sizes with indexes:
+    
+        $ du -h -c /usr/share/ibus-table/tables/*.db
+        8.6M	/usr/share/ibus-table/tables/array30-big.db
+        3.7M	/usr/share/ibus-table/tables/array30.db
+        3.7M	/usr/share/ibus-table/tables/cangjie-big.db
+        2.1M	/usr/share/ibus-table/tables/cangjie3.db
+        4.7M	/usr/share/ibus-table/tables/cangjie5.db
+        572K	/usr/share/ibus-table/tables/cantonese.db
+        700K	/usr/share/ibus-table/tables/cantonhk.db
+        5.0M	/usr/share/ibus-table/tables/cns11643.db
+        64K	/usr/share/ibus-table/tables/compose.db
+        7.7M	/usr/share/ibus-table/tables/easy-big.db
+        96K	/usr/share/ibus-table/tables/emoji-table.db
+        6.6M	/usr/share/ibus-table/tables/erbi-qs.db
+        3.0M	/usr/share/ibus-table/tables/erbi.db
+        40K	/usr/share/ibus-table/tables/ipa-x-sampa.db
+        640K	/usr/share/ibus-table/tables/jyutping.db
+        60K	/usr/share/ibus-table/tables/latex.db
+        312K	/usr/share/ibus-table/tables/mathwriter-ibus.db
+        812K	/usr/share/ibus-table/tables/quick-classic.db
+        2.0M	/usr/share/ibus-table/tables/quick3.db
+        4.4M	/usr/share/ibus-table/tables/quick5.db
+        40K	/usr/share/ibus-table/tables/rustrad.db
+        5.0M	/usr/share/ibus-table/tables/scj6.db
+        364K	/usr/share/ibus-table/tables/stroke5.db
+        40K	/usr/share/ibus-table/tables/thai.db
+        40K	/usr/share/ibus-table/tables/translit-ua.db
+        40K	/usr/share/ibus-table/tables/translit.db
+        40K	/usr/share/ibus-table/tables/viqr.db
+        1000K	/usr/share/ibus-table/tables/wu.db
+        11M	/usr/share/ibus-table/tables/wubi-haifeng86.db
+        12M	/usr/share/ibus-table/tables/wubi-jidian86.db
+        40K	/usr/share/ibus-table/tables/yawerty.db
+        4.2M	/usr/share/ibus-table/tables/yong.db
+        87M	合計
+    
+    Sizes without indexes:
+    
+        $ du -h -c /usr/share/ibus-table/tables/*.db
+        4.6M	/usr/share/ibus-table/tables/array30-big.db
+        2.0M	/usr/share/ibus-table/tables/array30.db
+        1.5M	/usr/share/ibus-table/tables/cangjie-big.db
+        1020K	/usr/share/ibus-table/tables/cangjie3.db
+        2.1M	/usr/share/ibus-table/tables/cangjie5.db
+        236K	/usr/share/ibus-table/tables/cantonese.db
+        292K	/usr/share/ibus-table/tables/cantonhk.db
+        2.1M	/usr/share/ibus-table/tables/cns11643.db
+        32K	/usr/share/ibus-table/tables/compose.db
+        3.2M	/usr/share/ibus-table/tables/easy-big.db
+        48K	/usr/share/ibus-table/tables/emoji-table.db
+        3.2M	/usr/share/ibus-table/tables/erbi-qs.db
+        1.3M	/usr/share/ibus-table/tables/erbi.db
+        24K	/usr/share/ibus-table/tables/ipa-x-sampa.db
+        268K	/usr/share/ibus-table/tables/jyutping.db
+        36K	/usr/share/ibus-table/tables/latex.db
+        152K	/usr/share/ibus-table/tables/mathwriter-ibus.db
+        332K	/usr/share/ibus-table/tables/quick-classic.db
+        980K	/usr/share/ibus-table/tables/quick3.db
+        2.0M	/usr/share/ibus-table/tables/quick5.db
+        24K	/usr/share/ibus-table/tables/rustrad.db
+        2.2M	/usr/share/ibus-table/tables/scj6.db
+        156K	/usr/share/ibus-table/tables/stroke5.db
+        24K	/usr/share/ibus-table/tables/thai.db
+        24K	/usr/share/ibus-table/tables/translit-ua.db
+        24K	/usr/share/ibus-table/tables/translit.db
+        24K	/usr/share/ibus-table/tables/viqr.db
+        424K	/usr/share/ibus-table/tables/wu.db
+        4.8M	/usr/share/ibus-table/tables/wubi-haifeng86.db
+        5.7M	/usr/share/ibus-table/tables/wubi-jidian86.db
+        24K	/usr/share/ibus-table/tables/yawerty.db
+        1.8M	/usr/share/ibus-table/tables/yong.db
+        40M	合計
+
+commit 9d942218061379a17972eaf18987e886ba23291b
+Author: Caius "kaio" Chance <caius.chance@gmail.com>
+Date:   Wed Jun 4 22:28:24 2014 +1000
+
+    Release 1.8.1
+
 commit 21448804bd27a77e9385406b2064d762311624a1
 Merge: 8ded23b c9f6a2b
 Author: Caius "kaio" Chance <me@kaio.net>

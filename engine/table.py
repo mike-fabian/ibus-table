@@ -735,8 +735,7 @@ class editor(object):
                 tabkeys=self._chars_valid,
                 chinese_mode=self._chinese_mode,
                 single_wildcard_char=self._single_wildcard_char,
-                multi_wildcard_char=self._multi_wildcard_char,
-                auto_wildcard=self._auto_wildcard)
+                multi_wildcard_char=self._multi_wildcard_char)
         else:
             self._candidates = self.db.select_words(
                 tabkeys=self._chars_valid,
@@ -1044,6 +1043,14 @@ class tabengine (IBus.Engine):
         self._setup_pid = 0
         self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
                 os.path.sep, 'icons', os.path.sep)
+        # name for config section
+        self._engine_name = os.path.basename(self.db.filename).replace('.db', '')
+        self._config_section = "engine/Table/%s" %self._engine_name.replace(' ','_')
+
+        # config module
+        self._config = self._bus.get_config ()
+        self._config.connect ("value-changed", self.config_value_changed_cb)
+
         # self._ime_py: Indicates whether this table supports pinyin mode
         self._ime_py = self.db.ime_properties.get('pinyin_mode')
         if self._ime_py:
@@ -1059,33 +1066,44 @@ class tabengine (IBus.Engine):
         # now we check and update the valid input characters
         self._valid_input_chars = self.db.ime_properties.get('valid_input_chars')
         self._pinyin_valid_input_chars = u'abcdefghijklmnopqrstuvwxyz!@#$%'
-        self._single_wildcard_char = self.db.ime_properties.get('single_wildcard_char')
-        if not self._single_wildcard_char:
-            self._single_wildcard_char = '?'
-        self._multi_wildcard_char = self.db.ime_properties.get('multi_wildcard_char')
-        if not self._multi_wildcard_char:
-            self._multi_wildcard_char = '*'
+
+        self._single_wildcard_char = variant_to_value(self._config.get_value(
+            self._config_section,
+            "singlewildcardchar"))
+        if self._single_wildcard_char == None:
+            self._single_wildcard_char = self.db.ime_properties.get('single_wildcard_char')
+        if self._single_wildcard_char == None:
+            self._single_wildcard_char = u''
+        if len(self._single_wildcard_char) > 1:
+            self._single_wildcard_char = self._single_wildcard_char[0]
+
+        self._multi_wildcard_char = variant_to_value(self._config.get_value(
+            self._config_section,
+            "multiwildcardchar"))
+        if self._multi_wildcard_char == None:
+            self._multi_wildcard_char = self.db.ime_properties.get('multi_wildcard_char')
+        if self._multi_wildcard_char == None:
+            self._multi_wildcard_char = u''
+        if len(self._multi_wildcard_char) > 1:
+            self._multi_wildcard_char = self._multi_wildcard_char[0]
 
         self._valid_input_chars += self._single_wildcard_char
         self._valid_input_chars += self._multi_wildcard_char
         self._pinyin_valid_input_chars += self._single_wildcard_char
         self._pinyin_valid_input_chars += self._multi_wildcard_char
-        self._auto_wildcard = self.db.ime_properties.get('auto_wildcard')
-        if self._auto_wildcard and self._auto_wildcard.lower() == u'false':
-            self._auto_wildcard = False
-        else:
-            self._auto_wildcard = True
+
+        self._auto_wildcard = variant_to_value(self._config.get_value(
+            self._config_section,
+            "autowildcard"))
+        if self._auto_wildcard == None:
+            self._auto_wildcard = self.db.ime_properties.get('auto_wildcard')
+            if self._auto_wildcard and self._auto_wildcard.lower() == u'false':
+                self._auto_wildcard = False
+            else:
+                self._auto_wildcard = True
 
         self._max_key_length = int(self.db.ime_properties.get('max_key_length'))
         self._max_key_length_pinyin = 7
-
-        # name for config section
-        self._engine_name = os.path.basename(self.db.filename).replace('.db', '')
-        self._config_section = "engine/Table/%s" %self._engine_name.replace(' ','_')
-
-        # config module
-        self._config = self._bus.get_config ()
-        self._config.connect ("value-changed", self.config_value_changed_cb)
 
         self._page_up_keys = [
             IBus.KEY_Page_Up,
@@ -2363,4 +2381,15 @@ class tabengine (IBus.Engine):
                 if IBus.KEY_space not in self._commit_keys:
                     self._commit_keys.append(IBus.KEY_space)
             return
-
+        if name == u'singlewildcardchar':
+            self._single_wildcard_char = value
+            self._editor._single_wildcard_char = value
+            return
+        if name == u'multiwildcardchar':
+            self._multi_wildcard_char = value
+            self._editor._multi_wildcard_char = value
+            return
+        if name == u'autowildcard':
+            self._auto_wildcard = value
+            self._editor._auto_wildcard = value
+            return

@@ -713,7 +713,7 @@ class tabsqlitedb:
                           ord(x[1][0]) # Unicode codepoint of first character of phrase
                       ))[:maximum_number_of_candidates]
 
-    def select_words(self, tabkeys=u'', onechar=False, chinese_mode=-1, single_wildcard_char=u'?', multi_wildcard_char=u'*', auto_wildcard=True):
+    def select_words(self, tabkeys=u'', onechar=False, chinese_mode=-1, single_wildcard_char=u'', multi_wildcard_char=u'', auto_wildcard=False):
         '''
         Get matching phrases for tabkeys from the database.
         '''
@@ -780,7 +780,7 @@ class tabsqlitedb:
             chinese_mode=chinese_mode)
         return best
 
-    def select_chinese_characters_by_pinyin(self, tabkeys=u'', chinese_mode=-1, single_wildcard_char=u'?', multi_wildcard_char=u'*', auto_wildcard=True):
+    def select_chinese_characters_by_pinyin(self, tabkeys=u'', chinese_mode=-1, single_wildcard_char=u'', multi_wildcard_char=u''):
         '''
         Get Chinese characters matching the pinyin given by tabkeys
         from the database.

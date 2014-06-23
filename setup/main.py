@@ -55,10 +55,18 @@ OPTION_DEFAULTS = {
     "autoselect": False,
     "autocommit": False,
     "spacekeybehavior": False,
+    "autowildcard": True,
+    "singlewildcardchar": u'',
+    "multiwildcardchar": u'',
 }
 
 SCALE_WIDGETS = {
     "lookuptablepagesize",
+}
+
+ENTRY_WIDGETS = {
+    "singlewildcardchar",
+    "multiwildcardchar",
 }
 
 ibus_dir = os.getenv('IBUS_TABLE_LOCATION')
@@ -195,6 +203,21 @@ class PreferencesDialog:
                 for x in commit_keys_csv.split(',')]
         if IBus.KEY_space in self._commit_keys:
             OPTION_DEFAULTS['spacekeybehavior'] = False
+        auto_wildcard = self.tabsqlitedb.ime_properties.get('auto_wildcard')
+        if (auto_wildcard
+            and type(auto_wildcard) == type(u'')
+            and auto_wildcard.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['autowildcard'] = auto_wildcard.lower() == u'true'
+        single_wildcard_char = self.tabsqlitedb.ime_properties.get('single_wildcard_char')
+        if (single_wildcard_char
+            and type(single_wildcard_char) == type(u'')
+            and len(single_wildcard_char) == 1):
+            OPTION_DEFAULTS['singlewildcardchar'] = single_wildcard_char
+        multi_wildcard_char = self.tabsqlitedb.ime_properties.get('multi_wildcard_char')
+        if (multi_wildcard_char
+            and type(multi_wildcard_char) == type(u'')
+            and len(multi_wildcard_char) == 1):
+            OPTION_DEFAULTS['multiwildcardchar'] = multi_wildcard_char
 
     def __restore_defaults(self):
         for name in OPTION_DEFAULTS:
@@ -216,7 +239,7 @@ class PreferencesDialog:
         self.__dialog = self.__builder.get_object("dialog")
 
         for name in list(OPTION_DEFAULTS.keys()):
-            if name not in SCALE_WIDGETS:
+            if name not in SCALE_WIDGETS and name not in ENTRY_WIDGETS:
                 self._build_combobox_renderer(name)
 
     def do_init(self):
@@ -238,6 +261,8 @@ class PreferencesDialog:
             #self.__config.unset(self.__config_section, name); continue
             if name in SCALE_WIDGETS:
                 self._init_hscale(name)
+            elif name in ENTRY_WIDGETS:
+                self._init_entry(name)
             else:
                 self._init_combobox(name)
         self._init_button('restoredefaults')
@@ -297,6 +322,16 @@ class PreferencesDialog:
         __combobox.set_active(val)
         __combobox.connect("changed", self.__changed_cb, name)
 
+    def _init_entry(self, name):
+        """Set entry widget from the __config engine"""
+        __entry = self.__builder.get_object("entry%s" % name)
+        if name in self.__values:
+            val = self.__values[name]
+        else:
+            val = OPTION_DEFAULTS[name]
+        __entry.set_text(val)
+        __entry.connect("activate", self.__entry_changed_cb, name)
+
     def _init_hscale(self, name):
         """Set scale widget from the __config engine"""
         __hscale = self.__builder.get_object("hscale%s" % name)
@@ -333,12 +368,23 @@ class PreferencesDialog:
             val = int(val)
         self.__set_value(name, val)
 
+    def __entry_changed_cb(self, widget, name):
+        """entry widget text changed handler"""
+        val = widget.get_text()
+        vtype = type(OPTION_DEFAULTS[name])
+        if vtype != type(u''):
+            val = val.decode('UTF-8')
+        self.__set_value(name, val)
+
     def __config_value_changed_cb(self, config, section, name, val):
         """__config engine value changed handler"""
         val = val.unpack()
         if name in SCALE_WIDGETS:
             __hscale = self.__builder.get_object("hscale%s" % name)
             __hscale.set_value(val)
+        elif name in ENTRY_WIDGETS:
+            __entry =  self.__builder.get_object("entry%s" % name)
+            __entry.set_text(val)
         else:
             __combobox = self.__builder.get_object("combobox%s" % name)
             if isinstance(val, bool):

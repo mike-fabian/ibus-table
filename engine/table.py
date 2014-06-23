@@ -206,7 +206,7 @@ class KeyEvent:
 
 class editor(object):
     '''Hold user inputs chars and preedit string'''
-    def __init__ (self, config, valid_input_chars, pinyin_valid_input_chars, single_wildcard_char, multi_wildcard_char, auto_wildcard, max_key_length, database):
+    def __init__ (self, config, valid_input_chars, pinyin_valid_input_chars, single_wildcard_char, multi_wildcard_char, auto_wildcard, full_width_letter, full_width_punct, max_key_length, database):
         self.db = database
         self._config = config
         engine_name = os.path.basename(self.db.filename).replace('.db', '')
@@ -218,6 +218,8 @@ class editor(object):
         self._single_wildcard_char = single_wildcard_char
         self._multi_wildcard_char = multi_wildcard_char
         self._auto_wildcard = auto_wildcard
+        self._full_width_letter = full_width_letter
+        self._full_width_punct = full_width_punct
         #
         # The values below will be reset in self.clear_input_not_committed_to_preedit()
         self._chars_valid = u''    # valid user input in table mode
@@ -743,6 +745,31 @@ class editor(object):
                 single_wildcard_char=self._single_wildcard_char,
                 multi_wildcard_char=self._multi_wildcard_char,
                 auto_wildcard=self._auto_wildcard)
+        # If only a wildcard character has been typed, insert a
+        # special candidate at the first position for the wildcard
+        # character itself. For example, if “?” is used as a
+        # wildcard character and this is the only character typed, add
+        # a candidate ('?', '?', 0, 1000000000) in halfwidth mode or a
+        # candidate ('?', '？', 0, 1000000000) in fullwidth mode.
+        # This is needed to make it possible to input the wildcard
+        # characters themselves, if “?” acted only as a wildcard
+        # it would be impossible to input a fullwidth question mark.
+        if (self._chars_valid
+            in [self._single_wildcard_char, self._multi_wildcard_char]):
+            wildcard_key = self._chars_valid
+            wildcard_phrase = self._chars_valid
+            if ascii_ispunct(wildcard_key):
+                if self._full_width_punct[1]:
+                    wildcard_phrase = unichar_half_to_full(wildcard_phrase)
+                else:
+                    wildcard_phrase = unichar_full_to_half(wildcard_phrase)
+            else:
+                if self._full_width_letter[1]:
+                    wildcard_phrase = unichar_half_to_full(wildcard_phrase)
+                else:
+                    wildcard_phrase = unichar_full_to_half(wildcard_phrase)
+            self._candidates.insert(
+                0, (wildcard_key, wildcard_phrase, 0, 1000000000))
         if self._candidates:
             self.fill_lookup_table()
             self._candidates_previous = self._candidates
@@ -1059,14 +1086,6 @@ class tabengine (IBus.Engine):
         # config module
         self._config = self._bus.get_config ()
         self._config.connect ("value-changed", self.config_value_changed_cb)
-        self._editor = editor(self._config,
-                              self._valid_input_chars,
-                              self._pinyin_valid_input_chars,
-                              self._single_wildcard_char,
-                              self._multi_wildcard_char,
-                              self._auto_wildcard,
-                              self._max_key_length,
-                              self.db)
 
         self._page_up_keys = [
             IBus.KEY_Page_Up,
@@ -1156,7 +1175,6 @@ class tabengine (IBus.Engine):
         self._double_quotation_state = False
         self._single_quotation_state = False
 
-        # [EnMode,TabMode] we get TabMode properties from db
         self._full_width_letter = [
             variant_to_value(self._config.get_value(
                     self._config_section,
@@ -1208,6 +1226,17 @@ class tabengine (IBus.Engine):
                 self._always_show_lookup = self.db.ime_properties.get('always_show_lookup').lower() == u'true'
             else:
                 self._always_show_lookup = True
+
+        self._editor = editor(self._config,
+                              self._valid_input_chars,
+                              self._pinyin_valid_input_chars,
+                              self._single_wildcard_char,
+                              self._multi_wildcard_char,
+                              self._auto_wildcard,
+                              self._full_width_letter,
+                              self._full_width_punct,
+                              self._max_key_length,
+                              self.db)
 
         self._on = False
         self._save_user_count = 0
@@ -2267,10 +2296,12 @@ class tabengine (IBus.Engine):
             return
         if name == u'endeffullwidthletter':
             self._full_width_letter[0] = value
+            self._editor._full_width_letter[0] = value
             self._refresh_properties()
             return
         if name == u'endeffullwidthpunct':
             self._full_width_punct[0] = value
+            self._editor._full_width_punct[0] = value
             self._refresh_properties()
             return
         if name == u'lookuptableorientation':
@@ -2306,10 +2337,12 @@ class tabengine (IBus.Engine):
             return
         if name == u'tabdeffullwidthletter':
             self._full_width_letter[1] = value
+            self._editor._full_width_letter[1] = value
             self._refresh_properties()
             return
         if name == u'tabdeffullwidthpunct':
             self._full_width_punct[1] = value
+            self._editor._full_width_punct[1] = value
             self._refresh_properties()
             return
         if name == u'alwaysshowlookup':

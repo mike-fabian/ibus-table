@@ -898,7 +898,11 @@ class tabsqlitedb:
         if not zi:
             return u''
         sqlstr = 'SELECT goucima FROM main.goucima WHERE zi = :zi;'
-        goucima = self.db.execute(sqlstr, {'zi': zi}).fetchall()[0][0]
+        results = self.db.execute(sqlstr, {'zi': zi}).fetchall()
+        if results:
+            goucima = results[0][0]
+        else:
+            goucima = u''
         return goucima
 
     def parse_phrase (self, phrase):

@@ -1,3 +1,78 @@
+commit 9dd5bd9c2f08c39143e3eea0ded8d34ce979bbcb
+Merge: 7cb2765 80c97fa
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Wed Jun 25 22:23:22 2014 +1000
+
+    Merge pull request #41 from mike-fabian/improve-wildcard-support
+    
+    Improve wildcard support
+
+commit 80c97fad74ae8be835576be15c5913efed081190
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jun 25 11:03:15 2014 +0200
+
+    Update Chinese .po files
+    
+    (Only to get the changed strings from the source synced with the .po
+    files, I did neither change nor add any translations).
+
+commit 1816bb90295ff0bb44f11f3b85deb3ca5d4484a7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jun 25 11:02:25 2014 +0200
+
+    Update German translations
+
+commit 95851e5dc6e3491813ac6ea8e3927d608d375a04
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 23 18:26:32 2014 +0200
+
+    Make wildchard characters configurable
+    
+    The options AUTO_WILDCARD, SINGLE_WILDCARD_CHAR, and
+    MULTI_WILDCARD_CHAR are now not only configurable in the table sources
+    but also in the setup tool and via dconf.
+    
+    The default for AUTO_WILDCARD if neither specified in the table source
+    nor in the setup tool nor in dconf is TRUE, this is best for most
+    tables.
+    
+    The defaults for SINGLE_WILDCARD_CHAR and MULTI_WILDCARD_CHAR
+    are the empty strings, this means no wildcards are used.
+    
+    In some table sources default values for SINGLE_WILDCARD_CHAR and
+    MULTI_WILDCARD_CHAR are defined, in most cases these are
+    
+    SINGLE_WILDCARD_CHAR = ?
+    MULTI_WILDCARD_CHAR = *
+
+commit 77a1a5a7a683e463538387684dcc37268aab37e5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 23 15:24:47 2014 +0200
+
+    Insert a special candidate for the wildcard character itself if only a wildcard character has been typed
+    
+    Resolves: rhbz#1110325 - Unable to input question marks in Wubi-jidian
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1110325
+    
+    The same problem has been also reported here:
+    
+        https://code.google.com/p/ibus/issues/detail?id=1720
+    
+    If only a wildcard character has been typed, insert a special
+    candidate at the first position for the wildcard character itself. For
+    example, if “?” is used as a wildcard character and this is the only
+    character typed, add a candidate ('?', '?', 0, 1000000000) in
+    halfwidth mode or a candidate ('?', '？', 0, 1000000000) in fullwidth
+    mode.  This is needed to make it possible to input the wildcard
+    characters themselves, if “?” acted only as a wildcard it would be
+    impossible to input a fullwidth question mark.
+
+commit 7cb27653cbabc05d393903c6721e0b1fecd7f19c
+Author: Caius "kaio" Chance <caius.chance@gmail.com>
+Date:   Mon Jun 9 13:12:00 2014 +1000
+
+    Release v1.8.2.
+
 commit a6f9c22dead6992d15b15cd356d86fbfd14ac629
 Merge: b07c6ea e18f708
 Author: Caius "kaio" Chance <me@kaio.net>

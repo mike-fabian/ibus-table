@@ -186,6 +186,20 @@
       </row>
     </data>
   </object>
+  <object class="GtkListStore" id="liststoreAutoWildCard">
+    <columns>
+      <!-- column-name AutoWildCard -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">No</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Yes</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkDialog" id="dialog">
     <property name="width_request">400</property>
     <property name="can_focus">False</property>
@@ -811,6 +825,103 @@ lookup table) or using the mouse.</property>
                                   <packing>
                                     <property name="left_attach">0</property>
                                     <property name="top_attach">3</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelautowildcard">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Auto wildcard:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">4</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="comboboxautowildcard">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">If yes, a multi wildcard will be automatically
+appended to the end of the input string.</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="model">liststoreAutoWildCard</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">4</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelsinglewildcardchar">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Single wildchard character:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">5</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkEntry" id="entrysinglewildcardchar">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="max_length">1</property>
+                                    <property name="width_chars">1</property>
+                                    <property name="tooltip_text" translatable="yes">The wildcard to match any single character.
+Type RETURN or ENTER to confirm after changing the wildcard.</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">5</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="labelmultiwildcardchar">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">Multi wildcard character:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">6</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkEntry" id="entrymultiwildcardchar">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="max_length">1</property>
+                                    <property name="width_chars">1</property>
+                                    <property name="tooltip_text" translatable="yes">The wildcard used to match any number of characters.
+Type RETURN or ENTER to confirm after changing the wildcard.</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">6</property>
                                     <property name="width">1</property>
                                     <property name="height">1</property>
                                   </packing>

@@ -406,8 +406,10 @@ class editor(object):
         Returns “True” if candidates were found, “False” if not.
         '''
         if (self._chars_invalid
-            or (not self._py_mode and (c not in self._valid_input_chars))
-            or (self._py_mode and (c not in self._pinyin_valid_input_chars))):
+            or (not self._py_mode
+                and (c not in self._valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char))
+            or (self._py_mode
+                and (c not in self._pinyin_valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char))):
             self._chars_invalid += c
         else:
             self._chars_valid += c
@@ -1087,11 +1089,6 @@ class tabengine (IBus.Engine):
         if len(self._multi_wildcard_char) > 1:
             self._multi_wildcard_char = self._multi_wildcard_char[0]
 
-        self._valid_input_chars += self._single_wildcard_char
-        self._valid_input_chars += self._multi_wildcard_char
-        self._pinyin_valid_input_chars += self._single_wildcard_char
-        self._pinyin_valid_input_chars += self._multi_wildcard_char
-
         self._auto_wildcard = variant_to_value(self._config.get_value(
             self._config_section,
             "autowildcard"))
@@ -1131,7 +1128,7 @@ class tabengine (IBus.Engine):
         # Remove keys from the page up/down keys if they are needed
         # for input (for example, '=' or '-' could well be needed for
         # input. Input is more important):
-        for character in self._valid_input_chars:
+        for character in self._valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char:
             keyval = IBus.unicode_to_keyval(character)
             if keyval in self._page_up_keys:
                 self._page_up_keys.remove(keyval)
@@ -1934,7 +1931,7 @@ class tabengine (IBus.Engine):
         # This is the first character typed, if it is invalid
         # input, handle it immediately here, if it is valid, continue.
         if self._editor.is_empty() and not self._editor.get_preedit_string_complete():
-            if ((keychar not in self._valid_input_chars
+            if ((keychar not in self._valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char
                  or (self.db.startchars and keychar not in self.db.startchars))
                 and (not key.mask &
                      (IBus.ModifierType.MOD1_MASK |
@@ -2116,9 +2113,9 @@ class tabengine (IBus.Engine):
         # between the keys by using different SELECT_KEYS and/or
         # PAGE_UP_KEYS/PAGE_DOWN_KEYS in that table ...
         if (keychar
-            and (keychar in self._valid_input_chars
+            and (keychar in self._valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char
                  or (self._editor._py_mode
-                     and keychar in self._pinyin_valid_input_chars))):
+                     and keychar in self._pinyin_valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char))):
             if debug_level > 0:
                 sys.stderr.write('_table_mode_process_key_event() valid input: ')
                 sys.stderr.write('repr(keychar)=%(keychar)s\n' %{'keychar': keychar})

@@ -356,16 +356,19 @@ class editor(object):
             else:
                 __lc = os.environ['LANG'].split('.')[0].lower()
 
-            if __lc.find('_cn') != -1:
-                return 0
-            # HK and TW should use traditional Chinese by default
-            elif __lc.find('_hk') != -1 or __lc.find('_tw') != -1\
-                    or __lc.find('_mo') != -1:
-                return 1
+            if '_cn' in __lc or '_sg' in __lc:
+                # CN and SG should prefer traditional Chinese by default
+                return 2 # show simplified Chinese first
+            elif '_hk' in __lc or '_tw' in __lc or '_mo' in __lc:
+                # HK, TW, and MO should prefer traditional Chinese by default
+                return 3 # show traditional Chinese first
             else:
                 if self.db._is_chinese:
-                    # if IME declare as Chinese IME
-                    return 0
+                    # This table is used for Chinese, but we don’t
+                    # know for which variant. Therefore, better show
+                    # all Chinese characters and don’t prefer any
+                    # variant:
+                    return 4 # show all Chinese characters
                 else:
                     return -1
         except:

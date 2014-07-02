@@ -680,8 +680,14 @@ class editor(object):
         if self.db._is_chinese and self._py_mode:
             # restore tune symbol
             remaining_tabkeys = remaining_tabkeys.replace('!','↑1').replace('@','↑2').replace('#','↑3').replace('$','↑4').replace('%','↑5')
-        for char in self._prompt_characters:
-            remaining_tabkeys = remaining_tabkeys.replace(char, self._prompt_characters[char])
+        if not self._py_mode:
+            remaining_tabkeys_new = u''
+            for char in remaining_tabkeys:
+                if char in self._prompt_characters:
+                    remaining_tabkeys_new += self._prompt_characters[char]
+                else:
+                    remaining_tabkeys_new += char
+            remaining_tabkeys = remaining_tabkeys_new
         candidate_text = phrase + u' ' + remaining_tabkeys
         attrs = IBus.AttrList ()
         attrs.append(IBus.attr_foreground_new(
@@ -844,9 +850,13 @@ class editor(object):
             if self._py_mode:
                 aux_string = aux_string.replace('!','1').replace('@','2').replace('#','3').replace('$','4').replace('%','5')
             else:
-                for char in self._prompt_characters:
-                    aux_string = aux_string.replace(
-                        char, self._prompt_characters[char])
+                aux_string_new = u''
+                for char in aux_string:
+                    if char in self._prompt_characters:
+                        aux_string_new += self._prompt_characters[char]
+                    else:
+                        aux_string_new += char
+                aux_string = aux_string_new
             return aux_string
 
         # There are no input strings at the moment. But there could
@@ -873,9 +883,13 @@ class editor(object):
         if self.db.user_can_define_phrase:
             if len(cstr) > 1:
                 aux_string += (u'\t#: ' + self.db.parse_phrase(cstr))
-        for char in self._prompt_characters:
-            aux_string = aux_string.replace(char, self._prompt_characters[char])
-        return aux_string
+        aux_string_new = u''
+        for char in aux_string:
+            if char in self._prompt_characters:
+                aux_string_new += self._prompt_characters[char]
+            else:
+                aux_string_new += char
+        return aux_string_new
 
     def fill_lookup_table(self):
         '''Fill more entries to self._lookup_table if needed.
@@ -1596,8 +1610,14 @@ class tabengine (IBus.Engine):
         left_of_current_edit = u''.join(preedit_string_parts[0])
         current_edit = preedit_string_parts[1]
         right_of_current_edit = u''.join(preedit_string_parts[2])
-        for char in self._editor._prompt_characters:
-            current_edit = current_edit.replace(char, self._editor._prompt_characters[char])
+        if not self._editor._py_mode:
+            current_edit_new = u''
+            for char in current_edit:
+                if char in self._editor._prompt_characters:
+                    current_edit_new += self._editor._prompt_characters[char]
+                else:
+                    current_edit_new += char
+            current_edit = current_edit_new
         preedit_string_complete = (
             left_of_current_edit + current_edit + right_of_current_edit)
         if not preedit_string_complete:

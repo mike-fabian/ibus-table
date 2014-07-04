@@ -273,7 +273,11 @@ class editor(object):
             "LookupTableSelectKeys"))
         if select_keys_csv == None:
             select_keys_csv = self.db.get_select_keys()
-        self._select_keys = [x.strip() for x in select_keys_csv.split(",")]
+        if select_keys_csv == None:
+            select_keys_csv = '1,2,3,4,5,6,7,8,9'
+        self._select_keys = [
+            IBus.keyval_from_name(y)
+            for y in [x.strip() for x in select_keys_csv.split(",")]]
         self._page_size = variant_to_value(self._config.get_value(
             self._config_section,
             "lookuptablepagesize"))
@@ -322,7 +326,11 @@ class editor(object):
             else:
                 self._auto_select = False
 
-    def get_new_lookup_table(self, page_size=10, select_keys='1234567890', orientation=True):
+    def get_new_lookup_table(self, page_size=10, select_keys=[49, 50, 51, 52, 53, 54, 55, 56, 57, 48], orientation=True):
+        '''
+        [49, 50, 51, 52, 53, 54, 55, 56, 57, 48] are the key codes
+        for the characters ['1', '2', '3', '4', '5', '6', '7', '8', '0']
+        '''
         if page_size < 1:
             page_size = 1
         if page_size > len(select_keys):
@@ -332,13 +340,19 @@ class editor(object):
             cursor_pos=0,
             cursor_visible=True,
             round=True)
-        for key in select_keys:
-            lookup_table.append_label(IBus.Text.new_from_string("%s." %key))
+        for keycode in select_keys:
+            lookup_table.append_label(
+                IBus.Text.new_from_string("%s." %IBus.keyval_name(keycode)))
         lookup_table.set_orientation(orientation)
         return lookup_table
 
     def get_select_keys(self):
-        """@return: a list of chars as select keys: ["1", "2", ...]"""
+        """
+        Returns the list of key codes for the select keys.
+        For example, if the select keys are ["1", "2", ...] the
+        key codes are [49, 50, ...]. If the select keys are
+        ["F1", "F2", ...] the key codes are [65470, 65471, ...]
+        """
         return self._select_keys
 
     def get_chinese_mode (self):
@@ -946,23 +960,23 @@ class editor(object):
             return True
         return res
 
-    def select_key(self, char):
+    def select_key(self, keycode):
         '''
         Commit a candidate which was selected by typing a selection key
         from the lookup table to the preedit. Does not yet “really”
         commit the candidate, only to the preedit.
         '''
-        if char not in self._select_keys:
+        if keycode not in self._select_keys:
             return False
         return self.commit_to_preedit_current_page(
-            self._select_keys.index(char))
+            self._select_keys.index(keycode))
 
-    def remove_candidate_from_user_database(self, char):
+    def remove_candidate_from_user_database(self, keycode):
         '''Remove a candidate displayed in the lookup table from the user database.
 
-        The candidate indicated by the selection key “char” is
-        removed, if possible.  If it is not in the user database at
-        all, nothing happens.
+        The candidate indicated by the selection key with the key code
+        “keycode” is removed, if possible.  If it is not in the user
+        database at all, nothing happens.
 
         If this is a candidate which is also in the system database,
         removing it from the user database only means that its user
@@ -971,10 +985,11 @@ class editor(object):
 
         If this is a candidate which is user defined and not in the system
         database, it will not match at all anymore after removing it.
+
         '''
-        if char not in self._select_keys:
+        if keycode not in self._select_keys:
             return False
-        index = self._select_keys.index(char)
+        index = self._select_keys.index(keycode)
         cursor_pos = self._lookup_table.get_cursor_pos()
         cursor_in_page = self._lookup_table.get_cursor_in_page()
         current_page_start = cursor_pos - cursor_in_page
@@ -2084,17 +2099,17 @@ class tabengine (IBus.Engine):
             self._update_ui()
             return True
 
-        if (keychar in self._editor.get_select_keys()
+        if (key.code in self._editor.get_select_keys()
             and self._editor._candidates
             and key.mask & IBus.ModifierType.CONTROL_MASK):
-            res = self._editor.select_key(keychar)
+            res = self._editor.select_key(key.code)
             self._update_ui()
             return res
 
-        if (keychar in self._editor.get_select_keys()
+        if (key.code in self._editor.get_select_keys()
             and self._editor._candidates
             and key.mask & IBus.ModifierType.MOD1_MASK):
-            res = self._editor.remove_candidate_from_user_database(keychar)
+            res = self._editor.remove_candidate_from_user_database(key.code)
             self._update_ui()
             return res
 
@@ -2216,8 +2231,8 @@ class tabengine (IBus.Engine):
             self._update_ui()
             return res
 
-        if keychar in self._editor.get_select_keys() and self._editor._candidates:
-            if self._editor.select_key(keychar): # commits to preëdit
+        if key.code in self._editor.get_select_keys() and self._editor._candidates:
+            if self._editor.select_key(key.code): # commits to preëdit
                 self.commit_string(self._editor.get_preedit_string_complete(),
                                    tabkeys=self._editor.get_preedit_tabkeys_complete())
             return True

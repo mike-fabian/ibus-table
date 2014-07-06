@@ -673,6 +673,13 @@ class tabsqlitedb:
         '''
         return
 
+    def big5_code(self, phrase):
+        try:
+            big5 = phrase.encode('Big5')
+        except:
+            big5 = b'\xff\xff' # higher than any Big5 code
+        return big5
+
     def best_candidates(self, typed_tabkeys=u'', candidates=[], chinese_mode=-1):
         '''
         “candidates” is an array containing something like:
@@ -683,6 +690,13 @@ class tabsqlitedb:
         candidate.
         '''
         maximum_number_of_candidates = 100
+        engine_name = os.path.basename(self.filename).replace('.db', '')
+        if engine_name in [
+                'cangjie3', 'cangjie5', 'cangjie-big',
+                'quick-classic', 'quick3', 'quick5']:
+            code_point_function = self.big5_code
+        else:
+            code_point_function = lambda x: (1)
         if chinese_mode in (2, 3) and self._is_chinese:
             if chinese_mode == 2:
                 bitmask = (1 << 0) # used in simplified Chinese
@@ -699,6 +713,7 @@ class tabsqlitedb:
                               -1*x[2],   # freq descending
                               len(x[0]), # len(tabkeys) ascending
                               x[0],      # tabkeys alphabetical
+                              code_point_function(x[1][0]),
                               ord(x[1][0]) # Unicode codepoint of first character of phrase
                           ))[:maximum_number_of_candidates]
         return sorted(candidates,
@@ -710,6 +725,7 @@ class tabsqlitedb:
                           -1*x[2],   # freq descending
                           len(x[0]), # len(tabkeys) ascending
                           x[0],      # tabkeys alphabetical
+                          code_point_function(x[1][0]),
                           ord(x[1][0]) # Unicode codepoint of first character of phrase
                       ))[:maximum_number_of_candidates]
 

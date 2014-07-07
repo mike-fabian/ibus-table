@@ -1,3 +1,226 @@
+commit a87efc9f072114c47d9260cd779f923e5fca3c38
+Merge: cd83314 e21444f
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Mon Jul 7 16:36:07 2014 +1000
+
+    Merge pull request #43 from mike-fabian/tweak-defaults-for-chinese-mode-taken-from-locale
+    
+    Tweak defaults for Chinese mode taken from the locale
+
+commit e21444f8ea90661f387ce2e9fb15d1d799162b06
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Jul 6 07:32:52 2014 +0200
+
+    For cangjie* and quick* tables: Use big5 order if the freq from the table is the same
+    
+    In the cangjie5.txt table, all the frequency weights are 1000, for example:
+    
+        su	己	1000
+        su	已	1000
+        su		1000
+        su	㔾	1000
+    
+    Currently, the Unicode code point is used as a last ditch fallback if
+    all the other sort keys are the same (sort keys are: exact match, user
+    frequency, Chinese variant, system frequency, length of input
+    sequence, input sequence alphabetical, Unicode code point).
+    
+    In case of the above characters matching “su”, the Unicode code
+    points and Big5 code points:
+    
+        㔾 U+353E Big5 -    Big5HKSCS 8BC8
+        己 U+5DF1 Big5 A476 Big5HKSCS A476
+        已 U+5DF2 Big5 A477 Big5HKSCS A477
+         U+E81D Big5 -    Big5HKSCS -
+    
+    Sorting via the Unicode code points gives:
+    
+        尸山 (1/9)
+        1. 㔾
+        2. 己
+        3. 已
+        4. 
+        ...
+    
+    And sorting first via the Big5 code points and then via the Unicode
+    code points for characters which do not have a Big5 code point gives:
+    
+        尸山 (1/9)
+        1. 己
+        2. 已
+        3. 㔾
+        4. 
+        ...
+    
+    This order seems to make more sense for Cangjie because:
+    
+    • https://en.wikipedia.org/wiki/Big5:
+      “The original Big5 character set is sorted first by usage frequency,
+      second by stroke count, lastly by Kangxi radical.”
+    • some other popular operating system also uses Big5 order for Cangjie
+    
+    Therefore, for the cangjie* and quick* tables, this commit introduces
+    another sort key sorting according to the Big5 code point just before
+    sorting the final sort key using the Unicode code point.
+    
+    As the frequency data in the tables (which is currently always 1000
+    for cangjie5.txt, cangjie3.txt, and cangjie-big.txt) has higher priority,
+    one could still tweak the frequency data in the table if the order is
+    still not perfect for some characters. But it looks like Big5 order
+    is quite reasonable.
+
+commit db062f794099e2c57d977c212418ef5506f78e24
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jul 4 15:15:26 2014 +0200
+
+    Make it possible to use select keys like F1, F2, F3 ...
+    
+    Select keys like F1, F2, F3, ... are necessary for the ipa-x-sampa
+    table which has:
+    
+    VALID_INPUT_CHARS == +!\%&'-./0123456789:<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+    
+    Therefore, using 1, 2, 3, ... as the select keys for ipa-x-sampa
+    is bad because it makes it impossible to input the following
+    entries of the ipa-x-sampa table:
+    
+        1	ɨ	0	### U+0268 LATIN SMALL LETTER I WITH STROKE
+        2	ø	0	### U+00F8 LATIN SMALL LETTER O WITH STROKE
+        3	ɜ	0	### U+025C LATIN SMALL LETTER REVERSED OPEN E
+        3\	ɞ	0	### U+025E LATIN SMALL LETTER CLOSED REVERSED OPEN E
+        4	ɾ	0	### U+027E LATIN SMALL LETTER R WITH FISHHOOK
+        5	ɫ	0	### U+026B LATIN SMALL LETTER L WITH MIDDLE TILDE
+        6	ɐ	0	### U+0250 LATIN SMALL LETTER TURNED A
+        7	ɤ	0	### U+0264 LATIN SMALL LETTER RAMS HORN
+        8	ɵ	0	### U+0275 LATIN SMALL LETTER BARRED O
+        9	œ	0	### U+0153 LATIN SMALL LIGATURE OE
+    
+        _0	̥	0	### U+0325 COMBINING RING BELOW
+        _1	₁	0	### U+2081 SUBSCRIPT ONE
+        _2	₂	0	### U+2082 SUBSCRIPT TWO
+        _3	₃	0	### U+2083 SUBSCRIPT THREE
+        _4	₄	0	### U+2084 SUBSCRIPT FOUR
+        _5	₅	0	### U+2085 SUBSCRIPT FIVE
+        _6	₆	0	### U+2086 SUBSCRIPT SIX
+    
+    Also, use the key codes of the select keys instead of the names of the
+    select keys in the key even processing. One could of course keep
+    using the names and still make using select keys like F1, F2, F3, ...
+    possible. But other similar key lists like self._commit_keys,
+    self._page_up_keys, and self._page_down_keys use key codes, it seems
+    nicer make all these similar key lists use the same data types.
+
+commit 04accb2a5f7cf688d8455cadc18f28a8c4d0a2e6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jul 3 11:57:08 2014 +0200
+
+    Update NEWS file for ibus-table 1.8.x
+
+commit adb107ef2273acc2257226ac0c87ba8d915de421
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jul 2 17:26:52 2014 +0200
+
+    Fix prompts for array30 table and don’t use prompts in pinyin mode
+    
+    The array 30 table has prompts which are longer than one character.
+    Like this:
+    
+    BEGIN_CHAR_PROMPTS_DEFINITION
+    q 1^
+    w 2^
+    e 3^
+    ...
+    m 7v
+    , 8v
+    . 9v
+    / 0v
+    END_CHAR_PROMPTS_DEFINITION
+    
+    This did not work with my old code.
+    
+    Also, do not use the prompts in pinyin mode. This commit
+    
+        commit c9f6a2bfe833da6f6a3d67546a89e0cefd886d83
+        Author: Mike FABIAN <mfabian@redhat.com>
+        Date:   Wed Jun 4 12:45:19 2014 +0200
+    
+    	Don’t show the prompt characters defined in the table in pinyin mode in the auxiliary text
+    
+    already avoided using the prompts in pinyin mode in the auxiliary text.
+    But prompt characters may also appear in the candidate list to show
+    which characters are needed to complete a candidate (“remaining_tabkeys”)
+    and also in the preëdit when no candidate can be found for the typed
+    characters.  Fix this for pinyin mode for these cases as well.
+
+commit 4adcd6fe8be21892b856f20948314e9c5ea08cb5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jul 1 18:28:44 2014 +0200
+
+    Tweak defaults for Chinese mode taken from the locale
+    
+    - detect also the locale zh_SG as simplified Chinese
+    - if the Chinese variant is detected from the locale, set the
+      Chinese mode to a mode which prefers a variant instead of
+      showing that variant only. I.e., if zh_CN or zh_SG is in
+      the locale, set the Chinese mode to 2 (“Show simplified Chinese first”)
+      instead of 0 (“Show *only* simplified Chinese”).
+      If one wants to show only one variant, one can easily change that
+      later, but as a default it is better not to hide one variant, this
+      seems to confuse some users who have not yet discovered that these
+      options exist (see for example: https://code.google.com/p/ibus/issues/detail?id=1492
+      and https://code.google.com/p/ibus/issues/detail?id=1670 )
+    - if no Chinese locale is set (and the Chinese mode is neither set in
+      the table nor in the user settings either), use mode 4 (“Show all Chinese
+      characters”) by default. In this case we don’t really know whether
+      the table is intended for simplified or for traditional Chinese,
+      it makes no sense to just guess simplified Chinese then.
+
+commit cd83314cecc5d78fa5545611a8f5a313dc8d044f
+Merge: b570739 cb4233c
+Author: Caius "kaio" Chance <me@kaio.net>
+Date:   Fri Jun 27 14:46:43 2014 +1000
+
+    Merge pull request #42 from mike-fabian/do-not-add-wildcards-to-string-of-valid-input-chars
+    
+    Don’t add self._single_wildcard_char and self._multi_wildcard_char to se...
+
+commit cb4233ca63b4838580ce744cbe4048c9b095cf62
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jun 26 15:37:22 2014 +0200
+
+    Don’t add self._single_wildcard_char and self._multi_wildcard_char to self._valid_input_chars and self._pinyin_valid_input_chars
+    
+    This is because the wildcard characters can be changed with the setup
+    tool at runtime. If they are added to the string of valid input
+    characters, the old wildcards would need to be removed from that
+    string if the wildcards are changed. But the wildcard character may
+    have been in that list already before it was added as a wildcard
+    character. In that case, only one instance of the old wildcard
+    character should be removed from the string of valid input characters
+    if the wildcard character is changed. Replacing the wildcard
+    characters in the string of valid input characters when they change
+    seems more confusing that not adding them to that string in the first
+    place.
+    
+    Therefore, I do not add the wildcard characters to the string of
+    valid input characters anymore, but that means that when checking
+    whether a character is a valid input character
+    
+        if c in self._valid_input_chars:
+    
+    is not enough anymore, now one needs
+    
+        if c in self._valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char:
+    
+    That seems less confusing than adding the wildcard characters to
+    self._valid_input_chars and replacing them there when they change.
+
+commit b570739aec426bebd166fb494d41d5f04cccb1aa
+Author: Caius "kaio" Chance <caius.chance@gmail.com>
+Date:   Wed Jun 25 22:46:53 2014 +1000
+
+    Release v1.8.3.
+
 commit 9dd5bd9c2f08c39143e3eea0ded8d34ce979bbcb
 Merge: 7cb2765 80c97fa
 Author: Caius "kaio" Chance <me@kaio.net>

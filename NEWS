@@ -1,3 +1,25 @@
+July 3, 2014:
+    ibus-table >= 1.8.x has many improvements over 1.5.x
+    • The database format is simplified which makes better matching
+      possible. But because of the changed database format, the
+      tables have to be rebuilt, i.e. packages like ibus-table-chinese
+      and ibus-table-others have to be rebuilt against  ibus-table > 1.8.0.
+    • Wildcard support added, wildcards like ? for single characters or *
+      for many characters can be used. The wildcards can be configured
+      in the setup tool, for example one can also use 'z' as a single character
+      wildcard if desired.
+    • Setup tool improved, several new options added, works with Gnome3 now.
+    • Prompt characters are supported now, for example when using Cangjie,
+      日, 月, 金, ... are displayed while typing instead of a, b, c, ...
+    • Moving around in the preëdit works correctly now. One can commit
+      the current candidate to preëdit with the left shift key or with
+      the arrow keys, commit more characters to preëdit that way, then
+      move around in the preëdit and see the full key sequences of the
+      characters in the preëdit. This way one can check the
+      key sequences if one used wildcards or pinyin mode to enter the
+      characters.
+    • Fix many bugs.
+
 June 2, 2009:
     add auto_commit key into tabsqlitedb;
     only check phrase length during auto_commit mode in Chinese IME;

@@ -265,7 +265,7 @@ def main():
         egsout = tostring (egs, encoding='utf8').decode('utf-8')
         patt = re.compile (r'<\?.*\?>\n')
         egsout = patt.sub ('',egsout)
-        print('%s' %egsout)
+        sys.stdout.buffer.write((egsout+'\n').encode('utf-8'))
         return 0
 
     if options.daemon :

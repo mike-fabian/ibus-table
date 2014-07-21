@@ -1,3 +1,18 @@
+commit 5a50f3e0e34ae61108cbf886bea2b7bbadc593fb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 21 15:23:44 2014 +0200
+
+    Always write xml output in UTF-8 encoding, not in the encoding of the current locale
+    
+    Resolves: rhbz#1120919 - abrt] ibus-table: main.py:268:main:UnicodeEncodeError: 'ascii' codec can't encode characters in position 1150-1152: ordinal not in range(128)
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1120919
+
+commit 076063a362953a9fa75d72c97191c6651c0afabd
+Author: Caius "kaio" Chance <caius.chance@gmail.com>
+Date:   Mon Jul 7 16:37:19 2014 +1000
+
+    - Release v1.8.4
+
 commit a87efc9f072114c47d9260cd779f923e5fca3c38
 Merge: cd83314 e21444f
 Author: Caius "kaio" Chance <me@kaio.net>

@@ -1,3 +1,35 @@
+commit bc21d02ae3a6362c8a80364d82e56827f7d51728
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 28 21:08:40 2014 +0200
+
+    Release v1.8.6
+
+commit 275d514e388afedce1a6c74525f671e6f287b3aa
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 28 21:04:21 2014 +0200
+
+    Escape % and _ if they are not intended as wildcards
+    
+    Resolves: rhbz#1123981 - With the new "rusle" table in ibus-table-cyrillic, typing '%' shows ':' in preëdit instead of committing it directly
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1123981
+
+commit fb4969c2f4ec9e5413322415ebe4b8c109dfe9c4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jul 22 16:41:16 2014 +0200
+
+    Require Python >= 3.3
+    
+    When porting to Python3, I originally kept it working with Python2 as
+    well. But I didn’t test with Python2 for a while and the current code
+    would not work anymore with Python2.  It doesn’t seem to make sense
+    to invest effort to keep Python2 compatibility. Better require Python >= 3.3.
+
+commit fe79787880f451815efc86b7b9f7c35d6da27782
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 21 15:38:17 2014 +0200
+
+    Release v1.8.5
+
 commit 5a50f3e0e34ae61108cbf886bea2b7bbadc593fb
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Jul 21 15:23:44 2014 +0200

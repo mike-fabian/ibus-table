@@ -744,20 +744,29 @@ class tabsqlitedb:
         SELECT tabkeys, phrase, freq, user_freq FROM
         (
             SELECT tabkeys, phrase, freq, user_freq FROM main.phrases
-            WHERE tabkeys LIKE :tabkeys %(one_char_condition)s
+            WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar %(one_char_condition)s
             UNION ALL
             SELECT tabkeys, phrase, freq, user_freq FROM user_db.phrases
-            WHERE tabkeys LIKE :tabkeys %(one_char_condition)s
+            WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar %(one_char_condition)s
         )
         ''' % {'one_char_condition': one_char_condition}
+        escapechar = '☺'
+        for c in '!@#':
+            if c not in [single_wildcard_char, multi_wildcard_char]:
+                escapechar = c
         tabkeys_for_like = tabkeys
+        tabkeys_for_like = tabkeys_for_like.replace(escapechar, escapechar+escapechar)
+        if '%' not in [single_wildcard_char, multi_wildcard_char]:
+            tabkeys_for_like = tabkeys_for_like.replace('%', escapechar+'%')
+        if '_' not in [single_wildcard_char, multi_wildcard_char]:
+            tabkeys_for_like = tabkeys_for_like.replace('_', escapechar+'_')
         if single_wildcard_char:
             tabkeys_for_like = tabkeys_for_like.replace(single_wildcard_char, '_')
         if multi_wildcard_char:
             tabkeys_for_like = tabkeys_for_like.replace(multi_wildcard_char, '%%')
         if auto_wildcard:
             tabkeys_for_like += '%%'
-        sqlargs = {'tabkeys': tabkeys_for_like}
+        sqlargs = {'tabkeys': tabkeys_for_like, 'escapechar': escapechar}
         unfiltered_results = self.db.execute(sqlstr, sqlargs).fetchall()
         bitmask = None
         if chinese_mode == 0:

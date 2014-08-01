@@ -343,7 +343,7 @@ class PreferencesDialog:
         __hscale.connect("value-changed", self.__value_changed_cb, name)
 
     def _init_button(self, name):
-        """Initialize the button to restored the default settings"""
+        """Initialize the button to restore the default settings"""
         __button = self.__builder.get_object("button%s" %name)
         __button.connect("clicked", self.__button_clicked_cb, name)
 

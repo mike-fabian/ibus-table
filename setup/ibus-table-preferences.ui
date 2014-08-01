@@ -51,6 +51,20 @@
       </row>
     </data>
   </object>
+  <object class="GtkListStore" id="liststoreAutoWildCard">
+    <columns>
+      <!-- column-name AutoWildCard -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">No</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Yes</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkListStore" id="liststoreChineseMode">
     <columns>
       <!-- column-name ChineseMode -->
@@ -186,20 +200,6 @@
       </row>
     </data>
   </object>
-  <object class="GtkListStore" id="liststoreAutoWildCard">
-    <columns>
-      <!-- column-name AutoWildCard -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">No</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Yes</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkDialog" id="dialog">
     <property name="width_request">400</property>
     <property name="can_focus">False</property>
@@ -218,9 +218,22 @@
           <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="button1">
+              <object class="GtkButton" id="buttonrestoredefaults">
+                <property name="label" translatable="yes">Restore all defaults</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Restore defaults as specified in the database for this engine.</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="buttongtkclose">
                 <property name="label">gtk-close</property>
                 <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
@@ -231,7 +244,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </object>
@@ -882,10 +895,10 @@ appended to the end of the input string.</property>
                                   <object class="GtkEntry" id="entrysinglewildcardchar">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="max_length">1</property>
-                                    <property name="width_chars">1</property>
                                     <property name="tooltip_text" translatable="yes">The wildcard to match any single character.
 Type RETURN or ENTER to confirm after changing the wildcard.</property>
+                                    <property name="max_length">1</property>
+                                    <property name="width_chars">1</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -914,10 +927,10 @@ Type RETURN or ENTER to confirm after changing the wildcard.</property>
                                   <object class="GtkEntry" id="entrymultiwildcardchar">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="max_length">1</property>
-                                    <property name="width_chars">1</property>
                                     <property name="tooltip_text" translatable="yes">The wildcard used to match any number of characters.
 Type RETURN or ENTER to confirm after changing the wildcard.</property>
+                                    <property name="max_length">1</property>
+                                    <property name="width_chars">1</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -947,21 +960,7 @@ Type RETURN or ENTER to confirm after changing the wildcard.</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="buttonrestoredefaults">
-                        <property name="label" translatable="yes">Restore defaults</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Restore defaults as specified in the database for this engine.</property>
-                        <property name="margin_top">6</property>
-                        <property name="relief">half</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">3</property>
-                        <property name="width">1</property>
-                        <property name="height">1</property>
-                      </packing>
+                      <placeholder/>
                     </child>
                   </object>
                 </child>
@@ -1170,7 +1169,7 @@ Seán de Búrca
       </object>
     </child>
     <action-widgets>
-      <action-widget response="0">button1</action-widget>
+      <action-widget response="0">buttongtkclose</action-widget>
     </action-widgets>
   </object>
 </interface>

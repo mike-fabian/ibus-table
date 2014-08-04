@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ibus-table 1.4.99\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2014-06-25 10:51+0200\n"
-"PO-Revision-Date: 2014-06-25 11:02+0200\n"
+"POT-Creation-Date: 2014-08-04 10:03+0200\n"
+"PO-Revision-Date: 2014-08-04 10:04+0200\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: German <trans-de@lists.fedoraproject.org>\n"
 "Language: de\n"
@@ -17,171 +17,171 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: engine/table.py:1328
+#: engine/table.py:1365
 msgid "Setup"
 msgstr "Einstellungen"
 
-#: engine/table.py:1330
+#: engine/table.py:1367
 msgid "Configure ibus-table"
 msgstr "Konfiguration von ibus-table"
 
-#: engine/table.py:1353
+#: engine/table.py:1390
 msgid "Chinese input"
 msgstr "Chinesische Eingabe"
 
-#: engine/table.py:1354 engine/table.py:1360
+#: engine/table.py:1391 engine/table.py:1397
 msgid "Switch to “Direct input” (Left Shift)"
 msgstr "Wechseln zum “Direkteingabe Modus” (Linke Shift Taste)"
 
-#: engine/table.py:1366 engine/table.py:1372
-#: setup/ibus-table-preferences.ui:112
+#: engine/table.py:1403 engine/table.py:1409
+#: setup/ibus-table-preferences.ui:126
 msgid "Direct input"
 msgstr "Direkteingabemodus"
 
-#: engine/table.py:1367
+#: engine/table.py:1404
 msgid "Switch to “Chinese input” (Left Shift)"
 msgstr "Wechseln zum “Pinyin Modus” (Linke Shift Taste)"
 
-#: engine/table.py:1373
+#: engine/table.py:1410
 #, python-format
 msgid "Switch to %s (“Table input”) (Left Shift)"
 msgstr "Wechseln zu %s (“Tabelleneingabe Modus”) (Linke Shift Taste)"
 
-#: engine/table.py:1380
+#: engine/table.py:1417
 msgid "Fullwidth letters"
 msgstr "Buchstaben in voller Breite"
 
-#: engine/table.py:1381
+#: engine/table.py:1418
 msgid "Switch to “Halfwidth letters” (Shift-Space)"
 msgstr "Wechseln zu “Buchstaben in halber Breite” (Ctrl-Space)"
 
-#: engine/table.py:1386
+#: engine/table.py:1423
 msgid "Halfwidth letters"
 msgstr "Buchstaben in halber Breite"
 
-#: engine/table.py:1387
+#: engine/table.py:1424
 msgid "Switch to “Fullwidth letters” (Shift-Space)"
 msgstr "Wechseln zu “Buchstaben in voller Breite” (Ctrl-Space)"
 
-#: engine/table.py:1394
+#: engine/table.py:1431
 msgid "Fullwidth punctuation"
 msgstr "Zeichensetzung in voller Breite"
 
-#: engine/table.py:1395
+#: engine/table.py:1432
 msgid "Switch to “Halfwidth punctuation” (Ctrl-.)"
 msgstr "Wechseln zu “Zeichensetzung in halber Breite” (Ctrl-.)"
 
-#: engine/table.py:1400
+#: engine/table.py:1437
 msgid "Halfwidth punctuation"
 msgstr "Zeichensetzung in halber Breite"
 
-#: engine/table.py:1401
+#: engine/table.py:1438
 msgid "Switch to “Fullwidth punctuation” (Ctrl-.)"
 msgstr "Wechseln zu “Zeichensetzung in voller Breite” (Ctrl-.)"
 
-#: engine/table.py:1409
+#: engine/table.py:1446
 msgid "Pinyin mode"
 msgstr "Pinyin Modus"
 
-#: engine/table.py:1410
+#: engine/table.py:1447
 msgid "Switch to “Table mode” (Right Shift)"
 msgstr "In “Tabellen Modus” wechseln (Rechte Shift Taste)"
 
-#: engine/table.py:1415
+#: engine/table.py:1452
 msgid "Table mode"
 msgstr "Tabellenmodus"
 
-#: engine/table.py:1416
+#: engine/table.py:1453
 msgid "Switch to “Pinyin mode” (Right Shift)"
 msgstr "In “Pinyin Modus” Modus wechseln (Rechte Shift Taste)"
 
-#: engine/table.py:1423
+#: engine/table.py:1460
 msgid "Single character mode"
 msgstr "Einzelzeichenmodus"
 
-#: engine/table.py:1424
+#: engine/table.py:1461
 msgid "Switch to “Phrase mode” (Ctrl-,)"
 msgstr "Wechseln zum “Satz- bzw. Wortmodus” (Ctrl-,)"
 
-#: engine/table.py:1429
+#: engine/table.py:1466
 msgid "Phrase mode"
 msgstr "Satz- bzw. Wortmodus"
 
-#: engine/table.py:1430
+#: engine/table.py:1467
 msgid "Switch to “Single character mode” (Ctrl-,)"
 msgstr "Wechseln zum “Einzelzeichenmodus” (Ctrl-,)"
 
-#: engine/table.py:1437
+#: engine/table.py:1474
 msgid "Direct commit mode"
 msgstr "Direkter Commitmodus"
 
-#: engine/table.py:1438
+#: engine/table.py:1475
 msgid "Switch to “Normal commit mode” (uses space to commit) (Ctrl-/)"
 msgstr ""
 "Wechseln zum normalen Commitmodus (Commit beim Tippen des Leerzeichens) "
 "(Ctrl-/)"
 
-#: engine/table.py:1443
+#: engine/table.py:1480
 msgid "Normal commit mode"
 msgstr "Normaler Commitmodus"
 
-#: engine/table.py:1444
+#: engine/table.py:1481
 msgid "Switch to “Direct commit mode” (Ctrl-/)"
 msgstr "Wechseln zum “direkten Commitmodus” (Ctrl-/)"
 
-#: engine/table.py:1451
+#: engine/table.py:1488
 msgid "Display candidates"
 msgstr "Kandidatenliste anzeigen"
 
-#: engine/table.py:1452
+#: engine/table.py:1489
 msgid "Switch to “Hide candidates”"
 msgstr "Wechseln zu “Kandidaten verstecken”"
 
-#: engine/table.py:1457
+#: engine/table.py:1494
 msgid "Hide candidates"
 msgstr "Kandidaten verstecken"
 
-#: engine/table.py:1458
+#: engine/table.py:1495
 msgid "Switch to “Display candidates”"
 msgstr "Wechseln zu “Kandidatenliste anzeigen”"
 
-#: engine/table.py:1472 setup/ibus-table-preferences.ui:61
+#: engine/table.py:1509 setup/ibus-table-preferences.ui:75
 msgid "Simplified Chinese"
 msgstr "Vereinfachtes Chinesisch"
 
-#: engine/table.py:1473
+#: engine/table.py:1510
 msgid "Switch to “Traditional Chinese” (Ctrl-;)"
 msgstr "Wechseln zu “Traditionelles Chinesisch” (Ctrl-;)"
 
-#: engine/table.py:1478 setup/ibus-table-preferences.ui:64
+#: engine/table.py:1515 setup/ibus-table-preferences.ui:78
 msgid "Traditional Chinese"
 msgstr "Traditionelles Chinesisch"
 
-#: engine/table.py:1479
+#: engine/table.py:1516
 msgid "Switch to “Simplified Chinese before traditional” (Ctrl-;)"
 msgstr "Wechseln zu “Vereinfachtes Chinesisch”"
 
-#: engine/table.py:1484 setup/ibus-table-preferences.ui:67
+#: engine/table.py:1521 setup/ibus-table-preferences.ui:81
 msgid "Simplified Chinese before traditional"
 msgstr "Vereinfachtes Chinesisch zuerst"
 
-#: engine/table.py:1485
+#: engine/table.py:1522
 msgid "Switch to “Traditional Chinese before simplified” (Ctrl-;)"
 msgstr "Wechseln zu “Traditionelles Chinesisch” (Ctrl-;)"
 
-#: engine/table.py:1490 setup/ibus-table-preferences.ui:70
+#: engine/table.py:1527 setup/ibus-table-preferences.ui:84
 msgid "Traditional Chinese before simplified"
 msgstr "Traditionelles Chinesisch zuerst"
 
-#: engine/table.py:1491
+#: engine/table.py:1528
 msgid "Switch to “All Chinese characters” (Ctrl-;)"
 msgstr "Wechseln zu “Alle chinesischen Zeichen” (Ctrl-;)"
 
-#: engine/table.py:1496 setup/ibus-table-preferences.ui:73
+#: engine/table.py:1533 setup/ibus-table-preferences.ui:87
 msgid "All Chinese characters"
 msgstr "Alle chinesischen Zeichen"
 
-#: engine/table.py:1497
+#: engine/table.py:1534
 msgid "Switch to “Simplified Chinese”"
 msgstr "Wechseln zu “Vereinfachtes Chinesisch”"
 
@@ -206,12 +206,12 @@ msgid "IBus Table %s Preferences"
 msgstr "IBus Table %s Einstellungen"
 
 #: setup/ibus-table-preferences.ui:19 setup/ibus-table-preferences.ui:47
-#: setup/ibus-table-preferences.ui:196
+#: setup/ibus-table-preferences.ui:61
 msgid "No"
 msgstr "Nein"
 
 #: setup/ibus-table-preferences.ui:22 setup/ibus-table-preferences.ui:50
-#: setup/ibus-table-preferences.ui:199
+#: setup/ibus-table-preferences.ui:64
 msgid "Yes"
 msgstr "Ja"
 
@@ -223,49 +223,60 @@ msgstr "Normal"
 msgid "Direct"
 msgstr "Direkt"
 
-#: setup/ibus-table-preferences.ui:84 setup/ibus-table-preferences.ui:98
-#: setup/ibus-table-preferences.ui:168 setup/ibus-table-preferences.ui:182
+#: setup/ibus-table-preferences.ui:98 setup/ibus-table-preferences.ui:112
+#: setup/ibus-table-preferences.ui:182 setup/ibus-table-preferences.ui:196
 msgid "Half"
 msgstr "Halbe Breite"
 
-#: setup/ibus-table-preferences.ui:87 setup/ibus-table-preferences.ui:101
-#: setup/ibus-table-preferences.ui:171 setup/ibus-table-preferences.ui:185
+#: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
+#: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
 msgid "Full"
 msgstr "Volle Breite"
 
-#: setup/ibus-table-preferences.ui:115
+#: setup/ibus-table-preferences.ui:129
 msgid "Table input"
 msgstr "Tabelleneingabemodus"
 
-#: setup/ibus-table-preferences.ui:126
+#: setup/ibus-table-preferences.ui:140
 msgid "Horizontal"
 msgstr "Horizontal"
 
-#: setup/ibus-table-preferences.ui:129
+#: setup/ibus-table-preferences.ui:143
 msgid "Vertical"
 msgstr "Vertikal"
 
-#: setup/ibus-table-preferences.ui:140
+#: setup/ibus-table-preferences.ui:154
 msgid "Phrase"
 msgstr "Satzmodus"
 
-#: setup/ibus-table-preferences.ui:143
+#: setup/ibus-table-preferences.ui:157
 msgid "Single Char"
 msgstr "Einzelzeichenmodus"
 
-#: setup/ibus-table-preferences.ui:154
+#: setup/ibus-table-preferences.ui:168
 msgid "Commit"
 msgstr "Commit"
 
-#: setup/ibus-table-preferences.ui:157
+#: setup/ibus-table-preferences.ui:171
 msgid "Next Page"
 msgstr "Nächste Seite"
 
-#: setup/ibus-table-preferences.ui:289
+#: setup/ibus-table-preferences.ui:223
+msgid "Restore all defaults"
+msgstr "Alles auf Standardeinstellungen zurücksetzen"
+
+#: setup/ibus-table-preferences.ui:227
+msgid "Restore defaults as specified in the database for this engine."
+msgstr ""
+"Auf Standardeinstellungen zurücksetzen, so\n"
+"wie sie in der Datenbank für diesen Inputengine\n"
+"definiert sind."
+
+#: setup/ibus-table-preferences.ui:302
 msgid "Input mode:"
 msgstr "Eingabemodus"
 
-#: setup/ibus-table-preferences.ui:302
+#: setup/ibus-table-preferences.ui:315
 msgid ""
 "“Simplified Chinese” shows only characters \n"
 "used in simplified Chinese. “Traditional Chinese”\n"
@@ -288,7 +299,7 @@ msgstr ""
 "“Alle chinesischen Zeichen” zeigt alle Kandidaten ohne\n"
 "daß die Reihenfolge irgendwie gefiltert wird."
 
-#: setup/ibus-table-preferences.ui:327
+#: setup/ibus-table-preferences.ui:340
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
@@ -297,7 +308,7 @@ msgstr ""
 "Breite im Tabelleneingabemodus benutzt werden\n"
 "sollen."
 
-#: setup/ibus-table-preferences.ui:344
+#: setup/ibus-table-preferences.ui:357
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
@@ -306,7 +317,7 @@ msgstr ""
 "Breite im Tabelleneingabemodus benutzt\n"
 "werden soll."
 
-#: setup/ibus-table-preferences.ui:361
+#: setup/ibus-table-preferences.ui:374
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
@@ -315,7 +326,7 @@ msgstr ""
 "Breite im Direkteingabemodus benutzt werden\n"
 "sollen."
 
-#: setup/ibus-table-preferences.ui:378
+#: setup/ibus-table-preferences.ui:391
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
@@ -324,27 +335,27 @@ msgstr ""
 "Breite im Direkteingabemodus benutzt\n"
 "werden soll."
 
-#: setup/ibus-table-preferences.ui:398
+#: setup/ibus-table-preferences.ui:411
 msgid "Chinese mode:"
 msgstr "Chinesischer Modus:"
 
-#: setup/ibus-table-preferences.ui:414
+#: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"
 msgstr "Buchstabenbreite im Tabelleneingabemodus"
 
-#: setup/ibus-table-preferences.ui:430
+#: setup/ibus-table-preferences.ui:443
 msgid "Table input punctuation width:"
 msgstr "Zeichensetzungsbreite im Tabelleneingabemodus"
 
-#: setup/ibus-table-preferences.ui:446
+#: setup/ibus-table-preferences.ui:459
 msgid "Direct input letter width:"
 msgstr "Buchstabenbreite im Direkteingabemodus"
 
-#: setup/ibus-table-preferences.ui:462
+#: setup/ibus-table-preferences.ui:475
 msgid "Direct input punctuation width:"
 msgstr "Zeichensetzungsbreite im Direkteingabemodus"
 
-#: setup/ibus-table-preferences.ui:475
+#: setup/ibus-table-preferences.ui:488
 msgid ""
 "“Direct input” is almost the same as if the\n"
 "input method were off, i.e. not used at all, most\n"
@@ -362,11 +373,11 @@ msgstr ""
 "“Tabelleneingabemodus” bedeutet, daß die Eingabemethode\n"
 "aktiv ist."
 
-#: setup/ibus-table-preferences.ui:501
+#: setup/ibus-table-preferences.ui:514
 msgid "<b>Inital state</b>"
 msgstr "<b>Zustand beim Start</b>"
 
-#: setup/ibus-table-preferences.ui:538
+#: setup/ibus-table-preferences.ui:551
 msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
@@ -374,7 +385,7 @@ msgstr ""
 "Ob die Kandidatenliste horizontal oder\n"
 "vertikal angezeigt werden soll."
 
-#: setup/ibus-table-preferences.ui:555
+#: setup/ibus-table-preferences.ui:568
 msgid ""
 "The maximum number of candidates in\n"
 "one page of the lookup table. You can switch\n"
@@ -386,19 +397,19 @@ msgstr ""
 "Kandidatenliste mit den Seite hoch/runter oder\n"
 "den Pfeil hoch/runter Tasten blättern."
 
-#: setup/ibus-table-preferences.ui:579
+#: setup/ibus-table-preferences.ui:592
 msgid "Orientation:"
 msgstr "Orientierung"
 
-#: setup/ibus-table-preferences.ui:595
+#: setup/ibus-table-preferences.ui:608
 msgid "Page size:"
 msgstr "Kandidaten pro Seite:"
 
-#: setup/ibus-table-preferences.ui:611
+#: setup/ibus-table-preferences.ui:624
 msgid "Show candidate list"
 msgstr "Kandidatenliste zeigen"
 
-#: setup/ibus-table-preferences.ui:624
+#: setup/ibus-table-preferences.ui:637
 msgid ""
 "Whether candidate lists should be shown or hidden.\n"
 "For Chinese input methods one usually wants the\n"
@@ -413,11 +424,11 @@ msgstr ""
 "“translit” ist es besser die Kandidatenlisten zu\n"
 "verstecken."
 
-#: setup/ibus-table-preferences.ui:648
+#: setup/ibus-table-preferences.ui:661
 msgid "<b>Candidate list</b>"
 msgstr "<b>Kandidatenliste</b>"
 
-#: setup/ibus-table-preferences.ui:685
+#: setup/ibus-table-preferences.ui:698
 msgid ""
 "If this is set to “single char”, only single\n"
 "character candidates will be shown. If it is\n"
@@ -431,7 +442,7 @@ msgstr ""
 "längere Kandidaten angezeigt werden, ganze Wörter\n"
 "oder gar Sätze."
 
-#: setup/ibus-table-preferences.ui:704
+#: setup/ibus-table-preferences.ui:717
 msgid ""
 "If set to “Yes”, this does the following 4 things:\n"
 "1) When typing “Return”, commit the \n"
@@ -458,7 +469,7 @@ msgstr ""
 "   nicht-chinesische Eingabemethoden, zum Beispiel die\n"
 "   Russische Eingabemethode “translit”)"
 
-#: setup/ibus-table-preferences.ui:729
+#: setup/ibus-table-preferences.ui:742
 msgid ""
 "Committing with the commit keys or with the mouse\n"
 "always commits to the application. This option is about\n"
@@ -482,7 +493,7 @@ msgstr ""
 "werden, wo sie weiter editiert werden können und später\n"
 "manuell committed."
 
-#: setup/ibus-table-preferences.ui:753
+#: setup/ibus-table-preferences.ui:766
 msgid ""
 "If you choose the space key to do “Next page”,\n"
 " you can only commit using the selection keys\n"
@@ -495,27 +506,27 @@ msgstr ""
 "Kandidatenliste vor den Kandidaten angezeigt werden)\n"
 "oder mit der Maus committen."
 
-#: setup/ibus-table-preferences.ui:775
+#: setup/ibus-table-preferences.ui:788
 msgid "Compose:"
 msgstr "Komposition"
 
-#: setup/ibus-table-preferences.ui:791
+#: setup/ibus-table-preferences.ui:804
 msgid "Auto select:"
 msgstr "Automatische Auswahl"
 
-#: setup/ibus-table-preferences.ui:807
+#: setup/ibus-table-preferences.ui:820
 msgid "Commit mode:"
 msgstr "Commitmodus"
 
-#: setup/ibus-table-preferences.ui:823
+#: setup/ibus-table-preferences.ui:836
 msgid "Behavior of space key:"
 msgstr "Verhalten der Leertaste"
 
-#: setup/ibus-table-preferences.ui:839
+#: setup/ibus-table-preferences.ui:852
 msgid "Auto wildcard:"
 msgstr "Automatischer Platzhalter"
 
-#: setup/ibus-table-preferences.ui:852
+#: setup/ibus-table-preferences.ui:865
 msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
@@ -524,11 +535,11 @@ msgstr ""
 "automatich ein Platzhalter für beliebig viele\n"
 "Zeichen ans Ende des Eingabetextes angehängt."
 
-#: setup/ibus-table-preferences.ui:872
+#: setup/ibus-table-preferences.ui:885
 msgid "Single wildchard character:"
 msgstr "Platzhalter für ein Zeichen:"
 
-#: setup/ibus-table-preferences.ui:887
+#: setup/ibus-table-preferences.ui:898
 msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
@@ -536,11 +547,11 @@ msgstr ""
 "Das Platzhalterzeichen für ein beliebiges einzelnes\n"
 "Zeichen. Nach Ändern dieser Option mit RETURN oder ENTER bestätigen."
 
-#: setup/ibus-table-preferences.ui:904
+#: setup/ibus-table-preferences.ui:917
 msgid "Multi wildcard character:"
 msgstr "Platzhalter für beliebig viele Zeichen:"
 
-#: setup/ibus-table-preferences.ui:919
+#: setup/ibus-table-preferences.ui:930
 msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
@@ -548,30 +559,19 @@ msgstr ""
 "Das Platzhalterzeichen für beliebig viele Zeichen.\n"
 "Nach Ändern dieser Option mit RETURN oder ENTER bestätigen."
 
-#: setup/ibus-table-preferences.ui:937
+#: setup/ibus-table-preferences.ui:950
 msgid "<b>Details</b>"
 msgstr "<b>Details</b>"
 
-#: setup/ibus-table-preferences.ui:951
-msgid "Restore defaults"
-msgstr "Auf Standardeinstellungen zurücksetzen"
-
-#: setup/ibus-table-preferences.ui:955
-msgid "Restore defaults as specified in the database for this engine."
-msgstr ""
-"Auf Standardeinstellungen zurücksetzen, so\n"
-"wie sie in der Datenbank für diesen Inputengine\n"
-"definiert sind."
-
-#: setup/ibus-table-preferences.ui:974
+#: setup/ibus-table-preferences.ui:973
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: setup/ibus-table-preferences.ui:1025
+#: setup/ibus-table-preferences.ui:1024
 msgid "Table input method for IBus"
 msgstr "Tabellenbasierte Eingabemethode für IBus"
 
-#: setup/ibus-table-preferences.ui:1057
+#: setup/ibus-table-preferences.ui:1056
 msgid ""
 "<small>\n"
 "<b>Authors:</b>\n"
@@ -609,6 +609,6 @@ msgstr ""
 "Seán de Búrca\n"
 "</small>"
 
-#: setup/ibus-table-preferences.ui:1156
+#: setup/ibus-table-preferences.ui:1155
 msgid "About"
 msgstr "Info über IBus Table"

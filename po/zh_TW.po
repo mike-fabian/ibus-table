@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1.20080819\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2014-06-25 10:51+0200\n"
+"POT-Creation-Date: 2014-08-04 10:03+0200\n"
 "PO-Revision-Date: 2012-11-13 08:31+0100\n"
 "Last-Translator: Caius 'kaio' Chance <k@kaio.me>\n"
 "Language-Team: Caius 'kaio' Chance <k@kaio.me>\n"
@@ -16,200 +16,200 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: engine/table.py:1328
+#: engine/table.py:1365
 msgid "Setup"
 msgstr ""
 
-#: engine/table.py:1330
+#: engine/table.py:1367
 msgid "Configure ibus-table"
 msgstr ""
 
-#: engine/table.py:1353
+#: engine/table.py:1390
 #, fuzzy
 msgid "Chinese input"
 msgstr "中文模式"
 
-#: engine/table.py:1354 engine/table.py:1360
+#: engine/table.py:1391 engine/table.py:1397
 #, fuzzy
 msgid "Switch to “Direct input” (Left Shift)"
 msgstr "切換成拼音反查模式"
 
-#: engine/table.py:1366 engine/table.py:1372
-#: setup/ibus-table-preferences.ui:112
+#: engine/table.py:1403 engine/table.py:1409
+#: setup/ibus-table-preferences.ui:126
 #, fuzzy
 msgid "Direct input"
 msgstr "直接輸出模式，亦即單項結果即時輸出"
 
-#: engine/table.py:1367
+#: engine/table.py:1404
 #, fuzzy
 msgid "Switch to “Chinese input” (Left Shift)"
 msgstr "切換成拼音反查模式"
 
-#: engine/table.py:1373
+#: engine/table.py:1410
 #, fuzzy, python-format
 msgid "Switch to %s (“Table input”) (Left Shift)"
 msgstr "切換成形碼模式"
 
-#: engine/table.py:1380
+#: engine/table.py:1417
 #, fuzzy
 msgid "Fullwidth letters"
 msgstr "全形字元"
 
-#: engine/table.py:1381
+#: engine/table.py:1418
 #, fuzzy
 msgid "Switch to “Halfwidth letters” (Shift-Space)"
 msgstr "切換成半形字元"
 
-#: engine/table.py:1386
+#: engine/table.py:1423
 #, fuzzy
 msgid "Halfwidth letters"
 msgstr "半形字元"
 
-#: engine/table.py:1387
+#: engine/table.py:1424
 #, fuzzy
 msgid "Switch to “Fullwidth letters” (Shift-Space)"
 msgstr "切換成全形字元"
 
-#: engine/table.py:1394
+#: engine/table.py:1431
 #, fuzzy
 msgid "Fullwidth punctuation"
 msgstr "全形標點"
 
-#: engine/table.py:1395
+#: engine/table.py:1432
 #, fuzzy
 msgid "Switch to “Halfwidth punctuation” (Ctrl-.)"
 msgstr "切換成半形標點"
 
-#: engine/table.py:1400
+#: engine/table.py:1437
 #, fuzzy
 msgid "Halfwidth punctuation"
 msgstr "半形標點"
 
-#: engine/table.py:1401
+#: engine/table.py:1438
 #, fuzzy
 msgid "Switch to “Fullwidth punctuation” (Ctrl-.)"
 msgstr "切換成全形標點"
 
-#: engine/table.py:1409
+#: engine/table.py:1446
 msgid "Pinyin mode"
 msgstr ""
 
-#: engine/table.py:1410
+#: engine/table.py:1447
 #, fuzzy
 msgid "Switch to “Table mode” (Right Shift)"
 msgstr "切換成形碼模式"
 
-#: engine/table.py:1415
+#: engine/table.py:1452
 #, fuzzy
 msgid "Table mode"
 msgstr "形碼模式"
 
-#: engine/table.py:1416
+#: engine/table.py:1453
 #, fuzzy
 msgid "Switch to “Pinyin mode” (Right Shift)"
 msgstr "切換成英文模式"
 
-#: engine/table.py:1423
+#: engine/table.py:1460
 #, fuzzy
 msgid "Single character mode"
 msgstr "單字元模式"
 
-#: engine/table.py:1424
+#: engine/table.py:1461
 #, fuzzy
 msgid "Switch to “Phrase mode” (Ctrl-,)"
 msgstr "切換成詞組模式"
 
-#: engine/table.py:1429
+#: engine/table.py:1466
 #, fuzzy
 msgid "Phrase mode"
 msgstr "詞組模式"
 
-#: engine/table.py:1430
+#: engine/table.py:1467
 #, fuzzy
 msgid "Switch to “Single character mode” (Ctrl-,)"
 msgstr "切換成單字元模式"
 
-#: engine/table.py:1437
+#: engine/table.py:1474
 #, fuzzy
 msgid "Direct commit mode"
 msgstr "直接輸出模式，亦即單項結果即時輸出"
 
-#: engine/table.py:1438
+#: engine/table.py:1475
 #, fuzzy
 msgid "Switch to “Normal commit mode” (uses space to commit) (Ctrl-/)"
 msgstr "切換成標準輸出模式，亦即按空格鍵執行輸出"
 
-#: engine/table.py:1443
+#: engine/table.py:1480
 #, fuzzy
 msgid "Normal commit mode"
 msgstr "標準輸出模式"
 
-#: engine/table.py:1444
+#: engine/table.py:1481
 #, fuzzy
 msgid "Switch to “Direct commit mode” (Ctrl-/)"
 msgstr "切換成直接輸出模式，亦即單項結果即時輸出"
 
-#: engine/table.py:1451
+#: engine/table.py:1488
 msgid "Display candidates"
 msgstr ""
 
-#: engine/table.py:1452
+#: engine/table.py:1489
 msgid "Switch to “Hide candidates”"
 msgstr ""
 
-#: engine/table.py:1457
+#: engine/table.py:1494
 msgid "Hide candidates"
 msgstr ""
 
-#: engine/table.py:1458
+#: engine/table.py:1495
 msgid "Switch to “Display candidates”"
 msgstr ""
 
-#: engine/table.py:1472 setup/ibus-table-preferences.ui:61
+#: engine/table.py:1509 setup/ibus-table-preferences.ui:75
 #, fuzzy
 msgid "Simplified Chinese"
 msgstr "簡體模式"
 
-#: engine/table.py:1473
+#: engine/table.py:1510
 #, fuzzy
 msgid "Switch to “Traditional Chinese” (Ctrl-;)"
 msgstr "切換成繁體模式"
 
-#: engine/table.py:1478 setup/ibus-table-preferences.ui:64
+#: engine/table.py:1515 setup/ibus-table-preferences.ui:78
 #, fuzzy
 msgid "Traditional Chinese"
 msgstr "繁體模式"
 
-#: engine/table.py:1479
+#: engine/table.py:1516
 #, fuzzy
 msgid "Switch to “Simplified Chinese before traditional” (Ctrl-;)"
 msgstr "切換成簡體模式"
 
-#: engine/table.py:1484 setup/ibus-table-preferences.ui:67
+#: engine/table.py:1521 setup/ibus-table-preferences.ui:81
 #, fuzzy
 msgid "Simplified Chinese before traditional"
 msgstr "簡體模式"
 
-#: engine/table.py:1485
+#: engine/table.py:1522
 #, fuzzy
 msgid "Switch to “Traditional Chinese before simplified” (Ctrl-;)"
 msgstr "切換成繁體模式"
 
-#: engine/table.py:1490 setup/ibus-table-preferences.ui:70
+#: engine/table.py:1527 setup/ibus-table-preferences.ui:84
 #, fuzzy
 msgid "Traditional Chinese before simplified"
 msgstr "繁體模式"
 
-#: engine/table.py:1491
+#: engine/table.py:1528
 #, fuzzy
 msgid "Switch to “All Chinese characters” (Ctrl-;)"
 msgstr "切換成繁體模式"
 
-#: engine/table.py:1496 setup/ibus-table-preferences.ui:73
+#: engine/table.py:1533 setup/ibus-table-preferences.ui:87
 msgid "All Chinese characters"
 msgstr ""
 
-#: engine/table.py:1497
+#: engine/table.py:1534
 #, fuzzy
 msgid "Switch to “Simplified Chinese”"
 msgstr "切換成簡體模式"
@@ -233,12 +233,12 @@ msgid "IBus Table %s Preferences"
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:19 setup/ibus-table-preferences.ui:47
-#: setup/ibus-table-preferences.ui:196
+#: setup/ibus-table-preferences.ui:61
 msgid "No"
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:22 setup/ibus-table-preferences.ui:50
-#: setup/ibus-table-preferences.ui:199
+#: setup/ibus-table-preferences.ui:64
 msgid "Yes"
 msgstr ""
 
@@ -250,52 +250,60 @@ msgstr ""
 msgid "Direct"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:84 setup/ibus-table-preferences.ui:98
-#: setup/ibus-table-preferences.ui:168 setup/ibus-table-preferences.ui:182
+#: setup/ibus-table-preferences.ui:98 setup/ibus-table-preferences.ui:112
+#: setup/ibus-table-preferences.ui:182 setup/ibus-table-preferences.ui:196
 msgid "Half"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:87 setup/ibus-table-preferences.ui:101
-#: setup/ibus-table-preferences.ui:171 setup/ibus-table-preferences.ui:185
+#: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
+#: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
 msgid "Full"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:115
+#: setup/ibus-table-preferences.ui:129
 msgid "Table input"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:126
+#: setup/ibus-table-preferences.ui:140
 msgid "Horizontal"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:129
+#: setup/ibus-table-preferences.ui:143
 msgid "Vertical"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:140
+#: setup/ibus-table-preferences.ui:154
 #, fuzzy
 msgid "Phrase"
 msgstr "詞組模式"
 
-#: setup/ibus-table-preferences.ui:143
+#: setup/ibus-table-preferences.ui:157
 #, fuzzy
 msgid "Single Char"
 msgstr "單字元模式"
 
-#: setup/ibus-table-preferences.ui:154
+#: setup/ibus-table-preferences.ui:168
 msgid "Commit"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:157
+#: setup/ibus-table-preferences.ui:171
 msgid "Next Page"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:289
+#: setup/ibus-table-preferences.ui:223
+msgid "Restore all defaults"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:227
+msgid "Restore defaults as specified in the database for this engine."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:302
 #, fuzzy
 msgid "Input mode:"
 msgstr "直接輸出模式，亦即單項結果即時輸出"
 
-#: setup/ibus-table-preferences.ui:302
+#: setup/ibus-table-preferences.ui:315
 msgid ""
 "“Simplified Chinese” shows only characters \n"
 "used in simplified Chinese. “Traditional Chinese”\n"
@@ -309,52 +317,52 @@ msgid ""
 "versus simplified Chinese."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:327
+#: setup/ibus-table-preferences.ui:340
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:344
+#: setup/ibus-table-preferences.ui:357
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:361
+#: setup/ibus-table-preferences.ui:374
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:378
+#: setup/ibus-table-preferences.ui:391
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:398
+#: setup/ibus-table-preferences.ui:411
 #, fuzzy
 msgid "Chinese mode:"
 msgstr "中文模式"
 
-#: setup/ibus-table-preferences.ui:414
+#: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:430
+#: setup/ibus-table-preferences.ui:443
 msgid "Table input punctuation width:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:446
+#: setup/ibus-table-preferences.ui:459
 msgid "Direct input letter width:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:462
+#: setup/ibus-table-preferences.ui:475
 msgid "Direct input punctuation width:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:475
+#: setup/ibus-table-preferences.ui:488
 msgid ""
 "“Direct input” is almost the same as if the\n"
 "input method were off, i.e. not used at all, most\n"
@@ -364,17 +372,17 @@ msgid ""
 "“Table input” means the input method is on."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:501
+#: setup/ibus-table-preferences.ui:514
 msgid "<b>Inital state</b>"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:538
+#: setup/ibus-table-preferences.ui:551
 msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:555
+#: setup/ibus-table-preferences.ui:568
 msgid ""
 "The maximum number of candidates in\n"
 "one page of the lookup table. You can switch\n"
@@ -382,19 +390,19 @@ msgid ""
 "keys or the arrow up/down keys."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:579
+#: setup/ibus-table-preferences.ui:592
 msgid "Orientation:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:595
+#: setup/ibus-table-preferences.ui:608
 msgid "Page size:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:611
+#: setup/ibus-table-preferences.ui:624
 msgid "Show candidate list"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:624
+#: setup/ibus-table-preferences.ui:637
 msgid ""
 "Whether candidate lists should be shown or hidden.\n"
 "For Chinese input methods one usually wants the\n"
@@ -403,11 +411,11 @@ msgid ""
 "candidate lists is better."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:648
+#: setup/ibus-table-preferences.ui:661
 msgid "<b>Candidate list</b>"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:685
+#: setup/ibus-table-preferences.ui:698
 msgid ""
 "If this is set to “single char”, only single\n"
 "character candidates will be shown. If it is\n"
@@ -415,7 +423,7 @@ msgid ""
 "several characters may be shown."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:704
+#: setup/ibus-table-preferences.ui:717
 msgid ""
 "If set to “Yes”, this does the following 4 things:\n"
 "1) When typing “Return”, commit the \n"
@@ -429,7 +437,7 @@ msgid ""
 "   the Russian “translit”)"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:729
+#: setup/ibus-table-preferences.ui:742
 msgid ""
 "Committing with the commit keys or with the mouse\n"
 "always commits to the application. This option is about\n"
@@ -442,7 +450,7 @@ msgid ""
 "to preëdit."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:753
+#: setup/ibus-table-preferences.ui:766
 msgid ""
 "If you choose the space key to do “Next page”,\n"
 " you can only commit using the selection keys\n"
@@ -450,75 +458,67 @@ msgid ""
 "lookup table) or using the mouse."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:775
+#: setup/ibus-table-preferences.ui:788
 msgid "Compose:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:791
+#: setup/ibus-table-preferences.ui:804
 msgid "Auto select:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:807
+#: setup/ibus-table-preferences.ui:820
 #, fuzzy
 msgid "Commit mode:"
 msgstr "直接輸出模式，亦即單項結果即時輸出"
 
-#: setup/ibus-table-preferences.ui:823
+#: setup/ibus-table-preferences.ui:836
 msgid "Behavior of space key:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:839
+#: setup/ibus-table-preferences.ui:852
 msgid "Auto wildcard:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:852
+#: setup/ibus-table-preferences.ui:865
 msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:872
+#: setup/ibus-table-preferences.ui:885
 #, fuzzy
 msgid "Single wildchard character:"
 msgstr "單字元模式"
 
-#: setup/ibus-table-preferences.ui:887
+#: setup/ibus-table-preferences.ui:898
 msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:904
+#: setup/ibus-table-preferences.ui:917
 msgid "Multi wildcard character:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:919
+#: setup/ibus-table-preferences.ui:930
 msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:937
+#: setup/ibus-table-preferences.ui:950
 msgid "<b>Details</b>"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:951
-msgid "Restore defaults"
-msgstr ""
-
-#: setup/ibus-table-preferences.ui:955
-msgid "Restore defaults as specified in the database for this engine."
-msgstr ""
-
-#: setup/ibus-table-preferences.ui:974
+#: setup/ibus-table-preferences.ui:973
 msgid "Settings"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:1025
+#: setup/ibus-table-preferences.ui:1024
 msgid "Table input method for IBus"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:1057
+#: setup/ibus-table-preferences.ui:1056
 msgid ""
 "<small>\n"
 "<b>Authors:</b>\n"
@@ -539,7 +539,7 @@ msgid ""
 "</small>"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:1156
+#: setup/ibus-table-preferences.ui:1155
 msgid "About"
 msgstr ""
 

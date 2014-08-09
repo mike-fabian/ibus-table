@@ -260,7 +260,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
-              <object class="GtkAlignment" id="alignment1">
+              <object class="GtkAlignment" id="alignmentsettingstab">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="top_padding">12</property>
@@ -268,11 +268,11 @@
                 <property name="left_padding">12</property>
                 <property name="right_padding">12</property>
                 <child>
-                  <object class="GtkGrid" id="grid_vbox1">
+                  <object class="GtkGrid" id="grid_vboxsettingstab">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkFrame" id="frame1">
+                      <object class="GtkFrame" id="frameinitialstate">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
@@ -524,7 +524,7 @@ halfwidth may still happen in direct input mode.
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkFrame" id="frame2">
+                      <object class="GtkFrame" id="framecandidatelist">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
@@ -670,21 +670,47 @@ candidate lists is better.</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="labelsettingstab">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Settings</property>
+              </object>
+              <packing>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkAlignment" id="alignmentdetailsta">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="top_padding">12</property>
+                <property name="bottom_padding">12</property>
+                <property name="left_padding">12</property>
+                <property name="right_padding">12</property>
+                <child>
+                  <object class="GtkGrid" id="grid_vboxdetailstab">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkFrame" id="frame3">
+                      <object class="GtkFrame" id="framedetails">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="hexpand">True</property>
                         <property name="label_xalign">0</property>
                         <property name="shadow_type">none</property>
                         <child>
-                          <object class="GtkAlignment" id="alignment4">
+                          <object class="GtkAlignment" id="alignmentdetailstab">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="top_padding">6</property>
                             <property name="left_padding">12</property>
                             <child>
-                              <object class="GtkGrid" id="grid2">
+                              <object class="GtkGrid" id="griddetails">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="row_spacing">6</property>
@@ -954,32 +980,37 @@ Type RETURN or ENTER to confirm after changing the wildcard.</property>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
-                        <property name="top_attach">2</property>
+                        <property name="top_attach">0</property>
                         <property name="width">1</property>
                         <property name="height">1</property>
                       </packing>
                     </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="labelsettingstab">
+              <object class="GtkLabel" id="labeldetailstab">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Settings</property>
+                <property name="label" translatable="yes">Details</property>
               </object>
               <packing>
+                <property name="position">1</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
             <child>
-              <object class="GtkAlignment" id="alignment5">
+              <object class="GtkAlignment" id="alignmentabouttab">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="top_padding">12</property>
+                <property name="bottom_padding">12</property>
+                <property name="left_padding">12</property>
+                <property name="right_padding">12</property>
                 <child>
                   <object class="GtkGrid" id="grid_vbox7">
                     <property name="visible">True</property>
@@ -1145,7 +1176,7 @@ Seán de Búrca
                 </child>
               </object>
               <packing>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child type="tab">
@@ -1155,7 +1186,7 @@ Seán de Búrca
                 <property name="label" translatable="yes">About</property>
               </object>
               <packing>
-                <property name="position">1</property>
+                <property name="position">2</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>

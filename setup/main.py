@@ -330,7 +330,7 @@ class PreferencesDialog:
         else:
             val = OPTION_DEFAULTS[name]
         __entry.set_text(val)
-        __entry.connect("activate", self.__entry_changed_cb, name)
+        __entry.connect("notify::text", self.__entry_changed_cb, name)
 
     def _init_hscale(self, name):
         """Set scale widget from the __config engine"""
@@ -368,7 +368,7 @@ class PreferencesDialog:
             val = int(val)
         self.__set_value(name, val)
 
-    def __entry_changed_cb(self, widget, name):
+    def __entry_changed_cb(self, widget, property_spec, name):
         """entry widget text changed handler"""
         val = widget.get_text()
         vtype = type(OPTION_DEFAULTS[name])

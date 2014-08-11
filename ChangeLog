@@ -1,4 +1,75 @@
-commit bc21d02ae3a6362c8a80364d82e56827f7d51728
+commit 03aab0c12d10b961cf21cd096f02fdfc6fea7352
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Aug 11 19:00:23 2014 +0200
+
+    Release v1.8.7
+
+commit 67faf246f7137cd901a042cf47f7a016ebf63f98
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Aug 11 18:40:33 2014 +0200
+
+    Use the “notify::text” signal instead of “activate” on GtkEntry widget
+    
+    To make it possible that any change of text in the GtkEntry widgets
+    is applied immediately. The “activate” signal is only emitted
+    when Enter/Return is typed, the “notify::text” signal is emitted
+    on any sort of change in the text.
+
+commit e7a014318ba45239dc8f4b9409594d6e39c0c0bd
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Aug 4 10:06:04 2014 +0200
+
+    Update Chinese .po files
+
+commit 7ded13e317f22cf0c97a2ee48819769c0d9024e9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Aug 4 10:04:50 2014 +0200
+
+    Update German translation
+
+commit 64984f048d2dd578318769ee543265ee74b82947
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Aug 1 09:41:24 2014 +0200
+
+    Move the “Restore all defaults” button into the GtkButtonBox at bottom
+    
+    - Makes the dialog a little bit less tall (helps for small screens)
+    - I want to add another tab for detailed settings, the “Restore all defaults”
+      button restores the defaults for all options in all tabs, therefore it
+      should not be part of a tab.
+
+commit 7a2d96a990f812cd62df2cd80abc29a1d78d9cf1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Aug 1 09:11:40 2014 +0200
+
+    Fix typo in comment
+
+commit 85c59eb98465295dba2323aaec131bc5db3f9220
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jul 30 09:44:01 2014 +0200
+
+    Apply fix for 同 again to Unihan_Variants.txt, it is both simplified *and* traditional Chinese
+    
+    This fix is not yet included in Unicode 7.0.0. It will be included
+    in a future version though.
+
+commit edfa725889c6d68dce4eb41408976b83eed21430
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jul 30 09:39:55 2014 +0200
+
+    Update Unihan_Variants.txt from “2013-02-25 Unicode 6.3.0” to “2014-05-09 Unicode 7.0.0”
+    
+    And regenerate engine/chinese_variants.py.
+    
+    New lines in Unihan_Variants.txt which are relevant for simplified and
+    traditional detection:
+    
+    > U+9FC1	kSimplifiedVariant	U+4724
+    > U+4724	kTraditionalVariant	U+9FC1
+    
+    U+4724 = 䜤 U+9FC1 = 鿁
+
+commit 558aa047be78df18e85e2b58409a9a8f97d46d4f
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Jul 28 21:08:40 2014 +0200
 

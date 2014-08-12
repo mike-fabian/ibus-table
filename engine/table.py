@@ -1371,26 +1371,26 @@ class tabengine (IBus.Engine):
                 self._set_property(
                     self._status_property,
                     'chinese.svg',
-                    _('Chinese input'),
+                    _('Chinese input (Left Shift)'),
                     _('Switch to “Direct input” (Left Shift)'))
             else:
                 self._set_property(
                     self._status_property,
                     'ibus-table.svg',
-                    self._status,
+                    self._status + ' (Left Shift)',
                     _('Switch to “Direct input” (Left Shift)'))
         else:
             if self.db.is_chinese:
                 self._set_property(
                     self._status_property,
                     'english.svg',
-                    _('Direct input'),
+                    _('Direct input (Left Shift)'),
                     _('Switch to “Chinese input” (Left Shift)'))
             else:
                 self._set_property(
                     self._status_property,
                     'english.svg',
-                    _('Direct input'),
+                    _('Direct input (Left Shift)'),
                     _('Switch to %s (“Table input”) (Left Shift)') %self._status)
         self.update_property(self._status_property)
 
@@ -1398,13 +1398,13 @@ class tabengine (IBus.Engine):
             self._set_property(
                 self._letter_property,
                 'full-letter.svg',
-                _('Fullwidth letters'),
+                _('Fullwidth letters (Shift-Space)'),
                 _('Switch to “Halfwidth letters” (Shift-Space)'))
         else:
             self._set_property(
                 self._letter_property,
                 'half-letter.svg',
-                _('Halfwidth letters'),
+                _('Halfwidth letters (Shift-Space)'),
                 _('Switch to “Fullwidth letters” (Shift-Space)'))
         self.update_property(self._letter_property)
 
@@ -1412,13 +1412,13 @@ class tabengine (IBus.Engine):
             self._set_property(
                 self._punct_property,
                 'full-punct.svg',
-                _('Fullwidth punctuation'),
+                _('Fullwidth punctuation (Ctrl-.)'),
                 _('Switch to “Halfwidth punctuation” (Ctrl-.)'))
         else:
             self._set_property(
                 self._punct_property,
                 'half-punct.svg',
-                _('Halfwidth punctuation'),
+                _('Halfwidth punctuation (Ctrl-.)'),
                 _('Switch to “Fullwidth punctuation” (Ctrl-.)'))
         self.update_property(self._punct_property)
 
@@ -1427,13 +1427,13 @@ class tabengine (IBus.Engine):
                 self._set_property(
                     self._py_property,
                     'py-mode.svg',
-                    _('Pinyin mode'),
+                    _('Pinyin mode (Right Shift)'),
                     _('Switch to “Table mode” (Right Shift)'))
             else:
                 self._set_property(
                     self._py_property,
                     'tab-mode.svg',
-                    _('Table mode'),
+                    _('Table mode (Right Shift)'),
                     _('Switch to “Pinyin mode” (Right Shift)'))
             self.update_property(self._py_property)
 
@@ -1441,13 +1441,13 @@ class tabengine (IBus.Engine):
             self._set_property(
                 self._onechar_property,
                 'onechar.svg',
-                _('Single character mode'),
+                _('Single character mode (Ctrl-,)'),
                 _('Switch to “Phrase mode” (Ctrl-,)'))
         else:
             self._set_property(
                 self._onechar_property,
                 'phrase.svg',
-                _('Phrase mode'),
+                _('Phrase mode (Ctrl-,)'),
                 _('Switch to “Single character mode” (Ctrl-,)'))
         self.update_property(self._onechar_property)
 
@@ -1455,13 +1455,13 @@ class tabengine (IBus.Engine):
             self._set_property(
                 self._auto_commit_property,
                 'acommit.svg',
-                _('Direct commit mode'),
+                _('Direct commit mode (Ctrl-/)'),
                 _('Switch to “Normal commit mode” (uses space to commit) (Ctrl-/)'))
         else:
             self._set_property(
                 self._auto_commit_property,
                 'ncommit.svg',
-                _('Normal commit mode'),
+                _('Normal commit mode (Ctrl-/)'),
                 _('Switch to “Direct commit mode” (Ctrl-/)'))
         self.update_property(self._auto_commit_property)
 
@@ -1490,32 +1490,32 @@ class tabengine (IBus.Engine):
                 self._set_property(
                     self._cmode_property,
                     'sc-mode.svg',
-                    _('Simplified Chinese'),
+                    _('Simplified Chinese (Ctrl-;)'),
                     _('Switch to “Traditional Chinese” (Ctrl-;)'))
             elif self._editor._chinese_mode == 1:
                 self._set_property(
                     self._cmode_property,
                     'tc-mode.svg',
-                    _('Traditional Chinese'),
+                    _('Traditional Chinese (Ctrl-;)'),
                     _('Switch to “Simplified Chinese before traditional” (Ctrl-;)'))
             elif self._editor._chinese_mode == 2:
                 self._set_property(
                     self._cmode_property,
                     'scb-mode.svg',
-                    _('Simplified Chinese before traditional'),
+                    _('Simplified Chinese before traditional (Ctrl-;)'),
                     _('Switch to “Traditional Chinese before simplified” (Ctrl-;)'))
             elif self._editor._chinese_mode == 3:
                 self._set_property(
                     self._cmode_property,
                     'tcb-mode.svg',
-                    _('Traditional Chinese before simplified'),
+                    _('Traditional Chinese before simplified (Ctrl-;)'),
                     _('Switch to “All Chinese characters” (Ctrl-;)'))
             elif self._editor._chinese_mode == 4:
                 self._set_property(
                     self._cmode_property,
                     'cb-mode.svg',
-                    _('All Chinese characters'),
-                    _('Switch to “Simplified Chinese”'))
+                    _('All Chinese characters (Ctrl-;)'),
+                    _('Switch to “Simplified Chinese” (Ctrl-;)'))
             self.update_property(self._cmode_property)
 
     def _set_property (self, property, icon, label, tooltip):

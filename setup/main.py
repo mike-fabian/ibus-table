@@ -151,6 +151,17 @@ class PreferencesDialog:
                 re.sub(r'^table:', '', self.__engine_name)+'.db'),
             user_db = None,
             create_database = False)
+        self.__is_chinese = False
+        self.__is_cjk = False
+        languages = self.tabsqlitedb.ime_properties.get('languages')
+        if languages:
+            languages = languages.split(',')
+            for language in languages:
+                if language.strip().startswith('zh'):
+                    self.__is_chinese = True
+                for lang in ['zh', 'ja', 'ko']:
+                    if language.strip().startswith(lang):
+                        self.__is_cjk = True
         language_filter = self.tabsqlitedb.ime_properties.get('language_filter')
         if language_filter in ['cm0', 'cm1', 'cm2', 'cm3', 'cm4']:
             OPTION_DEFAULTS['chinesemode'] = int(language_filter[-1])
@@ -321,6 +332,15 @@ class PreferencesDialog:
                     break
         __combobox.set_active(val)
         __combobox.connect("changed", self.__changed_cb, name)
+        if ((name in ['chinesemode']
+             and not self.__is_chinese)
+            or
+            (name in ['tabdeffullwidthletter',
+                      'tabdeffullwidthpunct',
+                      'endeffullwidthletter',
+                      'endeffullwidthpunct']
+             and not self.__is_cjk)):
+            __combobox.set_button_sensitivity(Gtk.SensitivityType.OFF)
 
     def _init_entry(self, name):
         """Set entry widget from the __config engine"""

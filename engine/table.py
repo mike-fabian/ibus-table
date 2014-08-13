@@ -1341,8 +1341,6 @@ class tabengine (IBus.Engine):
         self._auto_commit_property = self._new_property(u'acommit')
         self.properties.append(self._auto_commit_property)
 
-        self._always_show_lookup_property = self._new_property(u'always_show_lookup')
-        self.properties.append(self._always_show_lookup_property)
 
         self._setup_property = self._new_property(
             key = u'setup',
@@ -1465,20 +1463,6 @@ class tabengine (IBus.Engine):
                 _('Switch to “Direct commit mode” (Ctrl-/)'))
         self.update_property(self._auto_commit_property)
 
-        if self._always_show_lookup:
-            self._set_property(
-                self._always_show_lookup_property,
-                'always_show_lookup_y.svg',
-                _('Display candidates'),
-                _('Switch to “Hide candidates”'))
-        else:
-            self._set_property(
-                self._always_show_lookup_property,
-                'always_show_lookup_n.svg',
-                _('Hide candidates'),
-                _('Switch to “Display candidates”'))
-        self.update_property(self._always_show_lookup_property)
-
         # The Chinese_mode:
         #   0 means to show simplified Chinese only
         #   1 means to show traditional Chinese only
@@ -1582,12 +1566,6 @@ class tabengine (IBus.Engine):
                     "EnDefFullWidthPunct",
                     GLib.Variant.new_boolean(
                         self._full_width_punct[self._input_mode]))
-        elif property == u'always_show_lookup':
-            self._always_show_lookup = not self._always_show_lookup
-            self._config.set_value(
-                self._config_section,
-                "AlwaysShowLookup",
-                GLib.Variant.new_boolean(self._always_show_lookup))
         elif property == u'cmode':
             if self._editor._chinese_mode != -1:
                 self._editor._chinese_mode = (self._editor._chinese_mode+1) % 5

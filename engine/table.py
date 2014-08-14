@@ -1325,11 +1325,11 @@ class tabengine (IBus.Engine):
             self._cmode_property = self._new_property(u'cmode')
             self.properties.append(self._cmode_property)
 
-        self._letter_property = self._new_property(u'letter')
-        self.properties.append(self._letter_property)
-
-        self._punct_property = self._new_property(u'punct')
-        self.properties.append(self._punct_property)
+        if self.db._is_cjk:
+            self._letter_property = self._new_property(u'letter')
+            self.properties.append(self._letter_property)
+            self._punct_property = self._new_property(u'punct')
+            self.properties.append(self._punct_property)
 
         if self._ime_py:
             self._py_property = self._new_property('py_mode')
@@ -1392,33 +1392,33 @@ class tabengine (IBus.Engine):
                     _('Switch to %s (“Table input”) (Left Shift)') %self._status)
         self.update_property(self._status_property)
 
-        if self._full_width_letter[self._input_mode]:
-            self._set_property(
-                self._letter_property,
-                'full-letter.svg',
-                _('Fullwidth letters (Shift-Space)'),
-                _('Switch to “Halfwidth letters” (Shift-Space)'))
-        else:
-            self._set_property(
-                self._letter_property,
-                'half-letter.svg',
-                _('Halfwidth letters (Shift-Space)'),
-                _('Switch to “Fullwidth letters” (Shift-Space)'))
-        self.update_property(self._letter_property)
-
-        if self._full_width_punct[self._input_mode]:
-            self._set_property(
-                self._punct_property,
-                'full-punct.svg',
-                _('Fullwidth punctuation (Ctrl-.)'),
-                _('Switch to “Halfwidth punctuation” (Ctrl-.)'))
-        else:
-            self._set_property(
-                self._punct_property,
-                'half-punct.svg',
-                _('Halfwidth punctuation (Ctrl-.)'),
-                _('Switch to “Fullwidth punctuation” (Ctrl-.)'))
-        self.update_property(self._punct_property)
+        if self.db._is_cjk:
+            if self._full_width_letter[self._input_mode]:
+                self._set_property(
+                    self._letter_property,
+                    'full-letter.svg',
+                    _('Fullwidth letters (Shift-Space)'),
+                    _('Switch to “Halfwidth letters” (Shift-Space)'))
+            else:
+                self._set_property(
+                    self._letter_property,
+                    'half-letter.svg',
+                    _('Halfwidth letters (Shift-Space)'),
+                    _('Switch to “Fullwidth letters” (Shift-Space)'))
+            self.update_property(self._letter_property)
+            if self._full_width_punct[self._input_mode]:
+                self._set_property(
+                    self._punct_property,
+                    'full-punct.svg',
+                    _('Fullwidth punctuation (Ctrl-.)'),
+                    _('Switch to “Halfwidth punctuation” (Ctrl-.)'))
+            else:
+                self._set_property(
+                    self._punct_property,
+                    'half-punct.svg',
+                    _('Halfwidth punctuation (Ctrl-.)'),
+                    _('Switch to “Fullwidth punctuation” (Ctrl-.)'))
+            self.update_property(self._punct_property)
 
         if self._ime_py:
             if self._editor._py_mode:
@@ -1538,7 +1538,7 @@ class tabengine (IBus.Engine):
                 self._config_section,
                 "AutoCommit",
                 GLib.Variant.new_boolean(self._auto_commit))
-        elif property == u'letter':
+        elif property == u'letter' and self.db._is_cjk:
             self._full_width_letter[self._input_mode] = not self._full_width_letter[self._input_mode]
             if self._input_mode:
                 self._config.set_value(
@@ -1552,7 +1552,7 @@ class tabengine (IBus.Engine):
                     "EnDefFullWidthLetter",
                     GLib.Variant.new_boolean(
                         self._full_width_letter[self._input_mode]))
-        elif property == u'punct':
+        elif property == u'punct' and self.db._is_cjk:
             self._full_width_punct[self._input_mode] = not self._full_width_punct[self._input_mode]
             if self._input_mode:
                 self._config.set_value(
@@ -1566,14 +1566,13 @@ class tabengine (IBus.Engine):
                     "EnDefFullWidthPunct",
                     GLib.Variant.new_boolean(
                         self._full_width_punct[self._input_mode]))
-        elif property == u'cmode':
-            if self._editor._chinese_mode != -1:
-                self._editor._chinese_mode = (self._editor._chinese_mode+1) % 5
-                self._config.set_value(
-                    self._config_section,
-                    "ChineseMode",
-                    GLib.Variant.new_int32(self._editor._chinese_mode))
-                self.reset()
+        elif property == u'cmode' and self.db._is_chinese and self._editor._chinese_mode != -1:
+            self._editor._chinese_mode = (self._editor._chinese_mode+1) % 5
+            self._config.set_value(
+                self._config_section,
+                "ChineseMode",
+                GLib.Variant.new_int32(self._editor._chinese_mode))
+            self.reset()
         elif property == "setup":
                 self._start_setup()
         self._refresh_properties()
@@ -1857,13 +1856,13 @@ class tabengine (IBus.Engine):
             return self._english_mode_process_key_event (key)
 
     def cond_letter_translate(self, char):
-        if self._full_width_letter[self._input_mode]:
+        if self._full_width_letter[self._input_mode] and self.db._is_cjk:
             return self._convert_to_full_width(char)
         else:
             return char
 
     def cond_punct_translate(self, char):
-        if self._full_width_punct[self._input_mode]:
+        if self._full_width_punct[self._input_mode] and self.db._is_cjk:
             return self._convert_to_full_width(char)
         else:
             return char

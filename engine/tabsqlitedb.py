@@ -209,6 +209,7 @@ class tabsqlitedb:
         # shared variables in this class:
         self._mlen = int(self.ime_properties.get("max_key_length"))
         self._is_chinese = self.is_chinese()
+        self._is_cjk = self.is_cjk()
         self.user_can_define_phrase = self.ime_properties.get('user_can_define_phrase')
         if self.user_can_define_phrase:
             if self.user_can_define_phrase.lower() == u'true' :
@@ -380,6 +381,16 @@ class tabsqlitedb:
             for _l in __langs:
                 if _l.lower().find('zh') != -1:
                     return True
+        return False
+
+    def is_cjk(self):
+        languages = self.ime_properties.get('languages')
+        if languages:
+            languages = languages.split(',')
+            for language in languages:
+                for lang in ['zh', 'ja', 'ko']:
+                    if language.strip().startswith(lang):
+                        return True
         return False
 
     def get_chinese_mode (self):

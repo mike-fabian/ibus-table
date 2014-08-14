@@ -1,4 +1,50 @@
-commit 03aab0c12d10b961cf21cd096f02fdfc6fea7352
+commit 2c93a5d95a7d3247b035fb704b0f41c194eb7d86
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 14 15:25:23 2014 +0200
+
+    Release v1.8.8
+
+commit 72b75c5d32a9491b06f68d21ed08468d27416717
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 14 14:37:59 2014 +0200
+
+    Disable properties related to fullwidth/halfwidth for non-CJK tables
+    
+    Resolves: rhbz#1128912  - With the new "rusle" table in ibus-table-cyrillic, typing space works strangely
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1128912
+
+commit 1fb4bffb7cb02962cc2453337a50445e06a236a5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 13 20:51:09 2014 +0200
+
+    If the database is not CJK, set sensitivity to comboboxes useful only for CJK to OFF
+
+commit 074a43e79475135e10ef0096498e48af512b339e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 13 15:07:23 2014 +0200
+
+    Remove “Hide Candidates/Display Candidates” from the properties menu
+    
+    This is almost never changed while using ibus-table, either one
+    keeps it always on or always off.
+    
+    It is changeable in the setup tool, that should be enough.  Stuff
+    which is used so rarely unnecessarily clutters the properties menu.
+
+commit c9895416e0ecef53c42f4af30c3b2a38eaa1b889
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 12 19:55:24 2014 +0200
+
+    Show keyboard shortcuts also in the property menu entries
+    
+    To make them easier to discover. They are shown in the tooltips
+    of the floating panel already, but Gnome3 does not have the floating
+    panel. Therefore the keyboard shortcuts are not easy to discover
+    when using Gnome3.
+    
+    See also https://bugzilla.redhat.com/show_bug.cgi?id=1128912
+
+commit b8b0d2bcb9b21fc2a92a97758054aca7da16313c
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Aug 11 19:00:23 2014 +0200
 

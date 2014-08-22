@@ -1841,12 +1841,12 @@ class tabengine (IBus.Engine):
             return True
 
         # Match full half letter mode switch hotkey
-        if self._match_hotkey (key, IBus.KEY_space, IBus.ModifierType.SHIFT_MASK):
+        if self._match_hotkey (key, IBus.KEY_space, IBus.ModifierType.SHIFT_MASK) and self.db._is_cjk:
             self.do_property_activate ("letter")
             return True
 
         # Match full half punct mode switch hotkey
-        if self._match_hotkey (key, IBus.KEY_period, IBus.ModifierType.CONTROL_MASK):
+        if self._match_hotkey (key, IBus.KEY_period, IBus.ModifierType.CONTROL_MASK) and self.db._is_cjk:
             self.do_property_activate ("punct")
             return True
 

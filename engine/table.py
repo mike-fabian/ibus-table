@@ -1970,13 +1970,26 @@ class tabengine (IBus.Engine):
             return True
 
         if key.code in (IBus.KEY_Return, IBus.KEY_KP_Enter):
+            if self._editor.is_empty() and not self._editor.get_preedit_string_complete():
+                # When IBus.KEY_Return is typed,
+                # IBus.keyval_to_unicode(key.code) returns a non-empty
+                # string. But when IBus.KEY_KP_Enter is typed it
+                # returns an empty string. Therefore, when typing
+                # IBus.KEY_KP_Enter as leading input, the key is not
+                # handled by the section to handle leading invalid
+                # input but it ends up here.  If it is leading input
+                # (i.e. the preëdit is empty) we should always pass
+                # IBus.KEY_KP_Enter to the application:
+                return False
             if self._auto_select:
                 self._editor.commit_to_preedit()
-                commit_string = self._editor.get_preedit_string_complete() + os.linesep
+                commit_string = self._editor.get_preedit_string_complete()
+                self.commit_string(commit_string)
+                return False
             else:
-                commit_string = self._editor.get_preedit_tabkeys_complete ()
-            self.commit_string(commit_string)
-            return True
+                commit_string = self._editor.get_preedit_tabkeys_complete()
+                self.commit_string(commit_string)
+                return True
 
         if key.code in (IBus.KEY_Tab, IBus.KEY_KP_Tab) and self._auto_select:
             # Used for example for the Russian transliteration method

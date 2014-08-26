@@ -1,4 +1,63 @@
-commit 2c93a5d95a7d3247b035fb704b0f41c194eb7d86
+commit 1861fe2a3a358e000951648fee6e5ad867019fb7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 26 13:39:23 2014 +0200
+
+    Release v1.8.9
+
+commit ba2aa1c55c2b06009eb3e1eed705777a906ffac3
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Aug 9 17:47:36 2014 +0200
+
+    Move some options into a new tab “Details”
+
+commit 7b07eea228a54020125204d480cee6cadd5b30ca
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Aug 23 14:18:43 2014 +0200
+
+    Pass IBus.KEY_KP_Enter to the application if the preedit is empty
+    
+    Resolves: rhbz#1133424 - With the new "rusle" table in ibus-table-cyrillic, Keypad Enter problem
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1133424
+    
+    If IBus.KEY_KP_Enter is typed:
+    
+    • if the preëdit is empty, we should always pass the key to the
+      application. *Not* commit an empty string plus os.linesep because
+      that behaves differently in some cases.  For example when typing a
+      message in Pidgin it would insert a linefeed into the message
+      instead of sending the message.
+    
+    • if the preëdit is not empty:
+      - when auto_select is true (typical for Russian input methods
+        like “rusle” or “translit”), the pending preëdit should be committed
+        and the IBus.KEY_KP_Enter key passed to the application.
+        For example, when typing “C” with translit, the preëdit contains
+        Ц because it is still possible that a “h” is typed next:
+    
+            C	Ц	1000
+            Ch	Ч	1000
+            CH	Ч	1000
+    
+        When IBus.KEY_KP_Enter is typed in this state, the Ц should
+        be committed and the IBus.KEY_KP_Enter should be passed to the
+        application. With the old code, typing “C” followed by
+        IBus.KEY_KP_Enter inserted a Ц and a linefeed in Pidgin instead
+        of sending the message ending with Ц.
+      - when auto_select is false (typical for Chinese input methods),
+        the typed tabkeys should be committed (not the Chinese characters
+        in the preëdit) and IBus.KEY_KP_Enter should not be passed
+        to the application.
+
+commit c85dacc43e11200e02f9bb715c4546aa0fdd4eaf
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Aug 22 21:12:04 2014 +0200
+
+    Ignore Shift+Space hotkey to switch fullwidth/halfwidth if the database is not for CJK
+    
+    Resolves: rhbz#1133422 - With the new "rusle" table in ibus-table-cyrillic, Shift-Space does not work
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1133422
+
+commit c4842088ddf21aee02cef5808f3086a854c3ac39
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Aug 14 15:25:23 2014 +0200
 

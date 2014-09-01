@@ -1931,7 +1931,7 @@ class tabengine (IBus.Engine):
             return True
 
         # Match Chinese mode shift
-        if self._match_hotkey(key, IBus.KEY_semicolon, IBus.ModifierType.CONTROL_MASK):
+        if self._match_hotkey(key, IBus.KEY_semicolon, IBus.ModifierType.CONTROL_MASK) and self.db._is_chinese:
             self.do_property_activate(u"cmode")
             return True
 

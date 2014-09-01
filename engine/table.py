@@ -1338,9 +1338,9 @@ class tabengine (IBus.Engine):
         self._onechar_property = self._new_property(u'onechar')
         self.properties.append(self._onechar_property)
 
-        self._auto_commit_property = self._new_property(u'acommit')
-        self.properties.append(self._auto_commit_property)
-
+        if self.db.user_can_define_phrase and self.db.rules:
+            self._auto_commit_property = self._new_property(u'acommit')
+            self.properties.append(self._auto_commit_property)
 
         self._setup_property = self._new_property(
             key = u'setup',
@@ -1449,19 +1449,20 @@ class tabengine (IBus.Engine):
                 _('Switch to “Single character mode” (Ctrl-,)'))
         self.update_property(self._onechar_property)
 
-        if self._auto_commit:
-            self._set_property(
-                self._auto_commit_property,
-                'acommit.svg',
-                _('Direct commit mode (Ctrl-/)'),
-                _('Switch to “Normal commit mode” (uses space to commit) (Ctrl-/)'))
-        else:
-            self._set_property(
-                self._auto_commit_property,
-                'ncommit.svg',
-                _('Normal commit mode (Ctrl-/)'),
-                _('Switch to “Direct commit mode” (Ctrl-/)'))
-        self.update_property(self._auto_commit_property)
+        if self.db.user_can_define_phrase and self.db.rules:
+            if self._auto_commit:
+                self._set_property(
+                    self._auto_commit_property,
+                    'acommit.svg',
+                    _('Direct commit mode (Ctrl-/)'),
+                    _('Switch to “Normal commit mode” (uses space to commit) (Ctrl-/)'))
+            else:
+                self._set_property(
+                    self._auto_commit_property,
+                    'ncommit.svg',
+                    _('Normal commit mode (Ctrl-/)'),
+                    _('Switch to “Direct commit mode” (Ctrl-/)'))
+            self.update_property(self._auto_commit_property)
 
         # The Chinese_mode:
         #   0 means to show simplified Chinese only
@@ -1532,7 +1533,7 @@ class tabengine (IBus.Engine):
                 self._config_section,
                 "OneChar",
                 GLib.Variant.new_boolean(self._editor._onechar))
-        elif property == u'acommit':
+        elif property == u'acommit' and self.db.user_can_define_phrase and self.db.rules:
             self._auto_commit = not self._auto_commit
             self._config.set_value(
                 self._config_section,
@@ -1925,7 +1926,7 @@ class tabengine (IBus.Engine):
             return True
 
         # Match direct commit mode switch hotkey
-        if self._match_hotkey(key, IBus.KEY_slash, IBus.ModifierType.CONTROL_MASK):
+        if self._match_hotkey(key, IBus.KEY_slash, IBus.ModifierType.CONTROL_MASK) and  self.db.user_can_define_phrase and self.db.rules:
             self.do_property_activate(u"acommit")
             return True
 

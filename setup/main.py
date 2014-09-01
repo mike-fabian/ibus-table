@@ -162,6 +162,11 @@ class PreferencesDialog:
                 for lang in ['zh', 'ja', 'ko']:
                     if language.strip().startswith(lang):
                         self.__is_cjk = True
+        self.__user_can_define_phrase = False
+        user_can_define_phrase = self.tabsqlitedb.ime_properties.get('user_can-define_phrase')
+        if user_can_define_phrase:
+            self.__user_can_define_phrase = user_can_define_phrase.lower() == u'true'
+        self.__rules = self.tabsqlitedb.ime_properties.get('rules')
         language_filter = self.tabsqlitedb.ime_properties.get('language_filter')
         if language_filter in ['cm0', 'cm1', 'cm2', 'cm3', 'cm4']:
             OPTION_DEFAULTS['chinesemode'] = int(language_filter[-1])
@@ -339,7 +344,10 @@ class PreferencesDialog:
                       'tabdeffullwidthpunct',
                       'endeffullwidthletter',
                       'endeffullwidthpunct']
-             and not self.__is_cjk)):
+             and not self.__is_cjk)
+            or
+            (name in ['autocommit']
+             and (not self.__user_can_define_phrase or not self.__rules))):
             __combobox.set_button_sensitivity(Gtk.SensitivityType.OFF)
 
     def _init_entry(self, name):

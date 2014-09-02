@@ -1335,8 +1335,9 @@ class tabengine (IBus.Engine):
             self._py_property = self._new_property('py_mode')
             self.properties.append(self._py_property)
 
-        self._onechar_property = self._new_property(u'onechar')
-        self.properties.append(self._onechar_property)
+        if self.db._is_cjk:
+            self._onechar_property = self._new_property(u'onechar')
+            self.properties.append(self._onechar_property)
 
         if self.db.user_can_define_phrase and self.db.rules:
             self._auto_commit_property = self._new_property(u'acommit')
@@ -1435,19 +1436,20 @@ class tabengine (IBus.Engine):
                     _('Switch to “Pinyin mode” (Right Shift)'))
             self.update_property(self._py_property)
 
-        if self._editor._onechar:
-            self._set_property(
-                self._onechar_property,
-                'onechar.svg',
-                _('Single character mode (Ctrl-,)'),
-                _('Switch to “Phrase mode” (Ctrl-,)'))
-        else:
-            self._set_property(
-                self._onechar_property,
-                'phrase.svg',
-                _('Phrase mode (Ctrl-,)'),
-                _('Switch to “Single character mode” (Ctrl-,)'))
-        self.update_property(self._onechar_property)
+        if self.db._is_cjk:
+            if self._editor._onechar:
+                self._set_property(
+                    self._onechar_property,
+                    'onechar.svg',
+                    _('Single character mode (Ctrl-,)'),
+                    _('Switch to “Phrase mode” (Ctrl-,)'))
+            else:
+                self._set_property(
+                    self._onechar_property,
+                    'phrase.svg',
+                    _('Phrase mode (Ctrl-,)'),
+                    _('Switch to “Single character mode” (Ctrl-,)'))
+            self.update_property(self._onechar_property)
 
         if self.db.user_can_define_phrase and self.db.rules:
             if self._auto_commit:
@@ -1527,7 +1529,7 @@ class tabengine (IBus.Engine):
             self._editor._py_mode = not self._editor._py_mode
             self._update_ui()
             # Not saved to config on purpose.
-        elif property == u'onechar':
+        elif property == u'onechar' and self.db._is_cjk:
             self._editor._onechar = not self._editor._onechar
             self._config.set_value(
                 self._config_section,
@@ -1921,7 +1923,7 @@ class tabengine (IBus.Engine):
             return res
 
         # Match single char mode switch hotkey
-        if self._match_hotkey(key, IBus.KEY_comma, IBus.ModifierType.CONTROL_MASK):
+        if self._match_hotkey(key, IBus.KEY_comma, IBus.ModifierType.CONTROL_MASK) and self.db._is_cjk:
             self.do_property_activate (u"onechar")
             return True
 

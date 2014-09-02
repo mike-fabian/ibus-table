@@ -346,6 +346,9 @@ class PreferencesDialog:
                       'endeffullwidthpunct']
              and not self.__is_cjk)
             or
+            (name in ['onechar']
+             and not  self.__is_cjk)
+            or
             (name in ['autocommit']
              and (not self.__user_can_define_phrase or not self.__rules))):
             __combobox.set_button_sensitivity(Gtk.SensitivityType.OFF)

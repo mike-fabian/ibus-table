@@ -1,16 +1,59 @@
-commit 1861fe2a3a358e000951648fee6e5ad867019fb7
+commit 0002222896f9dcff3cf51930e70bc54e24b48838
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Sep 4 16:07:38 2014 +0200
+
+    Release v1.8.10
+
+commit 2e30813032fe46c6df690a2ba68b38bf1dd3e68c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 2 10:38:07 2014 +0200
+
+    Disable “onechar” (Phrase mode/Single char mode) option for non-CJK databases
+    
+    This option is only useful for Chinese. Some Chinese tables, for
+    example wubi-jidian86 contain not only single Chinese characters but
+    also longer phrases. When one wants to input a certain single
+    character, longer phrases showing up as matches as well may make it
+    more difficult to find the desired single character in the candidate
+    list. I.e. to input single characters it may be sometimes useful to
+    switch to single character mode. For non-Chinese tables, such a single
+    character mode is useless.
+
+commit d489802af96db1d5c46cb2295728d475b4a3797f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Sep 1 16:50:28 2014 +0200
+
+    Disable hotkey to switch Chinese mode if database is not Chinese
+
+commit bbf7d0f3fcb73cb5ec777cb9fee30991fe3fcd53
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Sep 1 16:29:41 2014 +0200
+
+    Disable auto_commit option for tables which do not have RULES
+    
+    Resolves: rhbz#1135759 - The rusle is broken with "Normal commit mode"
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1135759
+    
+    If a table does not have USER_CAN_DEFINE_PHRASE=TRUE and a non-empty
+    RULES, it makes no sense to use “commit to preedit” for that table.
+    Therefore, for such tables, auto_commit should always be True
+    (= “Direct commit mode”) and never False (= “Normal commit mode”).
+    These tables have AUTO_COMMIT = TRUE in their source and this should
+    never be changed by the user.
+    
+    “Normal commit mode”, i.e. committing to preedit makes sense only
+    for tables like wubi-jidian86, wubi-haifeng86, and erbi-qs because
+    only these 3 tables currently have RULES and USER_CAN_DEFINE_PHRASE=TRUE.
+    For such tables, committing to preedit is used to define new
+    user shortcuts semi-automatically.
+
+commit 3663711986a93b112a2f537b0c485620fc756106
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Aug 26 13:39:23 2014 +0200
 
     Release v1.8.9
 
-commit ba2aa1c55c2b06009eb3e1eed705777a906ffac3
-Author: Mike FABIAN <mfabian@redhat.com>
-Date:   Sat Aug 9 17:47:36 2014 +0200
-
-    Move some options into a new tab “Details”
-
-commit 7b07eea228a54020125204d480cee6cadd5b30ca
+commit e43591313e619990c87dbfed91de25f1d34ab659
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Sat Aug 23 14:18:43 2014 +0200
 
@@ -48,7 +91,7 @@ Date:   Sat Aug 23 14:18:43 2014 +0200
         in the preëdit) and IBus.KEY_KP_Enter should not be passed
         to the application.
 
-commit c85dacc43e11200e02f9bb715c4546aa0fdd4eaf
+commit 48c2b7e9ac1a109b7b1cb77bc665f2a19b6fcbd4
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Fri Aug 22 21:12:04 2014 +0200
 
@@ -56,6 +99,24 @@ Date:   Fri Aug 22 21:12:04 2014 +0200
     
     Resolves: rhbz#1133422 - With the new "rusle" table in ibus-table-cyrillic, Shift-Space does not work
     See: https://bugzilla.redhat.com/show_bug.cgi?id=1133422
+
+commit 354acbd306780015d4e64219ca5fb6989f991016
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 26 13:53:35 2014 +0200
+
+    Update Chinese .po files
+
+commit eb64958cbd55f6ce8288987900ccfd9dfd8c3bea
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 26 13:53:11 2014 +0200
+
+    Update German translations
+
+commit b9824969683c77278edbc45c9472092b96bf4b58
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Aug 9 17:47:36 2014 +0200
+
+    Move some options into a new tab “Details”
 
 commit c4842088ddf21aee02cef5808f3086a854c3ac39
 Author: Mike FABIAN <mfabian@redhat.com>

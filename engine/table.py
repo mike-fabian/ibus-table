@@ -1096,7 +1096,23 @@ class tabengine (IBus.Engine):
             print('We could not find "pinyin_mode" entry in database, is it an outdated database?')
             self._ime_py = False
 
-        self._status = self.db.ime_properties.get('status_prompt')
+        self._symbol = self.db.ime_properties.get('symbol')
+        if self._symbol == None or self._symbol == u'':
+            self._symbol = self.db.ime_properties.get('status_prompt')
+        if self._symbol == None:
+            self._symbol = u''
+        # some Chinese tables have “STATUS_PROMPT = CN” replace it
+        # with the shorter and nicer “中”:
+        if self._symbol == u'CN':
+            self._symbol = u'中'
+        # workaround for the translit and translit-ua tables which
+        # have 2 character symbols. '☑' + self._symbol then is
+        # 3 characters and currently gnome-shell ignores symbols longer
+        # than 3 characters:
+        if self._symbol == u'Ya':
+            self._symbol = u'Я'
+        if self._symbol == u'Yi':
+            self._symbol = u'Ї'
         # now we check and update the valid input characters
         self._valid_input_chars = self.db.ime_properties.get('valid_input_chars')
         self._pinyin_valid_input_chars = u'abcdefghijklmnopqrstuvwxyz!@#$%'
@@ -1285,6 +1301,194 @@ class tabengine (IBus.Engine):
                               self._max_key_length,
                               self.db)
 
+        self.chinese_mode_properties = {
+            'ChineseMode.Simplified': { # show simplified Chinese only
+                'number': 0,
+                'symbol': '簡',
+                'icon': 'sc-mode.svg',
+                'label': _('Simplified Chinese'),
+                'tooltip': _('Switch to “Simplified Chinese only”.')},
+            'ChineseMode.Traditional': { # show traditional Chinese only
+                'number': 1,
+                'symbol': '繁',
+                'icon': 'tc-mode.svg',
+                'label': _('Traditional Chinese'),
+                'tooltip': _('Switch to “Traditional Chinese only”.')},
+            'ChineseMode.SimplifiedFirst': { # show all but simplified first
+                'number': 2,
+                'symbol': '簡/大',
+                'icon': 'scb-mode.svg',
+                'label': _('Simplified Chinese first'),
+                'tooltip': _('Switch to “Simplified Chinese before traditional”.')},
+            'ChineseMode.TraditionalFirst': { # show all but traditional first
+                'number': 3,
+                'symbol': '繁/大',
+                'icon': 'tcb-mode.svg',
+                'label': _('Traditional Chinese first'),
+                'tooltip': _('Switch to “Traditional Chinese before simplified”.')},
+            'ChineseMode.All': { # show all Chinese characters, no particular order
+                'number': 4,
+                'symbol': '大',
+                'icon': 'cb-mode.svg',
+                'label': _('All Chinese characters'),
+                'tooltip': _('Switch to “All Chinese characters”.')}
+        }
+        self.chinese_mode_menu = {
+            'key': 'ChineseMode',
+            'label': _('Chinese mode'),
+            'tooltip': _('Switch Chinese mode'),
+            'shortcut_hint': '(Ctrl-;)',
+            'sub_properties': self.chinese_mode_properties
+        }
+        if self.db._is_chinese:
+            self.input_mode_properties = {
+                'InputMode.Direct': {
+                    'number': 0,
+                    'symbol': '英',
+                    'icon': 'english.svg',
+                    'label': _('English'),
+                    'tooltip': _('Switch to English input')},
+                'InputMode.Table': {
+                    'number': 1,
+                    'symbol': '中',
+                    'icon': 'chinese.svg',
+                    'label': _('Chinese'),
+                    'tooltip': _('Switch to Chinese input')}
+            }
+        else:
+            self.input_mode_properties = {
+                'InputMode.Direct': {
+                    'number': 0,
+                    'symbol': '☐' + self._symbol,
+                    'icon': 'english.svg',
+                    'label': _('Direct'),
+                    'tooltip': _('Switch to direct input')},
+                'InputMode.Table': {
+                    'number': 1,
+                    'symbol': '☑' + self._symbol,
+                    'icon': 'ibus-table.svg',
+                    'label': _('Table'),
+                    'tooltip': _('Switch to table input')}
+            }
+        # The symbol of the property “InputMode” is displayed
+        # in the input method indicator of the Gnome3 panel.
+        # This depends on the property name “InputMode” and
+        # is case sensitive!
+        self.input_mode_menu = {
+            'key': 'InputMode',
+            'label': _('Input mode'),
+            'tooltip': _('Switch Input mode'),
+            'shortcut_hint': '(Left Shift)',
+            'sub_properties': self.input_mode_properties
+        }
+        self.letter_width_properties = {
+            'LetterWidth.Half': {
+                'number': 0,
+                'symbol': '◑',
+                'icon': 'half-letter.svg',
+                'label': _('Half'),
+                'tooltip': _('Switch to halfwidth letters')},
+            'LetterWidth.Full': {
+                'number': 1,
+                'symbol': '●',
+                'icon': 'full-letter.svg',
+                'label': _('Full'),
+                'tooltip': _('Switch to fullwidth letters')}
+        }
+        self.letter_width_menu = {
+            'key': 'LetterWidth',
+            'label': _('Letter width'),
+            'tooltip': _('Switch letter width'),
+            'shortcut_hint': '(Shift-Space)',
+            'sub_properties': self.letter_width_properties
+        }
+        self.punctuation_width_properties = {
+            'PunctuationWidth.Half': {
+                'number': 0,
+                'symbol': ',.',
+                'icon': 'half-punct.svg',
+                'label': _('Half'),
+                'tooltip': _('Switch to halfwidth punctuation')},
+            'PunctuationWidth.Full': {
+                'number': 1,
+                'symbol': '、。',
+                'icon': 'full-punct.svg',
+                'label': _('Full'),
+                'tooltip': _('Switch to fullwidth punctuation')}
+        }
+        self.punctuation_width_menu = {
+            'key': 'PunctuationWidth',
+            'label': _('Punctuation width'),
+            'tooltip': _('Switch punctuation width'),
+            'shortcut_hint': '(Ctrl-.)',
+            'sub_properties': self.punctuation_width_properties
+        }
+        self.pinyin_mode_properties = {
+            'PinyinMode.Table': {
+                'number': 0,
+                'symbol': '☐ 拼音',
+                'icon': 'tab-mode.svg',
+                'label': _('Table'),
+                'tooltip': _('Switch to table mode')},
+            'PinyinMode.Pinyin': {
+                'number': 1,
+                'symbol': '☑ 拼音',
+                'icon': 'py-mode.svg',
+                'label': _('Pinyin'),
+                'tooltip': _('Switch to pinyin mode')}
+        }
+        self.pinyin_mode_menu = {
+            'key': 'PinyinMode',
+            'label': _('Pinyin mode'),
+            'tooltip': _('Switch pinyin mode'),
+            'shortcut_hint': '(Right Shift)',
+            'sub_properties': self.pinyin_mode_properties
+        }
+        self.onechar_mode_properties = {
+            'OneCharMode.Phrase': {
+                'number': 0,
+                'symbol': '☐ 1',
+                'icon': 'phrase.svg',
+                'label': _('Multiple character match'),
+                'tooltip': _('Switch to matching multiple characters at once')},
+            'OneCharMode.OneChar': {
+                'number': 1,
+                'symbol': '☑ 1',
+                'icon': 'onechar.svg',
+                'label': _('Single character match'),
+                'tooltip': _('Switch to matching only single characters')}
+        }
+        self.onechar_mode_menu = {
+            'key': 'OneCharMode',
+            'label': _('Onechar mode'),
+            'tooltip': _('Switch onechar mode'),
+            'shortcut_hint': '(Ctrl-,)',
+            'sub_properties': self.onechar_mode_properties
+        }
+        self.autocommit_mode_properties = {
+            'AutoCommitMode.Direct': {
+                'number': 0,
+                'symbol': '☐ ↑',
+                'icon': 'ncommit.svg',
+                'label': _('Normal'),
+                'tooltip': _('Switch to normal commit mode (automatic commits go into the preedit instead of into the application. This enables automatic definitions of new shortcuts)')},
+            'AutoCommitMode.Normal': {
+                'number': 1,
+                'symbol': '☑ ↑',
+                'icon': 'acommit.svg',
+                'label': _('Direct'),
+                'tooltip': _('Switch to direct commit mode (automatic commits go directly into the application)')}
+        }
+        self.autocommit_mode_menu = {
+            'key': 'AutoCommitMode',
+            'label': _('Auto commit mode'),
+            'tooltip': _('Switch autocommit mode'),
+            'shortcut_hint': '(Ctrl-/)',
+            'sub_properties': self.autocommit_mode_properties
+        }
+        self._prop_dict = {}
+        self._init_properties()
+
         self._on = False
         self._save_user_count = 0
         self._save_user_start = time.time()
@@ -1301,8 +1505,7 @@ class tabengine (IBus.Engine):
         self._double_quotation_state = False
         self._single_quotation_state = False
         self._prev_key = None
-        self._init_properties()
-        self._update_ui ()
+        self._update_ui()
 
     def do_destroy(self):
         if self.sync_timeout_id > 0:
@@ -1315,270 +1518,267 @@ class tabengine (IBus.Engine):
             self._save_user_count = 0
         super(tabengine,self).destroy()
 
+    def set_input_mode(self, mode=0):
+        if mode == self._input_mode:
+            return
+        self._input_mode = mode
+        # Not saved to config on purpose. In the setup tool one
+        # can select whether “Table input” or “Direct input” should
+        # be the default when the input method starts. But when
+        # changing this input mode using the property menu,
+        # the change is not remembered.
+        self._init_or_update_property_menu(
+            self.input_mode_menu,
+            self._input_mode)
+        # Letter width and punctuation width depend on the input mode.
+        # Therefore, the properties for letter width and punctuation
+        # width need to be updated here:
+        self._init_or_update_property_menu(
+            self.letter_width_menu,
+            self._full_width_letter[self._input_mode])
+        self._init_or_update_property_menu(
+            self.punctuation_width_menu,
+            self._full_width_punct[self._input_mode])
+        self.reset()
+
+    def set_pinyin_mode(self, mode=False):
+        if mode == self._editor._py_mode:
+            return
+        # The pinyin mode is never saved to config on purpose
+        self._editor.commit_to_preedit()
+        self._editor._py_mode = mode
+        self._init_or_update_property_menu(
+            self.pinyin_mode_menu, mode)
+        self._update_ui()
+
+    def set_onechar_mode(self, mode=False):
+        if mode == self._editor._onechar:
+            return
+        self._editor._onechar = mode
+        self._init_or_update_property_menu(
+            self.onechar_mode_menu, mode)
+        self._config.set_value(
+            self._config_section,
+            "OneChar",
+            GLib.Variant.new_boolean(mode))
+
+    def set_autocommit_mode(self, mode=False):
+        if mode == self._auto_commit:
+            return
+        self._auto_commit = mode
+        self._init_or_update_property_menu(
+            self.autocommit_mode_menu, mode)
+        self._config.set_value(
+            self._config_section,
+            "AutoCommit",
+            GLib.Variant.new_boolean(mode))
+
+    def set_letter_width(self, mode=False, input_mode=0):
+        if mode == self._full_width_letter[input_mode]:
+            return
+        self._full_width_letter[input_mode] = mode
+        self._editor._full_width_letter[input_mode] = mode
+        if input_mode == self._input_mode:
+            self._init_or_update_property_menu(
+                self.letter_width_menu, mode)
+        if input_mode:
+            self._config.set_value(
+                self._config_section,
+                "TabDefFullWidthLetter",
+                GLib.Variant.new_boolean(mode))
+        else:
+            self._config.set_value(
+                self._config_section,
+                "EnDefFullWidthLetter",
+                GLib.Variant.new_boolean(mode))
+
+    def set_punctuation_width(self, mode=False, input_mode=0):
+        if mode == self._full_width_punct[input_mode]:
+            return
+        self._full_width_punct[input_mode] = mode
+        self._editor._full_width_punct[input_mode] = mode
+        if input_mode == self._input_mode:
+            self._init_or_update_property_menu(
+                self.punctuation_width_menu, mode)
+        if input_mode:
+            self._config.set_value(
+                self._config_section,
+                "TabDefFullWidthPunct",
+                GLib.Variant.new_boolean(mode))
+        else:
+            self._config.set_value(
+                self._config_section,
+                "EnDefFullWidthPunct",
+                GLib.Variant.new_boolean(mode))
+
+    def set_chinese_mode(self, mode=0):
+        if mode == self._editor._chinese_mode:
+            return
+        self._editor._chinese_mode = mode
+        self._init_or_update_property_menu(
+            self.chinese_mode_menu, mode)
+        self._config.set_value(
+            self._config_section,
+            "ChineseMode",
+            GLib.Variant.new_int32(mode))
+
+    def _init_or_update_property_menu(self, menu, current_mode=0):
+        key = menu['key']
+        if key in self._prop_dict:
+            update_prop = True
+        else:
+            update_prop = False
+        sub_properties = menu['sub_properties']
+        for prop in sub_properties:
+            if sub_properties[prop]['number'] == int(current_mode):
+                symbol = sub_properties[prop]['symbol']
+                icon = sub_properties[prop]['icon']
+                label = '%(label)s (%(symbol)s) %(shortcut_hint)s' %{
+                    'label': menu['label'],
+                    'symbol': symbol,
+                    'shortcut_hint': menu['shortcut_hint']}
+                tooltip = '%(tooltip)s\n%(shortcut_hint)s' %{
+                    'tooltip': menu['tooltip'],
+                    'shortcut_hint': menu['shortcut_hint']}
+        self._prop_dict[key] = IBus.Property(
+            key=key,
+            prop_type=IBus.PropType.MENU,
+            label=IBus.Text.new_from_string(label),
+            symbol=IBus.Text.new_from_string(symbol),
+            icon=os.path.join(self._icon_dir, icon),
+            tooltip=IBus.Text.new_from_string(tooltip),
+            sensitive=True,
+            visible=True,
+            state=IBus.PropState.UNCHECKED,
+            sub_props=None)
+        self._prop_dict[key].set_sub_props(
+            self._init_sub_properties(
+                sub_properties, current_mode=current_mode))
+        if update_prop:
+            self.properties.update_property(self._prop_dict[key])
+            self.update_property(self._prop_dict[key])
+        else:
+            self.properties.append(self._prop_dict[key])
+
+    def _init_sub_properties(self, modes, current_mode=0):
+        sub_props = IBus.PropList()
+        for mode in sorted(modes, key=lambda x: (modes[x]['number'])):
+            sub_props.append(IBus.Property(
+                key=mode,
+                prop_type=IBus.PropType.RADIO,
+                label=IBus.Text.new_from_string(modes[mode]['label']),
+                icon=os.path.join(modes[mode]['icon']),
+                tooltip=modes[mode]['tooltip'],
+                sensitive=True,
+                visible=True,
+                state=IBus.PropState.UNCHECKED,
+                sub_props=None))
+        i = 0
+        while sub_props.get(i) != None:
+            prop = sub_props.get(i)
+            key = prop.get_key()
+            self._prop_dict[key] = prop
+            if modes[key]['number'] == int(current_mode):
+                prop.set_state(IBus.PropState.CHECKED)
+            else:
+                prop.set_state(IBus.PropState.UNCHECKED)
+            self.update_property(prop) # important!
+            i += 1
+        return sub_props
+
     def _init_properties(self):
-        self.properties= IBus.PropList()
+        self._prop_dict = {}
+        self.properties = IBus.PropList()
 
-        self._status_property = self._new_property(u'status')
-        self.properties.append(self._status_property)
+        self._init_or_update_property_menu(
+            self.input_mode_menu,
+            self._input_mode)
 
-        if self.db._is_chinese:
-            self._cmode_property = self._new_property(u'cmode')
-            self.properties.append(self._cmode_property)
+        if self.db._is_chinese and self._editor._chinese_mode != -1:
+            self._init_or_update_property_menu(
+                self.chinese_mode_menu,
+                self._editor._chinese_mode)
 
         if self.db._is_cjk:
-            self._letter_property = self._new_property(u'letter')
-            self.properties.append(self._letter_property)
-            self._punct_property = self._new_property(u'punct')
-            self.properties.append(self._punct_property)
+            self._init_or_update_property_menu(
+                self.letter_width_menu,
+                self._full_width_letter[self._input_mode])
+            self._init_or_update_property_menu(
+                self.punctuation_width_menu,
+                self._full_width_punct[self._input_mode])
 
         if self._ime_py:
-            self._py_property = self._new_property('py_mode')
-            self.properties.append(self._py_property)
+            self._init_or_update_property_menu(
+                self.pinyin_mode_menu,
+                self._editor._py_mode)
 
         if self.db._is_cjk:
-            self._onechar_property = self._new_property(u'onechar')
-            self.properties.append(self._onechar_property)
+            self._init_or_update_property_menu(
+                self.onechar_mode_menu,
+                self._editor._onechar)
 
         if self.db.user_can_define_phrase and self.db.rules:
-            self._auto_commit_property = self._new_property(u'acommit')
-            self.properties.append(self._auto_commit_property)
+            self._init_or_update_property_menu(
+                self.autocommit_mode_menu,
+                self._auto_commit)
 
-        self._setup_property = self._new_property(
+        self._setup_property = IBus.Property(
             key = u'setup',
             label = _('Setup'),
             icon = 'gtk-preferences',
-            tooltip = _('Configure ibus-table'))
+            tooltip = _('Configure ibus-table “%(engine-name)s”') %{
+                'engine-name': self._engine_name},
+            sensitive = True,
+            visible = True)
         self.properties.append(self._setup_property)
 
         self.register_properties(self.properties)
-        self._refresh_properties()
-
-    def _new_property(self, key, label=None, icon=None, tooltip=None, sensitive=True, visible=True):
-        '''Creates a new IBus.Property and returns it'''
-        return IBus.Property(key=key,
-                             label=label,
-                             icon=icon,
-                             tooltip=tooltip,
-                             sensitive=sensitive,
-                             visible=visible)
-
-    def _refresh_properties (self):
-        '''Method used to update properties'''
-        # taken and modified from PinYin.py :)
-        if self._input_mode == 1:
-            if self.db._is_chinese:
-                self._set_property(
-                    self._status_property,
-                    'chinese.svg',
-                    _('Chinese input (Left Shift)'),
-                    _('Switch to “Direct input” (Left Shift)'))
-            else:
-                self._set_property(
-                    self._status_property,
-                    'ibus-table.svg',
-                    self._status + ' (Left Shift)',
-                    _('Switch to “Direct input” (Left Shift)'))
-        else:
-            if self.db.is_chinese:
-                self._set_property(
-                    self._status_property,
-                    'english.svg',
-                    _('Direct input (Left Shift)'),
-                    _('Switch to “Chinese input” (Left Shift)'))
-            else:
-                self._set_property(
-                    self._status_property,
-                    'english.svg',
-                    _('Direct input (Left Shift)'),
-                    _('Switch to %s (“Table input”) (Left Shift)') %self._status)
-        self.update_property(self._status_property)
-
-        if self.db._is_cjk:
-            if self._full_width_letter[self._input_mode]:
-                self._set_property(
-                    self._letter_property,
-                    'full-letter.svg',
-                    _('Fullwidth letters (Shift-Space)'),
-                    _('Switch to “Halfwidth letters” (Shift-Space)'))
-            else:
-                self._set_property(
-                    self._letter_property,
-                    'half-letter.svg',
-                    _('Halfwidth letters (Shift-Space)'),
-                    _('Switch to “Fullwidth letters” (Shift-Space)'))
-            self.update_property(self._letter_property)
-            if self._full_width_punct[self._input_mode]:
-                self._set_property(
-                    self._punct_property,
-                    'full-punct.svg',
-                    _('Fullwidth punctuation (Ctrl-.)'),
-                    _('Switch to “Halfwidth punctuation” (Ctrl-.)'))
-            else:
-                self._set_property(
-                    self._punct_property,
-                    'half-punct.svg',
-                    _('Halfwidth punctuation (Ctrl-.)'),
-                    _('Switch to “Fullwidth punctuation” (Ctrl-.)'))
-            self.update_property(self._punct_property)
-
-        if self._ime_py:
-            if self._editor._py_mode:
-                self._set_property(
-                    self._py_property,
-                    'py-mode.svg',
-                    _('Pinyin mode (Right Shift)'),
-                    _('Switch to “Table mode” (Right Shift)'))
-            else:
-                self._set_property(
-                    self._py_property,
-                    'tab-mode.svg',
-                    _('Table mode (Right Shift)'),
-                    _('Switch to “Pinyin mode” (Right Shift)'))
-            self.update_property(self._py_property)
-
-        if self.db._is_cjk:
-            if self._editor._onechar:
-                self._set_property(
-                    self._onechar_property,
-                    'onechar.svg',
-                    _('Single character mode (Ctrl-,)'),
-                    _('Switch to “Phrase mode” (Ctrl-,)'))
-            else:
-                self._set_property(
-                    self._onechar_property,
-                    'phrase.svg',
-                    _('Phrase mode (Ctrl-,)'),
-                    _('Switch to “Single character mode” (Ctrl-,)'))
-            self.update_property(self._onechar_property)
-
-        if self.db.user_can_define_phrase and self.db.rules:
-            if self._auto_commit:
-                self._set_property(
-                    self._auto_commit_property,
-                    'acommit.svg',
-                    _('Direct commit mode (Ctrl-/)'),
-                    _('Switch to “Normal commit mode” (uses space to commit) (Ctrl-/)'))
-            else:
-                self._set_property(
-                    self._auto_commit_property,
-                    'ncommit.svg',
-                    _('Normal commit mode (Ctrl-/)'),
-                    _('Switch to “Direct commit mode” (Ctrl-/)'))
-            self.update_property(self._auto_commit_property)
-
-        # The Chinese_mode:
-        #   0 means to show simplified Chinese only
-        #   1 means to show traditional Chinese only
-        #   2 means to show all characters but show simplified Chinese first
-        #   3 means to show all characters but show traditional Chinese first
-        #   4 means to show all characters
-        if self.db._is_chinese:
-            if self._editor._chinese_mode == 0:
-                self._set_property(
-                    self._cmode_property,
-                    'sc-mode.svg',
-                    _('Simplified Chinese (Ctrl-;)'),
-                    _('Switch to “Traditional Chinese” (Ctrl-;)'))
-            elif self._editor._chinese_mode == 1:
-                self._set_property(
-                    self._cmode_property,
-                    'tc-mode.svg',
-                    _('Traditional Chinese (Ctrl-;)'),
-                    _('Switch to “Simplified Chinese before traditional” (Ctrl-;)'))
-            elif self._editor._chinese_mode == 2:
-                self._set_property(
-                    self._cmode_property,
-                    'scb-mode.svg',
-                    _('Simplified Chinese before traditional (Ctrl-;)'),
-                    _('Switch to “Traditional Chinese before simplified” (Ctrl-;)'))
-            elif self._editor._chinese_mode == 3:
-                self._set_property(
-                    self._cmode_property,
-                    'tcb-mode.svg',
-                    _('Traditional Chinese before simplified (Ctrl-;)'),
-                    _('Switch to “All Chinese characters” (Ctrl-;)'))
-            elif self._editor._chinese_mode == 4:
-                self._set_property(
-                    self._cmode_property,
-                    'cb-mode.svg',
-                    _('All Chinese characters (Ctrl-;)'),
-                    _('Switch to “Simplified Chinese” (Ctrl-;)'))
-            self.update_property(self._cmode_property)
-
-    def _set_property (self, property, icon, label, tooltip):
-        if type(label) != type(u''):
-            label = label.decode('utf-8')
-        if type(tooltip) != type(u''):
-            tooltip = tooltip.decode('utf-8')
-        property.set_icon ( u'%s%s' % (self._icon_dir, icon ) )
-        property.set_label(IBus.Text.new_from_string(label))
-        property.set_tooltip(IBus.Text.new_from_string(tooltip))
 
     def do_property_activate(self, property, prop_state = IBus.PropState.UNCHECKED):
-        '''Shift property'''
-        if property == u"status":
-            self._input_mode = int(not self._input_mode)
-            self.reset()
-            # Not saved to config on purpose. In the setup tool one
-            # can select whether “Table input” or “Direct input” should
-            # be the default when the input method starts. But when
-            # changing this input mode using the property menu, the change
-            # is not remembered.
-        elif property == u'py_mode' and self._ime_py:
-            self._editor.commit_to_preedit()
-            self._editor._py_mode = not self._editor._py_mode
-            self._update_ui()
-            # Not saved to config on purpose.
-        elif property == u'onechar' and self.db._is_cjk:
-            self._editor._onechar = not self._editor._onechar
-            self._config.set_value(
-                self._config_section,
-                "OneChar",
-                GLib.Variant.new_boolean(self._editor._onechar))
-        elif property == u'acommit' and self.db.user_can_define_phrase and self.db.rules:
-            self._auto_commit = not self._auto_commit
-            self._config.set_value(
-                self._config_section,
-                "AutoCommit",
-                GLib.Variant.new_boolean(self._auto_commit))
-        elif property == u'letter' and self.db._is_cjk:
-            self._full_width_letter[self._input_mode] = not self._full_width_letter[self._input_mode]
-            if self._input_mode:
-                self._config.set_value(
-                    self._config_section,
-                    "TabDefFullWidthLetter",
-                    GLib.Variant.new_boolean(
-                        self._full_width_letter[self._input_mode]))
-            else:
-                self._config.set_value(
-                    self._config_section,
-                    "EnDefFullWidthLetter",
-                    GLib.Variant.new_boolean(
-                        self._full_width_letter[self._input_mode]))
-        elif property == u'punct' and self.db._is_cjk:
-            self._full_width_punct[self._input_mode] = not self._full_width_punct[self._input_mode]
-            if self._input_mode:
-                self._config.set_value(
-                    self._config_section,
-                    "TabDefFullWidthPunct",
-                    GLib.Variant.new_boolean(
-                        self._full_width_punct[self._input_mode]))
-            else:
-                self._config.set_value(
-                    self._config_section,
-                    "EnDefFullWidthPunct",
-                    GLib.Variant.new_boolean(
-                        self._full_width_punct[self._input_mode]))
-        elif property == u'cmode' and self.db._is_chinese and self._editor._chinese_mode != -1:
-            self._editor._chinese_mode = (self._editor._chinese_mode+1) % 5
-            self._config.set_value(
-                self._config_section,
-                "ChineseMode",
-                GLib.Variant.new_int32(self._editor._chinese_mode))
-            self.reset()
-        elif property == "setup":
-                self._start_setup()
-        self._refresh_properties()
+        '''
+        Handle clicks on properties
+        '''
+        if property == "setup":
+            self._start_setup()
+            return
+        if prop_state != IBus.PropState.CHECKED:
+            # If the mouse just hovered over a menu button and
+            # no sub-menu entry was clicked, there is nothing to do:
+            return
+        if property.startswith(self.input_mode_menu['key']+'.'):
+            self.set_input_mode(
+                self.input_mode_properties[property]['number'])
+            return
+        if property.startswith(self.pinyin_mode_menu['key']+'.') and self._ime_py:
+            self.set_pinyin_mode(
+                bool(self.pinyin_mode_properties[property]['number']))
+            return
+        if property.startswith(self.onechar_mode_menu['key']+'.') and self.db._is_cjk:
+            self.set_onechar_mode(
+                bool(self.onechar_mode_properties[property]['number']))
+            return
+        if (property.startswith(self.autocommit_mode_menu['key']+'.')
+            and self.db.user_can_define_phrase and self.db.rules):
+            self.set_autocommit_mode(
+                bool(self.autocommit_mode_properties[property]['number']))
+            return
+        if property.startswith(self.letter_width_menu['key']+'.') and self.db._is_cjk:
+            self.set_letter_width(
+                bool(self.letter_width_properties[property]['number']),
+                input_mode=self._input_mode)
+            return
+        if (property.startswith(self.punctuation_width_menu['key']+'.')
+            and self.db._is_cjk):
+            self.set_punctuation_width(
+                bool(self.punctuation_width_properties[property]['number']),
+                input_mode=self._input_mode)
+            return
+        if (property.startswith(self.chinese_mode_menu['key']+'.')
+            and self.db._is_chinese
+            and self._editor._chinese_mode != -1):
+            self.set_chinese_mode(
+                self.chinese_mode_properties[property]['number'])
+            return
 
     def _start_setup(self):
         if self._setup_pid != 0:
@@ -1840,17 +2040,21 @@ class tabengine (IBus.Engine):
         '''Internal method to process key event'''
         # Match mode switch hotkey
         if self._editor.is_empty() and (self._match_hotkey(key, IBus.KEY_Shift_L, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
-            self.do_property_activate("status")
+            self.set_input_mode(int(not self._input_mode))
             return True
 
         # Match full half letter mode switch hotkey
         if self._match_hotkey (key, IBus.KEY_space, IBus.ModifierType.SHIFT_MASK) and self.db._is_cjk:
-            self.do_property_activate ("letter")
+            self.set_letter_width(
+                not self._full_width_letter[self._input_mode],
+                input_mode = self._input_mode)
             return True
 
         # Match full half punct mode switch hotkey
         if self._match_hotkey (key, IBus.KEY_period, IBus.ModifierType.CONTROL_MASK) and self.db._is_cjk:
-            self.do_property_activate ("punct")
+            self.set_punctuation_width(
+                not self._full_width_punct[self._input_mode],
+                input_mode = self._input_mode)
             return True
 
         if self._input_mode:
@@ -1901,7 +2105,7 @@ class tabengine (IBus.Engine):
             and self._match_hotkey(
                 key, IBus.KEY_Shift_R,
                 IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
-            self.do_property_activate(u"py_mode")
+            self.set_pinyin_mode(not self._editor._py_mode)
             return True
         # process commit to preedit
         if (self._match_hotkey(
@@ -1924,17 +2128,17 @@ class tabengine (IBus.Engine):
 
         # Match single char mode switch hotkey
         if self._match_hotkey(key, IBus.KEY_comma, IBus.ModifierType.CONTROL_MASK) and self.db._is_cjk:
-            self.do_property_activate (u"onechar")
+            self.set_onechar_mode(not self._editor._onechar)
             return True
 
         # Match direct commit mode switch hotkey
         if self._match_hotkey(key, IBus.KEY_slash, IBus.ModifierType.CONTROL_MASK) and  self.db.user_can_define_phrase and self.db.rules:
-            self.do_property_activate(u"acommit")
+            self.set_autocommit_mode(not self._auto_commit)
             return True
 
         # Match Chinese mode shift
         if self._match_hotkey(key, IBus.KEY_semicolon, IBus.ModifierType.CONTROL_MASK) and self.db._is_chinese:
-            self.do_property_activate(u"cmode")
+            self.set_chinese_mode((self._editor._chinese_mode+1) % 5)
             return True
 
         if key.mask & IBus.ModifierType.RELEASE_MASK:
@@ -2266,8 +2470,10 @@ class tabengine (IBus.Engine):
 
     def do_focus_in (self):
         if self._on:
-            self.register_properties (self.properties)
-            self._refresh_properties ()
+            self.register_properties(self.properties)
+            self._init_or_update_property_menu(
+                self.input_mode_menu,
+                self._input_mode)
             self._update_ui ()
 
     def do_focus_out (self):
@@ -2324,31 +2530,23 @@ class tabengine (IBus.Engine):
         print("config value %(n)s for engine %(en)s changed" %{'n': name, 'en': self._engine_name})
         value = variant_to_value(value)
         if name == u'inputmode':
-            self._input_mode = value
-            self._refresh_properties()
+            self.set_input_mode(value)
             return
         if name == u'autoselect':
             self._editor._auto_select = value
             self._auto_select = value
-            self._refresh_properties()
             return
         if name == u'autocommit':
-            self._auto_commit = value
-            self._refresh_properties()
+            self.set_autocommit_mode(value)
             return
         if name == u'chinesemode':
-            self._editor._chinese_mode = value
-            self._refresh_properties()
+            self.set_chinese_mode(value)
             return
         if name == u'endeffullwidthletter':
-            self._full_width_letter[0] = value
-            self._editor._full_width_letter[0] = value
-            self._refresh_properties()
+            self.set_letter_width(value, input_mode=0)
             return
         if name == u'endeffullwidthpunct':
-            self._full_width_punct[0] = value
-            self._editor._full_width_punct[0] = value
-            self._refresh_properties()
+            self.set_punctuation_width(value, input_mode=0)
             return
         if name == u'lookuptableorientation':
             self._editor._orientation = value
@@ -2378,22 +2576,16 @@ class tabengine (IBus.Engine):
             self._editor.set_select_keys(value)
             return
         if name == u'onechar':
-            self._editor._onechar = value
-            self._refresh_properties()
+            self.set_onechar_mode(value)
             return
         if name == u'tabdeffullwidthletter':
-            self._full_width_letter[1] = value
-            self._editor._full_width_letter[1] = value
-            self._refresh_properties()
+            self.set_letter_width(value, input_mode=1)
             return
         if name == u'tabdeffullwidthpunct':
-            self._full_width_punct[1] = value
-            self._editor._full_width_punct[1] = value
-            self._refresh_properties()
+            self.set_punctuation_width(value, input_mode=1)
             return
         if name == u'alwaysshowlookup':
             self._always_show_lookup = value
-            self._refresh_properties()
             return
         if name == u'spacekeybehavior':
             if value == True:

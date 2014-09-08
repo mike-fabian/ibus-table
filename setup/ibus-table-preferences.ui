@@ -843,7 +843,7 @@ lookup table) or using the mouse.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Commit mode:</property>
+                                    <property name="label" translatable="yes">Auto commit mode:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>

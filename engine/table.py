@@ -299,7 +299,7 @@ class editor(object):
                 self._config_section,
                 "OneChar"))
         if self._onechar == None:
-            self_onechar = False
+            self._onechar = False
         # self._chinese_mode: the candidate filter mode,
         #   0 means to show simplified Chinese only
         #   1 means to show traditional Chinese only

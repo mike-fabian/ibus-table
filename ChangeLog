@@ -1,4 +1,28 @@
-commit 0002222896f9dcff3cf51930e70bc54e24b48838
+commit 864fbd2c194c716dfa7e5f1845d5b7e017cebf85
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Sep 14 13:32:16 2014 +0200
+
+    Release 1.8.11
+
+commit 6bfad0054a7d8fea292557984a985d57f68bc74f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 9 20:34:21 2014 +0200
+
+    Fix typo in variable name self_onechar -> self._onechar
+    
+    This typo caused a Python backtrace when the dconf key
+    
+        /desktop/ibus/engine/table/wubi-jidian86/onechar
+    
+    was not set.
+
+commit 5bc44b0b45dfdfa5b0653625f37cd75e2533d927
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 9 08:47:06 2014 +0200
+
+    Fix typo in e-mail address
+
+commit 2a0b323d0c052794964f8473c23a399a6743bfc4
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Sep 4 16:07:38 2014 +0200
 

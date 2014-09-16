@@ -1,8 +1,82 @@
-commit 864fbd2c194c716dfa7e5f1845d5b7e017cebf85
+commit 0439a57d484f59aa36c6a97889b1901bbae0c85b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 16 09:57:26 2014 +0200
+
+    Release v1.9.0
+
+commit cf541b98b8a2fdb829efcbcd99701fa2e3130c16
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 9 09:24:31 2014 +0200
+
+    Add a Japanese translation file
+    
+    I did not translate many messages, I mostly want that file
+    because I run my desktop in Japanese and want to see whether
+    the translation system is working correctly or not.
+
+commit 406685f717f76683dac68c54d7277a5dadd5558c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 16 08:26:18 2014 +0200
+
+    Update Chinese .po files
+
+commit 741ab21b5a677604d4e47b3d03cd6345a2f78795
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 16 08:23:51 2014 +0200
+
+    Update German translations
+
+commit 461ed20a4fec27b3603cc29323c2be36ce7fdf7d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Sep 8 14:14:58 2014 +0200
+
+    Redesign the property menus, use sub-menus instead of toggles
+    
+    The toogles are very confusing, one cannot easily see to which
+    mode one will switch when a toggle is clicked. When the floating panel
+    is shown, tooltips explain to which mode will switch. But the floating
+    panel is never shown in Gnome3, so this does not help for Gnome3.
+    
+    User feedback also shows that many users are confused whether the
+    currently visible menu entry in case of a toggles shows the state
+    which is currently used or the state one will switch to when that
+    toggle is clicked.
+    
+    For toggles which have more than 2 values, for example the Chinese mode:
+    
+        0 means to show simplified Chinese only
+        1 means to show traditional Chinese only
+        2 means to show all characters but show simplified Chinese first
+        3 means to show all characters but show traditional Chinese first
+        4 means to show all characters
+    
+    it is tedious to change from mode 0 to mode 4 for example:
+    
+       Open the menu, click on the toggle, menu closes and one has
+       changed to mode 1. Repeat 3 more times to get to mode 4.
+    
+    The new system to use sub-menus instead of toogles also agrees better
+    with:
+    
+    https://wiki.gnome.org/AllanDay/IMEGuidelines
+    
+    > Avoid mutable menu items (menu items whose label changes after it has
+    > been selected). Instead, consider providing two adjacent menu items
+    > for the commands. Then make the items sensitive or insensitive as the
+    > situation demands.
+    >
+    > Do not use mutable menu items to toggle a two-state setting (for
+    > example, Show and Hide). Use a check box or radio buttons instead.
+    
+    Also included in this commit:
+    
+    - reset() not needed when switching Chinese mode
+
+commit 55b7b3b0c490397cd74610052345963f4f9ae982
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Sun Sep 14 13:32:16 2014 +0200
 
-    Release 1.8.11
+    Release v1.8.11
 
 commit 6bfad0054a7d8fea292557984a985d57f68bc74f
 Author: Mike FABIAN <mfabian@redhat.com>

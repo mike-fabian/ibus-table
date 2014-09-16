@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ibus-table 1.4.99\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2014-08-26 13:41+0200\n"
-"PO-Revision-Date: 2014-08-26 13:50+0200\n"
+"POT-Creation-Date: 2014-09-16 07:25+0200\n"
+"PO-Revision-Date: 2014-09-16 08:23+0200\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: German <trans-de@lists.fedoraproject.org>\n"
 "Language: de\n"
@@ -17,156 +17,221 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: engine/table.py:1347
+#: engine/table.py:1325 setup/ibus-table-preferences.ui:75
+msgid "Simplified Chinese"
+msgstr "Vereinfachtes Chinesisch"
+
+#: engine/table.py:1326
+msgid "Switch to “Simplified Chinese only”."
+msgstr "Wechseln zu “Vereinfachtes Chinesisch”"
+
+#: engine/table.py:1331 setup/ibus-table-preferences.ui:78
+msgid "Traditional Chinese"
+msgstr "Traditionelles Chinesisch"
+
+#: engine/table.py:1332
+msgid "Switch to “Traditional Chinese only”."
+msgstr "Wechseln zu “Traditionelles Chinesisch”"
+
+#: engine/table.py:1337
+msgid "Simplified Chinese first"
+msgstr "Vereinfachtes Chinesisch zuerst"
+
+#: engine/table.py:1338
+msgid "Switch to “Simplified Chinese before traditional”."
+msgstr "Wechseln zu “Vereinfachtes Chinesisch vor traditionellem”"
+
+#: engine/table.py:1343
+msgid "Traditional Chinese first"
+msgstr "Traditionelles Chinesisch zuerst"
+
+#: engine/table.py:1344
+msgid "Switch to “Traditional Chinese before simplified”."
+msgstr "Wechseln zu “Traditionelles Chinesisch vor vereinfachtem”"
+
+#: engine/table.py:1349 setup/ibus-table-preferences.ui:87
+msgid "All Chinese characters"
+msgstr "Alle chinesischen Zeichen"
+
+#: engine/table.py:1350
+msgid "Switch to “All Chinese characters”."
+msgstr "Wechseln zu “Alle chinesischen Zeichen”"
+
+#: engine/table.py:1354
+msgid "Chinese mode"
+msgstr "Chinesischer Modus"
+
+#: engine/table.py:1355
+msgid "Switch Chinese mode"
+msgstr "Chinesischen Modus ändern"
+
+#: engine/table.py:1365
+msgid "English"
+msgstr "Englisch"
+
+#: engine/table.py:1366
+msgid "Switch to English input"
+msgstr "Wechseln zur Eingabe von Englisch"
+
+#: engine/table.py:1371
+msgid "Chinese"
+msgstr "Chinesisch"
+
+#: engine/table.py:1372
+msgid "Switch to Chinese input"
+msgstr "Wechseln zur Eingabe von Chinesisch"
+
+#: engine/table.py:1380 engine/table.py:1495
+#: setup/ibus-table-preferences.ui:36
+msgid "Direct"
+msgstr "Direkt"
+
+#: engine/table.py:1381
+msgid "Switch to direct input"
+msgstr "Wechseln zum “Direkteingabe Modus”"
+
+#: engine/table.py:1386 engine/table.py:1447
+msgid "Table"
+msgstr "Tabelleneingabe"
+
+#: engine/table.py:1387
+msgid "Switch to table input"
+msgstr "Tabelleneingabemodus"
+
+#: engine/table.py:1395
+msgid "Input mode"
+msgstr "Eingabemodus"
+
+#: engine/table.py:1396
+msgid "Switch Input mode"
+msgstr "Eingabemodus ändern"
+
+#: engine/table.py:1405 engine/table.py:1426
+#: setup/ibus-table-preferences.ui:98 setup/ibus-table-preferences.ui:112
+#: setup/ibus-table-preferences.ui:182 setup/ibus-table-preferences.ui:196
+msgid "Half"
+msgstr "Halbe Breite"
+
+#: engine/table.py:1406
+msgid "Switch to halfwidth letters"
+msgstr "Wechseln zu “Buchstaben in halber Breite”"
+
+#: engine/table.py:1411 engine/table.py:1432
+#: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
+#: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
+msgid "Full"
+msgstr "Volle Breite"
+
+#: engine/table.py:1412
+msgid "Switch to fullwidth letters"
+msgstr "Wechseln zu “Buchstaben in voller Breite”"
+
+#: engine/table.py:1416
+msgid "Letter width"
+msgstr "Buchstabenbreite"
+
+#: engine/table.py:1417
+msgid "Switch letter width"
+msgstr "Buchstabenbreite ändern"
+
+#: engine/table.py:1427
+msgid "Switch to halfwidth punctuation"
+msgstr "Wechseln zu “Zeichensetzung in halber Breite”"
+
+#: engine/table.py:1433
+msgid "Switch to fullwidth punctuation"
+msgstr "Wechseln zu “Zeichensetzung in voller Breite”"
+
+#: engine/table.py:1437
+msgid "Punctuation width"
+msgstr "Zeichensetzungsbreite"
+
+#: engine/table.py:1438
+msgid "Switch punctuation width"
+msgstr "Zeichensetzungsbreite ändern"
+
+#: engine/table.py:1448
+msgid "Switch to table mode"
+msgstr "Zum “Tabellen Modus” wechseln"
+
+#: engine/table.py:1453
+msgid "Pinyin"
+msgstr "Pinyin"
+
+#: engine/table.py:1454
+msgid "Switch to pinyin mode"
+msgstr "Zum “Pinyin Modus” Modus wechseln"
+
+#: engine/table.py:1458
+msgid "Pinyin mode"
+msgstr "Pinyin Modus"
+
+#: engine/table.py:1459
+msgid "Switch pinyin mode"
+msgstr "Pinyinmodus ändern"
+
+#: engine/table.py:1468
+msgid "Multiple character match"
+msgstr "Mehrere Zeichen auf einmal"
+
+#: engine/table.py:1469
+msgid "Switch to matching multiple characters at once"
+msgstr "Zur Eingabe mehrerer Zeichen auf einmal wechseln"
+
+#: engine/table.py:1474
+msgid "Single character match"
+msgstr "Nur einzelne Zeichen"
+
+#: engine/table.py:1475
+msgid "Switch to matching only single characters"
+msgstr "Zur Eingabe einzelner Zeichen wechseln"
+
+#: engine/table.py:1479
+msgid "Onechar mode"
+msgstr "Einzelzeichenmodus"
+
+#: engine/table.py:1480
+msgid "Switch onechar mode"
+msgstr "Einzelzeichenmodus ändern"
+
+#: engine/table.py:1489 setup/ibus-table-preferences.ui:33
+msgid "Normal"
+msgstr "Normal"
+
+#: engine/table.py:1490
+msgid ""
+"Switch to normal commit mode (automatic commits go into the preedit instead "
+"of into the application. This enables automatic definitions of new shortcuts)"
+msgstr ""
+"Wechseln zum normallen Commitmodus (automatische Commits gehen in das "
+"Preedit\n"
+"anstatt in die Applikation. Das ermöglicht automatische Definitionen neuer\n"
+"Kürzel)"
+
+#: engine/table.py:1496
+msgid ""
+"Switch to direct commit mode (automatic commits go directly into the "
+"application)"
+msgstr ""
+"Wechseln zum direkten Commitmodus (automatische Commits gehen direkt in\n"
+"die Applikation)"
+
+#: engine/table.py:1500
+msgid "Auto commit mode"
+msgstr "Autocommitmodus"
+
+#: engine/table.py:1501
+msgid "Switch autocommit mode"
+msgstr "Autocommitmodus ändern"
+
+#: engine/table.py:1743
 msgid "Setup"
 msgstr "Einstellungen"
 
-#: engine/table.py:1349
-msgid "Configure ibus-table"
-msgstr "Konfiguration von ibus-table"
-
-#: engine/table.py:1372
-msgid "Chinese input (Left Shift)"
-msgstr "Chinesische Eingabe (Linke Shift Taste)"
-
-#: engine/table.py:1373 engine/table.py:1379
-msgid "Switch to “Direct input” (Left Shift)"
-msgstr "Wechseln zum “Direkteingabe Modus” (Linke Shift Taste)"
-
-#: engine/table.py:1385 engine/table.py:1391
-msgid "Direct input (Left Shift)"
-msgstr "Direkteingabe Modus (Linke Shift Taste)"
-
-#: engine/table.py:1386
-msgid "Switch to “Chinese input” (Left Shift)"
-msgstr "Wechseln zum “Pinyin Modus” (Linke Shift Taste)"
-
-#: engine/table.py:1392
+#: engine/table.py:1745
 #, python-format
-msgid "Switch to %s (“Table input”) (Left Shift)"
-msgstr "Wechseln zu %s (“Tabelleneingabe Modus”) (Linke Shift Taste)"
-
-#: engine/table.py:1400
-msgid "Fullwidth letters (Shift-Space)"
-msgstr "Buchstaben in voller Breite (Ctrl-Space)"
-
-#: engine/table.py:1401
-msgid "Switch to “Halfwidth letters” (Shift-Space)"
-msgstr "Wechseln zu “Buchstaben in halber Breite” (Ctrl-Space)"
-
-#: engine/table.py:1406
-msgid "Halfwidth letters (Shift-Space)"
-msgstr "Buchstaben in halber Breite (Ctrl-Space)"
-
-#: engine/table.py:1407
-msgid "Switch to “Fullwidth letters” (Shift-Space)"
-msgstr "Wechseln zu “Buchstaben in voller Breite” (Ctrl-Space)"
-
-#: engine/table.py:1413
-msgid "Fullwidth punctuation (Ctrl-.)"
-msgstr "Zeichensetzung in voller Breite (Ctrl-.)"
-
-#: engine/table.py:1414
-msgid "Switch to “Halfwidth punctuation” (Ctrl-.)"
-msgstr "Wechseln zu “Zeichensetzung in halber Breite” (Ctrl-.)"
-
-#: engine/table.py:1419
-msgid "Halfwidth punctuation (Ctrl-.)"
-msgstr "Zeichensetzung in halber Breite (Ctrl-.)"
-
-#: engine/table.py:1420
-msgid "Switch to “Fullwidth punctuation” (Ctrl-.)"
-msgstr "Wechseln zu “Zeichensetzung in voller Breite” (Ctrl-.)"
-
-#: engine/table.py:1428
-msgid "Pinyin mode (Right Shift)"
-msgstr "Pinyin Modus (Rechte Shift Taste)"
-
-#: engine/table.py:1429
-msgid "Switch to “Table mode” (Right Shift)"
-msgstr "In “Tabellen Modus” wechseln (Rechte Shift Taste)"
-
-#: engine/table.py:1434
-msgid "Table mode (Right Shift)"
-msgstr "Tabellenmodus (Rechte Shift Taste)"
-
-#: engine/table.py:1435
-msgid "Switch to “Pinyin mode” (Right Shift)"
-msgstr "In “Pinyin Modus” Modus wechseln (Rechte Shift Taste)"
-
-#: engine/table.py:1442
-msgid "Single character mode (Ctrl-,)"
-msgstr "Einzelzeichenmodus (Ctrl-,)"
-
-#: engine/table.py:1443
-msgid "Switch to “Phrase mode” (Ctrl-,)"
-msgstr "Wechseln zum “Satz- bzw. Wortmodus” (Ctrl-,)"
-
-#: engine/table.py:1448
-msgid "Phrase mode (Ctrl-,)"
-msgstr "Satz- bzw. Wortmodus (Ctrl-,)"
-
-#: engine/table.py:1449
-msgid "Switch to “Single character mode” (Ctrl-,)"
-msgstr "Wechseln zum “Einzelzeichenmodus” (Ctrl-,)"
-
-#: engine/table.py:1456
-msgid "Direct commit mode (Ctrl-/)"
-msgstr "Direkter Commitmodus (Ctrl-/)"
-
-#: engine/table.py:1457
-msgid "Switch to “Normal commit mode” (uses space to commit) (Ctrl-/)"
-msgstr ""
-"Wechseln zum normalen Commitmodus (Commit beim Tippen des Leerzeichens) "
-"(Ctrl-/)"
-
-#: engine/table.py:1462
-msgid "Normal commit mode (Ctrl-/)"
-msgstr "Normaler Commitmodus (Ctrl-/)"
-
-#: engine/table.py:1463
-msgid "Switch to “Direct commit mode” (Ctrl-/)"
-msgstr "Wechseln zum “direkten Commitmodus” (Ctrl-/)"
-
-#: engine/table.py:1477
-msgid "Simplified Chinese (Ctrl-;)"
-msgstr "Vereinfachtes Chinesisch (Ctrl-;)"
-
-#: engine/table.py:1478
-msgid "Switch to “Traditional Chinese” (Ctrl-;)"
-msgstr "Wechseln zu “Traditionelles Chinesisch” (Ctrl-;)"
-
-#: engine/table.py:1483
-msgid "Traditional Chinese (Ctrl-;)"
-msgstr "Traditionelles Chinesisch (Ctrl-;)"
-
-#: engine/table.py:1484
-msgid "Switch to “Simplified Chinese before traditional” (Ctrl-;)"
-msgstr "Wechseln zu “Vereinfachtes Chinesisch”"
-
-#: engine/table.py:1489
-msgid "Simplified Chinese before traditional (Ctrl-;)"
-msgstr "Vereinfachtes Chinesisch zuerst (Ctrl-;)"
-
-#: engine/table.py:1490
-msgid "Switch to “Traditional Chinese before simplified” (Ctrl-;)"
-msgstr "Wechseln zu “Traditionelles Chinesisch” (Ctrl-;)"
-
-#: engine/table.py:1495
-msgid "Traditional Chinese before simplified (Ctrl-;)"
-msgstr "Traditionelles Chinesisch zuerst (Ctrl-;)"
-
-#: engine/table.py:1496
-msgid "Switch to “All Chinese characters” (Ctrl-;)"
-msgstr "Wechseln zu “Alle chinesischen Zeichen” (Ctrl-;)"
-
-#: engine/table.py:1501
-msgid "All Chinese characters (Ctrl-;)"
-msgstr "Alle chinesischen Zeichen (Ctrl-;)"
-
-#: engine/table.py:1502
-msgid "Switch to “Simplified Chinese” (Ctrl-;)"
-msgstr "Wechseln zu “Vereinfachtes Chinesisch” (Ctrl-;)"
+msgid "Configure ibus-table “%(engine-name)s”"
+msgstr "Konfiguration von ibus-table “%(engine-name)s”"
 
 #: setup/main.py:125
 msgid "IBUS_ENGINE_NAME environment variable is not set."
@@ -183,7 +248,7 @@ msgstr ""
 msgid "IBus Table engine %s is not available"
 msgstr "IBus Table Engine %s ist nicht verfügbar"
 
-#: setup/main.py:266
+#: setup/main.py:271
 #, python-format
 msgid "IBus Table %s Preferences"
 msgstr "IBus Table %s Einstellungen"
@@ -198,22 +263,6 @@ msgstr "Nein"
 msgid "Yes"
 msgstr "Ja"
 
-#: setup/ibus-table-preferences.ui:33
-msgid "Normal"
-msgstr "Normal"
-
-#: setup/ibus-table-preferences.ui:36
-msgid "Direct"
-msgstr "Direkt"
-
-#: setup/ibus-table-preferences.ui:75
-msgid "Simplified Chinese"
-msgstr "Vereinfachtes Chinesisch"
-
-#: setup/ibus-table-preferences.ui:78
-msgid "Traditional Chinese"
-msgstr "Traditionelles Chinesisch"
-
 #: setup/ibus-table-preferences.ui:81
 msgid "Simplified Chinese before traditional"
 msgstr "Vereinfachtes Chinesisch zuerst"
@@ -221,20 +270,6 @@ msgstr "Vereinfachtes Chinesisch zuerst"
 #: setup/ibus-table-preferences.ui:84
 msgid "Traditional Chinese before simplified"
 msgstr "Traditionelles Chinesisch zuerst"
-
-#: setup/ibus-table-preferences.ui:87
-msgid "All Chinese characters"
-msgstr "Alle chinesischen Zeichen"
-
-#: setup/ibus-table-preferences.ui:98 setup/ibus-table-preferences.ui:112
-#: setup/ibus-table-preferences.ui:182 setup/ibus-table-preferences.ui:196
-msgid "Half"
-msgstr "Halbe Breite"
-
-#: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
-#: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
-msgid "Full"
-msgstr "Volle Breite"
 
 #: setup/ibus-table-preferences.ui:126
 msgid "Direct input"
@@ -526,8 +561,8 @@ msgid "Auto select:"
 msgstr "Automatische Auswahl"
 
 #: setup/ibus-table-preferences.ui:846
-msgid "Commit mode:"
-msgstr "Commitmodus"
+msgid "Auto commit mode:"
+msgstr "Autocommitmodus"
 
 #: setup/ibus-table-preferences.ui:862
 msgid "Behavior of space key:"
@@ -624,3 +659,58 @@ msgstr ""
 msgid "About"
 msgstr "Info über IBus Table"
 
+#~ msgid "Chinese input (Left Shift)"
+#~ msgstr "Chinesische Eingabe (Linke Shift Taste)"
+
+#~ msgid "Direct input (Left Shift)"
+#~ msgstr "Direkteingabe Modus (Linke Shift Taste)"
+
+#~ msgid "Switch to %s (“Table input”) (Left Shift)"
+#~ msgstr "Wechseln zu %s (“Tabelleneingabe Modus”) (Linke Shift Taste)"
+
+#~ msgid "Fullwidth letters (Shift-Space)"
+#~ msgstr "Buchstaben in voller Breite (Ctrl-Space)"
+
+#~ msgid "Halfwidth letters (Shift-Space)"
+#~ msgstr "Buchstaben in halber Breite (Ctrl-Space)"
+
+#~ msgid "Fullwidth punctuation (Ctrl-.)"
+#~ msgstr "Zeichensetzung in voller Breite (Ctrl-.)"
+
+#~ msgid "Halfwidth punctuation (Ctrl-.)"
+#~ msgstr "Zeichensetzung in halber Breite (Ctrl-.)"
+
+#~ msgid "Table mode (Right Shift)"
+#~ msgstr "Tabellenmodus (Rechte Shift Taste)"
+
+#~ msgid "Switch to “Phrase mode” (Ctrl-,)"
+#~ msgstr "Wechseln zum “Satz- bzw. Wortmodus” (Ctrl-,)"
+
+#~ msgid "Phrase mode (Ctrl-,)"
+#~ msgstr "Satz- bzw. Wortmodus (Ctrl-,)"
+
+#~ msgid "Direct commit mode (Ctrl-/)"
+#~ msgstr "Direkter Commitmodus (Ctrl-/)"
+
+#~ msgid "Switch to “Normal commit mode” (uses space to commit) (Ctrl-/)"
+#~ msgstr ""
+#~ "Wechseln zum normalen Commitmodus (Commit beim Tippen des Leerzeichens) "
+#~ "(Ctrl-/)"
+
+#~ msgid "Normal commit mode (Ctrl-/)"
+#~ msgstr "Normaler Commitmodus (Ctrl-/)"
+
+#~ msgid "Simplified Chinese (Ctrl-;)"
+#~ msgstr "Vereinfachtes Chinesisch (Ctrl-;)"
+
+#~ msgid "Traditional Chinese (Ctrl-;)"
+#~ msgstr "Traditionelles Chinesisch (Ctrl-;)"
+
+#~ msgid "Simplified Chinese before traditional (Ctrl-;)"
+#~ msgstr "Vereinfachtes Chinesisch zuerst (Ctrl-;)"
+
+#~ msgid "Traditional Chinese before simplified (Ctrl-;)"
+#~ msgstr "Traditionelles Chinesisch zuerst (Ctrl-;)"
+
+#~ msgid "All Chinese characters (Ctrl-;)"
+#~ msgstr "Alle chinesischen Zeichen (Ctrl-;)"

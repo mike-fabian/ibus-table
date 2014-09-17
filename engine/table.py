@@ -1351,6 +1351,8 @@ class tabengine (IBus.Engine):
                 'InputMode.Table': {
                     'number': 1,
                     'symbol': '中',
+                    'symbol_table': '中',
+                    'symbol_pinyin': '拼音',
                     'icon': 'chinese.svg',
                     'label': _('Chinese'),
                     'tooltip': _('Switch to Chinese input')}
@@ -1549,6 +1551,13 @@ class tabengine (IBus.Engine):
         self._editor._py_mode = mode
         self._init_or_update_property_menu(
             self.pinyin_mode_menu, mode)
+        if mode:
+            self.input_mode_properties['InputMode.Table']['symbol'] = self.input_mode_properties['InputMode.Table']['symbol_pinyin']
+        else:
+            self.input_mode_properties['InputMode.Table']['symbol'] = self.input_mode_properties['InputMode.Table']['symbol_table']
+        self._init_or_update_property_menu(
+            self.input_mode_menu,
+            self._input_mode)
         self._update_ui()
 
     def set_onechar_mode(self, mode=False):

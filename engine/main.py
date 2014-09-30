@@ -218,12 +218,15 @@ def main():
 
             _longname = SubElement (_engine, 'longname')
             _longname.text = ''
-            try:
-                _locale = getdefaultlocale()[0].lower()
+            # getdefaultlocale() returns something like ('ja_JP', 'UTF-8').
+            _locale = getdefaultlocale()[0].lower()
+            _longname.text = _sq_db.ime_properties.get(
+                '.'.join(['name', _locale]))
+            if not _longname.text:
                 _longname.text = _sq_db.ime_properties.get(
-                    '.'.join(['name',_locale]))
-            except:
-                pass
+                    '.'.join(['name', _locale.split('_')[0]]))
+            if not _longname.text:
+                _longname.text = _sq_db.ime_properties.get('name')
             if not _longname.text:
                 _longname.text = engine_name
 

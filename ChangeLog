@@ -1,4 +1,33 @@
-commit 0439a57d484f59aa36c6a97889b1901bbae0c85b
+commit 2be3e0cf2d90945df906865673bed0906a9b5755
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 30 14:15:10 2014 +0200
+
+    Release v1.9.1
+
+commit 616c93016c916d05555ad029768addfc12dbf548
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 30 12:38:18 2014 +0200
+
+    Use proper fallback when reading the localized table name
+    
+    Try language and region (“xx_YY”) first, then only language (“xx”).
+    Without this patch,
+    
+        NAME.ru = устаревшая
+    
+    would be ignored, only
+    
+        NAME.ru_RU = устаревшая
+    
+    would be used.
+
+commit 79bccdc39c6e233ea5081d011ef102bf2d7ef9ce
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 17 10:21:39 2014 +0200
+
+    Show pinyin mode as well in the input mode indicator
+
+commit 16e700192695fd75b392939abb34faccf1322639
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Sep 16 09:57:26 2014 +0200
 

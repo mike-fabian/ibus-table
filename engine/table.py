@@ -195,11 +195,12 @@ SAVE_USER_COUNT_MAX = 16
 SAVE_USER_TIMEOUT = 30 # in seconds
 
 class KeyEvent:
-    def __init__(self, keyval, state):
-        self.code = keyval
-        self.mask = state
+    def __init__(self, keyval, keycode, state):
+        self.val = keyval
+        self.code = keycode
+        self.state = state
     def __str__(self):
-        return "%s 0x%08x" % (IBus.keyval_name(self.code), self.mask)
+        return "%s 0x%08x" % (IBus.keyval_name(self.val), self.state)
 
 
 class editor(object):
@@ -1991,7 +1992,7 @@ class tabengine (IBus.Engine):
         # special puncts w/ further conditions
         if c == u".":
             if self._prev_char and self._prev_char.isdigit() \
-                and self._prev_key and chr(self._prev_key.code) == self._prev_char:
+                and self._prev_key and chr(self._prev_key.val) == self._prev_char:
                 return u"."
             else:
                 return u"。" # 。U+3002 IDEOGRAPHIC FULL STOP
@@ -2010,12 +2011,12 @@ class tabengine (IBus.Engine):
 
         return unichar_half_to_full(c)
 
-    def _match_hotkey (self, key, code, mask):
+    def _match_hotkey (self, key, keyval, state):
 
-        if key.code == code and key.mask == mask:
-            if self._prev_key and key.code == self._prev_key.code and key.mask & IBus.ModifierType.RELEASE_MASK:
+        if key.val == keyval and key.state == state:
+            if self._prev_key and key.val == self._prev_key.val and key.state & IBus.ModifierType.RELEASE_MASK:
                 return True
-            if not key.mask & IBus.ModifierType.RELEASE_MASK:
+            if not key.state & IBus.ModifierType.RELEASE_MASK:
                 return True
 
         return False
@@ -2035,9 +2036,9 @@ class tabengine (IBus.Engine):
         if self._has_input_purpose and self._input_purpose in [IBus.InputPurpose.PASSWORD, IBus.InputPurpose.PIN]:
             return False
 
-        key = KeyEvent(keyval, state)
+        key = KeyEvent(keyval, keycode, state)
         # ignore NumLock mask
-        key.mask &= ~IBus.ModifierType.MOD2_MASK
+        key.state &= ~IBus.ModifierType.MOD2_MASK
 
         result = self._process_key_event (key)
         self._prev_key = key
@@ -2083,14 +2084,14 @@ class tabengine (IBus.Engine):
 
     def _english_mode_process_key_event(self, key):
         # Ignore key release event
-        if key.mask & IBus.ModifierType.RELEASE_MASK:
+        if key.state & IBus.ModifierType.RELEASE_MASK:
             return True
-        if key.code >= 128:
+        if key.val >= 128:
             return False
         # we ignore all hotkeys here
-        if key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
+        if key.state & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
             return False
-        keychar = IBus.keyval_to_unicode(key.code)
+        keychar = IBus.keyval_to_unicode(key.val)
         if type(keychar) != type(u''):
             keychar = keychar.decode('UTF-8')
         if ascii_ispunct(keychar):
@@ -2148,10 +2149,10 @@ class tabengine (IBus.Engine):
             self.set_chinese_mode((self._editor._chinese_mode+1) % 5)
             return True
 
-        if key.mask & IBus.ModifierType.RELEASE_MASK:
+        if key.state & IBus.ModifierType.RELEASE_MASK:
             return True
 
-        keychar = IBus.keyval_to_unicode(key.code)
+        keychar = IBus.keyval_to_unicode(key.val)
         if type(keychar) != type(u''):
             keychar = keychar.decode('UTF-8')
 
@@ -2162,7 +2163,7 @@ class tabengine (IBus.Engine):
         if self._editor.is_empty() and not self._editor.get_preedit_string_complete():
             if ((keychar not in self._valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char
                  or (self.db.startchars and keychar not in self.db.startchars))
-                and (not key.mask &
+                and (not key.state &
                      (IBus.ModifierType.MOD1_MASK |
                       IBus.ModifierType.CONTROL_MASK))):
                 if debug_level > 0:
@@ -2178,15 +2179,15 @@ class tabengine (IBus.Engine):
                     self.commit_string(trans_char)
                     return True
 
-        if key.code == IBus.KEY_Escape:
+        if key.val == IBus.KEY_Escape:
             self.reset()
             self._update_ui()
             return True
 
-        if key.code in (IBus.KEY_Return, IBus.KEY_KP_Enter):
+        if key.val in (IBus.KEY_Return, IBus.KEY_KP_Enter):
             if self._editor.is_empty() and not self._editor.get_preedit_string_complete():
                 # When IBus.KEY_Return is typed,
-                # IBus.keyval_to_unicode(key.code) returns a non-empty
+                # IBus.keyval_to_unicode(key.val) returns a non-empty
                 # string. But when IBus.KEY_KP_Enter is typed it
                 # returns an empty string. Therefore, when typing
                 # IBus.KEY_KP_Enter as leading input, the key is not
@@ -2205,7 +2206,7 @@ class tabengine (IBus.Engine):
                 self.commit_string(commit_string)
                 return True
 
-        if key.code in (IBus.KEY_Tab, IBus.KEY_KP_Tab) and self._auto_select:
+        if key.val in (IBus.KEY_Tab, IBus.KEY_KP_Tab) and self._auto_select:
             # Used for example for the Russian transliteration method
             # “translit”, which uses “auto select”. If for example
             # a file with the name “шшш” exists and one types in
@@ -2229,99 +2230,99 @@ class tabengine (IBus.Engine):
             self.commit_string(self._editor.get_preedit_string_complete())
             return False
 
-        if key.code in (IBus.KEY_Down, IBus.KEY_KP_Down) :
+        if key.val in (IBus.KEY_Down, IBus.KEY_KP_Down) :
             if not self._editor.get_preedit_string_complete():
                 return False
             res = self._editor.cursor_down()
             self._update_ui()
             return res
 
-        if key.code in (IBus.KEY_Up, IBus.KEY_KP_Up):
+        if key.val in (IBus.KEY_Up, IBus.KEY_KP_Up):
             if not self._editor.get_preedit_string_complete():
                 return False
             res = self._editor.cursor_up()
             self._update_ui()
             return res
 
-        if (key.code in (IBus.KEY_Left, IBus.KEY_KP_Left)
-            and key.mask & IBus.ModifierType.CONTROL_MASK):
+        if (key.val in (IBus.KEY_Left, IBus.KEY_KP_Left)
+            and key.state & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
                 return False
             self._editor.control_arrow_left()
             self._update_ui()
             return True
 
-        if (key.code in (IBus.KEY_Right, IBus.KEY_KP_Right)
-            and key.mask & IBus.ModifierType.CONTROL_MASK):
+        if (key.val in (IBus.KEY_Right, IBus.KEY_KP_Right)
+            and key.state & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
                 return False
             self._editor.control_arrow_right()
             self._update_ui()
             return True
 
-        if key.code in (IBus.KEY_Left, IBus.KEY_KP_Left):
+        if key.val in (IBus.KEY_Left, IBus.KEY_KP_Left):
             if not self._editor.get_preedit_string_complete():
                 return False
             self._editor.arrow_left()
             self._update_ui()
             return True
 
-        if key.code in (IBus.KEY_Right, IBus.KEY_KP_Right):
+        if key.val in (IBus.KEY_Right, IBus.KEY_KP_Right):
             if not self._editor.get_preedit_string_complete():
                 return False
             self._editor.arrow_right()
             self._update_ui()
             return True
 
-        if (key.code == IBus.KEY_BackSpace
-            and key.mask & IBus.ModifierType.CONTROL_MASK):
+        if (key.val == IBus.KEY_BackSpace
+            and key.state & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
                 return False
             self._editor.remove_preedit_before_cursor()
             self._update_ui()
             return True
 
-        if key.code == IBus.KEY_BackSpace:
+        if key.val == IBus.KEY_BackSpace:
             if not self._editor.get_preedit_string_complete():
                 return False
             self._editor.remove_char()
             self._update_ui()
             return True
 
-        if (key.code == IBus.KEY_Delete
-            and key.mask & IBus.ModifierType.CONTROL_MASK):
+        if (key.val == IBus.KEY_Delete
+            and key.state & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
                 return False
             self._editor.remove_preedit_after_cursor()
             self._update_ui()
             return True
 
-        if key.code == IBus.KEY_Delete:
+        if key.val == IBus.KEY_Delete:
             if not self._editor.get_preedit_string_complete():
                 return False
             self._editor.delete()
             self._update_ui()
             return True
 
-        if (key.code in self._editor.get_select_keys()
+        if (key.val in self._editor.get_select_keys()
             and self._editor._candidates
-            and key.mask & IBus.ModifierType.CONTROL_MASK):
-            res = self._editor.select_key(key.code)
+            and key.state & IBus.ModifierType.CONTROL_MASK):
+            res = self._editor.select_key(key.val)
             self._update_ui()
             return res
 
-        if (key.code in self._editor.get_select_keys()
+        if (key.val in self._editor.get_select_keys()
             and self._editor._candidates
-            and key.mask & IBus.ModifierType.MOD1_MASK):
-            res = self._editor.remove_candidate_from_user_database(key.code)
+            and key.state & IBus.ModifierType.MOD1_MASK):
+            res = self._editor.remove_candidate_from_user_database(key.val)
             self._update_ui()
             return res
 
         # now we ignore all other hotkeys
-        if key.mask & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
+        if key.state & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
             return False
 
-        if key.mask & IBus.ModifierType.MOD1_MASK:
+        if key.state & IBus.ModifierType.MOD1_MASK:
             return False
 
         # Section to handle valid input characters:
@@ -2419,24 +2420,24 @@ class tabengine (IBus.Engine):
                 self._update_ui()
                 return True
 
-        if key.code in self._commit_keys:
+        if key.val in self._commit_keys:
             if self.commit_everything_unless_invalid():
                 if self._editor._auto_select:
                     self.commit_string(u' ')
             return True
 
-        if key.code in self._page_down_keys and self._editor._candidates:
+        if key.val in self._page_down_keys and self._editor._candidates:
             res = self._editor.page_down()
             self._update_ui()
             return res
 
-        if key.code in self._page_up_keys and self._editor._candidates:
+        if key.val in self._page_up_keys and self._editor._candidates:
             res = self._editor.page_up()
             self._update_ui()
             return res
 
-        if key.code in self._editor.get_select_keys() and self._editor._candidates:
-            if self._editor.select_key(key.code): # commits to preëdit
+        if key.val in self._editor.get_select_keys() and self._editor._candidates:
+            if self._editor.select_key(key.val): # commits to preëdit
                 self.commit_string(self._editor.get_preedit_string_complete(),
                                    tabkeys=self._editor.get_preedit_tabkeys_complete())
             return True
@@ -2469,7 +2470,7 @@ class tabengine (IBus.Engine):
 
         # What kind of key was this??
         #
-        #     keychar = IBus.keyval_to_unicode(key.code)
+        #     keychar = IBus.keyval_to_unicode(key.val)
         #
         # returned no result. So whatever this was, we cannot handle it,
         # just pass it through to the application by returning “False”.

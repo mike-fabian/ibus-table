@@ -2174,6 +2174,7 @@ class tabengine (IBus.Engine):
                 else:
                     trans_char = self.cond_letter_translate(keychar)
                 if trans_char == keychar:
+                    self._prev_char = trans_char
                     return False
                 else:
                     self.commit_string(trans_char)

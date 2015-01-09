@@ -38,6 +38,7 @@ import version
 
 sys.path = [sys.path[0]+'/../engine'] + sys.path
 import tabsqlitedb
+import ibus_table_location
 
 _ = lambda a : gettext.dgettext("ibus-table", a)
 
@@ -69,17 +70,10 @@ ENTRY_WIDGETS = {
     "multiwildcardchar",
 }
 
-ibus_dir = os.getenv('IBUS_TABLE_LOCATION')
-ibus_lib_dir = os.getenv('IBUS_TABLE_LIB_LOCATION')
-
-if not ibus_dir or not os.path.exists(ibus_dir):
-    ibus_dir = "/usr/share/ibus-table/"
-if not ibus_lib_dir or not os.path.exists(ibus_lib_dir):
-    ibus_lib_dir = "/usr/libexec"
-
-db_dir = os.path.join (ibus_dir, 'tables')
-icon_dir = os.path.join (ibus_dir, 'icons')
-setup_cmd = os.path.join(ibus_lib_dir, "ibus-setup-table")
+db_dir = os.path.join (ibus_table_location.data(), 'tables')
+icon_dir = os.path.join (ibus_table_location.data(), 'icons')
+setup_cmd = os.path.join(ibus_table_location.lib(), "ibus-setup-table")
+logfile = os.path.join(ibus_table_location.cache_home(), 'setup-debug.log')
 
 opt = optparse.OptionParser()
 opt.set_usage ('%prog [options]')
@@ -88,14 +82,11 @@ opt.add_option('-n', '--engine-name',
         help = 'Set the name of the engine, for example "table:cangjie3". Default: "%default"')
 opt.add_option( '-q', '--no-debug',
         action = 'store_false', dest = 'debug', default = True,
-        help = 'redirect stdout and stderr to ~/.ibus/tables/setup-debug.log, default: %default')
+        help = 'redirect stdout and stderr to ' + logfile +', default: %default')
 
 (options, args) = opt.parse_args()
 
 if options.debug:
-    if not os.access ( os.path.expanduser('~/.ibus/tables/'), os.F_OK):
-        os.system ('mkdir -p ~/.ibus/tables')
-    logfile = os.path.expanduser('~/.ibus/tables/setup-debug.log')
     sys.stdout = open(logfile, mode='a', buffering=1)
     sys.stderr = open(logfile, mode='a', buffering=1)
     print('--- %s ---' %strftime('%Y-%m-%d: %H:%M:%S'))

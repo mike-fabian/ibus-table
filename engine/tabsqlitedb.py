@@ -28,10 +28,12 @@ if sys.version_info < (3,0,0):
     sys.setdefaultencoding('utf-8')
 import os
 import os.path as path
+import shutil
 import sqlite3
 import uuid
 import time
 import re
+import ibus_table_location
 import chinese_variants
 
 database_version = '1.00'
@@ -241,10 +243,17 @@ class tabsqlitedb:
             return
 
         if user_db != ":memory:":
-            home_path = os.getenv("HOME")
-            tables_path = path.join(home_path, ".ibus",  "tables")
+            tables_path = path.join(ibus_table_location.data_home(),  "tables")
             if not path.isdir(tables_path):
-                os.makedirs(tables_path)
+                old_tables_path = os.path.join(os.getenv('HOME'), '.ibus/tables')
+                if path.isdir(old_tables_path):
+                    os.unlink(os.path.join(old_tables_path, 'debug.log'))
+                    os.unlink(os.path.join(old_tables_path, 'setup-debug.log'))
+                    shutil.copytree(old_tables_path, tables_path)
+                    shutil.rmtree(old_tables_path)
+                    os.symlink(tables_path, old_tables_path)
+                else:
+                    os.makedirs(tables_path)
             user_db = path.join(tables_path, user_db)
             if not path.exists(user_db):
                 sys.stderr.write("The user database %(udb)s does not exist yet.\n" %{'udb': user_db})

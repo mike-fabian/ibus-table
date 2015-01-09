@@ -26,6 +26,7 @@ man_MANS = $(BUILT_MANS)
 
 engine_table_PYTHON = \
 	chinese_variants.py \
+	ibus_table_location.py \
 	factory.py \
 	main.py \
 	table.py \

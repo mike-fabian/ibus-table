@@ -32,25 +32,13 @@ from signal import signal, SIGTERM, SIGINT
 import factory
 import tabsqlitedb
 
+import ibus_table_location
 
-ibus_dir = os.getenv('IBUS_TABLE_LOCATION')
-ibus_lib_dir = os.getenv('IBUS_TABLE_LIB_LOCATION')
-if os.getenv('HOME'):
-    home_ibus_dir = os.path.join(os.getenv('HOME'), ".ibus")
-else:
-    home_ibus_dir = ''
-
-if not ibus_dir or not os.path.exists(ibus_dir):
-    ibus_dir = "/usr/share/ibus-table/"
-if not ibus_lib_dir or not os.path.exists(ibus_lib_dir):
-    ibus_lib_dir = "/usr/libexec"
-if not home_ibus_dir or not os.path.exists(home_ibus_dir):
-    home_ibus_dir = os.path.expanduser("~/.ibus")
-
-db_dir = os.path.join (ibus_dir, 'tables')
-byo_db_dir = os.path.join(home_ibus_dir, "byo-tables")
-icon_dir = os.path.join (ibus_dir, 'icons')
-setup_cmd = os.path.join(ibus_lib_dir, "ibus-setup-table")
+db_dir = os.path.join (ibus_table_location.data(), 'tables')
+byo_db_dir = os.path.join(ibus_table_location.data_home(), "byo-tables")
+icon_dir = os.path.join (ibus_table_location.data(), 'icons')
+setup_cmd = os.path.join(ibus_table_location.lib(), "ibus-setup-table")
+logfile = os.path.join(ibus_table_location.cache_home(), 'debug.log')
 
 opt = optparse.OptionParser()
 
@@ -69,7 +57,7 @@ opt.add_option('--xml', '-x',
         help = 'output the engines xml part, default: %default')
 opt.add_option('--no-debug', '-n',
         action = 'store_false',dest = 'debug',default = True,
-        help = 'redirect stdout and stderr to ~/.ibus/tables/debug.log, default: %default')
+        help = 'redirect stdout and stderr to ' + logfile + ', default: %default')
 opt.add_option('--profile', '-p',
         action = 'store_true', dest = 'profile', default = False,
         help = 'print profiling information into the debug log. Works only together with --debug.')
@@ -79,9 +67,6 @@ opt.add_option('--profile', '-p',
 #    opt.error('no db found!')
 
 if (not options.xml) and options.debug:
-    if not os.access ( os.path.expanduser('~/.ibus/tables'), os.F_OK):
-        os.system ('mkdir -p ~/.ibus/tables')
-    logfile = os.path.expanduser('~/.ibus/tables/debug.log')
     sys.stdout = open (logfile, mode='a', buffering=1)
     sys.stderr = open (logfile, mode='a', buffering=1)
     from time import strftime

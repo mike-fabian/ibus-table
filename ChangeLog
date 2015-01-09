@@ -1,4 +1,84 @@
-commit 2be3e0cf2d90945df906865673bed0906a9b5755
+commit ba71559647eebf083eeb1a2793e0a45bb8717b16
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jan 9 11:23:50 2015 +0100
+
+    Release v1.9.2
+
+commit 0370cb105b79adfab6e6f295c9a824ffc6f71055
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jan 9 12:05:55 2015 +0100
+
+    add “compile” to .gitignore
+
+commit a69f91fefe5de2959b14aa597b432e916d6eebd2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jan 9 08:17:00 2015 +0100
+
+    Use directories according to theXDG Base Directory Specification
+    
+    See: http://standards.freedesktop.org/basedir-spec/latest/index.html
+    
+    Resolves: rhbz#1172524 - ibus-table log could use xdg
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1172524
+
+commit 75b956b3e060e03b93f270898a6e596a2c1bdfe6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 1 10:16:00 2014 +0200
+
+    When a leading invalid character is passed through, it needs to be remembered in self._prev_char
+    
+    When a string is committed using commit_string(), commit_string()
+    remembers its last characters in self._prev_char. But when a invalid
+    leading character is passed through directly to the application by
+    returning False in the key event processing, that character needs to
+    be remembered as well in self._prev_char.
+    
+    For example, when halfwidth letter mode but fullwidth punctuation mode
+    is used, _convert_to_full_width() does not convert a “.”  to “。”
+    if the previous character was a halfwidth digit. Probably the purpose
+    of this hack is to make it easier to enter floating point number like
+    “3.141”. A digit like “3” is an invalid input character for most
+    Chinese tables and thus committed or passed through to the application
+    immediately.  If the next character typed is “.”,
+    _convert_to_full_width() checks whether the previous character was a
+    halfwidth digit and if yet prevents conversion of “.” to ”。” to
+    avoid getting “3。141”. Therefore, no matter whether a character
+    is committed or passed through, the last character inserted into
+    the application needs to be remembered.
+
+commit 930b539bbfdac14dbc715e7898063ec940e9e41a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 1 09:44:20 2014 +0200
+
+    Change class “KeyEvent” to store the keycode as well
+    
+    - add the keycode to the class “KeyEvent”:
+      I may need to access the keycode in tabengine._process_key_event()
+      to forward a key event to the application:
+    
+      void ibus_engine_forward_key_event (IBusEngine         *engine,
+                                          guint               keyval,
+                                          guint               keycode,
+                                          guint               state);
+    
+      if the object of the class “KeyEvent” passed to
+      tabengine._process_key_event(self, key) does not contain the
+      keycode anymore, I cannot properly forward a key event.
+    
+    - Fix the confusing naming of the member variables in the class
+      “KeyEvent”: it is easier to give the member variables names like
+      the parameters of the IBus API (Why self.code = keval?)
+
+commit aa1f1ee6d5cb76d660f9074e2c623be44956f062
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 30 17:32:28 2014 +0200
+
+    Remove useless “is_press” parameter in constructor of class KeyEvent
+    
+    Checking whether the IBus.ModifierType.RELEASE_MASK bit is set
+    in “state” and if yes, set it again is completely redundant.
+
+commit 71cd8d3ae7d417ff5077205183c976763b69c2cc
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Sep 30 14:15:10 2014 +0200
 

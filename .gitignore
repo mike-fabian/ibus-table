@@ -1,5 +1,6 @@
 /INSTALL
 /ABOUT-NLS
+compile
 Makefile
 Makefile.in
 /aclocal.m4

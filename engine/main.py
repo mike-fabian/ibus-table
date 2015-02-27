@@ -204,7 +204,12 @@ def main():
             _longname = SubElement (_engine, 'longname')
             _longname.text = ''
             # getdefaultlocale() returns something like ('ja_JP', 'UTF-8').
-            _locale = getdefaultlocale()[0].lower()
+            # In case of C/POSIX locale it returns (None, None)
+            _locale = getdefaultlocale()[0]
+            if _locale:
+                _locale = _locale.lower()
+            else:
+                _locale = 'en'
             _longname.text = _sq_db.ime_properties.get(
                 '.'.join(['name', _locale]))
             if not _longname.text:

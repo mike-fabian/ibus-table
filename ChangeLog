@@ -1,4 +1,19 @@
-commit ba71559647eebf083eeb1a2793e0a45bb8717b16
+commit 6afbad3bb13482e79045eec7a64799defc352b84
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Mar 2 06:46:52 2015 +0100
+
+    Release v1.9.3
+
+commit 4793b610944261c3484d624564cfd3790b3440e0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Feb 27 22:17:58 2015 +0100
+
+    Try to get the English name of the table if run in locale C/POSIX
+    
+    Resolves: rhbz#1197001 - [abrt] ibus-table: main.py:222:main:AttributeError: 'NoneType' object has no attribute 'lower'
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1197001
+
+commit cfd698f14c2cfccc88dd34abb303bdf2c1a9eb22
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Fri Jan 9 11:23:50 2015 +0100
 

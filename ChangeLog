@@ -1,4 +1,19 @@
-commit 6afbad3bb13482e79045eec7a64799defc352b84
+commit f593d0385a7c19d4311bc03b84434789296d67d1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Mar 7 19:15:51 2015 +0100
+
+    Release 1.9.4
+
+commit 65aff02f6c099b07931e83da7701fbcac9e8dabf
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Mar 7 19:13:19 2015 +0100
+
+    Check existence of old log files before trying to delete them
+    
+    Resolves: rhbz#1199673 - [abrt] ibus-table: factory.py:89:do_create_engine:Exception: Cannot create engine wubi-jidian86
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1199673
+
+commit d858a60a7651505f2d4443cdce1b352a2a209cd5
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Mar 2 06:46:52 2015 +0100
 

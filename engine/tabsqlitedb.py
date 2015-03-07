@@ -247,8 +247,10 @@ class tabsqlitedb:
             if not path.isdir(tables_path):
                 old_tables_path = os.path.join(os.getenv('HOME'), '.ibus/tables')
                 if path.isdir(old_tables_path):
-                    os.unlink(os.path.join(old_tables_path, 'debug.log'))
-                    os.unlink(os.path.join(old_tables_path, 'setup-debug.log'))
+                    if os.access(os.path.join(old_tables_path, 'debug.log'), os.F_OK):
+                        os.unlink(os.path.join(old_tables_path, 'debug.log'))
+                    if os.access(os.path.join(old_tables_path, 'setup-debug.log'), os.F_OK):
+                        os.unlink(os.path.join(old_tables_path, 'setup-debug.log'))
                     shutil.copytree(old_tables_path, tables_path)
                     shutil.rmtree(old_tables_path)
                     os.symlink(tables_path, old_tables_path)

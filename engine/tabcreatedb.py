@@ -135,7 +135,7 @@ def main ():
         patt_com = re.compile(r'^###.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_conf = re.compile(r'[^\t]*=[^\t]*')
-        patt_table = re.compile(r'([^\t]+)\t([^\t]+)\t([^t]+)(\t.*)?$')
+        patt_table = re.compile(r'([^\t]+)\t([^\t]+)\t([0-9]+)(\t.*)?$')
         patt_gouci = re.compile(r' *[^\s]+ *\t *[^\s]+ *$')
 
         for l in f:

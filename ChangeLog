@@ -1,4 +1,36 @@
-commit f593d0385a7c19d4311bc03b84434789296d67d1
+commit 6a576ebbd6370f758eeba501cb9e395329135f99
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 13 12:34:19 2015 +0200
+
+    Release v1.9.5
+
+commit 822ec75b57abd20cd7a004a10035e292882b36db
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 13 11:22:37 2015 +0200
+
+    Don’t strip space when parsing phrases from a source table
+    
+    In some cases, one might want to start a key with a space.
+    As the columns in the table are separated by tab, there is no
+    reason to strip a leading space from the first column.
+    
+    Suggestion by James Wood, needed for a table to write the Shwa script
+    (http://shwa.org/).
+    
+    Resolves: rhbz#1211208 - ibus-table-createdb should allow table keys to start with spaces
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1211208
+
+commit 6f11a71399dc5ff227c8ff35091c10095a72519c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 13 11:18:56 2015 +0200
+
+    Fix typo in regexp parsing table entries
+    
+    There was ([^t]) instead of ([^\t]) in the part of the regexp getting
+    the frequency. As the frequency is an integer and should contain only
+    digits, this did not cause problems. But it still is a typo.
+
+commit 64c831a643dc68ef1f523ae12deb9d7398b50773
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Sat Mar 7 19:15:51 2015 +0100
 

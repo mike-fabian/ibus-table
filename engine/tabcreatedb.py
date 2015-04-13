@@ -224,7 +224,7 @@ def main ():
         for l in f:
             if type(l) != type(u''):
                 l = l.decode('utf-8')
-            xingma, phrase, freq = l.strip().split('\t')[:3]
+            xingma, phrase, freq = l.split('\t')[:3]
             if phrase == 'NOSYMBOL':
                 phrase = u''
             list.append ( (xingma, phrase, int(freq), 0) )

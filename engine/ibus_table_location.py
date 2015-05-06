@@ -64,7 +64,7 @@ def _init():
     if not ibus_table_location['data_home'] or not os.path.exists(ibus_table_location['data_home']):
         ibus_table_location['data_home'] = os.getenv('XDG_DATA_HOME')
     if not ibus_table_location['data_home'] or not os.path.exists(ibus_table_location['data_home']):
-        ibus_table_location['data_home'] = os.path.join(os.getenv('HOME'), '.local/share')
+        ibus_table_location['data_home'] = os.path.expanduser('~/.local/share')
     ibus_table_location['data_home'] = os.path.join(ibus_table_location['data_home'], 'ibus-table')
     if not os.access(ibus_table_location['data_home'], os.F_OK):
         os.makedirs(ibus_table_location['data_home'])
@@ -77,7 +77,7 @@ def _init():
     if not ibus_table_location['cache_home'] or not os.path.exists(ibus_table_location['cache_home']):
         ibus_table_location['cache_home'] = os.getenv('XDG_CACHE_HOME')
     if not ibus_table_location['cache_home'] or not os.path.exists(ibus_table_location['cache_home']):
-       ibus_table_location['cache_home'] = os.path.join(os.getenv('HOME'), '.cache')
+        ibus_table_location['cache_home'] = os.path.expanduser('~/.cache')
     ibus_table_location['cache_home'] = os.path.join(ibus_table_location['cache_home'], 'ibus-table')
     if not os.access(ibus_table_location['cache_home'], os.F_OK):
         os.makedirs(ibus_table_location['cache_home'])

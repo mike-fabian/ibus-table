@@ -1,4 +1,34 @@
-commit 6a576ebbd6370f758eeba501cb9e395329135f99
+commit 346f10567051baac74e0c4396be6cc0a0142cd59
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 6 08:38:41 2015 +0200
+
+    Release v1.9.6
+
+commit 877e6059ceeb667d0a754c7acbcf630c49bbe2e3
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 6 08:26:20 2015 +0200
+
+    Use os.path.expanduser('~') instead of os.getenv('HOME')
+    
+    Resolves: rhbz#1218023 - [abrt] ibus-table: posixpath.py:83:join:TypeError: unsupported operand type(s) for +=: 'NoneType' and 'str'
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1218023
+    
+    The Python documentation says:
+    
+     os.path.expanduser(path)
+    
+        On Unix and Windows, return the argument with an initial component
+        of ~ or ~user replaced by that user‘s home directory.
+    
+        On Unix, an initial ~ is replaced by the environment variable HOME
+        if it is set; otherwise the current user’s home directory is
+        looked up in the password directory through the built-in module
+        pwd. An initial ~user is looked up directly in the password
+        directory.
+    
+    This helps if HOME is not set.
+
+commit 90a2a74c4a61ba9f3a9e43c69c1c0b593a2f1b63
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Apr 13 12:34:19 2015 +0200
 

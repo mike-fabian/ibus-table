@@ -269,7 +269,8 @@ test_data = {
     u'a☺α乌': 1,
     u'a☺α烏': 2,
     u'台': 3,
-    u'同': 3, # Bug in Unihan_Variants.txt? Unihan_Variants.txt says  this is “simplified Chinese only”
+    u'同': 3,
+    u'覆': 3, # Bug in Unihan_Variants.txt? Unihan_Variants.txt says  this is “traditional Chinese only”
     }
 
 def test_detection(generated_script):

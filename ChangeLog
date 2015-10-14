@@ -1,4 +1,75 @@
-commit 346f10567051baac74e0c4396be6cc0a0142cd59
+commit 92e18b959280c5f074c9f73591aef1ff08a9c275
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 14 16:43:02 2015 +0200
+
+    Release v1.9.7
+
+commit 39ac7575759f2bfe5ff8d2f1a67750eb0518e822
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 14 08:43:20 2015 +0200
+
+    Fix some pylint warnings
+
+commit 372dbc04791770f1ca7b0e5504b03ee4423b23d2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 14 08:31:44 2015 +0200
+
+    When matching hotkeys, ignore all modifiers not requested in the match
+    
+    Hotkeys didn’t work when capslock was on. Now we ignore not only
+    NumLock/MOD2 but all modifiers which are not requested to match in
+    _match_hotkey().
+
+commit 22bbda0584bca5049657e5b66e0423f016ea22d1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 14 08:26:39 2015 +0200
+
+    Fix 覆 U+8986 in Unihan_variants.txt, it is both simplified *and* traditional Chinese
+    
+    Resolves: rhbz#1271036
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1271036#c3
+
+commit 0d5cdac37d244a879c090e3586ff264ddd714f23
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 14 07:58:18 2015 +0200
+
+    Update Unihan_Variants.txt from “2014-05-09 Unicode 7.0.0” to “2015-04-30 Unicode 8.0.0”
+    
+    And regenerate engine/chinese_variants.py.
+    
+    New lines in Unihan_Variants.txt which are relevant for simplified and
+    traditional detection:
+    
+    > U+4CA4	kTraditionalVariant	U+9FD0
+    
+    U+4CA4 = 䲤 U+9FD0 = 鿐
+    
+    > U+540C	kSimplifiedVariant	U+540C
+    
+    U+540C = 同
+    
+    > U+93B6	kSimplifiedVariant	U+9FD4
+    
+    U+93B6 = 鎶 U+9FD4 = 鿔
+    
+    > U+9FCF	kTraditionalVariant	U+4951
+    
+    U+9FCF = 鿏 U+4951 = 䥑
+    
+    > U+9FD0	kSimplifiedVariant	U+4CA4
+    
+    U+9FD0 = 鿐 U+4CA4 = 䲤
+    
+    > U+9FD2	kSimplifiedVariant	U+9FD3
+    > U+9FD3	kTraditionalVariant	U+9FD2
+    
+    U+9FD2 = 鿒 U+9FD3 鿓
+    
+    > U+9FD4	kTraditionalVariant	U+93B6
+    
+    U+9FD4 = 鿔 U+93B6 = 鎶
+
+commit bd8e1206afb60f74a7df4bcaf02dd2738cc2d20c
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed May 6 08:38:41 2015 +0200
 

@@ -2013,7 +2013,7 @@ class tabengine (IBus.Engine):
 
     def _match_hotkey (self, key, keyval, state):
 
-        if key.val == keyval and key.state == state:
+        if key.val == keyval and (key.state & state ) == state:
             if self._prev_key and key.val == self._prev_key.val and key.state & IBus.ModifierType.RELEASE_MASK:
                 return True
             if not key.state & IBus.ModifierType.RELEASE_MASK:
@@ -2037,8 +2037,6 @@ class tabengine (IBus.Engine):
             return False
 
         key = KeyEvent(keyval, keycode, state)
-        # ignore NumLock mask
-        key.state &= ~IBus.ModifierType.MOD2_MASK
 
         result = self._process_key_event (key)
         self._prev_key = key

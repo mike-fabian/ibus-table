@@ -43,24 +43,40 @@ logfile = os.path.join(ibus_table_location.cache_home(), 'debug.log')
 opt = optparse.OptionParser()
 
 opt.set_usage ('%prog --table a_table.db')
-opt.add_option('--table', '-t',
-        action = 'store',type = 'string',dest = 'db',default = '',
-        help = 'Set the IME table file, default: %default')
-opt.add_option('--daemon','-d',
-        action = 'store_true',dest = 'daemon',default=False,
-        help = 'Run as daemon, default: %default')
-opt.add_option('--ibus', '-i',
-        action = 'store_true',dest = 'ibus',default = False,
-        help = 'Set the IME icon file, default: %default')
-opt.add_option('--xml', '-x',
-        action = 'store_true',dest = 'xml',default = False,
-        help = 'output the engines xml part, default: %default')
-opt.add_option('--no-debug', '-n',
-        action = 'store_false',dest = 'debug',default = True,
-        help = 'redirect stdout and stderr to ' + logfile + ', default: %default')
-opt.add_option('--profile', '-p',
-        action = 'store_true', dest = 'profile', default = False,
-        help = 'print profiling information into the debug log. Works only together with --debug.')
+opt.add_option(
+    '--table', '-t',
+    action = 'store',
+    type = 'string',
+    dest = 'db',
+    default = '',
+    help = 'Set the IME table file, default: %default')
+opt.add_option(
+    '--daemon', '-d',
+    action = 'store_true',
+    dest = 'daemon',
+    default=False,
+    help = 'Run as daemon, default: %default')
+opt.add_option(
+    '--ibus', '-i',
+    action = 'store_true',
+    dest = 'ibus',
+    default = False,
+    help = 'Set the IME icon file, default: %default')
+opt.add_option(
+    '--xml', '-x',
+    action = 'store_true',
+    dest = 'xml',
+    default = False,
+    help = 'output the engines xml part, default: %default')
+opt.add_option(
+    '--no-debug', '-n',
+    action = 'store_false', dest = 'debug',default = True,
+    help = 'redirect stdout and stderr to ' + logfile + ', default: %default')
+opt.add_option(
+    '--profile', '-p',
+    action = 'store_true', dest = 'profile', default = False,
+    help = ('print profiling information into the debug log. '
+            +'Works only together with --debug.'))
 
 (options, args) = opt.parse_args()
 #if not options.db:
@@ -86,20 +102,22 @@ class IMApp:
         if exec_by_ibus:
             self.__bus.request_name("org.freedesktop.IBus.Table", 0)
         else:
-            self.__component = IBus.Component(name="org.freedesktop.IBus.Table",
-                                              description="Table Component",
-                                              version="0.1.0",
-                                              license="GPL",
-                                              author="Yuwei Yu <acevery@gmail.com>",
-                                              homepage="http://code.google.com/p/ibus/",
-                                              textdomain="ibus-table")
+            self.__component = IBus.Component(
+                name='org.freedesktop.IBus.Table',
+                description='Table Component',
+                version='0.1.0',
+                license='GPL',
+                author='Yuwei Yu <acevery@gmail.com>',
+                homepage='http://code.google.com/p/ibus/',
+                textdomain='ibus-table')
             # now we get IME info from self.__factory.db
-            engine_name = os.path.basename(self.__factory.db.filename).replace('.db', '')
+            engine_name = os.path.basename(
+                self.__factory.db.filename).replace('.db', '')
             name = 'table:'+engine_name
             longname = self.__factory.db.ime_properties.get("name")
             description = self.__factory.db.ime_properties.get("description")
             language = self.__factory.db.ime_properties.get("languages")
-            license = self.__factory.db.ime_properties.get("credit")
+            credit = self.__factory.db.ime_properties.get("credit")
             author = self.__factory.db.ime_properties.get("author")
             icon = self.__factory.db.ime_properties.get("icon")
             if icon:
@@ -113,7 +131,7 @@ class IMApp:
                                         longname=longname,
                                         description=description,
                                         language=language,
-                                        license=license,
+                                        license=credit,
                                         author=author,
                                         icon=icon,
                                         layout=layout,
@@ -257,21 +275,21 @@ def main():
         indent (egs)
         egsout = tostring (egs, encoding='utf8').decode('utf-8')
         patt = re.compile (r'<\?.*\?>\n')
-        egsout = patt.sub ('',egsout)
+        egsout = patt.sub ('', egsout)
         sys.stdout.buffer.write((egsout+'\n').encode('utf-8'))
         return 0
 
     if options.daemon :
         if os.fork():
-                sys.exit()
+            sys.exit()
     if options.db:
         if os.access( options.db, os.F_OK):
             db = options.db
         else:
-            db = '%s%s%s' % (db_dir,os.path.sep, os.path.basename(options.db) )
+            db = '%s%s%s' % (db_dir, os.path.sep, os.path.basename(options.db))
     else:
-        db=""
-    ima=IMApp(db, options.ibus)
+        db = ""
+    ima = IMApp(db, options.ibus)
     signal (SIGTERM, lambda signum, stack_frame: cleanup(ima))
     signal (SIGINT, lambda signum, stack_frame: cleanup(ima))
     try:

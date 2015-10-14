@@ -19,7 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-if sys.version_info < (3,0,0):
+if sys.version_info < (3, 0, 0):
     reload (sys)
     sys.setdefaultencoding('utf-8')
 
@@ -6105,7 +6105,7 @@ def detect_chinese_category(phrase):
         # the complete phrase is in variants_table, just return the
         # value found:
         return variants_table[phrase]
-    category = 0xFF;
+    category = 0xFF
     for c in phrase:
         if c in variants_table:
             category &= variants_table[c]

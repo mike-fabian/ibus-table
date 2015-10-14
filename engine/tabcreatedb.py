@@ -59,45 +59,88 @@ class InvalidTableName(Exception):
         self.table_name = name
 
     def __str__(self):
-        return 'Value of NAME attribute (%s) cannot contain any of %r and must be all ascii' % (self.table_name, _invalid_keyname_chars)
+        return ('Value of NAME attribute (%s) ' % self.table_name
+                + 'cannot contain any of %r ' % _invalid_keyname_chars
+                + 'and must be all ascii')
 
 # we use OptionParser to parse the cmd arguments :)
 usage = "usage: %prog [options]"
 opt_parser = OptionParser(usage=usage)
 
-opt_parser.add_option( '-n', '--name',
-        action = 'store', dest='name',default = '',
-        help = "specifies the file name for the binary database for the IME. The default is '%default'. If the file name of the database is not specified, the file name of the source file before the first '.' will be appended with '.db' and that will be used as the file name of the database.")
+opt_parser.add_option(
+    '-n', '--name',
+    action = 'store',
+    dest='name',
+    default = '',
+    help = (
+        'specifies the file name for the binary database for the IME. '
+        + 'The default is "%default". If the file name of the database '
+        + 'is not specified, the file name of the source file before '
+        + 'the first "." will be appended with ".db" and that will be '
+        + 'used as the file name of the database.'))
 
-opt_parser.add_option( '-s', '--source',
-        action = 'store', dest='source', default = '',
-        help = "specifies the file which contains the source of the IME.  The default is '%default'.")
+opt_parser.add_option(
+    '-s', '--source',
+    action = 'store',
+    dest='source',
+    default = '',
+    help = (
+        'specifies the file which contains the source of the IME. '
+        + 'The default is "%default".'))
 
-opt_parser.add_option( '-e', '--extra',
-        action = 'store', dest='extra', default = '',
-        help = "specifies the file name for the extra words for the IME.  The default is '%default'.")
+opt_parser.add_option(
+    '-e', '--extra',
+    action = 'store',
+    dest='extra',
+    default = '',
+    help = (
+        'specifies the file name for the extra words for the IME. '
+        + 'The default is "%default".'))
 
-opt_parser.add_option( '-p', '--pinyin',
-        action = 'store', dest='pinyin', default = '/usr/share/ibus-table/data/pinyin_table.txt.bz2',
-        help = "specifies the source file for the  pinyin.  The default is '%default'.")
+opt_parser.add_option(
+    '-p', '--pinyin',
+    action = 'store',
+    dest='pinyin',
+    default = '/usr/share/ibus-table/data/pinyin_table.txt.bz2',
+    help = (
+        'specifies the source file for the  pinyin. '
+        + 'The default is "%default".'))
 
-opt_parser.add_option( '-o', '--no-create-index',
-        action = 'store_false', dest='index', default = True,
-        help = 'Do not create an index for a database (Only for distrubution purposes, a normal user should not use this flag!)')
+opt_parser.add_option(
+    '-o', '--no-create-index',
+    action = 'store_false',
+    dest='index',
+    default = True,
+    help = (
+        'Do not create an index for a database '
+        + '(Only for distrubution purposes, '
+        + 'a normal user should not use this flag!)'))
 
-opt_parser.add_option( '-i', '--create-index-only',
-        action = 'store_true', dest='only_index', default = False,
-        help = 'Only create an index for an existing database. Specifying the file name of the binary database with the -n or --name option is required when this option is used.')
+opt_parser.add_option(
+    '-i', '--create-index-only',
+    action = 'store_true',
+    dest='only_index',
+    default = False,
+    help = (
+        'Only create an index for an existing database. '
+        + 'Specifying the file name of the binary database '
+        + 'with the -n or --name option is required '
+        + 'when this option is used.'))
 
-opt_parser.add_option( '-d', '--debug',
-        action = 'store_true', dest='debug', default = False,
-        help = 'Print extra debug messages.')
+opt_parser.add_option(
+    '-d', '--debug',
+    action = 'store_true',
+    dest='debug',
+    default = False,
+    help = 'Print extra debug messages.')
 
-opts,args = opt_parser.parse_args()
+opts, args = opt_parser.parse_args()
 if opts.only_index:
     if not opts.name:
         opt_parser.print_help()
-        print('\nPlease specify the file name of the database you want to create an index on!')
+        print(
+            '\nPlease specify the file name of the database '
+            + 'you want to create an index on!')
         sys.exit(2)
     if not os.path.exists(opts.name) or not os.path.isfile(opts.name):
         opt_parser.print_help()
@@ -109,7 +152,9 @@ if not opts.name and opts.source:
 
 if not opts.name:
     opt_parser.print_help()
-    print('\nYou need to specify the file which contains the source of the IME!')
+    print(
+        '\nYou need to specify the file which '
+        + 'contains the source of the IME!')
     sys.exit(2)
 
 def main ():
@@ -139,8 +184,11 @@ def main ():
         patt_gouci = re.compile(r' *[^\s]+ *\t *[^\s]+ *$')
 
         for l in f:
-            if ( not patt_com.match(l) ) and ( not patt_blank.match(l) ):
-                for _patt, _list in ( (patt_table,_table),(patt_gouci,_gouci),(patt_conf,_attri) ):
+            if (not patt_com.match(l)) and (not patt_blank.match(l)):
+                for _patt, _list in (
+                        (patt_table, _table),
+                        (patt_gouci, _gouci),
+                        (patt_conf, _attri)):
                     if _patt.match(l):
                         _list.append(l)
                         break
@@ -175,7 +223,7 @@ def main ():
                     else:
                         gouci_dict[res.group(2)] = res.group(1)
             for key in gouci_dict:
-                _gouci.append('%s\t%s' %(key,gouci_dict[key] ) )
+                _gouci.append('%s\t%s' %(key, gouci_dict[key]))
             _gouci.sort()
 
         return (_attri, _table, _gouci)
@@ -220,21 +268,21 @@ def main ():
             yield (_pinyin, _zi, _freq)
 
     def phrase_parser (f):
-        list=[]
+        phrase_list = []
         for l in f:
             if type(l) != type(u''):
                 l = l.decode('utf-8')
             xingma, phrase, freq = l.split('\t')[:3]
             if phrase == 'NOSYMBOL':
                 phrase = u''
-            list.append ( (xingma, phrase, int(freq), 0) )
-        return list
+            phrase_list.append((xingma, phrase, int(freq), 0))
+        return phrase_list
 
     def goucima_parser (f):
         for l in f:
             if type(l) != type(u''):
                 l = l.decode('utf-8')
-            zi,gcm = l.strip().split()
+            zi, gcm = l.strip().split()
             yield (zi, gcm)
 
     def attribute_parser (f):
@@ -242,25 +290,25 @@ def main ():
             if type(l) != type(u''):
                 l = l.decode('utf-8')
             try:
-                attr,val = l.strip().split('=')
+                attr, val = l.strip().split('=')
             except:
-                attr,val = l.strip().split('==')
+                attr, val = l.strip().split('==')
             attr = attr.strip().lower()
             val = val.strip()
-            yield (attr,val)
+            yield (attr, val)
 
     def extra_parser (f):
-        list = []
+        extra_list = []
         for l in f:
             if type(l) != type(u''):
                 l = l.decode('utf-8')
             phrase, freq = l.strip().split ()
             _tabkey = db.parse_phrase(phrase)
             if _tabkey:
-                list.append((_tabkey,phrase,freq,0))
+                extra_list.append((_tabkey, phrase, freq, 0))
             else:
                 print('No tabkeys found for “%s”, not adding.\n' %phrase)
-        return list
+        return extra_list
 
     def get_char_prompts(f):
         '''
@@ -310,7 +358,7 @@ def main ():
     source = source.split('\n')
     # first get config line and table line and goucima line respectively
     debug_print ('\tParsing table source file ')
-    attri,table,gouci =  parse_source ( source )
+    attri, table, gouci =  parse_source(source)
 
     debug_print('\t  get attribute of IME :)')
     attributes = list(attribute_parser(attri))
@@ -350,7 +398,8 @@ def main ():
     debug_print ("Optimizing database ")
     db.optimize_database ()
 
-    if db.ime_properties.get('user_can_define_phrase').lower() == u'true' and opts.extra:
+    if (db.ime_properties.get('user_can_define_phrase').lower() == u'true'
+        and opts.extra):
         debug_print( '\tPreparing for adding extra words' )
         db.create_indexes ('main')
         debug_print ('\tLoad extra words source \"%s\"' % opts.extra)
@@ -368,28 +417,31 @@ def main ():
         # phrases-[(xingma, phrase, int(freq), 0)]
         orig_phrases = {}
         for x in phrases:
-            orig_phrases.update({"%s\t%s"%(x[0],x[1]):x})
-        debug_print( '\t  the len of orig_phrases is: %d' % len(orig_phrases) )
+            orig_phrases.update({"%s\t%s" % (x[0], x[1]):x})
+        debug_print('\t  the len of orig_phrases is: %d' % len(orig_phrases))
         extra_phrases = {}
         for x in extrawds:
-            extra_phrases.update({"%s\t%s" %(x[0],x[1]):x})
-        debug_print ( '\t  the len of extra_phrases is: %d' % len(extra_phrases) )
+            extra_phrases.update({"%s\t%s" % (x[0], x[1]):x})
+        debug_print('\t  the len of extra_phrases is: %d' % len(extra_phrases))
         # pop duplicated keys
         for x in extra_phrases:
             if x in orig_phrases:
                 extra_phrases.pop(x)
-        debug_print( '\t  %d extra phrases will be added' % len(extra_phrases))
+        debug_print('\t  %d extra phrases will be added' % len(extra_phrases))
         new_phrases = list(extra_phrases.values())
-        debug_print ('\tAdding extra words into DB ')
+        debug_print('\tAdding extra words into DB ')
         db.add_phrases (new_phrases)
-        debug_print ("Optimizing database ")
+        debug_print('Optimizing database ')
         db.optimize_database ()
 
     if opts.index:
         debug_print ('Create Indexes ')
         db.create_indexes ('main')
     else:
-        debug_print ("We don't create index on database, you should only active this function only for distribution purpose")
+        debug_print(
+            "We don't create an index on the database, "
+            + "you should only activate this function "
+            + "for distribution purposes.")
         db.drop_indexes ('main')
     debug_print ('Done! :D')
 

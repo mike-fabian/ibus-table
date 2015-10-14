@@ -49,9 +49,10 @@ class EngineFactory (IBus.Factory):
 
         # init factory
         self.bus = bus
-        super(EngineFactory,self).__init__ (connection=bus.get_connection(),
+        super(EngineFactory, self).__init__(connection=bus.get_connection(),
                                             object_path=IBus.PATH_FACTORY)
-        self.engine_id=0
+        self.engine_id = 0
+        self.engine_path = ''
 
     def do_create_engine(self, engine_name):
         engine_name = re.sub(r'^table:', '', engine_name)
@@ -63,22 +64,26 @@ class EngineFactory (IBus.Factory):
                 # first check self.dbdict
                 if not engine_name in self.dbdict:
                     try:
-                        db_dir = os.path.join (os.getenv('IBUS_TABLE_LOCATION'),'tables')
+                        db_dir = os.path.join(
+                            os.getenv('IBUS_TABLE_LOCATION'),'tables')
                     except:
                         db_dir = "/usr/share/ibus-table/tables"
                     db = os.path.join (db_dir, engine_name+'.db')
                     udb = engine_name+'-user.db'
                     if not os.path.exists(db):
-                        byo_db_dir = os.path.join(os.getenv('HOME'), '.ibus/byo-tables')
+                        byo_db_dir = os.path.join(
+                            os.getenv('HOME'), '.ibus/byo-tables')
                         db = os.path.join(byo_db_dir, engine_name + '.db')
-                    _sq_db = tabsqlitedb.tabsqlitedb(filename = db, user_db = udb)
+                    _sq_db = tabsqlitedb.tabsqlitedb(
+                        filename = db, user_db = udb)
                     _sq_db.db.commit()
                     self.dbdict[engine_name] = _sq_db
             else:
                 name = self.dbusname
 
-            engine = table.tabengine(self.bus, self.engine_path \
-                    + str(self.engine_id), self.dbdict[engine_name])
+            engine = table.tabengine(self.bus,
+                                     self.engine_path + str(self.engine_id),
+                                     self.dbdict[engine_name])
             self.engine_id += 1
             #return engine.get_dbus_object()
             return engine
@@ -95,6 +100,6 @@ class EngineFactory (IBus.Factory):
         for _db in self.dbdict:
             self.dbdict[_db].sync_usrdb ()
         ##print "Have synced user db\n"
-        super(EngineFactory,self).destroy()
+        super(EngineFactory, self).destroy()
 
 

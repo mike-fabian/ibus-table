@@ -35,7 +35,6 @@ from gi.repository import GLib
 import re
 from gi.repository import GObject
 import time
-import chinese_variants
 
 debug_level = int(0)
 
@@ -103,7 +102,10 @@ def variant_to_value(variant):
     return variant
 
 def argb(a, r, g, b):
-    return ((a & 0xff)<<24) + ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff)
+    return (((a & 0xff)<<24)
+            + ((r & 0xff) << 16)
+            + ((g & 0xff) << 8)
+            + (b & 0xff))
 
 def rgb(r, g, b):
     return argb(255, r, g, b)
@@ -175,7 +177,7 @@ def unichar_half_to_full(c):
     code = ord(c)
     for half, full, size in __half_full_table:
         if code >= half and code < half + size:
-            if sys.version_info >= (3,0,0):
+            if sys.version_info >= (3, 0, 0):
                 return chr(full + code - half)
             else:
                 return unichr(full + code - half)
@@ -185,7 +187,7 @@ def unichar_full_to_half(c):
     code = ord(c)
     for half, full, size in __half_full_table:
         if code >= full and code < full + size:
-            if sys.version_info >= (3,0,0):
+            if sys.version_info >= (3, 0, 0):
                 return chr(half + code - full)
             else:
                 return unichr(half + code - full)
@@ -205,11 +207,14 @@ class KeyEvent:
 
 class editor(object):
     '''Hold user inputs chars and preedit string'''
-    def __init__ (self, config, valid_input_chars, pinyin_valid_input_chars, single_wildcard_char, multi_wildcard_char, auto_wildcard, full_width_letter, full_width_punct, max_key_length, database):
+    def __init__ (self, config, valid_input_chars, pinyin_valid_input_chars,
+                  single_wildcard_char, multi_wildcard_char,
+                  auto_wildcard, full_width_letter, full_width_punct,
+                  max_key_length, database):
         self.db = database
         self._config = config
         engine_name = os.path.basename(self.db.filename).replace('.db', '')
-        self._config_section = "engine/Table/%s" %engine_name.replace(' ','_')
+        self._config_section = "engine/Table/%s" % engine_name.replace(' ','_')
         self._max_key_length = int(max_key_length)
         self._max_key_length_pinyin = 7
         self._valid_input_chars = valid_input_chars
@@ -220,7 +225,8 @@ class editor(object):
         self._full_width_letter = full_width_letter
         self._full_width_punct = full_width_punct
         #
-        # The values below will be reset in self.clear_input_not_committed_to_preedit()
+        # The values below will be reset in
+        # self.clear_input_not_committed_to_preedit()
         self._chars_valid = u''    # valid user input in table mode
         self._chars_invalid = u''  # invalid user input in table mode
         self._chars_valid_update_candidates_last = u''
@@ -265,7 +271,8 @@ class editor(object):
         # committed to preëdit but not yet “really” committed.
         self._cursor_precommit = 0
 
-        self._prompt_characters = eval(self.db.ime_properties.get('char_prompts'))
+        self._prompt_characters = eval(
+            self.db.ime_properties.get('char_prompts'))
 
         select_keys_csv = variant_to_value(self._config.get_value(
             self._config_section,
@@ -321,11 +328,15 @@ class editor(object):
                 "AutoSelect"))
         if self._auto_select == None:
             if self.db.ime_properties.get('auto_select') != None:
-                self._auto_select = self.db.ime_properties.get('auto_select').lower() == u'true'
+                self._auto_select = self.db.ime_properties.get(
+                    'auto_select').lower() == u'true'
             else:
                 self._auto_select = False
 
-    def get_new_lookup_table(self, page_size=10, select_keys=[49, 50, 51, 52, 53, 54, 55, 56, 57, 48], orientation=True):
+    def get_new_lookup_table(
+            self, page_size=10,
+            select_keys=[49, 50, 51, 52, 53, 54, 55, 56, 57, 48],
+            orientation=True):
         '''
         [49, 50, 51, 52, 53, 54, 55, 56, 57, 48] are the key codes
         for the characters ['1', '2', '3', '4', '5', '6', '7', '8', '0']
@@ -355,7 +366,9 @@ class editor(object):
         return self._select_keys
 
     def get_chinese_mode (self):
-        '''Use db value or LC_CTYPE in your box to determine the _chinese_mode'''
+        '''
+        Use db value or LC_CTYPE in your box to determine the _chinese_mode
+        '''
         # use db value, if applicable
         __db_chinese_mode = self.db.get_chinese_mode()
         if __db_chinese_mode >= 0:
@@ -415,7 +428,7 @@ class editor(object):
         self._candidates = []
         self._candidates_previous = []
 
-    def add_input(self,c):
+    def add_input(self, c):
         '''
         Add input character and update candidates.
 
@@ -423,9 +436,15 @@ class editor(object):
         '''
         if (self._chars_invalid
             or (not self._py_mode
-                and (c not in self._valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char))
+                and (c not in
+                     self._valid_input_chars
+                     + self._single_wildcard_char
+                     + self._multi_wildcard_char))
             or (self._py_mode
-                and (c not in self._pinyin_valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char))):
+                and (c not in
+                     self._pinyin_valid_input_chars
+                     + self._single_wildcard_char
+                     + self._multi_wildcard_char))):
             self._chars_invalid += c
         else:
             self._chars_valid += c
@@ -434,7 +453,7 @@ class editor(object):
 
     def pop_input(self):
         '''remove and display last input char held'''
-        _c =''
+        _c = ''
         if self._chars_invalid:
             _c = self._chars_invalid[-1]
             self._chars_invalid = self._chars_invalid[:-1]
@@ -442,7 +461,8 @@ class editor(object):
             _c = self._chars_valid[-1]
             self._chars_valid = self._chars_valid[:-1]
             if (not self._chars_valid) and self._u_chars:
-                self._chars_valid = self._u_chars.pop(self._cursor_precommit - 1)
+                self._chars_valid = self._u_chars.pop(
+                    self._cursor_precommit - 1)
                 self._strings.pop(self._cursor_precommit - 1)
                 self._cursor_precommit -= 1
         self.update_candidates ()
@@ -548,16 +568,22 @@ class editor(object):
         if self.get_input_chars():
             current_edit = self.get_input_chars()
         if self._u_chars:
-            left_of_current_edit = tuple(self._u_chars[:self._cursor_precommit])
-            right_of_current_edit = tuple(self._u_chars[self._cursor_precommit:])
+            left_of_current_edit = tuple(
+                self._u_chars[:self._cursor_precommit])
+            right_of_current_edit = tuple(
+                self._u_chars[self._cursor_precommit:])
         return (left_of_current_edit, current_edit, right_of_current_edit)
 
     def get_preedit_tabkeys_complete(self):
-        '''Returns the tabkeys which belong to the parts of the preëdit string as a single string'''
+        '''Returns the tabkeys which belong to the parts of the preëdit
+        string as a single string
+        '''
         (left_tabkeys,
          current_tabkeys,
          right_tabkeys) = self.get_preedit_tabkeys_parts()
-        return  u''.join(left_tabkeys) + current_tabkeys + u''.join(right_tabkeys)
+        return  (u''.join(left_tabkeys)
+                 + current_tabkeys
+                 + u''.join(right_tabkeys))
 
     def get_preedit_string_parts(self):
         '''Returns the phrases which are parts of the preëdit string.
@@ -587,14 +613,19 @@ class editor(object):
             current_edit = self._candidates[
                 int(self._lookup_table.get_cursor_pos())][1]
         elif self.get_input_chars():
-                current_edit = self.get_input_chars()
+            current_edit = self.get_input_chars()
         if self._strings:
-            left_of_current_edit = tuple(self._strings[:self._cursor_precommit])
-            right_of_current_edit = tuple(self._strings[self._cursor_precommit:])
+            left_of_current_edit = tuple(
+                self._strings[:self._cursor_precommit])
+            right_of_current_edit = tuple(
+                self._strings[self._cursor_precommit:])
         return (left_of_current_edit, current_edit, right_of_current_edit)
 
     def get_preedit_string_complete(self):
-        '''Returns the phrases which are parts of the preëdit string as a single string'''
+        '''Returns the phrases which are parts of the preëdit string as a
+        single string
+
+        '''
         (left_strings,
          current_string,
          right_strings) = self.get_preedit_string_parts()
@@ -626,7 +657,8 @@ class editor(object):
         if len(self._strings[self._cursor_precommit-1]) <= 1:
             self._cursor_precommit -= 1
         else:
-            self.split_strings_committed_to_preedit(self._cursor_precommit-1, -1)
+            self.split_strings_committed_to_preedit(
+                self._cursor_precommit-1, -1)
         self.update_candidates()
 
     def arrow_right(self):
@@ -666,7 +698,8 @@ class editor(object):
         self._cursor_precommit = len(self._strings)
         self.update_candidates ()
 
-    def append_candidate_to_lookup_table(self, tabkeys=u'', phrase=u'', freq=0, user_freq=0):
+    def append_candidate_to_lookup_table(
+            self, tabkeys=u'', phrase=u'', freq=0, user_freq=0):
         '''append candidate to lookup_table'''
         if not tabkeys or not phrase:
             return
@@ -692,7 +725,12 @@ class editor(object):
             remaining_tabkeys = tabkeys
         if self.db._is_chinese and self._py_mode:
             # restore tune symbol
-            remaining_tabkeys = remaining_tabkeys.replace('!','↑1').replace('@','↑2').replace('#','↑3').replace('$','↑4').replace('%','↑5')
+            remaining_tabkeys = remaining_tabkeys.replace(
+                '!','↑1').replace(
+                    '@','↑2').replace(
+                        '#','↑3').replace(
+                            '$','↑4').replace(
+                                '%','↑5')
         if not self._py_mode:
             remaining_tabkeys_new = u''
             for char in remaining_tabkeys:
@@ -707,18 +745,23 @@ class editor(object):
             rgb(0x19,0x73,0xa2), 0, len(candidate_text)))
         if not self._py_mode and freq < 0:
             # this is a user defined phrase:
-            attrs.append(IBus.attr_foreground_new(rgb(0x77,0x00,0xc3), 0, len(phrase)))
+            attrs.append(
+                IBus.attr_foreground_new(rgb(0x77,0x00,0xc3), 0, len(phrase)))
         elif not self._py_mode and user_freq > 0:
             # this is a system phrase which has already been used by the user:
-            attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(phrase)))
+            attrs.append(IBus.attr_foreground_new(
+                rgb(0x00,0x00,0x00), 0, len(phrase)))
         else:
             # this is a system phrase that has not been used yet:
-            attrs.append(IBus.attr_foreground_new(rgb(0x00,0x00,0x00), 0, len(phrase)))
+            attrs.append(IBus.attr_foreground_new(
+                rgb(0x00,0x00,0x00), 0, len(phrase)))
         if debug_level > 0:
             debug_text = u' ' + str(freq) + u' ' + str(user_freq)
             candidate_text += debug_text
             attrs.append(IBus.attr_foreground_new(
-                rgb(0x00,0xff,0x00), len(candidate_text) - len(debug_text), len(candidate_text)))
+                rgb(0x00,0xff,0x00),
+                len(candidate_text) - len(debug_text),
+                len(candidate_text)))
         text = IBus.Text.new_from_string(candidate_text)
         i = 0
         while attrs.get(i) != None:
@@ -740,8 +783,8 @@ class editor(object):
         if (self._chars_valid == self._chars_valid_update_candidates_last
             and
             self._chars_invalid == self._chars_invalid_update_candidates_last):
-            # The input did not change since we came here last, do nothing and leave
-            # candidates and lookup table unchanged:
+            # The input did not change since we came here last, do
+            # nothing and leave candidates and lookup table unchanged:
             if self._candidates:
                 return True
             else:
@@ -855,13 +898,23 @@ class editor(object):
                  strings_right) = self.get_preedit_string_parts()
                 aux_string = u''
                 for i in range(0, len(strings_left)):
-                    aux_string += u'('+tabkeys_left[i]+u' '+strings_left[i]+u') '
+                    aux_string += (
+                        u'('
+                        + tabkeys_left[i] + u' '+ strings_left[i]
+                        + u') ')
                 aux_string += input_chars
                 for i in range(0, len(strings_right)):
-                    aux_string += u' ('+tabkeys_right[i]+u' '+strings_right[i]+u')'
-
+                    aux_string += (
+                        u' ('
+                        + tabkeys_right[i]+u' '+strings_right[i]
+                        + u')')
             if self._py_mode:
-                aux_string = aux_string.replace('!','1').replace('@','2').replace('#','3').replace('$','4').replace('%','5')
+                aux_string = aux_string.replace(
+                    '!','1').replace(
+                        '@','2').replace(
+                            '#','3').replace(
+                                '$','4').replace(
+                                    '%','5')
             else:
                 aux_string_new = u''
                 for char in aux_string:
@@ -971,7 +1024,8 @@ class editor(object):
             self._select_keys.index(keycode))
 
     def remove_candidate_from_user_database(self, keycode):
-        '''Remove a candidate displayed in the lookup table from the user database.
+        '''Remove a candidate displayed in the lookup table from the user
+        database.
 
         The candidate indicated by the selection key with the key code
         “keycode” is removed, if possible.  If it is not in the user
@@ -995,7 +1049,8 @@ class editor(object):
         real_index = current_page_start + index
         if len(self._candidates) > real_index: # this index is valid
             candidate = self._candidates[real_index]
-            self.db.remove_phrase(tabkeys=candidate[0], phrase=candidate[1], commit=True)
+            self.db.remove_phrase(
+                tabkeys=candidate[0], phrase=candidate[1], commit=True)
             # call update_candidates() to get a new SQL query.  The
             # input has not really changed, therefore we must clear
             # the remembered list of characters to
@@ -1056,13 +1111,13 @@ class editor(object):
 class tabengine (IBus.Engine):
     '''The IM Engine for Tables'''
 
-    def __init__ (self, bus, obj_path, db ):
-        super(tabengine,self).__init__ (connection=bus.get_connection(),
+    def __init__(self, bus, obj_path, db ):
+        super(tabengine, self).__init__(connection=bus.get_connection(),
                                         object_path=obj_path)
         global debug_level
         try:
             debug_level = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
-        except:
+        except (TypeError, ValueError):
             debug_level = int(0)
         self._input_purpose = 0
         self._has_input_purpose = False
@@ -1077,8 +1132,10 @@ class tabengine (IBus.Engine):
         self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
                 os.path.sep, 'icons', os.path.sep)
         # name for config section
-        self._engine_name = os.path.basename(self.db.filename).replace('.db', '')
-        self._config_section = "engine/Table/%s" %self._engine_name.replace(' ','_')
+        self._engine_name = os.path.basename(
+            self.db.filename).replace('.db', '')
+        self._config_section = (
+            "engine/Table/%s" % self._engine_name.replace(' ','_'))
 
         # config module
         self._config = self._bus.get_config ()
@@ -1092,7 +1149,8 @@ class tabengine (IBus.Engine):
             else:
                 self._ime_py = False
         else:
-            print('We could not find "pinyin_mode" entry in database, is it an outdated database?')
+            print('We could not find "pinyin_mode" entry in database, '
+                  + 'is it an outdated database?')
             self._ime_py = False
 
         self._symbol = self.db.ime_properties.get('symbol')
@@ -1113,14 +1171,16 @@ class tabengine (IBus.Engine):
         if self._symbol == u'Yi':
             self._symbol = u'Ї'
         # now we check and update the valid input characters
-        self._valid_input_chars = self.db.ime_properties.get('valid_input_chars')
+        self._valid_input_chars = self.db.ime_properties.get(
+            'valid_input_chars')
         self._pinyin_valid_input_chars = u'abcdefghijklmnopqrstuvwxyz!@#$%'
 
         self._single_wildcard_char = variant_to_value(self._config.get_value(
             self._config_section,
             "singlewildcardchar"))
         if self._single_wildcard_char == None:
-            self._single_wildcard_char = self.db.ime_properties.get('single_wildcard_char')
+            self._single_wildcard_char = self.db.ime_properties.get(
+                'single_wildcard_char')
         if self._single_wildcard_char == None:
             self._single_wildcard_char = u''
         if len(self._single_wildcard_char) > 1:
@@ -1130,7 +1190,8 @@ class tabengine (IBus.Engine):
             self._config_section,
             "multiwildcardchar"))
         if self._multi_wildcard_char == None:
-            self._multi_wildcard_char = self.db.ime_properties.get('multi_wildcard_char')
+            self._multi_wildcard_char = self.db.ime_properties.get(
+                'multi_wildcard_char')
         if self._multi_wildcard_char == None:
             self._multi_wildcard_char = u''
         if len(self._multi_wildcard_char) > 1:
@@ -1175,7 +1236,10 @@ class tabengine (IBus.Engine):
         # Remove keys from the page up/down keys if they are needed
         # for input (for example, '=' or '-' could well be needed for
         # input. Input is more important):
-        for character in self._valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char:
+        for character in (
+             self._valid_input_chars
+             + self._single_wildcard_char
+             + self._multi_wildcard_char):
             keyval = IBus.unicode_to_keyval(character)
             if keyval in self._page_up_keys:
                 self._page_up_keys.remove(keyval)
@@ -1248,7 +1312,8 @@ class tabengine (IBus.Engine):
         if self._full_width_letter[0] == None:
             self._full_width_letter[0] = False
         if self._full_width_letter[1] == None:
-            self._full_width_letter[1] = self.db.ime_properties.get('def_full_width_letter').lower() == u'true'
+            self._full_width_letter[1] = self.db.ime_properties.get(
+                'def_full_width_letter').lower() == u'true'
         self._full_width_punct = [
             variant_to_value(self._config.get_value(
                     self._config_section,
@@ -1260,13 +1325,15 @@ class tabengine (IBus.Engine):
         if self._full_width_punct[0] == None:
             self._full_width_punct[0] = False
         if self._full_width_punct[1] == None:
-            self._full_width_punct[1] = self.db.ime_properties.get('def_full_width_punct').lower() == u'true'
+            self._full_width_punct[1] = self.db.ime_properties.get(
+                'def_full_width_punct').lower() == u'true'
 
         self._auto_commit = variant_to_value(self._config.get_value(
                 self._config_section,
                 "AutoCommit"))
         if self._auto_commit == None:
-            self._auto_commit = self.db.ime_properties.get('auto_commit').lower() == u'true'
+            self._auto_commit = self.db.ime_properties.get(
+                'auto_commit').lower() == u'true'
 
         # If auto select is true, then the first candidate phrase will
         # be selected automatically during typing. Auto select is true
@@ -1276,7 +1343,8 @@ class tabengine (IBus.Engine):
                 "AutoSelect"))
         if self._auto_select == None:
             if self.db.ime_properties.get('auto_select') != None:
-                self._auto_select = self.db.ime_properties.get('auto_select').lower() == u'true'
+                self._auto_select = self.db.ime_properties.get(
+                    'auto_select').lower() == u'true'
             else:
                 self._auto_select = False
 
@@ -1285,7 +1353,8 @@ class tabengine (IBus.Engine):
                 "AlwaysShowLookup"))
         if self._always_show_lookup == None:
             if self.db.ime_properties.get('always_show_lookup') != None:
-                self._always_show_lookup = self.db.ime_properties.get('always_show_lookup').lower() == u'true'
+                self._always_show_lookup = self.db.ime_properties.get(
+                    'always_show_lookup').lower() == u'true'
             else:
                 self._always_show_lookup = True
 
@@ -1301,31 +1370,40 @@ class tabengine (IBus.Engine):
                               self.db)
 
         self.chinese_mode_properties = {
-            'ChineseMode.Simplified': { # show simplified Chinese only
+            'ChineseMode.Simplified': {
+                # show simplified Chinese only
                 'number': 0,
                 'symbol': '簡',
                 'icon': 'sc-mode.svg',
                 'label': _('Simplified Chinese'),
-                'tooltip': _('Switch to “Simplified Chinese only”.')},
-            'ChineseMode.Traditional': { # show traditional Chinese only
+                'tooltip':
+                _('Switch to “Simplified Chinese only”.')},
+            'ChineseMode.Traditional': {
+                # show traditional Chinese only
                 'number': 1,
                 'symbol': '繁',
                 'icon': 'tc-mode.svg',
                 'label': _('Traditional Chinese'),
-                'tooltip': _('Switch to “Traditional Chinese only”.')},
-            'ChineseMode.SimplifiedFirst': { # show all but simplified first
+                'tooltip':
+                _('Switch to “Traditional Chinese only”.')},
+            'ChineseMode.SimplifiedFirst': {
+                # show all but simplified first
                 'number': 2,
                 'symbol': '簡/大',
                 'icon': 'scb-mode.svg',
                 'label': _('Simplified Chinese first'),
-                'tooltip': _('Switch to “Simplified Chinese before traditional”.')},
-            'ChineseMode.TraditionalFirst': { # show all but traditional first
+                'tooltip':
+                _('Switch to “Simplified Chinese before traditional”.')},
+            'ChineseMode.TraditionalFirst': {
+                # show all but traditional first
                 'number': 3,
                 'symbol': '繁/大',
                 'icon': 'tcb-mode.svg',
                 'label': _('Traditional Chinese first'),
-                'tooltip': _('Switch to “Traditional Chinese before simplified”.')},
-            'ChineseMode.All': { # show all Chinese characters, no particular order
+                'tooltip':
+                _('Switch to “Traditional Chinese before simplified”.')},
+            'ChineseMode.All': {
+                # show all Chinese characters, no particular order
                 'number': 4,
                 'symbol': '大',
                 'icon': 'cb-mode.svg',
@@ -1472,13 +1550,19 @@ class tabengine (IBus.Engine):
                 'symbol': '☐ ↑',
                 'icon': 'ncommit.svg',
                 'label': _('Normal'),
-                'tooltip': _('Switch to normal commit mode (automatic commits go into the preedit instead of into the application. This enables automatic definitions of new shortcuts)')},
+                'tooltip':
+                _('Switch to normal commit mode '
+                  + '(automatic commits go into the preedit '
+                  + 'instead of into the application. '
+                  + 'This enables automatic definitions of new shortcuts)')},
             'AutoCommitMode.Normal': {
                 'number': 1,
                 'symbol': '☑ ↑',
                 'icon': 'acommit.svg',
                 'label': _('Direct'),
-                'tooltip': _('Switch to direct commit mode (automatic commits go directly into the application)')}
+                'tooltip':
+                _('Switch to direct commit mode '
+                  + '(automatic commits go directly into the application)')}
         }
         self.autocommit_mode_menu = {
             'key': 'AutoCommitMode',
@@ -1517,7 +1601,7 @@ class tabengine (IBus.Engine):
         if self._save_user_count > 0:
             self.db.sync_usrdb()
             self._save_user_count = 0
-        super(tabengine,self).destroy()
+        super(tabengine, self).destroy()
 
     def set_input_mode(self, mode=0):
         if mode == self._input_mode:
@@ -1551,9 +1635,11 @@ class tabengine (IBus.Engine):
         self._init_or_update_property_menu(
             self.pinyin_mode_menu, mode)
         if mode:
-            self.input_mode_properties['InputMode.Table']['symbol'] = self.input_mode_properties['InputMode.Table']['symbol_pinyin']
+            self.input_mode_properties['InputMode.Table']['symbol'] = (
+                self.input_mode_properties['InputMode.Table']['symbol_pinyin'])
         else:
-            self.input_mode_properties['InputMode.Table']['symbol'] = self.input_mode_properties['InputMode.Table']['symbol_table']
+            self.input_mode_properties['InputMode.Table']['symbol'] = (
+                self.input_mode_properties['InputMode.Table']['symbol_table'])
         self._init_or_update_property_menu(
             self.input_mode_menu,
             self._input_mode)
@@ -1641,11 +1727,11 @@ class tabengine (IBus.Engine):
             if sub_properties[prop]['number'] == int(current_mode):
                 symbol = sub_properties[prop]['symbol']
                 icon = sub_properties[prop]['icon']
-                label = '%(label)s (%(symbol)s) %(shortcut_hint)s' %{
+                label = '%(label)s (%(symbol)s) %(shortcut_hint)s' % {
                     'label': menu['label'],
                     'symbol': symbol,
                     'shortcut_hint': menu['shortcut_hint']}
-                tooltip = '%(tooltip)s\n%(shortcut_hint)s' %{
+                tooltip = '%(tooltip)s\n%(shortcut_hint)s' % {
                     'tooltip': menu['tooltip'],
                     'shortcut_hint': menu['shortcut_hint']}
         self._prop_dict[key] = IBus.Property(
@@ -1742,7 +1828,8 @@ class tabengine (IBus.Engine):
 
         self.register_properties(self.properties)
 
-    def do_property_activate(self, property, prop_state = IBus.PropState.UNCHECKED):
+    def do_property_activate(
+            self, property, prop_state = IBus.PropState.UNCHECKED):
         '''
         Handle clicks on properties
         '''
@@ -1757,11 +1844,13 @@ class tabengine (IBus.Engine):
             self.set_input_mode(
                 self.input_mode_properties[property]['number'])
             return
-        if property.startswith(self.pinyin_mode_menu['key']+'.') and self._ime_py:
+        if (property.startswith(self.pinyin_mode_menu['key']+'.')
+            and self._ime_py):
             self.set_pinyin_mode(
                 bool(self.pinyin_mode_properties[property]['number']))
             return
-        if property.startswith(self.onechar_mode_menu['key']+'.') and self.db._is_cjk:
+        if (property.startswith(self.onechar_mode_menu['key']+'.')
+            and self.db._is_cjk):
             self.set_onechar_mode(
                 bool(self.onechar_mode_properties[property]['number']))
             return
@@ -1770,7 +1859,8 @@ class tabengine (IBus.Engine):
             self.set_autocommit_mode(
                 bool(self.autocommit_mode_properties[property]['number']))
             return
-        if property.startswith(self.letter_width_menu['key']+'.') and self.db._is_cjk:
+        if (property.startswith(self.letter_width_menu['key']+'.')
+            and self.db._is_cjk):
             self.set_letter_width(
                 bool(self.letter_width_properties[property]['number']),
                 input_mode=self._input_mode)
@@ -1824,7 +1914,8 @@ class tabengine (IBus.Engine):
         preedit_string_complete = (
             left_of_current_edit + current_edit + right_of_current_edit)
         if not preedit_string_complete:
-            super(tabengine, self).update_preedit_text(IBus.Text.new_from_string(u''), 0, False)
+            super(tabengine, self).update_preedit_text(
+                IBus.Text.new_from_string(u''), 0, False)
             return
         color_left = rgb(0xf9, 0x0f, 0x0f) # bright red
         color_right = rgb(0x1e, 0xdc, 0x1a) # light green
@@ -1862,18 +1953,20 @@ class tabengine (IBus.Engine):
                                   attr.get_start_index(),
                                   attr.get_end_index())
             i += 1
-        super(tabengine, self).update_preedit_text(text, self._editor.get_caret(), True)
+        super(tabengine, self).update_preedit_text(
+            text, self._editor.get_caret(), True)
 
     def _update_aux (self):
         '''Update Aux String in UI'''
         aux_string = self._editor.get_aux_strings()
         if len(self._editor._candidates) > 0:
-            aux_string += u' (%d / %d)' %(
+            aux_string += u' (%d / %d)' % (
                 self._editor._lookup_table.get_cursor_pos() +1,
                 self._editor._lookup_table.get_number_of_candidates())
         if aux_string:
             attrs = IBus.AttrList()
-            attrs.append(IBus.attr_foreground_new(rgb(0x95,0x15,0xb5),0, len(aux_string)))
+            attrs.append(IBus.attr_foreground_new(
+                rgb(0x95,0x15,0xb5),0, len(aux_string)))
             text = IBus.Text.new_from_string(aux_string)
             i = 0
             while attrs.get(i) != None:
@@ -1939,7 +2032,7 @@ class tabengine (IBus.Engine):
     def commit_string (self, phrase, tabkeys=u''):
         self._editor.clear_all_input_and_preedit()
         self._update_ui()
-        super(tabengine,self).commit_text(IBus.Text.new_from_string(phrase))
+        super(tabengine, self).commit_text(IBus.Text.new_from_string(phrase))
         if len(phrase) > 0:
             self._prev_char = phrase[-1]
         else:
@@ -1991,8 +2084,10 @@ class tabengine (IBus.Engine):
 
         # special puncts w/ further conditions
         if c == u".":
-            if self._prev_char and self._prev_char.isdigit() \
-                and self._prev_key and chr(self._prev_key.val) == self._prev_char:
+            if (self._prev_char
+                and self._prev_char.isdigit()
+                and self._prev_key
+                and chr(self._prev_key.val) == self._prev_char):
                 return u"."
             else:
                 return u"。" # 。U+3002 IDEOGRAPHIC FULL STOP
@@ -2014,7 +2109,9 @@ class tabengine (IBus.Engine):
     def _match_hotkey (self, key, keyval, state):
 
         if key.val == keyval and (key.state & state ) == state:
-            if self._prev_key and key.val == self._prev_key.val and key.state & IBus.ModifierType.RELEASE_MASK:
+            if (self._prev_key
+                and key.val == self._prev_key.val
+                and key.state & IBus.ModifierType.RELEASE_MASK):
                 return True
             if not key.state & IBus.ModifierType.RELEASE_MASK:
                 return True
@@ -2022,9 +2119,11 @@ class tabengine (IBus.Engine):
         return False
 
     def do_candidate_clicked(self, index, button, state):
-        if self._editor.commit_to_preedit_current_page(index): # commits to preëdit
-            self.commit_string(self._editor.get_preedit_string_complete(),
-                               tabkeys=self._editor.get_preedit_tabkeys_complete())
+        if self._editor.commit_to_preedit_current_page(index):
+            # commits to preëdit
+            self.commit_string(
+                self._editor.get_preedit_string_complete(),
+                tabkeys=self._editor.get_preedit_tabkeys_complete())
             return True
         return False
 
@@ -2033,7 +2132,9 @@ class tabengine (IBus.Engine):
         Key Events include Key Press and Key Release,
         modifier means Key Pressed
         '''
-        if self._has_input_purpose and self._input_purpose in [IBus.InputPurpose.PASSWORD, IBus.InputPurpose.PIN]:
+        if (self._has_input_purpose
+            and self._input_purpose
+            in [IBus.InputPurpose.PASSWORD, IBus.InputPurpose.PIN]):
             return False
 
         key = KeyEvent(keyval, keycode, state)
@@ -2045,19 +2146,27 @@ class tabengine (IBus.Engine):
     def _process_key_event (self, key):
         '''Internal method to process key event'''
         # Match mode switch hotkey
-        if self._editor.is_empty() and (self._match_hotkey(key, IBus.KEY_Shift_L, IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
+        if (self._editor.is_empty()
+            and (self._match_hotkey(
+                key, IBus.KEY_Shift_L,
+                IBus.ModifierType.SHIFT_MASK
+                | IBus.ModifierType.RELEASE_MASK))):
             self.set_input_mode(int(not self._input_mode))
             return True
 
         # Match full half letter mode switch hotkey
-        if self._match_hotkey (key, IBus.KEY_space, IBus.ModifierType.SHIFT_MASK) and self.db._is_cjk:
+        if (self._match_hotkey(
+                key, IBus.KEY_space,
+                IBus.ModifierType.SHIFT_MASK) and self.db._is_cjk):
             self.set_letter_width(
                 not self._full_width_letter[self._input_mode],
                 input_mode = self._input_mode)
             return True
 
         # Match full half punct mode switch hotkey
-        if self._match_hotkey (key, IBus.KEY_period, IBus.ModifierType.CONTROL_MASK) and self.db._is_cjk:
+        if (self._match_hotkey(
+                key, IBus.KEY_period,
+                IBus.ModifierType.CONTROL_MASK) and self.db._is_cjk):
             self.set_punctuation_width(
                 not self._full_width_punct[self._input_mode],
                 input_mode = self._input_mode)
@@ -2087,7 +2196,8 @@ class tabengine (IBus.Engine):
         if key.val >= 128:
             return False
         # we ignore all hotkeys here
-        if key.state & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
+        if (key.state
+            & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK)):
             return False
         keychar = IBus.keyval_to_unicode(key.val)
         if type(keychar) != type(u''):
@@ -2125,25 +2235,32 @@ class tabengine (IBus.Engine):
             return res
 
         # Left ALT key to cycle candidates in the current page.
-        if self._match_hotkey(
+        if (self._match_hotkey(
                 key, IBus.KEY_Alt_L,
-                IBus.ModifierType.MOD1_MASK | IBus.ModifierType.RELEASE_MASK):
+                IBus.ModifierType.MOD1_MASK | IBus.ModifierType.RELEASE_MASK)):
             res = self._editor.cycle_next_cand()
             self._update_ui()
             return res
 
         # Match single char mode switch hotkey
-        if self._match_hotkey(key, IBus.KEY_comma, IBus.ModifierType.CONTROL_MASK) and self.db._is_cjk:
+        if (self._match_hotkey(
+                key, IBus.KEY_comma,
+                IBus.ModifierType.CONTROL_MASK) and self.db._is_cjk):
             self.set_onechar_mode(not self._editor._onechar)
             return True
 
         # Match direct commit mode switch hotkey
-        if self._match_hotkey(key, IBus.KEY_slash, IBus.ModifierType.CONTROL_MASK) and  self.db.user_can_define_phrase and self.db.rules:
+        if (self._match_hotkey(
+                key, IBus.KEY_slash,
+                IBus.ModifierType.CONTROL_MASK)
+            and  self.db.user_can_define_phrase and self.db.rules):
             self.set_autocommit_mode(not self._auto_commit)
             return True
 
         # Match Chinese mode shift
-        if self._match_hotkey(key, IBus.KEY_semicolon, IBus.ModifierType.CONTROL_MASK) and self.db._is_chinese:
+        if (self._match_hotkey(
+                key, IBus.KEY_semicolon,
+                IBus.ModifierType.CONTROL_MASK) and self.db._is_chinese):
             self.set_chinese_mode((self._editor._chinese_mode+1) % 5)
             return True
 
@@ -2158,15 +2275,22 @@ class tabengine (IBus.Engine):
         #
         # This is the first character typed, if it is invalid
         # input, handle it immediately here, if it is valid, continue.
-        if self._editor.is_empty() and not self._editor.get_preedit_string_complete():
-            if ((keychar not in self._valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char
+        if (self._editor.is_empty()
+            and not self._editor.get_preedit_string_complete()):
+            if ((keychar not in (
+                    self._valid_input_chars
+                    + self._single_wildcard_char
+                    + self._multi_wildcard_char)
                  or (self.db.startchars and keychar not in self.db.startchars))
                 and (not key.state &
                      (IBus.ModifierType.MOD1_MASK |
                       IBus.ModifierType.CONTROL_MASK))):
                 if debug_level > 0:
-                    sys.stderr.write('_table_mode_process_key_event() leading invalid input: ')
-                    sys.stderr.write('repr(keychar)=%(keychar)s\n' %{'keychar': keychar})
+                    sys.stderr.write(
+                        '_table_mode_process_key_event() '
+                        + 'leading invalid input: '
+                        + 'repr(keychar)=%(keychar)s\n'
+                        % {'keychar': keychar})
                 if ascii_ispunct(keychar):
                     trans_char = self.cond_punct_translate(keychar)
                 else:
@@ -2184,7 +2308,8 @@ class tabengine (IBus.Engine):
             return True
 
         if key.val in (IBus.KEY_Return, IBus.KEY_KP_Enter):
-            if self._editor.is_empty() and not self._editor.get_preedit_string_complete():
+            if (self._editor.is_empty()
+                and not self._editor.get_preedit_string_complete()):
                 # When IBus.KEY_Return is typed,
                 # IBus.keyval_to_unicode(key.val) returns a non-empty
                 # string. But when IBus.KEY_KP_Enter is typed it
@@ -2318,7 +2443,8 @@ class tabengine (IBus.Engine):
             return res
 
         # now we ignore all other hotkeys
-        if key.state & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK):
+        if (key.state
+            & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK)):
             return False
 
         if key.state & IBus.ModifierType.MOD1_MASK:
@@ -2355,12 +2481,18 @@ class tabengine (IBus.Engine):
         # between the keys by using different SELECT_KEYS and/or
         # PAGE_UP_KEYS/PAGE_DOWN_KEYS in that table ...
         if (keychar
-            and (keychar in self._valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char
+            and (keychar in (self._valid_input_chars
+                             + self._single_wildcard_char
+                             + self._multi_wildcard_char)
                  or (self._editor._py_mode
-                     and keychar in self._pinyin_valid_input_chars + self._single_wildcard_char + self._multi_wildcard_char))):
+                     and keychar in (self._pinyin_valid_input_chars
+                                     + self._single_wildcard_char
+                                     + self._multi_wildcard_char)))):
             if debug_level > 0:
-                sys.stderr.write('_table_mode_process_key_event() valid input: ')
-                sys.stderr.write('repr(keychar)=%(keychar)s\n' %{'keychar': keychar})
+                sys.stderr.write(
+                    '_table_mode_process_key_event() valid input: '
+                    + 'repr(keychar)=%(keychar)s\n'
+                    % {'keychar': keychar})
             if self._editor._py_mode:
                 if ((len(self._editor._chars_valid)
                      == self._max_key_length_pinyin)
@@ -2435,10 +2567,12 @@ class tabengine (IBus.Engine):
             self._update_ui()
             return res
 
-        if key.val in self._editor.get_select_keys() and self._editor._candidates:
+        if (key.val in self._editor.get_select_keys()
+            and self._editor._candidates):
             if self._editor.select_key(key.val): # commits to preëdit
-                self.commit_string(self._editor.get_preedit_string_complete(),
-                                   tabkeys=self._editor.get_preedit_tabkeys_complete())
+                self.commit_string(
+                    self._editor.get_preedit_string_complete(),
+                    tabkeys=self._editor.get_preedit_tabkeys_complete())
             return True
 
         # Section to handle trailing invalid input:
@@ -2454,8 +2588,10 @@ class tabengine (IBus.Engine):
         # fullwidth or halfwidth.
         if keychar:
             if debug_level > 0:
-                sys.stderr.write('_table_mode_process_key_event() trailing invalid input: ')
-                sys.stderr.write('repr(keychar)=%(keychar)s\n' %{'keychar': keychar})
+                sys.stderr.write(
+                    '_table_mode_process_key_event() trailing invalid input: '
+                    + 'repr(keychar)=%(keychar)s\n'
+                    % {'keychar': keychar})
             if not self._editor._candidates:
                 self.commit_string(self._editor.get_preedit_tabkeys_complete())
             else:
@@ -2520,7 +2656,7 @@ class tabengine (IBus.Engine):
         # effect of comparing the dconf sections case insentively
         # in some locales, it would fail for example if Turkish
         # locale (tr_TR.UTF-8) is set.
-        if sys.version_info >= (3,0,0): # Python3
+        if sys.version_info >= (3, 0, 0): # Python3
             return re.sub(r'[_:]', r'-', section).translate(
                 ''.maketrans(
                 string.ascii_uppercase,
@@ -2532,9 +2668,11 @@ class tabengine (IBus.Engine):
                 string.ascii_lowercase).decode('ISO-8859-1'))
 
     def config_value_changed_cb(self, config, section, name, value):
-        if self.config_section_normalize(self._config_section) != self.config_section_normalize(section):
+        if (self.config_section_normalize(self._config_section)
+            != self.config_section_normalize(section)):
             return
-        print("config value %(n)s for engine %(en)s changed" %{'n': name, 'en': self._engine_name})
+        print('config value %(n)s for engine %(en)s changed'
+              % {'n': name, 'en': self._engine_name})
         value = variant_to_value(value)
         if name == u'inputmode':
             self.set_input_mode(value)

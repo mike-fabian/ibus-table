@@ -110,6 +110,16 @@ RULES = ce2:p11+p12+p21+p22;ce3:p11+p21+p22+p31;ca4:p11+p21+p31+p41
 ### The key strokes to page down.
 ### PAGE_DOWN_KEYS = Page_Down,KP_Page_Down,equal,period
 
+### The key strokes to select candidiate phrases.
+### Usually "1,2,3,4,5,6,7,8,9" but if this conflicts with
+### characters one wants to use for input one can also
+### use something like “F1,F2,F3,F4,F5,F6,F7,F8,F9”
+SELECT_KEYS = 1,2,3,4,5,6,7,8,9
+
+### The default orientation of the candidate list
+### TRUE means the candidate list is vertical, FALSE means it is vertical
+ORIENTATION=TRUE
+
 END_DEFINITION
 
 ### Begin Table data.

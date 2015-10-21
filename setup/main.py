@@ -77,12 +77,21 @@ logfile = os.path.join(ibus_table_location.cache_home(), 'setup-debug.log')
 
 opt = optparse.OptionParser()
 opt.set_usage ('%prog [options]')
-opt.add_option('-n', '--engine-name',
-        action = 'store',type = 'string', dest = 'engine_name', default = '',
-        help = 'Set the name of the engine, for example "table:cangjie3". Default: "%default"')
-opt.add_option( '-q', '--no-debug',
-        action = 'store_false', dest = 'debug', default = True,
-        help = 'redirect stdout and stderr to ' + logfile +', default: %default')
+opt.add_option(
+    '-n', '--engine-name',
+    action = 'store',
+    type = 'string',
+    dest = 'engine_name',
+    default = '',
+    help = ('Set the name of the engine, for example "table:cangjie3". '
+            + 'Default: "%default"'))
+opt.add_option(
+    '-q', '--no-debug',
+    action = 'store_false',
+    dest = 'debug',
+    default = True,
+    help = ('redirect stdout and stderr to '
+            + logfile + ', default: %default'))
 
 (options, args) = opt.parse_args()
 
@@ -154,33 +163,45 @@ class PreferencesDialog:
                     if language.strip().startswith(lang):
                         self.__is_cjk = True
         self.__user_can_define_phrase = False
-        user_can_define_phrase = self.tabsqlitedb.ime_properties.get('user_can-define_phrase')
+        user_can_define_phrase = self.tabsqlitedb.ime_properties.get(
+            'user_can-define_phrase')
         if user_can_define_phrase:
-            self.__user_can_define_phrase = user_can_define_phrase.lower() == u'true'
+            self.__user_can_define_phrase = (
+                user_can_define_phrase.lower() == u'true')
         self.__rules = self.tabsqlitedb.ime_properties.get('rules')
         language_filter = self.tabsqlitedb.ime_properties.get('language_filter')
         if language_filter in ['cm0', 'cm1', 'cm2', 'cm3', 'cm4']:
             OPTION_DEFAULTS['chinesemode'] = int(language_filter[-1])
-        def_full_width_punct = self.tabsqlitedb.ime_properties.get('def_full_width_punct')
+        def_full_width_punct = self.tabsqlitedb.ime_properties.get(
+            'def_full_width_punct')
         if (def_full_width_punct
             and type(def_full_width_punct) == type(u'')
             and def_full_width_punct.lower() in [u'true', u'false']):
-            OPTION_DEFAULTS['tabdeffullwidthpunct'] = def_full_width_punct.lower() == u'true'
-            OPTION_DEFAULTS['endeffullwidthpunct'] = def_full_width_punct.lower() == u'true'
-        def_full_width_letter = self.tabsqlitedb.ime_properties.get('def_full_width_letter')
+            OPTION_DEFAULTS['tabdeffullwidthpunct'] = (
+                def_full_width_punct.lower() == u'true')
+            OPTION_DEFAULTS['endeffullwidthpunct'] = (
+                def_full_width_punct.lower() == u'true')
+        def_full_width_letter = self.tabsqlitedb.ime_properties.get(
+            'def_full_width_letter')
         if (def_full_width_letter
             and type(def_full_width_letter) == type(u'')
             and def_full_width_letter.lower() in [u'true', u'false']):
-            OPTION_DEFAULTS['tabdeffullwidthletter'] = def_full_width_letter.lower() == u'true'
-            OPTION_DEFAULTS['endeffullwidthletter'] = def_full_width_letter.lower() == u'true'
-        always_show_lookup = self.tabsqlitedb.ime_properties.get('always_show_lookup')
+            OPTION_DEFAULTS['tabdeffullwidthletter'] = (
+                def_full_width_letter.lower() == u'true')
+            OPTION_DEFAULTS['endeffullwidthletter'] = (
+                def_full_width_letter.lower() == u'true')
+        always_show_lookup = self.tabsqlitedb.ime_properties.get(
+            'always_show_lookup')
         if (always_show_lookup
             and type(always_show_lookup) == type(u'')
             and always_show_lookup.lower() in [u'true', u'false']):
-            OPTION_DEFAULTS['alwaysshowlookup'] = always_show_lookup.lower() == u'true'
+            OPTION_DEFAULTS['alwaysshowlookup'] = (
+                always_show_lookup.lower() == u'true')
         select_keys_csv = self.tabsqlitedb.ime_properties.get('select_keys')
-        if select_keys_csv: # select_keys_csv is something like: "1,2,3,4,5,6,7,8,9,0"
-            OPTION_DEFAULTS['lookuptablepagesize'] = len(select_keys_csv.split(","))
+        if select_keys_csv:
+            # select_keys_csv is something like: "1,2,3,4,5,6,7,8,9,0"
+            OPTION_DEFAULTS['lookuptablepagesize'] = len(
+                select_keys_csv.split(","))
         auto_select = self.tabsqlitedb.ime_properties.get('auto_select')
         if (auto_select
             and type(auto_select) == type(u'')
@@ -195,10 +216,12 @@ class PreferencesDialog:
         if (orientation
             and type(orientation) == type(u'')
             and orientation.lower() in [u'true', u'false']):
-            OPTION_DEFAULTS['lookuptableorientation'] = orientation.lower() == u'true'
+            OPTION_DEFAULTS['lookuptableorientation'] = (
+                orientation.lower() == u'true')
         # if space is a page down key, set the option
         # “spacekeybehavior” to “True”:
-        page_down_keys_csv = self.tabsqlitedb.ime_properties.get('page_down_keys')
+        page_down_keys_csv = self.tabsqlitedb.ime_properties.get(
+            'page_down_keys')
         if page_down_keys_csv:
             self._page_down_keys = [
                 IBus.keyval_from_name(x)
@@ -220,12 +243,14 @@ class PreferencesDialog:
             and type(auto_wildcard) == type(u'')
             and auto_wildcard.lower() in [u'true', u'false']):
             OPTION_DEFAULTS['autowildcard'] = auto_wildcard.lower() == u'true'
-        single_wildcard_char = self.tabsqlitedb.ime_properties.get('single_wildcard_char')
+        single_wildcard_char = self.tabsqlitedb.ime_properties.get(
+            'single_wildcard_char')
         if (single_wildcard_char
             and type(single_wildcard_char) == type(u'')
             and len(single_wildcard_char) == 1):
             OPTION_DEFAULTS['singlewildcardchar'] = single_wildcard_char
-        multi_wildcard_char = self.tabsqlitedb.ime_properties.get('multi_wildcard_char')
+        multi_wildcard_char = self.tabsqlitedb.ime_properties.get(
+            'multi_wildcard_char')
         if (multi_wildcard_char
             and type(multi_wildcard_char) == type(u'')
             and len(multi_wildcard_char) == 1):
@@ -455,10 +480,10 @@ class PreferencesDialog:
         self.__values[name] = val
         self.__config.set_value(self.__config_section, name, var)
 
-    def __run_message_dialog(self, message, type=Gtk.MessageType.INFO):
+    def __run_message_dialog(self, message, message_type=Gtk.MessageType.INFO):
         dlg = Gtk.MessageDialog(parent=None,
                                 flags=Gtk.DialogFlags.MODAL,
-                                message_type=type,
+                                message_type=message_type,
                                 buttons=Gtk.ButtonsType.OK,
                                 message_format=message)
         dlg.run()

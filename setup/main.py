@@ -191,6 +191,11 @@ class PreferencesDialog:
             and type(auto_commit) == type(u'')
             and auto_commit.lower() in [u'true', u'false']):
             OPTION_DEFAULTS['autocommit'] = auto_commit.lower() == u'true'
+        orientation = self.tabsqlitedb.ime_properties.get('orientation')
+        if (orientation
+            and type(orientation) == type(u'')
+            and orientation.lower() in [u'true', u'false']):
+            OPTION_DEFAULTS['lookuptableorientation'] = orientation.lower() == u'true'
         # if space is a page down key, set the option
         # “spacekeybehavior” to “True”:
         page_down_keys_csv = self.tabsqlitedb.ime_properties.get('page_down_keys')

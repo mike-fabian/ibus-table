@@ -1,4 +1,28 @@
-commit 92e18b959280c5f074c9f73591aef1ff08a9c275
+commit 2c537854e65b3ddd0110fc6a52eb3248d04edc77
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 21 08:55:04 2015 +0200
+
+    Release 1.9.8
+
+commit a52e9dc7c68426d8c6ddf24bf658ce8714b75e74
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 21 08:52:45 2015 +0200
+
+    Fix a few pylint warnings
+
+commit 8515046c0d0b23823cf800ae13511ce907fd5324
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 21 08:40:04 2015 +0200
+
+    Document “orientation” and “select_keys” options in template.txt
+
+commit de9ff578577672f1314b247a5c0812d82477dadf
+Author: Heiher <r@hev.cc>
+Date:   Wed Oct 21 13:17:33 2015 +0800
+
+    Get option 'lookuptableorientation' default value from database.
+
+commit 9193fce1921db961198a562be179354f932c2082
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Oct 14 16:43:02 2015 +0200
 

@@ -2552,9 +2552,7 @@ class tabengine (IBus.Engine):
                 return True
 
         if key.val in self._commit_keys:
-            if self.commit_everything_unless_invalid():
-                if self._editor._auto_select:
-                    self.commit_string(u' ')
+            self.commit_everything_unless_invalid()
             return True
 
         if key.val in self._page_down_keys and self._editor._candidates:

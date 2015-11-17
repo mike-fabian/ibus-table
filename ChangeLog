@@ -1,4 +1,36 @@
-commit 2c537854e65b3ddd0110fc6a52eb3248d04edc77
+commit 7009b561db4c84c89ae03ce297579defe897b6ff
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 17 09:12:42 2015 +0100
+
+    Release 1.9.9
+
+commit 72577d80a097bcc0ed675dde4222a1b1d3101250
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 17 09:04:03 2015 +0100
+
+    Update copyright years
+
+commit 1affea5b31537ae1fc1e480dbad30c6112088551
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 14 19:30:46 2014 +0200
+
+    Add optional debug code
+
+commit 35403961397f2d7dfc34d001be9ad3da4724c61f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 17 07:04:59 2015 +0100
+
+    Fix hotkey matching
+    
+    Resolves: Bug 1282683 - Some keyboard shortcuts in ibus-table do not work
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1282683
+    
+    Some hotkeys did not work because the matching on the key release
+    event was done inconsistently.
+    
+    Bug was reported by river tree <rivertree@gmail.com>.
+
+commit 6e8335efc7b8c5e11327eded8b1b0eef6567897c
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Oct 21 08:55:04 2015 +0200
 

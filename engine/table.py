@@ -2108,12 +2108,13 @@ class tabengine (IBus.Engine):
 
     def _match_hotkey (self, key, keyval, state):
 
-        if key.val == keyval and (key.state & state ) == state:
+        # Match only when keys are released
+        state = state | IBus.ModifierType.RELEASE_MASK
+        if key.val == keyval and (key.state & state) == state:
+            # If it is a key release event, the previous key
+            # must have been the same key pressed down.
             if (self._prev_key
-                and key.val == self._prev_key.val
-                and key.state & IBus.ModifierType.RELEASE_MASK):
-                return True
-            if not key.state & IBus.ModifierType.RELEASE_MASK:
+                and key.val == self._prev_key.val):
                 return True
 
         return False
@@ -2149,19 +2150,27 @@ class tabengine (IBus.Engine):
         if (self._editor.is_empty()
             and (self._match_hotkey(
                 key, IBus.KEY_Shift_L,
-                IBus.ModifierType.SHIFT_MASK
-                | IBus.ModifierType.RELEASE_MASK))):
+                IBus.ModifierType.SHIFT_MASK))):
             self.set_input_mode(int(not self._input_mode))
             return True
 
-        # Match full half letter mode switch hotkey
-        if (self._match_hotkey(
-                key, IBus.KEY_space,
-                IBus.ModifierType.SHIFT_MASK) and self.db._is_cjk):
-            self.set_letter_width(
-                not self._full_width_letter[self._input_mode],
-                input_mode = self._input_mode)
-            return True
+        # Match fullwidth/halfwidth letter mode switch hotkey
+        if self.db._is_cjk:
+            if (key.val == IBus.KEY_space
+                and key.state & IBus.ModifierType.SHIFT_MASK
+                and not key.state & IBus.ModifierType.RELEASE_MASK):
+                # Ignore when Shift+Space was pressed, the key release
+                # event will toggle the fullwidth/halfwidth letter mode, we
+                # don’t want to insert an extra space on the key press
+                # event.
+                return True
+            if (self._match_hotkey(
+                    key, IBus.KEY_space,
+                    IBus.ModifierType.SHIFT_MASK)):
+                self.set_letter_width(
+                    not self._full_width_letter[self._input_mode],
+                    input_mode = self._input_mode)
+                return True
 
         # Match full half punct mode switch hotkey
         if (self._match_hotkey(
@@ -2215,21 +2224,24 @@ class tabengine (IBus.Engine):
         if debug_level > 0:
             sys.stderr.write('_table_mode_process_key_event() ')
             sys.stderr.write('repr(key)=%(key)s\n' %{'key': key})
-        # We have to process the pinyin mode change key event here,
-        # because we ignore all Release event below.
+        # Change pinyin mode
+        # (change only if the editor is empty. When the editor
+        # is not empty, the right shift key should commit to preëdit
+        # and not change the pinyin mode).
         if (self._ime_py
+            and self._editor.is_empty()
             and self._match_hotkey(
                 key, IBus.KEY_Shift_R,
-                IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
+                IBus.ModifierType.SHIFT_MASK)):
             self.set_pinyin_mode(not self._editor._py_mode)
             return True
         # process commit to preedit
         if (self._match_hotkey(
                 key, IBus.KEY_Shift_R,
-                IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+                IBus.ModifierType.SHIFT_MASK)
             or self._match_hotkey(
                 key, IBus.KEY_Shift_L,
-                IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)):
+                IBus.ModifierType.SHIFT_MASK)):
             res = self._editor.commit_to_preedit()
             self._update_ui()
             return res
@@ -2237,7 +2249,7 @@ class tabengine (IBus.Engine):
         # Left ALT key to cycle candidates in the current page.
         if (self._match_hotkey(
                 key, IBus.KEY_Alt_L,
-                IBus.ModifierType.MOD1_MASK | IBus.ModifierType.RELEASE_MASK)):
+                IBus.ModifierType.MOD1_MASK)):
             res = self._editor.cycle_next_cand()
             self._update_ui()
             return res
@@ -2671,9 +2683,9 @@ class tabengine (IBus.Engine):
         if (self.config_section_normalize(self._config_section)
             != self.config_section_normalize(section)):
             return
-        print('config value %(n)s for engine %(en)s changed'
-              % {'n': name, 'en': self._engine_name})
         value = variant_to_value(value)
+        print('config value %(n)s for engine %(en)s changed to %(value)s'
+              % {'n': name, 'en': self._engine_name, 'value': value})
         if name == u'inputmode':
             self.set_input_mode(value)
             return

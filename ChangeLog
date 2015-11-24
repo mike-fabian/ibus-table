@@ -1,4 +1,19 @@
-commit 7009b561db4c84c89ae03ce297579defe897b6ff
+commit 625293aa156207f6631aef63198e56ad44105aef
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 24 07:34:34 2015 +0100
+
+    Release 1.9.10
+
+commit b6113d6d8a601cefb3dfee2ca41267979f3cd7a8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 24 06:56:20 2015 +0100
+
+    Fix bug in Unihan_Variants.txt, 表 and 杰 are both simplified *and* traditional Chinese
+    
+    Resolves: rhbz#1284749
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1284749
+
+commit 0f6d2a2852953f6bf34807aaaa5ad5b66a39189b
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Nov 17 09:12:42 2015 +0100
 

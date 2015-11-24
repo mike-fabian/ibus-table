@@ -275,6 +275,8 @@ test_data = {
     # Bug in Unihan_Variants.txt? Unihan_Variants.txt says this is
     # “traditional Chinese only”:
     u'覆': 3,
+    u'表': 3,
+    u'杰': 3,
     }
 
 def test_detection(generated_script):
@@ -329,7 +331,7 @@ def parse_args():
     parser.add_argument('-o', '--outputfilename',
                         nargs='?',
                         type=str,
-                        default='./chinese-variants.py',
+                        default='./chinese_variants.py',
                         help='output file, default is ./chinese_variants.py')
     parser.add_argument('-d', '--debug',
                         action='store_true',

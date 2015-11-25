@@ -6081,7 +6081,7 @@ U+7CF9	kSemanticVariant	U+7CF8<kMatthews
 U+7CF9	kSimplifiedVariant	U+7E9F
 U+7CFA	kSemanticVariant	U+7CFE<kMatthews,kMeyerWempe
 U+7CFA	kZVariant	U+7CFE
-U+7CFB	kTraditionalVariant	U+4FC2 U+7E6B
+U+7CFB	kTraditionalVariant	U+7CFB U+4FC2 U+7E6B
 U+7CFB	kZVariant	U+7E6B
 U+7CFE	kSemanticVariant	U+7CFA<kMatthews,kMeyerWempe
 U+7CFE	kSimplifiedVariant	U+7EA0
@@ -10013,7 +10013,7 @@ U+975A	kZVariant	U+975C
 U+975C	kSimplifiedVariant	U+9759
 U+975D	kSemanticVariant	U+5929<kMatthews
 U+975D	kZVariant	U+9754
-U+9762	kTraditionalVariant	U+9EB5
+U+9762	kTraditionalVariant	U+9762 U+9EB5
 U+9765	kTraditionalVariant	U+9768
 U+9766	kSemanticVariant	U+89A5<kMeyerWempe
 U+9766	kSimplifiedVariant	U+817C

@@ -277,6 +277,8 @@ test_data = {
     u'覆': 3,
     u'表': 3,
     u'杰': 3,
+    u'面': 3,
+    u'系': 3,
     }
 
 def test_detection(generated_script):

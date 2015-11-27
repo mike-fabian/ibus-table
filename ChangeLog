@@ -1,4 +1,31 @@
-commit 625293aa156207f6631aef63198e56ad44105aef
+commit 2c90c5dc7b5afec667586d23bf579b1f8bde0caa
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Nov 27 09:55:37 2015 +0100
+
+    Release 1.9.11
+
+commit 734274cc52c23acae12b075887838c3f28e58cb9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Nov 27 09:44:52 2015 +0100
+
+    Add a few more IBus.Text.new_from_string() conversions
+    
+    surprisingly it works without this change on all my machines.  But for
+    楊文齊 <login0307@gmail.com> who uses an older system than me (Ubuntu
+    14.04.2 LTS, Unity desktop, IBUS 1.5.5), this change was necessary to
+    make it work. The change looks correct anyway and works fine for me as
+    well,so I’ll add it.
+
+commit be8eb2994a2385544ebaec12284653b3cade2c4e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Nov 25 11:06:31 2015 +0100
+
+    Fix bug in Unihan_Variants.txt, 面 U+9762 and 系 U+7CFB are both simplified *and* traditional Chinese
+    
+        Resolves: rhbz#1285379
+        See: https://bugzilla.redhat.com/show_bug.cgi?id=1285379
+
+commit fd1523aa6f16072b9e2ff0601c3ad5353b738633
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Nov 24 07:34:34 2015 +0100
 

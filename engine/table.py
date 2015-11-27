@@ -1831,7 +1831,7 @@ class tabengine (IBus.Engine):
                 prop_type=IBus.PropType.RADIO,
                 label=IBus.Text.new_from_string(modes[mode]['label']),
                 icon=os.path.join(modes[mode]['icon']),
-                tooltip=modes[mode]['tooltip'],
+                tooltip=IBus.Text.new_from_string(modes[mode]['tooltip']),
                 sensitive=True,
                 visible=True,
                 state=IBus.PropState.UNCHECKED,
@@ -1887,10 +1887,10 @@ class tabengine (IBus.Engine):
 
         self._setup_property = IBus.Property(
             key = u'setup',
-            label = _('Setup'),
+            label = IBus.Text.new_from_string(_('Setup')),
             icon = 'gtk-preferences',
-            tooltip = _('Configure ibus-table “%(engine-name)s”') %{
-                'engine-name': self._engine_name},
+            tooltip = IBus.Text.new_from_string(_('Configure ibus-table “%(engine-name)s”') %{
+                'engine-name': self._engine_name}),
             sensitive = True,
             visible = True)
         self.properties.append(self._setup_property)

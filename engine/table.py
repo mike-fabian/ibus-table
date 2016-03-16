@@ -770,6 +770,7 @@ class editor(object):
                 % {'remaining_tabkeys': remaining_tabkeys,
                    'chars_valid': self._chars_valid,
                    'phrase': phrase})
+        table_code = u''
         if self.db._is_chinese and self._py_mode:
             # restore tune symbol
             remaining_tabkeys = remaining_tabkeys.replace(
@@ -778,6 +779,28 @@ class editor(object):
                         '#','↑3').replace(
                             '$','↑4').replace(
                                 '%','↑5')
+            # If in pinyin mode, phrase can only be one character.
+            # When using pinyin mode for a table like Wubi or Cangjie,
+            # the reason is probably because one does not know the
+            # Wubi or Cangjie code. So get that code from the table
+            # and display it as well to help the user learn that code.
+            # The Wubi tables contain several codes for the same
+            # character, therefore self.db.find_zi_code(phrase) may
+            # return a list. The last code in that list is the full
+            # table code for that characters, other entries in that
+            # list are shorter substrings of the full table code which
+            # are not interesting to display. Therefore, we use only
+            # the last element of the list of table codes.
+            possible_table_codes = self.db.find_zi_code(phrase)
+            if possible_table_codes:
+                table_code = possible_table_codes[-1]
+            table_code_new = u''
+            for char in table_code:
+                if char in self._prompt_characters:
+                    table_code_new += self._prompt_characters[char]
+                else:
+                    table_code_new += char
+            table_code = table_code_new
         if not self._py_mode:
             remaining_tabkeys_new = u''
             for char in remaining_tabkeys:
@@ -787,6 +810,8 @@ class editor(object):
                     remaining_tabkeys_new += char
             remaining_tabkeys = remaining_tabkeys_new
         candidate_text = phrase + u' ' + remaining_tabkeys
+        if table_code:
+            candidate_text = candidate_text + u'   ' + table_code
         attrs = IBus.AttrList ()
         attrs.append(IBus.attr_foreground_new(
             rgb(0x19,0x73,0xa2), 0, len(candidate_text)))

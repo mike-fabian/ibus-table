@@ -1,4 +1,24 @@
-commit 2c90c5dc7b5afec667586d23bf579b1f8bde0caa
+commit ecf04c1ddc87416f14e91ffa092633ff101ba528
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Mar 16 07:34:54 2016 +0100
+
+    Release 1.9.12
+
+commit 1bf38d6cc74e9de6482b2d28f6065ef283391361
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Mar 16 07:29:50 2016 +0100
+
+    Show the table code in the candidate list when pinyin mode is used
+    
+    Resolves: rhbz#1318109 - [RFE] Please show Wubi table code when in pinyin mode
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1318109, https://github.com/ibus/ibus/issues/1846
+    
+    When using pinyin mode for a table like Wubi or Cangjie,
+    the reason is probably because one does not know the
+    Wubi or Cangjie code. So get that code from the table
+    and display it as well to help the user learn that code.
+
+commit f02b1b2efc074e6095aa0286b2fac9f335e7a4c6
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Fri Nov 27 09:55:37 2015 +0100
 

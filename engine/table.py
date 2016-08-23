@@ -2306,9 +2306,9 @@ class tabengine (IBus.Engine):
             return char
 
     def _english_mode_process_key_event(self, key):
-        # Ignore key release event
+        # Ignore key release events
         if key.state & IBus.ModifierType.RELEASE_MASK:
-            return True
+            return False
         if key.val >= 128:
             return False
         # we ignore all hotkeys here
@@ -2383,8 +2383,11 @@ class tabengine (IBus.Engine):
             self.set_chinese_mode((self._editor._chinese_mode+1) % 5)
             return True
 
+        # Ignore key release events
+        # (Must be below all self._match_hotkey() callse
+        # because these match on a release event).
         if key.state & IBus.ModifierType.RELEASE_MASK:
-            return True
+            return False
 
         keychar = IBus.keyval_to_unicode(key.val)
         if type(keychar) != type(u''):

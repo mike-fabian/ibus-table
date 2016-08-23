@@ -1,4 +1,75 @@
-commit ecf04c1ddc87416f14e91ffa092633ff101ba528
+commit 31d0cefb76a200617a1875eb79a25b3a31d208d9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 23 18:22:04 2016 +0200
+
+    Release 1.9.13
+
+commit bd2b87bd0bc99df3e842e6c4c8f0c82df53d54b9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 08:56:06 2016 +0200
+
+    Add ibus-table.appdata.xml to POTFILES.in to make it translatable
+    
+    Update po files. Translate the new stuff in de.po.
+
+commit 5e7f9758dec21a1499d4d7071514ac316ff0f1da
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 23 18:19:49 2016 +0200
+
+    When ignoring key release events, “False” should be returned, not “True”
+    
+        Resolves: rhbz#1369514 - When ibus-table is active the “enter command” dialog of Gnome cannot be closed with ESC
+        See: https://bugzilla.redhat.com/show_bug.cgi?id=1369514
+
+commit ffcca5ed7b4172da8c21a17e11f7f08a392f45c8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 08:06:49 2016 +0200
+
+    Specify IBus and Gtk versions before importing in setup/main.py
+
+commit b8913c5f4dfaf2529c85f70fde7cd5a7cdcc17a7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 08:01:16 2016 +0200
+
+    Specify IBus version before importing in engine/{factory,table}.py
+
+commit 4d59c40eb3a0b66b88d8fba006ebab0883edb70b
+Author: McSinyx <vn.mcsinyx@gmail.com>
+Date:   Wed Jun 22 10:47:37 2016 +0700
+
+    Specify IBus version before importing in engine/main.py
+
+commit 80639b148326ba3ab391c0bb7fb71484976a7ce2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 07:45:19 2016 +0200
+
+    Add ibus-table.appdata.xml and install it
+
+commit 55fa0b3cd97dae4d8941cd56abefa24508273d9c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 08:40:54 2016 +0200
+
+    Add ca.po, fr.po, pt_BR.po, and uk.po from zanata
+
+commit d54c4612e7e80f549a1a01127b39713c187d104a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 08:37:49 2016 +0200
+
+    pull ja.po, zh_CN.po, and zh_TW.po from zanata
+
+commit d38217aceb217fe5af9b8122aeb3c5066067334c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 08:34:11 2016 +0200
+
+    Add .zanata-cache/ to .gitignore
+
+commit f1c4bfb7c42f71e8248acf6bc41c484bc00d9fe4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 07:13:32 2016 +0200
+
+    Add zanata.xml
+
+commit edd0fea561f0f5953d291456ec851c17518e1cd1
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Mar 16 07:34:54 2016 +0100
 

@@ -5748,6 +5748,7 @@ variants_table = {
     u'𧜗': 2,
     u'𧜵': 2,
     u'𧝞': 2,
+    u'𧠵': 2,
     u'𧩙': 2,
     u'𧮪': 1,
     u'𧳕': 1,
@@ -6083,6 +6084,7 @@ variants_table = {
     u'𫛢': 1,
     u'𫛶': 1,
     u'𫛸': 1,
+    u'𬢍': 1,
     }
 
 def detect_chinese_category(phrase):

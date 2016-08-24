@@ -483,7 +483,7 @@ U+4E69	kZVariant	U+7A3D
 U+4E70	kTraditionalVariant	U+8CB7
 U+4E71	kSemanticVariant	U+4E82<kMatthews,kMeyerWempe
 U+4E71	kTraditionalVariant	U+4E82
-U+4E7E	kSimplifiedVariant	U+5E72
+U+4E7E	kSimplifiedVariant	U+4E7E U+5E72
 U+4E7E	kSpecializedSemanticVariant	U+4E81<kFenn
 U+4E80	kZVariant	U+9F9C
 U+4E81	kSpecializedSemanticVariant	U+4E7E<kFenn

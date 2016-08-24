@@ -22,6 +22,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from gi import require_version
+require_version('IBus', '1.0')
 from gi.repository import IBus
 import table
 import tabsqlitedb

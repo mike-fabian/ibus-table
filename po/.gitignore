@@ -14,3 +14,4 @@ remove-potcdate.sed
 remove-potcdate.sin
 stamp-po
 ibus-table.pot
+.zanata-cache/

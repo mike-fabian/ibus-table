@@ -31,8 +31,11 @@ import optparse
 from time import strftime
 import re
 
+from gi import require_version
 from gi.repository import GLib
+require_version('Gtk', '3.0')
 from gi.repository import Gtk
+require_version('IBus', '1.0')
 from gi.repository import IBus
 
 import version

@@ -1,349 +1,308 @@
-# IBus-Table Translation file: zh_TW.po
-# Copyright (C) 2009 Caius 'kaio' Chance <k@kaio.me>
-# This file is distributed under the same license as the ibus-table package.
-# Caius 'kaio' Chance <k@kaio.me>, 2009.05.21
-#
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2014. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1.20080819\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2014-09-16 07:25+0200\n"
-"PO-Revision-Date: 2012-11-13 08:31+0100\n"
-"Last-Translator: Caius 'kaio' Chance <k@kaio.me>\n"
-"Language-Team: Caius 'kaio' Chance <k@kaio.me>\n"
-"Language: \n"
+"POT-Creation-Date: 2016-08-23 18:25+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-11-29 09:15-0500\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Language-Team: Chinese (Taiwan)\n"
+"Language: zh-TW\n"
+"X-Generator: Zanata 3.9.3\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
-#: engine/table.py:1325 setup/ibus-table-preferences.ui:75
-#, fuzzy
+#: engine/table.py:1472 setup/ibus-table-preferences.ui:75
 msgid "Simplified Chinese"
-msgstr "簡體模式"
+msgstr "簡體字中文"
 
-#: engine/table.py:1326
-#, fuzzy
+#: engine/table.py:1474
 msgid "Switch to “Simplified Chinese only”."
-msgstr "切換成簡體模式"
+msgstr "切換至「僅簡體字中文」"
 
-#: engine/table.py:1331 setup/ibus-table-preferences.ui:78
-#, fuzzy
+#: engine/table.py:1480 setup/ibus-table-preferences.ui:78
 msgid "Traditional Chinese"
-msgstr "繁體模式"
+msgstr "正體字中文"
 
-#: engine/table.py:1332
-#, fuzzy
+#: engine/table.py:1482
 msgid "Switch to “Traditional Chinese only”."
-msgstr "切換成繁體模式"
+msgstr "切換至「正體字中文」"
 
-#: engine/table.py:1337
-#, fuzzy
+#: engine/table.py:1488
 msgid "Simplified Chinese first"
-msgstr "簡體模式"
+msgstr "簡體字中文優先"
 
-#: engine/table.py:1338
-#, fuzzy
+#: engine/table.py:1490
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr "切換成簡體模式"
+msgstr "切換至「簡體字中文先於正體字」"
 
-#: engine/table.py:1343
-#, fuzzy
+#: engine/table.py:1496
 msgid "Traditional Chinese first"
-msgstr "繁體模式"
+msgstr "正體字中文優先"
 
-#: engine/table.py:1344
-#, fuzzy
+#: engine/table.py:1498
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr "切換成繁體模式"
+msgstr "切換至「正體字中文先於簡體字」"
 
-#: engine/table.py:1349 setup/ibus-table-preferences.ui:87
+#: engine/table.py:1504 setup/ibus-table-preferences.ui:87
 msgid "All Chinese characters"
-msgstr ""
+msgstr "所有中文字元"
 
-#: engine/table.py:1350
-#, fuzzy
+#: engine/table.py:1505
 msgid "Switch to “All Chinese characters”."
-msgstr "切換成繁體模式"
+msgstr "切換至「所有中文字元」"
 
-#: engine/table.py:1354
-#, fuzzy
+#: engine/table.py:1509
 msgid "Chinese mode"
 msgstr "中文模式"
 
-#: engine/table.py:1355
-#, fuzzy
+#: engine/table.py:1510
 msgid "Switch Chinese mode"
-msgstr "中文模式"
+msgstr "切換中文模式"
 
-#: engine/table.py:1365
-#, fuzzy
+#: engine/table.py:1520
 msgid "English"
-msgstr "英文模式"
+msgstr "英文"
 
-#: engine/table.py:1366
+#: engine/table.py:1521
 msgid "Switch to English input"
-msgstr ""
+msgstr "切換至英文輸入"
 
-#: engine/table.py:1371
-#, fuzzy
+#: engine/table.py:1528
 msgid "Chinese"
-msgstr "中文模式"
+msgstr "中文"
 
-#: engine/table.py:1372
-#, fuzzy
+#: engine/table.py:1529
 msgid "Switch to Chinese input"
-msgstr "中文模式"
+msgstr "切換至中文輸入"
 
-#: engine/table.py:1380 engine/table.py:1495
-#: setup/ibus-table-preferences.ui:36
+#: engine/table.py:1537 engine/table.py:1656 setup/ibus-table-preferences.ui:36
 msgid "Direct"
-msgstr ""
+msgstr "直接"
 
-#: engine/table.py:1381
-#, fuzzy
+#: engine/table.py:1538
 msgid "Switch to direct input"
-msgstr "切換成拼音反查模式"
+msgstr "切換至直接輸入"
 
-#: engine/table.py:1386 engine/table.py:1447
-#, fuzzy
+#: engine/table.py:1543 engine/table.py:1604
 msgid "Table"
-msgstr "形碼模式"
+msgstr "表格"
 
-#: engine/table.py:1387
-#, fuzzy
+#: engine/table.py:1544
 msgid "Switch to table input"
-msgstr "切換成形碼模式"
+msgstr "切換至表格輸入"
 
-#: engine/table.py:1395
-#, fuzzy
+#: engine/table.py:1552
 msgid "Input mode"
-msgstr "直接輸出模式，亦即單項結果即時輸出"
+msgstr "輸入模式"
 
-#: engine/table.py:1396
-#, fuzzy
+#: engine/table.py:1553
 msgid "Switch Input mode"
-msgstr "直接輸出模式，亦即單項結果即時輸出"
+msgstr "切換輸入模式"
 
-#: engine/table.py:1405 engine/table.py:1426
-#: setup/ibus-table-preferences.ui:98 setup/ibus-table-preferences.ui:112
-#: setup/ibus-table-preferences.ui:182 setup/ibus-table-preferences.ui:196
+#: engine/table.py:1562 engine/table.py:1583 setup/ibus-table-preferences.ui:98
+#: setup/ibus-table-preferences.ui:112 setup/ibus-table-preferences.ui:182
+#: setup/ibus-table-preferences.ui:196
 msgid "Half"
-msgstr ""
+msgstr "半形"
 
-#: engine/table.py:1406
-#, fuzzy
+#: engine/table.py:1563
 msgid "Switch to halfwidth letters"
-msgstr "半形字元"
+msgstr "切換至半形字母"
 
-#: engine/table.py:1411 engine/table.py:1432
+#: engine/table.py:1568 engine/table.py:1589
 #: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
 #: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
 msgid "Full"
-msgstr ""
+msgstr "全形"
 
-#: engine/table.py:1412
-#, fuzzy
+#: engine/table.py:1569
 msgid "Switch to fullwidth letters"
-msgstr "全形字元"
+msgstr "切換至全形字母"
 
-#: engine/table.py:1416
+#: engine/table.py:1573
 msgid "Letter width"
-msgstr ""
+msgstr "字母寬"
 
-#: engine/table.py:1417
-#, fuzzy
+#: engine/table.py:1574
 msgid "Switch letter width"
-msgstr "全形字元"
+msgstr "切換字母寬度"
 
-#: engine/table.py:1427
-#, fuzzy
+#: engine/table.py:1584
 msgid "Switch to halfwidth punctuation"
-msgstr "切換成半形標點"
+msgstr "切換至半形標點"
 
-#: engine/table.py:1433
-#, fuzzy
+#: engine/table.py:1590
 msgid "Switch to fullwidth punctuation"
-msgstr "切換成全形標點"
+msgstr "切換至全形標點"
 
-#: engine/table.py:1437
+#: engine/table.py:1594
 msgid "Punctuation width"
-msgstr ""
+msgstr "標點寬"
 
-#: engine/table.py:1438
-#, fuzzy
+#: engine/table.py:1595
 msgid "Switch punctuation width"
-msgstr "全形標點"
+msgstr "切換標點寬度"
 
-#: engine/table.py:1448
-#, fuzzy
+#: engine/table.py:1605
 msgid "Switch to table mode"
-msgstr "切換成形碼模式"
+msgstr "切換至表格模式"
 
-#: engine/table.py:1453
+#: engine/table.py:1610
 msgid "Pinyin"
-msgstr ""
+msgstr "拼音"
 
-#: engine/table.py:1454
-#, fuzzy
+#: engine/table.py:1611
 msgid "Switch to pinyin mode"
-msgstr "切換成英文模式"
+msgstr "切換至拼音模式"
 
-#: engine/table.py:1458
-#, fuzzy
+#: engine/table.py:1615
 msgid "Pinyin mode"
-msgstr "切換成英文模式"
+msgstr "拼音模式"
 
-#: engine/table.py:1459
+#: engine/table.py:1616
 msgid "Switch pinyin mode"
-msgstr ""
+msgstr "切換拼音模式"
 
-#: engine/table.py:1468
+#: engine/table.py:1625
 msgid "Multiple character match"
-msgstr ""
+msgstr "多字元比對"
 
-#: engine/table.py:1469
-#, fuzzy
+#: engine/table.py:1626
 msgid "Switch to matching multiple characters at once"
-msgstr "切換成單字元模式"
+msgstr "切換至一次比對多字元"
 
-#: engine/table.py:1474
-#, fuzzy
+#: engine/table.py:1631
 msgid "Single character match"
-msgstr "單字元模式"
+msgstr "切換字元比對"
 
-#: engine/table.py:1475
+#: engine/table.py:1632
 msgid "Switch to matching only single characters"
-msgstr ""
+msgstr "切換至僅比對單一字元"
 
-#: engine/table.py:1479
-#, fuzzy
+#: engine/table.py:1636
 msgid "Onechar mode"
-msgstr "詞組模式"
+msgstr "一字模式"
 
-#: engine/table.py:1480
+#: engine/table.py:1637
 msgid "Switch onechar mode"
-msgstr ""
+msgstr "切換一字模式"
 
-#: engine/table.py:1489 setup/ibus-table-preferences.ui:33
+#: engine/table.py:1646 setup/ibus-table-preferences.ui:33
 msgid "Normal"
-msgstr ""
+msgstr "一般"
 
-#: engine/table.py:1490
+#: engine/table.py:1648
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
-"of into the application. This enables automatic definitions of new shortcuts)"
-msgstr ""
+"of into the application. This enables automatic definitions of new "
+"shortcuts)"
+msgstr "切換至一般提交模式 (自動提入預先編輯區內而非程式內。這會啟用新快捷鍵的自動定義)"
 
-#: engine/table.py:1496
+#: engine/table.py:1658
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
-msgstr ""
+msgstr "切換至直接提交模式 (直接自動提入程式內)"
 
-#: engine/table.py:1500
-#, fuzzy
+#: engine/table.py:1663
 msgid "Auto commit mode"
-msgstr "直接輸出模式，亦即單項結果即時輸出"
+msgstr "自動提交模式"
 
-#: engine/table.py:1501
-#, fuzzy
+#: engine/table.py:1664
 msgid "Switch autocommit mode"
-msgstr "切換成直接輸出模式，亦即單項結果即時輸出"
+msgstr "切換自動提交模式"
 
-#: engine/table.py:1743
+#: engine/table.py:1915
 msgid "Setup"
-msgstr ""
+msgstr "設置"
 
-#: engine/table.py:1745
+#: engine/table.py:1917
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
-msgstr ""
+msgstr "設定 ibus-table「%(engine-name)s」"
 
-#: setup/main.py:125
+#: setup/main.py:126
 msgid "IBUS_ENGINE_NAME environment variable is not set."
-msgstr ""
+msgstr "IBUS_ENGINE_NAME 環境變數尚未設定。"
 
-#: setup/main.py:129
+#: setup/main.py:130
 msgid "Cannot determine the engine name. Please use the --engine-name option."
-msgstr ""
+msgstr "無法判定引擎名稱。請使用 --engine-name 選項。"
 
-#: setup/main.py:143
+#: setup/main.py:144
 #, python-format
 msgid "IBus Table engine %s is not available"
-msgstr ""
+msgstr "IBus Table 引擎 %s 無法使用"
 
-#: setup/main.py:271
+#: setup/main.py:293
 #, python-format
 msgid "IBus Table %s Preferences"
-msgstr ""
+msgstr "IBus Table %s 偏好設定"
 
 #: setup/ibus-table-preferences.ui:19 setup/ibus-table-preferences.ui:47
 #: setup/ibus-table-preferences.ui:61
 msgid "No"
-msgstr ""
+msgstr "否"
 
 #: setup/ibus-table-preferences.ui:22 setup/ibus-table-preferences.ui:50
 #: setup/ibus-table-preferences.ui:64
 msgid "Yes"
-msgstr ""
+msgstr "是"
 
 #: setup/ibus-table-preferences.ui:81
-#, fuzzy
 msgid "Simplified Chinese before traditional"
-msgstr "簡體模式"
+msgstr "簡體字中文先於正體字"
 
 #: setup/ibus-table-preferences.ui:84
-#, fuzzy
 msgid "Traditional Chinese before simplified"
-msgstr "繁體模式"
+msgstr "繁體字中文先於簡體字"
 
 #: setup/ibus-table-preferences.ui:126
-#, fuzzy
 msgid "Direct input"
-msgstr "直接輸出模式，亦即單項結果即時輸出"
+msgstr "直接輸入"
 
 #: setup/ibus-table-preferences.ui:129
 msgid "Table input"
-msgstr ""
+msgstr "表格輸入"
 
 #: setup/ibus-table-preferences.ui:140
 msgid "Horizontal"
-msgstr ""
+msgstr "水平"
 
 #: setup/ibus-table-preferences.ui:143
 msgid "Vertical"
-msgstr ""
+msgstr "垂直"
 
 #: setup/ibus-table-preferences.ui:154
-#, fuzzy
 msgid "Phrase"
-msgstr "詞組模式"
+msgstr "詞彙"
 
 #: setup/ibus-table-preferences.ui:157
-#, fuzzy
 msgid "Single Char"
-msgstr "單字元模式"
+msgstr "一字"
 
 #: setup/ibus-table-preferences.ui:168
 msgid "Commit"
-msgstr ""
+msgstr "提交"
 
 #: setup/ibus-table-preferences.ui:171
 msgid "Next Page"
-msgstr ""
+msgstr "下一頁"
 
 #: setup/ibus-table-preferences.ui:223
 msgid "Restore all defaults"
-msgstr ""
+msgstr "全部還原至預設值"
 
 #: setup/ibus-table-preferences.ui:227
 msgid "Restore defaults as specified in the database for this engine."
-msgstr ""
+msgstr "還原至此引擎資料庫中指定的預設值。"
 
 #: setup/ibus-table-preferences.ui:302
-#, fuzzy
 msgid "Input mode:"
-msgstr "直接輸出模式，亦即單項結果即時輸出"
+msgstr "輸入模式："
 
 #: setup/ibus-table-preferences.ui:315
 msgid ""
@@ -358,51 +317,57 @@ msgid ""
 "matches without any particular filtering on traditional\n"
 "versus simplified Chinese."
 msgstr ""
+"「正體字中文」僅會顯示正體字。\n"
+"「簡體字中文」僅會顯示簡體字。\n"
+"「正體字中文先於簡體字」在候選清單中先顯示正體字。\n"
+"「簡體字中文先於正體字」在候選清單中先顯示簡體字。\n"
+"「所有字元」則顯示所有符合項目，不會特地過濾正體字\n"
+"或簡體字。"
 
 #: setup/ibus-table-preferences.ui:340
-msgid ""
-"Whether to use fullwidth or halfwidth\n"
+msgid "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
-msgstr ""
+msgstr "表格輸入模式要使用全形字母\n"
+"或半形字母。"
 
 #: setup/ibus-table-preferences.ui:357
-msgid ""
-"Whether to use fullwidth or halfwidth\n"
+msgid "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
-msgstr ""
+msgstr "表格輸入模式要使用全形標點\n"
+"或半形標點。"
 
 #: setup/ibus-table-preferences.ui:374
-msgid ""
-"Whether to use fullwidth or halfwidth\n"
+msgid "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
-msgstr ""
+msgstr "直接輸入模式要使用全形字母\n"
+"或半形字母。"
 
 #: setup/ibus-table-preferences.ui:391
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
-msgstr ""
+msgstr "直接輸入模式要使用全形標點\n"
+"或半形標點。"
 
 #: setup/ibus-table-preferences.ui:411
-#, fuzzy
 msgid "Chinese mode:"
-msgstr "中文模式"
+msgstr "中文模式："
 
 #: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"
-msgstr ""
+msgstr "表格輸入字母寬度："
 
 #: setup/ibus-table-preferences.ui:443
 msgid "Table input punctuation width:"
-msgstr ""
+msgstr "表格輸入標點寬度："
 
 #: setup/ibus-table-preferences.ui:459
 msgid "Direct input letter width:"
-msgstr ""
+msgstr "直接輸入字母寬度："
 
 #: setup/ibus-table-preferences.ui:475
 msgid "Direct input punctuation width:"
-msgstr ""
+msgstr "直接輸入標點寬度："
 
 #: setup/ibus-table-preferences.ui:488
 msgid ""
@@ -413,16 +378,22 @@ msgid ""
 "halfwidth may still happen in direct input mode.\n"
 "“Table input” means the input method is on."
 msgstr ""
+"「直接輸入」幾乎與關閉輸入法相同，\n"
+"如同未使用輸入法，大多數字元直接送\n"
+"入程式中。但有些全形、半形的轉換，\n"
+"在直接輸入模式中仍會處理。「表格輸\n"
+"入」則代表開啟輸入法。"
 
 #: setup/ibus-table-preferences.ui:514
 msgid "<b>Inital state</b>"
-msgstr ""
+msgstr "<b>初始狀態</b>"
 
 #: setup/ibus-table-preferences.ui:551
 msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
-msgstr ""
+msgstr "顯示候選字詞的查詢表格是要\n"
+"垂直排列或水平排列。"
 
 #: setup/ibus-table-preferences.ui:568
 msgid ""
@@ -513,9 +484,8 @@ msgid "Auto select:"
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:846
-#, fuzzy
 msgid "Auto commit mode:"
-msgstr "直接輸出模式，亦即單項結果即時輸出"
+msgstr ""
 
 #: setup/ibus-table-preferences.ui:862
 msgid "Behavior of space key:"
@@ -532,9 +502,8 @@ msgid ""
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:911
-#, fuzzy
 msgid "Single wildchard character:"
-msgstr "單字元模式"
+msgstr ""
 
 #: setup/ibus-table-preferences.ui:924
 msgid ""
@@ -588,112 +557,3 @@ msgstr ""
 #: setup/ibus-table-preferences.ui:1186
 msgid "About"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Chinese input (Left Shift)"
-#~ msgstr "切換成拼音反查模式"
-
-#, fuzzy
-#~ msgid "Direct input (Left Shift)"
-#~ msgstr "切換成拼音反查模式"
-
-#, fuzzy
-#~ msgid "Switch to “Chinese input” (Left Shift)"
-#~ msgstr "切換成拼音反查模式"
-
-#, fuzzy
-#~ msgid "Fullwidth letters (Shift-Space)"
-#~ msgstr "切換成全形字元"
-
-#, fuzzy
-#~ msgid "Switch to “Halfwidth letters” (Shift-Space)"
-#~ msgstr "切換成半形字元"
-
-#, fuzzy
-#~ msgid "Halfwidth letters (Shift-Space)"
-#~ msgstr "切換成半形字元"
-
-#, fuzzy
-#~ msgid "Switch to “Fullwidth letters” (Shift-Space)"
-#~ msgstr "切換成全形字元"
-
-#, fuzzy
-#~ msgid "Halfwidth punctuation (Ctrl-.)"
-#~ msgstr "半形標點"
-
-#, fuzzy
-#~ msgid "Table mode (Right Shift)"
-#~ msgstr "切換成形碼模式"
-
-#, fuzzy
-#~ msgid "Switch to “Phrase mode” (Ctrl-,)"
-#~ msgstr "切換成詞組模式"
-
-#, fuzzy
-#~ msgid "Phrase mode (Ctrl-,)"
-#~ msgstr "切換成詞組模式"
-
-#, fuzzy
-#~ msgid "Direct commit mode (Ctrl-/)"
-#~ msgstr "直接輸出模式，亦即單項結果即時輸出"
-
-#, fuzzy
-#~ msgid "Switch to “Normal commit mode” (uses space to commit) (Ctrl-/)"
-#~ msgstr "切換成標準輸出模式，亦即按空格鍵執行輸出"
-
-#, fuzzy
-#~ msgid "Normal commit mode (Ctrl-/)"
-#~ msgstr "標準輸出模式"
-
-#, fuzzy
-#~ msgid "Simplified Chinese (Ctrl-;)"
-#~ msgstr "簡體模式"
-
-#, fuzzy
-#~ msgid "Traditional Chinese (Ctrl-;)"
-#~ msgstr "繁體模式"
-
-#, fuzzy
-#~ msgid "Simplified Chinese before traditional (Ctrl-;)"
-#~ msgstr "簡體模式"
-
-#, fuzzy
-#~ msgid "Traditional Chinese before simplified (Ctrl-;)"
-#~ msgstr "繁體模式"
-
-#, fuzzy
-#~ msgid "All Chinese characters (Ctrl-;)"
-#~ msgstr "切換成繁體模式"
-
-#~ msgid "English Mode"
-#~ msgstr "英文模式"
-
-#~ msgid "PinYin Mode"
-#~ msgstr "拼音反查模式"
-
-#, fuzzy
-#~ msgid "Switch to Simplify Chinese first Big Charset Mode - Ctrl-;"
-#~ msgstr "切換成大字集模式（簡體結果優先）"
-
-#~ msgid "Simplified Chinese First Big Charset Mode"
-#~ msgstr "大字集模式（簡體結果優先）"
-
-#, fuzzy
-#~ msgid "Switch to Traditional Chinese first Big Charset Mode - Ctrl-;"
-#~ msgstr "切換成大字集模式（繁體結果優先）"
-
-#~ msgid "Traditional Chinese First Big Charset Mode"
-#~ msgstr "大字集模式（繁體結果優先）"
-
-#, fuzzy
-#~ msgid "Switch to Big Charset Mode - Ctrl-;"
-#~ msgstr "切換成大字集模式（預設結果順序）"
-
-#~ msgid "Big Chinese Mode"
-#~ msgstr "大字集模式（預設結果順序）"
-
-#~ msgid "CN"
-#~ msgstr "中"
-
-#~ msgid "EN"
-#~ msgstr "英"

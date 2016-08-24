@@ -1,245 +1,243 @@
-# IBus-Table Translation file: ja.po
-# Copyright (C) 2014 Mike FABIAN <mfabian@redhat.com>
-# This file is distributed under the same license as the PACKAGE package.
-# Mike FABIAN <mfabian@redhat.com>, 2014.
-#
+# Ooyama Yosiyuki <qqke6wd9k@apricot.ocn.ne.jp>, 2015. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: ibus-table 1.8.10\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2014-09-16 07:25+0200\n"
-"PO-Revision-Date: 2014-09-16 09:51+0200\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2016-08-23 18:25+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-08-15 03:33-0400\n"
+"Last-Translator: Ooyama Yosiyuki <qqke6wd9k@apricot.ocn.ne.jp>\n"
+"Language-Team: Japanese\n"
+"Language: ja\n"
+"X-Generator: Zanata 3.9.3\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
-#: engine/table.py:1325 setup/ibus-table-preferences.ui:75
+#: engine/table.py:1472 setup/ibus-table-preferences.ui:75
 msgid "Simplified Chinese"
-msgstr ""
+msgstr "中国語(簡体)"
 
-#: engine/table.py:1326
+#: engine/table.py:1474
 msgid "Switch to “Simplified Chinese only”."
 msgstr ""
 
-#: engine/table.py:1331 setup/ibus-table-preferences.ui:78
+#: engine/table.py:1480 setup/ibus-table-preferences.ui:78
 msgid "Traditional Chinese"
-msgstr ""
+msgstr "中国語(繁体)"
 
-#: engine/table.py:1332
+#: engine/table.py:1482
 msgid "Switch to “Traditional Chinese only”."
 msgstr ""
 
-#: engine/table.py:1337
+#: engine/table.py:1488
 msgid "Simplified Chinese first"
 msgstr ""
 
-#: engine/table.py:1338
+#: engine/table.py:1490
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr ""
 
-#: engine/table.py:1343
+#: engine/table.py:1496
 msgid "Traditional Chinese first"
 msgstr ""
 
-#: engine/table.py:1344
+#: engine/table.py:1498
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr ""
 
-#: engine/table.py:1349 setup/ibus-table-preferences.ui:87
+#: engine/table.py:1504 setup/ibus-table-preferences.ui:87
 msgid "All Chinese characters"
 msgstr ""
 
-#: engine/table.py:1350
+#: engine/table.py:1505
 msgid "Switch to “All Chinese characters”."
 msgstr ""
 
-#: engine/table.py:1354
+#: engine/table.py:1509
 msgid "Chinese mode"
 msgstr ""
 
-#: engine/table.py:1355
+#: engine/table.py:1510
 msgid "Switch Chinese mode"
 msgstr ""
 
-#: engine/table.py:1365
+#: engine/table.py:1520
 msgid "English"
 msgstr "英語"
 
-#: engine/table.py:1366
+#: engine/table.py:1521
 msgid "Switch to English input"
 msgstr ""
 
-#: engine/table.py:1371
+#: engine/table.py:1528
 msgid "Chinese"
 msgstr "中国語"
 
-#: engine/table.py:1372
+#: engine/table.py:1529
 msgid "Switch to Chinese input"
 msgstr ""
 
-#: engine/table.py:1380 engine/table.py:1495
-#: setup/ibus-table-preferences.ui:36
+#: engine/table.py:1537 engine/table.py:1656 setup/ibus-table-preferences.ui:36
 msgid "Direct"
 msgstr ""
 
-#: engine/table.py:1381
+#: engine/table.py:1538
 msgid "Switch to direct input"
 msgstr ""
 
-#: engine/table.py:1386 engine/table.py:1447
+#: engine/table.py:1543 engine/table.py:1604
 msgid "Table"
 msgstr ""
 
-#: engine/table.py:1387
+#: engine/table.py:1544
 msgid "Switch to table input"
 msgstr ""
 
-#: engine/table.py:1395
+#: engine/table.py:1552
 msgid "Input mode"
 msgstr "入力モード"
 
-#: engine/table.py:1396
+#: engine/table.py:1553
 msgid "Switch Input mode"
-msgstr ""
+msgstr "入力モードを切り替えます"
 
-#: engine/table.py:1405 engine/table.py:1426
-#: setup/ibus-table-preferences.ui:98 setup/ibus-table-preferences.ui:112
-#: setup/ibus-table-preferences.ui:182 setup/ibus-table-preferences.ui:196
+#: engine/table.py:1562 engine/table.py:1583 setup/ibus-table-preferences.ui:98
+#: setup/ibus-table-preferences.ui:112 setup/ibus-table-preferences.ui:182
+#: setup/ibus-table-preferences.ui:196
 msgid "Half"
-msgstr ""
+msgstr "半"
 
-#: engine/table.py:1406
+#: engine/table.py:1563
 msgid "Switch to halfwidth letters"
 msgstr ""
 
-#: engine/table.py:1411 engine/table.py:1432
+#: engine/table.py:1568 engine/table.py:1589
 #: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
 #: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
 msgid "Full"
-msgstr ""
+msgstr "全"
 
-#: engine/table.py:1412
+#: engine/table.py:1569
 msgid "Switch to fullwidth letters"
 msgstr ""
 
-#: engine/table.py:1416
+#: engine/table.py:1573
 msgid "Letter width"
 msgstr ""
 
-#: engine/table.py:1417
+#: engine/table.py:1574
 msgid "Switch letter width"
 msgstr ""
 
-#: engine/table.py:1427
+#: engine/table.py:1584
 msgid "Switch to halfwidth punctuation"
 msgstr ""
 
-#: engine/table.py:1433
+#: engine/table.py:1590
 msgid "Switch to fullwidth punctuation"
 msgstr ""
 
-#: engine/table.py:1437
+#: engine/table.py:1594
 msgid "Punctuation width"
 msgstr ""
 
-#: engine/table.py:1438
+#: engine/table.py:1595
 msgid "Switch punctuation width"
 msgstr ""
 
-#: engine/table.py:1448
+#: engine/table.py:1605
 msgid "Switch to table mode"
 msgstr ""
 
-#: engine/table.py:1453
+#: engine/table.py:1610
 msgid "Pinyin"
-msgstr ""
+msgstr "ピンイン"
 
-#: engine/table.py:1454
+#: engine/table.py:1611
 msgid "Switch to pinyin mode"
 msgstr ""
 
-#: engine/table.py:1458
+#: engine/table.py:1615
 msgid "Pinyin mode"
-msgstr ""
+msgstr "ピンインモード"
 
-#: engine/table.py:1459
+#: engine/table.py:1616
 msgid "Switch pinyin mode"
 msgstr ""
 
-#: engine/table.py:1468
+#: engine/table.py:1625
 msgid "Multiple character match"
 msgstr ""
 
-#: engine/table.py:1469
+#: engine/table.py:1626
 msgid "Switch to matching multiple characters at once"
 msgstr ""
 
-#: engine/table.py:1474
+#: engine/table.py:1631
 msgid "Single character match"
 msgstr ""
 
-#: engine/table.py:1475
+#: engine/table.py:1632
 msgid "Switch to matching only single characters"
 msgstr ""
 
-#: engine/table.py:1479
+#: engine/table.py:1636
 msgid "Onechar mode"
 msgstr ""
 
-#: engine/table.py:1480
+#: engine/table.py:1637
 msgid "Switch onechar mode"
 msgstr ""
 
-#: engine/table.py:1489 setup/ibus-table-preferences.ui:33
+#: engine/table.py:1646 setup/ibus-table-preferences.ui:33
 msgid "Normal"
 msgstr ""
 
-#: engine/table.py:1490
+#: engine/table.py:1648
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
-"of into the application. This enables automatic definitions of new shortcuts)"
+"of into the application. This enables automatic definitions of new "
+"shortcuts)"
 msgstr ""
 
-#: engine/table.py:1496
+#: engine/table.py:1658
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
 msgstr ""
 
-#: engine/table.py:1500
+#: engine/table.py:1663
 msgid "Auto commit mode"
 msgstr ""
 
-#: engine/table.py:1501
+#: engine/table.py:1664
 msgid "Switch autocommit mode"
 msgstr ""
 
-#: engine/table.py:1743
+#: engine/table.py:1915
 msgid "Setup"
-msgstr "設定"
+msgstr ""
 
-#: engine/table.py:1745
+#: engine/table.py:1917
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr ""
 
-#: setup/main.py:125
+#: setup/main.py:126
 msgid "IBUS_ENGINE_NAME environment variable is not set."
 msgstr ""
 
-#: setup/main.py:129
+#: setup/main.py:130
 msgid "Cannot determine the engine name. Please use the --engine-name option."
 msgstr ""
 
-#: setup/main.py:143
+#: setup/main.py:144
 #, python-format
 msgid "IBus Table engine %s is not available"
 msgstr ""
 
-#: setup/main.py:271
+#: setup/main.py:293
 #, python-format
 msgid "IBus Table %s Preferences"
 msgstr ""
@@ -321,20 +319,17 @@ msgid ""
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:340
-msgid ""
-"Whether to use fullwidth or halfwidth\n"
+msgid "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:357
-msgid ""
-"Whether to use fullwidth or halfwidth\n"
+msgid "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:374
-msgid ""
-"Whether to use fullwidth or halfwidth\n"
+msgid "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
 

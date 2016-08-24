@@ -1,4 +1,50 @@
-commit 31d0cefb76a200617a1875eb79a25b3a31d208d9
+commit 72f124af2d6a7c770a8523c44e16c77330157c64
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 13:45:51 2016 +0200
+
+    Release 1.9.14
+
+commit ac1229bbc73e2ac67daf6dea98a31d9673afe38d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 13:39:43 2016 +0200
+
+    Add test case for 乾 to make sure it is detected as both traditional and simplified Chinese
+
+commit d38e16f8a4f7fd52faf58eb1da7859ce2089c2cc
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 12:22:26 2016 +0200
+
+    Regenerate engine/chinese_variants.py
+
+commit d7f92a6f3c76daa02f271ee5a1989e748e6be7d9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 24 11:37:21 2016 +0200
+
+    Update Unihan_Variants.txt from “2015-04-30 Unicode 8.0.0” to “2016-06-01 Unicode 9.0.0”
+    
+    But keep our fixes which are not yet included upstream.
+    
+    New lines in Unihan_Variants.txt which are relevant for
+    simplified and traditional detection:
+    
+    > U+27835        kSimplifiedVariant      U+2C88D
+    
+    U+27835 = 𧠵 U+2C88D = 𬢍
+    
+    > U+2C88D        kTraditionalVariant     U+27835
+    
+    U+2C88D = 𬢍 U+27835 = 𧠵
+
+commit 63169be512839583c4d0743f1bebc5a6a8c07a6a
+Merge: ac11e4e 0dde127
+Author: Mike FABIAN <maiku.fabian@gmail.com>
+Date:   Wed Aug 24 13:18:01 2016 +0200
+
+    Merge pull request #47 from heiher/master
+    
+    Fix bug in Unihan_Variants.txt, 乾 U+4E7E is both simplified and traditional Chinese
+
+commit ac11e4e94a22a1064139361d657ca444125c4318
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Aug 23 18:22:04 2016 +0200
 
@@ -68,6 +114,12 @@ Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Aug 24 07:13:32 2016 +0200
 
     Add zanata.xml
+
+commit 0dde127843b2bf12921460fa3ab3f7e568f11d18
+Author: Heiher <r@hev.cc>
+Date:   Wed Aug 24 13:43:55 2016 +0800
+
+    Fix bug in Unihan_Variants.txt, 乾 U+4E7E is both simplified *and* traditional Chinese
 
 commit edd0fea561f0f5953d291456ec851c17518e1cd1
 Author: Mike FABIAN <mfabian@redhat.com>

@@ -1,0 +1,194 @@
+---
+layout: default
+---
+<h1>Documentation</h1>
+
+<br>
+<a name="contents"></a>
+<br>
+<h2>Contents</h2>
+
+<ul>
+  <li><a href="#key-bindings">Key bindings</a></li>
+</ul>
+
+<br>
+<a name="key-bindings"></a>
+<br>
+<h2>Key bindings</h2>
+
+<table border="2" cellspacing="10" cellpadding="10">
+<thead>
+<tr>
+  <th>Key combination</th>
+  <th>Effect</th>
+</tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Space</td>
+    <td>Commit the preëdit string.</td>
+  </tr>
+  <tr>
+  <tr>
+    <td>Escape</td>
+    <td>Clear preëdit and discard contents.</td>
+  </tr>
+  <tr>
+    <td>Left (Arrow left)</td>
+    <td>Move cursor one character left in the preëdit text.</td>
+  </tr>
+  <tr>
+    <td>Control+Left (Control+Arrow_Left)</td>
+    <td>Move cursor to the left end of the preëdit text.</td>
+  </tr>
+  <tr>
+    <td>Right (Arrow right)</td>
+    <td>Move cursor one characater right in preëdit text.</td>
+  </tr>
+  <tr>
+    <td>Control+Right (Control+Arrow_Right)</td>
+    <td>Move cursor to the right end of the preëdit text.</td>
+  </tr>
+  <tr>
+    <td>Backspace</td>
+    <td>Remove the character to the left of the cursor in the preëdit text.</td>
+  </tr>
+  <tr>
+    <td>Control+Backspace</td>
+    <td>Remove everything left of the cursor in the preëdit text.</td>
+  </tr>
+  <tr>
+    <td>Delete</td>
+    <td>
+      Remove the character to the right of the cursor in the preëdit
+      text.
+    </td>
+  </tr>
+  <tr>
+    <td>Control+Delete</td>
+    <td>Remove everything to the right of the cursor in the preëdit text.</td>
+  </tr>
+  <tr>
+    <td>Down (Arrow down)</td>
+    <td>Select the next candidate.</td>
+  </tr>
+  <tr>
+    <td>Up (Arrow up)</td>
+    <td>Select the previous candidate.</td>
+  </tr>
+  <tr>
+    <td>Page_Up</td>
+    <td>Show next page of candidates.</td>
+  </tr>
+  <tr>
+    <td>Page_Down</td>
+    <td>Show previous page of candidates.</td>
+  </tr>
+  <tr>
+    <td>-</td>
+    <td>
+      When not being used as a valid input key, same as Page_Up.
+    </td>
+  </tr>
+  <tr>
+    <td>=</td>
+    <td>
+      When not being used as a valid input key, same as Page_Down.
+    </td>
+  </tr>
+  <tr>
+    <td>1 …　9</td>
+    <td>
+      Commit the candidate labelled with that number.  Note that a
+      table can define other keys than the numbers 1 … 9 as select
+      keys to be able to use numbers as input. For example, the
+      “latex” table needs number as input.  Therefore, the “latex”
+      table defines F1 … F9 as select keys.
+    </td>
+  </tr>
+  <tr>
+    <td>Control+1 … Control+9</td>
+    <td>Commit the candidate labelled with that number to the preëdit.</td>
+  </tr>
+  <tr>
+    <td>Alt+1 … Alt+9</td>
+    <td>Remove the candidate labelled with that number from the database of
+      learned user input.</td>
+  </tr>
+  <tr>
+    <td>Shift_L (Left Shift key)</td>
+    <td>
+      <ul>
+        <li>
+          When the preëdit is empty: toggle the input mode between direct
+          input mode (e.g. “English”) and table mode (e.g. “Chinese”).
+        </li>
+        <li>When the preëdit is <b>not</b> empty: commit the first candidate
+          to the preëdit.
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>Shift_R (Right Shift key)</td>
+    <td>
+      <ul>
+        <li>
+          When in table mode: Toggle between pinyin mode and normal mode.
+        </li>
+        <li>
+          When in direct input mode: No function.
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>Shift+1 … Shift+5 (Right or Left Shift key)</td>
+    <td>
+      When in pinyin mode, input the tones. The tones are displayed in
+      the aux area as ↑1, ↑2, ↑3, ↑4, ↑5. 1 is YinPin, 2 is YangPin, 3
+      is ShangSheng, 4 is QuSheng, 5 is QingSheng.
+    </td>
+  </tr>
+  <tr>
+    <td>Control+,</td>
+    <td>
+      Toggle “one char mode”, i.e. toggle between showing only single
+      characters and several characters at once in the candidate list.
+    </td>
+  </tr>
+  <tr>
+    <td>Control+.</td>
+    <td>
+      Toggle between fullwidth and halfwidth punctuation.
+    </td>
+  </tr>
+  <tr>
+    <td>Control+/</td>
+    <td>
+      Toggle “autocommit mode”.
+    </td>
+  </tr>
+  <tr>
+    <td>Control+;</td>
+    <td>
+      Toggle between the 5 Chinese modes:
+      <ul>
+        <li>Simplified Chinese</li>
+        <li>Traditional Chinese</li>
+        <li>Simplified Chinese first</li>
+        <li>Traditional Chinese first</li>
+        <li>All Chinese characters</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>Shift+Space</td>
+    <td>
+      Toggle letter width between fullwidth and halfwidth
+    </td>
+  </tr>
+</tbody>
+</table>
+

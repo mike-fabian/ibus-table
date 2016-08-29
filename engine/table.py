@@ -2164,7 +2164,7 @@ class tabengine (IBus.Engine):
         '''Convert half width character to full width'''
 
         # This function handles punctuation that does not comply to the
-        # Unicode convesion formula in unichar_half_to_full(c).
+        # Unicode conversion formula in unichar_half_to_full(c).
         # For ".", "\"", "'"; there are even variations under specific
         # cases. This function should be more abstracted by extracting
         # that to another handling function later on.

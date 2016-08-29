@@ -1,59 +1,130 @@
-    == Introduction ==
-    IBus-Table is the IM Engine framework for table-based input methods, 
-    such as ZhengMa, WuBi, ErBi, CangJie and so on.
-    The aim of IBus-Table is to make the users of table-based input methods
-    can enjoy the typing on Linux environment.
-    Definitly, it is far from perfect, so if you have any wish or any
-    suggestion, please file a issue on http://code.google.com/p/ibus/issues
-    or send me an email <acevery@gmail.com>, I would be very please to hear
-    from you :)
-    
-    == Key Bindings ==
-    Notice: Ctrl is "Control Key", Shift_L is the left "Shift Key",
-            Shift_R is the right "Shift Key", Alt is the "Alt Key",
-            Arrow_Left is the "Arrow Key" point to left, Arrow_Right is
-            the "Arrow Key" point to right, similarly as  Arrow_Up and
-            Arrow_Down.
-            Cursor is the one in preedit string.
-            [Num1~Num9] means one key in Num1, Num2, Num3, ... ,Num9
-    
-    Space               commit inputted string.
-    Shift_L             when no key inputted: shift the input mode between
-                            English and Table mode.
-                        during input: commit the first candidate into
-                            preedit string.
-    Shift_R             shift between PinYin mode and Normal mode under
-                            Table mode.
-    
-    Shift_L/Shift_R + 1 input tunes under PinYin mode. the tunes display in
-                      2     aux string area as ↑1, ↑2, ↑3, ↑4, ↑5. 
-                      3     1 is YinPin, 2 is YangPin, 3 is ShangSheng,
-                      4     4 is QuSheng, 5 is QingSheng
-                      5
-    
-    Arrow_Left          move cursor one character left in preedit string.
-    Arrow_Right         move cursor one character right in preedit string.
-    Backspace           remove the last input key or last character in
-                            preeidt string.
-    Delete              remove one character after the cursor in preedit
-                            string.
-    Ctrl + Arrow_Lelf   move the cursor to the front of preedit string.
-    Ctrl + Arrow_Right  move the cursor to the end of preedit string.
-    Ctrl + Backspace    delete from cursor to the front of preedit string.
-    Ctrl + Delete       delete from cursor to the end of preedit string.
-    Arrow_Down          mext candidate.
-    Arrow_Up            previous candidate.
-    Esc                 reset the input method.
-    Num1 ~ Num9         select the correspondent candidate and commit
-                            inputted string
-    Ctrl + [Num1~Num9]  select the correspondent candidate and commit it
-                            into preedit string
-    Alt + [Num1~Num9]   remove the correspondent user-defined phrase.
-    Page_Up/Page_Down   page up/down the lookup table of candidates.
-    -/+                 when not been used as valid input keys, the same as
-                            Page_Up and Page_Down.
-    Ctrl + ,            open/close Single Character Mode, only show single
-                            character not phrases.
-    Ctrl + .            shift between full/half punctuation.
-    Ctrl + /            shift between direct/normal commit mode.
-    Ctrl + ;            shift between different SubCharset in Chinese
+Ibus-table is a framework for table based input methods using IBus.
+
+Ibus-table is mostly used for Chinese, table based input methods like
+ZhengMa, WuBi, ErBi, CangJie and so on.
+
+But it can be used for other languages as well and some tables are
+available for other languages.
+
+Authors and contributors:
+
+  • Yuwei YU (‘acevery’) acevery@gmail.com (Original Author)
+  • Mike FABIAN mfabian@redhat.com (Current maintainer and Fedora package maintainer)
+  • Caius ‘kaio’ CHANCE kaio@fedoraproject.org (Current maintainer)
+  • Peng Huang
+  • BYVoid
+  • Peng Wu
+  • koterpilla
+  • Zerng07
+  • Bernard Nauwelaerts
+  • Xiaojun Ma
+  • mozbugbox
+  • Seán de Búrca
+
+You can report bugs here:
+
+https://github.com/kaio/ibus-table/issues
+
+Online documentation can be found here:
+
+http://kaio.github.io/ibus-table/
+http://kaio.github.io/ibus-table/documentation.html
+
+The keybindings are documented here:
+
+http://kaio.github.io/ibus-table/documentation.html#key-bindings
+
+A  copy of that key-bindings documentation is included here for
+convenience:
+
+Key bindings
+
+┏━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃    Key combination    │                       Effect                        ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Space                 │ Commit the preëdit string.                          ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Escape                │ Clear preëdit and discard contents.                 ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Left (Arrow left)     │ Move cursor one character left in the preëdit text. ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Control+Left          │ Move cursor to the left end of the preëdit text.    ┃
+┃ (Control+Arrow_Left)  │                                                     ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Right (Arrow right)   │ Move cursor one characater right in preëdit text.   ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Control+Right         │ Move cursor to the right end of the preëdit text.   ┃
+┃ (Control+Arrow_Right) │                                                     ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Backspace             │ Remove the character to the left of the cursor in   ┃
+┃                       │ the preëdit text.                                   ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Control+Backspace     │ Remove everything left of the cursor in the preëdit ┃
+┃                       │ text.                                               ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Delete                │ Remove the character to the right of the cursor in  ┃
+┃                       │ the preëdit text.                                   ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Control+Delete        │ Remove everything to the right of the cursor in the ┃
+┃                       │ preëdit text.                                       ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Down (Arrow down)     │ Select the next candidate.                          ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Up (Arrow up)         │ Select the previous candidate.                      ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Page_Up               │ Show next page of candidates.                       ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Page_Down             │ Show previous page of candidates.                   ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ -                     │ When not being used as a valid input key, same as   ┃
+┃                       │ Page_Up.                                            ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ =                     │ When not being used as a valid input key, same as   ┃
+┃                       │ Page_Down.                                          ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃                       │ Commit the candidate labelled with that number.     ┃
+┃                       │ Note that a table can define other keys than the    ┃
+┃ 1 …　9                │ numbers 1 … 9 as select keys to be able to use      ┃
+┃                       │ numbers as input. For example, the “latex” table    ┃
+┃                       │ needs number as input. Therefore, the “latex” table ┃
+┃                       │ defines F1 … F9 as select keys.                     ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Control+1 … Control+9 │ Commit the candidate labelled with that number to   ┃
+┃                       │ the preëdit.                                        ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Alt+1 … Alt+9         │ Remove the candidate labelled with that number from ┃
+┃                       │ the database of learned user input.                 ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃                       │   • When the preëdit is empty: toggle the input     ┃
+┃ Shift_L (Left Shift   │     mode between direct input mode (e.g. “English”) ┃
+┃ key)                  │     and table mode (e.g. “Chinese”).                ┃
+┃                       │   • When the preëdit is not empty: commit the first ┃
+┃                       │     candidate to the preëdit.                       ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Shift_R (Right Shift  │   • When in table mode: Toggle between pinyin mode  ┃
+┃ key)                  │     and normal mode.                                ┃
+┃                       │   • When in direct input mode: No function.         ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Shift+1 … Shift+5     │ When in pinyin mode, input the tones. The tones are ┃
+┃ (Right or Left Shift  │ displayed in the aux area as ↑1, ↑2, ↑3, ↑4, ↑5. 1  ┃
+┃ key)                  │ is YinPin, 2 is YangPin, 3 is ShangSheng, 4 is      ┃
+┃                       │ QuSheng, 5 is QingSheng.                            ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃                       │ Toggle “one char mode”, i.e. toggle between showing ┃
+┃ Control+,             │ only single characters and several characters at    ┃
+┃                       │ once in the candidate list.                         ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Control+.             │ Toggle between fullwidth and halfwidth punctuation. ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Control+/             │ Toggle “autocommit mode”.                           ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃                       │ Toggle between the 5 Chinese modes:                 ┃
+┃                       │                                                     ┃
+┃                       │   • Simplified Chinese                              ┃
+┃ Control+;             │   • Traditional Chinese                             ┃
+┃                       │   • Simplified Chinese first                        ┃
+┃                       │   • Traditional Chinese first                       ┃
+┃                       │   • All Chinese characters                          ┃
+┠───────────────────────┼─────────────────────────────────────────────────────┨
+┃ Shift+Space           │ Toggle letter width between fullwidth and halfwidth ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛

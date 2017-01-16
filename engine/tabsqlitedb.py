@@ -364,15 +364,17 @@ class tabsqlitedb:
         try:
             sys.stderr.write(
                 'Connect to the database %(name)s.\n' %{'name': user_db})
-            self.db.execute('ATTACH DATABASE "%s" AS user_db;' % user_db)
-            self.db.execute('PRAGMA user_db.encoding = "UTF-8";')
-            self.db.execute('PRAGMA user_db.case_sensitive_like = true;')
-            self.db.execute('PRAGMA user_db.page_size = 4096; ')
-            self.db.execute('PRAGMA user_db.cache_size = 20000;')
-            self.db.execute('PRAGMA user_db.temp_store = MEMORY;')
-            self.db.execute('PRAGMA user_db.journal_mode = WAL;')
-            self.db.execute('PRAGMA user_db.journal_size_limit = 1000000;')
-            self.db.execute('PRAGMA user_db.synchronous = NORMAL;')
+            self.db.executescript('''
+                ATTACH DATABASE "%s" AS user_db;
+                PRAGMA user_db.encoding = "UTF-8";
+                PRAGMA user_db.case_sensitive_like = true;
+                PRAGMA user_db.page_size = 4096;
+                PRAGMA user_db.cache_size = 20000;
+                PRAGMA user_db.temp_store = MEMORY;
+                PRAGMA user_db.journal_mode = WAL;
+                PRAGMA user_db.journal_size_limit = 1000000;
+                PRAGMA user_db.synchronous = NORMAL;
+            ''' % user_db)
         except:
             sys.stderr.write('Could not open the database %s.\n' % user_db)
             from time import strftime
@@ -388,15 +390,17 @@ class tabsqlitedb:
             sys.stderr.write('Creating a new, empty database "%s".\n'
                              % user_db)
             self.init_user_db(user_db)
-            self.db.execute('ATTACH DATABASE "%s" AS user_db;' % user_db)
-            self.db.execute('PRAGMA user_db.encoding = "UTF-8";')
-            self.db.execute('PRAGMA user_db.case_sensitive_like = true;')
-            self.db.execute('PRAGMA user_db.page_size = 4096; ')
-            self.db.execute('PRAGMA user_db.cache_size = 20000;')
-            self.db.execute('PRAGMA user_db.temp_store = MEMORY;')
-            self.db.execute('PRAGMA user_db.journal_mode = WAL;')
-            self.db.execute('PRAGMA user_db.journal_size_limit = 1000000;')
-            self.db.execute('PRAGMA user_db.synchronous = NORMAL;')
+            self.db.executescript('''
+                ATTACH DATABASE "%s" AS user_db;
+                PRAGMA user_db.encoding = "UTF-8";
+                PRAGMA user_db.case_sensitive_like = true;
+                PRAGMA user_db.page_size = 4096;
+                PRAGMA user_db.cache_size = 20000;
+                PRAGMA user_db.temp_store = MEMORY;
+                PRAGMA user_db.journal_mode = WAL;
+                PRAGMA user_db.journal_size_limit = 1000000;
+                PRAGMA user_db.synchronous = NORMAL;
+            ''' % user_db)
         self.create_tables("user_db")
         if self.old_phrases:
             sqlargs = []
@@ -1022,15 +1026,17 @@ class tabsqlitedb:
     def init_user_db(self, db_file):
         if not path.exists(db_file):
             db = sqlite3.connect(db_file)
-            db.execute('PRAGMA encoding = "UTF-8";')
-            db.execute('PRAGMA case_sensitive_like = true;')
-            db.execute('PRAGMA page_size = 4096;')
             # 20000 pages should be enough to cache the whole database
-            db.execute('PRAGMA cache_size = 20000;')
-            db.execute('PRAGMA temp_store = MEMORY;')
-            db.execute('PRAGMA journal_mode = WAL;')
-            db.execute('PRAGMA journal_size_limit = 1000000;')
-            db.execute('PRAGMA synchronous = NORMAL;')
+            db.executescript('''
+                PRAGMA encoding = "UTF-8";
+                PRAGMA case_sensitive_like = true;
+                PRAGMA page_size = 4096;
+                PRAGMA cache_size = 20000;
+                PRAGMA temp_store = MEMORY;
+                PRAGMA journal_mode = WAL;
+                PRAGMA journal_size_limit = 1000000;
+                PRAGMA synchronous = NORMAL;
+            ''')
             db.commit()
 
     def get_database_desc (self, db_file):

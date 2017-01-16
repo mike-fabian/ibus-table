@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1.20080819\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2016-08-24 08:56+0200\n"
+"POT-Creation-Date: 2017-01-16 08:41+0100\n"
 "PO-Revision-Date: 2009-05-21 13:17+1000\n"
 "Last-Translator: Caius 'kaio' Chance <k@kaio.me>\n"
 "Language-Team: Caius 'kaio' Chance <k@kaio.me>\n"
@@ -256,26 +256,6 @@ msgstr ""
 #: engine/table.py:1919
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
-msgstr ""
-
-#: ibus-table.appdata.xml:5
-#, fuzzy
-msgid "Ibus Table"
-msgstr "切換成形碼模式"
-
-#: ibus-table.appdata.xml:6
-msgid "Table based input method"
-msgstr ""
-
-#: ibus-table.appdata.xml:8
-msgid ""
-"Ibus-table is an input method framework for table-based input methods. "
-"Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
-"CangJie, …. But some tables for other languages are available as well."
-msgstr ""
-
-#: ibus-table.appdata.xml:31
-msgid "Mike FABIAN"
 msgstr ""
 
 #: setup/main.py:129
@@ -606,6 +586,10 @@ msgstr ""
 #: setup/ibus-table-preferences.ui:1186
 msgid "About"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Ibus Table"
+#~ msgstr "切換成形碼模式"
 
 #, fuzzy
 #~ msgid "Chinese input (Left Shift)"

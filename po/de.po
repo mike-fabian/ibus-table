@@ -2,13 +2,14 @@
 # Copyright (C) 2012 Mike FABIAN <mfabian@redhat.com>
 # This file is distributed under the same license as the ibus-table package.
 # Mike FABIAN <mfabian@redhat.com>, 2012.
-#
+# Mike FABIAN <mfabian@redhat.com>, 2016. #zanata
+# Mike FABIAN <mfabian@redhat.com>, 2017. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: ibus-table 1.4.99\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2016-08-24 08:56+0200\n"
-"PO-Revision-Date: 2016-08-24 09:00+0200\n"
+"POT-Creation-Date: 2017-01-16 08:41+0100\n"
+"PO-Revision-Date: 2017-01-16 02:19-0500\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: German <trans-de@lists.fedoraproject.org>\n"
 "Language: de\n"
@@ -16,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Zanata 3.9.6\n"
 
 #: engine/table.py:1474 setup/ibus-table-preferences.ui:75
 msgid "Simplified Chinese"
@@ -202,7 +204,7 @@ msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
 msgstr ""
-"Wechseln zum normallen Commitmodus (automatische Commits gehen in das "
+"Wechseln zum normalen Commitmodus (automatische Commits gehen in das "
 "Preedit\n"
 "anstatt in die Applikation. Das ermöglicht automatische Definitionen neuer\n"
 "Kürzel)"
@@ -231,29 +233,6 @@ msgstr "Einstellungen"
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Konfiguration von ibus-table “%(engine-name)s”"
-
-#: ibus-table.appdata.xml:5
-msgid "Ibus Table"
-msgstr "Ibus Table"
-
-#: ibus-table.appdata.xml:6
-msgid "Table based input method"
-msgstr "Tabellenbasierte Eingabemethode"
-
-#: ibus-table.appdata.xml:8
-msgid ""
-"Ibus-table is an input method framework for table-based input methods. "
-"Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
-"CangJie, …. But some tables for other languages are available as well."
-msgstr ""
-"Ibus-table ist eine Inputsystem für tabellenbasierte Inputmethoden. Es\n"
-"wird hauptsächlich für chinesiche Inputmethoden wie ZhengMa, WuBi,\n"
-"ErBi, CangJie usw. benutzt. Aber es gibt auch einige Tabellen für\n"
-"andere Sprachen."
-
-#: ibus-table.appdata.xml:31
-msgid "Mike FABIAN"
-msgstr "Mike FABIAN"
 
 #: setup/main.py:129
 msgid "IBUS_ENGINE_NAME environment variable is not set."
@@ -681,58 +660,21 @@ msgstr ""
 msgid "About"
 msgstr "Info über IBus Table"
 
-#~ msgid "Chinese input (Left Shift)"
-#~ msgstr "Chinesische Eingabe (Linke Shift Taste)"
+#~ msgid "Ibus Table"
+#~ msgstr "Ibus Table"
 
-#~ msgid "Direct input (Left Shift)"
-#~ msgstr "Direkteingabe Modus (Linke Shift Taste)"
+#~ msgid "Table based input method"
+#~ msgstr "Tabellenbasierte Eingabemethode"
 
-#~ msgid "Switch to %s (“Table input”) (Left Shift)"
-#~ msgstr "Wechseln zu %s (“Tabelleneingabe Modus”) (Linke Shift Taste)"
-
-#~ msgid "Fullwidth letters (Shift-Space)"
-#~ msgstr "Buchstaben in voller Breite (Ctrl-Space)"
-
-#~ msgid "Halfwidth letters (Shift-Space)"
-#~ msgstr "Buchstaben in halber Breite (Ctrl-Space)"
-
-#~ msgid "Fullwidth punctuation (Ctrl-.)"
-#~ msgstr "Zeichensetzung in voller Breite (Ctrl-.)"
-
-#~ msgid "Halfwidth punctuation (Ctrl-.)"
-#~ msgstr "Zeichensetzung in halber Breite (Ctrl-.)"
-
-#~ msgid "Table mode (Right Shift)"
-#~ msgstr "Tabellenmodus (Rechte Shift Taste)"
-
-#~ msgid "Switch to “Phrase mode” (Ctrl-,)"
-#~ msgstr "Wechseln zum “Satz- bzw. Wortmodus” (Ctrl-,)"
-
-#~ msgid "Phrase mode (Ctrl-,)"
-#~ msgstr "Satz- bzw. Wortmodus (Ctrl-,)"
-
-#~ msgid "Direct commit mode (Ctrl-/)"
-#~ msgstr "Direkter Commitmodus (Ctrl-/)"
-
-#~ msgid "Switch to “Normal commit mode” (uses space to commit) (Ctrl-/)"
+#~ msgid ""
+#~ "Ibus-table is an input method framework for table-based input methods. "
+#~ "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
+#~ "CangJie, …. But some tables for other languages are available as well."
 #~ msgstr ""
-#~ "Wechseln zum normalen Commitmodus (Commit beim Tippen des Leerzeichens) "
-#~ "(Ctrl-/)"
+#~ "Ibus-table ist eine Inputsystem für tabellenbasierte Inputmethoden. Es\n"
+#~ "wird hauptsächlich für chinesiche Inputmethoden wie ZhengMa, WuBi,\n"
+#~ "ErBi, CangJie usw. benutzt. Aber es gibt auch einige Tabellen für\n"
+#~ "andere Sprachen."
 
-#~ msgid "Normal commit mode (Ctrl-/)"
-#~ msgstr "Normaler Commitmodus (Ctrl-/)"
-
-#~ msgid "Simplified Chinese (Ctrl-;)"
-#~ msgstr "Vereinfachtes Chinesisch (Ctrl-;)"
-
-#~ msgid "Traditional Chinese (Ctrl-;)"
-#~ msgstr "Traditionelles Chinesisch (Ctrl-;)"
-
-#~ msgid "Simplified Chinese before traditional (Ctrl-;)"
-#~ msgstr "Vereinfachtes Chinesisch zuerst (Ctrl-;)"
-
-#~ msgid "Traditional Chinese before simplified (Ctrl-;)"
-#~ msgstr "Traditionelles Chinesisch zuerst (Ctrl-;)"
-
-#~ msgid "All Chinese characters (Ctrl-;)"
-#~ msgstr "Alle chinesischen Zeichen (Ctrl-;)"
+#~ msgid "Mike FABIAN"
+#~ msgstr "Mike FABIAN"

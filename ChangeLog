@@ -1,4 +1,52 @@
-commit 199f1a122bdf8e555dc82d3057b29912232f182f
+commit 4bee8f3bff018a5ed7a64f1ccd0a08b67c560409
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 16 14:46:57 2017 +0100
+
+    Release 1.9.16
+
+commit faa9d95c9cdef4a5516f6185fa3d06f8bbf4409e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 16 14:24:02 2017 +0100
+
+    Unbreak sqlite on Python 3.6
+    
+    Resolves: rhbz#1413580 - [abrt] ibus-table: __init__(): factory.py:96:do_create_engine:Exception: Cannot create engine wubi-jidian86
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1413580
+    
+    Py3.6 changed the transaction behavior; DDL commands like PRAGMA do not
+    commit open transactions anymore, and since the default for execute() is
+    to auto-open a transaction, setting the journal_mode fails.
+    
+    Changing the isolation_level to None so that transactions aren't opened
+    anymore is a possible workaround. However, using executescript() seems
+    like a better idea; it always commits any open transaction first.
+    
+    Jan Alexander Steffens (heftig) <jan.steffens@gmail.com> submitted
+    this patch for ibus-typing-booster, ibus-table needs this as well
+    to run with Python >= 3.6.
+
+commit 8291d20227e013a4ebb396a92b3dfc3de54b300a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 16 13:08:39 2017 +0100
+
+    Add comment
+
+commit a4c12a577adcbf2814718167fd3362b4b2889ad9
+Author: Osamu Aoki <osamu@debian.org>
+Date:   Sat Jan 14 23:44:00 2017 +0900
+
+    Avoid running initialization code of ibus_table_location.py
+    
+    The code refactoring which placed "import ibus_table_location" at the start of
+    this script caused regression for distribution use of this ibus-table-createdb
+    script where there is no gurantee that the HOME directory is writable etc.
+    
+    This bug is reported as release critical bug as:
+    
+    https://bugs.debian.org/848756
+    https://bugs.debian.org/848765
+
+commit 4683791c3137c4a351ffc56fa8e87f06d480f062
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Jan 16 08:25:16 2017 +0100
 

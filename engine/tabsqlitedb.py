@@ -256,6 +256,17 @@ class tabsqlitedb:
             return
 
         if user_db != ":memory:":
+            # Do not move this import to the beginning of this script!
+            # If for example the home directory is not writeable,
+            # ibus_table_location.py would fail because it cannot
+            # create some directories.
+            #
+            # But for tabcreatedb.py, no such directories are needed,
+            # tabcreatedb.py should not fail just because
+            # ibus_table_location.py cannot create some directories.
+            #
+            # “HOME=/foobar ibus-table-createdb” should not fail if
+            # “/foobar” is not writeable.
             import ibus_table_location
             tables_path = path.join(ibus_table_location.data_home(),  "tables")
             if not path.isdir(tables_path):

@@ -1,4 +1,34 @@
-commit 72f124af2d6a7c770a8523c44e16c77330157c64
+commit 199f1a122bdf8e555dc82d3057b29912232f182f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 16 08:25:16 2017 +0100
+
+    Release 1.9.15
+
+commit 58272136c275eb925b0aa536c9836f6631b17368
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 16 08:22:14 2017 +0100
+
+    Update translations from zanata (ca, de, fr, uk updated)
+
+commit 9f19f4689d94f37c6435cdb93ed23df050ba4996
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Sep 8 10:14:06 2016 +0200
+
+    Point to new home-page in the “About” tab.
+
+commit 0f1bb5121a470156530ed3253f40e2e28488667e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Aug 29 14:12:30 2016 +0200
+
+    Improve README
+
+commit 057c5e12575d309188830d12e1e77b1c1980bdbe
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Aug 29 13:41:26 2016 +0200
+
+    Fix a typo in a comment
+
+commit 6c0677c4e54b203cf5f7dec4762112d332060f7c
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Aug 24 13:45:51 2016 +0200
 
@@ -281,32 +311,32 @@ Date:   Wed Oct 14 07:58:18 2015 +0200
     New lines in Unihan_Variants.txt which are relevant for simplified and
     traditional detection:
     
-    > U+4CA4	kTraditionalVariant	U+9FD0
+    > U+4CA4        kTraditionalVariant     U+9FD0
     
     U+4CA4 = 䲤 U+9FD0 = 鿐
     
-    > U+540C	kSimplifiedVariant	U+540C
+    > U+540C        kSimplifiedVariant      U+540C
     
     U+540C = 同
     
-    > U+93B6	kSimplifiedVariant	U+9FD4
+    > U+93B6        kSimplifiedVariant      U+9FD4
     
     U+93B6 = 鎶 U+9FD4 = 鿔
     
-    > U+9FCF	kTraditionalVariant	U+4951
+    > U+9FCF        kTraditionalVariant     U+4951
     
     U+9FCF = 鿏 U+4951 = 䥑
     
-    > U+9FD0	kSimplifiedVariant	U+4CA4
+    > U+9FD0        kSimplifiedVariant      U+4CA4
     
     U+9FD0 = 鿐 U+4CA4 = 䲤
     
-    > U+9FD2	kSimplifiedVariant	U+9FD3
-    > U+9FD3	kTraditionalVariant	U+9FD2
+    > U+9FD2        kSimplifiedVariant      U+9FD3
+    > U+9FD3        kTraditionalVariant     U+9FD2
     
     U+9FD2 = 鿒 U+9FD3 鿓
     
-    > U+9FD4	kTraditionalVariant	U+93B6
+    > U+9FD4        kTraditionalVariant     U+93B6
     
     U+9FD4 = 鿔 U+93B6 = 鎶
 
@@ -688,9 +718,9 @@ Date:   Sat Aug 23 14:18:43 2014 +0200
         For example, when typing “C” with translit, the preëdit contains
         Ц because it is still possible that a “h” is typed next:
     
-            C	Ц	1000
-            Ch	Ч	1000
-            CH	Ч	1000
+            C       Ц       1000
+            Ch      Ч       1000
+            CH      Ч       1000
     
         When IBus.KEY_KP_Enter is typed in this state, the Ц should
         be committed and the IBus.KEY_KP_Enter should be passed to the
@@ -841,8 +871,8 @@ Date:   Wed Jul 30 09:39:55 2014 +0200
     New lines in Unihan_Variants.txt which are relevant for simplified and
     traditional detection:
     
-    > U+9FC1	kSimplifiedVariant	U+4724
-    > U+4724	kTraditionalVariant	U+9FC1
+    > U+9FC1        kSimplifiedVariant      U+4724
+    > U+4724        kTraditionalVariant     U+9FC1
     
     U+4724 = 䜤 U+9FC1 = 鿁
 
@@ -910,10 +940,10 @@ Date:   Sun Jul 6 07:32:52 2014 +0200
     
     In the cangjie5.txt table, all the frequency weights are 1000, for example:
     
-        su	己	1000
-        su	已	1000
-        su		1000
-        su	㔾	1000
+        su  己      1000
+        su  已      1000
+        su         1000
+        su  㔾      1000
     
     Currently, the Unicode code point is used as a last ditch fallback if
     all the other sort keys are the same (sort keys are: exact match, user
@@ -979,24 +1009,24 @@ Date:   Fri Jul 4 15:15:26 2014 +0200
     is bad because it makes it impossible to input the following
     entries of the ipa-x-sampa table:
     
-        1	ɨ	0	### U+0268 LATIN SMALL LETTER I WITH STROKE
-        2	ø	0	### U+00F8 LATIN SMALL LETTER O WITH STROKE
-        3	ɜ	0	### U+025C LATIN SMALL LETTER REVERSED OPEN E
-        3\	ɞ	0	### U+025E LATIN SMALL LETTER CLOSED REVERSED OPEN E
-        4	ɾ	0	### U+027E LATIN SMALL LETTER R WITH FISHHOOK
-        5	ɫ	0	### U+026B LATIN SMALL LETTER L WITH MIDDLE TILDE
-        6	ɐ	0	### U+0250 LATIN SMALL LETTER TURNED A
-        7	ɤ	0	### U+0264 LATIN SMALL LETTER RAMS HORN
-        8	ɵ	0	### U+0275 LATIN SMALL LETTER BARRED O
-        9	œ	0	### U+0153 LATIN SMALL LIGATURE OE
+        1   ɨ       0       ### U+0268 LATIN SMALL LETTER I WITH STROKE
+        2   ø       0       ### U+00F8 LATIN SMALL LETTER O WITH STROKE
+        3   ɜ       0       ### U+025C LATIN SMALL LETTER REVERSED OPEN E
+        3\  ɞ       0       ### U+025E LATIN SMALL LETTER CLOSED REVERSED OPEN E
+        4   ɾ       0       ### U+027E LATIN SMALL LETTER R WITH FISHHOOK
+        5   ɫ       0       ### U+026B LATIN SMALL LETTER L WITH MIDDLE TILDE
+        6   ɐ       0       ### U+0250 LATIN SMALL LETTER TURNED A
+        7   ɤ       0       ### U+0264 LATIN SMALL LETTER RAMS HORN
+        8   ɵ       0       ### U+0275 LATIN SMALL LETTER BARRED O
+        9   œ       0       ### U+0153 LATIN SMALL LIGATURE OE
     
-        _0	̥	0	### U+0325 COMBINING RING BELOW
-        _1	₁	0	### U+2081 SUBSCRIPT ONE
-        _2	₂	0	### U+2082 SUBSCRIPT TWO
-        _3	₃	0	### U+2083 SUBSCRIPT THREE
-        _4	₄	0	### U+2084 SUBSCRIPT FOUR
-        _5	₅	0	### U+2085 SUBSCRIPT FIVE
-        _6	₆	0	### U+2086 SUBSCRIPT SIX
+        _0  ̥        0       ### U+0325 COMBINING RING BELOW
+        _1  ₁       0       ### U+2081 SUBSCRIPT ONE
+        _2  ₂       0       ### U+2082 SUBSCRIPT TWO
+        _3  ₃       0       ### U+2083 SUBSCRIPT THREE
+        _4  ₄       0       ### U+2084 SUBSCRIPT FOUR
+        _5  ₅       0       ### U+2085 SUBSCRIPT FIVE
+        _6  ₆       0       ### U+2086 SUBSCRIPT SIX
     
     Also, use the key codes of the select keys instead of the names of the
     select keys in the key even processing. One could of course keep
@@ -1039,7 +1069,7 @@ Date:   Wed Jul 2 17:26:52 2014 +0200
         Author: Mike FABIAN <mfabian@redhat.com>
         Date:   Wed Jun 4 12:45:19 2014 +0200
     
-    	Don’t show the prompt characters defined in the table in pinyin mode in the auxiliary text
+            Don’t show the prompt characters defined in the table in pinyin mode in the auxiliary text
     
     already avoided using the prompts in pinyin mode in the auxiliary text.
     But prompt characters may also appear in the candidate list to show
@@ -1233,20 +1263,20 @@ Date:   Fri Jun 6 20:43:22 2014 +0200
     wubi-jidian86.txt contains the following matches for 語
     (as a single character):
     
-        ygkg	語	204000000
+        ygkg        語      204000000
     
     It contains the following matches for 语 (as a single character):
     
-        ygk	语	234000000
-        ygkg	语	234000000
+        ygk 语      234000000
+        ygkg        语      234000000
     
     And the following matches for the input sequence “ygkg”:
     
-        ygkg	語	204000000
-        ygkg	语	234000000
-        ygkg	𢌐	0
-        ygkg	𣄟	0
-        ygkg	𩐕	0
+        ygkg        語      204000000
+        ygkg        语      234000000
+        ygkg        𢌐      0
+        ygkg        𣄟      0
+        ygkg        𩐕      0
     
     After this commit, typing “ygkg” gives the following results in the
     lookup table (when all user frequencies are 0. For testing this
@@ -1336,76 +1366,76 @@ Date:   Fri Jun 6 10:44:30 2014 +0200
     Sizes with indexes:
     
         $ du -h -c /usr/share/ibus-table/tables/*.db
-        8.6M	/usr/share/ibus-table/tables/array30-big.db
-        3.7M	/usr/share/ibus-table/tables/array30.db
-        3.7M	/usr/share/ibus-table/tables/cangjie-big.db
-        2.1M	/usr/share/ibus-table/tables/cangjie3.db
-        4.7M	/usr/share/ibus-table/tables/cangjie5.db
-        572K	/usr/share/ibus-table/tables/cantonese.db
-        700K	/usr/share/ibus-table/tables/cantonhk.db
-        5.0M	/usr/share/ibus-table/tables/cns11643.db
-        64K	/usr/share/ibus-table/tables/compose.db
-        7.7M	/usr/share/ibus-table/tables/easy-big.db
-        96K	/usr/share/ibus-table/tables/emoji-table.db
-        6.6M	/usr/share/ibus-table/tables/erbi-qs.db
-        3.0M	/usr/share/ibus-table/tables/erbi.db
-        40K	/usr/share/ibus-table/tables/ipa-x-sampa.db
-        640K	/usr/share/ibus-table/tables/jyutping.db
-        60K	/usr/share/ibus-table/tables/latex.db
-        312K	/usr/share/ibus-table/tables/mathwriter-ibus.db
-        812K	/usr/share/ibus-table/tables/quick-classic.db
-        2.0M	/usr/share/ibus-table/tables/quick3.db
-        4.4M	/usr/share/ibus-table/tables/quick5.db
-        40K	/usr/share/ibus-table/tables/rustrad.db
-        5.0M	/usr/share/ibus-table/tables/scj6.db
-        364K	/usr/share/ibus-table/tables/stroke5.db
-        40K	/usr/share/ibus-table/tables/thai.db
-        40K	/usr/share/ibus-table/tables/translit-ua.db
-        40K	/usr/share/ibus-table/tables/translit.db
-        40K	/usr/share/ibus-table/tables/viqr.db
-        1000K	/usr/share/ibus-table/tables/wu.db
-        11M	/usr/share/ibus-table/tables/wubi-haifeng86.db
-        12M	/usr/share/ibus-table/tables/wubi-jidian86.db
-        40K	/usr/share/ibus-table/tables/yawerty.db
-        4.2M	/usr/share/ibus-table/tables/yong.db
-        87M	合計
+        8.6M        /usr/share/ibus-table/tables/array30-big.db
+        3.7M        /usr/share/ibus-table/tables/array30.db
+        3.7M        /usr/share/ibus-table/tables/cangjie-big.db
+        2.1M        /usr/share/ibus-table/tables/cangjie3.db
+        4.7M        /usr/share/ibus-table/tables/cangjie5.db
+        572K        /usr/share/ibus-table/tables/cantonese.db
+        700K        /usr/share/ibus-table/tables/cantonhk.db
+        5.0M        /usr/share/ibus-table/tables/cns11643.db
+        64K /usr/share/ibus-table/tables/compose.db
+        7.7M        /usr/share/ibus-table/tables/easy-big.db
+        96K /usr/share/ibus-table/tables/emoji-table.db
+        6.6M        /usr/share/ibus-table/tables/erbi-qs.db
+        3.0M        /usr/share/ibus-table/tables/erbi.db
+        40K /usr/share/ibus-table/tables/ipa-x-sampa.db
+        640K        /usr/share/ibus-table/tables/jyutping.db
+        60K /usr/share/ibus-table/tables/latex.db
+        312K        /usr/share/ibus-table/tables/mathwriter-ibus.db
+        812K        /usr/share/ibus-table/tables/quick-classic.db
+        2.0M        /usr/share/ibus-table/tables/quick3.db
+        4.4M        /usr/share/ibus-table/tables/quick5.db
+        40K /usr/share/ibus-table/tables/rustrad.db
+        5.0M        /usr/share/ibus-table/tables/scj6.db
+        364K        /usr/share/ibus-table/tables/stroke5.db
+        40K /usr/share/ibus-table/tables/thai.db
+        40K /usr/share/ibus-table/tables/translit-ua.db
+        40K /usr/share/ibus-table/tables/translit.db
+        40K /usr/share/ibus-table/tables/viqr.db
+        1000K       /usr/share/ibus-table/tables/wu.db
+        11M /usr/share/ibus-table/tables/wubi-haifeng86.db
+        12M /usr/share/ibus-table/tables/wubi-jidian86.db
+        40K /usr/share/ibus-table/tables/yawerty.db
+        4.2M        /usr/share/ibus-table/tables/yong.db
+        87M 合計
     
     Sizes without indexes:
     
         $ du -h -c /usr/share/ibus-table/tables/*.db
-        4.6M	/usr/share/ibus-table/tables/array30-big.db
-        2.0M	/usr/share/ibus-table/tables/array30.db
-        1.5M	/usr/share/ibus-table/tables/cangjie-big.db
-        1020K	/usr/share/ibus-table/tables/cangjie3.db
-        2.1M	/usr/share/ibus-table/tables/cangjie5.db
-        236K	/usr/share/ibus-table/tables/cantonese.db
-        292K	/usr/share/ibus-table/tables/cantonhk.db
-        2.1M	/usr/share/ibus-table/tables/cns11643.db
-        32K	/usr/share/ibus-table/tables/compose.db
-        3.2M	/usr/share/ibus-table/tables/easy-big.db
-        48K	/usr/share/ibus-table/tables/emoji-table.db
-        3.2M	/usr/share/ibus-table/tables/erbi-qs.db
-        1.3M	/usr/share/ibus-table/tables/erbi.db
-        24K	/usr/share/ibus-table/tables/ipa-x-sampa.db
-        268K	/usr/share/ibus-table/tables/jyutping.db
-        36K	/usr/share/ibus-table/tables/latex.db
-        152K	/usr/share/ibus-table/tables/mathwriter-ibus.db
-        332K	/usr/share/ibus-table/tables/quick-classic.db
-        980K	/usr/share/ibus-table/tables/quick3.db
-        2.0M	/usr/share/ibus-table/tables/quick5.db
-        24K	/usr/share/ibus-table/tables/rustrad.db
-        2.2M	/usr/share/ibus-table/tables/scj6.db
-        156K	/usr/share/ibus-table/tables/stroke5.db
-        24K	/usr/share/ibus-table/tables/thai.db
-        24K	/usr/share/ibus-table/tables/translit-ua.db
-        24K	/usr/share/ibus-table/tables/translit.db
-        24K	/usr/share/ibus-table/tables/viqr.db
-        424K	/usr/share/ibus-table/tables/wu.db
-        4.8M	/usr/share/ibus-table/tables/wubi-haifeng86.db
-        5.7M	/usr/share/ibus-table/tables/wubi-jidian86.db
-        24K	/usr/share/ibus-table/tables/yawerty.db
-        1.8M	/usr/share/ibus-table/tables/yong.db
-        40M	合計
+        4.6M        /usr/share/ibus-table/tables/array30-big.db
+        2.0M        /usr/share/ibus-table/tables/array30.db
+        1.5M        /usr/share/ibus-table/tables/cangjie-big.db
+        1020K       /usr/share/ibus-table/tables/cangjie3.db
+        2.1M        /usr/share/ibus-table/tables/cangjie5.db
+        236K        /usr/share/ibus-table/tables/cantonese.db
+        292K        /usr/share/ibus-table/tables/cantonhk.db
+        2.1M        /usr/share/ibus-table/tables/cns11643.db
+        32K /usr/share/ibus-table/tables/compose.db
+        3.2M        /usr/share/ibus-table/tables/easy-big.db
+        48K /usr/share/ibus-table/tables/emoji-table.db
+        3.2M        /usr/share/ibus-table/tables/erbi-qs.db
+        1.3M        /usr/share/ibus-table/tables/erbi.db
+        24K /usr/share/ibus-table/tables/ipa-x-sampa.db
+        268K        /usr/share/ibus-table/tables/jyutping.db
+        36K /usr/share/ibus-table/tables/latex.db
+        152K        /usr/share/ibus-table/tables/mathwriter-ibus.db
+        332K        /usr/share/ibus-table/tables/quick-classic.db
+        980K        /usr/share/ibus-table/tables/quick3.db
+        2.0M        /usr/share/ibus-table/tables/quick5.db
+        24K /usr/share/ibus-table/tables/rustrad.db
+        2.2M        /usr/share/ibus-table/tables/scj6.db
+        156K        /usr/share/ibus-table/tables/stroke5.db
+        24K /usr/share/ibus-table/tables/thai.db
+        24K /usr/share/ibus-table/tables/translit-ua.db
+        24K /usr/share/ibus-table/tables/translit.db
+        24K /usr/share/ibus-table/tables/viqr.db
+        424K        /usr/share/ibus-table/tables/wu.db
+        4.8M        /usr/share/ibus-table/tables/wubi-haifeng86.db
+        5.7M        /usr/share/ibus-table/tables/wubi-jidian86.db
+        24K /usr/share/ibus-table/tables/yawerty.db
+        1.8M        /usr/share/ibus-table/tables/yong.db
+        40M 合計
 
 commit 9d942218061379a17972eaf18987e886ba23291b
 Author: Caius "kaio" Chance <caius.chance@gmail.com>
@@ -1466,7 +1496,7 @@ Date:   Tue Jun 3 16:43:04 2014 +0200
     Now one can use wildcards as in the following example for cangjie5:
     “cangjie5.txt” contains:
     
-        sqsf	馬	1000
+        sqsf        馬      1000
     
     Now typing something like “s*f” or “s?sf” will match 馬.
     
@@ -1516,8 +1546,8 @@ Date:   Sun Jun 1 22:49:58 2014 +1000
     Merge branch 'master' into 1.7
     
     Conflicts:
-    	engine/main.py
-    	engine/tabsqlitedb.py
+            engine/main.py
+            engine/tabsqlitedb.py
 
 commit 3d8ec4f62c77fd67882ea32075777b9d01c55864
 Merge: 7600acb 063a61a
@@ -1547,8 +1577,8 @@ Date:   Wed May 28 18:38:31 2014 +0200
     input sequences *and* the system frequencies are also the same
     for example
     
-        bmr	同	1000
-        bmr	𦚈	1000
+        bmr 同      1000
+        bmr 𦚈      1000
     
     in cangjie5.txt, instead of getting the order randomly, use the
     Unicode code point as a last ditch sort key. Some defined order is
@@ -1563,12 +1593,12 @@ Date:   Wed May 28 18:38:31 2014 +0200
     *exactly* the same input sequences matches different characters which
     are all in the BMP, for example:
     
-        bmso	豚	1000
-        bmso	冢	1000
-        bmso	䐁	1000
+        bmso        豚      1000
+        bmso        冢      1000
+        bmso        䐁      1000
     
-        dhe	皮	1000
-        dhe	板	1000
+        dhe 皮      1000
+        dhe 板      1000
     
     But sorting the characters in the BMP to the top if all other sort
     keys are the same is better than nothing.
@@ -2262,14 +2292,14 @@ Date:   Mon May 12 16:38:47 2014 +0200
     
         if ...:
             ...
-    	return True
+            return True
             ...
-    	return False
+            return False
         elif ...:
             ...  <- jumps to the final “return False” here
         elif ...:
             ...
-    	return True
+            return True
         elif ...:
             ...
             return True
@@ -2279,9 +2309,9 @@ Date:   Mon May 12 16:38:47 2014 +0200
     
         if ...:
             ...
-    	return True
+            return True
             ...
-    	return False
+            return False
         if ...:
             ...
             return False
@@ -2474,12 +2504,12 @@ Date:   Thu May 8 17:46:14 2014 +0200
         Author: Mike FABIAN <mfabian@redhat.com>
         Date:   Tue Apr 8 16:34:58 2014 +0200
     
-    	Don’t switch off pinyin mode in clear()
+            Don’t switch off pinyin mode in clear()
     
-    	clear() is called in do_focus_out().  And do_focus_out() is called
-    	after clicking into the gnome menu to switch to pinyin mode.  This
-    	makes it almost impossible to enable pinyin mode and keep it when
-    	pinyin mode is switched off in clear().
+            clear() is called in do_focus_out().  And do_focus_out() is called
+            after clicking into the gnome menu to switch to pinyin mode.  This
+            makes it almost impossible to enable pinyin mode and keep it when
+            pinyin mode is switched off in clear().
     
     Therefore, there is no need to check whether the pinyin mode has
     changed after commit_string() or editor.clear() anymore.
@@ -2641,9 +2671,9 @@ Date:   Mon May 5 21:27:38 2014 +0200
     the result will be ['wq', 'wqi', 'wqiy'] because that table
     contains the following 3 lines matching that phrase exactly:
     
-    wq	你	597727619
-    wqi	你	1490000000
-    wqiy	你	1490000000
+    wq      你      597727619
+    wqi     你      1490000000
+    wqiy    你      1490000000
 
 commit b55980f79ab6eb36ece9560b4c04b9bee5a21bce
 Author: Mike FABIAN <mfabian@redhat.com>
@@ -3818,7 +3848,7 @@ Date:   Sat May 18 17:55:30 2013 +0800
     Merge remote-tracking branch 'kaio/1.7' into ascii-with-empty-canadidate
     
     Conflicts:
-    	engine/table.py
+            engine/table.py
 
 commit 4d18a67d8b0bc0fbe0999f330769707611d11eea
 Merge: cd11209 2467638
@@ -3828,8 +3858,8 @@ Date:   Sat May 18 17:46:20 2013 +0800
     Merge remote-tracking branch 'kaio/1.7' into ascii-with-empty-canadidate
     
     Conflicts:
-    	engine/main.py
-    	engine/table.py
+            engine/main.py
+            engine/table.py
 
 commit d782b07861c40b22aafa81aa779f4eb76ed08fce
 Author: Caius "kaio" CHANCE <me@kaio.net>
@@ -3933,7 +3963,7 @@ Date:   Mon Apr 29 20:26:36 2013 +1000
     Merge remote-tracking branch 'bernardn/master' into 1.6
     
     Conflicts:
-    	engine/table.py
+            engine/table.py
 
 commit 9745b5384c3328cd7db994baab7301f6367b5ee4
 Merge: 764a8c7 757a88e
@@ -3966,7 +3996,7 @@ Date:   Sun Apr 28 21:12:43 2013 +1000
     Merge remote-tracking branch 'mozbugbox/tooltip-show-hotkey' into 1.6
     
     Conflicts:
-    	engine/table.py
+            engine/table.py
 
 commit b7da6e8a66a455fc0ed9270fe1f2c0638c1b1211
 Author: Anthony Wong <anthony.wong@ubuntu.com>
@@ -3975,7 +4005,7 @@ Date:   Tue Dec 4 00:39:06 2012 +0800
     Catch exception when reading ~/.ibus/byo-tables so the process won't halt.
     
     Conflicts:
-    	engine/main.py
+            engine/main.py
 
 commit 5f274590b27068cc3dca08899a8831aa38f647e6
 Merge: e32bda3 f5e8e37
@@ -3992,7 +4022,7 @@ Date:   Thu Apr 25 21:51:36 2013 +1000
     Merge remote-tracking branch 'bernardn/candidates_list_visible' into 1.6
     
     Conflicts:
-    	engine/table.py
+            engine/table.py
 
 commit ea2795bdcd5ab6d67e865f3e5fc715096d59d0a6
 Merge: c029e9f 99b16e2
@@ -4339,7 +4369,7 @@ Date:   Sun Nov 18 23:44:41 2012 +0800
     Merge remote-tracking branch 'kaio/ibus-setup-table-639' into save-user-db
     
     Conflicts:
-    	engine/main.py
+            engine/main.py
 
 commit b40c6f3c595498e55222ca126c2e808cabe145ee
 Merge: d5b9f9c d1b8d13
@@ -4349,7 +4379,7 @@ Date:   Sun Nov 18 21:44:22 2012 +0800
     Merge remote-tracking branch 'kaio/1.5.0' into save-user-db
     
     Conflicts:
-    	engine/main.py
+            engine/main.py
 
 commit 12abcdbdc55aa1f25fcbe725ce70765b8519674e
 Author: Mike FABIAN <mfabian@redhat.com>
@@ -4413,7 +4443,7 @@ Date:   Mon Nov 12 01:55:55 2012 +1000
     Merge branch 'master' into ibus-setup-table-639
     
     Conflicts:
-    	engine/main.py
+            engine/main.py
 
 commit 001ee4acf2dc01e3b8291dbdb110bce005e4d0e8
 Author: Caius 'kaio' Chance <me@kaio.net>
@@ -4756,7 +4786,7 @@ Date:   Thu Sep 6 08:28:32 2012 +1000
     Merge remote-tracking branch 'acevery/master' into rel20121001
     
     Conflicts:
-    	engine/table.py
+            engine/table.py
 
 commit 84c287f1a7e261c32e7b4a18d7f488ae3d78da75
 Author: Yuwei Yu <acevery@gmail.com>
@@ -4784,7 +4814,7 @@ Date:   Tue Sep 4 22:35:46 2012 +1000
     Merge commit '3ba23ba4667818c096639acb3920b50994263ef4' into rel20120901
     
     Conflicts:
-    	tables/additional/latex.txt
+            tables/additional/latex.txt
 
 commit d4c5fad5ad5bd80ad34d8e96bd1d1d48dc21973d
 Author: Caius 'kaio' Chance <me@kaio.net>
@@ -4864,7 +4894,7 @@ Date:   Tue Aug 7 23:32:23 2012 +1000
     Merge branch 'menu-label' into rel20120901
     
     Conflicts:
-    	engine/table.py
+            engine/table.py
 
 commit 277814cac5d5dcd46bfb17574553a744f7a61e78
 Author: Caius 'kaio' Chance <me@kaio.net>
@@ -4936,9 +4966,9 @@ Date:   Fri Mar 9 23:48:09 2012 +1000
     Merge remote-tracking branch 'seanf/master' into 2012-03-09
     
     Conflicts:
-    	po/zh_CN.po
-    	po/zh_HK.po
-    	po/zh_TW.po
+            po/zh_CN.po
+            po/zh_HK.po
+            po/zh_TW.po
 
 commit 6ac623ba7b7a59b7032d1916ee53bd249801dd28
 Author: Caius Chance <me@kaio.net>
@@ -5525,9 +5555,9 @@ Date:   Thu Feb 19 15:06:06 2009 +1000
     RE-Merge commit 'acevery/master'
     
     Conflicts:
-    	doc/Makefile.am
-    	engine/Makefile.am
-    	engine/table.xml.in.in
+            doc/Makefile.am
+            engine/Makefile.am
+            engine/table.xml.in.in
 
 commit e8ccd0137d01f615dbd92fce41d1d49b77d39796
 Author: 余钰炜 <acevery@gmail.com>
@@ -5628,19 +5658,19 @@ Date:   Mon Feb 16 18:11:05 2009 +1000
     Merge commit 'acevery/for_c_ibus_daemon'
     
     Conflicts:
-    	configure.ac
-    	data/Makefile.am
-    	doc/Makefile.am
-    	engine/Makefile.am
-    	engine/factory.py
-    	engine/ibus-engine-table.in
-    	engine/main.py
-    	engine/speedmeter.py
-    	engine/table.py
-    	icons/Makefile.am
-    	icons/additional/Makefile.am
-    	tables/Makefile.am
-    	tables/additional/Makefile.am
+            configure.ac
+            data/Makefile.am
+            doc/Makefile.am
+            engine/Makefile.am
+            engine/factory.py
+            engine/ibus-engine-table.in
+            engine/main.py
+            engine/speedmeter.py
+            engine/table.py
+            icons/Makefile.am
+            icons/additional/Makefile.am
+            tables/Makefile.am
+            tables/additional/Makefile.am
 
 commit ffa04fe490dd89a0ef8de2335ef5ad8971a2c265
 Author: 余钰炜 <acevery@gmail.com>

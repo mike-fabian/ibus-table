@@ -16,7 +16,44 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
-    <release version="1.9.13" date="2016-08-24" urgency="medium">
+    <release version="1.9.15" date="2017-01-16" urgency="medium">
+      <description>
+        <ul>
+          <li>
+            Update translations from zanata (ca, de, fr, uk updated)
+          </li>
+          <li>
+            Improve README
+          </li>
+          <li>
+            Point to new home-page in the “About” tab.
+          </li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.9.14" date="2016-08-24" urgency="medium">
+      <description>
+        <ul>
+          <li>
+            Fix bug in Unihan_Variants.txt, 乾 U+4E7E is both
+            simplified and traditional Chinese (thanks to heiher)
+          </li>
+          <li>
+            Update Unihan_Variants.txt from “2015-04-30 Unicode 8.0.0”
+            to “2016-06-01 Unicode 9.0.0”
+          </li>
+          <li>
+            Regenerate engine/chinese_variants.py
+          </li>
+          <li>
+            Add test case for 乾 to make sure it is detected as both
+            traditional and simplified Chinese
+          </li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+    <release version="1.9.13" date="2016-08-23" urgency="medium">
       <description>
         <ul>
           <li>

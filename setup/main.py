@@ -295,6 +295,15 @@ class PreferencesDialog:
         """Initialize the general notebook page"""
         self.__dialog.set_title(_("IBus Table %s Preferences")
                                 %re.sub(r'^table:', '', self.__engine_name))
+        # https://tronche.com/gui/x/icccm/sec-4.html#WM_CLASS
+        # gnome-shell seems to use the first argument of set_wmclass()
+        # to find the .desktop file.  If the .desktop file can be
+        # found, the name shown by gnome-shell in the top bar comes
+        # from that .desktop file and the icon to show is also read
+        # from that .desktop file. If the .desktop file cannot be
+        # found, the second argument of set_wmclass() is shown by
+        # gnome-shell in the top bar.
+        self.__dialog.set_wmclass('ibus-setup-table', 'IBus Table Setup')
         self.__values = self.__config.get_values(self.__config_section).unpack()
         self.__config.connect ("value-changed", self.__config_value_changed_cb)
 
@@ -498,8 +507,8 @@ class PreferencesDialog:
         if not ret:
             return 0
         self.get_default_options_from_database()
-        GLib.idle_add(self.do_init)
         self.load_builder()
+        self.do_init()
         return self.__dialog.run()
 
 

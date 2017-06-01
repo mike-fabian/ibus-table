@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2017-01-16 08:41+0100\n"
+"POT-Creation-Date: 2017-06-01 13:18+0200\n"
 "PO-Revision-Date: 2015-08-15 03:33-0400\n"
 "Last-Translator: Ooyama Yosiyuki <qqke6wd9k@apricot.ocn.ne.jp>\n"
 "Language-Team: Japanese\n"
@@ -223,20 +223,39 @@ msgstr ""
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr ""
 
-#: setup/main.py:129
+#: ibus-table.appdata.xml:5
+msgid "Ibus Table"
+msgstr ""
+
+#: ibus-table.appdata.xml:6
+msgid "Table based input method"
+msgstr ""
+
+#: ibus-table.appdata.xml:8
+msgid ""
+"Ibus-table is an input method framework for table-based input methods. "
+"Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
+"CangJie, …. But some tables for other languages are available as well."
+msgstr ""
+
+#: ibus-table.appdata.xml:94
+msgid "Mike FABIAN"
+msgstr ""
+
+#: setup/main.py:137
 msgid "IBUS_ENGINE_NAME environment variable is not set."
 msgstr ""
 
-#: setup/main.py:133
+#: setup/main.py:141
 msgid "Cannot determine the engine name. Please use the --engine-name option."
 msgstr ""
 
-#: setup/main.py:147
+#: setup/main.py:155
 #, python-format
 msgid "IBus Table engine %s is not available"
 msgstr ""
 
-#: setup/main.py:296
+#: setup/main.py:304
 #, python-format
 msgid "IBus Table %s Preferences"
 msgstr ""

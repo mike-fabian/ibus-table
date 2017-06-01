@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2017-01-16 08:41+0100\n"
+"POT-Creation-Date: 2017-06-01 13:18+0200\n"
 "PO-Revision-Date: 2017-01-16 02:19-0500\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: German <trans-de@lists.fedoraproject.org>\n"
@@ -234,22 +234,45 @@ msgstr "Einstellungen"
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Konfiguration von ibus-table “%(engine-name)s”"
 
-#: setup/main.py:129
+#: ibus-table.appdata.xml:5
+msgid "Ibus Table"
+msgstr "Ibus Table"
+
+#: ibus-table.appdata.xml:6
+msgid "Table based input method"
+msgstr "Tabellenbasierte Eingabemethode"
+
+#: ibus-table.appdata.xml:8
+msgid ""
+"Ibus-table is an input method framework for table-based input methods. "
+"Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
+"CangJie, …. But some tables for other languages are available as well."
+msgstr ""
+"Ibus-table ist eine Inputsystem für tabellenbasierte Inputmethoden. Es\n"
+"wird hauptsächlich für chinesiche Inputmethoden wie ZhengMa, WuBi,\n"
+"ErBi, CangJie usw. benutzt. Aber es gibt auch einige Tabellen für\n"
+"andere Sprachen."
+
+#: ibus-table.appdata.xml:94
+msgid "Mike FABIAN"
+msgstr "Mike FABIAN"
+
+#: setup/main.py:137
 msgid "IBUS_ENGINE_NAME environment variable is not set."
 msgstr "Die Umgebungsvariable IBUS_ENGINE_NAME ist nicht gesetzt."
 
-#: setup/main.py:133
+#: setup/main.py:141
 msgid "Cannot determine the engine name. Please use the --engine-name option."
 msgstr ""
 "Der Name für diesen Input-Engine kann nicht gefunden werden. Bitte benutzen "
 "Sie die --engine-name Option."
 
-#: setup/main.py:147
+#: setup/main.py:155
 #, python-format
 msgid "IBus Table engine %s is not available"
 msgstr "IBus Table Engine %s ist nicht verfügbar"
 
-#: setup/main.py:296
+#: setup/main.py:304
 #, python-format
 msgid "IBus Table %s Preferences"
 msgstr "IBus Table %s Einstellungen"
@@ -659,22 +682,3 @@ msgstr ""
 #: setup/ibus-table-preferences.ui:1186
 msgid "About"
 msgstr "Info über IBus Table"
-
-#~ msgid "Ibus Table"
-#~ msgstr "Ibus Table"
-
-#~ msgid "Table based input method"
-#~ msgstr "Tabellenbasierte Eingabemethode"
-
-#~ msgid ""
-#~ "Ibus-table is an input method framework for table-based input methods. "
-#~ "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
-#~ "CangJie, …. But some tables for other languages are available as well."
-#~ msgstr ""
-#~ "Ibus-table ist eine Inputsystem für tabellenbasierte Inputmethoden. Es\n"
-#~ "wird hauptsächlich für chinesiche Inputmethoden wie ZhengMa, WuBi,\n"
-#~ "ErBi, CangJie usw. benutzt. Aber es gibt auch einige Tabellen für\n"
-#~ "andere Sprachen."
-
-#~ msgid "Mike FABIAN"
-#~ msgstr "Mike FABIAN"

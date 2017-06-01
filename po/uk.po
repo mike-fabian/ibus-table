@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2017-01-16 08:41+0100\n"
+"POT-Creation-Date: 2017-06-01 13:18+0200\n"
 "PO-Revision-Date: 2016-09-01 12:49-0400\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -231,22 +231,45 @@ msgstr "Налаштування"
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Налаштувати «%(engine-name)s» для ibus-table"
 
-#: setup/main.py:129
+#: ibus-table.appdata.xml:5
+msgid "Ibus Table"
+msgstr "Таблиця Ibus"
+
+#: ibus-table.appdata.xml:6
+msgid "Table based input method"
+msgstr "Спосіб введення на основі таблиці"
+
+#: ibus-table.appdata.xml:8
+msgid ""
+"Ibus-table is an input method framework for table-based input methods. "
+"Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
+"CangJie, …. But some tables for other languages are available as well."
+msgstr ""
+"Ibus-table — оболонка способів введення символів за допомогою таблиці. "
+"Здебільшого використовується для способів введення символів китайської, "
+"зокрема ZhengMa, WuBi, ErBi, CangJie, … Але передбачено і таблиці для деяких "
+"інших мов."
+
+#: ibus-table.appdata.xml:94
+msgid "Mike FABIAN"
+msgstr "Mike FABIAN"
+
+#: setup/main.py:137
 msgid "IBUS_ENGINE_NAME environment variable is not set."
 msgstr "Змінну середовища IBUS_ENGINE_NAME не визначено."
 
-#: setup/main.py:133
+#: setup/main.py:141
 msgid "Cannot determine the engine name. Please use the --engine-name option."
 msgstr ""
 "Не вдалося встановити назву рушія. Будь ласка, скористайтеся параметром --"
 "engine-name."
 
-#: setup/main.py:147
+#: setup/main.py:155
 #, python-format
 msgid "IBus Table engine %s is not available"
 msgstr "Не виявлено рушія таблиці IBus %s"
 
-#: setup/main.py:296
+#: setup/main.py:304
 #, python-format
 msgid "IBus Table %s Preferences"
 msgstr "Налаштування таблиці IBus %s"
@@ -649,22 +672,3 @@ msgstr ""
 #: setup/ibus-table-preferences.ui:1186
 msgid "About"
 msgstr "Про програму"
-
-#~ msgid "Ibus Table"
-#~ msgstr "Таблиця Ibus"
-
-#~ msgid "Table based input method"
-#~ msgstr "Спосіб введення на основі таблиці"
-
-#~ msgid ""
-#~ "Ibus-table is an input method framework for table-based input methods. "
-#~ "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
-#~ "CangJie, …. But some tables for other languages are available as well."
-#~ msgstr ""
-#~ "Ibus-table — оболонка способів введення символів за допомогою таблиці. "
-#~ "Здебільшого використовується для способів введення символів китайської, "
-#~ "зокрема ZhengMa, WuBi, ErBi, CangJie, … Але передбачено і таблиці для "
-#~ "деяких інших мов."
-
-#~ msgid "Mike FABIAN"
-#~ msgstr "Mike FABIAN"

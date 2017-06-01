@@ -16,6 +16,19 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.9.17" date="2017-06-01" urgency="medium">
+      <description>
+        <ul>
+          <li>
+            Load .desktop file for ibus-setup-table correctly under
+            Gnome Wayland
+          </li>
+          <li>
+            Set WM_CLASS of ibus-setup-table correctly
+          </li>
+        </ul>
+      </description>
+    </release>
     <release version="1.9.16" date="2017-01-17" urgency="medium">
       <description>
         <ul>
@@ -66,7 +79,6 @@
         </ul>
       </description>
     </release>
-  </releases>
     <release version="1.9.13" date="2016-08-23" urgency="medium">
       <description>
         <ul>

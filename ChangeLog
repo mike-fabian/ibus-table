@@ -1,4 +1,42 @@
-commit 4bee8f3bff018a5ed7a64f1ccd0a08b67c560409
+commit 185b90c7565249a386175925449d81f03093b37f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jun 1 13:11:04 2017 +0200
+
+    Release 1.9.17
+
+commit f2ad418163efbe78d8e1ef98d8b2389499e32f3e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jun 1 13:17:13 2017 +0200
+
+    Update translations from zanata
+
+commit 2d26e15cb828a94e4e26512626c4b783cdc9680a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jun 1 13:08:29 2017 +0200
+
+    Load .desktop file for ibus-setup-table correctly under Gnome Wayland
+
+commit 4cf3f6d8490392de28c7fdc311d8e4e782dcd0b7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Feb 23 05:11:25 2017 +0100
+
+    Set WM_CLASS of ibus-setup-table correctly
+    
+    This is needed to get the application name and icon shown correctly by
+    gnome-shell in the top bar.
+    
+    gnome-shell seems to use the first argument of set_wmclass() to find
+    the .desktop file.  If the .desktop file can be found, the name shown
+    by gnome-shell in the top bar comes from that .desktop file and the
+    icon to show is also read from that .desktop file. If the .desktop
+    file cannot be found, the second argument of set_wmclass() is shown by
+    gnome-shell in the top bar.
+    
+    Therefore, for ibus-setup-typing-table we need:
+    
+        set_wmclass('ibus-setup-table', 'IBus Table Setup')
+
+commit 02f1b980582e784c22cf41915e28b706d09000e9
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Jan 16 14:46:57 2017 +0100
 

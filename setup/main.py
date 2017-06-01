@@ -32,7 +32,15 @@ from time import strftime
 import re
 
 from gi import require_version
+require_version('GLib', '2.0')
 from gi.repository import GLib
+
+# set_prgname before importing other modules to show the name in warning
+# messages when import modules are failed. E.g. Gtk.
+GLib.set_application_name('IBus Table Preferences')
+# This makes gnome-shell load the .desktop file when running under Wayland:
+GLib.set_prgname('ibus-setup-table')
+
 require_version('Gtk', '3.0')
 from gi.repository import Gtk
 require_version('IBus', '1.0')

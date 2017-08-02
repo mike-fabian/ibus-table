@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2017-06-01 13:18+0200\n"
+"POT-Creation-Date: 2016-08-24 08:56+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2014-11-29 09:15-0500\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan)\n"
 "Language: zh-TW\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 3.9.6\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
@@ -197,10 +197,9 @@ msgstr "一般"
 #: engine/table.py:1650
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
-"of into the application. This enables automatic definitions of new shortcuts)"
-msgstr ""
-"切換至一般提交模式 (自動提入預先編輯區內而非程式內。這會啟用新快捷鍵的自動定"
-"義)"
+"of into the application. This enables automatic definitions of new "
+"shortcuts)"
+msgstr "切換至一般提交模式 (自動提入預先編輯區內而非程式內。這會啟用新快捷鍵的自動定義)"
 
 #: engine/table.py:1660
 msgid ""
@@ -226,14 +225,12 @@ msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "設定 ibus-table「%(engine-name)s」"
 
 #: ibus-table.appdata.xml:5
-#, fuzzy
 msgid "Ibus Table"
-msgstr "表格"
+msgstr ""
 
 #: ibus-table.appdata.xml:6
-#, fuzzy
 msgid "Table based input method"
-msgstr "表格輸入"
+msgstr ""
 
 #: ibus-table.appdata.xml:8
 msgid ""
@@ -242,24 +239,24 @@ msgid ""
 "CangJie, …. But some tables for other languages are available as well."
 msgstr ""
 
-#: ibus-table.appdata.xml:94
+#: ibus-table.appdata.xml:31
 msgid "Mike FABIAN"
 msgstr ""
 
-#: setup/main.py:137
+#: setup/main.py:129
 msgid "IBUS_ENGINE_NAME environment variable is not set."
 msgstr "IBUS_ENGINE_NAME 環境變數尚未設定。"
 
-#: setup/main.py:141
+#: setup/main.py:133
 msgid "Cannot determine the engine name. Please use the --engine-name option."
 msgstr "無法判定引擎名稱。請使用 --engine-name 選項。"
 
-#: setup/main.py:155
+#: setup/main.py:147
 #, python-format
 msgid "IBus Table engine %s is not available"
 msgstr "IBus Table 引擎 %s 無法使用"
 
-#: setup/main.py:304
+#: setup/main.py:296
 #, python-format
 msgid "IBus Table %s Preferences"
 msgstr "IBus Table %s 偏好設定"
@@ -347,35 +344,28 @@ msgstr ""
 "或簡體字。"
 
 #: setup/ibus-table-preferences.ui:340
-msgid ""
-"Whether to use fullwidth or halfwidth\n"
+msgid "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
-msgstr ""
-"表格輸入模式要使用全形字母\n"
+msgstr "表格輸入模式要使用全形字母\n"
 "或半形字母。"
 
 #: setup/ibus-table-preferences.ui:357
-msgid ""
-"Whether to use fullwidth or halfwidth\n"
+msgid "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
-msgstr ""
-"表格輸入模式要使用全形標點\n"
+msgstr "表格輸入模式要使用全形標點\n"
 "或半形標點。"
 
 #: setup/ibus-table-preferences.ui:374
-msgid ""
-"Whether to use fullwidth or halfwidth\n"
+msgid "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
-msgstr ""
-"直接輸入模式要使用全形字母\n"
+msgstr "直接輸入模式要使用全形字母\n"
 "或半形字母。"
 
 #: setup/ibus-table-preferences.ui:391
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
-msgstr ""
-"直接輸入模式要使用全形標點\n"
+msgstr "直接輸入模式要使用全形標點\n"
 "或半形標點。"
 
 #: setup/ibus-table-preferences.ui:411
@@ -421,8 +411,7 @@ msgstr "<b>初始狀態</b>"
 msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
-msgstr ""
-"顯示候選字詞的查詢表格是要\n"
+msgstr "顯示候選字詞的查詢表格是要\n"
 "垂直排列或水平排列。"
 
 #: setup/ibus-table-preferences.ui:568

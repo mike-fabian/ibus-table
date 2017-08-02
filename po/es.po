@@ -1,6 +1,4 @@
-# Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2015. #zanata
-# Mike FABIAN <mfabian@redhat.com>, 2016. #zanata
-# Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2016. #zanata
+# Máximo Castañeda Riloba <mcrcctm@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -9,148 +7,148 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-08-25 07:02-0400\n"
-"Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
-"Language-Team: Catalan\n"
-"Language: ca\n"
+"PO-Revision-Date: 2017-03-05 05:57-0500\n"
+"Last-Translator: Máximo Castañeda Riloba <mcrcctm@gmail.com>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
 "X-Generator: Zanata 3.9.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: engine/table.py:1474 setup/ibus-table-preferences.ui:75
 msgid "Simplified Chinese"
-msgstr "Xinès simplificat"
+msgstr "Chino simplificado"
 
 #: engine/table.py:1476
 msgid "Switch to “Simplified Chinese only”."
-msgstr "Commuta a “Tan sols xinès simplificat”."
+msgstr "Cambia al modo “sólo chino simplificado”."
 
 #: engine/table.py:1482 setup/ibus-table-preferences.ui:78
 msgid "Traditional Chinese"
-msgstr "Xinès tradicional"
+msgstr "Chino tradicional"
 
 #: engine/table.py:1484
 msgid "Switch to “Traditional Chinese only”."
-msgstr "Commuta a “Tan sols xinès tradicional”."
+msgstr "Cambia al modo “sólo chino tradicional”."
 
 #: engine/table.py:1490
 msgid "Simplified Chinese first"
-msgstr "Primer el xinès simplificat"
+msgstr "Primero chino simplificado"
 
 #: engine/table.py:1492
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr "Commuta a “Xinès simplificat abans del tradicional”."
+msgstr "Cambia al modo “chino simplificado antes que el tradicional”."
 
 #: engine/table.py:1498
 msgid "Traditional Chinese first"
-msgstr "Primer el xinès tradicional"
+msgstr "Primero chino tradicional"
 
 #: engine/table.py:1500
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr "Commuta a “Xinès tradicional abans del simplificat”."
+msgstr "Cambia al modo “chino tradicional antes que el simplificado”."
 
 #: engine/table.py:1506 setup/ibus-table-preferences.ui:87
 msgid "All Chinese characters"
-msgstr "Tots els caràcters del xinès"
+msgstr "Todos los caracteres chinos"
 
 #: engine/table.py:1507
 msgid "Switch to “All Chinese characters”."
-msgstr "Commuta a “Tots els caràcters del xinès”."
+msgstr "Cambia al modo “todos los caracteres chinos”."
 
 #: engine/table.py:1511
 msgid "Chinese mode"
-msgstr "Mode xinès"
+msgstr "Modo chino"
 
 #: engine/table.py:1512
 msgid "Switch Chinese mode"
-msgstr "Commuta el “Mode xinès”."
+msgstr "Cambia al modo chino"
 
 #: engine/table.py:1522
 msgid "English"
-msgstr "Anglès"
+msgstr "Inglés"
 
 #: engine/table.py:1523
 msgid "Switch to English input"
-msgstr "Commuta a Entrada en anglès"
+msgstr "Cambia a modo de entrada en inglés"
 
 #: engine/table.py:1530
 msgid "Chinese"
-msgstr "Xinès"
+msgstr "Chino"
 
 #: engine/table.py:1531
 msgid "Switch to Chinese input"
-msgstr "Commuta a Entrada en xinès"
+msgstr "Cambia a modo de entrada en chino"
 
 #: engine/table.py:1539 engine/table.py:1658 setup/ibus-table-preferences.ui:36
 msgid "Direct"
-msgstr "Directe"
+msgstr "Directa"
 
 #: engine/table.py:1540
 msgid "Switch to direct input"
-msgstr "Commuta a Entrada directa"
+msgstr "Cambia a modo de entrada directa"
 
 #: engine/table.py:1545 engine/table.py:1606
 msgid "Table"
-msgstr "Taula"
+msgstr "Tabla"
 
 #: engine/table.py:1546
 msgid "Switch to table input"
-msgstr "Commuta a l'entrada de taula"
+msgstr "Cambia a modo de entrada de tabla"
 
 #: engine/table.py:1554
 msgid "Input mode"
-msgstr "Mode d'entrada"
+msgstr "Modo de entrada"
 
 #: engine/table.py:1555
 msgid "Switch Input mode"
-msgstr "Commuta el mode d'entrada"
+msgstr "Cambia el modo de entrada"
 
 #: engine/table.py:1564 engine/table.py:1585 setup/ibus-table-preferences.ui:98
 #: setup/ibus-table-preferences.ui:112 setup/ibus-table-preferences.ui:182
 #: setup/ibus-table-preferences.ui:196
 msgid "Half"
-msgstr "Mitjana"
+msgstr "Medio"
 
 #: engine/table.py:1565
 msgid "Switch to halfwidth letters"
-msgstr "Commuta a l'amplada mitjana de lletres"
+msgstr "Cambia a caracteres de medio ancho"
 
 #: engine/table.py:1570 engine/table.py:1591
 #: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
 #: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
 msgid "Full"
-msgstr "Complet"
+msgstr "Completo"
 
 #: engine/table.py:1571
 msgid "Switch to fullwidth letters"
-msgstr "Commuta a l'amplada completa de lletres"
+msgstr "Cambia a caracteres de ancho completo"
 
 #: engine/table.py:1575
 msgid "Letter width"
-msgstr "Amplada de la lletra"
+msgstr "Ancho de caracteres"
 
 #: engine/table.py:1576
 msgid "Switch letter width"
-msgstr "Commuta l'amplada de la lletra"
+msgstr "Cambia el ancho de caracteres"
 
 #: engine/table.py:1586
 msgid "Switch to halfwidth punctuation"
-msgstr "Commuta a l'amplada mitjana de la puntuació"
+msgstr "Cambia a puntuación de medio ancho"
 
 #: engine/table.py:1592
 msgid "Switch to fullwidth punctuation"
-msgstr "Commuta a l'amplada completa de la puntuació"
+msgstr "Cambia a puntuación de ancho completo"
 
 #: engine/table.py:1596
 msgid "Punctuation width"
-msgstr "Amplada de la puntuació"
+msgstr "Ancho de puntuación"
 
 #: engine/table.py:1597
 msgid "Switch punctuation width"
-msgstr "Commuta l'amplada de la puntuació"
+msgstr "Cambia el ancho de la puntuación"
 
 #: engine/table.py:1607
 msgid "Switch to table mode"
-msgstr "Commuta al mode de taula"
+msgstr "Cambia a modo de tabla"
 
 #: engine/table.py:1612
 msgid "Pinyin"
@@ -158,39 +156,39 @@ msgstr "Pinyin"
 
 #: engine/table.py:1613
 msgid "Switch to pinyin mode"
-msgstr "Commuta al mode pinyin"
+msgstr "Cambia al modo pinyin"
 
 #: engine/table.py:1617
 msgid "Pinyin mode"
-msgstr "Mode pinyin"
+msgstr "Modo pinyin"
 
 #: engine/table.py:1618
 msgid "Switch pinyin mode"
-msgstr "Commuta el mode pinyin"
+msgstr "Cambia el modo pinyin"
 
 #: engine/table.py:1627
 msgid "Multiple character match"
-msgstr "Coincidència de caràcters múltiples"
+msgstr "Coincidencia de varios caracteres"
 
 #: engine/table.py:1628
 msgid "Switch to matching multiple characters at once"
-msgstr "Commuta a fer coincidir múltiples caràcters alhora"
+msgstr "Pasa a la búsqueda de coincidencias de varios caracteres a la vez"
 
 #: engine/table.py:1633
 msgid "Single character match"
-msgstr "Coincidència de caràcter individual"
+msgstr "Coincidencia de un sólo carácter"
 
 #: engine/table.py:1634
 msgid "Switch to matching only single characters"
-msgstr "Commuta a fer coincidir tan sols caràcters individuals"
+msgstr "Pasa a la búsqueda de coincidencias para caracteres individuales"
 
 #: engine/table.py:1638
 msgid "Onechar mode"
-msgstr "Mode d'un caràcter"
+msgstr "Modo de carácter"
 
 #: engine/table.py:1639
 msgid "Switch onechar mode"
-msgstr "Commuta el mode d'un caràcter"
+msgstr "Cambia el modo de coincidencia de carácter"
 
 #: engine/table.py:1648 setup/ibus-table-preferences.ui:33
 msgid "Normal"
@@ -202,34 +200,34 @@ msgid ""
 "of into the application. This enables automatic definitions of new "
 "shortcuts)"
 msgstr ""
-"Commuta al mode normal de consignació (les consignacions automàtiques van a "
-"la preedició en lloc de l'aplicació. Això permet la definició automàtica de "
-"noves dreceres)"
+"Cambia al modo normal (los asentamientos automáticos van a preedición en vez "
+"de a la aplicación, de forma que se permita la definición automática de "
+"nuevos atajos)"
 
 #: engine/table.py:1660
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
 msgstr ""
-"Commuta al mode directe de consignació (les consignacions automàtiques va "
-"directament a l'aplicació)"
+"Cambia al modo directo (los asentamientos automáticos van directamente a la "
+"aplicación)"
 
 #: engine/table.py:1665
 msgid "Auto commit mode"
-msgstr "Mode automàtic de consignació"
+msgstr "Modo automático de asentamiento"
 
 #: engine/table.py:1666
 msgid "Switch autocommit mode"
-msgstr "Commuta el mode automàtic de consignació"
+msgstr "Cambia el modo de asentamiento automático"
 
 #: engine/table.py:1917
 msgid "Setup"
-msgstr "Ajusta"
+msgstr "Ajustes"
 
 #: engine/table.py:1919
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
-msgstr "Configura l'ibus-table “%(engine-name)s”"
+msgstr "Configura ibus-table “%(engine-name)s”"
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"
@@ -237,7 +235,7 @@ msgstr "Ibus Table"
 
 #: ibus-table.appdata.xml:6
 msgid "Table based input method"
-msgstr "Mètode d'entrada de taula per a l'IBus"
+msgstr "Método de entrada basado en tabla"
 
 #: ibus-table.appdata.xml:8
 msgid ""
@@ -245,10 +243,9 @@ msgid ""
 "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
 "CangJie, …. But some tables for other languages are available as well."
 msgstr ""
-"Ibus-table és un marc de treball de mètode d'entrada per als mètodes "
-"d'entrada basats en taules. Sobretot s'utilitza per als mètodes d'entrada "
-"xinesos com ara ZhengMa, WuBi, ErBi, CangJie, …. No obstant això, també hi "
-"ha disponible algunes taules per a altres idiomes."
+"Ibus-table es un marco común para métodos de entrada basados en tablas. Se "
+"usa sobre todo para métodos de entrada de chino, como ZhengMa, WuBi, ErBi o "
+"CangJie, aunque también hay tablas para otros idiomas."
 
 #: ibus-table.appdata.xml:31
 msgid "Mike FABIAN"
@@ -256,23 +253,22 @@ msgstr "Mike FABIAN"
 
 #: setup/main.py:129
 msgid "IBUS_ENGINE_NAME environment variable is not set."
-msgstr "No està establerta la variable d'entorn IBUS_ENGINE_NAME."
+msgstr "No se ha establecido la variable de entorno IBUS_ENGINE_NAME."
 
 #: setup/main.py:133
 msgid "Cannot determine the engine name. Please use the --engine-name option."
 msgstr ""
-"No es pot determinar el nom del motor. Si us plau, utilitzeu l'opció --"
-"engine-name."
+"No se pudo determinar el nombre del motor. Use el parámetro --engine-name."
 
 #: setup/main.py:147
 #, python-format
 msgid "IBus Table engine %s is not available"
-msgstr "El motor de la taula d'IBus %s no està disponible"
+msgstr "El motor de IBus Table %s no está disponible"
 
 #: setup/main.py:296
 #, python-format
 msgid "IBus Table %s Preferences"
-msgstr "Preferències %s de la taula d'IBus"
+msgstr "Preferencias de IBus Table %s"
 
 #: setup/ibus-table-preferences.ui:19 setup/ibus-table-preferences.ui:47
 #: setup/ibus-table-preferences.ui:61
@@ -286,11 +282,11 @@ msgstr "Sí"
 
 #: setup/ibus-table-preferences.ui:81
 msgid "Simplified Chinese before traditional"
-msgstr "Xinès simplificat abans del tradicional"
+msgstr "Chino simplificado antes que el tradicional"
 
 #: setup/ibus-table-preferences.ui:84
 msgid "Traditional Chinese before simplified"
-msgstr "Xinès tradicional abans del simplificat"
+msgstr "Chino tradicional antes que el simplificado"
 
 #: setup/ibus-table-preferences.ui:126
 msgid "Direct input"
@@ -298,11 +294,11 @@ msgstr "Entrada directa"
 
 #: setup/ibus-table-preferences.ui:129
 msgid "Table input"
-msgstr "Entrada de taula"
+msgstr "Entrada de tabla"
 
 #: setup/ibus-table-preferences.ui:140
 msgid "Horizontal"
-msgstr "Horitzontal"
+msgstr "Horizontal"
 
 #: setup/ibus-table-preferences.ui:143
 msgid "Vertical"
@@ -314,29 +310,29 @@ msgstr "Frase"
 
 #: setup/ibus-table-preferences.ui:157
 msgid "Single Char"
-msgstr "Caràcter individual"
+msgstr "Carácter"
 
 #: setup/ibus-table-preferences.ui:168
 msgid "Commit"
-msgstr "Consigna"
+msgstr "Asentar"
 
 #: setup/ibus-table-preferences.ui:171
 msgid "Next Page"
-msgstr "Pàgina següent"
+msgstr "Siguiente página"
 
 #: setup/ibus-table-preferences.ui:223
 msgid "Restore all defaults"
-msgstr "Restableix-ho tot al predeterminat"
+msgstr "Restablecer valores predeterminados"
 
 #: setup/ibus-table-preferences.ui:227
 msgid "Restore defaults as specified in the database for this engine."
 msgstr ""
-"Restaura els valors predeterminats com s'especifica a la base de dades per a "
-"aquest motor."
+"Vuelve a poner los valores predeterminados de la base de datos para este "
+"motor."
 
 #: setup/ibus-table-preferences.ui:302
 msgid "Input mode:"
-msgstr "Mode d'entrada:"
+msgstr "Modo de entrada:"
 
 #: setup/ibus-table-preferences.ui:315
 msgid ""
@@ -351,65 +347,65 @@ msgid ""
 "matches without any particular filtering on traditional\n"
 "versus simplified Chinese."
 msgstr ""
-"“Xinès simplificat” mostra tan sols els caràcters\n"
-"utilitzats en el xinès simplificat. “Xinès tradicional”\n"
-"mostra tan sols els caràcters en el xinès tradicional.\n"
-"“Xinès tradicional abans del simplifica” mostra trots\n"
-"tots els caràcters però fica els caràcters simplificats\n"
-"més amunt en la llista de candidats. “Xinès tradicional\n"
-"abans del simplificat”  fica els caràcters simplificats\n"
-"més amunt en la llista de candidats. “Tots els caràcters”\n"
-"només mostra totes les coincidències sense cap filtre\n"
-"en particular sobre el xinès tradicional o el simplificat."
+"“Chino simplificado” sólo muestra caracteres usados\n"
+"en el chino simplificado. “Chino tradicional” sólo\n"
+"muestra caracteres usados en el chino tradicional.\n"
+"“Chino simplificado antes que el tradicional” muestra\n"
+"todos los caracteres pero da preferencia a los del\n"
+"simplificado en la lista de candidatos. “Chino\n"
+"tradicional antes que el simplificado” da preferencia\n"
+"a los del tradicional. “Todos los caracteres chinos”\n"
+"muestra todas las coincidencias sin filtrar por el\n"
+"tipo de carácter del que se trate."
 
 #: setup/ibus-table-preferences.ui:340
 msgid "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
-"Si utilitzar l'amplada total o mitjana de les\n"
-"lletres en el mode d'entrada de taula."
+"Si se deben usar letras de ancho medio o\n"
+"completo en el modo de entrada de tabla."
 
 #: setup/ibus-table-preferences.ui:357
 msgid "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
-"Si utilitzar l'amplada total o mitjana de la\n"
-"puntuació en el mode d'entrada de taula."
+"Si se debe usar puntuación de ancho medio\n"
+"o completo en el modo de entrada de tabla."
 
 #: setup/ibus-table-preferences.ui:374
 msgid "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
-"Si utilitzar l'amplada total o mitjana de les\n"
-"lletres en el mode directe d'entrada."
+"Si se deben usar letras de ancho medio o\n"
+"completo en el modo de entrada directa."
 
 #: setup/ibus-table-preferences.ui:391
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
 msgstr ""
-"Si utilitzar l'amplada total o mitjana de la\n"
-"puntuació en el mode directe d'entrada."
+"Si se debe usar puntuación de ancho medio\n"
+"o completo en el modo de entrada directa."
 
 #: setup/ibus-table-preferences.ui:411
 msgid "Chinese mode:"
-msgstr "Mode xinès:"
+msgstr "Modo de chino:"
 
 #: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"
-msgstr "Amplada de la lletra de l'entrada de taula:"
+msgstr "Ancho de letra con entrada de tabla:"
 
 #: setup/ibus-table-preferences.ui:443
 msgid "Table input punctuation width:"
-msgstr "Amplada de la puntuació de l'entrada de taula:"
+msgstr "Ancho de puntuación con entrada de tabla:"
 
 #: setup/ibus-table-preferences.ui:459
 msgid "Direct input letter width:"
-msgstr "Amplada de la lletra de l'entrada directa:"
+msgstr "Ancho de letra con entrada directa:"
 
 #: setup/ibus-table-preferences.ui:475
 msgid "Direct input punctuation width:"
-msgstr "Amplada de la puntuació de l'entrada directa:"
+msgstr "Ancho de puntuación con entrada directa:"
 
 #: setup/ibus-table-preferences.ui:488
 msgid ""
@@ -420,26 +416,25 @@ msgid ""
 "halfwidth may still happen in direct input mode.\n"
 "“Table input” means the input method is on."
 msgstr ""
-"“Entrada directa” és gairebé el mateix que si el\n"
-"mètode d'entrada estigués apagat, és a dir, no\n"
-"s'utilitza en absolut, la majoria dels caràcters\n"
-"simplement es passen a l'aplicació. Però en el\n"
-"mode directe d'entrada encara es poden\n"
-"produir algunes conversions entre l'amplada\n"
-"completa i la mitjana. “Entrada de taula” significa\n"
-"que el mètode d'entrada està engegat."
+"La “entrada directa” viene a ser como si se\n"
+"desactivara el método de entrada, casi todos los\n"
+"caracteres pasan directamente a la aplicación,\n"
+"aunque puede haber alguna conversión entre\n"
+"caracteres de ancho medio y completo.\n"
+"“Entrada de tabla” significa que el método de\n"
+"entrada está activo."
 
 #: setup/ibus-table-preferences.ui:514
 msgid "<b>Inital state</b>"
-msgstr "<b>Estat inicial</b>"
+msgstr "<b>Estado inicial</b>"
 
 #: setup/ibus-table-preferences.ui:551
 msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
 msgstr ""
-"Si la taula de consulta que mostra els candidats\n"
-"ha de ser vertical o horitzontal."
+"Si la tabla de consulta con los candidatos\n"
+"debe ser vertical u horizontal."
 
 #: setup/ibus-table-preferences.ui:568
 msgid ""
@@ -448,22 +443,22 @@ msgid ""
 "pages in the lookup table using the page up/down\n"
 "keys or the arrow up/down keys."
 msgstr ""
-"El nombre màxim de candidats en una pàgina de\n"
-"la taula de consulta. Podeu commutar la pàgina en\n"
-"la taula de consulta utilitzant les tecles de pàgina\n"
-"cap amunt/avall o la fletxa cap amunt/avall."
+"El número máximo de candidatos por página.\n"
+"Puede moverse entre página con las teclas\n"
+"de página siguiente/anterior o con las de\n"
+"flecha abajo/arriba."
 
 #: setup/ibus-table-preferences.ui:592
 msgid "Orientation:"
-msgstr "Orientació:"
+msgstr "Orientación:"
 
 #: setup/ibus-table-preferences.ui:608
 msgid "Page size:"
-msgstr "Mida de la pàgina:"
+msgstr "Tamaño de página:"
 
 #: setup/ibus-table-preferences.ui:624
 msgid "Show candidate list"
-msgstr "Mostra la llista de candidats"
+msgstr "Mostrar la lista de candidatos"
 
 #: setup/ibus-table-preferences.ui:637
 msgid ""
@@ -473,19 +468,19 @@ msgid ""
 "input methods like the Russian “translit”, hiding the\n"
 "candidate lists is better."
 msgstr ""
-"Si les llistes de candidats s'han de mostrar o ocultar.\n"
-"Per als mètodes d'entrada xinesos en general es vol\n"
-"mostrar les llistes de candidats. Però per alguns\n"
-"mètodes d'entrada no xinesos com el rus “translit”,\n"
-"el millor és ocultar les llistes de candidats."
+"Si debe mostrarse o no la lista de candidatos.\n"
+"Para métodos de entrada de chino lo normal\n"
+"es que quiera visualizarse la lista, pero\n"
+"para otros como el “translit” ruso, suele ser\n"
+"mejor ocultarla."
 
 #: setup/ibus-table-preferences.ui:661
 msgid "<b>Candidate list</b>"
-msgstr "<b>Llista de candidats</b>"
+msgstr "<b>Lista de candidatos</b>"
 
 #: setup/ibus-table-preferences.ui:681
 msgid "Settings"
-msgstr "Ajustos"
+msgstr "Ajustes"
 
 #: setup/ibus-table-preferences.ui:724
 msgid ""
@@ -494,10 +489,10 @@ msgid ""
 "set to “Phrase” candidates consisting of\n"
 "several characters may be shown."
 msgstr ""
-"Si s'estableix a «caràcter individual», apareixeran\n"
-"només els candidats d'un sol caràcter. Si s'estableix\n"
-"a «frase», es poden mostrar els candidats que consten\n"
-"de diversos caràcters."
+"Con “carácter” sólo se muestran candidatos\n"
+"de caracteres individuales.\n"
+"Con “frase” pueden aparecer candidatos de\n"
+"varios caracteres."
 
 #: setup/ibus-table-preferences.ui:743
 msgid ""
@@ -512,16 +507,17 @@ msgid ""
 "   (Mostly needed for non-Chinese input methods like\n"
 "   the Russian “translit”)"
 msgstr ""
-"Si s'estableix a «Sí», això fa les 4 coses següents:\n"
-"1) En escriure «Retorn», consigna el \n"
-"   candidat + avanç de línia\n"
-"2) En escriure Tabulador, consigna el candidat\n"
-"3) En consignar mitjançant una tecla de consignació,\n"
-"   consigna el candidat + « »\n"
-"4) Si en escriure el següent caràcter no coincideix amb\n"
-"   cap candidat es consigna el primer candidat de\n"
-"   l'anterior coincidència. (Majorment necessari per \n"
-"   mètodes d'entrada no xinesos com el rus «translit»)"
+"Con la opción activada se hace lo siguiente:\n"
+"1) Al pulsar “intro” se envían el candidato\n"
+"   y el cambio de línea\n"
+"2) Con el tabulador se envía el candidato\n"
+"3) Con la tecla de asentamiento se envían\n"
+"   el candidato y un espacio\n"
+"4) Si al escribir el siguiente carácter no\n"
+"   se encuentran candidatos, se envía el\n"
+"   primer candidato de la coincidencia anterior.\n"
+"   (Usado sobre todo para métodos como el\n"
+"   “translit” ruso)"
 
 #: setup/ibus-table-preferences.ui:768
 msgid ""
@@ -535,15 +531,13 @@ msgid ""
 "into the application, “Normal” means they get committed\n"
 "to preëdit."
 msgstr ""
-"Consignar amb les tecles de consignació o amb el\n"
-"ratolí sempre consigna a l'aplicació. Aquesta opció és\n"
-"sobre les consignacions “automàtiques” que poden\n"
-"ocórrer quan un només continua escrivint l'entrada\n"
-"sense la consignació manual. De tant en tant, les\n"
-"consignacions “automàtiques” es produiran.\n"
-"“Directe” significa que com en la consignació\n"
-"“automàtica” les consignacions van directament a\n"
-"l'aplicació, “Normal” significa que s'envien en la preedició."
+"Al asentar con las teclas de asentamiento o con el ratón\n"
+"siempre se envían los datos a la aplicación. Esta opción\n"
+"es para los asentamientos “automáticos” que pueden\n"
+"producirse al escribir sin asentar manualmente.\n"
+"“Directa” hace que la entrada de a esos asentamientos\n"
+"“automáticos” se envíe a la aplicación. “Normal” hace el\n"
+"asentamiento en la preedición."
 
 #: setup/ibus-table-preferences.ui:792
 msgid ""
@@ -552,74 +546,76 @@ msgid ""
 "(i.e. the labels in front of the candidates in the\n"
 "lookup table) or using the mouse."
 msgstr ""
-"Si trieu la tecla d'espai per fer “Pàgina següent”,\n"
-"tan sols podeu consignar mitjançant les tecles de\n"
-"selecció (p. ex. les etiquetes davant dels candidats\n"
-"en la taula de consulta) o mitjançant el ratolí."
+"Si usa la tecla espaciadora como\n"
+"“siguiente página”, sólo podrá\n"
+"asentar con las teclas de selección\n"
+"(las etiquetas que aparecen en la\n"
+"lista junto a los candidatos) o con\n"
+"el ratón."
 
 #: setup/ibus-table-preferences.ui:814
 msgid "Compose:"
-msgstr "Compon:"
+msgstr "Generación de candidatos:"
 
 #: setup/ibus-table-preferences.ui:830
 msgid "Auto select:"
-msgstr "Autoselecciona:"
+msgstr "Selección automática:"
 
 #: setup/ibus-table-preferences.ui:846
 msgid "Auto commit mode:"
-msgstr "Mode automàtic de consignació:"
+msgstr "Modo de asentamiento automático:"
 
 #: setup/ibus-table-preferences.ui:862
 msgid "Behavior of space key:"
-msgstr "Comportament de la tecla espaiadora:"
+msgstr "Comportamiento de la tecla espaciadora:"
 
 #: setup/ibus-table-preferences.ui:878
 msgid "Auto wildcard:"
-msgstr "Comodí automàtic:"
+msgstr "Comodín automático:"
 
 #: setup/ibus-table-preferences.ui:891
 msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
 msgstr ""
-"Si és així, un comodí múltiple s'afegirà\n"
-"automàticament al final de la cadena d'entrada."
+"Cuando está activo se añade automáticamente el comodín\n"
+"de coincidencia múltiple al final de la cadena de entrada."
 
 #: setup/ibus-table-preferences.ui:911
 msgid "Single wildchard character:"
-msgstr "Comodí de caràcter individual:"
+msgstr "Comodín de carácter:"
 
 #: setup/ibus-table-preferences.ui:924
 msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
-"El comodí per cercar qualsevol caràcter individual.\n"
-"Teclegeu RETORN per a confirmar després de canviar el comodí."
+"El comodín para coincidencias de un solo carácter.\n"
+"Pulse INTRO para confirmar el cambio de comodín."
 
 #: setup/ibus-table-preferences.ui:943
 msgid "Multi wildcard character:"
-msgstr "Caràcter de comodí múltiple:"
+msgstr "Comodín de cadena:"
 
 #: setup/ibus-table-preferences.ui:956
 msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
-"El comodí utilitzat per cercar qualsevol nombre de caràcters.\n"
-"Teclegeu RETORN per a confirmar després de canviar el comodí."
+"El comodín para coincidencias de cualquier número de caracteres.\n"
+"Pulse INTRO para confirmar el cambio de comodín."
 
 #: setup/ibus-table-preferences.ui:976
 msgid "<b>Details</b>"
-msgstr "<b>Detalls</b>"
+msgstr "<b>Detalles</b>"
 
 #: setup/ibus-table-preferences.ui:999
 msgid "Details"
-msgstr "Detalls"
+msgstr "Detalles"
 
 #: setup/ibus-table-preferences.ui:1055
 msgid "Table input method for IBus"
-msgstr "Mètode d'entrada de taula per a l'IBus"
+msgstr "Método de entrada basado en tabla para IBus"
 
 #: setup/ibus-table-preferences.ui:1087
 msgid ""
@@ -642,13 +638,13 @@ msgid ""
 "</small>"
 msgstr ""
 "<small>\n"
-"<b>Autors:</b>\n"
+"<b>Autores:</b>\n"
 "Yuwei YU (‘acevery’)\n"
 "Peng Huang\n"
 "BYVoid\n"
 "Peng Wu\n"
 "\n"
-"<b>Contribuïdors:</b>\n"
+"<b>Colaboradores:</b>\n"
 "koterpilla\n"
 "Zerng07\n"
 "Caius ‘kaio’ Chance\n"
@@ -661,4 +657,4 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:1186
 msgid "About"
-msgstr "Quant a"
+msgstr "Acerca de"

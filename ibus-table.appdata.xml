@@ -86,10 +86,13 @@
     </release>
     <release version="1.9.13" date="2016-08-23" urgency="medium">
       <description>
-        <p>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
             When ignoring key release events, “False” should be
-            returned, not “True” (Resolves: rhbz#1369514).
-        </p>
+            returned, not “True” (Resolves: rhbz#1369514)
+          </li>
+        </ul>
       </description>
     </release>
   </releases>

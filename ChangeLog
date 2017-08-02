@@ -1,4 +1,80 @@
-commit 185b90c7565249a386175925449d81f03093b37f
+commit 61c74af9daac017fe58bdb9765f4fb958ecfaca0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 2 09:23:32 2017 +0200
+
+    Release 1.9.18
+
+commit 0cf87b9170a2d3018ddd162e553cc503f9500187
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 2 09:30:48 2017 +0200
+
+    Update translations from zanata (pt_BR updated, es new)
+
+commit ccb0effe6dc15c81e4782588f709fd6dca4cb41d
+Author: Heiher <r@hev.cc>
+Date:   Sun Jul 23 10:37:04 2017 +0800
+
+    Don't query user database if user define phrase and dynamic adjust are disabled
+
+commit b10c2ddfa9f003a529efc7bb4f2309e899f64444
+Author: Heiher <r@hev.cc>
+Date:   Wed Aug 2 15:10:03 2017 +0800
+
+    Enable hash map based cache for user database enabled.
+
+commit d68a20c1aece6092ee58b57927a554d16a425dfa
+Author: Heiher <r@hev.cc>
+Date:   Sun Jul 23 12:03:29 2017 +0800
+
+    Import hash map based cache for table database.
+
+commit b426d421908846973c506a666b5ac36701087c31
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 2 09:17:48 2017 +0200
+
+    Fix another appdata warning
+
+commit bb7d86abea69543e435e77e67a03992cae9e8b3d
+Author: Jeremy Bicha <jbicha@ubuntu.com>
+Date:   Mon Jul 3 00:48:05 2017 -0400
+
+    build: Install appstream metadata to /usr/share/metainfo/
+
+commit 8d9d143769571a60d452067f5645278f2c4cd38b
+Author: Jeremy Bicha <jbicha@ubuntu.com>
+Date:   Mon Jul 3 00:47:10 2017 -0400
+
+    appdata: Fix some validation issues
+
+commit 96e10b288da4d4c60e2201ef048d29a8fbcace6d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 1 07:48:55 2017 +0200
+
+    Add 著 U+8457 to the test cases in  generate-chinese-variants.py
+
+commit 3128edf8519671500b01747cf0f024fb0711c965
+Author: Heiher <r@hev.cc>
+Date:   Mon Jul 24 18:48:29 2017 +0800
+
+    Fix bug in Unihan_Variants.txt, 著 U+8457 is both simplified *and* traditional Chinese
+
+commit 97619240b43968ed6296eead80139986ad2857cb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 31 17:29:23 2017 +0200
+
+    Keep our fixes to Unihan_Variants which are not yet included upstream
+
+commit 7a320806d3a546eba57dddf4de7e0b644aae1bb8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 31 17:10:18 2017 +0200
+
+    Update Unihan_Variants.txt from “2016-06-01 Unicode 9.0.0” to “2017-05-14 Unicode 10.0.0”
+    
+    There are no new lines in Unihan_Variants.txt which are relevant for
+    simplified and traditional detection. Unfortunately none of our fixes
+    for simplified and traditional detection seems to be included upstream yet.
+
+commit 360933c93068ce50d3dd807bf6d22b3c1cafafc6
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Jun 1 13:11:04 2017 +0200
 

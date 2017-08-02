@@ -16,6 +16,39 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.9.18" date="2017-08-02" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Update translations from zanata (pt_BR updated, es new)
+          </li>
+          <li>
+            Don't query user database if user define phrase and
+            dynamic adjust are disabled (thanks to heiher)
+          </li>
+          <li>
+            Enable hash map based cache for user database enabled
+            (thanks to heiher)
+          </li>
+          <li>
+            Import hash map based cache for table database (thanks to
+            heiher)
+          </li>
+          <li>
+            Install appstream metadata to /usr/share/metainfo/ (thanks
+            to jbicha)
+          </li>
+          <li>
+            Fix some appdata validation issues (thanks to jbicha)
+          </li>
+          <li>
+            Fix bug in Unihan_Variants.txt, 著 U+8457 is both
+            simplified *and* traditional Chinese (thanks to heiher)
+          </li>
+        </ul>
+      </description>
+    </release>
     <release version="1.9.17" date="2017-06-01" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

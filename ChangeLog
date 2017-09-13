@@ -1,4 +1,45 @@
-commit 61c74af9daac017fe58bdb9765f4fb958ecfaca0
+commit 6b62cbec36e42155294332398e34279d9fca0073
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 13 08:51:57 2017 +0200
+
+    Release 1.9.19
+
+commit 8fc59050efc554d5e0cf1218a6be08eda539040f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 30 11:38:40 2018 +0200
+
+    Add some debug code to see whether _phrases_cache is handled correctly
+    
+    It needs to be reset when changing the Chinese mode. And stuff committed
+    to the user database needs to be removed.
+    
+    Can be tested using the SmartCangJie6 table (scj6.txt) because this table uses
+    both
+    
+        USER_CAN_DEFINE_PHRASE = FALSE
+    
+    and
+    
+        DYNAMIC_ADJUST = FALSE
+    
+    so no tabkeys are ever removed individually from _phrases_cache but
+    _phrases_cache is reset to empty when the Chinese mode is changed (or
+    when other settings influencing the caching like onechar mode or
+    wildcard characters are changed).
+
+commit 8c791d35feeca7083babf23e4a0b5c4f10a1c205
+Author: Heiher <r@hev.cc>
+Date:   Fri Aug 4 11:18:05 2017 +0800
+
+    Sync phrases cache from/to external storage.
+
+commit a7c845185d561055f756971686c01c90ab0bc337
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 13 08:40:28 2017 +0200
+
+    Update translations from zanata (cs new)
+
+commit 13753d1f23159e521ff8f61ed47c36211d2f0060
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Aug 2 09:23:32 2017 +0200
 

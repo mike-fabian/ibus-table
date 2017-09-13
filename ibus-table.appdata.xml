@@ -16,6 +16,19 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.9.19" date="2018-04-30" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Sync phrases cache from/to external storage (thanks to heiher).
+          </li>
+          <li>
+            Update translations from zanata (cs new)
+          </li>
+        </ul>
+      </description>
+    </release>
     <release version="1.9.18" date="2017-08-02" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

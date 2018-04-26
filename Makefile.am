@@ -30,6 +30,7 @@ SUBDIRS = \
 	data \
 	po \
 	setup \
+	tests \
 	$(NULL)
 
 ACLOCAL_AMFLAGS = -I m4

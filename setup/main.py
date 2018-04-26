@@ -62,7 +62,7 @@ OPTION_DEFAULTS = {
     "endeffullwidthletter": False,
     "endeffullwidthpunct": False,
     "alwaysshowlookup": True,
-    "lookuptableorientation": True,
+    "lookuptableorientation": 1, # 0 = horizontal, 1 = vertical, 2 = system
     "lookuptablepagesize": 6,
     "onechar": False,
     "autoselect": False,
@@ -224,12 +224,8 @@ class PreferencesDialog:
             and type(auto_commit) == type(u'')
             and auto_commit.lower() in [u'true', u'false']):
             OPTION_DEFAULTS['autocommit'] = auto_commit.lower() == u'true'
-        orientation = self.tabsqlitedb.ime_properties.get('orientation')
-        if (orientation
-            and type(orientation) == type(u'')
-            and orientation.lower() in [u'true', u'false']):
-            OPTION_DEFAULTS['lookuptableorientation'] = (
-                orientation.lower() == u'true')
+        orientation = self.tabsqlitedb.get_orientation()
+        OPTION_DEFAULTS['lookuptableorientation'] = orientation
         # if space is a page down key, set the option
         # “spacekeybehavior” to “True”:
         page_down_keys_csv = self.tabsqlitedb.ime_properties.get(
@@ -258,14 +254,16 @@ class PreferencesDialog:
         single_wildcard_char = self.tabsqlitedb.ime_properties.get(
             'single_wildcard_char')
         if (single_wildcard_char
-            and type(single_wildcard_char) == type(u'')
-            and len(single_wildcard_char) == 1):
+            and type(single_wildcard_char) == type(u'')):
+            if len(single_wildcard_char) > 1:
+                single_wildcard_char = single_wildcard_char[0]
             OPTION_DEFAULTS['singlewildcardchar'] = single_wildcard_char
         multi_wildcard_char = self.tabsqlitedb.ime_properties.get(
             'multi_wildcard_char')
         if (multi_wildcard_char
-            and type(multi_wildcard_char) == type(u'')
-            and len(multi_wildcard_char) == 1):
+            and type(multi_wildcard_char) == type(u'')):
+            if len(multi_wildcard_char) > 1:
+                multi_wildcard_char = multi_wildcard_char[0]
             OPTION_DEFAULTS['multiwildcardchar'] = multi_wildcard_char
 
     def __restore_defaults(self):

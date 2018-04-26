@@ -37,6 +37,7 @@ from gi.repository import GLib
 import re
 from gi.repository import GObject
 import time
+import it_util
 
 debug_level = int(0)
 
@@ -250,8 +251,10 @@ class editor(object):
                   max_key_length, database):
         self.db = database
         self._config = config
-        engine_name = os.path.basename(self.db.filename).replace('.db', '')
-        self._config_section = "engine/Table/%s" % engine_name.replace(' ','_')
+        engine_name = os.path.basename(
+            self.db.filename).replace('.db', '').replace(' ','_')
+        self._config_section = it_util.config_section_normalize(
+            "engine/Table/%s" % engine_name)
         self._max_key_length = int(max_key_length)
         self._max_key_length_pinyin = 7
         self._valid_input_chars = valid_input_chars
@@ -351,7 +354,7 @@ class editor(object):
                 self._config_section,
                 "ChineseMode"))
         if self._chinese_mode == None:
-            self._chinese_mode = self.get_chinese_mode()
+            self._chinese_mode = self.get_default_chinese_mode()
         elif debug_level > 1:
             sys.stderr.write(
                 "Chinese mode found in user config, mode=%s\n"
@@ -373,7 +376,7 @@ class editor(object):
     def get_new_lookup_table(
             self, page_size=10,
             select_keys=[49, 50, 51, 52, 53, 54, 55, 56, 57, 48],
-            orientation=True):
+            orientation=IBus.Orientation.VERTICAL):
         '''
         [49, 50, 51, 52, 53, 54, 55, 56, 57, 48] are the key codes
         for the characters ['1', '2', '3', '4', '5', '6', '7', '8', '0']
@@ -382,7 +385,7 @@ class editor(object):
             page_size = 1
         if page_size > len(select_keys):
             page_size = len(select_keys)
-        lookup_table = IBus.LookupTable.new(
+        lookup_table = IBus.LookupTable(
             page_size=page_size,
             cursor_pos=0,
             cursor_visible=True,
@@ -402,7 +405,7 @@ class editor(object):
         """
         return self._select_keys
 
-    def get_chinese_mode (self):
+    def get_default_chinese_mode (self):
         '''
         Use db value or LC_CTYPE in your box to determine the _chinese_mode
         '''
@@ -411,7 +414,7 @@ class editor(object):
         if __db_chinese_mode >= 0:
             if debug_level > 1:
                 sys.stderr.write(
-                    "get_chinese_mode(): "
+                    "get_default_chinese_mode(): "
                     + "default Chinese mode found in database, mode=%s\n"
                     %__db_chinese_mode)
             return __db_chinese_mode
@@ -421,19 +424,19 @@ class editor(object):
                 __lc = os.environ['LC_ALL'].split('.')[0].lower()
                 if debug_level > 1:
                     sys.stderr.write(
-                        "get_chinese_mode(): __lc=%s  found in LC_ALL\n"
+                        "get_default_chinese_mode(): __lc=%s  found in LC_ALL\n"
                         % __lc)
             elif 'LC_CTYPE' in os.environ:
                 __lc = os.environ['LC_CTYPE'].split('.')[0].lower()
                 if debug_level > 1:
                     sys.stderr.write(
-                        "get_chinese_mode(): __lc=%s  found in LC_CTYPE\n"
+                        "get_default_chinese_mode(): __lc=%s  found in LC_CTYPE\n"
                         % __lc)
             else:
                 __lc = os.environ['LANG'].split('.')[0].lower()
                 if debug_level > 1:
                     sys.stderr.write(
-                        "get_chinese_mode(): __lc=%s  found in LANG\n"
+                        "get_default_chinese_mode(): __lc=%s  found in LANG\n"
                         % __lc)
 
             if '_cn' in __lc or '_sg' in __lc:
@@ -450,14 +453,14 @@ class editor(object):
                     # variant:
                     if debug_level > 1:
                         sys.stderr.write(
-                            "get_chinese_mode(): last fallback, "
+                            "get_default_chinese_mode(): last fallback, "
                             + "database is Chinese but we don’t know "
                             + "which variant.\n")
                     return 4 # show all Chinese characters
                 else:
                     if debug_level > 1:
                         sys.stderr.write(
-                            "get_chinese_mode(): last fallback, "
+                            "get_default_chinese_mode(): last fallback, "
                             + "database is not Chinese, returning -1.\n")
                     return -1
         except:
@@ -1230,7 +1233,7 @@ class editor(object):
 class tabengine (IBus.Engine):
     '''The IM Engine for Tables'''
 
-    def __init__(self, bus, obj_path, db ):
+    def __init__(self, bus, obj_path, db, unit_test=False):
         super(tabengine, self).__init__(connection=bus.get_connection(),
                                         object_path=obj_path)
         global debug_level
@@ -1238,6 +1241,7 @@ class tabengine (IBus.Engine):
             debug_level = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
         except (TypeError, ValueError):
             debug_level = int(0)
+        self._unit_test = unit_test
         self._input_purpose = 0
         self._has_input_purpose = False
         if hasattr(IBus, 'InputPurpose'):
@@ -1252,12 +1256,16 @@ class tabengine (IBus.Engine):
                 os.path.sep, 'icons', os.path.sep)
         # name for config section
         self._engine_name = os.path.basename(
-            self.db.filename).replace('.db', '')
-        self._config_section = (
-            "engine/Table/%s" % self._engine_name.replace(' ','_'))
+            self.db.filename).replace('.db', '').replace(' ','_')
+        self._config_section = it_util.config_section_normalize(
+            "engine/Table/%s" % self._engine_name)
+        if debug_level > 1:
+            sys.stderr.write(
+                'tabengine.__init__() self._config_section = %s\n'
+                % self._config_section)
 
         # config module
-        self._config = self._bus.get_config ()
+        self._config = self._bus.get_config()
         self._config.connect ("value-changed", self.config_value_changed_cb)
 
         # self._ime_py: Indicates whether this table supports pinyin mode
@@ -1729,7 +1737,7 @@ class tabengine (IBus.Engine):
             self._save_user_count = 0
         super(tabengine, self).destroy()
 
-    def set_input_mode(self, mode=0):
+    def set_input_mode(self, mode=1):
         if mode == self._input_mode:
             return
         self._input_mode = mode
@@ -1752,6 +1760,9 @@ class tabengine (IBus.Engine):
             self._full_width_punct[self._input_mode])
         self.reset()
 
+    def get_input_mode(self):
+        return self._input_mode
+
     def set_pinyin_mode(self, mode=False):
         if mode == self._editor._py_mode:
             return
@@ -1771,29 +1782,242 @@ class tabengine (IBus.Engine):
             self._input_mode)
         self._update_ui()
 
-    def set_onechar_mode(self, mode=False):
+    def set_onechar_mode(self, mode=False, update_dconf=True):
         if mode == self._editor._onechar:
             return
         self._editor._onechar = mode
         self._init_or_update_property_menu(
             self.onechar_mode_menu, mode)
-        self._config.set_value(
-            self._config_section,
-            "OneChar",
-            GLib.Variant.new_boolean(mode))
+        self.db.reset_phrases_cache()
+        if update_dconf:
+            self._config.set_value(
+                self._config_section,
+                "OneChar",
+                GLib.Variant.new_boolean(mode))
 
-    def set_autocommit_mode(self, mode=False):
+    def get_onechar_mode(self):
+        return self._editor._onechar
+
+    def set_autocommit_mode(self, mode=False, update_dconf=True):
         if mode == self._auto_commit:
             return
         self._auto_commit = mode
         self._init_or_update_property_menu(
             self.autocommit_mode_menu, mode)
-        self._config.set_value(
-            self._config_section,
-            "AutoCommit",
-            GLib.Variant.new_boolean(mode))
+        if update_dconf:
+            self._config.set_value(
+                self._config_section,
+                "AutoCommit",
+                GLib.Variant.new_boolean(mode))
 
-    def set_letter_width(self, mode=False, input_mode=0):
+    def get_autocommit_mode(self):
+        return self._auto_commit
+
+    def set_autoselect_mode(self, mode=False, update_dconf=True):
+        if mode == self._auto_select:
+            return
+        self._auto_select = mode
+        self._editor._auto_select = mode
+        if update_dconf:
+            self._config.set_value(
+                self._config_section,
+                "AutoSelect",
+                GLib.Variant.new_boolean(mode))
+
+    def get_autoselect_mode(self):
+        return self._auto_select
+
+    def set_autowildcard_mode(self, mode=False, update_dconf=True):
+        if mode == self._auto_wildcard:
+            return
+        self._auto_wildcard = mode
+        self._editor._auto_wildcard = mode
+        self.db.reset_phrases_cache()
+        if update_dconf:
+            self._config.set_value(
+                self._config_section,
+                "AutoWildcard",
+                GLib.Variant.new_boolean(mode))
+
+    def get_autowildcard_mode(self):
+        return self._auto_wildcard
+
+    def set_single_wildcard_char(self, char=u'', update_dconf=True):
+        if char == self._single_wildcard_char:
+            return
+        self._single_wildcard_char = char
+        self._editor._single_wildcard_char = char
+        self.db.reset_phrases_cache()
+        if update_dconf:
+            self._config.set_value(
+                self._config_section,
+                "singlewildcardchar",
+                GLib.Variant.new_string(char))
+
+    def get_single_wildcard_char(self):
+        return self._single_wildcard_char
+
+    def set_multi_wildcard_char(self, char=u'', update_dconf=True):
+        if char == self._multi_wildcard_char:
+            return
+        self._multi_wildcard_char = char
+        self._editor._multi_wildcard_char = char
+        self.db.reset_phrases_cache()
+        if update_dconf:
+            self._config.set_value(
+                self._config_section,
+                "multiwildcardchar",
+                GLib.Variant.new_string(char))
+
+    def get_multi_wildcard_char(self):
+        return self._multi_wildcard_char
+
+    def set_space_key_behavior_mode(self, mode=False, update_dconf=True):
+        '''Sets the behaviour of the space key
+
+        :param mode: How the space key should behave
+        :type mode: Boolean
+                    True: space is used as a page down key
+                          and not as a commit key.
+                    False: space is used as a commit key
+                           and not used as a page down key
+        :param update_dconf: Whether to write the change to dconf.
+                             Set this to False if this method is
+                             called because the dconf key changed
+                             to avoid endless loops when the dconf
+                             key is changed twice in a short time.
+        :type update_dconf: boolean
+        '''
+        if debug_level > 1:
+            sys.stderr.write(
+                "set_space_key_behavior_mode(%s)\n"
+                %mode)
+        if mode == True:
+            # space is used as a page down key and not as a commit key:
+            if IBus.KEY_space not in self._page_down_keys:
+                self._page_down_keys.append(IBus.KEY_space)
+            if IBus.KEY_space in self._commit_keys:
+                self._commit_keys.remove(IBus.KEY_space)
+        if mode == False:
+            # space is used as a commit key and not used as a page down key:
+            if IBus.KEY_space in self._page_down_keys:
+                self._page_down_keys.remove(IBus.KEY_space)
+            if IBus.KEY_space not in self._commit_keys:
+                self._commit_keys.append(IBus.KEY_space)
+        if debug_level > 1:
+            sys.stderr.write(
+                'set_space_key_behavior_mode(): self._page_down_keys=%s\n'
+                % repr(self._page_down_keys))
+            sys.stderr.write(
+                'set_space_key_behavior_mode(): self._commit_keys=%s\n'
+                % repr(self._commit_keys))
+        if update_dconf:
+            self._config.set_value(
+                self._config_section,
+                "spacekeybehavior",
+                GLib.Variant.new_boolean(mode))
+
+    def get_space_key_behavior_mode(self):
+        mode = False
+        if IBus.KEY_space in self._page_down_keys:
+            mode = True
+        if IBus.KEY_space in self._commit_keys:
+            # commit key behaviour overrides the page down behaviour
+            mode = False
+        return mode
+
+    def set_always_show_lookup(self, mode=False, update_dconf=True):
+        if mode == self._always_show_lookup:
+            return
+        self._always_show_lookup = mode
+        if update_dconf:
+            self._config.set_value(
+                self._config_section,
+                "AlwaysShowLookup",
+                GLib.Variant.new_boolean(mode))
+
+    def get_always_show_lookup(self):
+        return self._always_show_lookup
+
+    def set_lookup_table_orientation(self, orientation, update_dconf=True):
+        '''Sets the orientation of the lookup table
+
+        :param orientation: The orientation of the lookup table
+        :type mode: integer >= 0 and <= 2
+                    IBUS_ORIENTATION_HORIZONTAL = 0,
+                    IBUS_ORIENTATION_VERTICAL   = 1,
+                    IBUS_ORIENTATION_SYSTEM     = 2.
+        :param update_dconf: Whether to write the change to dconf.
+                             Set this to False if this method is
+                             called because the dconf key changed
+                             to avoid endless loops when the dconf
+                             key is changed twice in a short time.
+        :type update_dconf: boolean
+        '''
+        if debug_level > 1:
+            sys.stderr.write(
+                "set_lookup_table_orientation(%s)\n"
+                %orientation)
+        if orientation == self._editor._orientation:
+            return
+        if orientation >= 0 and orientation <= 2:
+            self._editor._orientation = orientation
+            self._editor._lookup_table.set_orientation(orientation)
+            if update_dconf:
+                self._config.set_value(
+                    self._config_section,
+                    'lookuptableorientation',
+                    GLib.Variant.new_int32(orientation))
+
+    def get_lookup_table_orientation(self):
+        '''Returns the current orientation of the lookup table
+
+        :rtype: integer
+        '''
+        return self._editor._orientation
+
+    def set_page_size(self, page_size, update_dconf=True):
+        '''Sets the page size of the lookup table
+
+        :param orientation: The orientation of the lookup table
+        :type mode: integer >= 1 and <= number of select keys
+        :param update_dconf: Whether to write the change to dconf.
+                             Set this to False if this method is
+                             called because the dconf key changed
+                             to avoid endless loops when the dconf
+                             key is changed twice in a short time.
+        :type update_dconf: boolean
+        '''
+        if debug_level > 1:
+            sys.stderr.write(
+                "set_page_size(%s)\n"
+                %page_size)
+        if page_size == self._editor._page_size:
+            return
+        if value > len(self._editor._select_keys):
+            value = len(self._editor._select_keys)
+        if value < 1:
+            value = 1
+        self._editor._page_size = value
+        self._editor._lookup_table = self._editor.get_new_lookup_table(
+            page_size = self._editor._page_size,
+            select_keys = self._editor._select_keys,
+            orientation = self._editor._orientation)
+        self.reset()
+        if update_dconf:
+            self._config.set_value(
+                self._config_section,
+                'lookuptablepagesize',
+                GLib.Variant.new_int32(value))
+
+    def get_page_size(self):
+        '''Returns the current page size of the lookup table
+
+        :rtype: integer
+        '''
+        return self._editor._page_size
+
+    def set_letter_width(self, mode=False, input_mode=0, update_dconf=True):
         if mode == self._full_width_letter[input_mode]:
             return
         self._full_width_letter[input_mode] = mode
@@ -1801,18 +2025,22 @@ class tabengine (IBus.Engine):
         if input_mode == self._input_mode:
             self._init_or_update_property_menu(
                 self.letter_width_menu, mode)
-        if input_mode:
-            self._config.set_value(
-                self._config_section,
-                "TabDefFullWidthLetter",
-                GLib.Variant.new_boolean(mode))
-        else:
-            self._config.set_value(
-                self._config_section,
-                "EnDefFullWidthLetter",
-                GLib.Variant.new_boolean(mode))
+        if update_dconf:
+            if input_mode:
+                self._config.set_value(
+                    self._config_section,
+                    "TabDefFullWidthLetter",
+                    GLib.Variant.new_boolean(mode))
+            else:
+                self._config.set_value(
+                    self._config_section,
+                    "EnDefFullWidthLetter",
+                    GLib.Variant.new_boolean(mode))
 
-    def set_punctuation_width(self, mode=False, input_mode=0):
+    def get_letter_width(self):
+        return self._full_width_letter
+
+    def set_punctuation_width(self, mode=False, input_mode=0, update_dconf=True):
         if mode == self._full_width_punct[input_mode]:
             return
         self._full_width_punct[input_mode] = mode
@@ -1820,27 +2048,36 @@ class tabengine (IBus.Engine):
         if input_mode == self._input_mode:
             self._init_or_update_property_menu(
                 self.punctuation_width_menu, mode)
-        if input_mode:
-            self._config.set_value(
-                self._config_section,
-                "TabDefFullWidthPunct",
-                GLib.Variant.new_boolean(mode))
-        else:
-            self._config.set_value(
-                self._config_section,
-                "EnDefFullWidthPunct",
-                GLib.Variant.new_boolean(mode))
+        if update_dconf:
+            if input_mode:
+                self._config.set_value(
+                    self._config_section,
+                    "TabDefFullWidthPunct",
+                    GLib.Variant.new_boolean(mode))
+            else:
+                self._config.set_value(
+                    self._config_section,
+                    "EnDefFullWidthPunct",
+                    GLib.Variant.new_boolean(mode))
 
-    def set_chinese_mode(self, mode=0):
+    def get_punctuation_width(self):
+        return self._full_width_punct
+
+    def set_chinese_mode(self, mode=0, update_dconf=True):
         if mode == self._editor._chinese_mode:
             return
         self._editor._chinese_mode = mode
+        self.db.reset_phrases_cache()
         self._init_or_update_property_menu(
             self.chinese_mode_menu, mode)
-        self._config.set_value(
-            self._config_section,
-            "ChineseMode",
-            GLib.Variant.new_int32(mode))
+        if update_dconf:
+            self._config.set_value(
+                self._config_section,
+                "ChineseMode",
+                GLib.Variant.new_int32(mode))
+
+    def get_chinese_mode(self):
+        return self._editor._chinese_mode
 
     def _init_or_update_property_menu(self, menu, current_mode=0):
         key = menu['key']
@@ -2269,6 +2506,44 @@ class tabengine (IBus.Engine):
             return True
         return False
 
+    def _return_false(self, keyval, keycode, state):
+        '''A replacement for “return False” in do_process_key_event()
+
+        do_process_key_event should return “True” if a key event has
+        been handled completely. It should return “False” if the key
+        event should be passed to the application.
+
+        But just doing “return False” doesn’t work well when trying to
+        do the unit tests. The MockEngine class in the unit tests
+        cannot get that return value. Therefore, it cannot do the
+        necessary updates to the self._mock_committed_text etc. which
+        prevents proper testing of the effects of such keys passed to
+        the application. Instead of “return False”, one can also use
+        self.forward_key_event(keyval, keycode, keystate) to pass the
+        key to the application. And this works fine with the unit
+        tests because a forward_key_event function is implemented in
+        MockEngine as well which then gets the key and can test its
+        effects.
+
+        Unfortunately, “forward_key_event()” does not work in Qt5
+        applications because the ibus module in Qt5 does not implement
+        “forward_key_event()”. Therefore, always using
+        “forward_key_event()” instead of “return False” in
+        “do_process_key_event()” would break ibus-typing-booster
+        completely for all Qt5 applictions.
+
+        To work around this problem and make unit testing possible
+        without breaking Qt5 applications, we use this helper function
+        which uses “forward_key_event()” when unit testing and “return
+        False” during normal usage.
+
+        '''
+        if self._unit_test:
+            self.forward_key_event(keyval, keycode, state)
+            return True
+        else:
+            return False
+
     def do_process_key_event(self, keyval, keycode, state):
         '''Process Key Events
         Key Events include Key Press and Key Release,
@@ -2279,9 +2554,13 @@ class tabengine (IBus.Engine):
         if (self._has_input_purpose
             and self._input_purpose
             in [IBus.InputPurpose.PASSWORD, IBus.InputPurpose.PIN]):
-            return False
+            return self._return_false(keyval, keycode, state)
 
         key = KeyEvent(keyval, keycode, state)
+        if debug_level > 1:
+            sys.stderr.write(
+                "process_key_event() "
+                "KeyEvent object: %s" % key)
 
         result = self._process_key_event (key)
         self._prev_key = key
@@ -2344,13 +2623,13 @@ class tabengine (IBus.Engine):
     def _english_mode_process_key_event(self, key):
         # Ignore key release events
         if key.state & IBus.ModifierType.RELEASE_MASK:
-            return False
+            return self._return_false(key.val, key.code, key.state)
         if key.val >= 128:
-            return False
+            return self._return_false(key.val, key.code, key.state)
         # we ignore all hotkeys here
         if (key.state
             & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK)):
-            return False
+            return self._return_false(key.val, key.code, key.state)
         keychar = IBus.keyval_to_unicode(key.val)
         if type(keychar) != type(u''):
             keychar = keychar.decode('UTF-8')
@@ -2359,7 +2638,7 @@ class tabengine (IBus.Engine):
         else:
             trans_char = self.cond_letter_translate(keychar)
         if trans_char == keychar:
-            return False
+            return self._return_false(key.val, key.code, key.state)
         self.commit_string(trans_char)
         return True
 
@@ -2423,7 +2702,7 @@ class tabengine (IBus.Engine):
         # (Must be below all self._match_hotkey() callse
         # because these match on a release event).
         if key.state & IBus.ModifierType.RELEASE_MASK:
-            return False
+            return self._return_false(key.val, key.code, key.state)
 
         keychar = IBus.keyval_to_unicode(key.val)
         if type(keychar) != type(u''):
@@ -2455,7 +2734,7 @@ class tabengine (IBus.Engine):
                     trans_char = self.cond_letter_translate(keychar)
                 if trans_char == keychar:
                     self._prev_char = trans_char
-                    return False
+                    return self._return_false(key.val, key.code, key.state)
                 else:
                     self.commit_string(trans_char)
                     return True
@@ -2477,12 +2756,12 @@ class tabengine (IBus.Engine):
                 # input but it ends up here.  If it is leading input
                 # (i.e. the preëdit is empty) we should always pass
                 # IBus.KEY_KP_Enter to the application:
-                return False
+                return self._return_false(key.val, key.code, key.state)
             if self._auto_select:
                 self._editor.commit_to_preedit()
                 commit_string = self._editor.get_preedit_string_complete()
                 self.commit_string(commit_string)
-                return False
+                return self._return_false(key.val, key.code, key.state)
             else:
                 commit_string = self._editor.get_preedit_tabkeys_complete()
                 self.commit_string(commit_string)
@@ -2510,18 +2789,18 @@ class tabengine (IBus.Engine):
             # to “шшш”.
             self._editor.commit_to_preedit()
             self.commit_string(self._editor.get_preedit_string_complete())
-            return False
+            return self._return_false(key.val, key.code, key.state)
 
         if key.val in (IBus.KEY_Down, IBus.KEY_KP_Down) :
             if not self._editor.get_preedit_string_complete():
-                return False
+                return self._return_false(key.val, key.code, key.state)
             res = self._editor.cursor_down()
             self._update_ui()
             return res
 
         if key.val in (IBus.KEY_Up, IBus.KEY_KP_Up):
             if not self._editor.get_preedit_string_complete():
-                return False
+                return self._return_false(key.val, key.code, key.state)
             res = self._editor.cursor_up()
             self._update_ui()
             return res
@@ -2529,7 +2808,7 @@ class tabengine (IBus.Engine):
         if (key.val in (IBus.KEY_Left, IBus.KEY_KP_Left)
             and key.state & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
-                return False
+                return self._return_false(key.val, key.code, key.state)
             self._editor.control_arrow_left()
             self._update_ui()
             return True
@@ -2537,21 +2816,21 @@ class tabengine (IBus.Engine):
         if (key.val in (IBus.KEY_Right, IBus.KEY_KP_Right)
             and key.state & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
-                return False
+                return self._return_false(key.val, key.code, key.state)
             self._editor.control_arrow_right()
             self._update_ui()
             return True
 
         if key.val in (IBus.KEY_Left, IBus.KEY_KP_Left):
             if not self._editor.get_preedit_string_complete():
-                return False
+                return self._return_false(key.val, key.code, key.state)
             self._editor.arrow_left()
             self._update_ui()
             return True
 
         if key.val in (IBus.KEY_Right, IBus.KEY_KP_Right):
             if not self._editor.get_preedit_string_complete():
-                return False
+                return self._return_false(key.val, key.code, key.state)
             self._editor.arrow_right()
             self._update_ui()
             return True
@@ -2559,14 +2838,14 @@ class tabengine (IBus.Engine):
         if (key.val == IBus.KEY_BackSpace
             and key.state & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
-                return False
+                return self._return_false(key.val, key.code, key.state)
             self._editor.remove_preedit_before_cursor()
             self._update_ui()
             return True
 
         if key.val == IBus.KEY_BackSpace:
             if not self._editor.get_preedit_string_complete():
-                return False
+                return self._return_false(key.val, key.code, key.state)
             self._editor.remove_char()
             self._update_ui()
             return True
@@ -2574,14 +2853,14 @@ class tabengine (IBus.Engine):
         if (key.val == IBus.KEY_Delete
             and key.state & IBus.ModifierType.CONTROL_MASK):
             if not self._editor.get_preedit_string_complete():
-                return False
+                return self._return_false(key.val, key.code, key.state)
             self._editor.remove_preedit_after_cursor()
             self._update_ui()
             return True
 
         if key.val == IBus.KEY_Delete:
             if not self._editor.get_preedit_string_complete():
-                return False
+                return self._return_false(key.val, key.code, key.state)
             self._editor.delete()
             self._update_ui()
             return True
@@ -2603,10 +2882,10 @@ class tabengine (IBus.Engine):
         # now we ignore all other hotkeys
         if (key.state
             & (IBus.ModifierType.CONTROL_MASK|IBus.ModifierType.MOD1_MASK)):
-            return False
+            return self._return_false(key.val, key.code, key.state)
 
         if key.state & IBus.ModifierType.MOD1_MASK:
-            return False
+            return self._return_false(key.val, key.code, key.state)
 
         # Section to handle valid input characters:
         #
@@ -2767,7 +3046,7 @@ class tabengine (IBus.Engine):
         #
         # returned no result. So whatever this was, we cannot handle it,
         # just pass it through to the application by returning “False”.
-        return False
+        return self._return_false(key.val, key.code, key.state)
 
     def do_focus_in (self):
         if debug_level > 1:
@@ -2838,89 +3117,47 @@ class tabengine (IBus.Engine):
             self.set_input_mode(value)
             return
         if name == u'autoselect':
-            self._editor._auto_select = value
-            self._auto_select = value
+            self.set_autoselect_mode(value, update_dconf=False)
             return
         if name == u'autocommit':
-            self.set_autocommit_mode(value)
+            self.set_autocommit_mode(value, update_dconf=False)
             return
         if name == u'chinesemode':
-            self.set_chinese_mode(value)
-            self.db.reset_phrases_cache()
+            self.set_chinese_mode(value, update_dconf=False)
             return
         if name == u'endeffullwidthletter':
-            self.set_letter_width(value, input_mode=0)
+            self.set_letter_width(value, input_mode=0, update_dconf=False)
             return
         if name == u'endeffullwidthpunct':
-            self.set_punctuation_width(value, input_mode=0)
+            self.set_punctuation_width(value, input_mode=0, update_dconf=False)
             return
         if name == u'lookuptableorientation':
-            self._editor._orientation = value
-            self._editor._lookup_table.set_orientation(value)
+            self.set_lookup_table_orientation(value, update_dconf=False)
             return
         if name == u'lookuptablepagesize':
-            if value > len(self._editor._select_keys):
-                value = len(self._editor._select_keys)
-                self._config.set_value(
-                    self._config_section,
-                    'lookuptablepagesize',
-                    GLib.Variant.new_int32(value))
-            if value < 1:
-                value = 1
-                self._config.set_value(
-                    self._config_section,
-                    'lookuptablepagesize',
-                    GLib.Variant.new_int32(value))
-            self._editor._page_size = value
-            self._editor._lookup_table = self._editor.get_new_lookup_table(
-                page_size = self._editor._page_size,
-                select_keys = self._editor._select_keys,
-                orientation = self._editor._orientation)
-            self.reset()
+            self.set_page_size(value, update_dconf=False)
             return
         if name == u'onechar':
-            self.set_onechar_mode(value)
-            self.db.reset_phrases_cache()
+            self.set_onechar_mode(value, update_dconf=False)
             return
         if name == u'tabdeffullwidthletter':
-            self.set_letter_width(value, input_mode=1)
+            self.set_letter_width(value, input_mode=1, update_dconf=False)
             return
         if name == u'tabdeffullwidthpunct':
-            self.set_punctuation_width(value, input_mode=1)
+            self.set_punctuation_width(value, input_mode=1, update_dconf=False)
             return
         if name == u'alwaysshowlookup':
-            self._always_show_lookup = value
+            self.set_always_show_lookup(value, update_dconf=False)
             return
         if name == u'spacekeybehavior':
-            if value == True:
-                # space is used as a page down key and not as a commit key:
-                if IBus.KEY_space not in self._page_down_keys:
-                    self._page_down_keys.append(IBus.KEY_space)
-                if IBus.KEY_space in self._commit_keys:
-                    self._commit_keys.remove(IBus.KEY_space)
-            if value == False:
-                # space is used as a commit key and not used as a page down key:
-                if IBus.KEY_space in self._page_down_keys:
-                    self._page_down_keys.remove(IBus.KEY_space)
-                if IBus.KEY_space not in self._commit_keys:
-                    self._commit_keys.append(IBus.KEY_space)
-            if debug_level > 1:
-                sys.stderr.write(
-                    "self._page_down_keys=%s\n"
-                    % repr(self._page_down_keys))
+            self.set_space_key_behavior_mode(value, update_dconf=False)
             return
         if name == u'singlewildcardchar':
-            self._single_wildcard_char = value
-            self._editor._single_wildcard_char = value
-            self.db.reset_phrases_cache()
+            self.set_single_wildcard_char(value, update_dconf=False)
             return
         if name == u'multiwildcardchar':
-            self._multi_wildcard_char = value
-            self._editor._multi_wildcard_char = value
-            self.db.reset_phrases_cache()
+            self.set_multi_wildcard_char(value, update_dconf=False)
             return
         if name == u'autowildcard':
-            self._auto_wildcard = value
-            self._editor._auto_wildcard = value
-            self.db.reset_phrases_cache()
+            self.set_autowildcard_mode(value, update_dconf=False)
             return

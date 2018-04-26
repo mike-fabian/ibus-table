@@ -1086,6 +1086,8 @@ class tabsqlitedb:
             traceback.print_exc ()
 
     def init_user_db(self, db_file):
+        if db_file == ':memory:':
+            return
         if not path.exists(db_file):
             db = sqlite3.connect(db_file)
             # 20000 pages should be enough to cache the whole database

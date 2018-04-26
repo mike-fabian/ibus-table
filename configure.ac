@@ -68,6 +68,7 @@ AC_CONFIG_FILES([po/Makefile.in
     setup/Makefile
     setup/ibus-setup-table
     setup/version.py
+    tests/Makefile
     ibus-table.spec
     ibus-table.pc]
 )

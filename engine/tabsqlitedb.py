@@ -469,14 +469,20 @@ class tabsqlitedb:
         self.db.execute('PRAGMA wal_checkpoint;')
 
     def reset_phrases_cache (self):
+        if debug_level > 1:
+            sys.stderr.write("reset_phrases_cache()\n")
         self._phrases_cache = {}
 
     def invalidate_phrases_cache (self, tabkeys=u''):
+        if debug_level > 1:
+            sys.stderr.write("invalidate_phrases_cache()\n")
         for i in range(1, self._mlen + 1):
             if self._phrases_cache.get(tabkeys[0:i]):
                 self._phrases_cache.pop(tabkeys[0:i])
 
     def load_phrases_cache(self):
+        if debug_level > 1:
+            sys.stderr.write("load_phrases_cache()\n")
         try:
             import json
             self._phrases_cache = json.load(open(self.cache_path, 'r'))
@@ -487,6 +493,8 @@ class tabsqlitedb:
             pass
 
     def save_phrases_cache(self):
+        if debug_level > 1:
+            sys.stderr.write("save_phrases_cache()\n")
         try:
             import json
             self._phrases_cache['serial_number'] = self._snum

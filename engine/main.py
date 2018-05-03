@@ -279,7 +279,14 @@ def main():
         egsout = tostring (egs, encoding='utf8').decode('utf-8')
         patt = re.compile (r'<\?.*\?>\n')
         egsout = patt.sub ('', egsout)
-        sys.stdout.buffer.write((egsout+'\n').encode('utf-8'))
+        # Always write xml output in UTF-8 encoding, not in the
+        # encoding of the current locale, otherwise it might fail
+        # if conversion into the encoding of the current locale is
+        # not possible:
+        if sys.version_info >= (3, 0, 0):
+                sys.stdout.buffer.write((egsout+'\n').encode('utf-8'))
+        else:
+                sys.stdout.write((egsout+'\n').encode('utf-8'))
         return 0
 
     if options.daemon :

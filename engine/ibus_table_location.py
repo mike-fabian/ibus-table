@@ -1,4 +1,4 @@
-# vim:et sts=4 sw=4
+# vim:et sts=4 sw=4 -*- coding: utf-8 -*-
 #
 # ibus-table - The Tables engine for IBus
 #
@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-'''
+u'''
 Get locations where ibus-table stores stuff.
 
 The directories used are according to the

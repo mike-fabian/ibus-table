@@ -274,6 +274,9 @@ def main():
             _setup = SubElement (_engine, 'setup')
             _setup.text = setup_arg
 
+            _icon_prop_key = SubElement (_engine, 'icon_prop_key')
+            _icon_prop_key.text = 'InputMode'
+
         # now format the xmlout pretty
         indent (egs)
         egsout = tostring (egs, encoding='utf8').decode('utf-8')

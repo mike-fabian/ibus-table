@@ -1,4 +1,24 @@
-commit 6b62cbec36e42155294332398e34279d9fca0073
+commit 86c7bc2623de27035e00ad0ea1a036e5b1f2df60
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 3 09:58:56 2018 +0200
+
+    Release 1.9.20
+
+commit 593f3cd7491d9dbd131f62b1b3d861940c299114
+Author: Takao Fujiwara <tfujiwar@redhat.com>
+Date:   Thu May 3 09:54:19 2018 +0200
+
+    Draw InputMode text instead of icon into panel on non-Gnome desktops
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/6
+
+commit e9a8ebaf2cca88bf7c2d9aa1ffb1c1ec847432c3
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 3 09:46:21 2018 +0200
+
+    Make it work with Python2 again
+
+commit 1188651f58c5d0531ff85290584b45813250b24d
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Sep 13 08:51:57 2017 +0200
 

@@ -981,6 +981,9 @@ class tabsqlitedb:
         if auto_wildcard:
             tabkeys_for_like += '%%'
         sqlargs = {'tabkeys': tabkeys_for_like, 'escapechar': escapechar}
+        if debug_level > 1:
+            sys.stderr.write('select_words() sqlstr=%s sqlargs=%s\n'
+                             %(sqlstr, repr(sqlargs)))
         unfiltered_results = self.db.execute(sqlstr, sqlargs).fetchall()
         bitmask = None
         if chinese_mode == 0:

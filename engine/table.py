@@ -856,19 +856,16 @@ class editor(object):
         '''
         if debug_level > 1:
             sys.stderr.write(
-                "update_candidates() "
-                + "self._chars_valid=%(chars_valid)s "
-                + "self._chars_invalid=%(chars_invalid)s "
-                + "self._chars_valid_update_candidates_last=%(chars_last)s "
-                + "self._candidates=%(candidates)s "
-                + "self.db.startchars=%(start)s "
-                + "self._strings=%(strings)s\n"
-                % {'chars_valid': self._chars_valid,
-                   'chars_invalid': self._chars_invalid,
-                   'chars_last': self._chars_valid_update_candidates_last,
-                   'candidates': self._candidates,
-                   'start': self.db.startchars,
-                   'strings': self._strings})
+                'update_candidates() '
+                + 'self._chars_valid=%s ' % self._chars_valid
+                + 'self._chars_invalid=%s ' % self._chars_invalid
+                + 'self._chars_valid_update_candidates_last=%s '
+                % self._chars_valid_update_candidates_last
+                + 'self._chars_invalid_update_candidates_last=%s '
+                % self._chars_invalid_update_candidates_last
+                + 'self._candidates=%s ' % self._candidates
+                + 'self.db.startchars=%s ' % self.db.startchars
+                + 'self._strings=%s\n' % self._strings)
         if (self._chars_valid == self._chars_valid_update_candidates_last
             and
             self._chars_invalid == self._chars_invalid_update_candidates_last):

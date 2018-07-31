@@ -311,11 +311,7 @@ class editor(object):
         self._prompt_characters = eval(
             self.db.ime_properties.get('char_prompts'))
 
-        select_keys_csv = variant_to_value(self._config.get_value(
-            self._config_section,
-            "LookupTableSelectKeys"))
-        if select_keys_csv == None:
-            select_keys_csv = self.db.get_select_keys()
+        select_keys_csv = self.db.get_select_keys()
         if select_keys_csv == None:
             select_keys_csv = '1,2,3,4,5,6,7,8,9'
         self._select_keys = [
@@ -2881,9 +2877,6 @@ class tabengine (IBus.Engine):
                 select_keys = self._editor._select_keys,
                 orientation = self._editor._orientation)
             self.reset()
-            return
-        if name == u'lookuptableselectkeys':
-            self._editor.set_select_keys(value)
             return
         if name == u'onechar':
             self.set_onechar_mode(value)

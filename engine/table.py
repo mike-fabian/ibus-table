@@ -2244,7 +2244,10 @@ class tabengine (IBus.Engine):
         return unichar_half_to_full(c)
 
     def _match_hotkey (self, key, keyval, state):
-
+        if debug_level > 0:
+            sys.stderr.write('_match_hotkey() typed key: %s\n' %key)
+            sys.stderr.write('trying to match: keyval=%s state=%s\n'
+                             %(keyval, state))
         # Match only when keys are released
         state = state | IBus.ModifierType.RELEASE_MASK
         if key.val == keyval and (key.state & state) == state:
@@ -2252,8 +2255,11 @@ class tabengine (IBus.Engine):
             # must have been the same key pressed down.
             if (self._prev_key
                 and key.val == self._prev_key.val):
+                if debug_level > 0:
+                    sys.stderr.write('_match_hotkey(): *Match*!\n')
                 return True
 
+        sys.stderr.write('_match_hotkey(): No match!\n')
         return False
 
     def do_candidate_clicked(self, index, button, state):

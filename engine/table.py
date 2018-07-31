@@ -1335,11 +1335,13 @@ class tabengine (IBus.Engine):
 
         self._page_up_keys = [
             IBus.KEY_Page_Up,
+            IBus.KEY_KP_Prior, # identical to IBus.KEY_KP_Page_UP!
             IBus.KEY_KP_Page_Up,
             IBus.KEY_minus
         ]
         self._page_down_keys = [
             IBus.KEY_Page_Down,
+            IBus.KEY_KP_Next, # identical to IBus.KEY_KP_Page_Down!
             IBus.KEY_KP_Page_Down,
             IBus.KEY_equal
         ]

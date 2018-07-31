@@ -16,6 +16,24 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.9.21" date="2018-08-03" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Migrate IBusConfig to GSettings. Resolves:
+            https://github.com/mike-fabian/ibus-table/issues/4
+          </li>
+          <li>
+            Add a test suite
+          </li>
+          <li>
+            Add missing tags to ibus-table-createdb.sgml. Resolves:
+            https://github.com/mike-fabian/ibus-table/issues/3
+          </li>
+        </ul>
+      </description>
+    </release>
     <release version="1.9.20" date="2018-05-03" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

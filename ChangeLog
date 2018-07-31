@@ -1,4 +1,135 @@
-commit 86c7bc2623de27035e00ad0ea1a036e5b1f2df60
+commit bc50ca35dbe192c8e6b9dd983078056234e9b8fa
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jul 31 18:16:58 2018 +0200
+
+    Release 1.9.21
+
+commit 255ba22360de30477b5e0a173dc4b2a9c65f9b1c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 28 23:37:36 2018 +0200
+
+    Add missing tags to ibus-table-createdb.sgml
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/3
+
+commit 13ccd7c78be2b572a222ca8e43cb277ed5e769de
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Aug 10 16:24:32 2018 +0200
+
+    Fix some pylint warnings
+
+commit 0cb39acf1deefc6a4f0af2ff95faeee7934f5ca8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 7 00:29:18 2018 +0200
+
+    Add a test case for chinese mode using the 'wubi-jidian86' table
+
+commit 6c55a4670da78440db3fee92f875712d9219dade
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 7 00:28:54 2018 +0200
+
+    Make some lines shorter
+
+commit 43e900117801e7e6b52016dea0a6c54cf89874b6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 7 00:28:20 2018 +0200
+
+    Some more debug messages and comments
+
+commit 7caa4913f52edea16cac7226447dcd24a93dfc74
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Aug 3 16:40:22 2018 +0200
+
+    Add test cases for latex
+
+commit 40913515c6f6be8751c58a4b46cadfdcfc13c73b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Aug 3 12:11:16 2018 +0200
+
+    Add test cases for ipa-x-sampa
+
+commit 50fb9b9122eda743333e4b960137e0663a2d54a8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Aug 3 10:29:13 2018 +0200
+
+    Add test cases for cangjie5
+
+commit f9195f877c5212fef0dfa446acb328c45ba5852b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 2 10:40:04 2018 +0200
+
+    Migrate IBusConfig to GSettings
+    
+    IBus plans to deprecate IBusConfig and suggests to migrate to GSettings.
+    https://groups.google.com/forum/#!topic/ibus-devel/Mu1IoFX-bKE
+    
+    The old settings are unfortunately lost, so one has to open the setup
+    tool and recreate ones favourite settings.
+    
+    Fix some minor bugs while doing the migration:
+    
+    - Use 4 as the default Chinese mode, not -1. 4 means no special
+      filtering and sorting at all, which is appropriate for non-Chinese
+      tables as well.
+
+commit d9cf5f14934ccc65255d04876bc3decac001f87a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 26 10:23:10 2018 +0200
+
+    Add a test suite
+
+commit 672455cbc5cb54356b8b3924eeef9114471f4319
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jul 31 15:57:30 2018 +0200
+
+    Do not read the dconf key lookuptableselectkeys
+    
+    There is no such option in the setup tool anyway, it makes no sense
+    to read this from a dconf key if the setup tool doesn’t support it.
+    
+    The select keys come only from the table headers.
+
+commit 75d89b595a85abf4dea3647cca0c3190ef6a00c8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jul 31 15:22:15 2018 +0200
+
+    Add IBus.KEY_KP_Prior and IBus.KEY_KP_Next to the default page-up and page-down keys
+    
+    These have the same numerical value, so it is not really necessary to
+    add them to self._page_up_keys and self._page_down_keys:
+    
+    src/ibuskeysyms.h:#define IBUS_KEY_KP_Prior 0xff9a
+    src/ibuskeysyms.h:#define IBUS_KEY_KP_Page_Up 0xff9a
+    src/ibuskeysyms.h:#define IBUS_KEY_KP_Next 0xff9b
+    src/ibuskeysyms.h:#define IBUS_KEY_KP_Page_Down 0xff9b
+    
+    it is for clarity only.
+
+commit 433923158c24bc6626399f3e5d02d3b8ebe27baa
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jul 31 15:12:33 2018 +0200
+
+    More debug messages in _match_hotkey()
+
+commit 675a537004926d74f53f9727de3c31ec9e1ccfc2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jul 31 08:19:22 2018 +0200
+
+    Improve KeyEvent class to make debugging easier
+
+commit 23d8cc8b742fbcdf6428a104e3d75c2ddffdcba2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 30 17:59:05 2018 +0200
+
+    Add a debug message in select_words()
+
+commit ffbefa829d697f2e7f96af8fc9be9ae258e7972c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 30 16:52:51 2018 +0200
+
+    Fix wrong syntax in debug message
+
+commit 396437c768d349e6c16678c5853fedaf47547bc3
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu May 3 09:58:56 2018 +0200
 

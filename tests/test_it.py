@@ -125,7 +125,7 @@ def set_default_settings():
     global ENGINE
     global TABSQLITEDB
     ENGINE.set_input_mode(mode=1)
-    chinese_mode = 0
+    chinese_mode = 4
     language_filter = TABSQLITEDB.ime_properties.get('language_filter')
     if language_filter in ['cm0', 'cm1', 'cm2', 'cm3', 'cm4']:
         chinese_mode = int(language_filter[-1])
@@ -136,7 +136,7 @@ def set_default_settings():
         'def_full_width_letter')
     if def_full_width_letter:
         letter_width_mode = (def_full_width_letter.lower() == u'true')
-    ENGINE.set_letter_width(mode=letter_width_mode, input_mode=0)
+    ENGINE.set_letter_width(mode=False, input_mode=0)
     ENGINE.set_letter_width(mode=letter_width_mode, input_mode=1)
 
     punctuation_width_mode = False
@@ -144,7 +144,7 @@ def set_default_settings():
         'def_full_width_punct')
     if def_full_width_punct:
         punctuation_width_mode = (def_full_width_punct.lower() == u'true')
-    ENGINE.set_punctuation_width(mode=punctuation_width_mode, input_mode=0)
+    ENGINE.set_punctuation_width(mode=False, input_mode=0)
     ENGINE.set_punctuation_width(mode=punctuation_width_mode, input_mode=1)
 
     always_show_lookup_mode = True

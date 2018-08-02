@@ -32,6 +32,9 @@ import string
 from gi import require_version
 require_version('IBus', '1.0')
 from gi.repository import IBus
+require_version('Gio', '2.0')
+from gi.repository import Gio
+require_version('GLib', '2.0')
 from gi.repository import GLib
 #import tabsqlitedb
 import re
@@ -81,28 +84,6 @@ def ascii_ispunct(character):
         return True
     else:
         return False
-
-def variant_to_value(variant):
-    if type(variant) != GLib.Variant:
-        return variant
-    type_string = variant.get_type_string()
-    if type_string == 's':
-        return variant.get_string()
-    elif type_string == 'i':
-        return variant.get_int32()
-    elif type_string == 'b':
-        return variant.get_boolean()
-    elif type_string == 'as':
-        # In the latest pygobject3 3.3.4 or later, g_variant_dup_strv
-        # returns the allocated strv but in the previous release,
-        # it returned the tuple of (strv, length)
-        if type(GLib.Variant.new_strv([]).dup_strv()) == tuple:
-            return variant.dup_strv()[0]
-        else:
-            return variant.dup_strv()
-    else:
-        print('error: unknown variant type: %s' %type_string)
-    return variant
 
 def argb(a, r, g, b):
     return (((a & 0xff)<<24)
@@ -245,16 +226,14 @@ class KeyEvent:
 
 class editor(object):
     '''Hold user inputs chars and preedit string'''
-    def __init__ (self, config, valid_input_chars, pinyin_valid_input_chars,
+    def __init__ (self, gsettings, valid_input_chars, pinyin_valid_input_chars,
                   single_wildcard_char, multi_wildcard_char,
                   auto_wildcard, full_width_letter, full_width_punct,
                   max_key_length, database):
         self.db = database
-        self._config = config
+        self._gsettings = gsettings
         engine_name = os.path.basename(
             self.db.filename).replace('.db', '').replace(' ','_')
-        self._config_section = it_util.config_section_normalize(
-            "engine/Table/%s" % engine_name)
         self._max_key_length = int(max_key_length)
         self._max_key_length_pinyin = 7
         self._valid_input_chars = valid_input_chars
@@ -320,14 +299,12 @@ class editor(object):
         self._select_keys = [
             IBus.keyval_from_name(y)
             for y in [x.strip() for x in select_keys_csv.split(",")]]
-        self._page_size = variant_to_value(self._config.get_value(
-            self._config_section,
-            "lookuptablepagesize"))
+        self._page_size = it_util.variant_to_value(self._gsettings.get_user_value(
+            'lookuptablepagesize'))
         if self._page_size == None or self._page_size > len(self._select_keys):
             self._page_size = len(self._select_keys)
-        self._orientation = variant_to_value(self._config.get_value(
-            self._config_section,
-            "LookupTableOrientation"))
+        self._orientation = it_util.variant_to_value(self._gsettings.get_user_value(
+            'lookuptableorientation'))
         if self._orientation == None:
             self._orientation = self.db.get_orientation()
         self._lookup_table = self.get_new_lookup_table(
@@ -337,11 +314,8 @@ class editor(object):
         # self._py_mode: whether in pinyin mode
         self._py_mode = False
         # self._onechar: whether we only select single character
-        self._onechar = variant_to_value(self._config.get_value(
-                self._config_section,
-                "OneChar"))
-        if self._onechar == None:
-            self._onechar = False
+        self._onechar = it_util.variant_to_value(self._gsettings.get_value(
+            'onechar'))
         # self._chinese_mode: the candidate filter mode,
         #   0 means to show simplified Chinese only
         #   1 means to show traditional Chinese only
@@ -349,29 +323,28 @@ class editor(object):
         #   3 means to show all characters but show traditional Chinese first
         #   4 means to show all characters
         # we use LC_CTYPE or LANG to determine which one to use if
-        # no default comes from the config.
-        self._chinese_mode = variant_to_value(self._config.get_value(
-                self._config_section,
-                "ChineseMode"))
+        # no default comes from the user Gsettings.
+        self._chinese_mode = it_util.variant_to_value(
+            self._gsettings.get_user_value('chinesemode'))
+        if self._chinese_mode != None and debug_level > 1:
+            sys.stderr.write(
+                "Chinese mode found in Gsettings, mode=%s\n"
+                % self._chinese_mode)
         if self._chinese_mode == None:
             self._chinese_mode = self.get_default_chinese_mode()
-        elif debug_level > 1:
-            sys.stderr.write(
-                "Chinese mode found in user config, mode=%s\n"
-                % self._chinese_mode)
 
         # If auto select is true, then the first candidate phrase will
         # be selected automatically during typing. Auto select is true
         # by default for the stroke5 table for example.
-        self._auto_select = variant_to_value(self._config.get_value(
-                self._config_section,
-                "AutoSelect"))
+        self._auto_select = it_util.variant_to_value(
+            self._gsettings.get_user_value('autoselect'))
         if self._auto_select == None:
             if self.db.ime_properties.get('auto_select') != None:
                 self._auto_select = self.db.ime_properties.get(
                     'auto_select').lower() == u'true'
-            else:
-                self._auto_select = False
+        if self._auto_select == None:
+            self._auto_select = it_util.variant_to_value(
+                self._gsettings.get_value('autoselect'))
 
     def get_new_lookup_table(
             self, page_size=10,
@@ -408,6 +381,16 @@ class editor(object):
     def get_default_chinese_mode (self):
         '''
         Use db value or LC_CTYPE in your box to determine the _chinese_mode
+
+        0 means to show simplified Chinese only
+        1 means to show traditional Chinese only
+        2 means to show all characters but show simplified Chinese first
+        3 means to show all characters but show traditional Chinese first
+        4 means to show all characters
+
+        If nothing can be found return 4 to avoid any special
+        Chinese filtering or sorting.
+
         '''
         # use db value, if applicable
         __db_chinese_mode = self.db.get_chinese_mode()
@@ -461,12 +444,12 @@ class editor(object):
                     if debug_level > 1:
                         sys.stderr.write(
                             "get_default_chinese_mode(): last fallback, "
-                            + "database is not Chinese, returning -1.\n")
-                    return -1
+                            + "database is not Chinese, returning 4.\n")
+                    return 4
         except:
             import traceback
             traceback.print_exc()
-            return -1
+            return 4
 
     def clear_all_input_and_preedit(self):
         '''
@@ -1254,19 +1237,17 @@ class tabengine (IBus.Engine):
         self._setup_pid = 0
         self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
                 os.path.sep, 'icons', os.path.sep)
-        # name for config section
         self._engine_name = os.path.basename(
             self.db.filename).replace('.db', '').replace(' ','_')
-        self._config_section = it_util.config_section_normalize(
-            "engine/Table/%s" % self._engine_name)
         if debug_level > 1:
             sys.stderr.write(
-                'tabengine.__init__() self._config_section = %s\n'
-                % self._config_section)
+                'tabengine.__init__() self._engine_name = %s\n'
+                % self._engine_name)
 
-        # config module
-        self._config = self._bus.get_config()
-        self._config.connect ("value-changed", self.config_value_changed_cb)
+        self._gsettings = Gio.Settings(
+            schema='org.freedesktop.ibus.engine.table',
+            path='/org/freedesktop/ibus/engine/table/%s/' %self._engine_name)
+        self._gsettings.connect('changed', self.on_gsettings_value_changed)
 
         # self._ime_py: Indicates whether this table supports pinyin mode
         self._ime_py = self.db.ime_properties.get('pinyin_mode')
@@ -1302,37 +1283,37 @@ class tabengine (IBus.Engine):
             'valid_input_chars')
         self._pinyin_valid_input_chars = u'abcdefghijklmnopqrstuvwxyz!@#$%'
 
-        self._single_wildcard_char = variant_to_value(self._config.get_value(
-            self._config_section,
-            "singlewildcardchar"))
+        self._single_wildcard_char = it_util.variant_to_value(
+            self._gsettings.get_user_value('singlewildcardchar'))
         if self._single_wildcard_char == None:
             self._single_wildcard_char = self.db.ime_properties.get(
                 'single_wildcard_char')
         if self._single_wildcard_char == None:
-            self._single_wildcard_char = u''
+            self._single_wildcard_char = it_util.variant_to_value(
+                self._gsettings.get_value('singlewildcardchar'))
         if len(self._single_wildcard_char) > 1:
             self._single_wildcard_char = self._single_wildcard_char[0]
 
-        self._multi_wildcard_char = variant_to_value(self._config.get_value(
-            self._config_section,
-            "multiwildcardchar"))
+        self._multi_wildcard_char = it_util.variant_to_value(
+            self._gsettings.get_user_value('multiwildcardchar'))
         if self._multi_wildcard_char == None:
             self._multi_wildcard_char = self.db.ime_properties.get(
                 'multi_wildcard_char')
         if self._multi_wildcard_char == None:
-            self._multi_wildcard_char = u''
+            self._multi_wildcard_char = it_util.variant_to_value(
+                self._gsettings.get_value('multiwildcardchar'))
         if len(self._multi_wildcard_char) > 1:
             self._multi_wildcard_char = self._multi_wildcard_char[0]
 
-        self._auto_wildcard = variant_to_value(self._config.get_value(
-            self._config_section,
-            "autowildcard"))
+        self._auto_wildcard = it_util.variant_to_value(
+            self._gsettings.get_user_value('autowildcard'))
         if self._auto_wildcard == None:
-            self._auto_wildcard = self.db.ime_properties.get('auto_wildcard')
-            if self._auto_wildcard and self._auto_wildcard.lower() == u'false':
-                self._auto_wildcard = False
-            else:
-                self._auto_wildcard = True
+            if self.db.ime_properties.get('auto_wildcard') != None:
+                self._auto_wildcard = self.db.ime_properties.get(
+                    'auto_wildcard').lower() == u'true'
+        if self._auto_wildcard == None:
+            self._auto_wildcard = it_util.variant_to_value(
+                self._gsettings.get_value('autowildcard'))
 
         self._max_key_length = int(self.db.ime_properties.get('max_key_length'))
         self._max_key_length_pinyin = 7
@@ -1394,24 +1375,24 @@ class tabengine (IBus.Engine):
                 self._page_up_keys.remove(keyval)
             if keyval in self._page_down_keys:
                 self._page_down_keys.remove(keyval)
-        # Finally, check the user setting, i.e. the config value
+        # Finally, check the user setting, i.e. the Gsettings value
         # “spacekeybehavior” and let the user have the last word
         # how to use the space key:
-        spacekeybehavior = variant_to_value(self._config.get_value(
-            self._config_section,
-            "spacekeybehavior"))
-        if spacekeybehavior == True:
-            # space is used as a page down key and not as a commit key:
-            if IBus.KEY_space not in self._page_down_keys:
-                self._page_down_keys.append(IBus.KEY_space)
-            if IBus.KEY_space in self._commit_keys:
-                self._commit_keys.remove(IBus.KEY_space)
-        if spacekeybehavior == False:
-            # space is used as a commit key and not used as a page down key:
-            if IBus.KEY_space in self._page_down_keys:
-                self._page_down_keys.remove(IBus.KEY_space)
-            if IBus.KEY_space not in self._commit_keys:
-                self._commit_keys.append(IBus.KEY_space)
+        spacekeybehavior = it_util.variant_to_value(
+            self._gsettings.get_user_value('spacekeybehavior'))
+        if spacekeybehavior != None:
+            if spacekeybehavior == True:
+                # space is used as a page down key and not as a commit key:
+                if IBus.KEY_space not in self._page_down_keys:
+                    self._page_down_keys.append(IBus.KEY_space)
+                if IBus.KEY_space in self._commit_keys:
+                    self._commit_keys.remove(IBus.KEY_space)
+            if spacekeybehavior == False:
+                # space is used as a commit key and not used as a page down key:
+                if IBus.KEY_space in self._page_down_keys:
+                    self._page_down_keys.remove(IBus.KEY_space)
+                if IBus.KEY_space not in self._commit_keys:
+                    self._commit_keys.append(IBus.KEY_space)
         if debug_level > 1:
             sys.stderr.write(
                 "self._page_down_keys=%s\n" %repr(self._page_down_keys))
@@ -1423,11 +1404,8 @@ class tabengine (IBus.Engine):
         #     (but some fullwidth ↔ halfwidth conversion may be done even
         #     in this mode, depending on the settings)
         # 1 = Table input ON (aka “Table input mode”, “Chinese mode”)
-        self._input_mode = variant_to_value(self._config.get_value(
-            self._config_section,
-            "inputmode"))
-        if self._input_mode == None:
-            self._input_mode = 1
+        self._input_mode = it_util.variant_to_value(
+            self._gsettings.get_value('inputmode'))
 
         # self._prev_key: hold the key event last time.
         self._prev_key = None
@@ -1436,63 +1414,67 @@ class tabengine (IBus.Engine):
         self._single_quotation_state = False
 
         self._full_width_letter = [
-            variant_to_value(self._config.get_value(
-                    self._config_section,
-                    "EnDefFullWidthLetter")),
-            variant_to_value(self._config.get_value(
-                    self._config_section,
-                    "TabDefFullWidthLetter"))
+            it_util.variant_to_value(
+                self._gsettings.get_value('endeffullwidthletter')),
+            it_util.variant_to_value(
+                self._gsettings.get_user_value('tabdeffullwidthletter'))
             ]
-        if self._full_width_letter[0] == None:
-            self._full_width_letter[0] = False
         if self._full_width_letter[1] == None:
-            self._full_width_letter[1] = self.db.ime_properties.get(
-                'def_full_width_letter').lower() == u'true'
-        self._full_width_punct = [
-            variant_to_value(self._config.get_value(
-                    self._config_section,
-                    "EnDefFullWidthPunct")),
-            variant_to_value(self._config.get_value(
-                    self._config_section,
-                    "TabDefFullWidthPunct"))
-            ]
-        if self._full_width_punct[0] == None:
-            self._full_width_punct[0] = False
-        if self._full_width_punct[1] == None:
-            self._full_width_punct[1] = self.db.ime_properties.get(
-                'def_full_width_punct').lower() == u'true'
+            if self.db.ime_properties.get('def_full_width_letter'):
+                self._full_width_letter[1] = self.db.ime_properties.get(
+                    'def_full_width_letter').lower() == u'true'
+        if self._full_width_letter[1] == None:
+            self._full_width_letter[1] = it_util.variant_to_value(
+                self._gsettings.get_value('tabdeffullwidthletter'))
 
-        self._auto_commit = variant_to_value(self._config.get_value(
-                self._config_section,
-                "AutoCommit"))
+        self._full_width_punct = [
+            it_util.variant_to_value(
+                self._gsettings.get_value('endeffullwidthpunct')),
+            it_util.variant_to_value(
+                self._gsettings.get_user_value('tabdeffullwidthpunct'))
+            ]
+        if self._full_width_punct[1] == None:
+            if self.db.ime_properties.get('def_full_width_punct'):
+                self._full_width_punct[1] = self.db.ime_properties.get(
+                    'def_full_width_punct').lower() == u'true'
+        if self._full_width_punct[1] == None:
+            self._full_width_punct[1] = it_util.variant_to_value(
+                self._gsettings.get_value('tabdeffullwidthpunct'))
+
+        self._auto_commit = it_util.variant_to_value(
+            self._gsettings.get_user_value('autocommit'))
         if self._auto_commit == None:
-            self._auto_commit = self.db.ime_properties.get(
-                'auto_commit').lower() == u'true'
+            if self.db.ime_properties.get('auto_commit'):
+                self._auto_commit = self.db.ime_properties.get(
+                    'auto_commit').lower() == u'true'
+        if self._auto_commit == None:
+            self._auto_commit = it_util.variant_to_value(
+                self._gsettings.get_value('autocommit'))
 
         # If auto select is true, then the first candidate phrase will
         # be selected automatically during typing. Auto select is true
         # by default for the stroke5 table for example.
-        self._auto_select = variant_to_value(self._config.get_value(
-                self._config_section,
-                "AutoSelect"))
+        self._auto_select = it_util.variant_to_value(
+            self._gsettings.get_user_value('autoselect'))
         if self._auto_select == None:
             if self.db.ime_properties.get('auto_select') != None:
                 self._auto_select = self.db.ime_properties.get(
                     'auto_select').lower() == u'true'
-            else:
-                self._auto_select = False
+        if self._auto_select == None:
+            self._auto_select = it_util.variant_to_value(
+                self._gsettings.get_value('autoselect'))
 
-        self._always_show_lookup = variant_to_value(self._config.get_value(
-                self._config_section,
-                "AlwaysShowLookup"))
+        self._always_show_lookup = it_util.variant_to_value(
+            self._gsettings.get_user_value('alwaysshowlookup'))
         if self._always_show_lookup == None:
             if self.db.ime_properties.get('always_show_lookup') != None:
                 self._always_show_lookup = self.db.ime_properties.get(
                     'always_show_lookup').lower() == u'true'
-            else:
-                self._always_show_lookup = True
+        if self._always_show_lookup == None:
+            self._always_show_lookup = it_util.variant_to_value(
+                self._gsettings.get_value('alwaysshowlookup'))
 
-        self._editor = editor(self._config,
+        self._editor = editor(self._gsettings,
                               self._valid_input_chars,
                               self._pinyin_valid_input_chars,
                               self._single_wildcard_char,
@@ -1741,7 +1723,7 @@ class tabengine (IBus.Engine):
         if mode == self._input_mode:
             return
         self._input_mode = mode
-        # Not saved to config on purpose. In the setup tool one
+        # Not saved to Gsettings on purpose. In the setup tool one
         # can select whether “Table input” or “Direct input” should
         # be the default when the input method starts. But when
         # changing this input mode using the property menu,
@@ -1766,7 +1748,7 @@ class tabengine (IBus.Engine):
     def set_pinyin_mode(self, mode=False):
         if mode == self._editor._py_mode:
             return
-        # The pinyin mode is never saved to config on purpose
+        # The pinyin mode is never saved to Gsettings on purpose
         self._editor.commit_to_preedit()
         self._editor._py_mode = mode
         self._init_or_update_property_menu(
@@ -1782,97 +1764,91 @@ class tabengine (IBus.Engine):
             self._input_mode)
         self._update_ui()
 
-    def set_onechar_mode(self, mode=False, update_dconf=True):
+    def set_onechar_mode(self, mode=False, update_gsettings=True):
         if mode == self._editor._onechar:
             return
         self._editor._onechar = mode
         self._init_or_update_property_menu(
             self.onechar_mode_menu, mode)
         self.db.reset_phrases_cache()
-        if update_dconf:
-            self._config.set_value(
-                self._config_section,
+        if update_gsettings:
+            self._gsettings.set_value(
                 "OneChar",
                 GLib.Variant.new_boolean(mode))
 
     def get_onechar_mode(self):
         return self._editor._onechar
 
-    def set_autocommit_mode(self, mode=False, update_dconf=True):
+    def set_autocommit_mode(self, mode=False, update_gsettings=True):
         if mode == self._auto_commit:
             return
         self._auto_commit = mode
         self._init_or_update_property_menu(
             self.autocommit_mode_menu, mode)
-        if update_dconf:
-            self._config.set_value(
-                self._config_section,
+        if update_gsettings:
+            self._gsettings.set_value(
                 "AutoCommit",
                 GLib.Variant.new_boolean(mode))
 
     def get_autocommit_mode(self):
         return self._auto_commit
 
-    def set_autoselect_mode(self, mode=False, update_dconf=True):
+    def set_autoselect_mode(self, mode=False, update_gsettings=True):
         if mode == self._auto_select:
             return
         self._auto_select = mode
         self._editor._auto_select = mode
-        if update_dconf:
-            self._config.set_value(
-                self._config_section,
+        if update_gsettings:
+            self._gsettings.set_value(
                 "AutoSelect",
                 GLib.Variant.new_boolean(mode))
 
     def get_autoselect_mode(self):
         return self._auto_select
 
-    def set_autowildcard_mode(self, mode=False, update_dconf=True):
+    def set_autowildcard_mode(self, mode=False, update_gsettings=True):
         if mode == self._auto_wildcard:
             return
         self._auto_wildcard = mode
         self._editor._auto_wildcard = mode
         self.db.reset_phrases_cache()
-        if update_dconf:
-            self._config.set_value(
-                self._config_section,
+        if update_gsettings:
+            self._gsettings.set_value(
                 "AutoWildcard",
                 GLib.Variant.new_boolean(mode))
 
     def get_autowildcard_mode(self):
         return self._auto_wildcard
 
-    def set_single_wildcard_char(self, char=u'', update_dconf=True):
+    def set_single_wildcard_char(self, char=u'', update_gsettings=True):
         if char == self._single_wildcard_char:
             return
         self._single_wildcard_char = char
         self._editor._single_wildcard_char = char
         self.db.reset_phrases_cache()
-        if update_dconf:
-            self._config.set_value(
-                self._config_section,
+        if update_gsettings:
+            self._gsettings.set_value(
                 "singlewildcardchar",
                 GLib.Variant.new_string(char))
 
     def get_single_wildcard_char(self):
         return self._single_wildcard_char
 
-    def set_multi_wildcard_char(self, char=u'', update_dconf=True):
+    def set_multi_wildcard_char(self, char=u'', update_gsettings=True):
         if char == self._multi_wildcard_char:
             return
         self._multi_wildcard_char = char
         self._editor._multi_wildcard_char = char
         self.db.reset_phrases_cache()
-        if update_dconf:
-            self._config.set_value(
-                self._config_section,
+        if update_gsettings:
+            self._gsettings.set_value(
                 "multiwildcardchar",
                 GLib.Variant.new_string(char))
 
     def get_multi_wildcard_char(self):
         return self._multi_wildcard_char
 
-    def set_space_key_behavior_mode(self, mode=False, update_dconf=True):
+    def set_space_key_behavior_mode(self, mode=False, update_gsettings=True):
         '''Sets the behaviour of the space key
 
         :param mode: How the space key should behave
@@ -1881,12 +1857,12 @@ class tabengine (IBus.Engine):
                           and not as a commit key.
                     False: space is used as a commit key
                            and not used as a page down key
-        :param update_dconf: Whether to write the change to dconf.
-                             Set this to False if this method is
-                             called because the dconf key changed
-                             to avoid endless loops when the dconf
-                             key is changed twice in a short time.
-        :type update_dconf: boolean
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the dconf key changed
+                                 to avoid endless loops when the dconf
+                                 key is changed twice in a short time.
+        :type update_gsettings: boolean
         '''
         if debug_level > 1:
             sys.stderr.write(
@@ -1911,9 +1887,8 @@ class tabengine (IBus.Engine):
             sys.stderr.write(
                 'set_space_key_behavior_mode(): self._commit_keys=%s\n'
                 % repr(self._commit_keys))
-        if update_dconf:
-            self._config.set_value(
-                self._config_section,
+        if update_gsettings:
+            self._gsettings.set_value(
                 "spacekeybehavior",
                 GLib.Variant.new_boolean(mode))
 
@@ -1926,20 +1901,19 @@ class tabengine (IBus.Engine):
             mode = False
         return mode
 
-    def set_always_show_lookup(self, mode=False, update_dconf=True):
+    def set_always_show_lookup(self, mode=False, update_gsettings=True):
         if mode == self._always_show_lookup:
             return
         self._always_show_lookup = mode
-        if update_dconf:
-            self._config.set_value(
-                self._config_section,
+        if update_gsettings:
+            self._gsettings.set_value(
                 "AlwaysShowLookup",
                 GLib.Variant.new_boolean(mode))
 
     def get_always_show_lookup(self):
         return self._always_show_lookup
 
-    def set_lookup_table_orientation(self, orientation, update_dconf=True):
+    def set_lookup_table_orientation(self, orientation, update_gsettings=True):
         '''Sets the orientation of the lookup table
 
         :param orientation: The orientation of the lookup table
@@ -1947,12 +1921,12 @@ class tabengine (IBus.Engine):
                     IBUS_ORIENTATION_HORIZONTAL = 0,
                     IBUS_ORIENTATION_VERTICAL   = 1,
                     IBUS_ORIENTATION_SYSTEM     = 2.
-        :param update_dconf: Whether to write the change to dconf.
-                             Set this to False if this method is
-                             called because the dconf key changed
-                             to avoid endless loops when the dconf
-                             key is changed twice in a short time.
-        :type update_dconf: boolean
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the dconf key changed
+                                 to avoid endless loops when the dconf
+                                 key is changed twice in a short time.
+        :type update_gsettings: boolean
         '''
         if debug_level > 1:
             sys.stderr.write(
@@ -1963,9 +1937,8 @@ class tabengine (IBus.Engine):
         if orientation >= 0 and orientation <= 2:
             self._editor._orientation = orientation
             self._editor._lookup_table.set_orientation(orientation)
-            if update_dconf:
-                self._config.set_value(
-                    self._config_section,
+            if update_gsettings:
+                self._gsettings.set_value(
                     'lookuptableorientation',
                     GLib.Variant.new_int32(orientation))
 
@@ -1976,17 +1949,17 @@ class tabengine (IBus.Engine):
         '''
         return self._editor._orientation
 
-    def set_page_size(self, page_size, update_dconf=True):
+    def set_page_size(self, page_size, update_gsettings=True):
         '''Sets the page size of the lookup table
 
         :param orientation: The orientation of the lookup table
         :type mode: integer >= 1 and <= number of select keys
-        :param update_dconf: Whether to write the change to dconf.
-                             Set this to False if this method is
-                             called because the dconf key changed
-                             to avoid endless loops when the dconf
-                             key is changed twice in a short time.
-        :type update_dconf: boolean
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the dconf key changed
+                                 to avoid endless loops when the dconf
+                                 key is changed twice in a short time.
+        :type update_gsettings: boolean
         '''
         if debug_level > 1:
             sys.stderr.write(
@@ -2004,9 +1977,8 @@ class tabengine (IBus.Engine):
             select_keys = self._editor._select_keys,
             orientation = self._editor._orientation)
         self.reset()
-        if update_dconf:
-            self._config.set_value(
-                self._config_section,
+        if update_gsettings:
+            self._gsettings.set_value(
                 'lookuptablepagesize',
                 GLib.Variant.new_int32(value))
 
@@ -2017,7 +1989,7 @@ class tabengine (IBus.Engine):
         '''
         return self._editor._page_size
 
-    def set_letter_width(self, mode=False, input_mode=0, update_dconf=True):
+    def set_letter_width(self, mode=False, input_mode=0, update_gsettings=True):
         if mode == self._full_width_letter[input_mode]:
             return
         self._full_width_letter[input_mode] = mode
@@ -2025,22 +1997,20 @@ class tabengine (IBus.Engine):
         if input_mode == self._input_mode:
             self._init_or_update_property_menu(
                 self.letter_width_menu, mode)
-        if update_dconf:
+        if update_gsettings:
             if input_mode:
-                self._config.set_value(
-                    self._config_section,
+                self._gsettings.set_value(
                     "TabDefFullWidthLetter",
                     GLib.Variant.new_boolean(mode))
             else:
-                self._config.set_value(
-                    self._config_section,
+                self._gsettings.set_value(
                     "EnDefFullWidthLetter",
                     GLib.Variant.new_boolean(mode))
 
     def get_letter_width(self):
         return self._full_width_letter
 
-    def set_punctuation_width(self, mode=False, input_mode=0, update_dconf=True):
+    def set_punctuation_width(self, mode=False, input_mode=0, update_gsettings=True):
         if mode == self._full_width_punct[input_mode]:
             return
         self._full_width_punct[input_mode] = mode
@@ -2048,32 +2018,29 @@ class tabengine (IBus.Engine):
         if input_mode == self._input_mode:
             self._init_or_update_property_menu(
                 self.punctuation_width_menu, mode)
-        if update_dconf:
+        if update_gsettings:
             if input_mode:
-                self._config.set_value(
-                    self._config_section,
+                self._gsettings.set_value(
                     "TabDefFullWidthPunct",
                     GLib.Variant.new_boolean(mode))
             else:
-                self._config.set_value(
-                    self._config_section,
+                self._gsettings.set_value(
                     "EnDefFullWidthPunct",
                     GLib.Variant.new_boolean(mode))
 
     def get_punctuation_width(self):
         return self._full_width_punct
 
-    def set_chinese_mode(self, mode=0, update_dconf=True):
+    def set_chinese_mode(self, mode=0, update_gsettings=True):
         if mode == self._editor._chinese_mode:
             return
         self._editor._chinese_mode = mode
         self.db.reset_phrases_cache()
         self._init_or_update_property_menu(
             self.chinese_mode_menu, mode)
-        if update_dconf:
-            self._config.set_value(
-                self._config_section,
-                "ChineseMode",
+        if update_gsettings:
+            self._gsettings.set_value(
+                "chinesemode",
                 GLib.Variant.new_int32(mode))
 
     def get_chinese_mode(self):
@@ -3086,78 +3053,60 @@ class tabengine (IBus.Engine):
             return True
         return False
 
-    def config_section_normalize(self, section):
-        # This function replaces _: with - in the dconf
-        # section and converts to lower case to make
-        # the comparison of the dconf sections work correctly.
-        # I avoid using .lower() here because it is locale dependent,
-        # when using .lower() this would not achieve the desired
-        # effect of comparing the dconf sections case insentively
-        # in some locales, it would fail for example if Turkish
-        # locale (tr_TR.UTF-8) is set.
-        if sys.version_info >= (3, 0, 0): # Python3
-            return re.sub(r'[_:]', r'-', section).translate(
-                ''.maketrans(
-                string.ascii_uppercase,
-                string.ascii_lowercase))
-        else: # Python2
-            return re.sub(r'[_:]', r'-', section).translate(
-                string.maketrans(
-                string.ascii_uppercase,
-                string.ascii_lowercase).decode('ISO-8859-1'))
-
-    def config_value_changed_cb(self, config, section, name, value):
-        if (self.config_section_normalize(self._config_section)
-            != self.config_section_normalize(section)):
-            return
-        value = variant_to_value(value)
-        print('config value %(n)s for engine %(en)s changed to %(value)s'
-              % {'n': name, 'en': self._engine_name, 'value': value})
-        if name == u'inputmode':
+    def on_gsettings_value_changed(self, settings, key):
+        '''
+        Called when a value in the settings has been changed.
+        '''
+        value = it_util.variant_to_value(self._gsettings.get_value(key))
+        sys.stderr.write('Settings changed for engine “%s”: key=%s value=%s\n'
+                         %(self._engine_name, key, value))
+        if key == u'inputmode':
             self.set_input_mode(value)
             return
-        if name == u'autoselect':
-            self.set_autoselect_mode(value, update_dconf=False)
+        if key == u'autoselect':
+            self.set_autoselect_mode(value, update_gsettings=False)
             return
-        if name == u'autocommit':
-            self.set_autocommit_mode(value, update_dconf=False)
+        if key == u'autocommit':
+            self.set_autocommit_mode(value, update_gsettings=False)
             return
-        if name == u'chinesemode':
-            self.set_chinese_mode(value, update_dconf=False)
+        if key == u'chinesemode':
+            self.set_chinese_mode(value, update_gsettings=False)
             return
-        if name == u'endeffullwidthletter':
-            self.set_letter_width(value, input_mode=0, update_dconf=False)
+        if key == u'endeffullwidthletter':
+            self.set_letter_width(value, input_mode=0, update_gsettings=False)
             return
-        if name == u'endeffullwidthpunct':
-            self.set_punctuation_width(value, input_mode=0, update_dconf=False)
+        if key == u'endeffullwidthpunct':
+            self.set_punctuation_width(value, input_mode=0, update_gsettings=False)
             return
-        if name == u'lookuptableorientation':
-            self.set_lookup_table_orientation(value, update_dconf=False)
+        if key == u'lookuptableorientation':
+            self.set_lookup_table_orientation(value, update_gsettings=False)
             return
-        if name == u'lookuptablepagesize':
-            self.set_page_size(value, update_dconf=False)
+        if key == u'lookuptablepagesize':
+            self.set_page_size(value, update_gsettings=False)
             return
-        if name == u'onechar':
-            self.set_onechar_mode(value, update_dconf=False)
+        if key == u'onechar':
+            self.set_onechar_mode(value, update_gsettings=False)
             return
-        if name == u'tabdeffullwidthletter':
-            self.set_letter_width(value, input_mode=1, update_dconf=False)
+        if key == u'tabdeffullwidthletter':
+            self.set_letter_width(value, input_mode=1, update_gsettings=False)
             return
-        if name == u'tabdeffullwidthpunct':
-            self.set_punctuation_width(value, input_mode=1, update_dconf=False)
+        if key == u'tabdeffullwidthpunct':
+            self.set_punctuation_width(value, input_mode=1, update_gsettings=False)
             return
-        if name == u'alwaysshowlookup':
-            self.set_always_show_lookup(value, update_dconf=False)
+        if key == u'alwaysshowlookup':
+            self.set_always_show_lookup(value, update_gsettings=False)
             return
-        if name == u'spacekeybehavior':
-            self.set_space_key_behavior_mode(value, update_dconf=False)
+        if key == u'spacekeybehavior':
+            self.set_space_key_behavior_mode(value, update_gsettings=False)
             return
-        if name == u'singlewildcardchar':
-            self.set_single_wildcard_char(value, update_dconf=False)
+        if key == u'singlewildcardchar':
+            self.set_single_wildcard_char(value, update_gsettings=False)
             return
-        if name == u'multiwildcardchar':
-            self.set_multi_wildcard_char(value, update_dconf=False)
+        if key == u'multiwildcardchar':
+            self.set_multi_wildcard_char(value, update_gsettings=False)
             return
-        if name == u'autowildcard':
-            self.set_autowildcard_mode(value, update_dconf=False)
+        if key == u'autowildcard':
+            self.set_autowildcard_mode(value, update_gsettings=False)
             return
+        sys.stderr.write('Unknown key\n')
+        return

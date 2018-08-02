@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.freedesktop.ibus.engine.table">
+    <key name="autoselect" type="b">
+      <default>false</default>
+    </key>
+    <key name="autocommit" type="b">
+      <default>false</default>
+    </key>
+    <key name="inputmode" type="i">
+      <default>1</default>
+    </key>
+    <key name="chinesemode" type="i">
+      <default>4</default>
+    </key>
+    <key name="endeffullwidthletter" type="b">
+      <default>false</default>
+    </key>
+    <key name="endeffullwidthpunct" type="b">
+      <default>false</default>
+    </key>
+    <key name="lookuptableorientation" type="i">
+      <default>1</default>
+    </key>
+    <key name="lookuptablepagesize" type="i">
+      <default>6</default>
+    </key>
+    <key name="onechar" type="b">
+      <default>false</default>
+    </key>
+    <key name="tabdeffullwidthletter" type="b">
+      <default>false</default>
+    </key>
+    <key name="tabdeffullwidthpunct" type="b">
+      <default>false</default>
+    </key>
+    <key name="alwaysshowlookup" type="b">
+      <default>true</default>
+    </key>
+    <key name="spacekeybehavior" type="b">
+      <default>false</default>
+    </key>
+    <key name="singlewildcardchar" type="s">
+      <default>''</default>
+    </key>
+    <key name="multiwildcardchar" type="s">
+      <default>''</default>
+    </key>
+    <key name="autowildcard" type="b">
+      <default>true</default>
+    </key>
+  </schema>
+</schemalist>

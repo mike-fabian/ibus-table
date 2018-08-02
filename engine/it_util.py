@@ -26,33 +26,35 @@ Utility functions used in ibus-table
 '''
 
 import sys
-import re
-import string
+from gi import require_version
+require_version('GLib', '2.0')
+from gi.repository import GLib
 
-def config_section_normalize(section):
-    '''Replaces “_:” with “-” in the dconf section and converts to lower case
-
-    :param section: The name of the dconf section
-    :type section: string
-    :rtype: string
-
-    To make the comparison of the dconf sections work correctly.
-
-    I avoid using .lower() here because it is locale dependent, when
-    using .lower() this would not achieve the desired effect of
-    comparing the dconf sections case insentively in some locales, it
-    would fail for example if Turkish locale (tr_TR.UTF-8) is set.
-
-    Examples:
-
-    >>> config_section_normalize('Foo_bAr:Baz')
-    'foo-bar-baz'
+def variant_to_value(variant):
     '''
-    return re.sub(r'[_:]', r'-', section).translate(
-        bytes.maketrans(
-            bytes(string.ascii_uppercase.encode('ascii')),
-            bytes(string.ascii_lowercase.encode('ascii'))))
-
+    Convert a GLib variant to a value
+    '''
+    # pylint: disable=unidiomatic-typecheck
+    if type(variant) != GLib.Variant:
+        return variant
+    type_string = variant.get_type_string()
+    if type_string == 's':
+        return variant.get_string()
+    elif type_string == 'i':
+        return variant.get_int32()
+    elif type_string == 'b':
+        return variant.get_boolean()
+    elif type_string == 'as':
+        # In the latest pygobject3 3.3.4 or later, g_variant_dup_strv
+        # returns the allocated strv but in the previous release,
+        # it returned the tuple of (strv, length)
+        if type(GLib.Variant.new_strv([]).dup_strv()) == tuple:
+            return variant.dup_strv()[0]
+        else:
+            return variant.dup_strv()
+    else:
+        print('error: unknown variant type: %s' %type_string)
+    return variant
 
 if __name__ == "__main__":
     import doctest

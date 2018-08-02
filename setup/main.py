@@ -32,6 +32,8 @@ from time import strftime
 import re
 
 from gi import require_version
+require_version('Gio', '2.0')
+from gi.repository import Gio
 require_version('GLib', '2.0')
 from gi.repository import GLib
 
@@ -51,12 +53,17 @@ import version
 sys.path = [sys.path[0]+'/../engine'] + sys.path
 import tabsqlitedb
 import ibus_table_location
+import it_util
 
 _ = lambda a : gettext.dgettext("ibus-table", a)
 
+# The contents this OPTION_DEFAULTS dict are first overwritten
+# with the defaults from the Gsettings schema file and then again with
+# the defaults from the tables.
+
 OPTION_DEFAULTS = {
     "inputmode": 1,
-    "chinesemode": 0,
+    "chinesemode": 4,
     "tabdeffullwidthletter": False,
     "tabdeffullwidthpunct": False,
     "endeffullwidthletter": False,
@@ -141,6 +148,12 @@ class PreferencesDialog:
                 _("Cannot determine the engine name. Please use the --engine-name option."),
                 Gtk.MessageType.ERROR)
             sys.exit(1)
+        short_engine_name = re.sub(
+            r'^table:', '', self.__engine_name).replace(" ", "_")
+        self.__gsettings = Gio.Settings(
+            schema='org.freedesktop.ibus.engine.table',
+            path='/org/freedesktop/ibus/engine/table/%s/' %short_engine_name)
+        self.__gsettings.connect('changed', self.on_gsettings_value_changed)
 
     def check_table_available(self):
         """Check if the current engine_name is available.
@@ -156,7 +169,19 @@ class PreferencesDialog:
                 Gtk.MessageType.ERROR)
         return ret
 
+    def get_default_options_from_gsettings(self):
+        '''
+        Get the default options from the Gsettings schema file.
+        '''
+        for key in OPTION_DEFAULTS:
+            OPTION_DEFAULTS[key] = it_util.variant_to_value(
+                self.__gsettings.get_value(key))
+
     def get_default_options_from_database(self):
+        '''
+        If there are default options in the database,
+        they override the defaults from Gsettings.
+        '''
         self.tabsqlitedb = tabsqlitedb.tabsqlitedb(
             filename = os.path.join(
                 db_dir,
@@ -267,13 +292,13 @@ class PreferencesDialog:
             OPTION_DEFAULTS['multiwildcardchar'] = multi_wildcard_char
 
     def __restore_defaults(self):
-        for name in OPTION_DEFAULTS:
-            value = OPTION_DEFAULTS[name]
-            self.__set_value(name, value)
+        for key in OPTION_DEFAULTS:
+            value = OPTION_DEFAULTS[key]
+            self.__set_value(key, value)
 
-    def _build_combobox_renderer(self, name):
+    def _build_combobox_renderer(self, key):
         """setup cell renderer for combobox"""
-        __combobox = self.__builder.get_object("combobox%s" % name)
+        __combobox = self.__builder.get_object("combobox%s" % key)
         __cell = Gtk.CellRendererText()
         __combobox.pack_start(__cell, True)
         __combobox.add_attribute(__cell, 'text', 0)
@@ -285,15 +310,11 @@ class PreferencesDialog:
         self.__builder.add_from_file("ibus-table-preferences.ui")
         self.__dialog = self.__builder.get_object("dialog")
 
-        for name in list(OPTION_DEFAULTS.keys()):
-            if name not in SCALE_WIDGETS and name not in ENTRY_WIDGETS:
-                self._build_combobox_renderer(name)
+        for key in list(OPTION_DEFAULTS.keys()):
+            if key not in SCALE_WIDGETS and key not in ENTRY_WIDGETS:
+                self._build_combobox_renderer(key)
 
     def do_init(self):
-        self.__config = self.__bus.get_config()
-        self.__config_section = ("engine/Table/%s" %
-                re.sub(r'^table:', '', self.__engine_name).replace(" ", "_"))
-
         self.__init_general()
         self.__init_about()
 
@@ -310,17 +331,20 @@ class PreferencesDialog:
         # found, the second argument of set_wmclass() is shown by
         # gnome-shell in the top bar.
         self.__dialog.set_wmclass('ibus-setup-table', 'IBus Table Setup')
-        self.__values = self.__config.get_values(self.__config_section).unpack()
-        self.__config.connect ("value-changed", self.__config_value_changed_cb)
 
-        for name in list(OPTION_DEFAULTS.keys()):
-            #self.__config.unset(self.__config_section, name); continue
-            if name in SCALE_WIDGETS:
-                self._init_hscale(name)
-            elif name in ENTRY_WIDGETS:
-                self._init_entry(name)
+        self.__user_values = {}
+        for key in OPTION_DEFAULTS:
+            if self.__gsettings.get_user_value(key) != None:
+                self.__user_values[key] = it_util.variant_to_value(
+                    self.__gsettings.get_user_value(key))
+                sys.stderr.write(
+                    'self.__user_values[%s]=%s\n' %(key, self.__user_values[key]))
+            if key in SCALE_WIDGETS:
+                self._init_hscale(key)
+            elif key in ENTRY_WIDGETS:
+                self._init_entry(key)
             else:
-                self._init_combobox(name)
+                self._init_combobox(key)
         self._init_button('restoredefaults')
         return
 
@@ -357,14 +381,14 @@ class PreferencesDialog:
                 w = self.__builder.get_object("TableNameImage")
                 w.set_from_pixbuf(pixbuf)
 
-    def _init_combobox(self, name):
-        """Set combobox from the __config engine"""
-        __combobox = self.__builder.get_object("combobox%s" % name)
+    def _init_combobox(self, key):
+        """Set combobox from the Gsettings"""
+        __combobox = self.__builder.get_object("combobox%s" % key)
         val = 0
-        if name in self.__values:
-            init_val = self.__values[name]
+        if key in self.__user_values:
+            init_val = self.__user_values[key]
         else:
-            init_val = OPTION_DEFAULTS[name]
+            init_val = OPTION_DEFAULTS[key]
         if isinstance(init_val, bool):
             val = 1 if init_val else 0
         elif isinstance(init_val, int):
@@ -376,115 +400,108 @@ class PreferencesDialog:
                     val = i
                     break
         __combobox.set_active(val)
-        __combobox.connect("changed", self.__changed_cb, name)
-        if ((name in ['chinesemode']
+        __combobox.connect("changed", self.__changed_cb, key)
+        if ((key in ['chinesemode']
              and not self.__is_chinese)
             or
-            (name in ['tabdeffullwidthletter',
+            (key in ['tabdeffullwidthletter',
                       'tabdeffullwidthpunct',
                       'endeffullwidthletter',
                       'endeffullwidthpunct']
              and not self.__is_cjk)
             or
-            (name in ['onechar']
+            (key in ['onechar']
              and not  self.__is_cjk)
             or
-            (name in ['autocommit']
+            (key in ['autocommit']
              and (not self.__user_can_define_phrase or not self.__rules))):
             __combobox.set_button_sensitivity(Gtk.SensitivityType.OFF)
 
-    def _init_entry(self, name):
-        """Set entry widget from the __config engine"""
-        __entry = self.__builder.get_object("entry%s" % name)
-        if name in self.__values:
-            val = self.__values[name]
+    def _init_entry(self, key):
+        """Set entry widget from the Gsettings engine"""
+        __entry = self.__builder.get_object("entry%s" % key)
+        if key in self.__user_values:
+            val = self.__user_values[key]
         else:
-            val = OPTION_DEFAULTS[name]
+            val = OPTION_DEFAULTS[key]
         __entry.set_text(val)
-        __entry.connect("notify::text", self.__entry_changed_cb, name)
+        __entry.connect("notify::text", self.__entry_changed_cb, key)
 
-    def _init_hscale(self, name):
-        """Set scale widget from the __config engine"""
-        __hscale = self.__builder.get_object("hscale%s" % name)
-        if name in self.__values:
-            val = self.__values[name]
+    def _init_hscale(self, key):
+        """Set scale widget from Gsettings"""
+        __hscale = self.__builder.get_object("hscale%s" % key)
+        if key in self.__user_values:
+            val = self.__user_values[key]
         else:
-            val = OPTION_DEFAULTS[name]
+            val = OPTION_DEFAULTS[key]
         __hscale.set_value(val)
-        __hscale.connect("value-changed", self.__value_changed_cb, name)
+        __hscale.connect("value-changed", self.__value_changed_cb, key)
 
-    def _init_button(self, name):
+    def _init_button(self, key):
         """Initialize the button to restore the default settings"""
-        __button = self.__builder.get_object("button%s" %name)
-        __button.connect("clicked", self.__button_clicked_cb, name)
+        __button = self.__builder.get_object("button%s" %key)
+        __button.connect("clicked", self.__button_clicked_cb, key)
 
-    def __button_clicked_cb(self, widget, name):
+    def __button_clicked_cb(self, widget, key):
         """Button clicked handler"""
-        if name == 'restoredefaults':
+        if key == 'restoredefaults':
             self.__restore_defaults()
 
-    def __changed_cb(self, widget, name):
+    def __changed_cb(self, widget, key):
         """Combobox changed handler"""
         val = widget.get_active()
-        vtype = type(OPTION_DEFAULTS[name])
+        vtype = type(OPTION_DEFAULTS[key])
         if vtype == bool:
             val = False if val == 0 else True
-        self.__set_value(name, val)
+        self.__set_value(key, val)
 
-    def __value_changed_cb(self, widget, name):
+    def __value_changed_cb(self, widget, key):
         """scale widget value changed handler"""
         val = widget.get_value()
-        vtype = type(OPTION_DEFAULTS[name])
+        vtype = type(OPTION_DEFAULTS[key])
         if vtype == int:
             val = int(val)
-        self.__set_value(name, val)
+        self.__set_value(key, val)
 
-    def __entry_changed_cb(self, widget, property_spec, name):
+    def __entry_changed_cb(self, widget, property_spec, key):
         """entry widget text changed handler"""
         val = widget.get_text()
-        vtype = type(OPTION_DEFAULTS[name])
+        vtype = type(OPTION_DEFAULTS[key])
         if vtype != type(u''):
             val = val.decode('UTF-8')
-        self.__set_value(name, val)
+        self.__set_value(key, val)
 
-    def __config_value_changed_cb(self, config, section, name, val):
-        """__config engine value changed handler"""
-        val = val.unpack()
-        if name in SCALE_WIDGETS:
-            __hscale = self.__builder.get_object("hscale%s" % name)
-            __hscale.set_value(val)
-        elif name in ENTRY_WIDGETS:
-            __entry =  self.__builder.get_object("entry%s" % name)
-            __entry.set_text(val)
+    def on_gsettings_value_changed(self, settings, key):
+        """
+        Called when a value in the settings has been changed.
+        """
+        value = it_util.variant_to_value(self.__gsettings.get_value(key))
+        sys.stderr.write('Settings changed: key=%s value=%s\n' %(key, value))
+        if key in SCALE_WIDGETS:
+            __hscale = self.__builder.get_object("hscale%s" % key)
+            __hscale.set_value(value)
+        elif key in ENTRY_WIDGETS:
+            __entry =  self.__builder.get_object("entry%s" % key)
+            __entry.set_text(value)
         else:
-            __combobox = self.__builder.get_object("combobox%s" % name)
-            if isinstance(val, bool):
-                val = 1 if val else 0
-            elif isinstance(val, str):
-                val = val.get_string()
+            __combobox = self.__builder.get_object("combobox%s" % key)
+            if isinstance(value, bool):
+                value = 1 if value else 0
+            elif isinstance(value, str):
                 model = __combobox.get_model()
                 for i, row in enumerate(model):
-                    if row[0] == val:
-                        val = i
+                    if row[0] == value:
+                        value = i
                         break
-            __combobox.set_active(val)
-        self.__values[name] = val
+            __combobox.set_active(value)
+        self.__user_values[key] = value
 
-    def __toggled_cb(self, widget, name):
+    def __toggled_cb(self, widget, key):
         """toggle button toggled signal handler"""
-        self.__set_value(name, widget.get_active ())
+        self.__set_value(key, widget.get_active ())
 
-    def __get_value(self, name, defval):
-        """Get the __config value if available"""
-        if name in self.__values:
-            var = self.__values[name]
-            if isinstance(defval, type(var)):
-                return var
-        self.__set_value(name, defval)
-        return defval
-
-    def __set_value(self, name, val):
-        """Set the config value to __config"""
+    def __set_value(self, key, val):
+        """Set the _gsettings value"""
         var = None
         if isinstance(val, bool):
             var = GLib.Variant.new_boolean(val)
@@ -496,8 +513,8 @@ class PreferencesDialog:
             sys.stderr.write("val(%s) is not in support type." %repr(val))
             return
 
-        self.__values[name] = val
-        self.__config.set_value(self.__config_section, name, var)
+        self.__user_values[key] = val
+        self.__gsettings.set_value(key, var)
 
     def __run_message_dialog(self, message, message_type=Gtk.MessageType.INFO):
         dlg = Gtk.MessageDialog(parent=None,
@@ -512,8 +529,9 @@ class PreferencesDialog:
         ret = self.check_table_available()
         if not ret:
             return 0
-        self.get_default_options_from_database()
         self.load_builder()
+        self.get_default_options_from_gsettings()
+        self.get_default_options_from_database()
         self.do_init()
         return self.__dialog.run()
 

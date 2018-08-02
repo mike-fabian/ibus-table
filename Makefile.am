@@ -44,11 +44,28 @@ pkgconfigdir = $(libdir)/pkgconfig
 # To register as an AppStream component to be visible in the software center
 # (See http://www.freedesktop.org/software/appstream/docs/ for more details):
 appdata_DATA = \
-       ibus-table.appdata.xml \
-       $(NULL)
+	ibus-table.appdata.xml \
+	$(NULL)
 
 appdatadir = $(datadir)/metainfo
 
+schemas_DATA = \
+	org.freedesktop.ibus.engine.table.gschema.xml
+	$(NULL)
+
+schemasdir = $(datadir)/glib-2.0/schemas/
+
+install-data-hook:
+	if test -z "$(DESTDIR)"; then \
+	    glib-compile-schemas $(schemasdir); \
+	fi
+
+uninstall-hook:
+	SCHEMAS_FILES=`ls $(schemasdir)/*.gschema.xml` || true;         \
+	if test -z "$$SCHEMAS_FILES" &&                                 \
+	    test -f $(schemasdir)/gschemas.compiled; then               \
+	    rm $(schemasdir)/gschemas.compiled;                         \
+	fi
 
 AUX_DIST = \
 	config.guess \
@@ -70,6 +87,7 @@ EXTRA_DIST = \
 	config.rpath \
 	autogen.sh \
 	ibus-table.appdata.xml \
+	$(schemas_DATA) \
 	@PACKAGE_NAME@.spec \
 	$(NULL)
 

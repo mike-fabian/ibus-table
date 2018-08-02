@@ -98,6 +98,9 @@ class ImeProperties:
         else:
             return None
 
+    def __str__(self):
+        return 'ime_property_cache = %s' %repr(self.ime_property_cache)
+
 class tabsqlitedb:
     '''Phrase database for tables
 
@@ -525,13 +528,13 @@ class tabsqlitedb:
                         return True
         return False
 
-    def get_chinese_mode (self):
+    def get_chinese_mode(self):
         try:
             __dict = {'cm0':0, 'cm1':1, 'cm2':2, 'cm3':3, 'cm4':4}
             __filt = self.ime_properties.get('language_filter')
             return __dict[__filt]
         except:
-            return -1
+            return 4
 
     def get_select_keys (self):
         ret = self.ime_properties.get("select_keys")
@@ -873,7 +876,7 @@ class tabsqlitedb:
         return big5
 
     def best_candidates(
-            self, typed_tabkeys=u'', candidates=[], chinese_mode=-1):
+            self, typed_tabkeys=u'', candidates=[], chinese_mode=4):
         '''
         “candidates” is an array containing something like:
         [(tabkeys, phrase, freq, user_freq), ...]
@@ -928,7 +931,7 @@ class tabsqlitedb:
                       ))[:maximum_number_of_candidates]
 
     def select_words(
-            self, tabkeys=u'', onechar=False, chinese_mode=-1,
+            self, tabkeys=u'', onechar=False, chinese_mode=4,
             single_wildcard_char=u'', multi_wildcard_char=u'',
             auto_wildcard=False):
         '''
@@ -1027,7 +1030,7 @@ class tabsqlitedb:
         return best
 
     def select_chinese_characters_by_pinyin(
-            self, tabkeys=u'', chinese_mode=-1, single_wildcard_char=u'',
+            self, tabkeys=u'', chinese_mode=4, single_wildcard_char=u'',
             multi_wildcard_char=u''):
         '''
         Get Chinese characters matching the pinyin given by tabkeys

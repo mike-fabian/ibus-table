@@ -401,3 +401,31 @@ class TranslitTestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_preedit_text, 'с')
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, 'шщс ')
+
+class Cangjie5TestCase(unittest.TestCase):
+    def setUp(self):
+        set_up('cangjie5')
+
+    def tearDown(self):
+        tear_down()
+
+    def test_dummy(self):
+        self.assertEqual(True, True)
+
+    def test_single_char_commit_with_space(self):
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, '日')
+
+    def test_type_one_char_and_check_auxiliary(self):
+        ENGINE.do_process_key_event(IBus.KEY_d, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '木')
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates[8], '林 木 1000 0')
+        ENGINE.do_process_key_event(IBus.KEY_v, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_i, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_i, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '機')
+        self.assertEqual(ENGINE.mock_auxiliary_text, '木女戈戈 (1 / 1)')
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, ['機  1000 0'])
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, '機')

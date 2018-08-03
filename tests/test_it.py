@@ -451,3 +451,124 @@ class Ipa_x_sampaTestCase(unittest.TestCase):
                          ['ə  0 0', 'ɘ \\ 0 0', 'ɚ ` 0 0'])
         ENGINE.do_process_key_event(IBus.KEY_F3, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, 'ɚ')
+
+class LatexTestCase(unittest.TestCase):
+    def setUp(self):
+        set_up('latex')
+
+    def tearDown(self):
+        tear_down()
+
+    def test_dummy(self):
+        self.assertEqual(True, True)
+
+    def test_single_char_commit_with_space(self):
+        ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_l, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_p, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_h, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, 'α')
+
+    def test_single_char_commit_with_f3(self):
+        ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_b, 0, 0)
+        # Lookup table shows only the first page, subsequent
+        # pages are added on demand as a speed optimization:
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['¯ ar 0 0',
+                          '⊥ ot 0 0',
+                          'β eta 0 0',
+                          'ℶ eth 0 0',
+                          '⋂ igcap 0 0',
+                          '⋃ igcup 0 0',
+                          '⋁ igvee 0 0',
+                          '⋈ owtie 0 0',
+                          '⊡ oxdot 0 0'])
+        ENGINE.do_process_key_event(IBus.KEY_F3, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, 'β')
+        ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_b, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Page_Down, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['β eta 0 1', # user freq for β increased to 1
+                          '¯ ar 0 0',
+                          '⊥ ot 0 0',
+                          'ℶ eth 0 0',
+                          '⋂ igcap 0 0',
+                          '⋃ igcup 0 0',
+                          '⋁ igvee 0 0',
+                          '⋈ owtie 0 0',
+                          '⊡ oxdot 0 0',
+                          '• ullet 0 0',
+                          '∙ ullet 0 0',
+                          '≏ umpeq 0 0',
+                          '∽ acksim 0 0',
+                          '∵ ecause 0 0',
+                          '≬ etween 0 0',
+                          '⊞ oxplus 0 0',
+                          '⊼ arwedge 0 0',
+                          '⋀ igwedge 0 0'])
+        self.assertEqual(ENGINE._editor._lookup_table.get_cursor_pos(), 9)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.get_cursor_pos(), 15)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates[0:18],
+                         ['β eta 0 1', # user freq for β increased to 1
+                          '¯ ar 0 0',
+                          '⊥ ot 0 0',
+                          'ℶ eth 0 0',
+                          '⋂ igcap 0 0',
+                          '⋃ igcup 0 0',
+                          '⋁ igvee 0 0',
+                          '⋈ owtie 0 0',
+                          '⊡ oxdot 0 0',
+                          '• ullet 0 0',
+                          '∙ ullet 0 0',
+                          '≏ umpeq 0 0',
+                          '∽ acksim 0 0',
+                          '∵ ecause 0 0',
+                          '≬ etween 0 0',
+                          '⊞ oxplus 0 0',
+                          '⊼ arwedge 0 0',
+                          '⋀ igwedge 0 0'])
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, 'β⊞')
+        ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_b, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Page_Down, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['β eta 0 1', # user freq for β increased to 1
+                          '⊞ oxplus 0 1', # user freq for ⊞ increased to 1
+                          '¯ ar 0 0',
+                          '⊥ ot 0 0',
+                          'ℶ eth 0 0',
+                          '⋂ igcap 0 0',
+                          '⋃ igcup 0 0',
+                          '⋁ igvee 0 0',
+                          '⋈ owtie 0 0',
+                          '⊡ oxdot 0 0',
+                          '• ullet 0 0',
+                          '∙ ullet 0 0',
+                          '≏ umpeq 0 0',
+                          '∽ acksim 0 0',
+                          '∵ ecause 0 0',
+                          '≬ etween 0 0',
+                          '⊼ arwedge 0 0',
+                          '⋀ igwedge 0 0'])
+        self.assertEqual(ENGINE._editor._lookup_table.get_cursor_pos(), 9)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.get_cursor_pos(), 15)
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, 'β⊞≬')

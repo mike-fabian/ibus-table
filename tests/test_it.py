@@ -429,3 +429,25 @@ class Cangjie5TestCase(unittest.TestCase):
         self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, ['機  1000 0'])
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '機')
+
+class Ipa_x_sampaTestCase(unittest.TestCase):
+    def setUp(self):
+        set_up('ipa-x-sampa')
+
+    def tearDown(self):
+        tear_down()
+
+    def test_dummy(self):
+        self.assertEqual(True, True)
+
+    def test_single_char_commit_with_space(self):
+        ENGINE.do_process_key_event(IBus.KEY_at, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, 'ə ')
+
+    def test_single_char_commit_with_f3(self):
+        ENGINE.do_process_key_event(IBus.KEY_at, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['ə  0 0', 'ɘ \\ 0 0', 'ɚ ` 0 0'])
+        ENGINE.do_process_key_event(IBus.KEY_F3, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, 'ɚ')

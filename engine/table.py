@@ -2032,6 +2032,25 @@ class tabengine (IBus.Engine):
         return self._full_width_punct
 
     def set_chinese_mode(self, mode=0, update_gsettings=True):
+        '''Sets the candidate filter mode used for Chinese
+
+        0 means to show simplified Chinese only
+        1 means to show traditional Chinese only
+        2 means to show all characters but show simplified Chinese first
+        3 means to show all characters but show traditional Chinese first
+        4 means to show all characters
+
+        :param mode: The Chinese filter mode
+        :type mode: integer >= 0 and <= 4
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the dconf key changed
+                                 to avoid endless loops when the dconf
+                                 key is changed twice in a short time.
+        :type update_gsettings: boolean
+        '''
+        if debug_level > 1:
+            sys.stderr.write('set_chinese_mode(%s)\n' %mode)
         if mode == self._editor._chinese_mode:
             return
         self._editor._chinese_mode = mode
@@ -2047,6 +2066,10 @@ class tabengine (IBus.Engine):
         return self._editor._chinese_mode
 
     def _init_or_update_property_menu(self, menu, current_mode=0):
+        if debug_level > 1:
+            sys.stderr.write(
+                "_init_or_update_property_menu() menu=%s current_mode=%s\n"
+                %(repr(menu), current_mode))
         key = menu['key']
         if key in self._prop_dict:
             update_prop = True

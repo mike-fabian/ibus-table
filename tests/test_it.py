@@ -354,6 +354,83 @@ class Wubi_Jidian86TestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '工了你好以在工了你好以在')
 
+    def test_chinese_mode(self):
+        ENGINE.set_chinese_mode(mode=0) # show simplified Chinese only
+        ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['以  418261033 0',
+                          '能 ex 1820000000 0',
+                          '能 exx 1820000000 0',
+                          '对 fy 1200000000 0',
+                          '又 cc 729000000 0',
+                          '又 ccc 729000000 0',
+                          '通 ep 521000000 0',
+                          '通 epk 521000000 0',
+                          '台 kf 486000000 0',
+                          '难忘 wyn 404000000 0'])
+        ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+        ENGINE.set_chinese_mode(mode=1) # show traditional Chinese only
+        ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['以  418261033 0',
+                          '能 ex 1820000000 0',
+                          '能 exx 1820000000 0',
+                          '又 cc 729000000 0',
+                          '又 ccc 729000000 0',
+                          '通 ep 521000000 0',
+                          '通 epk 521000000 0',
+                          '台 kf 486000000 0',
+                          '能 e 306980312 0',
+                          '能力 elt 274000000 0'])
+        ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+        ENGINE.set_chinese_mode(mode=2) # show simplified Chinese first
+        ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['以  418261033 0',
+                          '能 ex 1820000000 0',
+                          '能 exx 1820000000 0',
+                          '对 fy 1200000000 0',
+                          '又 cc 729000000 0',
+                          '又 ccc 729000000 0',
+                          '通 ep 521000000 0',
+                          '通 epk 521000000 0',
+                          '台 kf 486000000 0',
+                          '难忘 wyn 404000000 0'])
+        ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+        ENGINE.set_chinese_mode(mode=3) # show traditional Chinese first
+        ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['以  418261033 0',
+                          '能 ex 1820000000 0',
+                          '能 exx 1820000000 0',
+                          '又 cc 729000000 0',
+                          '又 ccc 729000000 0',
+                          '通 ep 521000000 0',
+                          '通 epk 521000000 0',
+                          '台 kf 486000000 0',
+                          '能 e 306980312 0',
+                          '能力 elt 274000000 0'])
+        ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+        ENGINE.set_chinese_mode(mode=4) # show all characters
+        ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['以  418261033 0',
+                          '能 ex 1820000000 0',
+                          '能 exx 1820000000 0',
+                          '对 fy 1200000000 0',
+                          '又 cc 729000000 0',
+                          '又 ccc 729000000 0',
+                          '通 ep 521000000 0',
+                          '通 epk 521000000 0',
+                          '台 kf 486000000 0',
+                          '难忘 wyn 404000000 0'])
+        ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+
 class Stroke5TestCase(unittest.TestCase):
     def setUp(self):
         set_up('stroke5')

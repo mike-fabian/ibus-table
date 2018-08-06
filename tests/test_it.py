@@ -257,7 +257,7 @@ class Wubi_Jidian86TestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '工')
 
-    def test_commit_to_preedit_and_switching_to_pinyin_and_defining_a_phrase(self):
+    def test_commit_to_preedit_switching_to_pinyin_defining_a_phrase(self):
         ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
         # commit to preëdit needs a press and release of either
         # the left or the right shift key:
@@ -324,7 +324,8 @@ class Wubi_Jidian86TestCase(unittest.TestCase):
             IBus.KEY_Shift_L, 0,
             IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工了你好以在')
-        # Move right two characters in the preëdit (triggers a commit to preëdit):
+        # Move right two characters in the preëdit
+        # (triggers a commit to preëdit):
         ENGINE.do_process_key_event(IBus.KEY_Right, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Right, 0, 0)
         self.assertEqual(ENGINE.mock_auxiliary_text, 'd dhf dhfd\t#: abwd')
@@ -420,13 +421,15 @@ class Cangjie5TestCase(unittest.TestCase):
     def test_type_one_char_and_check_auxiliary(self):
         ENGINE.do_process_key_event(IBus.KEY_d, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '木')
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates[8], '林 木 1000 0')
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates[8],
+                         '林 木 1000 0')
         ENGINE.do_process_key_event(IBus.KEY_v, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_i, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '機')
         self.assertEqual(ENGINE.mock_auxiliary_text, '木女戈戈 (1 / 1)')
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, ['機  1000 0'])
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['機  1000 0'])
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '機')
 

@@ -50,8 +50,7 @@ def variant_to_value(variant):
         # it returned the tuple of (strv, length)
         if type(GLib.Variant.new_strv([]).dup_strv()) == tuple:
             return variant.dup_strv()[0]
-        else:
-            return variant.dup_strv()
+        return variant.dup_strv()
     else:
         print('error: unknown variant type: %s' %type_string)
     return variant

@@ -2,7 +2,7 @@
 #
 # ibus-table - The Tables engine for IBus
 #
-# Copyright (c) 2015 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2015-2018 Mike FABIAN <mfabian@redhat.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@ see: http://standards.freedesktop.org/basedir-spec/latest/index.html
 
 import os
 
-ibus_table_location = {
+IBUS_TABLE_LOCATION = {
     'data': '',
     'lib': '',
     'data_home': '',
@@ -37,59 +37,59 @@ ibus_table_location = {
 }
 
 def data():
-    return ibus_table_location['data']
+    return IBUS_TABLE_LOCATION['data']
 
 def lib():
-    return ibus_table_location['lib']
+    return IBUS_TABLE_LOCATION['lib']
 
 def data_home():
-    return ibus_table_location['data_home']
+    return IBUS_TABLE_LOCATION['data_home']
 
 def cache_home():
-    return ibus_table_location['cache_home']
+    return IBUS_TABLE_LOCATION['cache_home']
 
 def _init():
-    ibus_table_location['data'] = os.getenv('IBUS_TABLE_LOCATION')
-    if (not ibus_table_location['data']
-        or not os.path.exists(ibus_table_location['data'])):
-        ibus_table_location['data'] = "/usr/share/ibus-table/"
+    IBUS_TABLE_LOCATION['data'] = os.getenv('IBUS_TABLE_LOCATION')
+    if (not IBUS_TABLE_LOCATION['data']
+            or not os.path.exists(IBUS_TABLE_LOCATION['data'])):
+        IBUS_TABLE_LOCATION['data'] = "/usr/share/ibus-table/"
 
-    ibus_table_location['lib'] = os.getenv('IBUS_TABLE_LIB_LOCATION')
-    if (not ibus_table_location['lib']
-        or not os.path.exists(ibus_table_location['lib'])):
-        ibus_table_location['lib'] = "/usr/libexec"
+    IBUS_TABLE_LOCATION['lib'] = os.getenv('IBUS_TABLE_LIB_LOCATION')
+    if (not IBUS_TABLE_LOCATION['lib']
+            or not os.path.exists(IBUS_TABLE_LOCATION['lib'])):
+        IBUS_TABLE_LOCATION['lib'] = "/usr/libexec"
 
     # $XDG_DATA_HOME defines the base directory relative to which user
     # specific data files should be stored. If $XDG_DATA_HOME is either
     # not set or empty, a default equal to $HOME/.local/share should be
     # used.
-    ibus_table_location['data_home'] = os.getenv('IBUS_TABLE_DATA_HOME')
-    if (not ibus_table_location['data_home']
-        or not os.path.exists(ibus_table_location['data_home'])):
-        ibus_table_location['data_home'] = os.getenv('XDG_DATA_HOME')
-    if (not ibus_table_location['data_home']
-        or not os.path.exists(ibus_table_location['data_home'])):
-        ibus_table_location['data_home'] = os.path.expanduser('~/.local/share')
-    ibus_table_location['data_home'] = os.path.join(
-        ibus_table_location['data_home'], 'ibus-table')
-    if not os.access(ibus_table_location['data_home'], os.F_OK):
-        os.makedirs(ibus_table_location['data_home'])
+    IBUS_TABLE_LOCATION['data_home'] = os.getenv('IBUS_TABLE_DATA_HOME')
+    if (not IBUS_TABLE_LOCATION['data_home']
+            or not os.path.exists(IBUS_TABLE_LOCATION['data_home'])):
+        IBUS_TABLE_LOCATION['data_home'] = os.getenv('XDG_DATA_HOME')
+    if (not IBUS_TABLE_LOCATION['data_home']
+            or not os.path.exists(IBUS_TABLE_LOCATION['data_home'])):
+        IBUS_TABLE_LOCATION['data_home'] = os.path.expanduser('~/.local/share')
+    IBUS_TABLE_LOCATION['data_home'] = os.path.join(
+        IBUS_TABLE_LOCATION['data_home'], 'ibus-table')
+    if not os.access(IBUS_TABLE_LOCATION['data_home'], os.F_OK):
+        os.makedirs(IBUS_TABLE_LOCATION['data_home'])
 
     # $XDG_CACHE_HOME defines the base directory relative to which user
     # specific non-essential data files should be stored. If
     # $XDG_CACHE_HOME is either not set or empty, a default equal to
     # $HOME/.cache should be used.
-    ibus_table_location['cache_home'] = os.getenv('IBUS_TABLE_CACHE_HOME')
-    if (not ibus_table_location['cache_home']
-        or not os.path.exists(ibus_table_location['cache_home'])):
-        ibus_table_location['cache_home'] = os.getenv('XDG_CACHE_HOME')
-    if (not ibus_table_location['cache_home']
-        or not os.path.exists(ibus_table_location['cache_home'])):
-        ibus_table_location['cache_home'] = os.path.expanduser('~/.cache')
-    ibus_table_location['cache_home'] = os.path.join(
-        ibus_table_location['cache_home'], 'ibus-table')
-    if not os.access(ibus_table_location['cache_home'], os.F_OK):
-        os.makedirs(ibus_table_location['cache_home'])
+    IBUS_TABLE_LOCATION['cache_home'] = os.getenv('IBUS_TABLE_CACHE_HOME')
+    if (not IBUS_TABLE_LOCATION['cache_home']
+            or not os.path.exists(IBUS_TABLE_LOCATION['cache_home'])):
+        IBUS_TABLE_LOCATION['cache_home'] = os.getenv('XDG_CACHE_HOME')
+    if (not IBUS_TABLE_LOCATION['cache_home']
+            or not os.path.exists(IBUS_TABLE_LOCATION['cache_home'])):
+        IBUS_TABLE_LOCATION['cache_home'] = os.path.expanduser('~/.cache')
+    IBUS_TABLE_LOCATION['cache_home'] = os.path.join(
+        IBUS_TABLE_LOCATION['cache_home'], 'ibus-table')
+    if not os.access(IBUS_TABLE_LOCATION['cache_home'], os.F_OK):
+        os.makedirs(IBUS_TABLE_LOCATION['cache_home'])
 
 class __ModuleInitializer:
     def __init__(self):
@@ -100,4 +100,3 @@ class __ModuleInitializer:
         return
 
 __module_init = __ModuleInitializer()
-

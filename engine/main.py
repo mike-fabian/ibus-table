@@ -22,78 +22,82 @@
 #
 
 import os
+import re
 import sys
 import optparse
+from signal import signal, SIGTERM, SIGINT
 
 from gi import require_version
 require_version('IBus', '1.0')
 from gi.repository import IBus
 from gi.repository import GLib
-import re
-from signal import signal, SIGTERM, SIGINT
 
 import factory
 import tabsqlitedb
-
 import ibus_table_location
 
-db_dir = os.path.join (ibus_table_location.data(), 'tables')
-byo_db_dir = os.path.join(ibus_table_location.data_home(), "byo-tables")
-icon_dir = os.path.join (ibus_table_location.data(), 'icons')
-setup_cmd = os.path.join(ibus_table_location.lib(), "ibus-setup-table")
-logfile = os.path.join(ibus_table_location.cache_home(), 'debug.log')
+DB_DIR = os.path.join(ibus_table_location.data(), 'tables')
+BYO_DB_DIR = os.path.join(ibus_table_location.data_home(), "byo-tables")
+ICON_DIR = os.path.join(ibus_table_location.data(), 'icons')
+SETUP_CMD = os.path.join(ibus_table_location.lib(), "ibus-setup-table")
+LOGFILE = os.path.join(ibus_table_location.cache_home(), 'debug.log')
 
-opt = optparse.OptionParser()
+_OPTION_PARSER = optparse.OptionParser()
 
-opt.set_usage ('%prog --table a_table.db')
-opt.add_option(
+_OPTION_PARSER.set_usage('%prog --table a_table.db')
+_OPTION_PARSER.add_option(
     '--table', '-t',
-    action = 'store',
-    type = 'string',
-    dest = 'db',
-    default = '',
-    help = 'Set the IME table file, default: %default')
-opt.add_option(
+    action='store',
+    type='string',
+    dest='db',
+    default='',
+    help='Set the IME table file, default: %default')
+_OPTION_PARSER.add_option(
     '--daemon', '-d',
-    action = 'store_true',
-    dest = 'daemon',
+    action='store_true',
+    dest='daemon',
     default=False,
-    help = 'Run as daemon, default: %default')
-opt.add_option(
+    help='Run as daemon, default: %default')
+_OPTION_PARSER.add_option(
     '--ibus', '-i',
-    action = 'store_true',
-    dest = 'ibus',
-    default = False,
-    help = 'Set the IME icon file, default: %default')
-opt.add_option(
+    action='store_true',
+    dest='ibus',
+    default=False,
+    help='Set the IME icon file, default: %default')
+_OPTION_PARSER.add_option(
     '--xml', '-x',
-    action = 'store_true',
-    dest = 'xml',
-    default = False,
-    help = 'output the engines xml part, default: %default')
-opt.add_option(
+    action='store_true',
+    dest='xml',
+    default=False,
+    help='output the engines xml part, default: %default')
+_OPTION_PARSER.add_option(
     '--no-debug', '-n',
-    action = 'store_false', dest = 'debug',default = True,
-    help = 'redirect stdout and stderr to ' + logfile + ', default: %default')
-opt.add_option(
+    action='store_false',
+    dest='debug',
+    default=True,
+    help='redirect stdout and stderr to ' + LOGFILE + ', default: %default')
+_OPTION_PARSER.add_option(
     '--profile', '-p',
-    action = 'store_true', dest = 'profile', default = False,
-    help = ('print profiling information into the debug log. '
-            +'Works only together with --debug.'))
+    action='store_true',
+    dest='profile',
+    default=False,
+    help=('print profiling information into the debug log. '
+          + 'Works only together with --debug.'))
 
-(options, args) = opt.parse_args()
-#if not options.db:
-#    opt.error('no db found!')
+(_OPTIONS, _ARGS) = _OPTION_PARSER.parse_args()
+#if not _OPTIONS.db:
+#    _OPTION_PARSER.error('no db found!')
 
-if (not options.xml) and options.debug:
-    sys.stdout = open (logfile, mode='a', buffering=1)
-    sys.stderr = open (logfile, mode='a', buffering=1)
+if (not _OPTIONS.xml) and _OPTIONS.debug:
+    sys.stdout = open(LOGFILE, mode='a', buffering=1)
+    sys.stderr = open(LOGFILE, mode='a', buffering=1)
     from time import strftime
     print('--- %s ---' %strftime('%Y-%m-%d: %H:%M:%S'))
 
-if options.profile:
-    import cProfile, pstats
-    profile = cProfile.Profile()
+if _OPTIONS.profile:
+    import cProfile
+    import pstats
+    _PROFILE = cProfile.Profile()
 
 class IMApp:
     def __init__(self, dbfile, exec_by_ibus):
@@ -124,29 +128,29 @@ class IMApp:
             author = self.__factory.db.ime_properties.get("author")
             icon = self.__factory.db.ime_properties.get("icon")
             if icon:
-                icon = os.path.join (icon_dir, icon)
-                if not os.access( icon, os.F_OK):
+                icon = os.path.join(ICON_DIR, icon)
+                if not os.access(icon, os.F_OK):
                     icon = ''
             layout = self.__factory.db.ime_properties.get("layout")
             symbol = self.__factory.db.ime_properties.get("symbol")
-            setup_arg = "{} --engine-name {}".format(setup_cmd, name)
+            setup_arg = "{} --engine-name {}".format(SETUP_CMD, name)
             engine = IBus.EngineDesc(name=name,
-                                        longname=longname,
-                                        description=description,
-                                        language=language,
-                                        license=credit,
-                                        author=author,
-                                        icon=icon,
-                                        layout=layout,
-                                        symbol=symbol,
-                                        setupdsis=setup_arg)
-            self.__component.add_engines(engine)
+                                     longname=longname,
+                                     description=description,
+                                     language=language,
+                                     license=credit,
+                                     author=author,
+                                     icon=icon,
+                                     layout=layout,
+                                     symbol=symbol,
+                                     setupdsis=setup_arg)
+            self.__component.add_engine(engine)
             self.__bus.register_component(self.__component)
 
 
     def run(self):
-        if options.profile:
-            profile.enable()
+        if _OPTIONS.profile:
+            _PROFILE.enable()
         self.__mainloop.run()
         self.__bus_destroy_cb()
 
@@ -160,69 +164,69 @@ class IMApp:
         self.__factory.do_destroy()
         self.destroyed = True
         self.__mainloop.quit()
-        if options.profile:
-            profile.disable()
-            p = pstats.Stats(profile)
-            p.strip_dirs()
-            p.sort_stats('cumulative')
-            p.print_stats('main', 25)
-            p.print_stats('factory', 25)
-            p.print_stats('tabsqlite', 25)
-            p.print_stats('table', 25)
+        if _OPTIONS.profile:
+            _PROFILE.disable()
+            stats = pstats.Stats(_PROFILE)
+            stats.strip_dirs()
+            stats.sort_stats('cumulative')
+            stats.print_stats('main', 25)
+            stats.print_stats('factory', 25)
+            stats.print_stats('tabsqlite', 25)
+            stats.print_stats('table', 25)
 
-def cleanup (ima_ins):
+def cleanup(ima_ins):
     ima_ins.quit()
     sys.exit()
 
-def indent(elem, level=0):
+def indent(element, level=0):
     '''Use to format xml Element pretty :)'''
     i = "\n" + level*"    "
-    if len(elem):
-        if not elem.text or not elem.text.strip():
-            elem.text = i + "    "
-        for e in elem:
-            indent(e, level+1)
-            if not e.tail or not e.tail.strip():
-                e.tail = i + "    "
-        if not e.tail or not e.tail.strip():
-            e.tail = i
+    if element:
+        if not element.text or not element.text.strip():
+            element.text = i + "    "
+        for subelement in element:
+            indent(subelement, level+1)
+            if not subelement.tail or not subelement.tail.strip():
+                subelement.tail = i + "    "
+        if not subelement.tail or not subelement.tail.strip():
+            subelement.tail = i
     else:
-        if level and (not elem.tail or not elem.tail.strip()):
-            elem.tail = i
+        if level and (not element.tail or not element.tail.strip()):
+            element.tail = i
 
 def main():
-    if options.xml:
+    if _OPTIONS.xml:
         from locale import getdefaultlocale
         from xml.etree.ElementTree import Element, SubElement, tostring
         # we will output the engines xml and return.
-        # 1. we find all dbs in db_dir and extract the infos into
+        # 1. we find all dbs in DB_DIR and extract the infos into
         #    Elements
-        dbs = os.listdir(db_dir)
-        dbs = filter (lambda x: x.endswith('.db'), dbs)
+        dbs = os.listdir(DB_DIR)
+        dbs = filter(lambda x: x.endswith('.db'), dbs)
 
         _all_dbs = []
         for _db in dbs:
-            _all_dbs.append(os.path.join (db_dir, _db))
+            _all_dbs.append(os.path.join(DB_DIR, _db))
         try:
-            byo_dbs = os.listdir(byo_db_dir)
-            byo_dbs = filter (lambda x: x.endswith('.db'), byo_dbs)
+            byo_dbs = os.listdir(BYO_DB_DIR)
+            byo_dbs = filter(lambda x: x.endswith('.db'), byo_dbs)
             for _db in byo_dbs:
-                _all_dbs.append(os.path.join (byo_db_dir, _db))
+                _all_dbs.append(os.path.join(BYO_DB_DIR, _db))
         except OSError:
-            # byo_db_dir does not exist or is not accessible
+            # BYO_DB_DIR does not exist or is not accessible
             pass
 
         egs = Element('engines')
         for _db in _all_dbs:
-            _sq_db = tabsqlitedb.tabsqlitedb (_db, user_db=None)
-            _engine = SubElement (egs,'engine')
+            _sq_db = tabsqlitedb.TabSqliteDb(_db, user_db=None)
+            _engine = SubElement(egs, 'engine')
 
-            _name = SubElement (_engine, 'name')
-            engine_name = os.path.basename(_db).replace ('.db','')
+            _name = SubElement(_engine, 'name')
+            engine_name = os.path.basename(_db).replace('.db', '')
             _name.text = 'table:'+engine_name
-            setup_arg = "{} --engine-name {}".format(setup_cmd, _name.text)
+            setup_arg = "{} --engine-name {}".format(SETUP_CMD, _name.text)
 
-            _longname = SubElement (_engine, 'longname')
+            _longname = SubElement(_engine, 'longname')
             _longname.text = ''
             # getdefaultlocale() returns something like ('ja_JP', 'UTF-8').
             # In case of C/POSIX locale it returns (None, None)
@@ -241,70 +245,72 @@ def main():
             if not _longname.text:
                 _longname.text = engine_name
 
-            _language = SubElement (_engine, 'language')
+            _language = SubElement(_engine, 'language')
             _langs = _sq_db.ime_properties.get('languages')
             if _langs:
-                _langs = _langs.split (',')
-                if len (_langs) == 1:
+                _langs = _langs.split(',')
+                if len(_langs) == 1:
                     _language.text = _langs[0].strip()
                 else:
                     # we ignore the place
                     _language.text = _langs[0].strip().split('_')[0]
 
-            _license = SubElement (_engine, 'license')
+            _license = SubElement(_engine, 'license')
             _license.text = _sq_db.ime_properties.get('license')
 
-            _author = SubElement (_engine, 'author')
-            _author.text  = _sq_db.ime_properties.get('author')
+            _author = SubElement(_engine, 'author')
+            _author.text = _sq_db.ime_properties.get('author')
 
-            _icon = SubElement (_engine, 'icon')
+            _icon = SubElement(_engine, 'icon')
             _icon_basename = _sq_db.ime_properties.get('icon')
             if _icon_basename:
-                _icon.text = os.path.join (icon_dir, _icon_basename)
+                _icon.text = os.path.join(ICON_DIR, _icon_basename)
 
-            _layout = SubElement (_engine, 'layout')
+            _layout = SubElement(_engine, 'layout')
             _layout.text = _sq_db.ime_properties.get('layout')
 
-            _symbol = SubElement (_engine, 'symbol')
+            _symbol = SubElement(_engine, 'symbol')
             _symbol.text = _sq_db.ime_properties.get('symbol')
 
-            _desc = SubElement (_engine, 'description')
+            _desc = SubElement(_engine, 'description')
             _desc.text = _sq_db.ime_properties.get('description')
 
-            _setup = SubElement (_engine, 'setup')
+            _setup = SubElement(_engine, 'setup')
             _setup.text = setup_arg
 
-            _icon_prop_key = SubElement (_engine, 'icon_prop_key')
+            _icon_prop_key = SubElement(_engine, 'icon_prop_key')
             _icon_prop_key.text = 'InputMode'
 
         # now format the xmlout pretty
-        indent (egs)
-        egsout = tostring (egs, encoding='utf8').decode('utf-8')
-        patt = re.compile (r'<\?.*\?>\n')
-        egsout = patt.sub ('', egsout)
+        indent(egs)
+        egsout = tostring(egs, encoding='utf8').decode('utf-8')
+        patt = re.compile(r'<\?.*\?>\n')
+        egsout = patt.sub('', egsout)
         # Always write xml output in UTF-8 encoding, not in the
         # encoding of the current locale, otherwise it might fail
         # if conversion into the encoding of the current locale is
         # not possible:
         if sys.version_info >= (3, 0, 0):
-                sys.stdout.buffer.write((egsout+'\n').encode('utf-8'))
+            sys.stdout.buffer.write((egsout+'\n').encode('utf-8'))
         else:
-                sys.stdout.write((egsout+'\n').encode('utf-8'))
+            sys.stdout.write((egsout+'\n').encode('utf-8'))
         return 0
 
-    if options.daemon :
+    if _OPTIONS.daemon:
         if os.fork():
             sys.exit()
-    if options.db:
-        if os.access( options.db, os.F_OK):
-            db = options.db
+    if _OPTIONS.db:
+        if os.access(_OPTIONS.db, os.F_OK):
+            db = _OPTIONS.db
         else:
-            db = '%s%s%s' % (db_dir, os.path.sep, os.path.basename(options.db))
+            db = '%s%s%s' % (DB_DIR,
+                             os.path.sep,
+                             os.path.basename(_OPTIONS.db))
     else:
         db = ""
-    ima = IMApp(db, options.ibus)
-    signal (SIGTERM, lambda signum, stack_frame: cleanup(ima))
-    signal (SIGINT, lambda signum, stack_frame: cleanup(ima))
+    ima = IMApp(db, _OPTIONS.ibus)
+    signal(SIGTERM, lambda signum, stack_frame: cleanup(ima))
+    signal(SIGINT, lambda signum, stack_frame: cleanup(ima))
     try:
         ima.run()
     except KeyboardInterrupt:
@@ -312,4 +318,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -26,9 +26,7 @@ This file implements the test cases for the unit tests of ibus-table
 
 import sys
 import os
-import unicodedata
 import unittest
-import subprocess
 
 from gi import require_version
 require_version('IBus', '1.0')
@@ -37,8 +35,6 @@ from gi.repository import IBus
 sys.path.insert(0, "../engine")
 from table import *
 import tabsqlitedb
-import it_util
-#sys.path.pop(0)
 
 ENGINE = None
 TABSQLITEDB = None
@@ -127,7 +123,7 @@ def set_default_settings():
     ENGINE.set_input_mode(mode=1)
     chinese_mode = 4
     language_filter = TABSQLITEDB.ime_properties.get('language_filter')
-    if language_filter in ['cm0', 'cm1', 'cm2', 'cm3', 'cm4']:
+    if language_filter in ('cm0', 'cm1', 'cm2', 'cm3', 'cm4'):
         chinese_mode = int(language_filter[-1])
     ENGINE.set_chinese_mode(mode=chinese_mode)
 
@@ -161,7 +157,8 @@ def set_default_settings():
     select_keys_csv = TABSQLITEDB.ime_properties.get('select_keys')
     # select_keys_csv is something like: "1,2,3,4,5,6,7,8,9,0"
     if select_keys_csv:
-        ENGINE.set_page_size(len(select_keys_csv.split(",")))
+        page_size = len(select_keys_csv.split(","))
+    ENGINE.set_page_size(page_size)
 
     onechar = False
     ENGINE.set_onechar_mode(onechar)
@@ -229,20 +226,20 @@ def set_up(engine_name):
     bus = IBus.Bus()
     db_dir = '/usr/share/ibus-table/tables'
     db_file = os.path.join(db_dir, engine_name + '.db')
-    TABSQLITEDB = tabsqlitedb.tabsqlitedb(
+    TABSQLITEDB = tabsqlitedb.TabSqliteDb(
         filename=db_file, user_db=':memory:')
-    ENGINE = tabengine(
+    ENGINE = TabEngine(
         bus,
         '/com/redhat/IBus/engines/table/%s/engine/0' %engine_name,
         TABSQLITEDB,
-        unit_test = True)
+        unit_test=True)
     backup_original_settings()
     set_default_settings()
 
 def tear_down():
-        restore_original_settings()
+    restore_original_settings()
 
-class Wubi_Jidian86TestCase(unittest.TestCase):
+class WubiJidian86TestCase(unittest.TestCase):
     def setUp(self):
         set_up('wubi-jidian86')
 
@@ -510,7 +507,7 @@ class Cangjie5TestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '機')
 
-class Ipa_x_sampaTestCase(unittest.TestCase):
+class IpaXSampaTestCase(unittest.TestCase):
     def setUp(self):
         set_up('ipa-x-sampa')
 

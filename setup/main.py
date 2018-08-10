@@ -6,7 +6,7 @@
 # Copyright (c) 2010 BYVoid <byvoid1@gmail.com>
 # Copyright (c) 2012 Ma Xiaojun <damage3025@gmail.com>
 # Copyright (c) 2012 mozbugbox <mozbugbox@yahoo.com.au>
-# Copyright (c) 2014-2015 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2014-2018 Mike FABIAN <mfabian@redhat.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,6 +21,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+
+'''
+The setup tool for ibus-table.
+'''
 
 import gettext
 import locale
@@ -55,7 +59,7 @@ import tabsqlitedb
 import ibus_table_location
 import it_util
 
-_ = lambda a : gettext.dgettext("ibus-table", a)
+_ = lambda a: gettext.dgettext("ibus-table", a)
 
 # The contents this OPTION_DEFAULTS dict are first overwritten
 # with the defaults from the Gsettings schema file and then again with
@@ -89,37 +93,39 @@ ENTRY_WIDGETS = {
     "multiwildcardchar",
 }
 
-db_dir = os.path.join (ibus_table_location.data(), 'tables')
-icon_dir = os.path.join (ibus_table_location.data(), 'icons')
-setup_cmd = os.path.join(ibus_table_location.lib(), "ibus-setup-table")
-logfile = os.path.join(ibus_table_location.cache_home(), 'setup-debug.log')
+DB_DIR = os.path.join(ibus_table_location.data(), 'tables')
+ICON_DIR = os.path.join(ibus_table_location.data(), 'icons')
+LOGFILE = os.path.join(ibus_table_location.cache_home(), 'setup-debug.log')
 
-opt = optparse.OptionParser()
-opt.set_usage ('%prog [options]')
-opt.add_option(
+_OPTION_PARSER = optparse.OptionParser()
+_OPTION_PARSER.set_usage('%prog [options]')
+_OPTION_PARSER.add_option(
     '-n', '--engine-name',
-    action = 'store',
-    type = 'string',
-    dest = 'engine_name',
-    default = '',
-    help = ('Set the name of the engine, for example "table:cangjie3". '
-            + 'Default: "%default"'))
-opt.add_option(
+    action='store',
+    type='string',
+    dest='engine_name',
+    default='',
+    help=('Set the name of the engine, for example "table:cangjie3". '
+          + 'Default: "%default"'))
+_OPTION_PARSER.add_option(
     '-q', '--no-debug',
-    action = 'store_false',
-    dest = 'debug',
-    default = True,
-    help = ('redirect stdout and stderr to '
-            + logfile + ', default: %default'))
+    action='store_false',
+    dest='debug',
+    default=True,
+    help=('redirect stdout and stderr to '
+          + LOGFILE + ', default: %default'))
 
-(options, args) = opt.parse_args()
+(_OPTIONS, _ARGS) = _OPTION_PARSER.parse_args()
 
-if options.debug:
-    sys.stdout = open(logfile, mode='a', buffering=1)
-    sys.stderr = open(logfile, mode='a', buffering=1)
+if _OPTIONS.debug:
+    sys.stdout = open(LOGFILE, mode='a', buffering=1)
+    sys.stderr = open(LOGFILE, mode='a', buffering=1)
     print('--- %s ---' %strftime('%Y-%m-%d: %H:%M:%S'))
 
 class PreferencesDialog:
+    '''
+    The setup dialog of ibus-table.
+    '''
     def __init__(self):
         locale.setlocale(locale.LC_ALL, "")
         localedir = os.getenv("IBUS_LOCALEDIR")
@@ -128,9 +134,9 @@ class PreferencesDialog:
 
         self.__bus = IBus.Bus()
         self.__engine_name = None
-        if options.engine_name:
+        if _OPTIONS.engine_name:
             # If the engine name is specified on the command line, use that:
-            self.__engine_name = options.engine_name
+            self.__engine_name = _OPTIONS.engine_name
         else:
             # If the engine name is not specified on the command line,
             # try to get it from the environment. This is necessary
@@ -143,7 +149,7 @@ class PreferencesDialog:
                 self.__run_message_dialog(
                     _("IBUS_ENGINE_NAME environment variable is not set."),
                     Gtk.MessageType.WARNING)
-        if self.__engine_name == None:
+        if self.__engine_name is None:
             self.__run_message_dialog(
                 _("Cannot determine the engine name. Please use the --engine-name option."),
                 Gtk.MessageType.ERROR)
@@ -182,12 +188,12 @@ class PreferencesDialog:
         If there are default options in the database,
         they override the defaults from Gsettings.
         '''
-        self.tabsqlitedb = tabsqlitedb.tabsqlitedb(
-            filename = os.path.join(
-                db_dir,
+        self.tabsqlitedb = tabsqlitedb.TabSqliteDb(
+            filename=os.path.join(
+                DB_DIR,
                 re.sub(r'^table:', '', self.__engine_name)+'.db'),
-            user_db = None,
-            create_database = False)
+            user_db=None,
+            create_database=False)
         self.__is_chinese = False
         self.__is_cjk = False
         languages = self.tabsqlitedb.ime_properties.get('languages')
@@ -206,14 +212,15 @@ class PreferencesDialog:
             self.__user_can_define_phrase = (
                 user_can_define_phrase.lower() == u'true')
         self.__rules = self.tabsqlitedb.ime_properties.get('rules')
-        language_filter = self.tabsqlitedb.ime_properties.get('language_filter')
-        if language_filter in ['cm0', 'cm1', 'cm2', 'cm3', 'cm4']:
+        language_filter = self.tabsqlitedb.ime_properties.get(
+            'language_filter')
+        if language_filter in ('cm0', 'cm1', 'cm2', 'cm3', 'cm4'):
             OPTION_DEFAULTS['chinesemode'] = int(language_filter[-1])
         def_full_width_punct = self.tabsqlitedb.ime_properties.get(
             'def_full_width_punct')
         if (def_full_width_punct
-            and type(def_full_width_punct) == type(u'')
-            and def_full_width_punct.lower() in [u'true', u'false']):
+                and type(def_full_width_punct) == type(u'')
+                and def_full_width_punct.lower() in [u'true', u'false']):
             OPTION_DEFAULTS['tabdeffullwidthpunct'] = (
                 def_full_width_punct.lower() == u'true')
             OPTION_DEFAULTS['endeffullwidthpunct'] = (
@@ -221,8 +228,8 @@ class PreferencesDialog:
         def_full_width_letter = self.tabsqlitedb.ime_properties.get(
             'def_full_width_letter')
         if (def_full_width_letter
-            and type(def_full_width_letter) == type(u'')
-            and def_full_width_letter.lower() in [u'true', u'false']):
+                and type(def_full_width_letter) == type(u'')
+                and def_full_width_letter.lower() in [u'true', u'false']):
             OPTION_DEFAULTS['tabdeffullwidthletter'] = (
                 def_full_width_letter.lower() == u'true')
             OPTION_DEFAULTS['endeffullwidthletter'] = (
@@ -230,8 +237,8 @@ class PreferencesDialog:
         always_show_lookup = self.tabsqlitedb.ime_properties.get(
             'always_show_lookup')
         if (always_show_lookup
-            and type(always_show_lookup) == type(u'')
-            and always_show_lookup.lower() in [u'true', u'false']):
+                and type(always_show_lookup) == type(u'')
+                and always_show_lookup.lower() in [u'true', u'false']):
             OPTION_DEFAULTS['alwaysshowlookup'] = (
                 always_show_lookup.lower() == u'true')
         select_keys_csv = self.tabsqlitedb.ime_properties.get('select_keys')
@@ -241,13 +248,13 @@ class PreferencesDialog:
                 select_keys_csv.split(","))
         auto_select = self.tabsqlitedb.ime_properties.get('auto_select')
         if (auto_select
-            and type(auto_select) == type(u'')
-            and auto_select.lower() in [u'true', u'false']):
+                and type(auto_select) == type(u'')
+                and auto_select.lower() in [u'true', u'false']):
             OPTION_DEFAULTS['autoselect'] = auto_select.lower() == u'true'
         auto_commit = self.tabsqlitedb.ime_properties.get('auto_commit')
         if (auto_commit
-            and type(auto_commit) == type(u'')
-            and auto_commit.lower() in [u'true', u'false']):
+                and type(auto_commit) == type(u'')
+                and auto_commit.lower() in [u'true', u'false']):
             OPTION_DEFAULTS['autocommit'] = auto_commit.lower() == u'true'
         orientation = self.tabsqlitedb.get_orientation()
         OPTION_DEFAULTS['lookuptableorientation'] = orientation
@@ -273,25 +280,28 @@ class PreferencesDialog:
             OPTION_DEFAULTS['spacekeybehavior'] = False
         auto_wildcard = self.tabsqlitedb.ime_properties.get('auto_wildcard')
         if (auto_wildcard
-            and type(auto_wildcard) == type(u'')
-            and auto_wildcard.lower() in [u'true', u'false']):
+                and type(auto_wildcard) == type(u'')
+                and auto_wildcard.lower() in [u'true', u'false']):
             OPTION_DEFAULTS['autowildcard'] = auto_wildcard.lower() == u'true'
         single_wildcard_char = self.tabsqlitedb.ime_properties.get(
             'single_wildcard_char')
         if (single_wildcard_char
-            and type(single_wildcard_char) == type(u'')):
+                and type(single_wildcard_char) == type(u'')):
             if len(single_wildcard_char) > 1:
                 single_wildcard_char = single_wildcard_char[0]
             OPTION_DEFAULTS['singlewildcardchar'] = single_wildcard_char
         multi_wildcard_char = self.tabsqlitedb.ime_properties.get(
             'multi_wildcard_char')
         if (multi_wildcard_char
-            and type(multi_wildcard_char) == type(u'')):
+                and type(multi_wildcard_char) == type(u'')):
             if len(multi_wildcard_char) > 1:
                 multi_wildcard_char = multi_wildcard_char[0]
             OPTION_DEFAULTS['multiwildcardchar'] = multi_wildcard_char
 
     def __restore_defaults(self):
+        '''
+        Restore defaults as specified in the database for this engine.
+        '''
         for key in OPTION_DEFAULTS:
             value = OPTION_DEFAULTS[key]
             self.__set_value(key, value)
@@ -315,6 +325,9 @@ class PreferencesDialog:
                 self._build_combobox_renderer(key)
 
     def do_init(self):
+        '''
+        Initialize the setup dialog.
+        '''
         self.__init_general()
         self.__init_about()
 
@@ -338,7 +351,8 @@ class PreferencesDialog:
                 self.__user_values[key] = it_util.variant_to_value(
                     self.__gsettings.get_user_value(key))
                 sys.stderr.write(
-                    'self.__user_values[%s]=%s\n' %(key, self.__user_values[key]))
+                    'self.__user_values[%s]=%s\n'
+                    %(key, self.__user_values[key]))
             if key in SCALE_WIDGETS:
                 self._init_hscale(key)
             elif key in ENTRY_WIDGETS:
@@ -349,37 +363,37 @@ class PreferencesDialog:
         return
 
     def __init_about(self):
-        """Initialize the About notebook page"""
-        # page About
+        '''
+        Initialize the About notebook page
+        '''
         self.__name_version = self.__builder.get_object("NameVersion")
         self.__name_version.set_markup(
-                "<big><b>IBus Table %s</b></big>" %version.get_version())
+            "<big><b>IBus Table %s</b></big>" %version.get_version())
 
-        img_fname = os.path.join(icon_dir, "ibus-table.svg")
+        img_fname = os.path.join(ICON_DIR, "ibus-table.svg")
         if os.path.exists(img_fname):
             img = self.__builder.get_object("image_about")
             img.set_from_file(img_fname)
 
         # setup table info
-        engines = self.__bus.list_engines()
-        engine = None
-        for e in engines:
-            if e.get_name() == self.__engine_name:
-                engine = e
+        our_engine = None
+        for engine in self.__bus.list_engines():
+            if engine.get_name() == self.__engine_name:
+                our_engine = engine
                 break
-        if engine:
-            longname = engine.get_longname()
+        if our_engine:
+            longname = our_engine.get_longname()
             if not longname:
-                longname = engine.get_name()
-            w = self.__builder.get_object("TableNameVersion")
-            w.set_markup("<b>%s</b>" %longname)
-            icon_path = engine.get_icon()
+                longname = our_engine.get_name()
+            label = self.__builder.get_object("TableNameVersion")
+            label.set_markup("<b>%s</b>" %longname)
+            icon_path = our_engine.get_icon()
             if icon_path and os.path.exists(icon_path):
                 from gi.repository import GdkPixbuf
-                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(icon_path,
-                        -1, 32)
-                w = self.__builder.get_object("TableNameImage")
-                w.set_from_pixbuf(pixbuf)
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(
+                    icon_path, -1, 32)
+                image = self.__builder.get_object("TableNameImage")
+                image.set_from_pixbuf(pixbuf)
 
     def _init_combobox(self, key):
         """Set combobox from the Gsettings"""
@@ -403,18 +417,18 @@ class PreferencesDialog:
         __combobox.connect("changed", self.__changed_cb, key)
         if ((key in ['chinesemode']
              and not self.__is_chinese)
-            or
-            (key in ['tabdeffullwidthletter',
-                      'tabdeffullwidthpunct',
-                      'endeffullwidthletter',
-                      'endeffullwidthpunct']
-             and not self.__is_cjk)
-            or
-            (key in ['onechar']
-             and not  self.__is_cjk)
-            or
-            (key in ['autocommit']
-             and (not self.__user_can_define_phrase or not self.__rules))):
+                or
+                (key in ['tabdeffullwidthletter',
+                         'tabdeffullwidthpunct',
+                         'endeffullwidthletter',
+                         'endeffullwidthpunct']
+                 and not self.__is_cjk)
+                or
+                (key in ['onechar']
+                 and not  self.__is_cjk)
+                or
+                (key in ['autocommit']
+                 and (not self.__user_can_define_phrase or not self.__rules))):
             __combobox.set_button_sensitivity(Gtk.SensitivityType.OFF)
 
     def _init_entry(self, key):
@@ -471,7 +485,7 @@ class PreferencesDialog:
             val = val.decode('UTF-8')
         self.__set_value(key, val)
 
-    def on_gsettings_value_changed(self, settings, key):
+    def on_gsettings_value_changed(self, _settings, key):
         """
         Called when a value in the settings has been changed.
         """
@@ -481,7 +495,7 @@ class PreferencesDialog:
             __hscale = self.__builder.get_object("hscale%s" % key)
             __hscale.set_value(value)
         elif key in ENTRY_WIDGETS:
-            __entry =  self.__builder.get_object("entry%s" % key)
+            __entry = self.__builder.get_object("entry%s" % key)
             __entry.set_text(value)
         else:
             __combobox = self.__builder.get_object("combobox%s" % key)
@@ -498,7 +512,7 @@ class PreferencesDialog:
 
     def __toggled_cb(self, widget, key):
         """toggle button toggled signal handler"""
-        self.__set_value(key, widget.get_active ())
+        self.__set_value(key, widget.get_active())
 
     def __set_value(self, key, val):
         """Set the _gsettings value"""
@@ -517,6 +531,9 @@ class PreferencesDialog:
         self.__gsettings.set_value(key, var)
 
     def __run_message_dialog(self, message, message_type=Gtk.MessageType.INFO):
+        '''
+        Pop up a message dialog.
+        '''
         dlg = Gtk.MessageDialog(parent=None,
                                 flags=Gtk.DialogFlags.MODAL,
                                 message_type=message_type,
@@ -526,6 +543,9 @@ class PreferencesDialog:
         dlg.destroy()
 
     def run(self):
+        '''
+        Run the setup dialog.
+        '''
         ret = self.check_table_available()
         if not ret:
             return 0
@@ -537,6 +557,9 @@ class PreferencesDialog:
 
 
 def main():
+    '''
+    Main function to run  the setup dialog.
+    '''
     PreferencesDialog().run()
 
 if __name__ == "__main__":

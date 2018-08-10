@@ -20,10 +20,10 @@
 
 import sys
 if sys.version_info < (3, 0, 0):
-    reload (sys)
+    reload(sys)
     sys.setdefaultencoding('utf-8')
 
-variants_table = {
+VARIANTS_TABLE = {
     # Meaning of the bits in the values:
     # 1 = 1 << 0       simplified Chinese
     # 2 = 1 << 1       traditional Chinese
@@ -6103,16 +6103,16 @@ def detect_chinese_category(phrase):
     # make sure that we got a unicode string
     if type(phrase) != type(u''):
         phrase = phrase.decode('utf8')
-    if phrase in variants_table:
-        # the complete phrase is in variants_table, just return the
+    if phrase in VARIANTS_TABLE:
+        # the complete phrase is in VARIANTS_TABLE, just return the
         # value found:
-        return variants_table[phrase]
+        return VARIANTS_TABLE[phrase]
     category = 0xFF
-    for c in phrase:
-        if c in variants_table:
-            category &= variants_table[c]
+    for char in phrase:
+        if char in VARIANTS_TABLE:
+            category &= VARIANTS_TABLE[char]
         else:
-            # If it is not listed in variants_table, assume it is
+            # If it is not listed in VARIANTS_TABLE, assume it is
             # both simplified and traditional Chinese.
             # It could be something non-Chinese as well then, but
             # if it is non-Chinese, it should also be allowed to

@@ -3,7 +3,7 @@
 
 # generate-chinese-variants
 #
-# Copyright (c) 2013 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2013-2018 Mike FABIAN <mfabian@redhat.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@ import re
 import logging
 import sys
 if sys.version_info < (3, 0, 0):
-    reload (sys)
+    reload(sys)
     sys.setdefaultencoding('utf-8')
 
 # Unihan_Variants.txt contains the following 2 lines:
@@ -45,16 +45,16 @@ if sys.version_info < (3, 0, 0):
 # U+50DE  kSimplifiedVariant      U+4F2A
 #
 # is read first and thus the character is already inserted in the
-# “variants_table_orig” dictionary as traditional Chinese, which is correct.
+# “VARIANTS_TABLE_ORIG” dictionary as traditional Chinese, which is correct.
 # If a character is already in the dictionary and more lines for the
 # same character are read from Unihan_Variants.txt, these extra lines
 # are ignored.
 #
 # But maybe for some corner cases more tweaking of the code is
 # necessary. One can also add overrides manually to the
-# initial content of “variants_table_orig”.
+# initial content of “VARIANTS_TABLE_ORIG”.
 
-variants_table_orig = {
+VARIANTS_TABLE_ORIG = {
     # Meaning of the bits in the values:
     # 1 = 1 << 0       simplified Chinese
     # 2 = 1 << 1       traditional Chinese
@@ -68,9 +68,12 @@ variants_table_orig = {
     }
 
 # keep the lines from Unihan_Variants.txt which were used for debugging
-variants_table_orig_unihan_variants_entry_used = {}
+VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED = {}
 
 def read_unihan_variants(unihan_variants_file):
+    '''
+    Read the Unihan_Variants.txt file downloaded  from Unicode.org.
+    '''
     for line in unihan_variants_file:
         line = line.strip()
         if not re.match('^#', line):
@@ -92,13 +95,13 @@ def read_unihan_variants(unihan_variants_file):
                     elif re.search('kSimplifiedVariant', line):
                         category = 1 << 1 # traditional only
                     logging.debug(
-                        "char=%(char)s category=%(category)d line=%(line)s"
-                        %{'char': char, 'category': category, 'line':  line})
-                    if not char in variants_table_orig:
-                        variants_table_orig[char] = category
+                        'char=%s category=%d line=%s',
+                        char, category, line)
+                    if not char in VARIANTS_TABLE_ORIG:
+                        VARIANTS_TABLE_ORIG[char] = category
                     if (not char
-                        in variants_table_orig_unihan_variants_entry_used):
-                        variants_table_orig_unihan_variants_entry_used[
+                            in VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED):
+                        VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED[
                             char] = line
 
 def detect_chinese_category_old(phrase):
@@ -153,11 +156,14 @@ def detect_chinese_category_old(phrase):
                 # not in gbk
                 pass
     # then set for 3rd bit, if not in SC and TC
-    if not ( category & (1 | 1 << 1) ):
+    if not category & (1 | 1 << 1):
         category |= (1 << 2)
     return category
 
 def write_variants_script(script_file):
+    '''
+    Write the generated Python script.
+    '''
     script_file.write('''#!/usr/bin/python
 # vim:fileencoding=utf-8:sw=4:et
 
@@ -182,12 +188,12 @@ def write_variants_script(script_file):
     script_file.write('''
 import sys
 if sys.version_info < (3, 0, 0):
-    reload (sys)
+    reload(sys)
     sys.setdefaultencoding('utf-8')
 ''')
 
     script_file.write('''
-variants_table = {
+VARIANTS_TABLE = {
     # Meaning of the bits in the values:
     # 1 = 1 << 0       simplified Chinese
     # 2 = 1 << 1       traditional Chinese
@@ -195,12 +201,12 @@ variants_table = {
     # 4 = 1 << 2       mixture of simplified and traditional Chinese
 ''')
 
-    for phrase in sorted(variants_table_orig):
+    for phrase in sorted(VARIANTS_TABLE_ORIG):
         if type(phrase) != type(u''):
             phrase = phrase.decode('utf-8')
         script_file.write(
             "    u'" + phrase + "': "
-            + "%s" %variants_table_orig[phrase] + ",\n")
+            + "%s" %VARIANTS_TABLE_ORIG[phrase] + ",\n")
 
     script_file.write('''    }
 ''')
@@ -222,16 +228,16 @@ def detect_chinese_category(phrase):
     # make sure that we got a unicode string
     if type(phrase) != type(u''):
         phrase = phrase.decode('utf8')
-    if phrase in variants_table:
-        # the complete phrase is in variants_table, just return the
+    if phrase in VARIANTS_TABLE:
+        # the complete phrase is in VARIANTS_TABLE, just return the
         # value found:
-        return variants_table[phrase]
+        return VARIANTS_TABLE[phrase]
     category = 0xFF
-    for c in phrase:
-        if c in variants_table:
-            category &= variants_table[c]
+    for char in phrase:
+        if char in VARIANTS_TABLE:
+            category &= VARIANTS_TABLE[char]
         else:
-            # If it is not listed in variants_table, assume it is
+            # If it is not listed in VARIANTS_TABLE, assume it is
             # both simplified and traditional Chinese.
             # It could be something non-Chinese as well then, but
             # if it is non-Chinese, it should also be allowed to
@@ -257,7 +263,7 @@ def detect_chinese_category(phrase):
     return category
 ''')
 
-test_data = {
+TEST_DATA = {
     # Meaning of the bits in the values:
     # 1 = 1 << 0       simplified Chinese
     # 2 = 1 << 1       traditional Chinese
@@ -284,21 +290,24 @@ test_data = {
     }
 
 def test_detection(generated_script):
+    '''
+    Test whether the generated script does the detection correctly.
+    '''
     logging.info('Testing detection ...')
-    for phrase in test_data:
+    for phrase in TEST_DATA:
         if (generated_script.detect_chinese_category(phrase)
-            != test_data[phrase]):
+                != TEST_DATA[phrase]):
             print('phrase', phrase, repr(phrase),
                   'detected as',
                   generated_script.detect_chinese_category(phrase),
-                  'should have been', test_data[phrase],
+                  'should have been', TEST_DATA[phrase],
                   'Test failed. exiting...')
-            exit (1)
+            exit(1)
         else:
-            logging.info('phrase=%(p)s %(repr)s detected as %(det)d OK.'
-                         %{'p': phrase,
-                           'repr': repr(phrase),
-                           'det': test_data[phrase]})
+            logging.info('phrase=%s %s detected as %d OK.',
+                         phrase,
+                         repr(phrase),
+                         TEST_DATA[phrase])
     logging.info('All tests passed.')
 
 def compare_old_new_detection(phrase, generated_script):
@@ -309,18 +318,19 @@ def compare_old_new_detection(phrase, generated_script):
     old and the new function.
     '''
     if (detect_chinese_category_old(phrase)
-        != generated_script.detect_chinese_category(phrase)):
+            != generated_script.detect_chinese_category(phrase)):
         logging.debug(
-            '%(p)s %(rp)s old=%(o)d new=%(n)d'
-            %{'p': phrase.encode('utf-8'),
-              'rp': repr(phrase),
-              'o': detect_chinese_category_old(phrase),
-              'n': generated_script.detect_chinese_category(phrase)})
-        if phrase in variants_table_orig_unihan_variants_entry_used:
+            '%s %s old=%d new=%d',
+            phrase.encode('utf-8'),
+            repr(phrase),
+            detect_chinese_category_old(phrase),
+            generated_script.detect_chinese_category(phrase))
+        if phrase in VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED:
             logging.debug(
-                variants_table_orig_unihan_variants_entry_used[phrase])
+                VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED[phrase])
 
 def parse_args():
+    '''Parse the command line arguments'''
     import argparse
     parser = argparse.ArgumentParser(
         description=(
@@ -343,16 +353,17 @@ def parse_args():
     return parser.parse_args()
 
 def main():
+    '''Main program'''
     args = parse_args()
     log_level = logging.INFO
     if args.debug:
         log_level = logging.DEBUG
     logging.basicConfig(format="%(levelname)s: %(message)s", level=log_level)
     with open(args.inputfilename, 'r') as inputfile:
-        logging.info("input file=%s" %inputfile)
+        logging.info("input file=%s", inputfile)
         read_unihan_variants(inputfile)
     with open(args.outputfilename, 'w') as outputfile:
-        logging.info("output file=%s" %outputfile)
+        logging.info("output file=%s", outputfile)
         write_variants_script(outputfile)
 
     import imp
@@ -360,10 +371,8 @@ def main():
 
     test_detection(generated_script)
 
-    for phrase in generated_script.variants_table:
+    for phrase in generated_script.VARIANTS_TABLE:
         compare_old_new_detection(phrase, generated_script)
 
 if __name__ == '__main__':
     main()
-
-

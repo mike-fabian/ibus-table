@@ -25,15 +25,15 @@
 
 import os
 import sys
-sys.path.append( os.path.dirname(os.path.abspath(__file__)) )
-import tabsqlitedb
 import bz2
 import re
-
 from optparse import OptionParser
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import tabsqlitedb
 
-_invalid_keyname_chars = " \t\r\n\"$&<>,+=#!()'|{}[]?~`;%\\"
-def gconf_valid_keyname(kn):
+_INVALID_KEYNAME_CHARS = " \t\r\n\"$&<>,+=#!()'|{}[]?~`;%\\"
+
+def gconf_valid_keyname(keyname):
     """
     Keynames must be ascii, and must not contain any invalid characters
 
@@ -49,131 +49,132 @@ def gconf_valid_keyname(kn):
     >>> gconf_valid_keyname('nyan\tnyan')
     False
     """
-    return not any(c in _invalid_keyname_chars or ord(c) > 127 for c in kn)
+    return not any(char in _INVALID_KEYNAME_CHARS or ord(char) > 127
+                   for char in keyname)
 
 class InvalidTableName(Exception):
     """
     Raised when an invalid table name is given
     """
     def __init__(self, name):
+        super(InvalidTableName, self).__init__()
         self.table_name = name
 
     def __str__(self):
         return ('Value of NAME attribute (%s) ' % self.table_name
-                + 'cannot contain any of %r ' % _invalid_keyname_chars
+                + 'cannot contain any of %r ' % _INVALID_KEYNAME_CHARS
                 + 'and must be all ascii')
 
 # we use OptionParser to parse the cmd arguments :)
-usage = "usage: %prog [options]"
-opt_parser = OptionParser(usage=usage)
+_OPTION_PARSER = OptionParser(usage="usage: %prog [options]")
 
-opt_parser.add_option(
+_OPTION_PARSER.add_option(
     '-n', '--name',
-    action = 'store',
+    action='store',
     dest='name',
-    default = '',
-    help = (
+    default='',
+    help=(
         'specifies the file name for the binary database for the IME. '
         + 'The default is "%default". If the file name of the database '
         + 'is not specified, the file name of the source file before '
         + 'the first "." will be appended with ".db" and that will be '
         + 'used as the file name of the database.'))
 
-opt_parser.add_option(
+_OPTION_PARSER.add_option(
     '-s', '--source',
-    action = 'store',
+    action='store',
     dest='source',
-    default = '',
-    help = (
+    default='',
+    help=(
         'specifies the file which contains the source of the IME. '
         + 'The default is "%default".'))
 
-opt_parser.add_option(
+_OPTION_PARSER.add_option(
     '-e', '--extra',
-    action = 'store',
+    action='store',
     dest='extra',
-    default = '',
-    help = (
+    default='',
+    help=(
         'specifies the file name for the extra words for the IME. '
         + 'The default is "%default".'))
 
-opt_parser.add_option(
+_OPTION_PARSER.add_option(
     '-p', '--pinyin',
-    action = 'store',
+    action='store',
     dest='pinyin',
-    default = '/usr/share/ibus-table/data/pinyin_table.txt.bz2',
-    help = (
+    default='/usr/share/ibus-table/data/pinyin_table.txt.bz2',
+    help=(
         'specifies the source file for the  pinyin. '
         + 'The default is "%default".'))
 
-opt_parser.add_option(
+_OPTION_PARSER.add_option(
     '-o', '--no-create-index',
-    action = 'store_false',
+    action='store_false',
     dest='index',
-    default = True,
-    help = (
+    default=True,
+    help=(
         'Do not create an index for a database '
         + '(Only for distrubution purposes, '
         + 'a normal user should not use this flag!)'))
 
-opt_parser.add_option(
+_OPTION_PARSER.add_option(
     '-i', '--create-index-only',
-    action = 'store_true',
+    action='store_true',
     dest='only_index',
-    default = False,
-    help = (
+    default=False,
+    help=(
         'Only create an index for an existing database. '
         + 'Specifying the file name of the binary database '
         + 'with the -n or --name option is required '
         + 'when this option is used.'))
 
-opt_parser.add_option(
+_OPTION_PARSER.add_option(
     '-d', '--debug',
-    action = 'store_true',
+    action='store_true',
     dest='debug',
-    default = False,
-    help = 'Print extra debug messages.')
+    default=False,
+    help='Print extra debug messages.')
 
-opts, args = opt_parser.parse_args()
-if opts.only_index:
-    if not opts.name:
-        opt_parser.print_help()
+(_OPTIONS, _ARGS) = _OPTION_PARSER.parse_args()
+if _OPTIONS.only_index:
+    if not _OPTIONS.name:
+        _OPTION_PARSER.print_help()
         print(
             '\nPlease specify the file name of the database '
             + 'you want to create an index on!')
         sys.exit(2)
-    if not os.path.exists(opts.name) or not os.path.isfile(opts.name):
-        opt_parser.print_help()
-        print("\nThe database file '%s' does not exist." %opts.name)
+    if not os.path.exists(_OPTIONS.name) or not os.path.isfile(_OPTIONS.name):
+        _OPTION_PARSER.print_help()
+        print("\nThe database file '%s' does not exist." % _OPTIONS.name)
         sys.exit(2)
 
-if not opts.name and opts.source:
-    opts.name = os.path.basename(opts.source).split('.')[0] + '.db'
+if not _OPTIONS.name and _OPTIONS.source:
+    _OPTIONS.name = os.path.basename(_OPTIONS.source).split('.')[0] + '.db'
 
-if not opts.name:
-    opt_parser.print_help()
+if not _OPTIONS.name:
+    _OPTION_PARSER.print_help()
     print(
         '\nYou need to specify the file which '
         + 'contains the source of the IME!')
     sys.exit(2)
 
-def main ():
-    def debug_print ( message ):
-        if opts.debug:
+def main():
+    def debug_print(message):
+        if _OPTIONS.debug:
             print(message)
 
-    if not opts.only_index:
+    if not _OPTIONS.only_index:
         try:
-            os.unlink (opts.name)
+            os.unlink(_OPTIONS.name)
         except:
             pass
 
-    debug_print ("Processing Database")
-    db = tabsqlitedb.tabsqlitedb(filename = opts.name,
-                                 user_db = None,
-                                 create_database = True)
+    debug_print('Processing Database')
+    db = tabsqlitedb.TabSqliteDb(filename=_OPTIONS.name,
+                                 user_db=None,
+                                 create_database=True)
 
-    def parse_source (f):
+    def parse_source(f):
         _attri = []
         _table = []
         _gouci = []
@@ -183,14 +184,14 @@ def main ():
         patt_table = re.compile(r'([^\t]+)\t([^\t]+)\t([0-9]+)(\t.*)?$')
         patt_gouci = re.compile(r' *[^\s]+ *\t *[^\s]+ *$')
 
-        for l in f:
-            if (not patt_com.match(l)) and (not patt_blank.match(l)):
+        for line in f:
+            if (not patt_com.match(line)) and (not patt_blank.match(line)):
                 for _patt, _list in (
                         (patt_table, _table),
                         (patt_gouci, _gouci),
                         (patt_conf, _attri)):
-                    if _patt.match(l):
-                        _list.append(l)
+                    if _patt.match(line):
+                        _list.append(line)
                         break
 
         if not _gouci:
@@ -228,18 +229,18 @@ def main ():
 
         return (_attri, _table, _gouci)
 
-    def parse_pinyin (f):
+    def parse_pinyin(f):
         _pinyins = []
         patt_com = re.compile(r'^#.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_py = re.compile(r'(.*)\t(.*)\t(.*)')
         patt_yin = re.compile(r'[a-z]+[1-5]')
 
-        for l in f:
-            if type(l) != type(u''):
-                l = l.decode('utf-8')
-            if ( not patt_com.match(l) ) and ( not patt_blank.match(l) ):
-                res = patt_py.match(l)
+        for line in f:
+            if type(line) != type(u''):
+                line = line.decode('utf-8')
+            if (not patt_com.match(line)) and (not patt_blank.match(line)):
+                res = patt_py.match(line)
                 if res:
                     yins = patt_yin.findall(res.group(2))
                     for yin in yins:
@@ -247,62 +248,64 @@ def main ():
                                 % (res.group(1), yin, res.group(3)))
         return _pinyins[:]
 
-    def parse_extra (f):
+    def parse_extra(f):
         _extra = []
         patt_com = re.compile(r'^###.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_extra = re.compile(r'(.*)\t(.*)')
 
-        for l in f:
-            if ( not patt_com.match(l) ) and ( not patt_blank.match(l) ):
-                if patt_extra.match(l):
-                    _extra.append(l)
+        for line in f:
+            if type(line) != type(u''):
+                line = line.decode('utf-8')
+            if (not patt_com.match(line)) and (not patt_blank.match(line)):
+                if patt_extra.match(line):
+                    _extra.append(line)
 
         return _extra
 
-    def pinyin_parser (f):
-        for py in f:
-            if type(py) != type(u''):
-                py = py.decode('utf-8')
-            _zi, _pinyin, _freq = py.strip().split()
+    def pinyin_parser(f):
+        for pinyin_line in f:
+            if type(pinyin_line) != type(u''):
+                pinyin_line = pinyin_line.decode('utf-8')
+            _zi, _pinyin, _freq = pinyin_line.strip().split()
             yield (_pinyin, _zi, _freq)
 
-    def phrase_parser (f):
+    def phrase_parser(f):
         phrase_list = []
-        for l in f:
-            if type(l) != type(u''):
-                l = l.decode('utf-8')
-            xingma, phrase, freq = l.split('\t')[:3]
+        for line in f:
+            if type(line) != type(u''):
+                line = line.decode('utf-8')
+            xingma, phrase, freq = line.split('\t')[:3]
             if phrase == 'NOSYMBOL':
                 phrase = u''
             phrase_list.append((xingma, phrase, int(freq), 0))
         return phrase_list
 
-    def goucima_parser (f):
-        for l in f:
-            if type(l) != type(u''):
-                l = l.decode('utf-8')
-            zi, gcm = l.strip().split()
+    def goucima_parser(f):
+        for line in f:
+            if type(line) != type(u''):
+                line = line.decode('utf-8')
+            zi, gcm = line.strip().split()
             yield (zi, gcm)
 
-    def attribute_parser (f):
-        for l in f:
-            if type(l) != type(u''):
-                l = l.decode('utf-8')
+    def attribute_parser(f):
+        for line in f:
+            if type(line) != type(u''):
+                line = line.decode('utf-8')
             try:
-                attr, val = l.strip().split('=')
+                attr, val = line.strip().split('=')
             except:
-                attr, val = l.strip().split('==')
+                attr, val = line.strip().split('==')
             attr = attr.strip().lower()
             val = val.strip()
             yield (attr, val)
 
-    def extra_parser (f):
+    def extra_parser(f):
         extra_list = []
-        for l in f:
-            if type(l) != type(u''):
-                l = l.decode('utf-8')
-            phrase, freq = l.strip().split ()
+        for line in f:
+            if type(line) != type(u''):
+                line = line.decode('utf-8')
+            phrase, freq = line.strip().split()
             _tabkey = db.parse_phrase(phrase)
             if _tabkey:
                 extra_list.append((_tabkey, phrase, freq, 0))
@@ -321,129 +324,132 @@ def main ():
         '''
         char_prompts = {}
         start = False
-        for l in f:
-            if type(l) != type(u''):
-                l = l.decode('utf-8')
-            if re.match(r'^BEGIN_CHAR_PROMPTS_DEFINITION', l):
+        for line in f:
+            if type(line) != type(u''):
+                line = line.decode('utf-8')
+            if re.match(r'^BEGIN_CHAR_PROMPTS_DEFINITION', line):
                 start = True
                 continue
             if not start:
                 continue
-            if re.match(r'^END_CHAR_PROMPTS_DEFINITION', l):
+            if re.match(r'^END_CHAR_PROMPTS_DEFINITION', line):
                 break
-            match = re.search(r'^(?P<char>[^\s]+)[\s]+(?P<prompt>[^\s]+)', l)
+            match = re.search(
+                r'^(?P<char>[^\s]+)[\s]+(?P<prompt>[^\s]+)', line)
             if match:
                 char_prompts[match.group('char')] = match.group('prompt')
         return ("char_prompts", repr(char_prompts))
 
-    if opts.only_index:
-        debug_print ('Only create Indexes')
-        debug_print ( "Optimizing database " )
-        db.optimize_database ()
+    if _OPTIONS.only_index:
+        debug_print('Only create Indexes')
+        debug_print('Optimizing database ')
+        db.optimize_database()
 
-        debug_print ('Create Indexes ')
-        db.create_indexes ('main')
-        debug_print ('Done! :D')
+        debug_print('Create Indexes ')
+        db.create_indexes('main')
+        debug_print('Done! :D')
         return 0
 
     # now we parse the ime source file
-    debug_print ("\tLoad sources \"%s\"" % opts.source)
-    patt_s = re.compile( r'.*\.bz2' )
-    _bz2s = patt_s.match(opts.source)
+    debug_print('\tLoad sources "%s"' % _OPTIONS.source)
+    patt_s = re.compile(r'.*\.bz2')
+    _bz2s = patt_s.match(_OPTIONS.source)
     if _bz2s:
-        source = bz2.BZ2File(opts.source, "r").read()
+        source = bz2.BZ2File(_OPTIONS.source, "r").read()
     else:
-        source = open(opts.source, mode='r', encoding='UTF-8').read()
+        source = open(_OPTIONS.source, mode='r', encoding='UTF-8').read()
     source = source.replace('\r\n', '\n')
     source = source.split('\n')
     # first get config line and table line and goucima line respectively
-    debug_print ('\tParsing table source file ')
-    attri, table, gouci =  parse_source(source)
+    debug_print('\tParsing table source file ')
+    attri, table, gouci = parse_source(source)
 
     debug_print('\t  get attribute of IME :)')
     attributes = list(attribute_parser(attri))
     attributes.append(get_char_prompts(source))
     debug_print('\t  add attributes into DB ')
-    db.update_ime( attributes )
+    db.update_ime(attributes)
     db.create_tables('main')
 
     # second, we use generators for database generating:
-    debug_print ('\t  get phrases of IME :)')
-    phrases = phrase_parser ( table)
+    debug_print('\t  get phrases of IME :)')
+    phrases = phrase_parser(table)
 
     # now we add things into db
     debug_print('\t  add phrases into DB ')
     db.add_phrases(phrases)
 
     if db.ime_properties.get('user_can_define_phrase').lower() == u'true':
-        debug_print ('\t  get goucima of IME :)')
-        goucima = goucima_parser (gouci)
-        debug_print ('\t  add goucima into DB ')
-        db.add_goucima ( goucima )
+        debug_print('\t  get goucima of IME :)')
+        goucima = goucima_parser(gouci)
+        debug_print('\t  add goucima into DB ')
+        db.add_goucima(goucima)
 
     if db.ime_properties.get('pinyin_mode').lower() == u'true':
-        debug_print ('\tLoad pinyin source \"%s\"' % opts.pinyin)
-        _bz2p = patt_s.match(opts.pinyin)
+        debug_print('\tLoad pinyin source \"%s\"' % _OPTIONS.pinyin)
+        _bz2p = patt_s.match(_OPTIONS.pinyin)
         if _bz2p:
-            pinyin_s = bz2.BZ2File ( opts.pinyin, "r" )
+            pinyin_s = bz2.BZ2File(_OPTIONS.pinyin, "r")
         else:
-            pinyin_s = file ( opts.pinyin, 'r' )
-        debug_print ('\tParsing pinyin source file ')
-        pyline = parse_pinyin (pinyin_s)
-        debug_print ('\tPreapring pinyin entries')
-        pinyin = pinyin_parser (pyline)
-        debug_print ('\t  add pinyin into DB ')
-        db.add_pinyin ( pinyin )
+            pinyin_s = open(_OPTIONS.pinyin, 'r')
+        debug_print('\tParsing pinyin source file ')
+        pyline = parse_pinyin(pinyin_s)
+        debug_print('\tPreapring pinyin entries')
+        pinyin = pinyin_parser(pyline)
+        debug_print('\t  add pinyin into DB ')
+        db.add_pinyin(pinyin)
 
-    debug_print ("Optimizing database ")
-    db.optimize_database ()
+    debug_print('Optimizing database ')
+    db.optimize_database()
 
     if (db.ime_properties.get('user_can_define_phrase').lower() == u'true'
-        and opts.extra):
-        debug_print( '\tPreparing for adding extra words' )
-        db.create_indexes ('main')
-        debug_print ('\tLoad extra words source \"%s\"' % opts.extra)
-        _bz2p = patt_s.match(opts.extra)
+            and _OPTIONS.extra):
+        debug_print('\tPreparing for adding extra words')
+        db.create_indexes('main')
+        debug_print('\tLoad extra words source "%s"' % _OPTIONS.extra)
+        _bz2p = patt_s.match(_OPTIONS.extra)
         if _bz2p:
-            extra_s = bz2.BZ2File ( opts.extra, "r" )
+            extra_s = bz2.BZ2File(_OPTIONS.extra, 'r')
         else:
-            extra_s = file ( opts.extra, 'r' )
-        debug_print ('\tParsing extra words source file ')
-        extraline = parse_extra (extra_s)
-        debug_print ('\tPreparing extra words lines')
-        extrawds = extra_parser (extraline)
-        debug_print( '\t  we have %d extra phrases from source' % len(extrawds))
+            extra_s = open(_OPTIONS.extra, 'r')
+        debug_print('\tParsing extra words source file ')
+        extraline = parse_extra(extra_s)
+        debug_print('\tPreparing extra words lines')
+        extrawords = extra_parser(extraline)
+        debug_print('\t  we have %d extra phrases from source'
+                    % len(extrawords))
         # first get the entry of original phrases from
         # phrases-[(xingma, phrase, int(freq), 0)]
         orig_phrases = {}
-        for x in phrases:
-            orig_phrases.update({"%s\t%s" % (x[0], x[1]):x})
+        for phrase in phrases:
+            orig_phrases.update({"%s\t%s" % (phrase[0], phrase[1]): phrase})
         debug_print('\t  the len of orig_phrases is: %d' % len(orig_phrases))
         extra_phrases = {}
-        for x in extrawds:
-            extra_phrases.update({"%s\t%s" % (x[0], x[1]):x})
+        for extraword in extrawords:
+            extra_phrases.update(
+                {"%s\t%s" % (extraword[0], extraword[1]): extraword})
         debug_print('\t  the len of extra_phrases is: %d' % len(extra_phrases))
         # pop duplicated keys
-        for x in extra_phrases:
-            if x in orig_phrases:
-                extra_phrases.pop(x)
+        for phrase in extra_phrases:
+            if phrase in orig_phrases:
+                extra_phrases.pop(phrase)
         debug_print('\t  %d extra phrases will be added' % len(extra_phrases))
         new_phrases = list(extra_phrases.values())
         debug_print('\tAdding extra words into DB ')
-        db.add_phrases (new_phrases)
+        db.add_phrases(new_phrases)
         debug_print('Optimizing database ')
-        db.optimize_database ()
+        db.optimize_database()
 
-    if opts.index:
-        debug_print ('Create Indexes ')
-        db.create_indexes ('main')
+    if _OPTIONS.index:
+        debug_print('Create Indexes ')
+        db.create_indexes('main')
     else:
         debug_print(
             "We don't create an index on the database, "
             + "you should only activate this function "
             + "for distribution purposes.")
-        db.drop_indexes ('main')
-    debug_print ('Done! :D')
+        db.drop_indexes('main')
+    debug_print('Done! :D')
 
 if __name__ == "__main__":
-    main ()
+    main()

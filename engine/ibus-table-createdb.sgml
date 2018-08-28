@@ -103,6 +103,7 @@ manpage.1: manpage.sgml
       options is included below.</para>
 
     <variablelist>
+      <varlistentry>
         <term><option>-n</option>
           <option>--name</option>
 	  <option><replaceable>database-file</replaceable></option>
@@ -111,6 +112,7 @@ manpage.1: manpage.sgml
           <para><replaceable>database-file</replaceable> specifies the file name for the binary database for the IME. The default is ''. If the file name of the database is not specified, the file name of the source file before the first '.' will be appended with '.db' and that will be used as the file name of the database.</para>
         </listitem>
       </varlistentry>
+      <varlistentry>
         <term><option>-s</option>
           <option>--source</option>
 	  <option><replaceable>source-file</replaceable></option>

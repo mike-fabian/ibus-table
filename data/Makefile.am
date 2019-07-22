@@ -21,11 +21,12 @@
 # $Id: $
 #
 
-pytable_DATA = pinyin_table.txt.bz2
+pytable_DATA = pinyin_table.txt.bz2 phrase.txt.bz2
 pytabledir = $(pkgdatadir)/data
 
 EXTRA_DIST = \
 	pinyin_table.txt.bz2 \
+	phrase.txt.bz2 \
 	$(NULL)
 
 MAINTAINERCLEANFILES = \

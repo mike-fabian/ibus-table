@@ -6,6 +6,7 @@
 # Copyright (c) 2008-2009 Yu Yuwei <acevery@gmail.com>
 # Copyright (c) 2009-2014 Caius "kaio" CHANCE <me@kaio.net>
 # Copyright (c) 2012-2018 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2019      Peng Wu <alexepico@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -198,6 +199,7 @@ class TabSqliteDb:
             'def_full_width_letter':'false',
             'user_can_define_phrase':'false',
             'pinyin_mode':'false',
+            'suggestion_mode':'false',
             'dynamic_adjust':'false',
             'auto_select':'false',
             'auto_commit':'false',
@@ -254,6 +256,15 @@ class TabSqliteDb:
                 'Could not find "dynamic_adjust" entry from database, '
                 + 'is it an outdated database?')
             self.dynamic_adjust = False
+
+        self.suggestion_mode = self.ime_properties.get('suggestion_mode')
+        if self.suggestion_mode:
+            self.suggestion_mode = bool(self.suggestion_mode.lower() == u'true')
+        else:
+            print(
+                'Could not find "suggestion_mode" entry from database, '
+                + 'is it an outdated database?')
+            self.suggestion_mode = False
 
         self.rules = self.get_rules()
         self.possible_tabkeys_lengths = self.get_possible_tabkeys_lengths()
@@ -627,6 +638,10 @@ class TabSqliteDb:
             (pinyin TEXT, zi TEXT, freq INTEGER);
             ''' % database
             self.db.execute(sqlstr)
+            sqlstr = '''
+            CREATE TABLE IF NOT EXISTS %s.suggestion
+            (phrase TEXT, freq INTEGER);
+            ''' %database
 
         sqlstr = '''
         CREATE TABLE IF NOT EXISTS %s.phrases
@@ -891,6 +906,28 @@ class TabSqliteDb:
                 traceback.print_exc()
         self.db.commit()
 
+    def add_suggestion(self, suggestions, database='main'):
+        '''Add suggestion phrase to database, suggestions is a iterable object
+        Like: [(phrase, freq), (phrase, freq), ...]
+        '''
+        sqlstr = '''
+        INSERT INTO %s.suggestion (phrase, freq) VALUES (:phrase, :freq);
+        ''' % database
+        count = 0
+        for phrase, freq in suggestions:
+            count += 1
+        try:
+            self.db.execute(
+                sqlstr, {'phrase': phrase, 'freq': freq})
+        except Exception:
+            sys.stderr.write(
+                'Error when inserting into suggestion table. '
+                + 'count=%(c)s phrase=%(p)s freq=%(f)s\n'
+                % {'c': count, 'p': phrase, 'f': freq})
+            import traceback
+            traceback.print_exc()
+        self.db.commit()
+
     def optimize_database(self):
         '''
         Optimize the database by copying the contents
@@ -909,6 +946,10 @@ class TabSqliteDb:
             CREATE TABLE tmp AS SELECT * FROM main.pinyin;
             DELETE FROM main.pinyin;
             INSERT INTO main.pinyin SELECT * FROM tmp ORDER BY pinyin ASC, freq DESC;
+            DROP TABLE tmp;
+            CREATE TABLE tmp as SELECT * FROM main.suggestion;
+            DELETE FROM main.suggestion;
+            INSERT INTO main.suggestion SELECT * FROM tmp ORDER by phrase ASC, freq DESC;
             DROP TABLE tmp;
             '''
         self.db.executescript(sqlstr)
@@ -1121,8 +1162,8 @@ class TabSqliteDb:
             return []
         sqlstr = '''
         SELECT pinyin, zi, freq FROM main.pinyin WHERE pinyin LIKE :tabkeys
-        ORDER BY freq DESC, pinyin ASC
-        ;'''
+        ORDER BY freq DESC, pinyin ASC;
+        '''
         tabkeys_for_like = tabkeys
         if single_wildcard_char:
             tabkeys_for_like = tabkeys_for_like.replace(
@@ -1151,6 +1192,52 @@ class TabSqliteDb:
             typed_tabkeys=tabkeys,
             candidates=phrase_frequencies,
             chinese_mode=chinese_mode)
+
+    def select_suggestion_candidate(self, prefix=u''):
+        '''
+        Get Chinese phrase matching the prefix from the database.
+        '''
+        if not prefix:
+            return []
+        sqlstr = '''
+        SELECT phrase, freq FROM main.suggestion WHERE phrase LIKE :prefix
+        ORDER BY length(phrase) DESC, freq DESC, phrase ASC;
+        '''
+        prefix_for_like = prefix + '%%'
+        sqlargs = {'prefix': prefix_for_like}
+        results = self.db.execute(sqlstr, sqlargs).fetchall()
+        phrase_frequencies = {}
+        # merge the same phrase in suggestion candidates
+        for phrase, freq in results:
+            if phrase not in phrase_frequencies:
+                phrase_frequencies[phrase] = (phrase, freq)
+            else:
+                phrase_frequencies.update([(phrase,
+                                            (phrase, max(freq, phrase_frequencies[phrase][1])))])
+        candidates = phrase_frequencies.values()
+        if DEBUG_LEVEL > 1:
+            sys.stderr.write("select_suggestion_candidate() candidates=%s\n" %repr(candidates))
+                maximum_number_of_candidates = 100
+        engine_name = os.path.basename(self.filename).replace('.db', '')
+
+        if engine_name in [
+                'cangjie3', 'cangjie5', 'cangjie-big',
+                'quick-classic', 'quick3', 'quick5']:
+            code_point_function = self.big5_code
+        else:
+            code_point_function = lambda x: (1)
+
+        return sorted(candidates,
+                      key=lambda x: (
+                          - int (len(x[0])), # longest matches first!
+                          -1*x[1],   # freq descending
+                          code_point_function(x[1][0]),
+                          code_point_function(x[1][1]),
+                          # Unicode codepoint of first character of phrase:
+                          ord(x[1][0],
+                          # Unicode codepoint of second character of phrase:
+                          ord(x[1][1])
+                      ))[:maximum_number_of_candidates]
 
     def generate_userdb_desc(self):
         '''

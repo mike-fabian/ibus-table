@@ -7,6 +7,7 @@
 # Copyright (c) 2008-2009 Yu Yuwei <acevery@gmail.com>
 # Copyright (c) 2009-2014 Caius "kaio" CHANCE <me@kaio.net>
 # Copyright (c) 2012-2015 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2019      Peng Wu <alexepico@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -105,6 +106,15 @@ _OPTION_PARSER.add_option(
     default='/usr/share/ibus-table/data/pinyin_table.txt.bz2',
     help=(
         'specifies the source file for the  pinyin. '
+        + 'The default is "%default".'))
+
+_OPTION_PARSER.add_option(
+    '-g', '--suggestion',
+    action='store',
+    dest='suggestion',
+    default='/usr/share/ibus-table/data/phrase.txt.bz2',
+    help=(
+        'specifies the source file for the suggestion candidate. '
         + 'The default is "%default".'))
 
 _OPTION_PARSER.add_option(
@@ -248,6 +258,23 @@ def main():
                                 % (res.group(1), yin, res.group(3)))
         return _pinyins[:]
 
+    def parse_suggestion(f):
+        _suggestions = []
+        patt_com = re.compile(r'^#.*')
+        patt_blank = re.compile(r'^[ \t]*$')
+        patt_sg = re.compile(r'(.*)\s+(.*)')
+
+        for line in f:
+            if type(line) != type(u''):
+                line = line.decode('utf-8')
+            if (not patt_com.match(line)) and (not patt_blank.match(line)):
+                res = patt_sg.match(line)
+                if res:
+                    phrase = res.group(1)
+                    freq = res.group(2)
+                    _suggestions.append("%s %s" % (phrase, freq))
+        return _suggestions[:]
+
     def parse_extra(f):
         _extra = []
         patt_com = re.compile(r'^###.*')
@@ -269,6 +296,13 @@ def main():
                 pinyin_line = pinyin_line.decode('utf-8')
             _zi, _pinyin, _freq = pinyin_line.strip().split()
             yield (_pinyin, _zi, _freq)
+
+    def suggestion_parser(f):
+        for suggestion_line in f:
+            if type(suggestion_line) != type(u''):
+                suggestion_line = suggestion_line.decode('utf-8')
+            _phrase, _freq = suggestion_line.strip().split()
+            yield (_phrase, _freq)
 
     def phrase_parser(f):
         phrase_list = []
@@ -398,6 +432,20 @@ def main():
         pinyin = pinyin_parser(pyline)
         debug_print('\t  add pinyin into DB ')
         db.add_pinyin(pinyin)
+
+    if db.ime_properties.get('suggestion_mode').lower() == u'true':
+        debug_print('\tLoad suggestion source \"%s\"' % _OPTIONS.suggestion)
+        _bz2p = patt_s.match(_OPTIONS.suggestion)
+        if _bz2p:
+            pinyin_s = bz2.BZ2File(_OPTIONS.suggestion, "r")
+        else:
+            pinyin_s = open(_OPTIONS.suggestion, 'r')
+        debug_print('\tParsing suggestion source file ')
+        sgline = parse_suggestion(suggestion_s)
+        debug_print('\tPreapring suggestion entries')
+        suggestions = suggestion_parser(sgline)
+        debug_print('\t  add suggestion candidates into DB ')
+        db.add_suggestion(suggestion)
 
     debug_print('Optimizing database ')
     db.optimize_database()

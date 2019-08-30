@@ -6,6 +6,7 @@
 # Copyright (c) 2008-2009 Yu Yuwei <acevery@gmail.com>
 # Copyright (c) 2009-2014 Caius "kaio" CHANCE <me@kaio.net>
 # Copyright (c) 2012-2018 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2019      Peng Wu <alexepico@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -49,6 +50,10 @@ from gi.repository import GObject
 import it_util
 
 DEBUG_LEVEL = int(0)
+
+(TABLE_MODE,
+ PINYIN_MODE,
+ SUGGESTION_MODE) = range(3)
 
 def ascii_ispunct(character):
     '''
@@ -331,7 +336,7 @@ class Editor(object):
         # been entered.
         self._strings = []
         # self._cursor_precommit: The cursor
-        # position inthe array of strings which have already been
+        # position in the array of strings which have already been
         # committed to preëdit but not yet “really” committed.
         self._cursor_precommit = 0
 
@@ -356,8 +361,8 @@ class Editor(object):
             page_size=self._page_size,
             select_keys=self._select_keys,
             orientation=self._orientation)
-        # self._py_mode: whether in pinyin mode
-        self._py_mode = False
+        # self._input_mode: which input mode
+        self._input_mode = TABLE_MODE
         # self._onechar: whether we only select single character
         self._onechar = it_util.variant_to_value(self._gsettings.get_value(
             'onechar'))
@@ -368,7 +373,7 @@ class Editor(object):
         #   3 means to show all characters but show traditional Chinese first
         #   4 means to show all characters
         # we use LC_CTYPE or LANG to determine which one to use if
-        # no default comes from the user Gsettings.
+        # no default comes from the user GSettings.
         self._chinese_mode = it_util.variant_to_value(
             self._gsettings.get_user_value('chinesemode'))
         if self._chinese_mode != None and DEBUG_LEVEL > 1:
@@ -542,12 +547,12 @@ class Editor(object):
         Returns “True” if candidates were found, “False” if not.
         '''
         if (self._chars_invalid
-                or (not self._py_mode
+                or (self._input_mode != PINYIN_MODE
                     and (char not in
                          self._valid_input_chars
                          + self._single_wildcard_char
                          + self._multi_wildcard_char))
-                or (self._py_mode
+                or (self._input_mode == PINYIN_MODE
                     and (char not in
                          self._pinyin_valid_input_chars
                          + self._single_wildcard_char
@@ -808,16 +813,18 @@ class Editor(object):
         self._cursor_precommit = len(self._strings)
         self.update_candidates()
 
-    def append_candidate_to_lookup_table(
+    def append_table_candidate(
             self, tabkeys=u'', phrase=u'', freq=0, user_freq=0):
-        '''append candidate to lookup_table'''
+        '''append table candidate to lookup table'''
+        assert self._input_mode == TABLE_MODE
         if DEBUG_LEVEL > 1:
             sys.stderr.write(
-                "append_candidate() "
+                "append_table_candidate() "
                 + "tabkeys=%(t)s phrase=%(p)s freq=%(f)s user_freq=%(u)s\n"
                 % {'t': tabkeys, 'p': phrase, 'f': freq, 'u': user_freq})
         if not tabkeys or not phrase:
             return
+
         regexp = self._chars_valid
         if self._multi_wildcard_char:
             regexp = regexp.replace(
@@ -840,14 +847,98 @@ class Editor(object):
             remaining_tabkeys = tabkeys
         if DEBUG_LEVEL > 1:
             sys.stderr.write(
-                "append_candidate() "
+                "append_table_candidate() "
                 + "remaining_tabkeys=%(remaining_tabkeys)s "
                 % {'remaining_tabkeys': remaining_tabkeys}
                 + "self._chars_valid=%(chars_valid)s phrase=%(phrase)s\n"
                 % {'chars_valid': self._chars_valid,
                    'phrase': phrase})
         table_code = u''
-        if self.db._is_chinese and self._py_mode:
+
+        if self._input_mode != PINYIN_MODE:
+            remaining_tabkeys_new = u''
+            for char in remaining_tabkeys:
+                if char in self._prompt_characters:
+                    remaining_tabkeys_new += self._prompt_characters[char]
+                else:
+                    remaining_tabkeys_new += char
+            remaining_tabkeys = remaining_tabkeys_new
+        candidate_text = phrase + u' ' + remaining_tabkeys
+
+        if table_code:
+            candidate_text = candidate_text + u'   ' + table_code
+        attrs = IBus.AttrList()
+        attrs.append(IBus.attr_foreground_new(
+            rgb(0x19, 0x73, 0xa2), 0, len(candidate_text)))
+        if freq < 0:
+            # this is a user defined phrase:
+            attrs.append(
+                IBus.attr_foreground_new(
+                    rgb(0x77, 0x00, 0xc3), 0, len(phrase)))
+        elif user_freq > 0:
+            # this is a system phrase which has already been used by the user:
+            attrs.append(IBus.attr_foreground_new(
+                rgb(0x00, 0x00, 0x00), 0, len(phrase)))
+        else:
+            # this is a system phrase that has not been used yet:
+            attrs.append(IBus.attr_foreground_new(
+                rgb(0x00, 0x00, 0x00), 0, len(phrase)))
+
+        if DEBUG_LEVEL > 0:
+            debug_text = u' ' + str(freq) + u' ' + str(user_freq)
+            candidate_text += debug_text
+            attrs.append(IBus.attr_foreground_new(
+                rgb(0x00, 0xff, 0x00),
+                len(candidate_text) - len(debug_text),
+                len(candidate_text)))
+        text = IBus.Text.new_from_string(candidate_text)
+        i = 0
+        while attrs.get(i) != None:
+            attr = attrs.get(i)
+            text.append_attribute(attr.get_attr_type(),
+                                  attr.get_value(),
+                                  attr.get_start_index(),
+                                  attr.get_end_index())
+            i += 1
+        self._lookup_table.append_candidate(text)
+        self._lookup_table.set_cursor_visible(True)
+
+    def append_pinyin_candidate(
+            self, tabkeys=u'', phrase=u'', freq=0, user_freq=0):
+        '''append pinyin candidate to lookup table'''
+        assert self._input_mode == PINYIN_MODE
+        if DEBUG_LEVEL > 1:
+            sys.stderr.write(
+                "append_pinyin_candidate() "
+                + "tabkeys=%(t)s phrase=%(p)s freq=%(f)s user_freq=%(u)s\n"
+                % {'t': tabkeys, 'p': phrase, 'f': freq, 'u': user_freq})
+        if not tabkeys or not phrase:
+            return
+
+        regexp = self._chars_valid
+        regexp = re.escape(regexp)
+        match = re.match(r'^'+regexp, tabkeys)
+        if match:
+            remaining_tabkeys = tabkeys[match.end():]
+        else:
+             # This should never happen! For the candidates
+             # added to the lookup table here, a match has
+             # been found for self._chars_valid in the database.
+             # In that case, the above regular expression should
+             # match as well.
+            remaining_tabkeys = tabkeys
+        if DEBUG_LEVEL > 1:
+            sys.stderr.write(
+                "append_pinyin_candidate() "
+                + "remaining_tabkeys=%(remaining_tabkeys)s "
+                % {'remaining_tabkeys': remaining_tabkeys}
+                + "self._chars_valid=%(chars_valid)s phrase=%(phrase)s\n"
+                % {'chars_valid': self._chars_valid,
+                   'phrase': phrase})
+
+        table_code = u''
+
+        if self.db._is_chinese and self._input_mode == PINYIN_MODE:
             # restore tune symbol
             remaining_tabkeys = remaining_tabkeys.replace(
                 '!', '↑1').replace(
@@ -877,33 +968,62 @@ class Editor(object):
                 else:
                     table_code_new += char
             table_code = table_code_new
-        if not self._py_mode:
-            remaining_tabkeys_new = u''
-            for char in remaining_tabkeys:
-                if char in self._prompt_characters:
-                    remaining_tabkeys_new += self._prompt_characters[char]
-                else:
-                    remaining_tabkeys_new += char
-            remaining_tabkeys = remaining_tabkeys_new
+
         candidate_text = phrase + u' ' + remaining_tabkeys
         if table_code:
             candidate_text = candidate_text + u'   ' + table_code
         attrs = IBus.AttrList()
         attrs.append(IBus.attr_foreground_new(
             rgb(0x19, 0x73, 0xa2), 0, len(candidate_text)))
-        if not self._py_mode and freq < 0:
-            # this is a user defined phrase:
-            attrs.append(
-                IBus.attr_foreground_new(
-                    rgb(0x77, 0x00, 0xc3), 0, len(phrase)))
-        elif not self._py_mode and user_freq > 0:
-            # this is a system phrase which has already been used by the user:
+
+        # this is a pinyin character:
+        attrs.append(IBus.attr_foreground_new(
+            rgb(0x00, 0x00, 0x00), 0, len(phrase)))
+
+        if DEBUG_LEVEL > 0:
+            debug_text = u' ' + str(freq) + u' ' + str(user_freq)
+            candidate_text += debug_text
             attrs.append(IBus.attr_foreground_new(
-                rgb(0x00, 0x00, 0x00), 0, len(phrase)))
-        else:
-            # this is a system phrase that has not been used yet:
-            attrs.append(IBus.attr_foreground_new(
-                rgb(0x00, 0x00, 0x00), 0, len(phrase)))
+                rgb(0x00, 0xff, 0x00),
+                len(candidate_text) - len(debug_text),
+                len(candidate_text)))
+        text = IBus.Text.new_from_string(candidate_text)
+        i = 0
+        while attrs.get(i) != None:
+            attr = attrs.get(i)
+            text.append_attribute(attr.get_attr_type(),
+                                  attr.get_value(),
+                                  attr.get_start_index(),
+                                  attr.get_end_index())
+            i += 1
+        self._lookup_table.append_candidate(text)
+        self._lookup_table.set_cursor_visible(True)
+
+    def append_suggestion_candidate(
+            self, prefix=u'', phrase=u'', freq=0, user_freq=0):
+        '''append suggestion candidate to lookup table'''
+        assert self._input_mode == SUGGESTION_MODE
+        if DEBUG_LEVEL > 1:
+            sys.stderr.write(
+                "append_suggestion_candidate() "
+                + "tabkeys=%(x)s phrase=%(p)s freq=%(f)s user_freq=%(u)s\n"
+                % {'x': prefix, 'p': phrase, 'f': freq, 'u': user_freq})
+        if not prefix or not phrase:
+            return
+
+        if not phrase.startswith(prefix):
+            return
+
+        candidate_text = phrase
+
+        attrs = IBus.AttrList()
+        attrs.append(IBus.attr_foreground_new(
+            rgb(0x19, 0x73, 0xa2), 0, len(candidate_text)))
+
+        # this is a suggestion candidate:
+        attrs.append(IBus.attr_foreground_new(
+            rgb(0x00, 0x00, 0x00), 0, len(phrase)))
+
         if DEBUG_LEVEL > 0:
             debug_text = u' ' + str(freq) + u' ' + str(user_freq)
             candidate_text += debug_text
@@ -1014,6 +1134,9 @@ class Editor(object):
         self._chars_valid_update_candidates_last = self._chars_valid
         self._chars_invalid_update_candidates_last = self._chars_invalid
         return False
+
+    def update_suggestion_candidates(self):
+        pass
 
     def commit_to_preedit(self):
         '''Add selected phrase in lookup table to preëdit string'''

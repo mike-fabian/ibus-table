@@ -363,6 +363,8 @@ class Editor(object):
             orientation=self._orientation)
         # self._input_mode: which input mode
         self._input_mode = TABLE_MODE
+        # self._prefix: the previous commit character or phrase
+        self._prefix = u''
         # self._onechar: whether we only select single character
         self._onechar = it_util.variant_to_value(self._gsettings.get_value(
             'onechar'))
@@ -1078,13 +1080,13 @@ class Editor(object):
             self._candidates = []
             self._candidates_previous = self._candidates
             return False
-        if self._py_mode and self.db._is_chinese:
+        if self._input_mode == PINYIN_MODE and self.db._is_chinese:
             self._candidates = self.db.select_chinese_characters_by_pinyin(
                 tabkeys=self._chars_valid,
                 chinese_mode=self._chinese_mode,
                 single_wildcard_char=self._single_wildcard_char,
                 multi_wildcard_char=self._multi_wildcard_char)
-        else:
+        elif self._input_mode == TABLE_MODE:
             self._candidates = self.db.select_words(
                 tabkeys=self._chars_valid,
                 onechar=self._onechar,
@@ -1092,6 +1094,11 @@ class Editor(object):
                 single_wildcard_char=self._single_wildcard_char,
                 multi_wildcard_char=self._multi_wildcard_char,
                 auto_wildcard=self._auto_wildcard)
+        elif self._input_mode == SUGGESTION_MODE:
+            self._candidates = self.db.select_suggestion_candidate(
+                self._prefix)
+        else:
+            assert False
         # If only a wildcard character has been typed, insert a
         # special candidate at the first position for the wildcard
         # character itself. For example, if “?” is used as a
@@ -1134,9 +1141,6 @@ class Editor(object):
         self._chars_valid_update_candidates_last = self._chars_valid
         self._chars_invalid_update_candidates_last = self._chars_invalid
         return False
-
-    def update_suggestion_candidates(self):
-        pass
 
     def commit_to_preedit(self):
         '''Add selected phrase in lookup table to preëdit string'''
@@ -1254,11 +1258,25 @@ class Editor(object):
             endpos = looklen + psize
             batch = self._candidates[looklen:endpos]
             for candidate in batch:
-                self.append_candidate_to_lookup_table(
-                    tabkeys=candidate[0],
-                    phrase=candidate[1],
-                    freq=candidate[2],
-                    user_freq=candidate[3])
+                if self._input_mode == TABLE_MODE:
+                    self.append_table_candidate(
+                        tabkeys=candidate[0],
+                        phrase=candidate[1],
+                        freq=candidate[2],
+                        user_freq=candidate[3])
+                elif self._input_mode == PINYIN_MODE:
+                    self.append_pinyin_candidate(
+                        tabkeys=candidate[0],
+                        phrase=candidate[1],
+                        freq=candidate[2],
+                        user_freq=candidate[3])
+                elif self._input_mode == SUGGESTION_MODE:
+                    self.append_suggestion_candidate(
+                        self._prefix,
+                        candidate[0],
+                        candidate[1])
+                else:
+                    assert False
 
     def cursor_down(self):
         '''Process Arrow Down Key Event

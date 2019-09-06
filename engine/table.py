@@ -1150,10 +1150,22 @@ class Editor(object):
         if not self._chars_valid:
             return False
         if self._candidates:
-            self._u_chars.insert(self._cursor_precommit,
-                                 self._candidates[self.get_cursor_pos()][0])
-            self._strings.insert(self._cursor_precommit,
-                                 self._candidates[self.get_cursor_pos()][1])
+            if self._input_mode in (TABLE_MODE, PINYIN_MODE):
+                phrase = self._candidates[self.get_cursor_pos()][1]
+                self._u_chars.insert(self._cursor_precommit,
+                                     self._candidates[self.get_cursor_pos()][0])
+                self._strings.insert(self._cursor_precommit,
+                                     phrase)
+                self._prev_input_mode = self._input_mode
+                self._input_mode = SUGGESTION_MODE
+                self._prefix = phrase
+            if self._input_mode == SUGGESTION_MODE:
+                phrase = self.candidates[self.get_cursor_pos()][0]
+                self._u_chars.insert(self._cursor_precommit,
+                                     u'')
+                self._strings.insert(self._cursor_precommit,
+                                     phrase)
+                self._prefix = phrase
             self._cursor_precommit += 1
         self.clear_input_not_committed_to_preedit()
         self.update_candidates()
@@ -2644,7 +2656,7 @@ class TabEngine(IBus.Engine):
         if self._ime_py:
             self._init_or_update_property_menu(
                 self.pinyin_mode_menu,
-                self._editor._py_mode)
+                self._py_mode)
 
         if self.db._is_cjk:
             self._init_or_update_property_menu(
@@ -2753,7 +2765,7 @@ class TabEngine(IBus.Engine):
         left_of_current_edit = u''.join(preedit_string_parts[0])
         current_edit = preedit_string_parts[1]
         right_of_current_edit = u''.join(preedit_string_parts[2])
-        if not self._editor._py_mode:
+        if self._editor._input_mode == TABLE_MODE:
             current_edit_new = u''
             for char in current_edit:
                 if char in self._editor._prompt_characters:
@@ -3191,7 +3203,7 @@ class TabEngine(IBus.Engine):
                 and self._match_hotkey(
                     key, IBus.KEY_Shift_R,
                     IBus.ModifierType.SHIFT_MASK)):
-            self.set_pinyin_mode(not self._editor._py_mode)
+            self.set_pinyin_mode(not self._py_mode)
             return True
         # process commit to preedit
         if (self._match_hotkey(
@@ -3456,16 +3468,21 @@ class TabEngine(IBus.Engine):
                 and (keychar in (self._valid_input_chars
                                  + self._single_wildcard_char
                                  + self._multi_wildcard_char)
-                     or (self._editor._py_mode
-                         and keychar in (self._pinyin_valid_input_chars
-                                         + self._single_wildcard_char
-                                         + self._multi_wildcard_char)))):
+                     or (self._editor._input_mode == PINYIN_MODE
+                         and keychar in (self._pinyin_valid_input_chars)))):
             if DEBUG_LEVEL > 0:
                 sys.stderr.write(
                     '_table_mode_process_key_event() valid input: '
                     + 'repr(keychar)=%(keychar)s\n'
                     % {'keychar': keychar})
-            if self._editor._py_mode:
+
+            # change input mode to previous input mode
+            if self._editor._input_mode == SUGGESTION_MODE:
+                assert self._editor._prev_input_mode != SUGGESTION_MODE
+                self._editor.clear_all_input_and_preedit()
+                self._editor._input_mode = self._editor._prev_input_mode
+
+            if self._editor._input_mode == PINYIN_MODE:
                 if ((len(self._editor._chars_valid)
                      == self._max_key_length_pinyin)
                         or (len(self._editor._chars_valid) > 1
@@ -3474,7 +3491,7 @@ class TabEngine(IBus.Engine):
                         self.commit_everything_unless_invalid()
                     else:
                         self._editor.commit_to_preedit()
-            else:
+            elif self._editor._input_mode == TABLE_MODE:
                 if ((len(self._editor._chars_valid)
                      == self._max_key_length)
                         or (len(self._editor._chars_valid)
@@ -3483,6 +3500,8 @@ class TabEngine(IBus.Engine):
                         self.commit_everything_unless_invalid()
                     else:
                         self._editor.commit_to_preedit()
+            else:
+                assert False
             res = self._editor.add_input(keychar)
             if not res:
                 if self._auto_select and self._editor._candidates_previous:

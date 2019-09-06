@@ -363,6 +363,7 @@ class Editor(object):
             orientation=self._orientation)
         # self._input_mode: which input mode
         self._input_mode = TABLE_MODE
+        self._prev_input_mode = TABLE_MODE
         # self._prefix: the previous commit character or phrase
         self._prefix = u''
         # self._onechar: whether we only select single character
@@ -516,6 +517,8 @@ class Editor(object):
         self._u_chars = []
         self._strings = []
         self._cursor_precommit = 0
+        self._prefix = u''
+        self._input_mode = TABLE_MODE
         self.update_candidates()
 
     def is_empty(self):
@@ -1459,6 +1462,15 @@ class TabEngine(IBus.Engine):
                   + 'is it an outdated database?')
             self._ime_py = False
 
+        # self._ime_sg: Indicates whether this table supports suggestion mode
+        self._ime_sg = self.db.ime_properties.get('suggestion_mode')
+        if self._ime_sg:
+            self._ime_sg = bool(self._ime_sg.lower() == u'true')
+        else:
+            print('We could not find "suggestion_mode" entry in database, '
+                  + 'is it an outdated database?')
+            self._ime_sg = False
+
         self._symbol = self.db.ime_properties.get('symbol')
         if self._symbol is None or self._symbol == u'':
             self._symbol = self.db.ime_properties.get('status_prompt')
@@ -1853,6 +1865,27 @@ class TabEngine(IBus.Engine):
             'shortcut_hint': '(Right Shift)',
             'sub_properties': self.pinyin_mode_properties
         }
+        self.suggestion_mode_properties = {
+            'SuggestionMode.Disabled': {
+                'number': 0,
+                'symbol': '☐ 联想',
+                'icon': 'tab-mode.svg',
+                'label': _('Legend'),
+                'tooltip': _('Switch to Legend mode')},
+            'SuggestionMode.Enabled': {
+                'number': 1,
+                'symbol': '☑ 联想',
+                'icon': 'tab-mode.svg',
+                'label': _('Legend'),
+                'tooltip': _('Switch to Legend mode')}
+        }
+        self.suggestion_mode_menu = {
+            'key': 'SuggestionMode',
+            'label': _('Legend mode'),
+            'tooltip': _('Switch Legend mode'),
+            'shortcut_hint': '',
+            'sub_properties': self.suggestion_mode_properties
+        }
         self.onechar_mode_properties = {
             'OneCharMode.Phrase': {
                 'number': 0,
@@ -1905,6 +1938,9 @@ class TabEngine(IBus.Engine):
         }
         self._prop_dict = {}
         self._init_properties()
+
+        self._py_mode = False
+        self._sg_mode = False
 
         self._on = False
         self._save_user_count = 0
@@ -1985,11 +2021,14 @@ class TabEngine(IBus.Engine):
                      False: Use the current table.
         :type mode: Boolean
         '''
-        if mode == self._editor._py_mode:
+        if not self._ime_py:
             return
-        # The pinyin mode is never saved to Gsettings on purpose
+        if mode == self._py_mode:
+            return
+        # The pinyin mode is never saved to GSettings on purpose
         self._editor.commit_to_preedit()
-        self._editor._py_mode = mode
+        self._py_mode = mode
+        self._editor._input_mode = PINYIN_MODE
         self._init_or_update_property_menu(
             self.pinyin_mode_menu, mode)
         if mode:
@@ -2001,6 +2040,24 @@ class TabEngine(IBus.Engine):
         self._init_or_update_property_menu(
             self.input_mode_menu,
             self._input_mode)
+        self._update_ui()
+
+    def set_suggestion_mode(self, mode=False):
+        '''Sets whether Suggestion is used.
+
+        :param mode: Whether to use Suggestion.
+                     True: Use Suggestion.
+                     False: Not use Suggestion.
+        :type mode: Boolean
+        '''
+        if not self._ime_sg:
+            return
+        if mode == self._sg_mode:
+            return
+        self._editor.commit_to_preedit()
+        self._sg_mode = mode
+        self._init_or_update_property_menu(
+            self.suggestion_mode_menu, mode)
         self._update_ui()
 
     def set_onechar_mode(self, mode=False, update_gsettings=True):
@@ -2837,6 +2894,10 @@ class TabEngine(IBus.Engine):
                              %{'p': phrase})
         self._editor.clear_all_input_and_preedit()
         self._update_ui()
+        self._editor._prefix = phrase
+        if self._sg_mode:
+            self._editor._prev_input_mode = self._editor._input_mode
+            self._editor._input_mode = SUGGESTION_MODE
         super(TabEngine, self).commit_text(IBus.Text.new_from_string(phrase))
         if phrase:
             self._prev_char = phrase[-1]

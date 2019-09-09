@@ -642,6 +642,7 @@ class TabSqliteDb:
             CREATE TABLE IF NOT EXISTS %s.suggestion
             (phrase TEXT, freq INTEGER);
             ''' %database
+            self.db.execute(sqlstr)
 
         sqlstr = '''
         CREATE TABLE IF NOT EXISTS %s.phrases
@@ -1217,7 +1218,7 @@ class TabSqliteDb:
         candidates = phrase_frequencies.values()
         if DEBUG_LEVEL > 1:
             sys.stderr.write("select_suggestion_candidate() candidates=%s\n" %repr(candidates))
-                maximum_number_of_candidates = 100
+            maximum_number_of_candidates = 100
         engine_name = os.path.basename(self.filename).replace('.db', '')
 
         if engine_name in [
@@ -1234,7 +1235,7 @@ class TabSqliteDb:
                           code_point_function(x[1][0]),
                           code_point_function(x[1][1]),
                           # Unicode codepoint of first character of phrase:
-                          ord(x[1][0],
+                          ord(x[1][0]),
                           # Unicode codepoint of second character of phrase:
                           ord(x[1][1])
                       ))[:maximum_number_of_candidates]

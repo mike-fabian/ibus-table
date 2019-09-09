@@ -1211,7 +1211,7 @@ class Editor(object):
                         u' ('
                         + tabkeys_right[i]+u' '+strings_right[i]
                         + u')')
-            if self._py_mode:
+            if self._input_mode == PINYIN_MODE:
                 aux_string = aux_string.replace(
                     '!', '1').replace(
                         '@', '2').replace(
@@ -1636,6 +1636,8 @@ class TabEngine(IBus.Engine):
         self._prev_char = None
         self._double_quotation_state = False
         self._single_quotation_state = False
+        self._py_mode = False
+        self._sg_mode = False
 
         self._full_width_letter = [
             it_util.variant_to_value(
@@ -1950,9 +1952,6 @@ class TabEngine(IBus.Engine):
         }
         self._prop_dict = {}
         self._init_properties()
-
-        self._py_mode = False
-        self._sg_mode = False
 
         self._on = False
         self._save_user_count = 0

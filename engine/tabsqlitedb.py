@@ -917,16 +917,16 @@ class TabSqliteDb:
         count = 0
         for phrase, freq in suggestions:
             count += 1
-        try:
-            self.db.execute(
-                sqlstr, {'phrase': phrase, 'freq': freq})
-        except Exception:
-            sys.stderr.write(
-                'Error when inserting into suggestion table. '
-                + 'count=%(c)s phrase=%(p)s freq=%(f)s\n'
-                % {'c': count, 'p': phrase, 'f': freq})
-            import traceback
-            traceback.print_exc()
+            try:
+                self.db.execute(
+                    sqlstr, {'phrase': phrase, 'freq': freq})
+            except Exception:
+                sys.stderr.write(
+                    'Error when inserting into suggestion table. '
+                    + 'count=%(c)s phrase=%(p)s freq=%(f)s\n'
+                    % {'c': count, 'p': phrase, 'f': freq})
+                import traceback
+                traceback.print_exc()
         self.db.commit()
 
     def optimize_database(self):

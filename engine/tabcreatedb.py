@@ -437,15 +437,15 @@ def main():
         debug_print('\tLoad suggestion source \"%s\"' % _OPTIONS.suggestion)
         _bz2p = patt_s.match(_OPTIONS.suggestion)
         if _bz2p:
-            pinyin_s = bz2.BZ2File(_OPTIONS.suggestion, "r")
+            suggestion_s = bz2.BZ2File(_OPTIONS.suggestion, "r")
         else:
-            pinyin_s = open(_OPTIONS.suggestion, 'r')
+            suggestion_s = open(_OPTIONS.suggestion, 'r')
         debug_print('\tParsing suggestion source file ')
         sgline = parse_suggestion(suggestion_s)
         debug_print('\tPreapring suggestion entries')
         suggestions = suggestion_parser(sgline)
         debug_print('\t  add suggestion candidates into DB ')
-        db.add_suggestion(suggestion)
+        db.add_suggestion(suggestions)
 
     debug_print('Optimizing database ')
     db.optimize_database()

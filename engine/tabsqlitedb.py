@@ -1218,7 +1218,7 @@ class TabSqliteDb:
         candidates = phrase_frequencies.values()
         if DEBUG_LEVEL > 1:
             sys.stderr.write("select_suggestion_candidate() candidates=%s\n" %repr(candidates))
-            maximum_number_of_candidates = 100
+        maximum_number_of_candidates = 100
         engine_name = os.path.basename(self.filename).replace('.db', '')
 
         if engine_name in [
@@ -1232,12 +1232,12 @@ class TabSqliteDb:
                       key=lambda x: (
                           - int (len(x[0])), # longest matches first!
                           -1*x[1],   # freq descending
-                          code_point_function(x[1][0]),
-                          code_point_function(x[1][1]),
+                          code_point_function(x[0][0]),
+                          code_point_function(x[0][1]),
                           # Unicode codepoint of first character of phrase:
-                          ord(x[1][0]),
+                          ord(x[0][0]),
                           # Unicode codepoint of second character of phrase:
-                          ord(x[1][1])
+                          ord(x[0][1])
                       ))[:maximum_number_of_candidates]
 
     def generate_userdb_desc(self):

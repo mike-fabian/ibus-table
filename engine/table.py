@@ -743,9 +743,15 @@ class Editor(object):
         single string
 
         '''
+        if self._input_mode == SUGGESTION_MODE:
+            if self._candidates:
+                return self._candidates[int(self._lookup_table.get_cursor_pos())][0]
+            return u''
+
         (left_strings,
          current_string,
          right_strings) = self.get_preedit_string_parts()
+
         return (u''.join(left_strings)
                 + current_string
                 + u''.join(right_strings))
@@ -1068,7 +1074,9 @@ class Editor(object):
                 + 'self._candidates=%s ' % self._candidates
                 + 'self.db.startchars=%s ' % self.db.startchars
                 + 'self._strings=%s\n' % self._strings)
-        if (self._chars_valid == self._chars_valid_update_candidates_last
+        if (self._input_mode != SUGGESTION_MODE
+            and
+            self._chars_valid == self._chars_valid_update_candidates_last
                 and
                 self._chars_invalid
                 == self._chars_invalid_update_candidates_last):
@@ -1079,10 +1087,11 @@ class Editor(object):
         self._chars_invalid_update_candidates_last = self._chars_invalid
         self._lookup_table.clear()
         self._lookup_table.set_cursor_visible(True)
-        if self._chars_invalid or not self._chars_valid:
-            self._candidates = []
-            self._candidates_previous = self._candidates
-            return False
+        if self._input_mode != SUGGESTION_MODE:
+            if self._chars_invalid or not self._chars_valid:
+                self._candidates = []
+                self._candidates_previous = self._candidates
+                return False
         if self._input_mode == PINYIN_MODE and self.db._is_chinese:
             self._candidates = self.db.select_chinese_characters_by_pinyin(
                 tabkeys=self._chars_valid,
@@ -1111,22 +1120,23 @@ class Editor(object):
         # This is needed to make it possible to input the wildcard
         # characters themselves, if “?” acted only as a wildcard
         # it would be impossible to input a fullwidth question mark.
-        if (self._chars_valid
+        if self._input_mode != SUGGESTION_MODE:
+            if (self._chars_valid
                 in [self._single_wildcard_char, self._multi_wildcard_char]):
-            wildcard_key = self._chars_valid
-            wildcard_phrase = self._chars_valid
-            if ascii_ispunct(wildcard_key):
-                if self._full_width_punct[1]:
-                    wildcard_phrase = unichar_half_to_full(wildcard_phrase)
+                wildcard_key = self._chars_valid
+                wildcard_phrase = self._chars_valid
+                if ascii_ispunct(wildcard_key):
+                    if self._full_width_punct[1]:
+                        wildcard_phrase = unichar_half_to_full(wildcard_phrase)
+                    else:
+                        wildcard_phrase = unichar_full_to_half(wildcard_phrase)
                 else:
-                    wildcard_phrase = unichar_full_to_half(wildcard_phrase)
-            else:
-                if self._full_width_letter[1]:
-                    wildcard_phrase = unichar_half_to_full(wildcard_phrase)
-                else:
-                    wildcard_phrase = unichar_full_to_half(wildcard_phrase)
-            self._candidates.insert(
-                0, (wildcard_key, wildcard_phrase, 0, 1000000000))
+                    if self._full_width_letter[1]:
+                        wildcard_phrase = unichar_half_to_full(wildcard_phrase)
+                    else:
+                        wildcard_phrase = unichar_full_to_half(wildcard_phrase)
+                self._candidates.insert(
+                    0, (wildcard_key, wildcard_phrase, 0, 1000000000))
         if self._candidates:
             self.fill_lookup_table()
             self._candidates_previous = self._candidates
@@ -1139,16 +1149,18 @@ class Editor(object):
         # that after adding this character, no candidates could be
         # found anymore.  Add this character to self._chars_invalid
         # and remove it from self._chars_valid.
-        self._chars_invalid += self._chars_valid[-1]
-        self._chars_valid = self._chars_valid[:-1]
-        self._chars_valid_update_candidates_last = self._chars_valid
-        self._chars_invalid_update_candidates_last = self._chars_invalid
+        if self._chars_valid:
+            self._chars_invalid += self._chars_valid[-1]
+            self._chars_valid = self._chars_valid[:-1]
+            self._chars_valid_update_candidates_last = self._chars_valid
+            self._chars_invalid_update_candidates_last = self._chars_invalid
         return False
 
     def commit_to_preedit(self):
         '''Add selected phrase in lookup table to preëdit string'''
-        if not self._chars_valid:
-            return False
+        if self._input_mode != SUGGESTION_MODE:
+            if not self._chars_valid:
+                return False
         if self._candidates:
             if self._input_mode in (TABLE_MODE, PINYIN_MODE):
                 phrase = self._candidates[self.get_cursor_pos()][1]
@@ -1156,16 +1168,18 @@ class Editor(object):
                                      self._candidates[self.get_cursor_pos()][0])
                 self._strings.insert(self._cursor_precommit,
                                      phrase)
-                self._prev_input_mode = self._input_mode
-                self._input_mode = SUGGESTION_MODE
                 self._prefix = phrase
-            if self._input_mode == SUGGESTION_MODE:
-                phrase = self.candidates[self.get_cursor_pos()][0]
+            elif self._input_mode == SUGGESTION_MODE:
+                phrase = self._candidates[self.get_cursor_pos()][0]
+                phrase = phrase[len(self._prefix):]
                 self._u_chars.insert(self._cursor_precommit,
                                      u'')
                 self._strings.insert(self._cursor_precommit,
                                      phrase)
-                self._prefix = phrase
+                self._prefix = u''
+                self._input_mode = self._prev_input_mode
+            else:
+                assert False
             self._cursor_precommit += 1
         self.clear_input_not_committed_to_preedit()
         self.update_candidates()
@@ -1287,9 +1301,9 @@ class Editor(object):
                         user_freq=candidate[3])
                 elif self._input_mode == SUGGESTION_MODE:
                     self.append_suggestion_candidate(
-                        self._prefix,
-                        candidate[0],
-                        candidate[1])
+                        prefix=self._prefix,
+                        phrase=candidate[0],
+                        freq=candidate[1])
                 else:
                     assert False
 
@@ -1299,7 +1313,6 @@ class Editor(object):
         self.fill_lookup_table()
 
         res = self._lookup_table.cursor_down()
-        self.update_candidates()
         if not res and self._candidates:
             return True
         return res
@@ -1308,7 +1321,6 @@ class Editor(object):
         '''Process Arrow Up Key Event
         Move Lookup Table cursor up'''
         res = self._lookup_table.cursor_up()
-        self.update_candidates()
         if not res and self._candidates:
             return True
         return res
@@ -1318,7 +1330,6 @@ class Editor(object):
         Move Lookup Table page down'''
         self.fill_lookup_table()
         res = self._lookup_table.page_down()
-        self.update_candidates()
         if not res and self._candidates:
             return True
         return res
@@ -1327,7 +1338,6 @@ class Editor(object):
         '''Process Page Up Key Event
         move Lookup Table page up'''
         res = self._lookup_table.page_up()
-        self.update_candidates()
         if not res and self._candidates:
             return True
         return res
@@ -1884,13 +1894,13 @@ class TabEngine(IBus.Engine):
                 'number': 0,
                 'symbol': '☐ 联想',
                 'icon': 'tab-mode.svg',
-                'label': _('Legend'),
+                'label': _('Legend Disabled'),
                 'tooltip': _('Switch to Legend mode')},
             'SuggestionMode.Enabled': {
                 'number': 1,
                 'symbol': '☑ 联想',
                 'icon': 'tab-mode.svg',
-                'label': _('Legend'),
+                'label': _('Legend Enabled'),
                 'tooltip': _('Switch to Legend mode')}
         }
         self.suggestion_mode_menu = {
@@ -2657,6 +2667,11 @@ class TabEngine(IBus.Engine):
                 self.pinyin_mode_menu,
                 self._py_mode)
 
+        if self._ime_sg:
+            self._init_or_update_property_menu(
+                self.suggestion_mode_menu,
+                self._sg_mode)
+
         if self.db._is_cjk:
             self._init_or_update_property_menu(
                 self.onechar_mode_menu,
@@ -2705,6 +2720,11 @@ class TabEngine(IBus.Engine):
                 and self._ime_py):
             self.set_pinyin_mode(
                 bool(self.pinyin_mode_properties[ibus_property]['number']))
+            return
+        if (ibus_property.startswith(self.suggestion_mode_menu['key']+'.')
+                and self._ime_sg):
+            self.set_suggestion_mode(
+                bool(self.suggestion_mode_properties[ibus_property]['number']))
             return
         if (ibus_property.startswith(self.onechar_mode_menu['key']+'.')
                 and self.db._is_cjk):
@@ -2760,6 +2780,11 @@ class TabEngine(IBus.Engine):
 
     def _update_preedit(self):
         '''Update Preedit String in UI'''
+
+        if self._editor._input_mode == SUGGESTION_MODE:
+            self.hide_preedit_text()
+            return
+
         preedit_string_parts = self._editor.get_preedit_string_parts()
         left_of_current_edit = u''.join(preedit_string_parts[0])
         current_edit = preedit_string_parts[1]
@@ -2819,6 +2844,9 @@ class TabEngine(IBus.Engine):
 
     def _update_aux(self):
         '''Update Aux String in UI'''
+        if self._editor._input_mode == SUGGESTION_MODE:
+            return u''
+
         aux_string = self._editor.get_aux_strings()
         if self._editor._candidates:
             aux_string += u' (%d / %d)' % (
@@ -2854,12 +2882,16 @@ class TabEngine(IBus.Engine):
             # is zero!
             self.hide_lookup_table()
             return
-        if self._editor.is_empty():
-            self.hide_lookup_table()
-            return
+
+        if self._editor._input_mode != SUGGESTION_MODE:
+            if self._editor.is_empty():
+                self.hide_lookup_table()
+                return
+
         if not self._always_show_lookup:
             self.hide_lookup_table()
             return
+
         self.update_lookup_table(self._editor.get_lookup_table(), True)
 
     def _update_ui(self):
@@ -2903,12 +2935,11 @@ class TabEngine(IBus.Engine):
         if DEBUG_LEVEL > 1:
             sys.stderr.write("commit_string() phrase=%(p)s\n"
                              %{'p': phrase})
+        self._prefix = phrase
         self._editor.clear_all_input_and_preedit()
         self._update_ui()
         self._editor._prefix = phrase
-        if self._sg_mode:
-            self._editor._prev_input_mode = self._editor._input_mode
-            self._editor._input_mode = SUGGESTION_MODE
+
         super(TabEngine, self).commit_text(IBus.Text.new_from_string(phrase))
         if phrase:
             self._prev_char = phrase[-1]
@@ -2928,8 +2959,13 @@ class TabEngine(IBus.Engine):
             sys.stderr.write("commit_everything_unless_invalid()\n")
         if self._editor._chars_invalid:
             return False
+
+        if self._editor._input_mode == SUGGESTION_MODE:
+            self._editor.commit_to_preedit()
+
         if not self._editor.is_empty():
             self._editor.commit_to_preedit()
+
         self.commit_string(self._editor.get_preedit_string_complete(),
                            tabkeys=self._editor.get_preedit_tabkeys_complete())
         return True
@@ -3545,6 +3581,14 @@ class TabEngine(IBus.Engine):
             if self.commit_everything_unless_invalid():
                 if self._editor._auto_select:
                     self.commit_string(u' ')
+
+            if self._sg_mode \
+               and self._editor._input_mode in (TABLE_MODE, PINYIN_MODE):
+                self._editor._prev_input_mode = self._editor._input_mode
+                self._editor._input_mode = SUGGESTION_MODE
+
+            self._editor.update_candidates()
+            self._update_ui()
             return True
 
         if key.val in self._page_down_keys and self._editor._candidates:

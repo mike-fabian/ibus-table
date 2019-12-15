@@ -4,234 +4,233 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2016-08-24 08:56+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2019-12-15 15:57+0100\n"
 "PO-Revision-Date: 2016-08-30 02:14-0400\n"
 "Last-Translator: Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>\n"
 "Language-Team: French\n"
 "Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 3.9.6\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
-#: engine/table.py:1474 setup/ibus-table-preferences.ui:75
+#: engine/table.py:1553 setup/ibus-table-preferences.ui:75
 msgid "Simplified Chinese"
 msgstr "Chinois simplifié"
 
-#: engine/table.py:1476
+#: engine/table.py:1555
 msgid "Switch to “Simplified Chinese only”."
 msgstr "Basculer vers \"Chinois simplifié uniquement\""
 
-#: engine/table.py:1482 setup/ibus-table-preferences.ui:78
+#: engine/table.py:1561 setup/ibus-table-preferences.ui:78
 msgid "Traditional Chinese"
 msgstr "Chinois traditionnel"
 
-#: engine/table.py:1484
+#: engine/table.py:1563
 msgid "Switch to “Traditional Chinese only”."
 msgstr "Basculer vers \"Chinois traditionnel uniquement\""
 
-#: engine/table.py:1490
+#: engine/table.py:1569
 msgid "Simplified Chinese first"
 msgstr "Chinois simplifié d'abord"
 
-#: engine/table.py:1492
+#: engine/table.py:1571
 #, fuzzy
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr "Basculer vers \"Chinois simplifié avant traditionnel\""
 
-#: engine/table.py:1498
+#: engine/table.py:1577
 msgid "Traditional Chinese first"
 msgstr "Chinois traditionnel d'abord"
 
-#: engine/table.py:1500
+#: engine/table.py:1579
 #, fuzzy
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr "Basculer vers \"Chinois traditionnel avant simplifié\""
 
-#: engine/table.py:1506 setup/ibus-table-preferences.ui:87
+#: engine/table.py:1585 setup/ibus-table-preferences.ui:87
 msgid "All Chinese characters"
 msgstr "Tous  les caractères chinois"
 
-#: engine/table.py:1507
+#: engine/table.py:1586
 msgid "Switch to “All Chinese characters”."
 msgstr "Basculer vers \"Tous les caractères chinois\""
 
-#: engine/table.py:1511
+#: engine/table.py:1590
 #, fuzzy
 msgid "Chinese mode"
 msgstr "Mode chinois"
 
-#: engine/table.py:1512
+#: engine/table.py:1591
 #, fuzzy
 msgid "Switch Chinese mode"
 msgstr "Basculer vers le mode chinois"
 
-#: engine/table.py:1522
+#: engine/table.py:1601
 msgid "English"
 msgstr "Anglais"
 
-#: engine/table.py:1523
+#: engine/table.py:1602
 #, fuzzy
 msgid "Switch to English input"
 msgstr "Basculer vers la saisie anglaise"
 
-#: engine/table.py:1530
+#: engine/table.py:1609
 msgid "Chinese"
 msgstr "Chinois"
 
-#: engine/table.py:1531
+#: engine/table.py:1610
 #, fuzzy
 msgid "Switch to Chinese input"
 msgstr "Basculer vers la saisie chinoise"
 
-#: engine/table.py:1539 engine/table.py:1658 setup/ibus-table-preferences.ui:36
+#: engine/table.py:1618 engine/table.py:1739 setup/ibus-table-preferences.ui:36
 msgid "Direct"
 msgstr "Direct"
 
-#: engine/table.py:1540
+#: engine/table.py:1619
 #, fuzzy
 msgid "Switch to direct input"
 msgstr "Basculer vers la saisie directe"
 
-#: engine/table.py:1545 engine/table.py:1606
+#: engine/table.py:1624 engine/table.py:1685
 msgid "Table"
 msgstr "Table"
 
-#: engine/table.py:1546
+#: engine/table.py:1625
 #, fuzzy
 msgid "Switch to table input"
 msgstr "Passer en saisie par table"
 
-#: engine/table.py:1554
+#: engine/table.py:1633
 msgid "Input mode"
 msgstr "Mode de saisie"
 
-#: engine/table.py:1555
+#: engine/table.py:1634
 msgid "Switch Input mode"
 msgstr "Changer de mode de saisie"
 
-#: engine/table.py:1564 engine/table.py:1585 setup/ibus-table-preferences.ui:98
+#: engine/table.py:1643 engine/table.py:1664 setup/ibus-table-preferences.ui:98
 #: setup/ibus-table-preferences.ui:112 setup/ibus-table-preferences.ui:182
 #: setup/ibus-table-preferences.ui:196
 msgid "Half"
 msgstr "Demie"
 
-#: engine/table.py:1565
+#: engine/table.py:1644
 #, fuzzy
 msgid "Switch to halfwidth letters"
 msgstr "Basculer en lettres de demie-chasse"
 
-#: engine/table.py:1570 engine/table.py:1591
+#: engine/table.py:1649 engine/table.py:1670
 #: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
 #: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
 msgid "Full"
 msgstr "Pleine"
 
-#: engine/table.py:1571
+#: engine/table.py:1650
 msgid "Switch to fullwidth letters"
 msgstr ""
 
-#: engine/table.py:1575
+#: engine/table.py:1654
 msgid "Letter width"
 msgstr "Largeur des lettres"
 
-#: engine/table.py:1576
+#: engine/table.py:1655
 msgid "Switch letter width"
 msgstr ""
 
-#: engine/table.py:1586
+#: engine/table.py:1665
 msgid "Switch to halfwidth punctuation"
 msgstr ""
 
-#: engine/table.py:1592
+#: engine/table.py:1671
 msgid "Switch to fullwidth punctuation"
 msgstr ""
 
-#: engine/table.py:1596
+#: engine/table.py:1675
 msgid "Punctuation width"
 msgstr ""
 
-#: engine/table.py:1597
+#: engine/table.py:1676
 msgid "Switch punctuation width"
 msgstr ""
 
-#: engine/table.py:1607
+#: engine/table.py:1686
 msgid "Switch to table mode"
 msgstr ""
 
-#: engine/table.py:1612
+#: engine/table.py:1691
 msgid "Pinyin"
 msgstr "Pinyin"
 
-#: engine/table.py:1613
+#: engine/table.py:1692
 msgid "Switch to pinyin mode"
 msgstr "Basculer vers le mode pinyin"
 
-#: engine/table.py:1617
+#: engine/table.py:1696
 msgid "Pinyin mode"
 msgstr "Mode pinyin"
 
-#: engine/table.py:1618
+#: engine/table.py:1697
 msgid "Switch pinyin mode"
 msgstr "Basculer vers le mode pinyin"
 
-#: engine/table.py:1627
+#: engine/table.py:1706
 msgid "Multiple character match"
 msgstr ""
 
-#: engine/table.py:1628
+#: engine/table.py:1708
 msgid "Switch to matching multiple characters at once"
 msgstr ""
 
-#: engine/table.py:1633
+#: engine/table.py:1713
 msgid "Single character match"
 msgstr ""
 
-#: engine/table.py:1634
+#: engine/table.py:1715
 msgid "Switch to matching only single characters"
 msgstr ""
 
-#: engine/table.py:1638
+#: engine/table.py:1719
 #, fuzzy
 msgid "Onechar mode"
 msgstr "Mode caractère-unique"
 
-#: engine/table.py:1639
+#: engine/table.py:1720
 #, fuzzy
 msgid "Switch onechar mode"
 msgstr "Changer en mode caractère-unique"
 
-#: engine/table.py:1648 setup/ibus-table-preferences.ui:33
+#: engine/table.py:1729 setup/ibus-table-preferences.ui:33
 msgid "Normal"
 msgstr "Normal"
 
-#: engine/table.py:1650
+#: engine/table.py:1731
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
-"of into the application. This enables automatic definitions of new "
-"shortcuts)"
+"of into the application. This enables automatic definitions of new shortcuts)"
 msgstr ""
 
-#: engine/table.py:1660
+#: engine/table.py:1741
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
 msgstr ""
 
-#: engine/table.py:1665
+#: engine/table.py:1746
 msgid "Auto commit mode"
 msgstr ""
 
-#: engine/table.py:1666
+#: engine/table.py:1747
 msgid "Switch autocommit mode"
 msgstr ""
 
-#: engine/table.py:1917
+#: engine/table.py:2449
 msgid "Setup"
 msgstr "Configuration"
 
-#: engine/table.py:1919
+#: engine/table.py:2452
 #, fuzzy, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Configurer ibus-table “%(engine-name)s”"
@@ -251,27 +250,161 @@ msgid ""
 "CangJie, …. But some tables for other languages are available as well."
 msgstr ""
 
-#: ibus-table.appdata.xml:31
+#: ibus-table.appdata.xml:21 ibus-table.appdata.xml:39
+#: ibus-table.appdata.xml:53 ibus-table.appdata.xml:66
+#: ibus-table.appdata.xml:99 ibus-table.appdata.xml:113
+#: ibus-table.appdata.xml:145 ibus-table.appdata.xml:167
+msgid "This new stable release includes these changes:"
+msgstr ""
+
+#: ibus-table.appdata.xml:23
+msgid ""
+"Migrate IBusConfig to GSettings. Resolves: https://github.com/mike-fabian/"
+"ibus-table/issues/4"
+msgstr ""
+
+#: ibus-table.appdata.xml:27
+msgid "Add a test suite"
+msgstr ""
+
+#: ibus-table.appdata.xml:30
+msgid ""
+"Add missing tags to ibus-table-createdb.sgml. Resolves: https://github.com/"
+"mike-fabian/ibus-table/issues/3"
+msgstr ""
+
+#: ibus-table.appdata.xml:41
+msgid ""
+"Draw InputMode text instead of icon into panel on non-Gnome desktops. "
+"Resolves: https://github.com/mike-fabian/ibus-table/issues/6"
+msgstr ""
+
+#: ibus-table.appdata.xml:45
+msgid "Make it work with Python2 again"
+msgstr ""
+
+#: ibus-table.appdata.xml:55
+msgid "Sync phrases cache from/to external storage (thanks to heiher)."
+msgstr ""
+
+#: ibus-table.appdata.xml:58
+msgid "Update translations from zanata (cs new)"
+msgstr ""
+
+#: ibus-table.appdata.xml:68
+msgid "Update translations from zanata (pt_BR updated, es new)"
+msgstr ""
+
+#: ibus-table.appdata.xml:71
+msgid ""
+"Don't query user database if user define phrase and dynamic adjust are "
+"disabled (thanks to heiher)"
+msgstr ""
+
+#: ibus-table.appdata.xml:75
+msgid ""
+"Enable hash map based cache for user database enabled (thanks to heiher)"
+msgstr ""
+
+#: ibus-table.appdata.xml:79
+msgid "Import hash map based cache for table database (thanks to heiher)"
+msgstr ""
+
+#: ibus-table.appdata.xml:83
+msgid "Install appstream metadata to /usr/share/metainfo/ (thanks to jbicha)"
+msgstr ""
+
+#: ibus-table.appdata.xml:87
+msgid "Fix some appdata validation issues (thanks to jbicha)"
+msgstr ""
+
+#: ibus-table.appdata.xml:90
+msgid ""
+"Fix bug in Unihan_Variants.txt, 著 U+8457 is both simplified *and* "
+"traditional Chinese (thanks to heiher)"
+msgstr ""
+
+#: ibus-table.appdata.xml:101
+msgid "Load .desktop file for ibus-setup-table correctly under Gnome Wayland"
+msgstr ""
+
+#: ibus-table.appdata.xml:105
+msgid "Set WM_CLASS of ibus-setup-table correctly"
+msgstr ""
+
+#: ibus-table.appdata.xml:115
+msgid ""
+"Avoid running initialization code of ibus_table_location.py when using ibus-"
+"table-createdb."
+msgstr ""
+
+#: ibus-table.appdata.xml:119
+msgid ""
+"Make it work on Python 3.6 (Unbreak sqlite on Python 3.6) (Resolves: "
+"rhbz#1413580)."
+msgstr ""
+
+#: ibus-table.appdata.xml:130
+msgid "Update translations from zanata (ca, de, fr, uk updated)"
+msgstr ""
+
+#: ibus-table.appdata.xml:133
+msgid "Improve README"
+msgstr ""
+
+#: ibus-table.appdata.xml:136
+msgid "Point to new home-page in the “About” tab."
+msgstr ""
+
+#: ibus-table.appdata.xml:147
+msgid ""
+"Fix bug in Unihan_Variants.txt, 乾 U+4E7E is both simplified and traditional "
+"Chinese (thanks to heiher)"
+msgstr ""
+
+#: ibus-table.appdata.xml:151
+msgid ""
+"Update Unihan_Variants.txt from “2015-04-30 Unicode 8.0.0” to “2016-06-01 "
+"Unicode 9.0.0”"
+msgstr ""
+
+#: ibus-table.appdata.xml:155
+msgid "Regenerate engine/chinese_variants.py"
+msgstr ""
+
+#: ibus-table.appdata.xml:158
+msgid ""
+"Add test case for 乾 to make sure it is detected as both traditional and "
+"simplified Chinese"
+msgstr ""
+
+#: ibus-table.appdata.xml:169
+msgid ""
+"When ignoring key release events, “False” should be returned, not "
+"“True” (Resolves: rhbz#1369514)"
+msgstr ""
+
+#: ibus-table.appdata.xml:178
 msgid "Mike FABIAN"
 msgstr ""
 
-#: setup/main.py:129
+#: setup/main.py:150
 msgid "IBUS_ENGINE_NAME environment variable is not set."
 msgstr "IBUS_ENGINE_NAME n'est pas définie."
 
-#: setup/main.py:133
+#: setup/main.py:154
 #, fuzzy
 msgid "Cannot determine the engine name. Please use the --engine-name option."
 msgstr ""
 "Impossible de déterminer le nom du moteur. Merci d'utiliser l'option --"
 "engine-name"
 
-#: setup/main.py:147
+#: setup/main.py:174
 #, python-format
 msgid "IBus Table engine %s is not available"
 msgstr ""
 
-#: setup/main.py:296
+#: setup/main.py:336
 #, fuzzy, python-format
 msgid "IBus Table %s Preferences"
 msgstr "Préférences d'Ibus Table %s"
@@ -354,17 +487,20 @@ msgid ""
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:340
-msgid "Whether to use fullwidth or halfwidth\n"
+msgid ""
+"Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:357
-msgid "Whether to use fullwidth or halfwidth\n"
+msgid ""
+"Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:374
-msgid "Whether to use fullwidth or halfwidth\n"
+msgid ""
+"Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
 

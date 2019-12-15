@@ -1,19 +1,20 @@
 # Alexandre Moine <nobrakal@gmail.com>, 2016. #zanata
-# Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2016. #zanata
+# Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2016. #zanata, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2019-12-15 15:57+0100\n"
-"PO-Revision-Date: 2016-08-30 02:14-0400\n"
+"PO-Revision-Date: 2019-12-15 15:17+0000\n"
 "Last-Translator: Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>\n"
-"Language-Team: French\n"
+"Language-Team: French <https://translate.stg.fedoraproject.org/projects/"
+"ibus-table/app/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Zanata 3.9.6\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.9.1\n"
 
 #: engine/table.py:1553 setup/ibus-table-preferences.ui:75
 msgid "Simplified Chinese"
@@ -36,18 +37,16 @@ msgid "Simplified Chinese first"
 msgstr "Chinois simplifié d'abord"
 
 #: engine/table.py:1571
-#, fuzzy
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr "Basculer vers \"Chinois simplifié avant traditionnel\""
+msgstr "Basculer vers « Chinois simplifié avant traditionnel »."
 
 #: engine/table.py:1577
 msgid "Traditional Chinese first"
 msgstr "Chinois traditionnel d'abord"
 
 #: engine/table.py:1579
-#, fuzzy
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr "Basculer vers \"Chinois traditionnel avant simplifié\""
+msgstr "Basculer vers « Chinois traditionel avant simplifié »."
 
 #: engine/table.py:1585 setup/ibus-table-preferences.ui:87
 msgid "All Chinese characters"
@@ -58,21 +57,18 @@ msgid "Switch to “All Chinese characters”."
 msgstr "Basculer vers \"Tous les caractères chinois\""
 
 #: engine/table.py:1590
-#, fuzzy
 msgid "Chinese mode"
 msgstr "Mode chinois"
 
 #: engine/table.py:1591
-#, fuzzy
 msgid "Switch Chinese mode"
-msgstr "Basculer vers le mode chinois"
+msgstr "Basculer le mode chinois"
 
 #: engine/table.py:1601
 msgid "English"
 msgstr "Anglais"
 
 #: engine/table.py:1602
-#, fuzzy
 msgid "Switch to English input"
 msgstr "Basculer vers la saisie anglaise"
 
@@ -81,7 +77,6 @@ msgid "Chinese"
 msgstr "Chinois"
 
 #: engine/table.py:1610
-#, fuzzy
 msgid "Switch to Chinese input"
 msgstr "Basculer vers la saisie chinoise"
 
@@ -90,7 +85,6 @@ msgid "Direct"
 msgstr "Direct"
 
 #: engine/table.py:1619
-#, fuzzy
 msgid "Switch to direct input"
 msgstr "Basculer vers la saisie directe"
 
@@ -99,7 +93,6 @@ msgid "Table"
 msgstr "Table"
 
 #: engine/table.py:1625
-#, fuzzy
 msgid "Switch to table input"
 msgstr "Passer en saisie par table"
 

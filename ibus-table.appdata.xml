@@ -12,6 +12,9 @@
       languages are available as well.
     </p>
   </description>
+  <project_license>LGPL-2.1+</project_license>
+  <developer_name>Mike FABIAN</developer_name>
+  <update_contact>mfabian@redhat.com</update_contact>
   <url type="homepage">https://kaio.github.io/ibus-table/</url>
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
@@ -174,8 +177,5 @@
       </description>
     </release>
   </releases>
-  <project_license>LGPL-2.1+</project_license>
-  <developer_name>Mike FABIAN</developer_name>
-  <update_contact>mfabian@redhat.com</update_contact>
   <translation type="gettext">ibus-table</translation>
 </component>

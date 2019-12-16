@@ -1,0 +1,561 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
+# This file is distributed under the same license as the PACKAGE package.
+# Oğuz Ersen <oguzersen@protonmail.com>, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
+"POT-Creation-Date: 2019-12-16 07:41+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: engine/table.py:1553 setup/ibus-table-preferences.ui:75
+msgid "Simplified Chinese"
+msgstr ""
+
+#: engine/table.py:1555
+msgid "Switch to “Simplified Chinese only”."
+msgstr ""
+
+#: engine/table.py:1561 setup/ibus-table-preferences.ui:78
+msgid "Traditional Chinese"
+msgstr ""
+
+#: engine/table.py:1563
+msgid "Switch to “Traditional Chinese only”."
+msgstr ""
+
+#: engine/table.py:1569
+msgid "Simplified Chinese first"
+msgstr ""
+
+#: engine/table.py:1571
+msgid "Switch to “Simplified Chinese before traditional”."
+msgstr ""
+
+#: engine/table.py:1577
+msgid "Traditional Chinese first"
+msgstr ""
+
+#: engine/table.py:1579
+msgid "Switch to “Traditional Chinese before simplified”."
+msgstr ""
+
+#: engine/table.py:1585 setup/ibus-table-preferences.ui:87
+msgid "All Chinese characters"
+msgstr ""
+
+#: engine/table.py:1586
+msgid "Switch to “All Chinese characters”."
+msgstr ""
+
+#: engine/table.py:1590
+msgid "Chinese mode"
+msgstr ""
+
+#: engine/table.py:1591
+msgid "Switch Chinese mode"
+msgstr ""
+
+#: engine/table.py:1601
+msgid "English"
+msgstr ""
+
+#: engine/table.py:1602
+msgid "Switch to English input"
+msgstr ""
+
+#: engine/table.py:1609
+msgid "Chinese"
+msgstr ""
+
+#: engine/table.py:1610
+msgid "Switch to Chinese input"
+msgstr ""
+
+#: engine/table.py:1618 engine/table.py:1739 setup/ibus-table-preferences.ui:36
+msgid "Direct"
+msgstr ""
+
+#: engine/table.py:1619
+msgid "Switch to direct input"
+msgstr ""
+
+#: engine/table.py:1624 engine/table.py:1685
+msgid "Table"
+msgstr ""
+
+#: engine/table.py:1625
+msgid "Switch to table input"
+msgstr ""
+
+#: engine/table.py:1633
+msgid "Input mode"
+msgstr ""
+
+#: engine/table.py:1634
+msgid "Switch Input mode"
+msgstr ""
+
+#: engine/table.py:1643 engine/table.py:1664 setup/ibus-table-preferences.ui:98
+#: setup/ibus-table-preferences.ui:112 setup/ibus-table-preferences.ui:182
+#: setup/ibus-table-preferences.ui:196
+msgid "Half"
+msgstr ""
+
+#: engine/table.py:1644
+msgid "Switch to halfwidth letters"
+msgstr ""
+
+#: engine/table.py:1649 engine/table.py:1670
+#: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
+#: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
+msgid "Full"
+msgstr ""
+
+#: engine/table.py:1650
+msgid "Switch to fullwidth letters"
+msgstr ""
+
+#: engine/table.py:1654
+msgid "Letter width"
+msgstr ""
+
+#: engine/table.py:1655
+msgid "Switch letter width"
+msgstr ""
+
+#: engine/table.py:1665
+msgid "Switch to halfwidth punctuation"
+msgstr ""
+
+#: engine/table.py:1671
+msgid "Switch to fullwidth punctuation"
+msgstr ""
+
+#: engine/table.py:1675
+msgid "Punctuation width"
+msgstr ""
+
+#: engine/table.py:1676
+msgid "Switch punctuation width"
+msgstr ""
+
+#: engine/table.py:1686
+msgid "Switch to table mode"
+msgstr ""
+
+#: engine/table.py:1691
+msgid "Pinyin"
+msgstr ""
+
+#: engine/table.py:1692
+msgid "Switch to pinyin mode"
+msgstr ""
+
+#: engine/table.py:1696
+msgid "Pinyin mode"
+msgstr ""
+
+#: engine/table.py:1697
+msgid "Switch pinyin mode"
+msgstr ""
+
+#: engine/table.py:1706
+msgid "Multiple character match"
+msgstr ""
+
+#: engine/table.py:1708
+msgid "Switch to matching multiple characters at once"
+msgstr ""
+
+#: engine/table.py:1713
+msgid "Single character match"
+msgstr ""
+
+#: engine/table.py:1715
+msgid "Switch to matching only single characters"
+msgstr ""
+
+#: engine/table.py:1719
+msgid "Onechar mode"
+msgstr ""
+
+#: engine/table.py:1720
+msgid "Switch onechar mode"
+msgstr ""
+
+#: engine/table.py:1729 setup/ibus-table-preferences.ui:33
+msgid "Normal"
+msgstr ""
+
+#: engine/table.py:1731
+msgid ""
+"Switch to normal commit mode (automatic commits go into the preedit instead "
+"of into the application. This enables automatic definitions of new shortcuts)"
+msgstr ""
+
+#: engine/table.py:1741
+msgid ""
+"Switch to direct commit mode (automatic commits go directly into the "
+"application)"
+msgstr ""
+
+#: engine/table.py:1746
+msgid "Auto commit mode"
+msgstr ""
+
+#: engine/table.py:1747
+msgid "Switch autocommit mode"
+msgstr ""
+
+#: engine/table.py:2449
+msgid "Setup"
+msgstr ""
+
+#: engine/table.py:2452
+#, python-format
+msgid "Configure ibus-table “%(engine-name)s”"
+msgstr ""
+
+#: ibus-table.appdata.xml:5
+msgid "Ibus Table"
+msgstr ""
+
+#: ibus-table.appdata.xml:6
+msgid "Table based input method"
+msgstr ""
+
+#: ibus-table.appdata.xml:8
+msgid ""
+"Ibus-table is an input method framework for table-based input methods. "
+"Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
+"CangJie, …. But some tables for other languages are available as well."
+msgstr ""
+
+#: setup/main.py:150
+msgid "IBUS_ENGINE_NAME environment variable is not set."
+msgstr ""
+
+#: setup/main.py:154
+msgid "Cannot determine the engine name. Please use the --engine-name option."
+msgstr ""
+
+#: setup/main.py:174
+#, python-format
+msgid "IBus Table engine %s is not available"
+msgstr ""
+
+#: setup/main.py:336
+#, python-format
+msgid "IBus Table %s Preferences"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:19 setup/ibus-table-preferences.ui:47
+#: setup/ibus-table-preferences.ui:61
+msgid "No"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:22 setup/ibus-table-preferences.ui:50
+#: setup/ibus-table-preferences.ui:64
+msgid "Yes"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:81
+msgid "Simplified Chinese before traditional"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:84
+msgid "Traditional Chinese before simplified"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:126
+msgid "Direct input"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:129
+msgid "Table input"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:140
+msgid "Horizontal"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:143
+msgid "Vertical"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:154
+msgid "Phrase"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:157
+msgid "Single Char"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:168
+msgid "Commit"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:171
+msgid "Next Page"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:223
+msgid "Restore all defaults"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:227
+msgid "Restore defaults as specified in the database for this engine."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:302
+msgid "Input mode:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:315
+msgid ""
+"“Simplified Chinese” shows only characters \n"
+"used in simplified Chinese. “Traditional Chinese”\n"
+"shows only characters used in traditional Chinese.\n"
+"“Simplified Chinese before traditional” shows all\n"
+"characters but puts the simplified characters higher\n"
+"up in the candidate list. “Traditional Chinese before\n"
+"simplified” puts the traditional characters higher up\n"
+"in the candidate list. “All characters” just shows all\n"
+"matches without any particular filtering on traditional\n"
+"versus simplified Chinese."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:340
+msgid ""
+"Whether to use fullwidth or halfwidth\n"
+"letters in table input mode."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:357
+msgid ""
+"Whether to use fullwidth or halfwidth\n"
+"punctuation in table input mode."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:374
+msgid ""
+"Whether to use fullwidth or halfwidth\n"
+"letters in direct input mode."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:391
+msgid ""
+"Whether to use fullwidth or halfwidth\n"
+"punctuation in direct input mode."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:411
+msgid "Chinese mode:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:427
+msgid "Table input letter width:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:443
+msgid "Table input punctuation width:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:459
+msgid "Direct input letter width:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:475
+msgid "Direct input punctuation width:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:488
+msgid ""
+"“Direct input” is almost the same as if the\n"
+"input method were off, i.e. not used at all, most\n"
+"characters just get passed to the application.\n"
+"But some conversion between fullwidth and\n"
+"halfwidth may still happen in direct input mode.\n"
+"“Table input” means the input method is on."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:514
+msgid "<b>Inital state</b>"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:551
+msgid ""
+"Whether the lookup table showing the candidates\n"
+"should be vertical or horizontal."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:568
+msgid ""
+"The maximum number of candidates in\n"
+"one page of the lookup table. You can switch\n"
+"pages in the lookup table using the page up/down\n"
+"keys or the arrow up/down keys."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:592
+msgid "Orientation:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:608
+msgid "Page size:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:624
+msgid "Show candidate list"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:637
+msgid ""
+"Whether candidate lists should be shown or hidden.\n"
+"For Chinese input methods one usually wants the\n"
+"candidate lists to be shown. But for some non-Chinese\n"
+"input methods like the Russian “translit”, hiding the\n"
+"candidate lists is better."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:661
+msgid "<b>Candidate list</b>"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:681
+msgid "Settings"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:724
+msgid ""
+"If this is set to “single char”, only single\n"
+"character candidates will be shown. If it is\n"
+"set to “Phrase” candidates consisting of\n"
+"several characters may be shown."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:743
+msgid ""
+"If set to “Yes”, this does the following 4 things:\n"
+"1) When typing “Return”, commit the \n"
+"   candidate + line-feed\n"
+"2) When tying Tab, commit the candidate\n"
+"3) When committing using a commit key, commit\n"
+"   the candidate + \" \"\n"
+"4) If typing the next character matches no candidates,\n"
+"   commit the first candidate of the previous match.\n"
+"   (Mostly needed for non-Chinese input methods like\n"
+"   the Russian “translit”)"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:768
+msgid ""
+"Committing with the commit keys or with the mouse\n"
+"always commits to the application. This option is about\n"
+"“automatic” commits which may happen when\n"
+"one just continues typing input without committing\n"
+"manually. From time to time, “automatic” commits will\n"
+"happen then.\n"
+"“Direct” means such “automatic” commits go directly\n"
+"into the application, “Normal” means they get committed\n"
+"to preëdit."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:792
+msgid ""
+"If you choose the space key to do “Next page”,\n"
+" you can only commit using the selection keys\n"
+"(i.e. the labels in front of the candidates in the\n"
+"lookup table) or using the mouse."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:814
+msgid "Compose:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:830
+msgid "Auto select:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:846
+msgid "Auto commit mode:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:862
+msgid "Behavior of space key:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:878
+msgid "Auto wildcard:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:891
+msgid ""
+"If yes, a multi wildcard will be automatically\n"
+"appended to the end of the input string."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:911
+msgid "Single wildchard character:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:924
+msgid ""
+"The wildcard to match any single character.\n"
+"Type RETURN or ENTER to confirm after changing the wildcard."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:943
+msgid "Multi wildcard character:"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:956
+msgid ""
+"The wildcard used to match any number of characters.\n"
+"Type RETURN or ENTER to confirm after changing the wildcard."
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:976
+msgid "<b>Details</b>"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:999
+msgid "Details"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:1055
+msgid "Table input method for IBus"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:1087
+msgid ""
+"<small>\n"
+"<b>Authors:</b>\n"
+"Yuwei YU (‘acevery’)\n"
+"Peng Huang\n"
+"BYVoid\n"
+"Peng Wu\n"
+"\n"
+"<b>Contributors:</b>\n"
+"koterpilla\n"
+"Zerng07\n"
+"Caius ‘kaio’ Chance\n"
+"Mike FABIAN\n"
+"Bernard Nauwelaerts\n"
+"Xiaojun Ma\n"
+"mozbugbox\n"
+"Seán de Búrca\n"
+"</small>"
+msgstr ""
+
+#: setup/ibus-table-preferences.ui:1186
+msgid "About"
+msgstr ""

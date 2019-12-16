@@ -1,23 +1,24 @@
 # IBus-Table Translation file: de.po
 # Copyright (C) 2012 Mike FABIAN <mfabian@redhat.com>
 # This file is distributed under the same license as the ibus-table package.
-# Mike FABIAN <mfabian@redhat.com>, 2012.
-# Mike FABIAN <mfabian@redhat.com>, 2016. #zanata
-# Mike FABIAN <mfabian@redhat.com>, 2017. #zanata
+# Mike FABIAN <mfabian@redhat.com>, 2012, 2019.
+# Mike FABIAN <mfabian@redhat.com>, 2016. #zanata, 2019.
+# Mike FABIAN <mfabian@redhat.com>, 2017. #zanata, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2019-12-15 15:57+0100\n"
-"PO-Revision-Date: 2017-01-16 02:19-0500\n"
+"PO-Revision-Date: 2019-12-16 18:16+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: German <trans-de@lists.fedoraproject.org>\n"
+"Language-Team: German <https://translate.stg.fedoraproject.org/projects/"
+"ibus-table/app/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 3.9.6\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.9.1\n"
 
 #: engine/table.py:1553 setup/ibus-table-preferences.ui:75
 msgid "Simplified Chinese"
@@ -25,7 +26,7 @@ msgstr "Vereinfachtes Chinesisch"
 
 #: engine/table.py:1555
 msgid "Switch to “Simplified Chinese only”."
-msgstr "Wechseln zu “Vereinfachtes Chinesisch”"
+msgstr "Wechseln zu “Vereinfachtes Chinesisch”."
 
 #: engine/table.py:1561 setup/ibus-table-preferences.ui:78
 msgid "Traditional Chinese"
@@ -33,7 +34,7 @@ msgstr "Traditionelles Chinesisch"
 
 #: engine/table.py:1563
 msgid "Switch to “Traditional Chinese only”."
-msgstr "Wechseln zu “Traditionelles Chinesisch”"
+msgstr "Wechseln zu “Traditionelles Chinesisch”."
 
 #: engine/table.py:1569
 msgid "Simplified Chinese first"
@@ -41,7 +42,7 @@ msgstr "Vereinfachtes Chinesisch zuerst"
 
 #: engine/table.py:1571
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr "Wechseln zu “Vereinfachtes Chinesisch vor traditionellem”"
+msgstr "Wechseln zu “Vereinfachtes Chinesisch vor traditionellem”."
 
 #: engine/table.py:1577
 msgid "Traditional Chinese first"
@@ -49,7 +50,7 @@ msgstr "Traditionelles Chinesisch zuerst"
 
 #: engine/table.py:1579
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr "Wechseln zu “Traditionelles Chinesisch vor vereinfachtem”"
+msgstr "Wechseln zu “Traditionelles Chinesisch vor vereinfachtem”."
 
 #: engine/table.py:1585 setup/ibus-table-preferences.ui:87
 msgid "All Chinese characters"
@@ -57,7 +58,7 @@ msgstr "Alle chinesischen Zeichen"
 
 #: engine/table.py:1586
 msgid "Switch to “All Chinese characters”."
-msgstr "Wechseln zu “Alle chinesischen Zeichen”"
+msgstr "Wechseln zu “Alle chinesischen Zeichen”."
 
 #: engine/table.py:1590
 msgid "Chinese mode"
@@ -474,7 +475,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:302
 msgid "Input mode:"
-msgstr "Eingabemodus"
+msgstr "Eingabemodus:"
 
 #: setup/ibus-table-preferences.ui:315
 msgid ""
@@ -541,19 +542,19 @@ msgstr "Chinesischer Modus:"
 
 #: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"
-msgstr "Buchstabenbreite im Tabelleneingabemodus"
+msgstr "Buchstabenbreite im Tabelleneingabemodus:"
 
 #: setup/ibus-table-preferences.ui:443
 msgid "Table input punctuation width:"
-msgstr "Zeichensetzungsbreite im Tabelleneingabemodus"
+msgstr "Zeichensetzungsbreite im Tabelleneingabemodus:"
 
 #: setup/ibus-table-preferences.ui:459
 msgid "Direct input letter width:"
-msgstr "Buchstabenbreite im Direkteingabemodus"
+msgstr "Buchstabenbreite im Direkteingabemodus:"
 
 #: setup/ibus-table-preferences.ui:475
 msgid "Direct input punctuation width:"
-msgstr "Zeichensetzungsbreite im Direkteingabemodus"
+msgstr "Zeichensetzungsbreite im Direkteingabemodus:"
 
 #: setup/ibus-table-preferences.ui:488
 msgid ""
@@ -599,7 +600,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:592
 msgid "Orientation:"
-msgstr "Orientierung"
+msgstr "Orientierung:"
 
 #: setup/ibus-table-preferences.ui:608
 msgid "Page size:"
@@ -712,23 +713,23 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:814
 msgid "Compose:"
-msgstr "Komposition"
+msgstr "Komposition:"
 
 #: setup/ibus-table-preferences.ui:830
 msgid "Auto select:"
-msgstr "Automatische Auswahl"
+msgstr "Automatische Auswahl:"
 
 #: setup/ibus-table-preferences.ui:846
 msgid "Auto commit mode:"
-msgstr "Autocommitmodus"
+msgstr "Autocommitmodus:"
 
 #: setup/ibus-table-preferences.ui:862
 msgid "Behavior of space key:"
-msgstr "Verhalten der Leertaste"
+msgstr "Verhalten der Leertaste:"
 
 #: setup/ibus-table-preferences.ui:878
 msgid "Auto wildcard:"
-msgstr "Automatischer Platzhalter"
+msgstr "Automatischer Platzhalter:"
 
 #: setup/ibus-table-preferences.ui:891
 msgid ""

@@ -7,230 +7,236 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2019-12-16 07:41+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2019-12-16 18:03+0000\n"
+"Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
+"Language-Team: Turkish <https://translate.stg.fedoraproject.org/projects/"
+"ibus-table/app/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.9.1\n"
 
 #: engine/table.py:1553 setup/ibus-table-preferences.ui:75
 msgid "Simplified Chinese"
-msgstr ""
+msgstr "Basitleştirilmiş Çince"
 
 #: engine/table.py:1555
 msgid "Switch to “Simplified Chinese only”."
-msgstr ""
+msgstr "“Yalnızca Basitleştirilmiş Çince”ye geç."
 
 #: engine/table.py:1561 setup/ibus-table-preferences.ui:78
 msgid "Traditional Chinese"
-msgstr ""
+msgstr "Geleneksel Çince"
 
 #: engine/table.py:1563
 msgid "Switch to “Traditional Chinese only”."
-msgstr ""
+msgstr "“Yalnızca Geleneksel Çince”ye geç."
 
 #: engine/table.py:1569
 msgid "Simplified Chinese first"
-msgstr ""
+msgstr "Önce Basitleştirilmiş Çince"
 
 #: engine/table.py:1571
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr ""
+msgstr "“Gelenekselden önce Basitleştirilmiş Çince”ye geç."
 
 #: engine/table.py:1577
 msgid "Traditional Chinese first"
-msgstr ""
+msgstr "Önce Geleneksel Çince"
 
 #: engine/table.py:1579
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr ""
+msgstr "“Basitleştirilmişten önce Geleneksel Çince”ye geç."
 
 #: engine/table.py:1585 setup/ibus-table-preferences.ui:87
 msgid "All Chinese characters"
-msgstr ""
+msgstr "Tüm Çince karakterler"
 
 #: engine/table.py:1586
 msgid "Switch to “All Chinese characters”."
-msgstr ""
+msgstr "“Tüm Çince karakterler”e geç."
 
 #: engine/table.py:1590
 msgid "Chinese mode"
-msgstr ""
+msgstr "Çince modu"
 
 #: engine/table.py:1591
 msgid "Switch Chinese mode"
-msgstr ""
+msgstr "Çince modunu değiştir"
 
 #: engine/table.py:1601
 msgid "English"
-msgstr ""
+msgstr "İngilizce"
 
 #: engine/table.py:1602
 msgid "Switch to English input"
-msgstr ""
+msgstr "İngilizce girişe geç"
 
 #: engine/table.py:1609
 msgid "Chinese"
-msgstr ""
+msgstr "Çince"
 
 #: engine/table.py:1610
 msgid "Switch to Chinese input"
-msgstr ""
+msgstr "Çince girişe geç"
 
 #: engine/table.py:1618 engine/table.py:1739 setup/ibus-table-preferences.ui:36
 msgid "Direct"
-msgstr ""
+msgstr "Doğrudan"
 
 #: engine/table.py:1619
 msgid "Switch to direct input"
-msgstr ""
+msgstr "Doğrudan girişe geç"
 
 #: engine/table.py:1624 engine/table.py:1685
 msgid "Table"
-msgstr ""
+msgstr "Tablo"
 
 #: engine/table.py:1625
 msgid "Switch to table input"
-msgstr ""
+msgstr "Tablo girişe geç"
 
 #: engine/table.py:1633
 msgid "Input mode"
-msgstr ""
+msgstr "Giriş modu"
 
 #: engine/table.py:1634
 msgid "Switch Input mode"
-msgstr ""
+msgstr "Giriş modunu değiştir"
 
 #: engine/table.py:1643 engine/table.py:1664 setup/ibus-table-preferences.ui:98
 #: setup/ibus-table-preferences.ui:112 setup/ibus-table-preferences.ui:182
 #: setup/ibus-table-preferences.ui:196
 msgid "Half"
-msgstr ""
+msgstr "Yarım"
 
 #: engine/table.py:1644
 msgid "Switch to halfwidth letters"
-msgstr ""
+msgstr "Yarım genişlikteki harflere geç"
 
 #: engine/table.py:1649 engine/table.py:1670
 #: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
 #: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
 msgid "Full"
-msgstr ""
+msgstr "Tam"
 
 #: engine/table.py:1650
 msgid "Switch to fullwidth letters"
-msgstr ""
+msgstr "Tam genişlikteki harflere geç"
 
 #: engine/table.py:1654
 msgid "Letter width"
-msgstr ""
+msgstr "Harf genişliği"
 
 #: engine/table.py:1655
 msgid "Switch letter width"
-msgstr ""
+msgstr "Harf genişliğini değiştir"
 
 #: engine/table.py:1665
 msgid "Switch to halfwidth punctuation"
-msgstr ""
+msgstr "Yarım genişlikteki noktalama işaretlerine geç"
 
 #: engine/table.py:1671
 msgid "Switch to fullwidth punctuation"
-msgstr ""
+msgstr "Tam genişlikteki noktalama işaretlerine geç"
 
 #: engine/table.py:1675
 msgid "Punctuation width"
-msgstr ""
+msgstr "Noktalama işareti genişliği"
 
 #: engine/table.py:1676
 msgid "Switch punctuation width"
-msgstr ""
+msgstr "Noktalama işareti genişliğini değiştir"
 
 #: engine/table.py:1686
 msgid "Switch to table mode"
-msgstr ""
+msgstr "Tablo moduna geç"
 
 #: engine/table.py:1691
 msgid "Pinyin"
-msgstr ""
+msgstr "Pinyin"
 
 #: engine/table.py:1692
 msgid "Switch to pinyin mode"
-msgstr ""
+msgstr "Pinyin moduna geç"
 
 #: engine/table.py:1696
 msgid "Pinyin mode"
-msgstr ""
+msgstr "Pinyin modu"
 
 #: engine/table.py:1697
 msgid "Switch pinyin mode"
-msgstr ""
+msgstr "Pinyin modunu değiştir"
 
 #: engine/table.py:1706
 msgid "Multiple character match"
-msgstr ""
+msgstr "Çoklu karakter eşleşmesi"
 
 #: engine/table.py:1708
 msgid "Switch to matching multiple characters at once"
-msgstr ""
+msgstr "Aynı anda birden fazla karakter eşleşmesine geç"
 
 #: engine/table.py:1713
 msgid "Single character match"
-msgstr ""
+msgstr "Tekli karakter eşleşmesi"
 
 #: engine/table.py:1715
 msgid "Switch to matching only single characters"
-msgstr ""
+msgstr "Aynı anda sadece bir karakter eşleşmesine geç"
 
 #: engine/table.py:1719
 msgid "Onechar mode"
-msgstr ""
+msgstr "Tek karakter modu"
 
 #: engine/table.py:1720
 msgid "Switch onechar mode"
-msgstr ""
+msgstr "Tek karakter modunu değiştir"
 
 #: engine/table.py:1729 setup/ibus-table-preferences.ui:33
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: engine/table.py:1731
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
 msgstr ""
+"Normal seçim moduna geç (otomatik seçimler, uygulama yerine önce ön-"
+"düzenlemeye gider. Bu, yeni kısayolların otomatik olarak tanımlanmasını "
+"sağlar)"
 
 #: engine/table.py:1741
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
-msgstr ""
+msgstr "Doğrudan seçim moduna geç (otomatik seçimler doğrudan uygulamaya gider)"
 
 #: engine/table.py:1746
 msgid "Auto commit mode"
-msgstr ""
+msgstr "Otomatik seçim modu"
 
 #: engine/table.py:1747
 msgid "Switch autocommit mode"
-msgstr ""
+msgstr "Otomatik seçim modunu değiştir"
 
 #: engine/table.py:2449
 msgid "Setup"
-msgstr ""
+msgstr "Kurulum"
 
 #: engine/table.py:2452
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
-msgstr ""
+msgstr "Ibus-table \"%(engine-name)s\" yapılandır"
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"
-msgstr ""
+msgstr "Ibus Tablosu"
 
 #: ibus-table.appdata.xml:6
 msgid "Table based input method"
-msgstr ""
+msgstr "Tablo tabanlı giriş yöntemi"
 
 #: ibus-table.appdata.xml:8
 msgid ""
@@ -238,86 +244,91 @@ msgid ""
 "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
 "CangJie, …. But some tables for other languages are available as well."
 msgstr ""
+"Ibus-table, tablo tabanlı giriş yöntemleri için bir giriş yöntemi "
+"çerçevesidir. Çoğunlukla ZhengMa, WuBi, ErBi, CangJie, ... gibi Çince giriş "
+"yöntemleri için kullanılır. Ancak diğer diller için de bazı tablolar "
+"mevcuttur."
 
 #: setup/main.py:150
 msgid "IBUS_ENGINE_NAME environment variable is not set."
-msgstr ""
+msgstr "IBUS_ENGINE_NAME ortam değişkeni tanımlı değil."
 
 #: setup/main.py:154
 msgid "Cannot determine the engine name. Please use the --engine-name option."
-msgstr ""
+msgstr "Motor adı belirlenemiyor. Lütfen --engine-name seçeneğini kullanın."
 
 #: setup/main.py:174
 #, python-format
 msgid "IBus Table engine %s is not available"
-msgstr ""
+msgstr "%s ibus tablo motoru mevcut değil"
 
 #: setup/main.py:336
 #, python-format
 msgid "IBus Table %s Preferences"
-msgstr ""
+msgstr "%s ibus tablosu tercihleri"
 
 #: setup/ibus-table-preferences.ui:19 setup/ibus-table-preferences.ui:47
 #: setup/ibus-table-preferences.ui:61
 msgid "No"
-msgstr ""
+msgstr "Hayır"
 
 #: setup/ibus-table-preferences.ui:22 setup/ibus-table-preferences.ui:50
 #: setup/ibus-table-preferences.ui:64
 msgid "Yes"
-msgstr ""
+msgstr "Evet"
 
 #: setup/ibus-table-preferences.ui:81
 msgid "Simplified Chinese before traditional"
-msgstr ""
+msgstr "Gelenekselden önce Basitleştirilmiş Çince"
 
 #: setup/ibus-table-preferences.ui:84
 msgid "Traditional Chinese before simplified"
-msgstr ""
+msgstr "Basitleştirilmişten önce Geleneksel Çince"
 
 #: setup/ibus-table-preferences.ui:126
 msgid "Direct input"
-msgstr ""
+msgstr "Doğrudan giriş"
 
 #: setup/ibus-table-preferences.ui:129
 msgid "Table input"
-msgstr ""
+msgstr "Tablo girişi"
 
 #: setup/ibus-table-preferences.ui:140
 msgid "Horizontal"
-msgstr ""
+msgstr "Yatay"
 
 #: setup/ibus-table-preferences.ui:143
 msgid "Vertical"
-msgstr ""
+msgstr "Dikey"
 
 #: setup/ibus-table-preferences.ui:154
 msgid "Phrase"
-msgstr ""
+msgstr "İfade"
 
 #: setup/ibus-table-preferences.ui:157
 msgid "Single Char"
-msgstr ""
+msgstr "Tek Karakter"
 
 #: setup/ibus-table-preferences.ui:168
 msgid "Commit"
-msgstr ""
+msgstr "Seçim"
 
 #: setup/ibus-table-preferences.ui:171
 msgid "Next Page"
-msgstr ""
+msgstr "Sonraki Sayfa"
 
 #: setup/ibus-table-preferences.ui:223
 msgid "Restore all defaults"
-msgstr ""
+msgstr "Tüm varsayılanları geri yükle"
 
 #: setup/ibus-table-preferences.ui:227
 msgid "Restore defaults as specified in the database for this engine."
 msgstr ""
+"Bu motor için veritabanında belirtildiği şekilde varsayılanları geri yükle."
 
 #: setup/ibus-table-preferences.ui:302
 msgid "Input mode:"
-msgstr ""
+msgstr "Giriş modu:"
 
 #: setup/ibus-table-preferences.ui:315
 msgid ""
@@ -332,50 +343,68 @@ msgid ""
 "matches without any particular filtering on traditional\n"
 "versus simplified Chinese."
 msgstr ""
+"“Basitleştirilmiş Çince” yalnızca basitleştirilmiş \n"
+"Çince'de kullanılan karakterleri gösterir. “Geleneksel\n"
+"Çince” sadece geleneksel Çince'de kullanılan karakterleri\n"
+"gösterir. “Gelenekselden önce Basitleştirilmiş Çince” tüm\n"
+"karakterleri gösterir, ancak basitleştirilmiş karakterleri aday\n"
+"listesinde daha yukarı koyar. “Basitleştirilmişten önce\n"
+"Geleneksel Çince” geleneksel karakterleri aday listesinde\n"
+"daha yukarı koyar. “Tüm karakterler” geleneksel ile\n"
+"sadeleştirilmiş Çince arasında belirli bir filtreleme olmadan\n"
+"tüm eşleşmeleri gösterir."
 
 #: setup/ibus-table-preferences.ui:340
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
+"Tablo giriş modunda tam genişlikli  mi\n"
+"yarım genişlikli mi harflerin kullanılacağı."
 
 #: setup/ibus-table-preferences.ui:357
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
+"Tablo giriş modunda tam genişlikli  mi yarım\n"
+"genişlikli mi noktalama işaretlerinin kullanılacağı."
 
 #: setup/ibus-table-preferences.ui:374
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
+"Doğrudan giriş modunda tam genişlikli  mi\n"
+"yarım genişlikli mi harflerin kullanılacağı."
 
 #: setup/ibus-table-preferences.ui:391
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
 msgstr ""
+"Doğrudan giriş modunda tam genişlikli  mi yarım\n"
+"genişlikli mi noktalama işaretlerinin kullanılacağı."
 
 #: setup/ibus-table-preferences.ui:411
 msgid "Chinese mode:"
-msgstr ""
+msgstr "Çince modu:"
 
 #: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"
-msgstr ""
+msgstr "Tablo girişi harf genişliği:"
 
 #: setup/ibus-table-preferences.ui:443
 msgid "Table input punctuation width:"
-msgstr ""
+msgstr "Tablo girişi noktalama işareti genişliği:"
 
 #: setup/ibus-table-preferences.ui:459
 msgid "Direct input letter width:"
-msgstr ""
+msgstr "Doğrudan giriş harf genişliği:"
 
 #: setup/ibus-table-preferences.ui:475
 msgid "Direct input punctuation width:"
-msgstr ""
+msgstr "Doğrudan giriş noktalama işareti genişliği:"
 
 #: setup/ibus-table-preferences.ui:488
 msgid ""
@@ -386,16 +415,24 @@ msgid ""
 "halfwidth may still happen in direct input mode.\n"
 "“Table input” means the input method is on."
 msgstr ""
+"“Doğrudan giriş”, giriş yönteminin kapalı olduğu\n"
+"durumla neredeyse aynıdır, yani hiç kullanılmazsa\n"
+"çoğu karakter uygulamaya iletilir. Ancak, doğrudan\n"
+"giriş modunda, tam genişlik ve yarım genişlik arasında\n"
+"bir miktar dönüşüm olmaya devam edebilir. “Tablo\n"
+"girişi”, giriş yönteminin açık olduğu anlamına gelir."
 
 #: setup/ibus-table-preferences.ui:514
 msgid "<b>Inital state</b>"
-msgstr ""
+msgstr "<b>Başlangıç durumu</b>"
 
 #: setup/ibus-table-preferences.ui:551
 msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
 msgstr ""
+"Adayları gösteren arama tablosunun dikey mi yatay\n"
+"mı olması gerektiği."
 
 #: setup/ibus-table-preferences.ui:568
 msgid ""
@@ -404,18 +441,22 @@ msgid ""
 "pages in the lookup table using the page up/down\n"
 "keys or the arrow up/down keys."
 msgstr ""
+"Arama tablosunun bir sayfasındaki maksimum\n"
+"aday sayısı. Page up/down tuşlarını veya yukarı/aşağı\n"
+"ok tuşlarını kullanarak arama tablosundaki sayfalar\n"
+"arasında geçiş yapabilirsiniz."
 
 #: setup/ibus-table-preferences.ui:592
 msgid "Orientation:"
-msgstr ""
+msgstr "Yön:"
 
 #: setup/ibus-table-preferences.ui:608
 msgid "Page size:"
-msgstr ""
+msgstr "Sayfa boyutu:"
 
 #: setup/ibus-table-preferences.ui:624
 msgid "Show candidate list"
-msgstr ""
+msgstr "Aday listesini göster"
 
 #: setup/ibus-table-preferences.ui:637
 msgid ""
@@ -425,14 +466,19 @@ msgid ""
 "input methods like the Russian “translit”, hiding the\n"
 "candidate lists is better."
 msgstr ""
+"Aday listelerin gösterilip gösterilmemesi gerektiği.\n"
+"Çince giriş yöntemleri için genellikle aday listelerinin\n"
+"gösterilmesi istenir. Ancak, Rusça “translit” gibi Çince\n"
+"dışındaki bazı giriş yöntemleri için aday listelerini\n"
+"gizlemek daha iyidir."
 
 #: setup/ibus-table-preferences.ui:661
 msgid "<b>Candidate list</b>"
-msgstr ""
+msgstr "<b>Aday listesi</b>"
 
 #: setup/ibus-table-preferences.ui:681
 msgid "Settings"
-msgstr ""
+msgstr "Ayarlar"
 
 #: setup/ibus-table-preferences.ui:724
 msgid ""
@@ -441,6 +487,10 @@ msgid ""
 "set to “Phrase” candidates consisting of\n"
 "several characters may be shown."
 msgstr ""
+"Bu “tek karakter” olarak ayarlanmışsa,\n"
+"sadece tek karakterli adaylar gösterilecektir.\n"
+"“İfade” olarak ayarlanmışsa, birkaç karakterden\n"
+"oluşan adaylar gösterilebilir."
 
 #: setup/ibus-table-preferences.ui:743
 msgid ""
@@ -455,6 +505,16 @@ msgid ""
 "   (Mostly needed for non-Chinese input methods like\n"
 "   the Russian “translit”)"
 msgstr ""
+"“Evet” olarak ayarlanmışsa, şu 4 şeyi yapar:\n"
+"1) “Enter” tuşuna basıldığında, adayı  \n"
+"   seç + yeni satıra geç\n"
+"2) Tab tuşuna basıldığında, adayı seç\n"
+"3) Seçim tuşu kullanılarak seçildiğinde,\n"
+"   adayı seç + \" \"\n"
+"4) Bir sonraki karakterin yazılması bir adayla eşleşmiyorsa,\n"
+"    önceki eşleşmenin ilk adayını seç.\n"
+"   (Genellikle Rusça \"translit\" gibi Çince dışındaki giriş\n"
+"   yöntemleri için gereklidir)"
 
 #: setup/ibus-table-preferences.ui:768
 msgid ""
@@ -468,6 +528,15 @@ msgid ""
 "into the application, “Normal” means they get committed\n"
 "to preëdit."
 msgstr ""
+"Seçim tuşları veya fare ile seçmek, her zaman\n"
+"seçimi uygulamaya gönderir. Bu seçenek, manuel\n"
+"olarak seçim yapmadan sadece yazmaya devam\n"
+"edildiğinde gerçekleşebilecek “otomatik” seçimlerle\n"
+"ilgilidir. Zaman zaman “otomatik” seçimler\n"
+"gerçekleşecektir.\n"
+"“Doğrudan”, böyle bir “otomatik” seçimin doğrudan\n"
+"uygulamaya gitmesi, “Normal” ise ön-düzenlemeye\n"
+"gönderilmesi anlamına gelir."
 
 #: setup/ibus-table-preferences.ui:792
 msgid ""
@@ -476,64 +545,76 @@ msgid ""
 "(i.e. the labels in front of the candidates in the\n"
 "lookup table) or using the mouse."
 msgstr ""
+"“Sonraki sayfa” için boşluk tuşunu seçerseniz,\n"
+" yalnızca seçim tuşlarını (yani arama tablosundaki\n"
+"adayların önündeki etiketler) veya fareyi kullanarak\n"
+"seçim yapabilirsiniz."
 
 #: setup/ibus-table-preferences.ui:814
 msgid "Compose:"
-msgstr ""
+msgstr "Oluştur:"
 
 #: setup/ibus-table-preferences.ui:830
 msgid "Auto select:"
-msgstr ""
+msgstr "Otomatik seçim:"
 
 #: setup/ibus-table-preferences.ui:846
 msgid "Auto commit mode:"
-msgstr ""
+msgstr "Otomatik seçim modu:"
 
 #: setup/ibus-table-preferences.ui:862
 msgid "Behavior of space key:"
-msgstr ""
+msgstr "Space tuşunun davranışı:"
 
 #: setup/ibus-table-preferences.ui:878
 msgid "Auto wildcard:"
-msgstr ""
+msgstr "Otomatik joker:"
 
 #: setup/ibus-table-preferences.ui:891
 msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
 msgstr ""
+"Eğer evet ise, giriş stringinin sonuna otomatik\n"
+"olarak çoklu bir joker karakter eklenecektir."
 
 #: setup/ibus-table-preferences.ui:911
 msgid "Single wildchard character:"
-msgstr ""
+msgstr "Tekli joker karakteri:"
 
 #: setup/ibus-table-preferences.ui:924
 msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
+"Herhangi bir tek karakterle eşleşen joker karakter.\n"
+"Joker karakteri değiştirdikten sonra onaylamak için RETURN veya ENTER tuşuna "
+"basın."
 
 #: setup/ibus-table-preferences.ui:943
 msgid "Multi wildcard character:"
-msgstr ""
+msgstr "Çoklu joker karakteri:"
 
 #: setup/ibus-table-preferences.ui:956
 msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
+"Herhangi bir sayıda karakterle eşleştirmek için kullanılan joker karakter.\n"
+"Joker karakteri değiştirdikten sonra onaylamak için RETURN veya ENTER tuşuna "
+"basın."
 
 #: setup/ibus-table-preferences.ui:976
 msgid "<b>Details</b>"
-msgstr ""
+msgstr "<b>Ayrıntılar</b>"
 
 #: setup/ibus-table-preferences.ui:999
 msgid "Details"
-msgstr ""
+msgstr "Ayrıntılar"
 
 #: setup/ibus-table-preferences.ui:1055
 msgid "Table input method for IBus"
-msgstr ""
+msgstr "IBus için tablo giriş yöntemi"
 
 #: setup/ibus-table-preferences.ui:1087
 msgid ""
@@ -555,7 +636,24 @@ msgid ""
 "Seán de Búrca\n"
 "</small>"
 msgstr ""
+"<small>\n"
+"<b>Yazarlar:</b>\n"
+"Yuwei YU (‘acevery’)\n"
+"Peng Huang\n"
+"BYVoid\n"
+"Peng Wu\n"
+"\n"
+"<b>Katkıda bulunanlar:</b>\n"
+"koterpilla\n"
+"Zerng07\n"
+"Caius ‘kaio’ Chance\n"
+"Mike FABIAN\n"
+"Bernard Nauwelaerts\n"
+"Xiaojun Ma\n"
+"mozbugbox\n"
+"Seán de Búrca\n"
+"</small>"
 
 #: setup/ibus-table-preferences.ui:1186
 msgid "About"
-msgstr ""
+msgstr "Hakkında"

@@ -2,13 +2,14 @@
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
 # Oğuz Ersen <oguzersen@protonmail.com>, 2019.
+# Mike FABIAN <mfabian@redhat.com>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2019-12-17 16:05+0100\n"
-"PO-Revision-Date: 2019-12-17 12:15+0000\n"
-"Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
+"PO-Revision-Date: 2019-12-17 15:15+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Turkish <https://translate.stg.fedoraproject.org/projects/"
 "ibus-table/app/tr/>\n"
 "Language: tr\n"
@@ -599,8 +600,6 @@ msgstr ""
 "olarak çoklu bir joker karakter eklenecektir."
 
 #: setup/ibus-table-preferences.ui:911
-#, fuzzy
-#| msgid "Single wildchard character:"
 msgid "Single wildcard character:"
 msgstr "Tekli joker karakteri:"
 

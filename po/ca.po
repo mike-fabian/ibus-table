@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2019-12-15 15:57+0100\n"
+"POT-Creation-Date: 2019-12-16 07:41+0100\n"
 "PO-Revision-Date: 2016-08-25 07:02-0400\n"
 "Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan\n"
@@ -248,144 +248,6 @@ msgstr ""
 "d'entrada basats en taules. Sobretot s'utilitza per als mètodes d'entrada "
 "xinesos com ara ZhengMa, WuBi, ErBi, CangJie, …. No obstant això, també hi "
 "ha disponible algunes taules per a altres idiomes."
-
-#: ibus-table.appdata.xml:21 ibus-table.appdata.xml:39
-#: ibus-table.appdata.xml:53 ibus-table.appdata.xml:66
-#: ibus-table.appdata.xml:99 ibus-table.appdata.xml:113
-#: ibus-table.appdata.xml:145 ibus-table.appdata.xml:167
-msgid "This new stable release includes these changes:"
-msgstr ""
-
-#: ibus-table.appdata.xml:23
-msgid ""
-"Migrate IBusConfig to GSettings. Resolves: https://github.com/mike-fabian/"
-"ibus-table/issues/4"
-msgstr ""
-
-#: ibus-table.appdata.xml:27
-msgid "Add a test suite"
-msgstr ""
-
-#: ibus-table.appdata.xml:30
-msgid ""
-"Add missing tags to ibus-table-createdb.sgml. Resolves: https://github.com/"
-"mike-fabian/ibus-table/issues/3"
-msgstr ""
-
-#: ibus-table.appdata.xml:41
-msgid ""
-"Draw InputMode text instead of icon into panel on non-Gnome desktops. "
-"Resolves: https://github.com/mike-fabian/ibus-table/issues/6"
-msgstr ""
-
-#: ibus-table.appdata.xml:45
-msgid "Make it work with Python2 again"
-msgstr ""
-
-#: ibus-table.appdata.xml:55
-msgid "Sync phrases cache from/to external storage (thanks to heiher)."
-msgstr ""
-
-#: ibus-table.appdata.xml:58
-msgid "Update translations from zanata (cs new)"
-msgstr ""
-
-#: ibus-table.appdata.xml:68
-msgid "Update translations from zanata (pt_BR updated, es new)"
-msgstr ""
-
-#: ibus-table.appdata.xml:71
-msgid ""
-"Don't query user database if user define phrase and dynamic adjust are "
-"disabled (thanks to heiher)"
-msgstr ""
-
-#: ibus-table.appdata.xml:75
-msgid ""
-"Enable hash map based cache for user database enabled (thanks to heiher)"
-msgstr ""
-
-#: ibus-table.appdata.xml:79
-msgid "Import hash map based cache for table database (thanks to heiher)"
-msgstr ""
-
-#: ibus-table.appdata.xml:83
-msgid "Install appstream metadata to /usr/share/metainfo/ (thanks to jbicha)"
-msgstr ""
-
-#: ibus-table.appdata.xml:87
-msgid "Fix some appdata validation issues (thanks to jbicha)"
-msgstr ""
-
-#: ibus-table.appdata.xml:90
-msgid ""
-"Fix bug in Unihan_Variants.txt, 著 U+8457 is both simplified *and* "
-"traditional Chinese (thanks to heiher)"
-msgstr ""
-
-#: ibus-table.appdata.xml:101
-msgid "Load .desktop file for ibus-setup-table correctly under Gnome Wayland"
-msgstr ""
-
-#: ibus-table.appdata.xml:105
-msgid "Set WM_CLASS of ibus-setup-table correctly"
-msgstr ""
-
-#: ibus-table.appdata.xml:115
-msgid ""
-"Avoid running initialization code of ibus_table_location.py when using ibus-"
-"table-createdb."
-msgstr ""
-
-#: ibus-table.appdata.xml:119
-msgid ""
-"Make it work on Python 3.6 (Unbreak sqlite on Python 3.6) (Resolves: "
-"rhbz#1413580)."
-msgstr ""
-
-#: ibus-table.appdata.xml:130
-msgid "Update translations from zanata (ca, de, fr, uk updated)"
-msgstr ""
-
-#: ibus-table.appdata.xml:133
-msgid "Improve README"
-msgstr ""
-
-#: ibus-table.appdata.xml:136
-msgid "Point to new home-page in the “About” tab."
-msgstr ""
-
-#: ibus-table.appdata.xml:147
-msgid ""
-"Fix bug in Unihan_Variants.txt, 乾 U+4E7E is both simplified and traditional "
-"Chinese (thanks to heiher)"
-msgstr ""
-
-#: ibus-table.appdata.xml:151
-msgid ""
-"Update Unihan_Variants.txt from “2015-04-30 Unicode 8.0.0” to “2016-06-01 "
-"Unicode 9.0.0”"
-msgstr ""
-
-#: ibus-table.appdata.xml:155
-msgid "Regenerate engine/chinese_variants.py"
-msgstr ""
-
-#: ibus-table.appdata.xml:158
-msgid ""
-"Add test case for 乾 to make sure it is detected as both traditional and "
-"simplified Chinese"
-msgstr ""
-
-#: ibus-table.appdata.xml:169
-msgid ""
-"When ignoring key release events, “False” should be returned, not "
-"“True” (Resolves: rhbz#1369514)"
-msgstr ""
-
-#: ibus-table.appdata.xml:178
-msgid "Mike FABIAN"
-msgstr "Mike FABIAN"
 
 #: setup/main.py:150
 msgid "IBUS_ENGINE_NAME environment variable is not set."
@@ -798,3 +660,6 @@ msgstr ""
 #: setup/ibus-table-preferences.ui:1186
 msgid "About"
 msgstr "Quant a"
+
+#~ msgid "Mike FABIAN"
+#~ msgstr "Mike FABIAN"

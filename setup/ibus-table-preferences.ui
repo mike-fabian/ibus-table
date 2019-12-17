@@ -908,7 +908,7 @@ appended to the end of the input string.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="xalign">0</property>
-                                    <property name="label" translatable="yes">Single wildchard character:</property>
+                                    <property name="label" translatable="yes">Single wildcard character:</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">0</property>

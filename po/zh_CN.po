@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2019-12-16 07:41+0100\n"
+"POT-Creation-Date: 2019-12-17 13:53+0100\n"
 "PO-Revision-Date: 2014-12-17 03:44-0500\n"
 "Last-Translator: Pany <geekpany@gmail.com>\n"
 "Language-Team: Chinese (China)\n"
@@ -15,216 +15,235 @@ msgstr ""
 "X-Generator: Zanata 3.9.6\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: engine/table.py:1553 setup/ibus-table-preferences.ui:75
+#. Translators: This is the menu entry to select
+#. when one wants to input only Simplified Chinese.
+#: engine/table.py:1554 setup/ibus-table-preferences.ui:75
 msgid "Simplified Chinese"
 msgstr "简体中文"
 
-#: engine/table.py:1555
+#: engine/table.py:1556
 msgid "Switch to “Simplified Chinese only”."
 msgstr "切换为“仅简体中文”"
 
-#: engine/table.py:1561 setup/ibus-table-preferences.ui:78
+#. Translators: This is the menu entry to select
+#. when one wants to input only Traditonal Chinese
+#: engine/table.py:1563 setup/ibus-table-preferences.ui:78
 msgid "Traditional Chinese"
 msgstr "繁体中文"
 
-#: engine/table.py:1563
+#: engine/table.py:1565
 #, fuzzy
 msgid "Switch to “Traditional Chinese only”."
 msgstr "切換至「繁體字中文」"
 
-#: engine/table.py:1569
+#. Translators: This is the menu entry to select when
+#. one wants to input both Simplified and Traditional
+#. Chinese but wants the Simplified Chinese to be
+#. preferred, i.e. shown higher up in the candidate
+#. lists.
+#: engine/table.py:1575
 msgid "Simplified Chinese first"
 msgstr "简体中文优先"
 
-#: engine/table.py:1571
+#: engine/table.py:1577
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr "切换为“简体中文先于繁体中文”"
 
-#: engine/table.py:1577
+#. Translators: This is the menu entry to select when
+#. one wants to input both Simplified and Traditional
+#. Chinese but wants the Traditional Chinese to be
+#. preferred, i.e. shown higher up in the candidate
+#. lists.
+#: engine/table.py:1587
 msgid "Traditional Chinese first"
 msgstr "繁体中文优先"
 
-#: engine/table.py:1579
+#: engine/table.py:1589
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr "切换为”繁体中文先于简体中文“"
 
-#: engine/table.py:1585 setup/ibus-table-preferences.ui:87
+#. Translators: This is the menu entry to select when
+#. one wants to input both Simplified and Traditional
+#. Chinese and has no particular preference whether
+#. simplified or traditional characters should be higher
+#. up in the candidate lists.
+#: engine/table.py:1599 setup/ibus-table-preferences.ui:87
 msgid "All Chinese characters"
 msgstr "所有中文字符"
 
-#: engine/table.py:1586
+#: engine/table.py:1600
 msgid "Switch to “All Chinese characters”."
 msgstr "切换到“所有中文字符”。"
 
-#: engine/table.py:1590
+#: engine/table.py:1604
 msgid "Chinese mode"
 msgstr "中文模式"
 
-#: engine/table.py:1591
+#: engine/table.py:1605
 msgid "Switch Chinese mode"
 msgstr "切换中文模式"
 
-#: engine/table.py:1601
+#: engine/table.py:1615
 msgid "English"
 msgstr "英文"
 
-#: engine/table.py:1602
+#: engine/table.py:1616
 msgid "Switch to English input"
 msgstr "切换到英文输入"
 
-#: engine/table.py:1609
+#: engine/table.py:1623
 msgid "Chinese"
 msgstr "中文"
 
-#: engine/table.py:1610
+#: engine/table.py:1624
 msgid "Switch to Chinese input"
 msgstr "切换到中文输入"
 
-#: engine/table.py:1618 engine/table.py:1739 setup/ibus-table-preferences.ui:36
+#: engine/table.py:1632 engine/table.py:1753 setup/ibus-table-preferences.ui:36
 msgid "Direct"
 msgstr "直接"
 
-#: engine/table.py:1619
+#: engine/table.py:1633
 msgid "Switch to direct input"
 msgstr "切换到直接输入"
 
-#: engine/table.py:1624 engine/table.py:1685
+#: engine/table.py:1638 engine/table.py:1699
 msgid "Table"
 msgstr "表格"
 
-#: engine/table.py:1625
+#: engine/table.py:1639
 msgid "Switch to table input"
 msgstr "切换为表格输入"
 
-#: engine/table.py:1633
+#: engine/table.py:1647
 msgid "Input mode"
 msgstr "输入模式"
 
-#: engine/table.py:1634
+#: engine/table.py:1648
 msgid "Switch Input mode"
 msgstr "切换输入模式"
 
-#: engine/table.py:1643 engine/table.py:1664 setup/ibus-table-preferences.ui:98
+#: engine/table.py:1657 engine/table.py:1678 setup/ibus-table-preferences.ui:98
 #: setup/ibus-table-preferences.ui:112 setup/ibus-table-preferences.ui:182
 #: setup/ibus-table-preferences.ui:196
 msgid "Half"
 msgstr "半角"
 
-#: engine/table.py:1644
+#: engine/table.py:1658
 msgid "Switch to halfwidth letters"
 msgstr "切换为半角字符"
 
-#: engine/table.py:1649 engine/table.py:1670
+#: engine/table.py:1663 engine/table.py:1684
 #: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
 #: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
 msgid "Full"
 msgstr "全角"
 
-#: engine/table.py:1650
+#: engine/table.py:1664
 msgid "Switch to fullwidth letters"
 msgstr "切换为全角字符"
 
-#: engine/table.py:1654
+#: engine/table.py:1668
 msgid "Letter width"
 msgstr "字符宽度"
 
-#: engine/table.py:1655
+#: engine/table.py:1669
 msgid "Switch letter width"
 msgstr "切换字符宽度"
 
-#: engine/table.py:1665
+#: engine/table.py:1679
 msgid "Switch to halfwidth punctuation"
 msgstr "切换为半角标点"
 
-#: engine/table.py:1671
+#: engine/table.py:1685
 msgid "Switch to fullwidth punctuation"
 msgstr "切换为全角标点"
 
-#: engine/table.py:1675
+#: engine/table.py:1689
 msgid "Punctuation width"
 msgstr "标点宽度"
 
-#: engine/table.py:1676
+#: engine/table.py:1690
 msgid "Switch punctuation width"
 msgstr "切换标点宽度"
 
-#: engine/table.py:1686
+#: engine/table.py:1700
 msgid "Switch to table mode"
 msgstr "切换为表格模式"
 
-#: engine/table.py:1691
+#: engine/table.py:1705
 msgid "Pinyin"
 msgstr "拼音"
 
-#: engine/table.py:1692
+#: engine/table.py:1706
 msgid "Switch to pinyin mode"
 msgstr "切换为拼音模式"
 
-#: engine/table.py:1696
+#: engine/table.py:1710
 msgid "Pinyin mode"
 msgstr "拼音模式"
 
-#: engine/table.py:1697
+#: engine/table.py:1711
 msgid "Switch pinyin mode"
 msgstr "切换拼音模式"
 
-#: engine/table.py:1706
+#: engine/table.py:1720
 #, fuzzy
 msgid "Multiple character match"
 msgstr "多字符比对"
 
-#: engine/table.py:1708
+#: engine/table.py:1722
 #, fuzzy
 msgid "Switch to matching multiple characters at once"
 msgstr "切换到一次比对多字符"
 
-#: engine/table.py:1713
+#: engine/table.py:1727
 #, fuzzy
 msgid "Single character match"
 msgstr "单字符比对"
 
-#: engine/table.py:1715
+#: engine/table.py:1729
 #, fuzzy
 msgid "Switch to matching only single characters"
 msgstr "切换至仅比对单字符"
 
-#: engine/table.py:1719
+#: engine/table.py:1733
 msgid "Onechar mode"
 msgstr "一字模式"
 
-#: engine/table.py:1720
+#: engine/table.py:1734
 msgid "Switch onechar mode"
 msgstr "切换一字模式"
 
-#: engine/table.py:1729 setup/ibus-table-preferences.ui:33
+#: engine/table.py:1743 setup/ibus-table-preferences.ui:33
 msgid "Normal"
 msgstr "普通"
 
-#: engine/table.py:1731
+#: engine/table.py:1745
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
 msgstr ""
 
-#: engine/table.py:1741
+#: engine/table.py:1755
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
 msgstr ""
 
-#: engine/table.py:1746
+#: engine/table.py:1760
 msgid "Auto commit mode"
 msgstr "自动提交模式"
 
-#: engine/table.py:1747
+#: engine/table.py:1761
 msgid "Switch autocommit mode"
 msgstr "切换自动提交模式"
 
-#: engine/table.py:2449
+#: engine/table.py:2463
 msgid "Setup"
 msgstr "设置"
 
-#: engine/table.py:2452
+#: engine/table.py:2466
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "配置 ibus-table “%(engine-name)s”"

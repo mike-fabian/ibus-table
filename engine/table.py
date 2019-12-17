@@ -1546,42 +1546,56 @@ class TabEngine(IBus.Engine):
 
         self.chinese_mode_properties = {
             'ChineseMode.Simplified': {
-                # show simplified Chinese only
                 'number': 0,
                 'symbol': '簡',
                 'icon': 'sc-mode.svg',
+                # Translators: This is the menu entry to select
+                # when one wants to input only Simplified Chinese.
                 'label': _('Simplified Chinese'),
                 'tooltip':
                 _('Switch to “Simplified Chinese only”.')},
             'ChineseMode.Traditional': {
-                # show traditional Chinese only
                 'number': 1,
                 'symbol': '繁',
                 'icon': 'tc-mode.svg',
+                # Translators: This is the menu entry to select
+                # when one wants to input only Traditonal Chinese
                 'label': _('Traditional Chinese'),
                 'tooltip':
                 _('Switch to “Traditional Chinese only”.')},
             'ChineseMode.SimplifiedFirst': {
-                # show all but simplified first
                 'number': 2,
                 'symbol': '簡/大',
                 'icon': 'scb-mode.svg',
+                # Translators: This is the menu entry to select when
+                # one wants to input both Simplified and Traditional
+                # Chinese but wants the Simplified Chinese to be
+                # preferred, i.e. shown higher up in the candidate
+                # lists.
                 'label': _('Simplified Chinese first'),
                 'tooltip':
                 _('Switch to “Simplified Chinese before traditional”.')},
             'ChineseMode.TraditionalFirst': {
-                # show all but traditional first
                 'number': 3,
                 'symbol': '繁/大',
                 'icon': 'tcb-mode.svg',
+                # Translators: This is the menu entry to select when
+                # one wants to input both Simplified and Traditional
+                # Chinese but wants the Traditional Chinese to be
+                # preferred, i.e. shown higher up in the candidate
+                # lists.
                 'label': _('Traditional Chinese first'),
                 'tooltip':
                 _('Switch to “Traditional Chinese before simplified”.')},
             'ChineseMode.All': {
-                # show all Chinese characters, no particular order
                 'number': 4,
                 'symbol': '大',
                 'icon': 'cb-mode.svg',
+                # Translators: This is the menu entry to select when
+                # one wants to input both Simplified and Traditional
+                # Chinese and has no particular preference whether
+                # simplified or traditional characters should be higher
+                # up in the candidate lists.
                 'label': _('All Chinese characters'),
                 'tooltip': _('Switch to “All Chinese characters”.')}
         }

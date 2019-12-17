@@ -19,6 +19,20 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.9.22" date="2019-12-17" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Added Turkish translation from Weblate, 100% translated
+          </li>
+          <li>
+            Minor translation updates some other languages
+            (Punctuation fixes).
+          </li>
+        </ul>
+      </description>
+    </release>
     <release version="1.9.21" date="2018-08-03" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

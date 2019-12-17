@@ -1,4 +1,205 @@
-commit bc50ca35dbe192c8e6b9dd983078056234e9b8fa
+commit 939268cb3d0763884ac6da8e65f6f9b0dc2a453a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 14:21:16 2019 +0100
+
+    Release  1.9.22
+
+commit daac707c786cacf581409b76cdae6ee7e878b306
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 13:05:04 2019 +0000
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/uk/
+
+commit 047d43a34c865ba1e42a8a8b38f7d5af5ce6392e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 13:06:08 2019 +0000
+
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 10.8% (12 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/pt_BR/
+
+commit fd4d2a22e36d97c0b573c4a2fec835f0ae137821
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 13:06:41 2019 +0000
+
+    Translated using Weblate (French)
+    
+    Currently translated at 43.2% (48 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/fr/
+
+commit 9f841218bfd311a198820d9a506a4fe97566db6f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 13:03:27 2019 +0000
+
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/ca/
+
+commit 03bf3d08fd6125d71229574256970cb8b4ecbdf0
+Author: Weblate <noreply@weblate.org>
+Date:   Tue Dec 17 13:59:44 2019 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/
+
+commit bdb0f5c40ae96e1860515bd338b3bcb96714faa8
+Author: Weblate <noreply@weblate.org>
+Date:   Tue Dec 17 13:15:23 2019 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/
+
+commit 5de30646940d8d44f6c41cc618864d4e034246c9
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Mon Dec 16 19:19:29 2019 +0000
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit cf277929579b32508bf6ed3022364bd4cf38adcf
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 13:55:11 2019 +0100
+
+    Update ibus-table.pot
+
+commit 4ff87711a36cba0a0334e8924ea8300fa2a6f999
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 13:54:38 2019 +0100
+
+    Add -c option for xgettext to enable comments for translators
+
+commit 6e3461ecee809a38a691bfa072f223927d1f7066
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 13:42:14 2019 +0100
+
+    Add some comments for translators
+
+commit 5a451b4c2fdc7dbaad8ac2abc370deb9ed2e9214
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Dec 16 18:13:43 2019 +0000
+
+    Translated using Weblate (German)
+    
+    Currently translated at 80.6% (112 of 139 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/de/
+
+commit 761bcc7e7012a0fd816b11f486e2000c97c96c44
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Mon Dec 16 16:08:48 2019 +0000
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit 39cef443ccc631ad74089bf09d7e225d9ec1b284
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Mon Dec 16 16:08:24 2019 +0000
+
+    Added translation using Weblate (Turkish)
+
+commit 39a60c8e57d7a7ff66d316bad0f2de4026fded12
+Merge: 944a82d ae5aed3
+Author: Mike FABIAN <maiku.fabian@gmail.com>
+Date:   Mon Dec 16 07:58:34 2019 +0100
+
+    Merge pull request #11 from weblate/weblate-ibus-table-app
+    
+    Update from Weblate
+
+commit 944a82d6db05272db55cf44395501f6a0ac1eb11
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Dec 16 07:21:03 2019 +0100
+
+    Add ibus-table.its and ibus-table.loc to avoid making the release descriptions and
+     developer name in ibus-table.appdata.xml translatable
+    
+    Translating all the release notes would be too much for the
+    translators, I think.
+    
+    So I added ibus-table.its and ibus-table.loc to ibus-table.
+    Ibus-table’s ibus-table.its differs from the upstream
+    /usr/share/gettext/its/metainfo.its like this:
+    
+        $ diff -u /usr/share/gettext/its/metainfo.its its/ibus-table.its
+        --- /usr/share/gettext/its/metainfo.its 2019-06-16 22:33:05.000000000 +0200
+        +++ its/ibus-table.its  2019-12-16 07:41:40.993341715 +0100
+        @@ -5,9 +5,7 @@
+           <its:translateRule selector="/component/name |
+                                        /component/summary |
+                                        /component/description |
+        -                               /component/developer_name |
+                                        /component/screenshots/screenshot/caption |
+        -                               /component/releases/release/description |
+                                        /component/agreement/agreement_section/name |
+                                        /component/agreement/agreement_section/description"
+                              translate="yes"/>
+        @@ -15,4 +13,6 @@
+                              translate="no"/>
+           <its:translateRule selector="/component/developer_name[@translatable = 'no']"
+                              translate="no"/>
+        +  <its:translateRule selector="/component/releases/release/description[@translatable = 'no']"
+        +                     translate="no"/>
+         </its:rules>
+
+commit ae5aed38706d69c0c74e3ede9d646d6472d312b0
+Author: Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>
+Date:   Sun Dec 15 15:14:17 2019 +0000
+
+    Translated using Weblate (French)
+    
+    Currently translated at 42.9% (48 of 112 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/fr/
+
+commit 46e4c89667425d379b49413e8bdd1f4cab7ede25
+Author: Weblate <noreply@weblate.org>
+Date:   Sun Dec 15 16:13:30 2019 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/
+
+commit 3cd5c2beef555ec676933a96916feaefc546cb43
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Dec 15 15:59:51 2019 +0100
+
+    Add ibus-table.pot file to repo.
+
+commit 7bf7a90d189364678a53aad1149246b5bff3a2e8
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Jul 31 18:16:58 2018 +0200
 
@@ -1279,7 +1480,7 @@ Date:   Mon Jul 7 16:37:19 2014 +1000
 
 commit a87efc9f072114c47d9260cd779f923e5fca3c38
 Merge: cd83314 e21444f
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon Jul 7 16:36:07 2014 +1000
 
     Merge pull request #43 from mike-fabian/tweak-defaults-for-chinese-mode-taken-from-locale
@@ -1456,7 +1657,7 @@ Date:   Tue Jul 1 18:28:44 2014 +0200
 
 commit cd83314cecc5d78fa5545611a8f5a313dc8d044f
 Merge: b570739 cb4233c
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Fri Jun 27 14:46:43 2014 +1000
 
     Merge pull request #42 from mike-fabian/do-not-add-wildcards-to-string-of-valid-input-chars
@@ -1502,7 +1703,7 @@ Date:   Wed Jun 25 22:46:53 2014 +1000
 
 commit 9dd5bd9c2f08c39143e3eea0ded8d34ce979bbcb
 Merge: 7cb2765 80c97fa
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Wed Jun 25 22:23:22 2014 +1000
 
     Merge pull request #41 from mike-fabian/improve-wildcard-support
@@ -1577,7 +1778,7 @@ Date:   Mon Jun 9 13:12:00 2014 +1000
 
 commit a6f9c22dead6992d15b15cd356d86fbfd14ac629
 Merge: b07c6ea e18f708
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sat Jun 7 23:41:12 2014 +1000
 
     Merge pull request #40 from mike-fabian/better-sorting-in-the-mixed-chinese-modes
@@ -1686,7 +1887,7 @@ Date:   Fri Jun 6 20:43:22 2014 +0200
 
 commit b07c6ea38c6e60d82ffb96c0fd9c52103ab5b51b
 Merge: 9d94221 9c6840b
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sat Jun 7 01:48:08 2014 +1000
 
     Merge pull request #39 from mike-fabian/do-not-create-useless-indexes
@@ -1799,7 +2000,7 @@ Date:   Wed Jun 4 22:28:24 2014 +1000
 
 commit 21448804bd27a77e9385406b2064d762311624a1
 Merge: 8ded23b c9f6a2b
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Wed Jun 4 22:19:34 2014 +1000
 
     Merge pull request #38 from mike-fabian/add-support-for-wildcards
@@ -1864,7 +2065,7 @@ Date:   Tue Jun 3 16:43:04 2014 +0200
 
 commit 8ded23bf3744468f6bf2867912c350e042a2e6dc
 Merge: 834b1db 58ab974
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Tue Jun 3 16:57:15 2014 +1000
 
     Merge pull request #37 from mike-fabian/adapt-ibus-table-query-to-the-new-database-format
@@ -1905,7 +2106,7 @@ Date:   Sun Jun 1 22:49:58 2014 +1000
 
 commit 3d8ec4f62c77fd67882ea32075777b9d01c55864
 Merge: 7600acb 063a61a
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Fri May 30 08:46:49 2014 +1000
 
     Merge pull request #36 from mike-fabian/use-unicode-code-point-as-a-last-sort-key
@@ -1914,7 +2115,7 @@ Date:   Fri May 30 08:46:49 2014 +1000
 
 commit 7600acb8dd81dfe703f3637646e9ed2518dd33b2
 Merge: 217b8c5 39e44a2
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Fri May 30 08:46:09 2014 +1000
 
     Merge pull request #35 from mike-fabian/exact-matches-at-the-top-and-support-prompts-for-cangjie
@@ -2052,7 +2253,7 @@ Date:   Fri May 23 00:02:17 2014 +0200
 
 commit 217b8c5055cd51deb4fb139d2e39239ae9be852f
 Merge: 081f61e 2392853
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Thu May 22 17:50:24 2014 +1000
 
     Merge pull request #34 from mike-fabian/remove-tabdict-and-other-improvements-and-bugfixes
@@ -3512,7 +3713,7 @@ Date:   Tue Apr 1 17:51:16 2014 +0200
 
 commit 081f61e5dc886dd8c897a9f4a2f5b75b7cb81cd6
 Merge: 1347342 3f031f7
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Wed Apr 16 19:06:33 2014 +1000
 
     Merge pull request #33 from mike-fabian/do-not-fail-when-home-is-not-set
@@ -3559,7 +3760,7 @@ Date:   Mon Apr 14 11:21:52 2014 +0200
 
 commit 1347342cc71a719a168526e62d19d859bb5b0d97
 Merge: ccb4b1b bd30def
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon Apr 14 19:02:28 2014 +1000
 
     Merge pull request #32 from mike-fabian/fix-pinyin-mode-and-dconf-usage
@@ -3686,7 +3887,7 @@ Date:   Tue Apr 8 11:16:16 2014 +0200
 
 commit ccb4b1bc4a778381e013ef64838dc8292e61d436
 Merge: 3255f48 8842b41
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Thu Apr 10 22:13:35 2014 +1000
 
     Merge pull request #31 from mike-fabian/fix-regression-caused-by-python3-port-causing-the-build-of-ibus-table-chinese-to-fail
@@ -3703,7 +3904,7 @@ Date:   Tue Apr 1 18:18:11 2014 +0200
 
 commit 3255f48cb6cdd6311ca9ae0dadaee349b6f6ce72
 Merge: cd317b7 0df841f
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sat Mar 15 21:22:16 2014 +1000
 
     Merge pull request #30 from mike-fabian/fix-bug1072940-comment18
@@ -3720,7 +3921,7 @@ Date:   Wed Mar 12 15:04:30 2014 +0100
 
 commit cd317b7d473eb94554e79fe91f5417a4f9074b60
 Merge: 1c437bf 19ee83e
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Wed Mar 12 22:12:34 2014 +1000
 
     Merge pull request #29 from mike-fabian/fix-setup-tool-for-use-with-gnome
@@ -4012,7 +4213,7 @@ Date:   Tue Mar 4 13:57:01 2014 +0100
 
 commit 1c437bf6896874903a6c0b1b496b93b54790bcbc
 Merge: fc6ce51 16a4f1c
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon Mar 3 21:21:53 2014 +1000
 
     Merge pull request #27 from mike-fabian/fix-saving-database-periodically-for-gobject-introspection-and-a-patch-from-leftmostcat
@@ -4047,7 +4248,7 @@ Date:   Tue Feb 18 20:15:13 2014 +0100
 
 commit fc6ce511c7eb483e8bee8e9cf5bb2b8f9e3881f8
 Merge: f68e73c c888c5d
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Tue Feb 4 22:46:44 2014 -0800
 
     Merge pull request #26 from mike-fabian/update-german-translations
@@ -4076,7 +4277,7 @@ Date:   Wed Feb 5 05:42:16 2014 +0100
 
 commit f68e73c982dba42a984cd5cb7c497efb458b1b14
 Merge: 9404fa6 0632dc9
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Tue Feb 4 15:20:32 2014 -0800
 
     Merge pull request #20 from mozbugbox/ascii-with-empty-canadidate
@@ -4085,7 +4286,7 @@ Date:   Tue Feb 4 15:20:32 2014 -0800
 
 commit a4144337912c6e9fce1e321b2b0d1b94db89d689
 Merge: c01120b 20913ab
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Tue Feb 4 15:18:38 2014 -0800
 
     Merge pull request #21 from leftmostcat/master
@@ -4094,7 +4295,7 @@ Date:   Tue Feb 4 15:18:38 2014 -0800
 
 commit 9404fa6a9729d1b89524f7454bb7b6f4a3c43586
 Merge: fe11a0c c5a60f6
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Tue Feb 4 15:16:32 2014 -0800
 
     Merge pull request #25 from mike-fabian/add-check-for-input-purpose-for-passwords
@@ -4103,7 +4304,7 @@ Date:   Tue Feb 4 15:16:32 2014 -0800
 
 commit fe11a0c32124618a35f21bcc5d31c7c54d9b6477
 Merge: 1d2f442 7919d03
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Tue Feb 4 14:55:23 2014 -0800
 
     Merge pull request #24 from mike-fabian/make-hide-candidates-work
@@ -4112,7 +4313,7 @@ Date:   Tue Feb 4 14:55:23 2014 -0800
 
 commit 1d2f442be9754759339bdde90b6d492f67012bf5
 Merge: d782b07 076bb39
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Tue Feb 4 14:55:03 2014 -0800
 
     Merge pull request #23 from mike-fabian/print-usage-message-when-tabcreate-is-called-without-options
@@ -4216,31 +4417,31 @@ Date:   Sat May 18 17:46:20 2013 +0800
             engine/table.py
 
 commit d782b07861c40b22aafa81aa779f4eb76ed08fce
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon May 6 22:21:01 2013 +1000
 
     Indent 4 spaces on README to support MarkDown on wiki page.
 
 commit 6f0702c742cd8ef30f375a3db28552b6e9bb9338
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon May 6 21:43:08 2013 +1000
 
     Removed unused commented-out code.
 
 commit ba990fe42d0ebab241f35a1f4f7cd1e1a911cc3f
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon May 6 21:37:15 2013 +1000
 
     Clear all input when "focus-out" (switch to another window/input-fields, etc).
 
 commit cb6e11a222f44e985e0632f81c4b2622e25d215a
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon May 6 21:17:06 2013 +1000
 
     Fixed mis-refactor of cursor_up as cursor_down in editor class.
 
 commit fb11d92439fe4bd55fcad480d3998a17434f6870
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon May 6 21:05:35 2013 +1000
 
     Issue #17:
@@ -4249,69 +4450,69 @@ Date:   Mon May 6 21:05:35 2013 +1000
 
 commit 24676389e9f218b7972283493096acd3e1a13f8e
 Merge: 763f181 d246000
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sun May 5 21:14:19 2013 +1000
 
     Merge branch 'rename_editor_func_from_key_combo_to_behavioral_naming_base' into 1.7
 
 commit d246000eb6686316026572fb65888ad29337dcf4
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sun May 5 20:48:31 2013 +1000
 
     Renamed funcs in editor class from keyboard-input based to behavior based.
 
 commit 763f181149dff0b84dc0dde0bb334903e40c0b8b
 Merge: 79fa67e d70d66f
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Thu May 2 14:41:26 2013 +1000
 
     Issue #14: Merge branch 'refactor_convert_to_full_width' into 1.7
 
 commit d70d66f25f8a4e9be1bfd6558dfde11a40bf4202
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Thu May 2 14:35:21 2013 +1000
 
     Added back unicode string spec to condition check in _convert_to_full_width (self, c).
 
 commit 2554d6091f413975dd4886b89c5d57776603f955
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Thu May 2 14:26:02 2013 +1000
 
     WIP: Removed excessive condition check.
 
 commit 24091c51a67e8b134b7db3dbe613990fdc44ab6f
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Thu May 2 14:21:23 2013 +1000
 
     WIP: Combined two dicts into single dict. Simplified the condition checks.
 
 commit f748d5e51ad4b2c68c5d883b4819860389458c85
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Thu May 2 11:15:16 2013 +1000
 
     WIP: Extracted more condition checks to dict.
 
 commit 7e826b7d4e7b30bdbcfe867be2ca744e22380142
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Thu May 2 10:22:12 2013 +1000
 
     WIP: Jump right to later half of conditions when _mode isn't true.
 
 commit a2e6215d1fcf07aba6f03bc4b88bffee1a785884
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Thu May 2 09:40:05 2013 +1000
 
     WIP: Removed excessive condition check on char eligiblity.
 
 commit 79fa67e529dff3562580f16c5138ff4c54309eb7
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Wed May 1 21:31:46 2013 +1000
 
     Extract repeating code from _init_properties(self) to _new_property(self,key).
 
 commit c01120bb6856445327270b2e53ca36099196a326
 Merge: 9745b53 a42c1d3
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon Apr 29 20:26:36 2013 +1000
 
     Merge remote-tracking branch 'bernardn/master' into 1.6
@@ -4321,14 +4522,14 @@ Date:   Mon Apr 29 20:26:36 2013 +1000
 
 commit 9745b5384c3328cd7db994baab7301f6367b5ee4
 Merge: 764a8c7 757a88e
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sun Apr 28 22:05:24 2013 +1000
 
     Merge remote-tracking branch 'origin/master' into 1.6
 
 commit 757a88e4eee512e478c6692f39b8e346a95aba5a
 Merge: 7a3f0d9 04e3be2
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sun Apr 28 05:04:07 2013 -0700
 
     Merge pull request #7 from luolimao/master
@@ -4337,14 +4538,14 @@ Date:   Sun Apr 28 05:04:07 2013 -0700
 
 commit 764a8c7251a9078bda22c544796c77b81ec2d581
 Merge: 68f25cb 367c146
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sun Apr 28 21:25:56 2013 +1000
 
     Merge remote-tracking branch 'anthonywong/master' into 1.6
 
 commit 68f25cb5c82dc87bd18b84afc9146435c9490944
 Merge: b7da6e8 02ddfba
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sun Apr 28 21:12:43 2013 +1000
 
     Merge remote-tracking branch 'mozbugbox/tooltip-show-hotkey' into 1.6
@@ -4363,14 +4564,14 @@ Date:   Tue Dec 4 00:39:06 2012 +0800
 
 commit 5f274590b27068cc3dca08899a8831aa38f647e6
 Merge: e32bda3 f5e8e37
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sun Apr 28 20:36:52 2013 +1000
 
     Merge remote-tracking branch 'bernardn/auto_select_two_candidates_inputs' into 1.6
 
 commit e32bda3276868d140d74a9f4291b4bb475a2215d
 Merge: ea2795b 5d34900
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Thu Apr 25 21:51:36 2013 +1000
 
     Merge remote-tracking branch 'bernardn/candidates_list_visible' into 1.6
@@ -4380,7 +4581,7 @@ Date:   Thu Apr 25 21:51:36 2013 +1000
 
 commit ea2795bdcd5ab6d67e865f3e5fc715096d59d0a6
 Merge: c029e9f 99b16e2
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Fri Apr 19 02:03:58 2013 -0700
 
     Merge pull request #12 from mike-fabian/add-man-page-and-apply-autoselect-dconf-value-immediately
@@ -4437,7 +4638,7 @@ Date:   Tue Mar 5 06:44:55 2013 +0100
 
 commit c029e9f132a044265b92822e01e95df6165b9cd5
 Merge: d31c8d9 9497457
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sun Feb 17 01:26:48 2013 -0800
 
     Merge pull request #10 from mike-fabian/mike-collected-changes-on-kaio-1.6-branch
@@ -4487,7 +4688,7 @@ Date:   Thu Feb 14 18:21:57 2013 +0100
     is done when the arrow-up and arrow-down keys are used.
 
 commit a42c1d351e3b1264186f99e5d0febc784063ffb9
-Author: bnauwelaerts <bnauwelaerts@cli0189.fednot.be>
+Author: Bernard Nauwelaerts <bernard.nauwelaerts@credoc.be>
 Date:   Thu Feb 7 10:30:23 2013 +0100
 
     Defaults _auto_select to False for tables that doesnt contain this attribute
@@ -4499,25 +4700,25 @@ Date:   Tue Feb 5 09:11:17 2013 +0100
     Fall back to auto_select = False if neither dconf nor the table have a value for auto_select
 
 commit 2baa9c3ff258c0623b4777f2c537467339cdcef6
-Author: bnauwelaerts <bnauwelaerts@cli0189.fednot.be>
+Author: Bernard Nauwelaerts <bernard.nauwelaerts@credoc.be>
 Date:   Sat Feb 2 17:22:40 2013 +0100
 
     Update cmode pproperty in chinese mode only
 
 commit a55783887e757f02078143c2d12031a33c9e9223
-Author: bnauwelaerts <bnauwelaerts@cli0189.fednot.be>
+Author: Bernard Nauwelaerts <bernard.nauwelaerts@credoc.be>
 Date:   Sat Feb 2 13:03:48 2013 +0100
 
     Add auto_select functionality to select the first phrase when typing. Useful for Cyrillic transliteration.
 
 commit a85b8b90c21cafc13079c17b35cf021dbf0a6475
-Author: bnauwelaerts <bnauwelaerts@cli0189.fednot.be>
+Author: Bernard Nauwelaerts <bernard.nauwelaerts@credoc.be>
 Date:   Sat Feb 2 17:22:40 2013 +0100
 
     Update cmode pproperty in chinese mode only
 
 commit f0f4ee216788fd901c3ef91c90f9ce4bede88862
-Author: bnauwelaerts <bnauwelaerts@cli0189.fednot.be>
+Author: Bernard Nauwelaerts <bernard.nauwelaerts@credoc.be>
 Date:   Sat Feb 2 13:03:48 2013 +0100
 
     Add auto_select functionality to select the first phrase when typing. Useful for Cyrillic transliteration.
@@ -4587,20 +4788,20 @@ Date:   Thu Jan 24 12:47:19 2013 +0100
     the meaning of _chinese_mode clearly.
 
 commit d31c8d94eb05a33c9eaf6c79b24cdb0b289bba76
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Wed Jan 16 07:54:56 2013 +1000
 
     Fixed release flag check for if timestamp is suffixed.
 
 commit 7a3f0d9d75fd36575a5e581830c4a57b07b2e7ad
-Author: Caius "kaio" CHANCE <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Wed Jan 16 07:45:35 2013 +1000
 
     Update author list.
 
 commit e663a176bf797cc523be7541e0dc7318eef7466e
 Merge: dca5eda 0b8bec0
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Wed Jan 9 14:44:25 2013 -0800
 
     Merge pull request #4 from mike-fabian/mike-fix-typo-in-chinese-mode-variable
@@ -4609,7 +4810,7 @@ Date:   Wed Jan 9 14:44:25 2013 -0800
 
 commit dca5edae81cc70d82099e9ccdca38052523196f9
 Merge: ea29e27 5ecc6d9
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Wed Jan 9 14:42:31 2013 -0800
 
     Merge pull request #3 from mike-fabian/mike-make-cursor-in-lookup-table-visible
@@ -4650,7 +4851,7 @@ Date:   Tue Jan 8 17:53:09 2013 +0100
 
 commit ea29e278c90b55f910e656f1b192df288e59d563
 Merge: b899a0a 526b8cf
-Author: Caius "kaio" Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Tue Jan 8 00:04:24 2013 -0800
 
     Merge pull request #2 from mike-fabian/mike-porting
@@ -4670,7 +4871,7 @@ Date:   Mon Jan 7 01:50:14 2013 +0100
     add *.pyc to .gitignore
 
 commit ca049a01f21852586e5ebf894513a6e7a0539ba2
-Author: Ma Xiaojun <damage3025@gmail.com>
+Author: Xiaojun Ma <damage3025@gmail.com>
 Date:   Tue Nov 20 23:33:11 2012 -0600
 
     start porting to gi
@@ -5143,19 +5344,19 @@ Date:   Thu Sep 6 08:28:32 2012 +1000
             engine/table.py
 
 commit 84c287f1a7e261c32e7b4a18d7f488ae3d78da75
-Author: Yuwei Yu <acevery@gmail.com>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Wed Sep 5 20:46:09 2012 +0800
 
     exclude control characters from input range
 
 commit edd01646dca3599f1e9a838b9ab9813e1477bd3d
-Author: Yuwei Yu <acevery@gmail.com>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Wed Sep 5 01:35:56 2012 +0800
 
     remove repeat unichr; remove blank lines in table.py
 
 commit 50692ab9599c3845bc9f29cb0516ee78b6b0eda0
-Author: Yuwei Yu <acevery@gmail.com>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Wed Sep 5 01:22:55 2012 +0800
 
     fix non-ASCII input key bug
@@ -5300,21 +5501,21 @@ Date:   Wed Jun 27 23:01:02 2012 +0800
 
 commit e31b4706825cbf1c1256c555323c4d87ec1610d8
 Merge: e04a10b 0e89c17
-Author: Caius Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sat Mar 10 00:15:15 2012 +1000
 
     Merge remote-tracking branch 'mvv/python-path-fix' into rel20120309
 
 commit e04a10b15dff4b3322cbe752e99e761b372d2c5b
 Merge: 820ee65 418ea16
-Author: Caius Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Sat Mar 10 00:14:42 2012 +1000
 
     Merge remote-tracking branch 'mvv/coloncolon' into rel20120309
 
 commit 820ee65a18e8f966372959bab88a542d084e0357
 Merge: 6ac623b 5eef930
-Author: Caius Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Fri Mar 9 23:48:09 2012 +1000
 
     Merge remote-tracking branch 'seanf/master' into 2012-03-09
@@ -5325,37 +5526,37 @@ Date:   Fri Mar 9 23:48:09 2012 +1000
             po/zh_TW.po
 
 commit 6ac623ba7b7a59b7032d1916ee53bd249801dd28
-Author: Caius Chance <me@kaio.net>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Fri Mar 9 19:06:05 2012 +1000
 
     - Add direct input of Chinese bracket to mid-brackets and large-brackets.
 
 commit a44d50c6face110c7cd1252067eade3f8a9193e8
-Author: Yuwei Yu <acevery@gmail.com>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Wed Mar 7 15:16:49 2012 +0800
 
     add _mo into locale test
 
 commit d4df7ed4c361a30f9c5d505e9ffc8b5fc7c163a7
-Author: Yuwei Yu <acevery@gmail.com>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Tue Mar 6 01:06:50 2012 +0800
 
     modify locale detecting code
 
 commit 487d9b6825492498cfc1f49b66e243c2eb4c5bcf
-Author: Yuwei Yu <acevery@gmail.com>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Mon Mar 5 08:57:08 2012 +0800
 
     enable en_HK user to use chinese mode
 
 commit 24596c02c86a0453c59485f8b0031279803f1581
-Author: Yuwei Yu <acevery@gmail.com>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Sun Oct 2 11:53:53 2011 +0800
 
     add some key for translit; fix #1318
 
 commit 8b54742f9648366abe8690513289337a43254621
-Author: Yuwei Yu <acevery@gmail.com>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Mon Aug 1 23:53:46 2011 +0800
 
     add NOSYMBOL to be a null target phrase
@@ -5379,14 +5580,14 @@ Date:   Sat Jun 18 16:20:49 2011 +0700
     Use Python executable found by autotools in scripts.
 
 commit 4a35882e82c8d879252e4518974feba60ba802c1
-Author: Yuwei Yu <acevery@gmail.com>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Wed Apr 27 10:14:43 2011 +0800
 
     update reg pattern in tabcreatedb.py to allow leading or trailing space in tab separated columns
 
 commit 2a1bb20de7fd3373d1c9bf1d7f5305a93d663cf9
 Merge: 1850d89 8d6e9ff
-Author: Yu Yuwei <acevery@gmail.com>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Tue Apr 26 18:39:25 2011 -0700
 
     Merged pull request #4 from sagara-/master.
@@ -5405,7 +5606,7 @@ Date:   Tue Apr 26 17:50:20 2011 -0400
       details
 
 commit 1850d891300ce777b474d782b347ea1b05b8a7cc
-Author: Yuwei Yu <acevery@gmail.com>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Fri Feb 18 08:50:57 2011 +0800
 
     update latex.txt from Giuseppe Castagna (gc@pps.jussieu.fr)
@@ -5791,19 +5992,19 @@ Date:   Fri Mar 6 14:07:12 2009 +0800
     add Caius into project
 
 commit e926b14b0718c3e02df28d1efd5490a715b7d9e9
-Author: cchance <cchance@dhcp-0-183.bne.redhat.com>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Fri Mar 6 15:23:47 2009 +1000
 
     make pkgconfig noarch
 
 commit 193267080c33cd7aed19151f9199fbb35807d86b
-Author: cchance <cchance@dhcp-0-183.bne.redhat.com>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Fri Mar 6 15:17:13 2009 +1000
 
     Corrected .spec form GPLv2+ to LGPLv2+.
 
 commit b7f63b016d148991cade9c62ea61254fbd390e87
-Author: cchance <cchance@dhcp-0-183.bne.redhat.com>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Fri Mar 6 14:57:42 2009 +1000
 
     Updated author list.
@@ -5811,7 +6012,7 @@ Date:   Fri Mar 6 14:57:42 2009 +1000
 
 commit a3f8a4667ace5be764973857f6833fff196d66e5
 Merge: 2b0726c fe3f5dc
-Author: cchance <cchance@dhcp-0-183.bne.redhat.com>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Fri Mar 6 14:39:46 2009 +1000
 
     Merge commit 'acevery/master'
@@ -5903,7 +6104,7 @@ Date:   Thu Feb 19 21:16:09 2009 +0800
 
 commit 2b0726ce00c2a9512d58b90cb94e3b95481a1ec1
 Merge: 3a5330a e8ccd01
-Author: Caius "kaio" Chance <caio@dejieshi.com>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Thu Feb 19 15:06:06 2009 +1000
 
     RE-Merge commit 'acevery/master'
@@ -6006,7 +6207,7 @@ Date:   Tue Feb 17 23:05:45 2009 +0800
 
 commit 3a5330ace95f39020407492cdedf4262614a3042
 Merge: f8b80b8 ffa04fe
-Author: Caius "kaio" Chance <caio@dejieshi.com>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon Feb 16 18:11:05 2009 +1000
 
     Merge commit 'acevery/for_c_ibus_daemon'
@@ -6034,13 +6235,13 @@ Date:   Mon Feb 16 00:07:01 2009 +0800
 
 commit f8b80b85b7a774a734720dd973574b9b77dee482
 Merge: b1a8593 198cf85
-Author: Caius Chance <cchance@hako.localdomain>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon Feb 16 01:37:05 2009 +1000
 
     Merge commit 'lidaobing/master'
 
 commit b1a85938c0aa38db91fb4d0c4f3835e7e4d9a3c0
-Author: Caius Chance <cchance@hako.localdomain>
+Author: Caius 'kaio' Chance <me@kaio.net>
 Date:   Mon Feb 16 00:50:20 2009 +1000
 
     added table spec xml
@@ -6275,7 +6476,7 @@ Date:   Wed Dec 3 21:43:38 2008 +0800
     Merge branch 'master' of git@github.com:acevery/ibus-table
 
 commit ea21559409fa2210e9f9a9c58c960d951ff6da4e
-Author: acevery <acevery@SoaringBase.(none)>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Wed Dec 3 17:00:22 2008 +0800
 
     fix direct commit bug; do not show cursor now and do not use arrow_up/down to move cursor in lookup_table
@@ -6572,7 +6773,7 @@ Date:   Sat Sep 6 13:12:58 2008 +0800
     fix typo
 
 commit 6592e19ebdaf72905fb5ded44ac6da4053400808
-Author: acevery <acevery@SoaringBase.(none)>
+Author: 余钰炜 <acevery@gmail.com>
 Date:   Fri Sep 5 11:48:07 2008 +0800
 
     ignore numlock mask

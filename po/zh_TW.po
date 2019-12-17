@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2019-12-17 13:53+0100\n"
+"POT-Creation-Date: 2019-12-17 16:05+0100\n"
 "PO-Revision-Date: 2014-11-29 09:15-0500\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan)\n"
@@ -545,8 +545,10 @@ msgid ""
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:911
-msgid "Single wildchard character:"
-msgstr ""
+#, fuzzy
+#| msgid "Single character match"
+msgid "Single wildcard character:"
+msgstr "切換字元比對"
 
 #: setup/ibus-table-preferences.ui:924
 msgid ""

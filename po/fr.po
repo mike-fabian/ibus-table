@@ -5,11 +5,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2019-12-17 13:53+0100\n"
+"POT-Creation-Date: 2019-12-17 16:05+0100\n"
 "PO-Revision-Date: 2019-12-17 13:14+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: French <https://translate.stg.fedoraproject.org/projects/"
-"ibus-table/app/fr/>\n"
+"Language-Team: French <https://translate.stg.fedoraproject.org/projects/ibus-"
+"table/app/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -534,7 +534,7 @@ msgid ""
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:911
-msgid "Single wildchard character:"
+msgid "Single wildcard character:"
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:924

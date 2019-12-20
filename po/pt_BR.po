@@ -1,13 +1,14 @@
 # Marco Aurélio Krause <ouesten@me.com>, 2015. #zanata
 # Rodrigo de Araujo Sousa Fonseca <rodrigodearaujo@fedoraproject.org>, 2017. #zanata
 # Mike FABIAN <mfabian@redhat.com>, 2019.
+# Anonymous <noreply@weblate.org>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2019-12-17 16:05+0100\n"
-"PO-Revision-Date: 2019-12-17 13:14+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"PO-Revision-Date: 2019-12-19 22:15+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.stg.fedoraproject.org/"
 "projects/ibus-table/app/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -118,7 +119,7 @@ msgstr ""
 
 #: engine/table.py:1647
 msgid "Input mode"
-msgstr ""
+msgstr "Modo de entrada"
 
 #: engine/table.py:1648
 msgid "Switch Input mode"
@@ -306,11 +307,11 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:140
 msgid "Horizontal"
-msgstr ""
+msgstr "Horizontal"
 
 #: setup/ibus-table-preferences.ui:143
 msgid "Vertical"
-msgstr ""
+msgstr "Vertical"
 
 #: setup/ibus-table-preferences.ui:154
 msgid "Phrase"
@@ -338,7 +339,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:302
 msgid "Input mode:"
-msgstr ""
+msgstr "Modo de entrada"
 
 #: setup/ibus-table-preferences.ui:315
 msgid ""
@@ -380,7 +381,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:411
 msgid "Chinese mode:"
-msgstr ""
+msgstr "Modo Chinês"
 
 #: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"
@@ -579,4 +580,4 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:1186
 msgid "About"
-msgstr ""
+msgstr "Sobre"

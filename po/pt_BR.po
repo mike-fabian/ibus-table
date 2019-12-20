@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2019-12-17 16:05+0100\n"
-"PO-Revision-Date: 2019-12-19 22:15+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2019-12-20 00:12+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.stg.fedoraproject.org/"
 "projects/ibus-table/app/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -339,7 +339,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:302
 msgid "Input mode:"
-msgstr "Modo de entrada"
+msgstr "Modo de entrada:"
 
 #: setup/ibus-table-preferences.ui:315
 msgid ""
@@ -381,7 +381,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:411
 msgid "Chinese mode:"
-msgstr "Modo Chinês"
+msgstr "Modo Chinês:"
 
 #: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"

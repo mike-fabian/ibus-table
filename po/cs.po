@@ -1,12 +1,13 @@
 # Zdenek <chmelarz@gmail.com>, 2017. #zanata
 # Anonymous <noreply@weblate.org>, 2019.
+# Mike FABIAN <mfabian@redhat.com>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2019-12-17 16:05+0100\n"
-"PO-Revision-Date: 2019-12-19 22:15+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2019-12-20 00:12+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Czech <https://translate.stg.fedoraproject.org/projects/"
 "ibus-table/app/cs/>\n"
 "Language: cs\n"
@@ -350,7 +351,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:302
 msgid "Input mode:"
-msgstr "Metoda vstupu"
+msgstr "Metoda vstupu:"
 
 #: setup/ibus-table-preferences.ui:315
 msgid ""

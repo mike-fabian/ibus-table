@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2019-12-17 16:05+0100\n"
-"PO-Revision-Date: 2019-12-20 00:12+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"PO-Revision-Date: 2019-12-29 18:49+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Japanese <https://translate.stg.fedoraproject.org/projects/"
 "ibus-table/app/ja/>\n"
 "Language: ja\n"
@@ -322,7 +322,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:168
 msgid "Commit"
-msgstr ""
+msgstr "確定"
 
 #: setup/ibus-table-preferences.ui:171
 msgid "Next Page"

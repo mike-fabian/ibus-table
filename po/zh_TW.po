@@ -1,12 +1,13 @@
 # Cheng-Chia Tseng <pswo10680@gmail.com>, 2014. #zanata
 # Mike FABIAN <mfabian@redhat.com>, 2019.
+# Anonymous <noreply@weblate.org>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2019-12-17 16:05+0100\n"
-"PO-Revision-Date: 2019-12-17 15:15+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"PO-Revision-Date: 2019-12-29 18:49+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Traditional) <https://translate.stg.fedoraproject."
 "org/projects/ibus-table/app/zh_TW/>\n"
 "Language: zh_TW\n"
@@ -603,4 +604,4 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:1186
 msgid "About"
-msgstr ""
+msgstr "關於"

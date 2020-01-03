@@ -743,7 +743,7 @@ several characters may be shown.</property>
                                     <property name="tooltip_text" translatable="yes">If set to “Yes”, this does the following 4 things:
 1) When typing “Return”, commit the 
    candidate + line-feed
-2) When tying Tab, commit the candidate
+2) When typing Tab, commit the candidate
 3) When committing using a commit key, commit
    the candidate + " "
 4) If typing the next character matches no candidates,
@@ -773,7 +773,7 @@ manually. From time to time, “automatic” commits will
 happen then.
 “Direct” means such “automatic” commits go directly
 into the application, “Normal” means they get committed
-to preëdit.</property>
+to preedit.</property>
                                     <property name="hexpand">True</property>
                                     <property name="vexpand">True</property>
                                     <property name="model">liststoreAutoCommit</property>

@@ -298,7 +298,7 @@ class TabSqliteDb:
                     shutil.rmtree(old_tables_path)
                     os.symlink(tables_path, old_tables_path)
                 else:
-                    os.makedirs(tables_path)
+                    os.makedirs(tables_path, exist_ok=True)
             user_db = path.join(tables_path, user_db)
             if not path.exists(user_db):
                 sys.stderr.write(

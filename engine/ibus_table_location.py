@@ -73,7 +73,7 @@ def _init():
     IBUS_TABLE_LOCATION['data_home'] = os.path.join(
         IBUS_TABLE_LOCATION['data_home'], 'ibus-table')
     if not os.access(IBUS_TABLE_LOCATION['data_home'], os.F_OK):
-        os.makedirs(IBUS_TABLE_LOCATION['data_home'])
+        os.makedirs(IBUS_TABLE_LOCATION['data_home'], exist_ok=True)
 
     # $XDG_CACHE_HOME defines the base directory relative to which user
     # specific non-essential data files should be stored. If
@@ -89,7 +89,7 @@ def _init():
     IBUS_TABLE_LOCATION['cache_home'] = os.path.join(
         IBUS_TABLE_LOCATION['cache_home'], 'ibus-table')
     if not os.access(IBUS_TABLE_LOCATION['cache_home'], os.F_OK):
-        os.makedirs(IBUS_TABLE_LOCATION['cache_home'])
+        os.makedirs(IBUS_TABLE_LOCATION['cache_home'], exist_ok=True)
 
 class __ModuleInitializer:
     def __init__(self):

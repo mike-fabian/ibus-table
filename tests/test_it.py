@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-# vim:et sts=4 sw=4
-#
+#!/usr/bin/python3
+
 # ibus-table - The Tables engine for IBus
 #
 # Copyright (c) 2018 Mike FABIAN <mfabian@redhat.com>
@@ -31,6 +30,19 @@ import unittest
 from gi import require_version
 require_version('IBus', '1.0')
 from gi.repository import IBus
+
+# Get more verbose output in the test log:
+os.environ['IBUS_TABLE_DEBUG_LEVEL'] = '255'
+
+# Monkey patch the environment with the mock classes:
+from mock_engine import MockEngine
+from mock_engine import MockLookupTable
+from mock_engine import MockProperty
+from mock_engine import MockPropList
+sys.modules["gi.repository.IBus"].Engine = MockEngine
+sys.modules["gi.repository.IBus"].LookupTable = MockLookupTable
+sys.modules["gi.repository.IBus"].Property = MockProperty
+sys.modules["gi.repository.IBus"].PropList = MockPropList
 
 sys.path.insert(0, "../engine")
 from table import *
@@ -649,3 +661,6 @@ class LatexTestCase(unittest.TestCase):
         self.assertEqual(ENGINE._editor._lookup_table.get_cursor_pos(), 15)
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, 'β⊞≬')
+
+if __name__ == '__main__':
+    unittest.main()

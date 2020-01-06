@@ -27,9 +27,10 @@ run_tests: run_tests.in
 	chmod +x $@
 
 EXTRA_DIST = \
+	__init__.py \
+	mock_engine.py \
 	run_tests.in \
 	test_it.py \
-	__init__.py \
 	$(NULL)
 
 CLEANFILES = \

@@ -1,12 +1,12 @@
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2015. #zanata
-# Mike FABIAN <mfabian@redhat.com>, 2016. #zanata, 2019.
+# Mike FABIAN <mfabian@redhat.com>, 2016. #zanata, 2019, 2020.
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2016. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-01-07 13:38+0100\n"
-"PO-Revision-Date: 2019-12-17 15:15+0000\n"
+"PO-Revision-Date: 2020-01-07 12:47+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Catalan <https://translate.stg.fedoraproject.org/projects/"
 "ibus-table/app/ca/>\n"
@@ -518,18 +518,6 @@ msgstr ""
 "de diversos caràcters."
 
 #: setup/ibus-table-preferences.ui:743
-#, fuzzy
-#| msgid ""
-#| "If set to “Yes”, this does the following 4 things:\n"
-#| "1) When typing “Return”, commit the \n"
-#| "   candidate + line-feed\n"
-#| "2) When tying Tab, commit the candidate\n"
-#| "3) When committing using a commit key, commit\n"
-#| "   the candidate + \" \"\n"
-#| "4) If typing the next character matches no candidates,\n"
-#| "   commit the first candidate of the previous match.\n"
-#| "   (Mostly needed for non-Chinese input methods like\n"
-#| "   the Russian “translit”)"
 msgid ""
 "If set to “Yes”, this does the following 4 things:\n"
 "1) When typing “Return”, commit the \n"
@@ -554,17 +542,6 @@ msgstr ""
 "   mètodes d'entrada no xinesos com el rus «translit»)"
 
 #: setup/ibus-table-preferences.ui:768
-#, fuzzy
-#| msgid ""
-#| "Committing with the commit keys or with the mouse\n"
-#| "always commits to the application. This option is about\n"
-#| "“automatic” commits which may happen when\n"
-#| "one just continues typing input without committing\n"
-#| "manually. From time to time, “automatic” commits will\n"
-#| "happen then.\n"
-#| "“Direct” means such “automatic” commits go directly\n"
-#| "into the application, “Normal” means they get committed\n"
-#| "to preëdit."
 msgid ""
 "Committing with the commit keys or with the mouse\n"
 "always commits to the application. This option is about\n"

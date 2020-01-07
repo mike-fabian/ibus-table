@@ -459,6 +459,49 @@ class Stroke5TestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '的')
 
+class TelexTestCase(unittest.TestCase):
+    def setUp(self):
+        set_up('telex')
+
+    def tearDown(self):
+        tear_down()
+
+    def test_dummy(self):
+        self.assertEqual(True, True)
+
+    def test_telex(self):
+        ENGINE.do_process_key_event(IBus.KEY_o, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, 'o')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'o')
+        ENGINE.do_process_key_event(IBus.KEY_o, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_f, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'oò')
+        ENGINE.do_process_key_event(IBus.KEY_o, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_o, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, 'ô')
+        self.assertEqual(ENGINE.mock_committed_text, 'oò')
+        ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'oòô')
+        ENGINE.do_process_key_event(IBus.KEY_o, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_o, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, 'ô')
+        self.assertEqual(ENGINE.mock_committed_text, 'oòô')
+        ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'oòôô')
+        ENGINE.do_process_key_event(IBus.KEY_o, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_o, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, 'ô')
+        self.assertEqual(ENGINE.mock_committed_text, 'oòôô')
+        ENGINE.do_process_key_event(IBus.KEY_j, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'oòôôộ')
+
 class TranslitTestCase(unittest.TestCase):
     def setUp(self):
         set_up('translit')
@@ -488,6 +531,20 @@ class TranslitTestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_preedit_text, 'с')
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, 'шщс ')
+
+    def test_sh_multiple_match_slavic(self):
+        ENGINE.do_process_key_event(IBus.KEY_scaron, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, 'ш')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        ENGINE.do_process_key_event(IBus.KEY_h, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'щ')
+        ENGINE.do_process_key_event(IBus.KEY_scaron, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, 'ш')
+        self.assertEqual(ENGINE.mock_committed_text, 'щ')
+        ENGINE.do_process_key_event(IBus.KEY_ccaron, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'щщ')
 
 class Cangjie5TestCase(unittest.TestCase):
     def setUp(self):

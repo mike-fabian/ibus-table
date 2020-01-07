@@ -2,13 +2,14 @@
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
 # Manuela Silva <mmsrs@sky.com>, 2020.
+# Anonymous <noreply@weblate.org>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2019-12-17 16:05+0100\n"
 "PO-Revision-Date: 2020-01-07 10:01+0000\n"
-"Last-Translator: Manuela Silva <mmsrs@sky.com>\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Portuguese (Portugal) <https://translate.stg.fedoraproject."
 "org/projects/ibus-table/app/pt_PT/>\n"
 "Language: pt_PT\n"
@@ -119,11 +120,11 @@ msgstr ""
 
 #: engine/table.py:1647
 msgid "Input mode"
-msgstr ""
+msgstr "Modo de entrada"
 
 #: engine/table.py:1648
 msgid "Switch Input mode"
-msgstr ""
+msgstr "Mudar modo de entrada"
 
 #: engine/table.py:1657 engine/table.py:1678 setup/ibus-table-preferences.ui:98
 #: setup/ibus-table-preferences.ui:112 setup/ibus-table-preferences.ui:182
@@ -551,7 +552,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:999
 msgid "Details"
-msgstr ""
+msgstr "Detalhes"
 
 #: setup/ibus-table-preferences.ui:1055
 msgid "Table input method for IBus"
@@ -580,4 +581,4 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:1186
 msgid "About"
-msgstr ""
+msgstr "Sobre"

@@ -1,4 +1,279 @@
-commit 939268cb3d0763884ac6da8e65f6f9b0dc2a453a
+commit b8a769c98a01c83347379e0914767a401ef4c530
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 7 12:47:23 2020 +0100
+
+    Release 1.9.23
+
+commit 42134fe0ffc6d7c170c11d183d9294113af5f70c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 6 19:39:04 2020 +0100
+
+    Move MockEngine classes into a separate file and make test_itb.py runnable standalone
+    
+    Now one can directly run ./test_it.py
+    
+    Use TAPTestRunner() instead of TextTestRunner(), but only when tap.py
+    is installed.
+
+commit 7034f592314a79903c8ce5958de4deba2c13ae22
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 6 19:09:56 2020 +0100
+
+    Add exist_ok=True in os.makedirs(path, exist_ok=True) to avoid failure due to race condition
+    
+    Resolves: rhbz#1786652 (https://bugzilla.redhat.com/show_bug.cgi?id=1786652)
+    
+    [abrt] ibus-table: makedirs(): os.py:221:makedirs:FileExistsError: [Errno 17] File exists: '/home/username/.local/share/ibus-table'
+
+commit 73de2f7068382a49f0d20d97cbeb53008db32024
+Author: Anonymous <noreply@weblate.org>
+Date:   Tue Jan 7 11:01:34 2020 +0100
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 31.5% (35 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/pt_PT/
+
+commit b226cbf15bb0e3d700cf00d2230e784072472d6a
+Author: Manuela Silva <mmsrs@sky.com>
+Date:   Tue Jan 7 11:01:34 2020 +0100
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 31.5% (35 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/pt_PT/
+
+commit c1ceacbc756cf0303162748ebfdcdeb7292d471e
+Author: Manuela Silva <mmsrs@sky.com>
+Date:   Mon Jan 6 10:46:03 2020 +0100
+
+    Added translation using Weblate (Portuguese (Portugal))
+
+commit d108f8e905cfff946c23ea1dc4b9f7591aac8aca
+Author: Rafael Fontenelle <rafaelff@gnome.org>
+Date:   Mon Jan 6 10:46:02 2020 +0100
+
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 20.7% (23 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/pt_BR/
+
+commit f6ba75fdf8136008059f23e37b6f071970aaecff
+Author: Anonymous <noreply@weblate.org>
+Date:   Sun Dec 29 19:49:34 2019 +0100
+
+    Translated using Weblate (Chinese (Traditional))
+    
+    Currently translated at 75.7% (84 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/zh_TW/
+    
+    Translated using Weblate (Chinese (Hong Kong))
+    
+    Currently translated at 2.7% (3 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/zh_HK/
+    
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 17.1% (19 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 14.4% (16 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/ja/
+
+commit 01ddabf7934f9cb5b2fe51120c2240dbadee2270
+Author: Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>
+Date:   Sun Dec 29 19:49:34 2019 +0100
+
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/fr/
+
+commit 592b6f0570bc7d10aa7e0f640d3f25c316fce312
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Dec 20 01:12:23 2019 +0100
+
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 16.2% (18 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 13.5% (15 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/ja/
+    
+    Translated using Weblate (Czech)
+    
+    Currently translated at 17.1% (19 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/cs/
+
+commit a6c0cab280166ed04a8ff6a3b2340a3dc38573d8
+Author: Julien Humbert <julroy67@gmail.com>
+Date:   Fri Dec 20 01:12:23 2019 +0100
+
+    Translated using Weblate (French)
+    
+    Currently translated at 44.1% (49 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/fr/
+
+commit f55d99e9468f7a3d6921b7d2b6a6954ab285102a
+Author: Anonymous <noreply@weblate.org>
+Date:   Fri Dec 20 01:12:22 2019 +0100
+
+    Translated using Weblate (Chinese (Simplified))
+    
+    Currently translated at 62.2% (69 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/zh_CN/
+    
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 16.2% (18 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 13.5% (15 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/ja/
+    
+    Translated using Weblate (Czech)
+    
+    Currently translated at 17.1% (19 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/cs/
+
+commit ee5568c05046d503706c99d468dfe8a842795e1c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 15:14:34 2019 +0000
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit 736eed327df3685c0c9d46b54403e1a40e53ece0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 15:11:13 2019 +0000
+
+    Translated using Weblate (Chinese (Traditional))
+    
+    Currently translated at 74.8% (83 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/zh_TW/
+
+commit e6b85022d4ccf05ffb213bed412b4c336aabcb15
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 15:14:50 2019 +0000
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/uk/
+
+commit 2aaf51cc2fd057859709e1d9a8bdfb27df90204b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 15:14:15 2019 +0000
+
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/es/
+
+commit 480f71eaf896172bb473b9722e20f48515bd583b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 15:13:56 2019 +0000
+
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/de/
+
+commit d7cd71bee06b2eebbce6d2a3db2bbe0828eca0e9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 15:09:58 2019 +0000
+
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/ca/
+
+commit 984c90ebe5f8ed6e9665c1ba5534702f04b5f2aa
+Author: Weblate <noreply@weblate.org>
+Date:   Tue Dec 17 16:08:08 2019 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/
+
+commit 190187fd5d92683609167844b234bcbc629ab302
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 16:06:17 2019 +0100
+
+    Update ibus-table.pot for the spelling fix.
+
+commit d0aa98c579d0f294a0a4535f6823c1d66e3e7060
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 17 15:29:58 2019 +0100
+
+    Fix misspelled word "wildchard" in the UI
+    
+    Resolves: https://github.com/kaio/ibus-table/issues/56
+
+commit e8c92afb81f28fb5f9557e71361c92e444cf7bba
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Dec 17 14:21:16 2019 +0100
 

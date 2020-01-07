@@ -19,6 +19,31 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.9.23" date="2020-01-07" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Add exist_ok=True in os.makedirs(path, exist_ok=True) to
+            avoid failure due to race condition. Resolves:
+            https://bugzilla.redhat.com/show_bug.cgi?id=1786652
+          </li>
+          <li>
+            Move MockEngine classes into a separate file and make
+            test_itb.py runnable standalone
+          </li>
+          <li>
+            Add new test case for ibus-table-others-1.3.10 (latex
+            table additions)
+          </li>
+          <li>
+            Translation updates for several languages (French at 100%
+            now, Brazilian Portuguese at 100% now, Porguguese
+            (Portugal) new and now at 31.5%)
+          </li>
+        </ul>
+      </description>
+    </release>
     <release version="1.9.22" date="2019-12-17" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

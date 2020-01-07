@@ -561,6 +561,22 @@ class LatexTestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, 'α')
 
+    def test_single_char_commit_with_space_fraktur(self):
+        # needs ibus-table-others-1.3.10 which adds
+        # most of Unicode 9.0 block Mathematical Alphanumeric Symbols
+        ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_m, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_t, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_h, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_f, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_r, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_k, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_F, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, '𝔉')
+
     def test_single_char_commit_with_f3(self):
         ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_b, 0, 0)

@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-01-07 13:38+0100\n"
-"PO-Revision-Date: 2020-01-07 10:01+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2020-01-14 14:01+0000\n"
+"Last-Translator: Manuela Silva <mmsrs@sky.com>\n"
 "Language-Team: Portuguese (Portugal) <https://translate.stg.fedoraproject."
 "org/projects/ibus-table/app/pt_PT/>\n"
 "Language: pt_PT\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.9.1\n"
+"X-Generator: Weblate 3.10.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -27,7 +27,7 @@ msgstr "Chinês Simplificado"
 
 #: engine/table.py:1556
 msgid "Switch to “Simplified Chinese only”."
-msgstr ""
+msgstr "Mudar para “apenas chinês simplificado”."
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
@@ -37,7 +37,7 @@ msgstr "Chinês Tradicional"
 
 #: engine/table.py:1565
 msgid "Switch to “Traditional Chinese only”."
-msgstr ""
+msgstr "Mudar para “apenas chinês tradicional”."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -46,11 +46,11 @@ msgstr ""
 #. lists.
 #: engine/table.py:1575
 msgid "Simplified Chinese first"
-msgstr ""
+msgstr "Primeiro, chinês simplificado"
 
 #: engine/table.py:1577
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr ""
+msgstr "Mudar para \"chinês simplificado antes de tradicional\"."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -59,11 +59,11 @@ msgstr ""
 #. lists.
 #: engine/table.py:1587
 msgid "Traditional Chinese first"
-msgstr ""
+msgstr "Primeiro, chinês tradicional"
 
 #: engine/table.py:1589
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr ""
+msgstr "Mudar para \"chinês tradicional antes de simplificado\"."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -76,7 +76,7 @@ msgstr "Todos os carateres chineses"
 
 #: engine/table.py:1600
 msgid "Switch to “All Chinese characters”."
-msgstr ""
+msgstr "Mudar para “todos os carateres chineses”."
 
 #: engine/table.py:1604
 msgid "Chinese mode"
@@ -104,11 +104,11 @@ msgstr "Mudar para entrada em chinês"
 
 #: engine/table.py:1632 engine/table.py:1753 setup/ibus-table-preferences.ui:36
 msgid "Direct"
-msgstr ""
+msgstr "Direta"
 
 #: engine/table.py:1633
 msgid "Switch to direct input"
-msgstr ""
+msgstr "Mudar para entrada direta"
 
 #: engine/table.py:1638 engine/table.py:1699
 msgid "Table"
@@ -116,7 +116,7 @@ msgstr "Tabela"
 
 #: engine/table.py:1639
 msgid "Switch to table input"
-msgstr ""
+msgstr "Mudar para entrada de tabela"
 
 #: engine/table.py:1647
 msgid "Input mode"
@@ -130,21 +130,21 @@ msgstr "Mudar modo de entrada"
 #: setup/ibus-table-preferences.ui:112 setup/ibus-table-preferences.ui:182
 #: setup/ibus-table-preferences.ui:196
 msgid "Half"
-msgstr ""
+msgstr "Metade"
 
 #: engine/table.py:1658
 msgid "Switch to halfwidth letters"
-msgstr ""
+msgstr "Mudar para letras de metade da largura"
 
 #: engine/table.py:1663 engine/table.py:1684
 #: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
 #: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
 msgid "Full"
-msgstr ""
+msgstr "Completa"
 
 #: engine/table.py:1664
 msgid "Switch to fullwidth letters"
-msgstr ""
+msgstr "Mudar para letras de largura completa"
 
 #: engine/table.py:1668
 msgid "Letter width"
@@ -164,11 +164,11 @@ msgstr ""
 
 #: engine/table.py:1689
 msgid "Punctuation width"
-msgstr ""
+msgstr "Largura de pontuação"
 
 #: engine/table.py:1690
 msgid "Switch punctuation width"
-msgstr ""
+msgstr "Mudar largura de pontuação"
 
 #: engine/table.py:1700
 msgid "Switch to table mode"
@@ -176,23 +176,23 @@ msgstr "Mudar para modo de tabela"
 
 #: engine/table.py:1705
 msgid "Pinyin"
-msgstr ""
+msgstr "Pinyin"
 
 #: engine/table.py:1706
 msgid "Switch to pinyin mode"
-msgstr ""
+msgstr "Mudar para modo pinyin"
 
 #: engine/table.py:1710
 msgid "Pinyin mode"
-msgstr ""
+msgstr "Modo pinyin"
 
 #: engine/table.py:1711
 msgid "Switch pinyin mode"
-msgstr ""
+msgstr "Mudar modo pinyin"
 
 #: engine/table.py:1720
 msgid "Multiple character match"
-msgstr ""
+msgstr "Correspondência de vários carateres"
 
 #: engine/table.py:1722
 msgid "Switch to matching multiple characters at once"
@@ -200,7 +200,7 @@ msgstr ""
 
 #: engine/table.py:1727
 msgid "Single character match"
-msgstr ""
+msgstr "Correspondência de um caráter"
 
 #: engine/table.py:1729
 msgid "Switch to matching only single characters"
@@ -208,11 +208,11 @@ msgstr ""
 
 #: engine/table.py:1733
 msgid "Onechar mode"
-msgstr ""
+msgstr "Modo um caráter"
 
 #: engine/table.py:1734
 msgid "Switch onechar mode"
-msgstr ""
+msgstr "Mudar modo de um caráter"
 
 #: engine/table.py:1743 setup/ibus-table-preferences.ui:33
 msgid "Normal"
@@ -249,11 +249,11 @@ msgstr "Configurar ibus-table “%(engine-name)s”"
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"
-msgstr "Ibus Table"
+msgstr "Tabela Ibus"
 
 #: ibus-table.appdata.xml:6
 msgid "Table based input method"
-msgstr ""
+msgstr "Tabela baseada no modo de entrada"
 
 #: ibus-table.appdata.xml:8
 msgid ""
@@ -264,21 +264,23 @@ msgstr ""
 
 #: setup/main.py:150
 msgid "IBUS_ENGINE_NAME environment variable is not set."
-msgstr ""
+msgstr "A variável de ambiente IBUS_ENGINE_NAME não está definida."
 
 #: setup/main.py:154
 msgid "Cannot determine the engine name. Please use the --engine-name option."
 msgstr ""
+"Não é possível determinar o nome do mecanismo. Por favor, use a opção "
+"--engine-name."
 
 #: setup/main.py:174
 #, python-format
 msgid "IBus Table engine %s is not available"
-msgstr "Mecanismo engine %s de IBus Table não está disponível"
+msgstr "O mecanismo %s da Tabela IBus não está disponível"
 
 #: setup/main.py:336
 #, python-format
 msgid "IBus Table %s Preferences"
-msgstr "IBus Table %s - Preferências"
+msgstr "Tabela IBus %s - Preferências"
 
 #: setup/ibus-table-preferences.ui:19 setup/ibus-table-preferences.ui:47
 #: setup/ibus-table-preferences.ui:61
@@ -300,11 +302,11 @@ msgstr "Chinês Tradicional antes do simplificado"
 
 #: setup/ibus-table-preferences.ui:126
 msgid "Direct input"
-msgstr ""
+msgstr "Entrada direta"
 
 #: setup/ibus-table-preferences.ui:129
 msgid "Table input"
-msgstr ""
+msgstr "Entrada de tabela"
 
 #: setup/ibus-table-preferences.ui:140
 msgid "Horizontal"
@@ -337,6 +339,8 @@ msgstr "Restaurar todas as predefinições"
 #: setup/ibus-table-preferences.ui:227
 msgid "Restore defaults as specified in the database for this engine."
 msgstr ""
+"Restaurar as predefinições como especificado na base de dados para este "
+"mecanismo."
 
 #: setup/ibus-table-preferences.ui:302
 msgid "Input mode:"
@@ -386,19 +390,19 @@ msgstr "Modo chinês:"
 
 #: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"
-msgstr ""
+msgstr "Largura da letra da entrada de tabela:"
 
 #: setup/ibus-table-preferences.ui:443
 msgid "Table input punctuation width:"
-msgstr ""
+msgstr "Largura de pontuação de entrada de tabela:"
 
 #: setup/ibus-table-preferences.ui:459
 msgid "Direct input letter width:"
-msgstr ""
+msgstr "Largura da letra de entrada direta:"
 
 #: setup/ibus-table-preferences.ui:475
 msgid "Direct input punctuation width:"
-msgstr ""
+msgstr "Largura de pontuação de entrada direta:"
 
 #: setup/ibus-table-preferences.ui:488
 msgid ""
@@ -412,7 +416,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:514
 msgid "<b>Inital state</b>"
-msgstr ""
+msgstr "<b>Estado inicial</b>"
 
 #: setup/ibus-table-preferences.ui:551
 msgid ""
@@ -430,15 +434,15 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:592
 msgid "Orientation:"
-msgstr ""
+msgstr "Orientação:"
 
 #: setup/ibus-table-preferences.ui:608
 msgid "Page size:"
-msgstr ""
+msgstr "Tamanho da página:"
 
 #: setup/ibus-table-preferences.ui:624
 msgid "Show candidate list"
-msgstr ""
+msgstr "Mostrar lista de candidatos"
 
 #: setup/ibus-table-preferences.ui:637
 msgid ""
@@ -451,11 +455,11 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:661
 msgid "<b>Candidate list</b>"
-msgstr ""
+msgstr "<b>Lista de candidatos</b>"
 
 #: setup/ibus-table-preferences.ui:681
 msgid "Settings"
-msgstr ""
+msgstr "Definições"
 
 #: setup/ibus-table-preferences.ui:724
 msgid ""
@@ -502,11 +506,11 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:814
 msgid "Compose:"
-msgstr ""
+msgstr "Compor:"
 
 #: setup/ibus-table-preferences.ui:830
 msgid "Auto select:"
-msgstr ""
+msgstr "Auto selecionar:"
 
 #: setup/ibus-table-preferences.ui:846
 msgid "Auto commit mode:"
@@ -514,11 +518,11 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:862
 msgid "Behavior of space key:"
-msgstr ""
+msgstr "Comportamento da tecla de espaço:"
 
 #: setup/ibus-table-preferences.ui:878
 msgid "Auto wildcard:"
-msgstr ""
+msgstr "Caráter de substituição automático:"
 
 #: setup/ibus-table-preferences.ui:891
 msgid ""
@@ -528,7 +532,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:911
 msgid "Single wildcard character:"
-msgstr ""
+msgstr "Caráter de substituição único:"
 
 #: setup/ibus-table-preferences.ui:924
 msgid ""
@@ -538,7 +542,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:943
 msgid "Multi wildcard character:"
-msgstr ""
+msgstr "Caráter de substituição múltiplo:"
 
 #: setup/ibus-table-preferences.ui:956
 msgid ""
@@ -556,7 +560,7 @@ msgstr "Detalhes"
 
 #: setup/ibus-table-preferences.ui:1055
 msgid "Table input method for IBus"
-msgstr ""
+msgstr "Método de entrada de tabela para IBus"
 
 #: setup/ibus-table-preferences.ui:1087
 msgid ""
@@ -578,6 +582,23 @@ msgid ""
 "Seán de Búrca\n"
 "</small>"
 msgstr ""
+"<small>\n"
+"<b>Autores:</b>\n"
+"Yuwei YU (‘acevery’)\n"
+"Peng Huang\n"
+"BYVoid\n"
+"Peng Wu\n"
+"\n"
+"<b>Colaboradores:</b>\n"
+"koterpilla\n"
+"Zerng07\n"
+"Caius ‘kaio’ Chance\n"
+"Mike FABIAN\n"
+"Bernard Nauwelaerts\n"
+"Xiaojun Ma\n"
+"mozbugbox\n"
+"Seán de Búrca\n"
+"</small>"
 
 #: setup/ibus-table-preferences.ui:1186
 msgid "About"

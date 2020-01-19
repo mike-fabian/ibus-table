@@ -1,15 +1,15 @@
 # Alexandre Moine <nobrakal@gmail.com>, 2016. #zanata
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2016. #zanata, 2019.
 # Mike FABIAN <mfabian@redhat.com>, 2019.
-# Julien Humbert <julroy67@gmail.com>, 2019.
+# Julien Humbert <julroy67@gmail.com>, 2019, 2020.
 # Anonymous <noreply@weblate.org>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-01-07 13:38+0100\n"
-"PO-Revision-Date: 2020-01-07 12:47+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2020-01-19 01:47+0000\n"
+"Last-Translator: Julien Humbert <julroy67@gmail.com>\n"
 "Language-Team: French <https://translate.stg.fedoraproject.org/projects/"
 "ibus-table/app/fr/>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.9.1\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -27,7 +27,7 @@ msgstr "Chinois simplifié"
 
 #: engine/table.py:1556
 msgid "Switch to “Simplified Chinese only”."
-msgstr "Basculer vers \"Chinois simplifié uniquement\"."
+msgstr "Basculer vers « Chinois simplifié uniquement »."
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
@@ -37,7 +37,7 @@ msgstr "Chinois traditionnel"
 
 #: engine/table.py:1565
 msgid "Switch to “Traditional Chinese only”."
-msgstr "Basculer vers \"Chinois traditionnel uniquement\"."
+msgstr "Basculer vers « Chinois traditionnel uniquement »."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -46,11 +46,11 @@ msgstr "Basculer vers \"Chinois traditionnel uniquement\"."
 #. lists.
 #: engine/table.py:1575
 msgid "Simplified Chinese first"
-msgstr "Chinois simplifié d'abord"
+msgstr "Chinois simplifié d’abord"
 
 #: engine/table.py:1577
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr "Basculer vers « Chinois simplifié avant traditionnel »."
+msgstr "Basculer vers « Chinois simplifié avant traditionnel »."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -59,11 +59,11 @@ msgstr "Basculer vers « Chinois simplifié avant traditionnel »."
 #. lists.
 #: engine/table.py:1587
 msgid "Traditional Chinese first"
-msgstr "Chinois traditionnel d'abord"
+msgstr "Chinois traditionnel d’abord"
 
 #: engine/table.py:1589
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr "Basculer vers « Chinois traditionnel avant simplifié »."
+msgstr "Basculer vers « Chinois traditionnel avant simplifié »."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -72,11 +72,11 @@ msgstr "Basculer vers « Chinois traditionnel avant simplifié »."
 #. up in the candidate lists.
 #: engine/table.py:1599 setup/ibus-table-preferences.ui:87
 msgid "All Chinese characters"
-msgstr "Tous  les caractères chinois"
+msgstr "Tous les caractères chinois"
 
 #: engine/table.py:1600
 msgid "Switch to “All Chinese characters”."
-msgstr "Basculer vers \"Tous les caractères chinois\"."
+msgstr "Basculer vers « Tous les caractères chinois »."
 
 #: engine/table.py:1604
 msgid "Chinese mode"
@@ -224,7 +224,7 @@ msgid ""
 "of into the application. This enables automatic definitions of new shortcuts)"
 msgstr ""
 "Passer au mode de validation normal (les validations automatiques vont dans "
-"la pré-édition plutôt que dans l'application. Ceci permet la définition "
+"la pré-édition plutôt que dans l’application. Ceci permet la définition "
 "automatique de nouveaux raccourcis)"
 
 #: engine/table.py:1755
@@ -233,7 +233,7 @@ msgid ""
 "application)"
 msgstr ""
 "Passer au mode de validation direct (les validations automatiques vont "
-"directement dans l'application)"
+"directement dans l’application)"
 
 #: engine/table.py:1760
 msgid "Auto commit mode"
@@ -250,7 +250,7 @@ msgstr "Configuration"
 #: engine/table.py:2466
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
-msgstr "Configurer ibus-table « %(engine-name)s »"
+msgstr "Configurer ibus-table « %(engine-name)s »"
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"
@@ -269,27 +269,27 @@ msgstr ""
 "Ibus-table est un cadriciel de de méthode de saisie pour les méthodes de "
 "saisies basées sur des tables. Il est principalement utilisé pour les "
 "méthodes de saisie Chinoises telles que ZhengMa, Wubizixing, ErBi, CangJie… "
-"Mais des tables pour d'autres langues sont également disponibles."
+"Mais des tables pour d’autres langues sont également disponibles."
 
 #: setup/main.py:150
 msgid "IBUS_ENGINE_NAME environment variable is not set."
-msgstr "IBUS_ENGINE_NAME n'est pas définie."
+msgstr "IBUS_ENGINE_NAME n’est pas définie."
 
 #: setup/main.py:154
 msgid "Cannot determine the engine name. Please use the --engine-name option."
 msgstr ""
-"Impossible de déterminer le nom du moteur. Merci d'utiliser l'option --"
-"engine-name."
+"Impossible de déterminer le nom du moteur. Merci d’utiliser l’option "
+"--engine-name."
 
 #: setup/main.py:174
 #, python-format
 msgid "IBus Table engine %s is not available"
-msgstr "Le moteur de tables IBus %s n'est pas disponible"
+msgstr "Le moteur de tables IBus %s n’est pas disponible"
 
 #: setup/main.py:336
 #, python-format
 msgid "IBus Table %s Preferences"
-msgstr "Préférences d'IBus Table %s"
+msgstr "Préférences d’IBus Table %s"
 
 #: setup/ibus-table-preferences.ui:19 setup/ibus-table-preferences.ui:47
 #: setup/ibus-table-preferences.ui:61
@@ -348,12 +348,12 @@ msgstr "Restaurer les valeurs par défaut"
 #: setup/ibus-table-preferences.ui:227
 msgid "Restore defaults as specified in the database for this engine."
 msgstr ""
-"Restaure les valeurs par défauts tels que définis dans la base de donnée "
+"Restaure les valeurs par défauts tels que définis dans la base de données "
 "pour ce moteur."
 
 #: setup/ibus-table-preferences.ui:302
 msgid "Input mode:"
-msgstr "Mode de saisie :"
+msgstr "Mode de saisie :"
 
 #: setup/ibus-table-preferences.ui:315
 msgid ""
@@ -368,15 +368,16 @@ msgid ""
 "matches without any particular filtering on traditional\n"
 "versus simplified Chinese."
 msgstr ""
-"« Chinois simplifié » ne montre que les caractères utilisés en chinois "
+"« Chinois simplifié » ne montre que les caractères utilisés en chinois "
 "simplifié.\n"
-"« Chinois traditionnel » montre seulement les caractères utilisés en chinois "
-"traditionnel.\n"
-"« Chinois simplifié avant traditionnel » montre tous les caractères mais "
-"place les caractères simplifiés plus haut dans la liste des candidats.\n"
-"« Chinois traditionnel avant simplifié » place les caractères traditionnels "
+"« Chinois traditionnel » montre seulement les caractères utilisés en\n"
+"chinois traditionnel.\n"
+"« Chinois simplifié avant traditionnel » montre tous les caractères, mais "
+"place\n"
+"les caractères simplifiés plus haut dans la liste des candidats.\n"
+"« Chinois traditionnel avant simplifié » place les caractères traditionnels\n"
 "plus haut dans la liste des candidats.\n"
-"« Tous les caractères » montre uniquement toutes les correspondances sans "
+"« Tous les caractères » montre uniquement toutes les correspondances sans\n"
 "filtrage particulier sur le chinois traditionnel par rapport au chinois "
 "simplifié."
 
@@ -385,7 +386,7 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
-"S'il faut utiliser des caractères pleine \n"
+"S’il faut utiliser des caractères pleine\n"
 "ou demi-chasse lors de la saisie en table."
 
 #: setup/ibus-table-preferences.ui:357
@@ -393,7 +394,7 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
-"S'il faut utiliser une ponctuation pleine \n"
+"S’il faut utiliser une ponctuation pleine\n"
 "ou demi-chasse lors de la saisie en table."
 
 #: setup/ibus-table-preferences.ui:374
@@ -401,7 +402,7 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
-"S'il faut utiliser des lettres pleine \n"
+"S’il faut utiliser des lettres pleine\n"
 "ou demi-chasse lors de la saisie en table."
 
 #: setup/ibus-table-preferences.ui:391
@@ -409,28 +410,28 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
 msgstr ""
-"S'il faut utiliser une ponctuation pleine \n"
+"S’il faut utiliser une ponctuation pleine\n"
 "ou demi-chasse lors de la saisie directe."
 
 #: setup/ibus-table-preferences.ui:411
 msgid "Chinese mode:"
-msgstr "Mode chinois :"
+msgstr "Mode chinois :"
 
 #: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"
-msgstr "Largeur des lettres en table :"
+msgstr "Largeur des lettres en table :"
 
 #: setup/ibus-table-preferences.ui:443
 msgid "Table input punctuation width:"
-msgstr "Largeur de la ponctuation en table :"
+msgstr "Largeur de la ponctuation en table :"
 
 #: setup/ibus-table-preferences.ui:459
 msgid "Direct input letter width:"
-msgstr "Largeur des lettres en saisie directe :"
+msgstr "Largeur des lettres en saisie directe :"
 
 #: setup/ibus-table-preferences.ui:475
 msgid "Direct input punctuation width:"
-msgstr "Largeur des lettres en saisie directe :"
+msgstr "Largeur des lettres en saisie directe :"
 
 #: setup/ibus-table-preferences.ui:488
 msgid ""
@@ -441,11 +442,12 @@ msgid ""
 "halfwidth may still happen in direct input mode.\n"
 "“Table input” means the input method is on."
 msgstr ""
-"« Saisie directe » est presque la même que si la méthode de saisie était "
-"désactivée, c'est-à-dire pas du tout utilisée, la plupart des caractères "
-"sont simplement passés à l'application. Mais certaines conversions pleine-"
-"chasse et demi-chasse peuvent encore se produire.\n"
-"« Table input » signifie que la méthode d'entrée est activée."
+"« Saisie directe » est presque la même que si la méthode\n"
+"de saisie était désactivée, c’est-à-dire pas du tout utilisée,\n"
+"la plupart des caractères sont simplement passés à\n"
+"l’application. Mais certaines conversions pleine-chasse et\n"
+"demi-chasse peuvent encore se produire.\n"
+"« Table input » signifie que la méthode d’entrée est activée."
 
 #: setup/ibus-table-preferences.ui:514
 msgid "<b>Inital state</b>"
@@ -467,9 +469,9 @@ msgid ""
 "keys or the arrow up/down keys."
 msgstr ""
 "Le nombre maximum de candidats dans une\n"
-"page de recherche de table. Vous pouvez \n"
-"changer de page en utilisant les touches \n"
-"pages suivante/précédente ou les flèches haut/bas."
+"page de recherche de table. Vous pouvez\n"
+"changer de page en utilisant les touches\n"
+"page suivante/précédente ou les flèches haut/bas."
 
 #: setup/ibus-table-preferences.ui:592
 msgid "Orientation:"
@@ -477,7 +479,7 @@ msgstr "Orientation :"
 
 #: setup/ibus-table-preferences.ui:608
 msgid "Page size:"
-msgstr "Taille de la page :"
+msgstr "Taille de la page :"
 
 #: setup/ibus-table-preferences.ui:624
 msgid "Show candidate list"
@@ -493,13 +495,13 @@ msgid ""
 msgstr ""
 "Si la liste des candidats doit être montrée ou cachée.\n"
 "Pour les méthodes de saisie chinoises, on souhaitera\n"
-"voire la liste. Mais pour certaines méthodes de saisie\n"
-"non chinoises, telle que le Russe « translit », cacher \n"
-"les listes de candidats est plus pratique."
+"voir la liste. Mais pour certaines méthodes de saisie\n"
+"non chinoises, telle que le Russe « translit », cacher\n"
+"la liste des candidats est plus pratique."
 
 #: setup/ibus-table-preferences.ui:661
 msgid "<b>Candidate list</b>"
-msgstr "<b> Liste des candidats</b>"
+msgstr "<b>Liste des candidats</b>"
 
 #: setup/ibus-table-preferences.ui:681
 msgid "Settings"
@@ -512,9 +514,9 @@ msgid ""
 "set to “Phrase” candidates consisting of\n"
 "several characters may be shown."
 msgstr ""
-"Si défini à « Mono caractère  », seuls les \n"
+"Si défini à « Mono caractère », seuls les\n"
 "candidats mono caractères seront montrés.\n"
-"Si défini à « Phrase », les candidats constitués \n"
+"Si défini à « Phrase », les candidats constitués\n"
 "de plusieurs caractères pourront être montrés."
 
 #: setup/ibus-table-preferences.ui:743
@@ -530,14 +532,14 @@ msgid ""
 "   (Mostly needed for non-Chinese input methods like\n"
 "   the Russian “translit”)"
 msgstr ""
-"Si défini à « Oui », cela fait les 4 choses suivantes :\n"
-"1) Lorsque vous tapez « Entrée », valide le candidat + saut de ligne\n"
-"2) Lorsque vous tapez « Tab », valide le candidat\n"
-"3) Lors de la validation avec une clef, valide le candidat + « ».\n"
+"Si défini à « Oui », cela fait les 4 choses suivantes :\n"
+"1) Lorsque vous tapez « Entrée », valide le candidat + saut de ligne\n"
+"2) Lorsque vous tapez « Tab », valide le candidat\n"
+"3) Lors de la validation avec une clef, valide le candidat + « ».\n"
 "4) Si la saisie du caractère suivant ne correspond à aucun candidat,\n"
 "   valide le premier candidat de la correspondance précédente.\n"
-"   (Principalement nécessaire pour les méthodes de saisie non chinoises "
-"comme le « translit » russe)"
+"   (Principalement nécessaire pour les méthodes de saisie non chinoises\n"
+"   comme le « translit » russe)"
 
 #: setup/ibus-table-preferences.ui:768
 msgid ""
@@ -551,14 +553,15 @@ msgid ""
 "into the application, “Normal” means they get committed\n"
 "to preedit."
 msgstr ""
-"La validation avec les touches de validation ou la souris va toujours être "
-"transmise à l'application. Cette option concerne les validations « "
-"automatiques » qui peuvent survenir lors ce qu'on continue à saisir sans "
-"valider manuellement. De temps en temps, des validations « automatiques » "
-"auront lieux.\n"
-"« Direct » signifie que les validations « automatiques » vont directement à "
-"l'application, « Normal » signifie qu'elles sont validées dans la "
-"pré-édition."
+"La validation avec les touches de validation ou la souris va\n"
+"toujours être transmise à l’application. Cette option concerne\n"
+"les validations « automatiques » qui peuvent survenir lors ce\n"
+"qu’on continue à saisir sans valider manuellement.\n"
+"De temps\n"
+"en temps, des validations « automatiques » auront lieux.\n"
+"« Direct » signifie que les validations « automatiques » vont\n"
+"directement à l’application, « Normal » signifie qu’elles sont\n"
+"validées dans la pré-édition."
 
 #: setup/ibus-table-preferences.ui:792
 msgid ""
@@ -567,56 +570,56 @@ msgid ""
 "(i.e. the labels in front of the candidates in the\n"
 "lookup table) or using the mouse."
 msgstr ""
-"Si vous choisissez la barre espace pour la \n"
-"page suivante, vous ne pourrez valider \n"
-"qu'avec les touches de sélection \n"
-"(i.e. les libellés en face des candidats dans \n"
+"Si vous choisissez la barre espace pour la\n"
+"page suivante, vous ne pourrez valider\n"
+"qu’avec les touches de sélection\n"
+"(p. ex. les libellés en face des candidats dans\n"
 "la table de recherche) ou en utilisant la souris."
 
 #: setup/ibus-table-preferences.ui:814
 msgid "Compose:"
-msgstr "Composer :"
+msgstr "Composer :"
 
 #: setup/ibus-table-preferences.ui:830
 msgid "Auto select:"
-msgstr "Auto sélection :"
+msgstr "Auto sélection :"
 
 #: setup/ibus-table-preferences.ui:846
 msgid "Auto commit mode:"
-msgstr "Mode de validation auto :"
+msgstr "Mode de validation auto :"
 
 #: setup/ibus-table-preferences.ui:862
 msgid "Behavior of space key:"
-msgstr "Comportement de la touche espace :"
+msgstr "Comportement de la touche espace :"
 
 #: setup/ibus-table-preferences.ui:878
 msgid "Auto wildcard:"
-msgstr "Métacaractère auto :"
+msgstr "Métacaractère auto :"
 
 #: setup/ibus-table-preferences.ui:891
 msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
 msgstr ""
-"Si oui, un métacaractère multiple sera \n"
-"automatiquement ajouté à la fin de la chaîne saisie."
+"Si oui, un métacaractère multiple sera\n"
+"automatiquement ajouté à la fin de la chaine saisie."
 
 #: setup/ibus-table-preferences.ui:911
 msgid "Single wildcard character:"
-msgstr "Métacaractère simple :"
+msgstr "Métacaractère simple :"
 
 #: setup/ibus-table-preferences.ui:924
 msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
-"Le métacaractère pour la correspondance de n'importe quel caractère.\n"
+"Le métacaractère pour la correspondance de n’importe quel caractère.\n"
 "Saisissez RETOUR ou ENTRÉE pour confirmer après le changement du "
 "métacaractère."
 
 #: setup/ibus-table-preferences.ui:943
 msgid "Multi wildcard character:"
-msgstr "Métacaractère multi :"
+msgstr "Métacaractère multi :"
 
 #: setup/ibus-table-preferences.ui:956
 msgid ""
@@ -660,22 +663,22 @@ msgid ""
 "Seán de Búrca\n"
 "</small>"
 msgstr ""
-"<small>¶\n"
-"<b>Auteurs:</b>¶\n"
-"Yuwei YU (‘acevery’)¶\n"
-"Peng Huang¶\n"
-"BYVoid¶\n"
-"Peng Wu¶\n"
-"¶\n"
-"<b>Contributeurs:</b>¶\n"
-"koterpilla¶\n"
-"Zerng07¶\n"
-"Caius ‘kaio’ Chance¶\n"
-"Mike FABIAN¶\n"
-"Bernard Nauwelaerts¶\n"
-"Xiaojun Ma¶\n"
-"mozbugbox¶\n"
-"Seán de Búrca¶\n"
+"<small>\n"
+"<b>Auteurs :</b>\n"
+"Yuwei YU (« acevery »)\n"
+"Peng Huang\n"
+"BYVoid\n"
+"Peng Wu\n"
+"\n"
+"<b>Contributeurs :</b>\n"
+"koterpilla\n"
+"Zerng07\n"
+"Caius « kaio » Chance\n"
+"Mike FABIAN\n"
+"Bernard Nauwelaerts\n"
+"Xiaojun Ma\n"
+"mozbugbox\n"
+"Seán de Búrca\n"
 "</small>"
 
 #: setup/ibus-table-preferences.ui:1186

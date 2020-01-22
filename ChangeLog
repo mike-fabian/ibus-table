@@ -1,4 +1,163 @@
-commit b8a769c98a01c83347379e0914767a401ef4c530
+commit 22e93f4d46546711f97bfece4528b1c0c9c2e9e2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 22 16:13:57 2020 +0100
+
+    Release 1.9.24
+
+commit 7c65cf1f090374518d1a475a163fb9871d460caa
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 7 17:37:39 2020 +0100
+
+    Add new test cases for ibus-table-others-1.3.11
+    
+    New in ibus-table-others-1.3.11:
+    
+    - Extend russian translit for latin slavic layouts.
+    - Add Vietnamese input methods Telex and VNI
+
+commit 07efc1eb30ccb2e89f0532c99a4cc784a28d1d7e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 7 12:02:00 2020 +0100
+
+    Add new test case for ibus-table-others-1.3.10
+    
+    Most of Unicode 9.0 block Mathematical Alphanumeric Symbols are added
+    in the “latex” table of ibus-table-others-1.3.10.
+
+commit 26d2b558fd23359539b7ed4a91e2e32bd765a1a1
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Wed Jan 22 09:07:20 2020 +0100
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit 3dbdf93ef5c2ce54f028ded2c77e032eb6d00238
+Author: Julien Humbert <julroy67@gmail.com>
+Date:   Sun Jan 19 02:47:54 2020 +0100
+
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/fr/
+
+commit fcc269353eff5ceb29b1a254b67b22dfab67985c
+Author: Anonymous <noreply@weblate.org>
+Date:   Sun Jan 19 02:47:54 2020 +0100
+
+    Translated using Weblate (Persian)
+    
+    Currently translated at 2.7% (3 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/fa/
+    
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 75.7% (84 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/pt_PT/
+
+commit accfc505af85967e2956f7d85f0c1e050486afd3
+Author: Manuela Silva <mmsrs@sky.com>
+Date:   Tue Jan 14 15:01:11 2020 +0100
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 74.8% (83 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/pt_PT/
+
+commit 6edd412964de7acecb0caa02fa6bff605b0cbee0
+Author: Ahmad Haghighi <haghighi.ahmad@gmail.com>
+Date:   Tue Jan 14 15:01:11 2020 +0100
+
+    Added translation using Weblate (Persian)
+
+commit dd596ebe51823b6e7804e739192ea08ec73e2821
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 7 13:47:56 2020 +0100
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/uk/
+    
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/es/
+    
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/de/
+    
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/ca/
+
+commit 32c6515bbc6896736edec312e04136071090c4aa
+Author: Anonymous <noreply@weblate.org>
+Date:   Tue Jan 7 13:47:56 2020 +0100
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/tr/
+    
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (111 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/fr/
+    
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.stg.fedoraproject.org/projects/ibus-table/app/
+
+commit cb1bd986d01bfd9f65445b473013d1ed8ea3b18f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 7 13:39:16 2020 +0100
+
+    Update ibus-table.pot for Rafael Fontenelle’s fixes
+
+commit 038606649a82d3bdea57bd6ed1463be882dd566b
+Author: Rafael Fontenelle <rffontenelle@users.noreply.github.com>
+Date:   Fri Jan 3 14:44:35 2020 -0300
+
+    preferences: minor word changes
+
+commit 75b68ee00fd83f88d38a262de92cb2d947eb2982
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Jan 7 12:47:23 2020 +0100
 

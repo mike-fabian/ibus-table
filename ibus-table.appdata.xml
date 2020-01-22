@@ -19,6 +19,22 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.9.24" date="2020-01-22" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Fixed two typos in message ids (Thanks to Rafael Fontenelle)
+          </li>
+          <li>
+            Translation updates (tr, fr, fa, pt, uk)
+          </li>
+          <li>
+            New test cases for ibus-table-others
+          </li>
+        </ul>
+      </description>
+    </release>
     <release version="1.9.23" date="2020-01-07" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

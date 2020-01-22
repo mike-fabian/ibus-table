@@ -518,7 +518,8 @@ class Editor(object):
         self._strings = []
         self._cursor_precommit = 0
         self._prefix = u''
-        self._input_mode = TABLE_MODE
+        if self._input_mode == SUGGESTION_MODE:
+            self._input_mode = self._prev_input_mode
         self.update_candidates()
 
     def is_empty(self):
@@ -2049,7 +2050,12 @@ class TabEngine(IBus.Engine):
         # The pinyin mode is never saved to GSettings on purpose
         self._editor.commit_to_preedit()
         self._py_mode = mode
-        self._editor._input_mode = PINYIN_MODE
+        if mode:
+            self._editor._input_mode = PINYIN_MODE
+            self._editor._prev_input_mode = PINYIN_MODE
+        else:
+            self._editor._input_mode = TABLE_MODE
+            self._editor._prev_input_mode = TABLE_MODE
         self._init_or_update_property_menu(
             self.pinyin_mode_menu, mode)
         if mode:
@@ -2077,6 +2083,12 @@ class TabEngine(IBus.Engine):
             return
         self._editor.commit_to_preedit()
         self._sg_mode = mode
+        if self._py_mode:
+            self._editor._input_mode = PINYIN_MODE
+            self._editor._prev_input_mode = PINYIN_MODE
+        else:
+            self._editor._input_mode = TABLE_MODE
+            self._editor._prev_input_mode = TABLE_MODE
         self._init_or_update_property_menu(
             self.suggestion_mode_menu, mode)
         self._update_ui()
@@ -3607,6 +3619,14 @@ class TabEngine(IBus.Engine):
                 self.commit_string(
                     self._editor.get_preedit_string_complete(),
                     tabkeys=self._editor.get_preedit_tabkeys_complete())
+
+            if self._sg_mode \
+               and self._editor._input_mode in (TABLE_MODE, PINYIN_MODE):
+                self._editor._prev_input_mode = self._editor._input_mode
+                self._editor._input_mode = SUGGESTION_MODE
+
+            self._editor.update_candidates()
+            self._update_ui()
             return True
 
         # Section to handle trailing invalid input:

@@ -1,4 +1,32 @@
-commit 22e93f4d46546711f97bfece4528b1c0c9c2e9e2
+commit 3de543985f1bc58f0451bb29667cfafe486eeafb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Feb 12 17:58:19 2020 +0100
+
+    Release 1.9.25
+
+commit 8a8decee675a7ef1f7679081537b2fffeb82fc08
+Author: Anonymous <noreply@weblate.org>
+Date:   Thu Jan 23 10:10:39 2020 +0100
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 81.1% (90 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+
+commit 02afce2a1542a27388db02f1dd8a4dc1362ad0eb
+Author: Manuela Silva <mmsrs@sky.com>
+Date:   Thu Jan 23 10:10:39 2020 +0100
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 81.1% (90 of 111 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+
+commit c0deea6da57110c69fe5537b79a0ac500bf60918
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Jan 22 16:13:57 2020 +0100
 

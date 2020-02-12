@@ -19,6 +19,20 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.9.25" date="2020-02-12" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Fix crash when changing some options using the menu or the floating panel
+            (Resolves: https://github.com/mike-fabian/ibus-table/issues/26)
+          </li>
+          <li>
+            Translation updates (pt_PT)
+          </li>
+        </ul>
+      </description>
+    </release>
     <release version="1.9.24" date="2020-01-22" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

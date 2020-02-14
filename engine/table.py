@@ -1886,7 +1886,7 @@ class TabEngine(IBus.Engine):
         self.db.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
-                "OneChar",
+                "onechar",
                 GLib.Variant.new_boolean(mode))
 
     def get_onechar_mode(self):
@@ -1921,7 +1921,7 @@ class TabEngine(IBus.Engine):
             self.autocommit_mode_menu, mode)
         if update_gsettings:
             self._gsettings.set_value(
-                "AutoCommit",
+                "autocommit",
                 GLib.Variant.new_boolean(mode))
 
     def get_autocommit_mode(self):
@@ -1951,7 +1951,7 @@ class TabEngine(IBus.Engine):
         self._editor._auto_select = mode
         if update_gsettings:
             self._gsettings.set_value(
-                "AutoSelect",
+                "autoselect",
                 GLib.Variant.new_boolean(mode))
 
     def get_autoselect_mode(self):
@@ -1982,7 +1982,7 @@ class TabEngine(IBus.Engine):
         self.db.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
-                "AutoWildcard",
+                "autowildcard",
                 GLib.Variant.new_boolean(mode))
 
     def get_autowildcard_mode(self):
@@ -2132,7 +2132,7 @@ class TabEngine(IBus.Engine):
         self._always_show_lookup = mode
         if update_gsettings:
             self._gsettings.set_value(
-                "AlwaysShowLookup",
+                "alwaysshowlookup",
                 GLib.Variant.new_boolean(mode))
 
     def get_always_show_lookup(self):
@@ -2246,11 +2246,11 @@ class TabEngine(IBus.Engine):
         if update_gsettings:
             if input_mode:
                 self._gsettings.set_value(
-                    "TabDefFullWidthLetter",
+                    "tabdeffullwidthletter",
                     GLib.Variant.new_boolean(mode))
             else:
                 self._gsettings.set_value(
-                    "EnDefFullWidthLetter",
+                    "endeffullwidthletter",
                     GLib.Variant.new_boolean(mode))
 
     def get_letter_width(self):
@@ -2288,11 +2288,11 @@ class TabEngine(IBus.Engine):
         if update_gsettings:
             if input_mode:
                 self._gsettings.set_value(
-                    "TabDefFullWidthPunct",
+                    "tabdeffullwidthpunct",
                     GLib.Variant.new_boolean(mode))
             else:
                 self._gsettings.set_value(
-                    "EnDefFullWidthPunct",
+                    "endeffullwidthpunct",
                     GLib.Variant.new_boolean(mode))
 
     def get_punctuation_width(self):

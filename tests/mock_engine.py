@@ -50,6 +50,9 @@ class MockEngine:
     def hide_auxiliary_text(self):
         pass
 
+    def hide_preedit_text(self):
+        pass
+
     def commit_text(self, text):
         self.mock_committed_text = (
             self.mock_committed_text[

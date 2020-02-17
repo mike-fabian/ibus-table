@@ -2069,6 +2069,14 @@ class TabEngine(IBus.Engine):
             self._input_mode)
         self._update_ui()
 
+    def get_pinyin_mode(self):
+        '''
+        Return the current pinyin mode
+
+        :rtype: Boolean
+        '''
+        return self._py_mode
+
     def set_suggestion_mode(self, mode=False):
         '''Sets whether Suggestion is used.
 
@@ -2092,6 +2100,14 @@ class TabEngine(IBus.Engine):
         self._init_or_update_property_menu(
             self.suggestion_mode_menu, mode)
         self._update_ui()
+
+    def get_suggestion_mode(self):
+        '''
+        Return the current suggestion mode
+
+        :rtype: Boolean
+        '''
+        return self._sg_mode
 
     def set_onechar_mode(self, mode=False, update_gsettings=True):
         '''Sets whether only single characters should be matched in

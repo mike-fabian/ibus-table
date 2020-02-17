@@ -64,6 +64,8 @@ ORIG_SPACE_KEY_BEHAVIOR_MODE = None
 ORIG_AUTOWILDCARD_MODE = None
 ORIG_SINGLE_WILDCARD_CHAR = None
 ORIG_MULTI_WILDCARD_CHAR = None
+ORIG_PINYIN_MODE = None
+ORIG_SUGGESTION_MODE = None
 
 def backup_original_settings():
     global ENGINE
@@ -81,6 +83,8 @@ def backup_original_settings():
     global ORIG_AUTOWILDCARD_MODE
     global ORIG_SINGLE_WILDCARD_CHAR
     global ORIG_MULTI_WILDCARD_CHAR
+    global ORIG_PINYIN_MODE
+    global ORIG_SUGGESTION_MODE
     ORIG_INPUT_MODE = ENGINE.get_input_mode()
     ORIG_CHINESE_MODE = ENGINE.get_chinese_mode()
     ORIG_LETTER_WIDTH = ENGINE.get_letter_width()
@@ -95,6 +99,8 @@ def backup_original_settings():
     ORIG_AUTOWILDCARD_MODE = ENGINE.get_autowildcard_mode()
     ORIG_SINGLE_WILDCARD_CHAR = ENGINE.get_single_wildcard_char()
     ORIG_MULTI_WILDCARD_CHAR = ENGINE.get_multi_wildcard_char()
+    ORIG_PINYIN_MODE = ENGINE.get_pinyin_mode()
+    ORIG_SUGGESTION_MODE = ENGINE.get_suggestion_mode()
 
 def restore_original_settings():
     global ENGINE
@@ -112,6 +118,8 @@ def restore_original_settings():
     global ORIG_AUTOWILDCARD_MODE
     global ORIG_SINGLE_WILDCARD_CHAR
     global ORIG_MULTI_WILDCARD_CHAR
+    global ORIG_PINYIN_MODE
+    global ORIG_SUGGESTION_MODE
     ENGINE.set_input_mode(ORIG_INPUT_MODE)
     ENGINE.set_chinese_mode(ORIG_CHINESE_MODE)
     ENGINE.set_letter_width(ORIG_LETTER_WIDTH[0], input_mode=0)
@@ -128,6 +136,8 @@ def restore_original_settings():
     ENGINE.set_autowildcard_mode(ORIG_AUTOWILDCARD_MODE)
     ENGINE.set_single_wildcard_char(ORIG_SINGLE_WILDCARD_CHAR)
     ENGINE.set_multi_wildcard_char(ORIG_MULTI_WILDCARD_CHAR)
+    ENGINE.set_pinyin_mode(ORIG_PINYIN_MODE)
+    ENGINE.set_suggestion_mode(ORIG_SUGGESTION_MODE)
 
 def set_default_settings():
     global ENGINE
@@ -232,6 +242,9 @@ def set_default_settings():
         multi_wildcard_char = multi_wildcard_char[0]
     ENGINE.set_multi_wildcard_char(multi_wildcard_char)
 
+    ENGINE.set_pinyin_mode(False)
+    ENGINE.set_suggestion_mode(False)
+
 def set_up(engine_name):
     global TABSQLITEDB
     global ENGINE
@@ -265,6 +278,80 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '工')
+
+    def test_pinyin_mode(self):
+        # Pinyin mode is False by default:
+        self.assertEqual(ENGINE.get_pinyin_mode(), False)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工')
+        ENGINE.set_pinyin_mode(True)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '爱')
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工爱')
+        ENGINE.set_pinyin_mode(False)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工爱工')
+
+    def test_suggestion_mode(self):
+        if not ENGINE._ime_sg:
+            self.skipTest("This engine does not have a suggestion mode.")
+        # Suggestion mode is False by default:
+        self.assertEqual(ENGINE.get_suggestion_mode(), False)
+        self.assertEqual(ENGINE.get_pinyin_mode(), False)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工')
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+        ENGINE.set_suggestion_mode(True)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工工')
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['工作人员 673 0',
+                          '工作会议 310 0',
+                          '工作报告 267 0',
+                          '工人阶级 146 0',
+                          '工作重点 78 0',
+                          '工作小组 73 0',
+                          '工业企业 71 0',
+                          '工业大学 69 0',
+                          '工作单位 61 0',
+                          '工业生产 58 0'])
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工工作人员')
+        ENGINE.set_pinyin_mode(True)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '爱')
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工工作人员爱')
+        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+                         ['爱因斯坦 1109 0',
+                          '爱情故事 519 0',
+                          '爱国主义 191 0',
+                          '爱尔兰语 91 0',
+                          '爱好和平 62 0',
+                          '爱情小说 58 0',
+                          '爱不释手 39 0',
+                          '爱国热情 35 0',
+                          '爱莫能助 34 0',
+                          '爱理不理 32 0'])
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工工作人员爱因斯坦')
 
     def test_commit_to_preedit_switching_to_pinyin_defining_a_phrase(self):
         ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)

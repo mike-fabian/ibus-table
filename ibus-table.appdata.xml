@@ -19,6 +19,31 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.10.0" date="2020-07-01" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Add suggestion mode feature
+            (Resolves: https://github.com/mike-fabian/ibus-table/pull/9
+            https://bugzilla.redhat.com/show_bug.cgi?id=835376)
+          </li>
+          <li>
+            Add test cases for suggestion mode feature
+          </li>
+          <li>
+            Fix problems with the behaviour of the property menus
+          </li>
+          <li>
+            Use python logging module with log file rotation instead
+            of writing to stdout/stderr
+          </li>
+          <li>
+            Update translations from Weblate (updated de, es, fr, pt_BR, pt_PT, tr, uk)
+          </li>
+        </ul>
+      </description>
+    </release>
     <release version="1.9.25" date="2020-02-12" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

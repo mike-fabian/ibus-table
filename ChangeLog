@@ -1,8 +1,357 @@
-commit 3de543985f1bc58f0451bb29667cfafe486eeafb
+commit 658d9b325c0512d34f67f7ded33af84144688c1e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Feb 17 16:25:03 2020 +0100
+
+    Release 1.10.0
+
+commit 4e01c63cf3cadc8d3098cbf2f827975606b67973
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jul 1 17:55:52 2020 +0200
+
+    Update ibus-table.pot (only line numbers changed)
+
+commit 6bc4cf33f6e6f5461217a3a211b2ec26d163a6e1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jul 2 13:23:51 2020 +0200
+
+    Fix a few pylint warnings
+
+commit e354bcdfb5fd7339cd9bb252169aa4ee9cb681d9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Feb 24 07:38:30 2020 +0100
+
+    Restructure input mode, pinyin mode, suggestion mode
+
+commit e35a4fe5f64da55300c4966f2994f4d95d0f4e1a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jul 1 17:01:39 2020 +0200
+
+    Fix problems with property menus
+    
+    Property menus were behaving strangely sometimes.  For example, when
+    choosing pinyin mode in the property menu, then moving the focus to a
+    client window and typing in pinyin, then opening the pinyin property
+    menu again, it showed table mode, not pinyin mode. Although the real
+    mode was pinyin mode.
+    
+    Fix the property menu handling by making the code as similar as
+    possible with the property menu handling in ibus-typing-booster. The
+    property menu handling code in ibus-typing-booster code has several
+    bugs fixed, and it is easier to maintain.
+
+commit a913869f02c7fd0b26ad2ea2e86e33bc4f74da83
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 30 18:12:43 2020 +0200
+
+    Skip test cases for engines when the database for that engine is not installed
+
+commit 0a2d3122f4c1b6f99d3b1b23f490c28215c1c2f8
+Author: Manuela Silva <mmsrs@sky.com>
+Date:   Fri May 22 12:40:27 2020 +0200
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+
+commit a2dfc6dc6d58156fab521f0e6823ff53ff8c7530
+Author: Manuela Silva <mmsrs@sky.com>
+Date:   Wed May 13 15:40:24 2020 +0200
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+
+commit c7e0443ef01da13751d964906ca5b5c9b4d09526
+Author: Manuela Silva <mmsrs@sky.com>
+Date:   Wed May 6 12:40:21 2020 +0200
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 97.4% (113 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+
+commit 3d11c5417722aab89d89fd605c5b2aee173eda5a
+Author: Adolfo Jayme Barrientos <fitoschido@gmail.com>
+Date:   Sun Apr 26 05:40:18 2020 +0200
+
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+
+commit da68840058cf742a4e5059a9bcc06edeec3994f7
+Author: Adolfo Ketzer <reztek@gmail.com>
+Date:   Sun Apr 26 05:40:18 2020 +0200
+
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 95.6% (111 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+
+commit 35f6fae24286a644fdd1b7ac65edc56e0aa0256f
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Thu Apr 16 20:40:17 2020 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit 001c42254e3df3b05790d0b8ac447b0a9a45b6a3
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Mon Apr 13 08:29:51 2020 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit e1a899e866940cdb088ed895de1c0509bbb4fd33
+Author: Manuela Silva <mmsrs@sky.com>
+Date:   Wed Apr 8 09:54:08 2020 +0200
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 94.8% (110 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+
+commit bb59a830bc923dd898c6c55146b0161f45cad3f7
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Wed Apr 8 09:54:07 2020 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit fb5b66fc2ceb1e738a761d5af836b1ab5b82e577
+Author: Manuela Silva <mmsrs@sky.com>
+Date:   Sun Mar 1 16:38:21 2020 +0100
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 93.9% (109 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+    
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 91.3% (106 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+
+commit eeafea1f484720135bf817df7b74caeaf7ad971e
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Sun Feb 23 18:38:19 2020 +0100
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit 30160d08b801ee3d702db3105dbb316aee638728
+Author: Yuri Chornoivan <yurchor@ukr.net>
+Date:   Sun Feb 23 18:38:19 2020 +0100
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+
+commit fccb68f8b31ba9eb154096f89f7da6f4fb305ea8
+Author: Julien Humbert <julroy67@gmail.com>
+Date:   Sun Feb 23 18:38:19 2020 +0100
+
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+
+commit e4a572b0b404c6735259a28a9c10d0cf5da2f546
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Feb 20 12:34:30 2020 +0100
+
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+
+commit bdafd4190826460fed4f5c9e3f53e65ed2af6315
+Author: Weblate <noreply@weblate.org>
+Date:   Thu Feb 20 12:34:30 2020 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+
+commit fc70d558e0526a28aa464c2c164c8f84ee88fc60
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Feb 17 16:52:55 2020 +0100
+
+    Update ibus-table.pot, new translatable strings for new “Suggestion mode”
+
+commit 270939a8b989e9d84570adbcc9f295c9c9ba9c88
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Feb 19 14:39:27 2020 +0100
+
+    Fix typo in comment
+
+commit b42ddd39c4e82164fad9f75e9df382811e728d68
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 18 15:38:46 2020 +0100
+
+    Fix some pylint warnings
+
+commit 8786c6f98457bc1496bce1170c011d9d116f3d92
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 18 14:15:39 2020 +0100
+
+    Use “Suggestion mode” instead of “Legend mode” in translatable strings
+
+commit 0df767cb026dc25d6e8823815500fb505fde2d06
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 18 15:07:16 2020 +0100
+
+    Use LOGGER.exeption() in exception handlers
+
+commit 47e8f3e5e4b8e6d7ecdcbc25b46e893ea527eb0c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 18 10:07:45 2020 +0100
+
+    Use python logging module with log file rotation instead of writing to stdout/stderr
+
+commit 607f6e626178993659b31263cfabdd6769b10dc4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Feb 17 18:25:07 2020 +0100
+
+    Add test cases for suggestion mode
+
+commit f66bfe4fda7dddffd3ca1bbfbf9af552a78533f6
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Wed Jan 22 13:42:23 2020 +0800
+
+    fixes pinyin mode
+
+commit 60d2f37337a415374ef841a273c22abfa17c1585
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Mon Oct 21 14:08:45 2019 +0800
+
+    fixes suggestion mode menu item
+
+commit 1472c26c150aa7614dd8e6da8f9e93d524ff9b85
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Tue Sep 17 11:19:57 2019 +0800
+
+    fixes tabcreatedb.py
+
+commit f5be00f407a62aa46069f6e99d9930c21c8462e2
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Mon Sep 9 14:24:57 2019 +0800
+
+    fixes python compile
+
+commit 800d5c684526273b174b119bc7587d06bd312772
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Fri Sep 6 15:37:59 2019 +0800
+
+    re-factor class TabEngine in progress
+
+commit 45dd34eaf2ecd3d21bde377c592e7d5a59d62afe
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Fri Sep 6 13:23:46 2019 +0800
+
+    start to re-factor class TabEngine
+
+commit e9dafcead4c692863ab48fd7551cb2bc6e6e56d9
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Tue Sep 3 14:32:58 2019 +0800
+
+    re-factor candidate methods
+
+commit 6bad3d71d67a01f613fef16ce495788329068f48
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Fri Aug 30 14:53:11 2019 +0800
+
+    re-factor append_candidate_to_lookup_table method
+
+commit c50c37461fe90d63f80f45728796c038e543aeba
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Wed Jul 24 15:23:28 2019 +0800
+
+    update tabcreatedb.py for suggestion candidates
+
+commit d3f4a35b34f8110da067376863f83ecdc23cacf7
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Tue Jul 23 16:14:23 2019 +0800
+
+    update tabsqlitedb.py for suggestion candidates
+
+commit 0883006072a9fe340c9325a7975e7596d3d308af
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Mon Jul 22 17:18:06 2019 +0800
+
+    update Makefile.am
+
+commit 6df76a02d147b21c7bd1ce817253ec7d017779bc
+Author: Peng Wu <alexepico@gmail.com>
+Date:   Mon Jul 15 14:58:43 2019 +0800
+
+    import phrase.txt.bz2
+
+commit 6eeaa8cf35b452a5e8b43af84cb6a464f6e1e8eb
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Feb 12 17:58:19 2020 +0100
 
     Release 1.9.25
+
+commit a0f8dcce840b5abebb930312abd7a7ab012ce023
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Feb 14 11:59:12 2020 +0100
+
+    Fix crash when changing some options using the menu or the floating panel
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/26
+    Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=1803028
 
 commit 8a8decee675a7ef1f7679081537b2fffeb82fc08
 Author: Anonymous <noreply@weblate.org>

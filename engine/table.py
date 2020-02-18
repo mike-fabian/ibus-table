@@ -201,7 +201,7 @@ def unichar_half_to_full(char):
     '''
     code = ord(char)
     for half, full, size in __HALF_FULL_TABLE:
-        if code >= half and code < half + size:
+        if half <= code < half + size:
             if sys.version_info >= (3, 0, 0):
                 return chr(full + code - half)
             return unichr(full + code - half)
@@ -226,7 +226,7 @@ def unichar_full_to_half(char):
     '''
     code = ord(char)
     for half, full, size in __HALF_FULL_TABLE:
-        if code >= full and code < full + size:
+        if full <= code < full + size:
             if sys.version_info >= (3, 0, 0):
                 return chr(half + code - full)
             return unichr(half + code - full)
@@ -384,7 +384,7 @@ class Editor(object):
         # no default comes from the user GSettings.
         self._chinese_mode = it_util.variant_to_value(
             self._gsettings.get_user_value('chinesemode'))
-        if self._chinese_mode != None and DEBUG_LEVEL > 1:
+        if self._chinese_mode is not None and DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'Chinese mode found in Gsettings, mode=%s',
                 self._chinese_mode)
@@ -397,7 +397,7 @@ class Editor(object):
         self._auto_select = it_util.variant_to_value(
             self._gsettings.get_user_value('autoselect'))
         if self._auto_select is None:
-            if self.db.ime_properties.get('auto_select') != None:
+            if self.db.ime_properties.get('auto_select') is not None:
                 self._auto_select = self.db.ime_properties.get(
                     'auto_select').lower() == u'true'
         if self._auto_select is None:
@@ -750,7 +750,8 @@ class Editor(object):
         '''
         if self._input_mode == SUGGESTION_MODE:
             if self._candidates:
-                return self._candidates[int(self._lookup_table.get_cursor_pos())][0]
+                return self._candidates[
+                    int(self._lookup_table.get_cursor_pos())][0]
             return u''
 
         (left_strings,
@@ -905,7 +906,7 @@ class Editor(object):
                 len(candidate_text)))
         text = IBus.Text.new_from_string(candidate_text)
         i = 0
-        while attrs.get(i) != None:
+        while attrs.get(i) is not None:
             attr = attrs.get(i)
             text.append_attribute(attr.get_attr_type(),
                                   attr.get_value(),
@@ -997,7 +998,7 @@ class Editor(object):
                 len(candidate_text)))
         text = IBus.Text.new_from_string(candidate_text)
         i = 0
-        while attrs.get(i) != None:
+        while attrs.get(i) is not None:
             attr = attrs.get(i)
             text.append_attribute(attr.get_attr_type(),
                                   attr.get_value(),
@@ -1040,7 +1041,7 @@ class Editor(object):
                 len(candidate_text)))
         text = IBus.Text.new_from_string(candidate_text)
         i = 0
-        while attrs.get(i) != None:
+        while attrs.get(i) is not None:
             attr = attrs.get(i)
             text.append_attribute(attr.get_attr_type(),
                                   attr.get_value(),
@@ -1164,10 +1165,11 @@ class Editor(object):
         if self._candidates:
             if self._input_mode in (TABLE_MODE, PINYIN_MODE):
                 phrase = self._candidates[self.get_cursor_pos()][1]
-                self._u_chars.insert(self._cursor_precommit,
-                                     self._candidates[self.get_cursor_pos()][0])
-                self._strings.insert(self._cursor_precommit,
-                                     phrase)
+                self._u_chars.insert(
+                    self._cursor_precommit,
+                    self._candidates[self.get_cursor_pos()][0])
+                self._strings.insert(
+                    self._cursor_precommit, phrase)
                 self._prefix = phrase
             elif self._input_mode == SUGGESTION_MODE:
                 phrase = self._candidates[self.get_cursor_pos()][0]
@@ -1539,7 +1541,7 @@ class TabEngine(IBus.Engine):
         self._auto_wildcard = it_util.variant_to_value(
             self._gsettings.get_user_value('autowildcard'))
         if self._auto_wildcard is None:
-            if self.db.ime_properties.get('auto_wildcard') != None:
+            if self.db.ime_properties.get('auto_wildcard') is not None:
                 self._auto_wildcard = self.db.ime_properties.get(
                     'auto_wildcard').lower() == u'true'
         if self._auto_wildcard is None:
@@ -1612,7 +1614,7 @@ class TabEngine(IBus.Engine):
         # how to use the space key:
         spacekeybehavior = it_util.variant_to_value(
             self._gsettings.get_user_value('spacekeybehavior'))
-        if spacekeybehavior != None:
+        if spacekeybehavior is not None:
             if spacekeybehavior is True:
                 # space is used as a page down key and not as a commit key:
                 if IBus.KEY_space not in self._page_down_keys:
@@ -1692,7 +1694,7 @@ class TabEngine(IBus.Engine):
         self._auto_select = it_util.variant_to_value(
             self._gsettings.get_user_value('autoselect'))
         if self._auto_select is None:
-            if self.db.ime_properties.get('auto_select') != None:
+            if self.db.ime_properties.get('auto_select') is not None:
                 self._auto_select = self.db.ime_properties.get(
                     'auto_select').lower() == u'true'
         if self._auto_select is None:
@@ -1702,7 +1704,7 @@ class TabEngine(IBus.Engine):
         self._always_show_lookup = it_util.variant_to_value(
             self._gsettings.get_user_value('alwaysshowlookup'))
         if self._always_show_lookup is None:
-            if self.db.ime_properties.get('always_show_lookup') != None:
+            if self.db.ime_properties.get('always_show_lookup') is not None:
                 self._always_show_lookup = self.db.ime_properties.get(
                     'always_show_lookup').lower() == u'true'
         if self._always_show_lookup is None:
@@ -2388,7 +2390,7 @@ class TabEngine(IBus.Engine):
         '''Sets the orientation of the lookup table
 
         :param orientation: The orientation of the lookup table
-        :type mode: integer >= 0 and <= 2
+        :type mode: 0 <= integer <= 2
                     IBUS_ORIENTATION_HORIZONTAL = 0,
                     IBUS_ORIENTATION_VERTICAL   = 1,
                     IBUS_ORIENTATION_SYSTEM     = 2.
@@ -2403,7 +2405,7 @@ class TabEngine(IBus.Engine):
             LOGGER.debug('orientation(%s)', orientation)
         if orientation == self._editor._orientation:
             return
-        if orientation >= 0 and orientation <= 2:
+        if 0 <= orientation <= 2:
             self._editor._orientation = orientation
             self._editor._lookup_table.set_orientation(orientation)
             if update_gsettings:
@@ -2643,7 +2645,7 @@ class TabEngine(IBus.Engine):
                 state=IBus.PropState.UNCHECKED,
                 sub_props=None))
         i = 0
-        while sub_props.get(i) != None:
+        while sub_props.get(i) is not None:
             prop = sub_props.get(i)
             key = prop.get_key()
             self._prop_dict[key] = prop
@@ -2847,7 +2849,7 @@ class TabEngine(IBus.Engine):
                 len(preedit_string_complete)))
         text = IBus.Text.new_from_string(preedit_string_complete)
         i = 0
-        while attrs.get(i) != None:
+        while attrs.get(i) is not None:
             attr = attrs.get(i)
             text.append_attribute(attr.get_attr_type(),
                                   attr.get_value(),
@@ -2873,7 +2875,7 @@ class TabEngine(IBus.Engine):
                 rgb(0x95, 0x15, 0xb5), 0, len(aux_string)))
             text = IBus.Text.new_from_string(aux_string)
             i = 0
-            while attrs.get(i) != None:
+            while attrs.get(i) is not None:
                 attr = attrs.get(i)
                 text.append_attribute(attr.get_attr_type(),
                                       attr.get_value(),
@@ -3515,7 +3517,7 @@ class TabEngine(IBus.Engine):
                                  + self._single_wildcard_char
                                  + self._multi_wildcard_char)
                      or (self._editor._input_mode == PINYIN_MODE
-                         and keychar in (self._pinyin_valid_input_chars)))):
+                         and keychar in self._pinyin_valid_input_chars))):
             if DEBUG_LEVEL > 0:
                 LOGGER.debug(
                     'valid input: keychar=%s', keychar)

@@ -89,7 +89,7 @@ class ImeProperties:
         if default_properties is None:
             default_properties = {}
         if not db:
-            return None
+            return
         self.ime_property_cache = default_properties
         sqlstr = 'SELECT attr, val FROM main.ime;'
         try:
@@ -259,7 +259,8 @@ class TabSqliteDb:
 
         self.suggestion_mode = self.ime_properties.get('suggestion_mode')
         if self.suggestion_mode:
-            self.suggestion_mode = bool(self.suggestion_mode.lower() == u'true')
+            self.suggestion_mode = bool(
+                self.suggestion_mode.lower() == u'true')
         else:
             print(
                 'Could not find "suggestion_mode" entry from database, '
@@ -734,15 +735,14 @@ class TabSqliteDb:
         if self.rules:
             max_len = self.rules["above"]
             return [len(self.rules[x]) for x in range(2, max_len+1)][:]
-        else:
-            try:
-                least_commit_len = int(
-                    self.ime_properties.get('least_commit_length'))
-            except (TypeError, ValueError):
-                least_commit_len = 0
-            if least_commit_len > 0:
-                return list(range(least_commit_len, self._mlen + 1))
-            return []
+        try:
+            least_commit_len = int(
+                self.ime_properties.get('least_commit_length'))
+        except (TypeError, ValueError):
+            least_commit_len = 0
+        if least_commit_len > 0:
+            return list(range(least_commit_len, self._mlen + 1))
+        return []
 
     def get_start_chars(self):
         '''return possible start chars of IME'''
@@ -942,7 +942,6 @@ class TabSqliteDb:
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('drop_indexes()')
-        return
 
     def create_indexes(self, _database, _commit=True):
         '''Create indexes for the database.
@@ -958,7 +957,6 @@ class TabSqliteDb:
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('create_indexes()')
-        return
 
     def big5_code(self, phrase):
         '''
@@ -1189,8 +1187,9 @@ class TabSqliteDb:
             if phrase not in phrase_frequencies:
                 phrase_frequencies[phrase] = (phrase, freq)
             else:
-                phrase_frequencies.update([(phrase,
-                                            (phrase, max(freq, phrase_frequencies[phrase][1])))])
+                phrase_frequencies.update(
+                    [(phrase,
+                      (phrase, max(freq, phrase_frequencies[phrase][1])))])
         candidates = phrase_frequencies.values()
         if DEBUG_LEVEL > 1:
             LOGGER.debug('candidates=%s', repr(candidates))
@@ -1206,7 +1205,7 @@ class TabSqliteDb:
 
         return sorted(candidates,
                       key=lambda x: (
-                          - int (len(x[0])), # longest matches first!
+                          - int(len(x[0])), # longest matches first!
                           -1*x[1],   # freq descending
                           code_point_function(x[0][0]),
                           code_point_function(x[0][1]),
@@ -1314,8 +1313,7 @@ class TabSqliteDb:
             if res:
                 tp = res.group(1).split(',')
                 return len(tp)
-            else:
-                return 0
+            return 0
         except:
             return 0
 
@@ -1595,45 +1593,44 @@ class TabSqliteDb:
                     'Recovered phrases from the old database: phrases=%s',
                     repr(phrases))
                 return phrases[:]
-            else:
-                # database is very old, it may still use many columns
-                # of type INTEGER for the tabkeys. Therefore, ignore
-                # the tabkeys in the database and try to get them
-                # from the system database instead.
-                phrases = []
-                results = db.execute(
-                    'SELECT phrase, sum(user_freq) '
-                    + 'FROM phrases GROUP BY phrase;'
-                ).fetchall()
-                for result in results:
-                    sqlstr = '''
-                    SELECT tabkeys FROM main.phrases WHERE phrase = :phrase
-                    ORDER BY length(tabkeys) DESC;
-                    '''
-                    sqlargs = {'phrase': result[0]}
-                    tabkeys_results = self.db.execute(
-                        sqlstr, sqlargs).fetchall()
-                    if tabkeys_results:
-                        phrases.append(
-                            (tabkeys_results[0][0], result[0], 0, result[1]))
-                    else:
-                        # No tabkeys for that phrase could not be
-                        # found in the system database.  Try to get
-                        # tabkeys by calling self.parse_phrase(), that
-                        # might return something if the table has
-                        # rules to construct user defined phrases:
-                        tabkeys = self.parse_phrase(result[0])
-                        if tabkeys:
-                            # for user defined phrases, the “freq”
-                            # column is -1:
-                            phrases.append((tabkeys, result[0], -1, result[1]))
-                db.close()
-                phrases = sorted(
-                    phrases, key=lambda x: (x[0], x[1], x[2], x[3]))
-                LOGGER.debug(
-                    'Recovered phrases from the very old database: '
-                    'phrases=%s', repr(phrases))
-                return phrases[:]
+            # database is very old, it may still use many columns
+            # of type INTEGER for the tabkeys. Therefore, ignore
+            # the tabkeys in the database and try to get them
+            # from the system database instead.
+            phrases = []
+            results = db.execute(
+                'SELECT phrase, sum(user_freq) '
+                + 'FROM phrases GROUP BY phrase;'
+            ).fetchall()
+            for result in results:
+                sqlstr = '''
+                SELECT tabkeys FROM main.phrases WHERE phrase = :phrase
+                ORDER BY length(tabkeys) DESC;
+                '''
+                sqlargs = {'phrase': result[0]}
+                tabkeys_results = self.db.execute(
+                    sqlstr, sqlargs).fetchall()
+                if tabkeys_results:
+                    phrases.append(
+                        (tabkeys_results[0][0], result[0], 0, result[1]))
+                else:
+                    # No tabkeys for that phrase could not be
+                    # found in the system database.  Try to get
+                    # tabkeys by calling self.parse_phrase(), that
+                    # might return something if the table has
+                    # rules to construct user defined phrases:
+                    tabkeys = self.parse_phrase(result[0])
+                    if tabkeys:
+                        # for user defined phrases, the “freq”
+                        # column is -1:
+                        phrases.append((tabkeys, result[0], -1, result[1]))
+            db.close()
+            phrases = sorted(
+                phrases, key=lambda x: (x[0], x[1], x[2], x[3]))
+            LOGGER.debug(
+                'Recovered phrases from the very old database: '
+                'phrases=%s', repr(phrases))
+            return phrases[:]
         except:
             LOGGER.exception('Unexpected error in extract_user_phrases()')
             return []

@@ -126,7 +126,11 @@ class PreferencesDialog:
     The setup dialog of ibus-table.
     '''
     def __init__(self):
-        locale.setlocale(locale.LC_ALL, "")
+        try:
+            locale.setlocale(locale.LC_ALL, '')
+        except locale.Error:
+            LOGGER.exception("IBUS-WARNING **: Using the fallback 'C' locale")
+            locale.setlocale(locale.LC_ALL, 'C')
         localedir = os.getenv("IBUS_LOCALEDIR")
         gettext.bindtextdomain("ibus-table", localedir)
         gettext.bind_textdomain_codeset("ibus-table", "UTF-8")

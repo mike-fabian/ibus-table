@@ -95,8 +95,7 @@ class ImeProperties:
         try:
             results = db.execute(sqlstr).fetchall()
         except:
-            import traceback
-            traceback.print_exc()
+            LOGGER.exception('Cannot get ime properties from database')
         for result in results:
             self.ime_property_cache[result[0]] = result[1]
 
@@ -168,9 +167,7 @@ class TabSqliteDb:
             self.db.execute('PRAGMA journal_size_limit = 1000000;')
             self.db.execute('PRAGMA synchronous = NORMAL;')
         except:
-            import traceback
-            traceback.print_exc()
-            print('Error while initializing database.')
+            LOGGER.exception('Error while initializing database')
         # create IME property table
         self.db.executescript(
             'CREATE TABLE IF NOT EXISTS main.ime (attr TEXT, val TEXT);')
@@ -383,8 +380,8 @@ class TabSqliteDb:
                         LOGGER.debug(
                             'Compatible database %s found.', user_db)
                 except:
-                    import traceback
-                    traceback.print_exc()
+                    LOGGER.exception(
+                        'Unexpected error trying to find user database')
 
         # open user phrase database
         try:
@@ -442,8 +439,7 @@ class TabSqliteDb:
             try:
                 self.db.executemany(sqlstr, sqlargs)
             except:
-                import traceback
-                traceback.print_exc()
+                LOGGER.exception('Error inserting old phrases')
             self.db.commit()
             self.db.execute('PRAGMA wal_checkpoint;')
 
@@ -474,8 +470,7 @@ class TabSqliteDb:
                 self.db.commit()
             self.invalidate_phrases_cache(tabkeys)
         except:
-            import traceback
-            traceback.print_exc()
+            LOGGER.exception('Unexpected error updating phrase in user_db.')
 
     def sync_usrdb(self):
         '''
@@ -547,8 +542,7 @@ class TabSqliteDb:
             json.dump(self._phrases_cache, open(_cache_path, 'w'))
             os.replace(_cache_path, self.cache_path)
         except:
-            import traceback
-            traceback.print_exc()
+            LOGGER.exception('Unexpected error in save_phrases_cache().')
 
     def is_chinese(self):
         '''
@@ -710,8 +704,7 @@ class TabSqliteDb:
                 else:
                     print('not a legal rule: "%s"' %rule)
         except Exception:
-            import traceback
-            traceback.print_exc()
+            LOGGER.exception('Unexpected error in get_rules().')
         return rules
 
     def get_possible_tabkeys_lengths(self):
@@ -847,8 +840,7 @@ class TabSqliteDb:
                 self.db.commit()
             self.invalidate_phrases_cache(tabkeys)
         except:
-            import traceback
-            traceback.print_exc()
+            LOGGER.exception('Unexpected error in add_phrase()')
 
     def add_goucima(self, goucimas):
         '''Add goucima into database, goucimas is iterable object
@@ -866,8 +858,7 @@ class TabSqliteDb:
             self.db.commit()
             self.db.execute('PRAGMA wal_checkpoint;')
         except:
-            import traceback
-            traceback.print_exc()
+            LOGGER.exception('Unexpected error in add_goucima().')
 
     def add_pinyin(self, pinyins, database='main'):
         '''Add pinyin to database, pinyins is a iterable object
@@ -889,12 +880,10 @@ class TabSqliteDb:
                 self.db.execute(
                     sqlstr, {'pinyin': pinyin, 'zi': zi, 'freq': freq})
             except Exception:
-                LOGGER.debug(
+                LOGGER.exception(
                     'Error when inserting into pinyin table. '
                     'count=%s pinyin=%s zi=%s freq=%s',
                     count, pinyin, zi, freq)
-                import traceback
-                traceback.print_exc()
         self.db.commit()
 
     def add_suggestion(self, suggestions, database='main'):
@@ -911,12 +900,10 @@ class TabSqliteDb:
                 self.db.execute(
                     sqlstr, {'phrase': phrase, 'freq': freq})
             except Exception:
-                LOGGER.debug(
+                LOGGER.exception(
                     'Error when inserting into suggestion table. '
                     'count=%s phrase=%s freq=%s',
                     count, phrase, freq)
-                import traceback
-                traceback.print_exc()
         self.db.commit()
 
     def optimize_database(self):
@@ -1248,8 +1235,7 @@ class TabSqliteDb:
             self.db.execute(sqlstring, ("create-time", ))
             self.db.commit()
         except:
-            import traceback
-            traceback.print_exc()
+            LOGGER.exception('Unexpected error in generate_userdb_desc().')
 
     def init_user_db(self, db_file):
         '''
@@ -1649,6 +1635,5 @@ class TabSqliteDb:
                     'phrases=%s', repr(phrases))
                 return phrases[:]
         except:
-            import traceback
-            traceback.print_exc()
+            LOGGER.exception('Unexpected error in extract_user_phrases()')
             return []

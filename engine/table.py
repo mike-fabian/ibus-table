@@ -508,8 +508,7 @@ class Editor(object):
                             'database is not Chinese, returning 4.')
                     return 4
         except:
-            import traceback
-            traceback.print_exc()
+            LOGGER.exception('Exception in get_default_chinese_mode()')
             return 4
 
     def clear_all_input_and_preedit(self):

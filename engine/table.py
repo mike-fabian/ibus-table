@@ -1893,19 +1893,19 @@ class TabEngine(IBus.Engine):
                 'number': 0,
                 'symbol': '☐ 联想',
                 'icon': 'tab-mode.svg',
-                'label': _('Legend Disabled'),
-                'tooltip': _('Switch to Legend mode')},
+                'label': _('Suggestion disabled'),
+                'tooltip': _('Switch to suggestion mode')},
             'SuggestionMode.Enabled': {
                 'number': 1,
                 'symbol': '☑ 联想',
                 'icon': 'tab-mode.svg',
-                'label': _('Legend Enabled'),
-                'tooltip': _('Switch to Legend mode')}
+                'label': _('Suggestion enabled'),
+                'tooltip': _('Switch to suggestion mode')}
         }
         self.suggestion_mode_menu = {
             'key': 'SuggestionMode',
-            'label': _('Legend mode'),
-            'tooltip': _('Switch Legend mode'),
+            'label': _('Suggestion mode'),
+            'tooltip': _('Switch suggestion mode'),
             'shortcut_hint': '',
             'sub_properties': self.suggestion_mode_properties
         }

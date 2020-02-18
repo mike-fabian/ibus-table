@@ -24,6 +24,7 @@
 
 import os
 import re
+import logging
 from gettext import dgettext
 _ = lambda a: dgettext("ibus-table", a)
 N_ = lambda a: a
@@ -33,10 +34,20 @@ from gi.repository import IBus
 import table
 import tabsqlitedb
 
+LOGGER = logging.getLogger('ibus-table')
+
+DEBUG_LEVEL = int(0)
 
 class EngineFactory(IBus.Factory):
     """Table IM Engine Factory"""
     def __init__(self, bus, db=''):
+        global DEBUG_LEVEL
+        try:
+            DEBUG_LEVEL = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
+        except (TypeError, ValueError):
+            DEBUG_LEVEL = int(0)
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('EngineFactory.__init__(bus=%s, db=%s)\n', bus, db)
         # db is the full path to the sql database
         if db:
             self.dbusname = os.path.basename(db).replace('.db', '')
@@ -56,6 +67,10 @@ class EngineFactory(IBus.Factory):
         self.engine_path = ''
 
     def do_create_engine(self, engine_name):
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug(
+                'EngineFactory.do_create_engine(engine_name=%s)\n',
+                engine_name)
         engine_name = re.sub(r'^table:', '', engine_name)
         engine_base_path = "/com/redhat/IBus/engines/table/%s/engine/"
         path_patt = re.compile(r'[^a-zA-Z0-9_/]')
@@ -93,6 +108,8 @@ class EngineFactory(IBus.Factory):
 
     def do_destroy(self):
         '''Destructor, which finish some task for IME'''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('EngineFactory.do_destroy()\n')
         #
         ## we need to sync the temp userdb in memory to the user_db on disk
         for _db in self.dbdict:

@@ -30,6 +30,8 @@ import gettext
 import locale
 import os
 import sys
+import logging
+import logging.handlers
 import signal
 import optparse
 from time import strftime
@@ -58,6 +60,8 @@ sys.path = [sys.path[0]+'/../engine'] + sys.path
 import tabsqlitedb
 import ibus_table_location
 import it_util
+
+LOGGER = logging.getLogger('ibus-table')
 
 _ = lambda a: gettext.dgettext("ibus-table", a)
 
@@ -112,15 +116,10 @@ _OPTION_PARSER.add_option(
     action='store_false',
     dest='debug',
     default=True,
-    help=('redirect stdout and stderr to '
+    help=('Write log file to '
           + LOGFILE + ', default: %default'))
 
 (_OPTIONS, _ARGS) = _OPTION_PARSER.parse_args()
-
-if _OPTIONS.debug:
-    sys.stdout = open(LOGFILE, mode='a', buffering=1)
-    sys.stderr = open(LOGFILE, mode='a', buffering=1)
-    print('--- %s ---' %strftime('%Y-%m-%d: %H:%M:%S'))
 
 class PreferencesDialog:
     '''
@@ -350,9 +349,8 @@ class PreferencesDialog:
             if self.__gsettings.get_user_value(key) != None:
                 self.__user_values[key] = it_util.variant_to_value(
                     self.__gsettings.get_user_value(key))
-                sys.stderr.write(
-                    'self.__user_values[%s]=%s\n'
-                    %(key, self.__user_values[key]))
+                LOGGER.debug('self.__user_values[%s]=%s',
+                             key, self.__user_values[key])
             if key in SCALE_WIDGETS:
                 self._init_hscale(key)
             elif key in ENTRY_WIDGETS:
@@ -490,7 +488,7 @@ class PreferencesDialog:
         Called when a value in the settings has been changed.
         """
         value = it_util.variant_to_value(self.__gsettings.get_value(key))
-        sys.stderr.write('Settings changed: key=%s value=%s\n' %(key, value))
+        LOGGER.debug('Settings changed: key=%s value=%s', key, value)
         if key in SCALE_WIDGETS:
             __hscale = self.__builder.get_object("hscale%s" % key)
             __hscale.set_value(value)
@@ -524,7 +522,7 @@ class PreferencesDialog:
         elif isinstance(val, str):
             var = GLib.Variant.new_string(val)
         else:
-            sys.stderr.write("val(%s) is not in support type." %repr(val))
+            LOGGER.debug('val(%s) is not in support type.', repr(val))
             return
 
         self.__user_values[key] = val
@@ -563,6 +561,27 @@ def main():
     PreferencesDialog().run()
 
 if __name__ == "__main__":
+    if not _OPTIONS.debug:
+        log_handler = logging.NullHandler()
+    else:
+        log_handler = logging.handlers.TimedRotatingFileHandler(
+            LOGFILE,
+            when='H',
+            interval=6,
+            backupCount=7,
+            encoding='UTF-8',
+            delay=False,
+            utc=False,
+            atTime=None)
+        log_formatter = logging.Formatter(
+            '%(asctime)s %(filename)s '
+            'line %(lineno)d %(funcName)s %(levelname)s: '
+            '%(message)s')
+        log_handler.setFormatter(log_formatter)
+        LOGGER.setLevel(logging.DEBUG)
+        LOGGER.addHandler(log_handler)
+        LOGGER.info('********** STARTING **********')
+
     # Workaround for
     # https://bugzilla.gnome.org/show_bug.cgi?id=622084
     # Bug 622084 - Ctrl+C does not exit gtk app

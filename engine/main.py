@@ -26,6 +26,8 @@ import re
 import sys
 import optparse
 from signal import signal, SIGTERM, SIGINT
+import logging
+import logging.handlers
 
 from gi import require_version
 require_version('IBus', '1.0')
@@ -35,6 +37,14 @@ from gi.repository import GLib
 import factory
 import tabsqlitedb
 import ibus_table_location
+
+LOGGER = logging.getLogger('ibus-table')
+
+DEBUG_LEVEL = int(0)
+try:
+    DEBUG_LEVEL = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
+except (TypeError, ValueError):
+    DEBUG_LEVEL = int(0)
 
 DB_DIR = os.path.join(ibus_table_location.data(), 'tables')
 BYO_DB_DIR = os.path.join(ibus_table_location.data_home(), "byo-tables")
@@ -75,32 +85,29 @@ _OPTION_PARSER.add_option(
     action='store_false',
     dest='debug',
     default=True,
-    help='redirect stdout and stderr to ' + LOGFILE + ', default: %default')
+    help='Write log file to ' + LOGFILE + ', default: %default')
 _OPTION_PARSER.add_option(
     '--profile', '-p',
     action='store_true',
     dest='profile',
     default=False,
     help=('print profiling information into the debug log. '
-          + 'Works only together with --debug.'))
+          + 'Works only when --no-debug is not used.'))
 
 (_OPTIONS, _ARGS) = _OPTION_PARSER.parse_args()
 #if not _OPTIONS.db:
 #    _OPTION_PARSER.error('no db found!')
 
-if (not _OPTIONS.xml) and _OPTIONS.debug:
-    sys.stdout = open(LOGFILE, mode='a', buffering=1)
-    sys.stderr = open(LOGFILE, mode='a', buffering=1)
-    from time import strftime
-    print('--- %s ---' %strftime('%Y-%m-%d: %H:%M:%S'))
-
 if _OPTIONS.profile:
     import cProfile
     import pstats
+    import io
     _PROFILE = cProfile.Profile()
 
 class IMApp:
     def __init__(self, dbfile, exec_by_ibus):
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('IMApp.__init__(exec_by_ibus=%s)\n', exec_by_ibus)
         self.__mainloop = GLib.MainLoop()
         self.__bus = IBus.Bus()
         self.__bus.connect("disconnected", self.__bus_destroy_cb)
@@ -149,30 +156,38 @@ class IMApp:
 
 
     def run(self):
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('IMApp.run()\n')
         if _OPTIONS.profile:
             _PROFILE.enable()
         self.__mainloop.run()
         self.__bus_destroy_cb()
 
     def quit(self):
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('IMApp.quit()\n')
         self.__bus_destroy_cb()
 
     def __bus_destroy_cb(self, bus=None):
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('IMApp.__bus_destroy_cb(bus=%s)\n', bus)
         if self.destroyed:
             return
-        print("finalizing:)")
+        LOGGER.info('finalizing:)')
         self.__factory.do_destroy()
         self.destroyed = True
         self.__mainloop.quit()
         if _OPTIONS.profile:
             _PROFILE.disable()
-            stats = pstats.Stats(_PROFILE)
+            stats_stream = io.StringIO()
+            stats = pstats.Stats(_PROFILE, stream=stats_stream)
             stats.strip_dirs()
             stats.sort_stats('cumulative')
             stats.print_stats('main', 25)
             stats.print_stats('factory', 25)
             stats.print_stats('tabsqlite', 25)
             stats.print_stats('table', 25)
+            LOGGER.info('Profiling info:\n%s', stats_stream.getvalue())
 
 def cleanup(ima_ins):
     ima_ins.quit()
@@ -195,6 +210,28 @@ def indent(element, level=0):
             element.tail = i
 
 def main():
+    if not _OPTIONS.xml:
+        if not _OPTIONS.debug:
+            log_handler = logging.NullHandler()
+        else:
+            log_handler = logging.handlers.TimedRotatingFileHandler(
+                LOGFILE,
+                when='midnight',
+                interval=1,
+                backupCount=7,
+                encoding='UTF-8',
+                delay=False,
+                utc=False,
+                atTime=None)
+        log_formatter = logging.Formatter(
+            '%(asctime)s %(filename)s '
+            'line %(lineno)d %(funcName)s %(levelname)s: '
+            '%(message)s')
+        log_handler.setFormatter(log_formatter)
+        LOGGER.setLevel(logging.DEBUG)
+        LOGGER.addHandler(log_handler)
+        LOGGER.info('********** STARTING **********')
+
     if _OPTIONS.xml:
         from locale import getdefaultlocale
         from xml.etree.ElementTree import Element, SubElement, tostring

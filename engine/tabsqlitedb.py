@@ -33,10 +33,13 @@ import sqlite3
 import uuid
 import time
 import re
+import logging
 import chinese_variants
 if sys.version_info < (3, 0, 0):
     reload(sys)
     sys.setdefaultencoding('utf-8')
+
+LOGGER = logging.getLogger('ibus-table')
 
 DEBUG_LEVEL = int(0)
 
@@ -312,9 +315,8 @@ class TabSqliteDb:
                     os.makedirs(tables_path, exist_ok=True)
             user_db = path.join(tables_path, user_db)
             if not path.exists(user_db):
-                sys.stderr.write(
-                    'The user database %(udb)s does not exist yet.\n'
-                    % {'udb': user_db})
+                LOGGER.debug(
+                    'The user database %s does not exist yet.', user_db)
             else:
                 try:
                     desc = self.get_database_desc(user_db)
@@ -325,71 +327,69 @@ class TabSqliteDb:
                             or (self.get_number_of_columns_of_phrase_table(
                                 user_db)
                                 != len(phrase_table_column_names))):
-                        sys.stderr.write(
-                            'The user database %s seems to be incompatible.\n'
-                            % user_db)
+                        LOGGER.debug(
+                            'The user database %s seems to be incompatible.',
+                            user_db)
                         if desc is None:
-                            sys.stderr.write(
+                            LOGGER.debug(
                                 'There is no version information in '
-                                + 'the database.\n')
+                                'the database.')
                             self.old_phrases = self.extract_user_phrases(
                                 user_db, old_database_version='0.0')
                         elif desc["version"] != DATABASE_VERSION:
-                            sys.stderr.write(
+                            LOGGER.debug(
                                 'The version of the database does not match '
-                                + '(too old or too new?).\n'
-                                'ibus-table wants version=%s\n'
-                                % DATABASE_VERSION
-                                + 'But the  database actually has version=%s\n'
-                                % desc['version'])
+                                '(too old or too new?). '
+                                'ibus-table wants version=%s '
+                                'But the  database actually has version=%s',
+                                DATABASE_VERSION, desc['version'])
                             self.old_phrases = self.extract_user_phrases(
                                 user_db, old_database_version=desc['version'])
                         elif (self.get_number_of_columns_of_phrase_table(
                                 user_db)
                               != len(phrase_table_column_names)):
-                            sys.stderr.write(
+                            LOGGER.debug(
                                 'The number of columns of the database '
-                                + 'does not match.\n'
-                                + 'ibus-table expects %s columns.\n'
-                                % len(phrase_table_column_names)
-                                + 'But the database actually has %s columns.\n'
-                                % self.get_number_of_columns_of_phrase_table(
-                                    user_db)
-                                + 'But the versions of the databases are '
-                                + 'identical.\n'
-                                + 'This should never happen!\n')
+                                'does not match. '
+                                'ibus-table expects %s columns. '
+                                'But the database actually has %s columns. '
+                                'But the versions of the databases are '
+                                'identical. '
+                                'This should never happen!',
+                                len(phrase_table_column_names),
+                                self.get_number_of_columns_of_phrase_table(
+                                    user_db))
                             self.old_phrases = None
                         from time import strftime
                         timestamp = strftime('-%Y-%m-%d_%H:%M:%S')
-                        sys.stderr.write(
-                            'Renaming the incompatible database to "%s".\n'
-                            % user_db+timestamp)
+                        LOGGER.debug(
+                            'Renaming the incompatible database to "%s".',
+                            user_db+timestamp)
                         if os.path.exists(user_db):
                             os.rename(user_db, user_db+timestamp)
                         if os.path.exists(user_db+'-shm'):
                             os.rename(user_db+'-shm', user_db+'-shm'+timestamp)
                         if os.path.exists(user_db+'-wal'):
                             os.rename(user_db+'-wal', user_db+'-wal'+timestamp)
-                        sys.stderr.write(
-                            'Creating a new, empty database "s".\n'
-                            % user_db)
+                        LOGGER.debug(
+                            'Creating a new, empty database "s".', user_db)
                         self.init_user_db(user_db)
-                        sys.stderr.write(
+                        LOGGER.debug(
                             'If user phrases were successfully recovered from '
-                            + 'the old,\n'
-                            + 'incompatible database, they will be used to '
-                            + 'initialize the new database.\n')
+                            'the old, '
+                            'incompatible database, they will be used to '
+                            'initialize the new database.')
                     else:
-                        sys.stderr.write(
-                            'Compatible database %s found.\n' % user_db)
+                        LOGGER.debug(
+                            'Compatible database %s found.', user_db)
                 except:
                     import traceback
                     traceback.print_exc()
 
         # open user phrase database
         try:
-            sys.stderr.write(
-                'Connect to the database %(name)s.\n' %{'name': user_db})
+            LOGGER.debug(
+                'Connect to the database %s.', user_db)
             self.db.executescript('''
                 ATTACH DATABASE "%s" AS user_db;
                 PRAGMA user_db.encoding = "UTF-8";
@@ -402,19 +402,18 @@ class TabSqliteDb:
                 PRAGMA user_db.synchronous = NORMAL;
             ''' % user_db)
         except:
-            sys.stderr.write('Could not open the database %s.\n' % user_db)
+            LOGGER.debug('Could not open the database %s.', user_db)
             from time import strftime
             timestamp = strftime('-%Y-%m-%d_%H:%M:%S')
-            sys.stderr.write('Renaming the incompatible database to "%s".\n'
-                             % user_db+timestamp)
+            LOGGER.debug('Renaming the incompatible database to "%s".',
+                         user_db+timestamp)
             if os.path.exists(user_db):
                 os.rename(user_db, user_db+timestamp)
             if os.path.exists(user_db+'-shm'):
                 os.rename(user_db+'-shm', user_db+'-shm'+timestamp)
             if os.path.exists(user_db+'-wal'):
                 os.rename(user_db+'-wal', user_db+'-wal'+timestamp)
-            sys.stderr.write('Creating a new, empty database "%s".\n'
-                             % user_db)
+            LOGGER.debug('Creating a new, empty database "%s".', user_db)
             self.init_user_db(user_db)
             self.db.executescript('''
                 ATTACH DATABASE "%s" AS user_db;
@@ -457,11 +456,9 @@ class TabSqliteDb:
             user_freq=0, database='user_db', commit=True):
         '''update phrase freqs'''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'update_phrase() tabkeys=%(t)s phrase=%(p)s '
-                % {'t': tabkeys, 'p': phrase}
-                + 'user_freq=%(u)s database=%(d)s\n'
-                % {'u': user_freq, 'd': database})
+            LOGGER.debug(
+                'tabkeys=%s phrase=%s user_freq=%s database=%s',
+                tabkeys, phrase, user_freq, database)
         if not tabkeys or not phrase:
             return
         sqlstr = '''
@@ -495,7 +492,7 @@ class TabSqliteDb:
         Make the phrases cache empty
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("reset_phrases_cache()\n")
+            LOGGER.debug('reset_phrases_cache()')
         self._phrases_cache = {}
 
     def invalidate_phrases_cache(self, tabkeys=u''):
@@ -507,7 +504,7 @@ class TabSqliteDb:
         :type tabkeys: String
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("invalidate_phrases_cache()\n")
+            LOGGER.debug('invalidate_phrases_cache()')
         for i in range(1, self._mlen + 1):
             if self._phrases_cache.get(tabkeys[0:i]):
                 self._phrases_cache.pop(tabkeys[0:i])
@@ -517,7 +514,7 @@ class TabSqliteDb:
         Load phrases cache from disk
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write('load_phrases_cache()\n')
+            LOGGER.debug('load_phrases_cache()')
         try:
             import json
             self._phrases_cache = json.load(open(self.cache_path, 'r'))
@@ -526,24 +523,21 @@ class TabSqliteDb:
                 self._phrases_cache = {}
         except FileNotFoundError:
             if DEBUG_LEVEL > 1:
-                sys.stderr.write(
-                    'load_phrases_cache() File %s not found\n'
-                    % self.cache_path)
+                LOGGER.debug(
+                    'File %s not found', self.cache_path)
         except PermissionError:
             if DEBUG_LEVEL > 1:
-                sys.stderr.write(
-                    'load_phrases_cache() Permission error reading %s\n'
-                    % self.cache_path)
+                LOGGER.debug(
+                    'Permission error reading %s', self.cache_path)
         except:
-            sys.stderr.write('load_phrases_cache() Unknown error reading %s\n'
-                             % self.cache_path)
+            LOGGER.debug('Unknown error reading %s', self.cache_path)
 
     def save_phrases_cache(self):
         '''
         Save phrases cache from disk
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write('save_phrases_cache()\n')
+            LOGGER.debug('save_phrases_cache()')
         try:
             import json
             self._phrases_cache['serial_number'] = self._snum
@@ -786,8 +780,7 @@ class TabSqliteDb:
 
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("add_phrases() len(phrases)=%s\n"
-                             %len(phrases))
+            LOGGER.debug('len(phrases)=%s', len(phrases))
         insert_sqlstr = '''
         INSERT INTO %(database)s.phrases
         (tabkeys, phrase, freq, user_freq)
@@ -812,11 +805,10 @@ class TabSqliteDb:
         (tabkeys, phrase, freq ,user_freq)
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'add_phrase tabkeys=%(t)s phrase=%(p)s '
-                % {'t': tabkeys, 'p': phrase}
-                + 'freq=%(f)s user_freq=%(u)s\n'
-                % {'f': freq, 'u': user_freq})
+            LOGGER.debug(
+                'add_phrase tabkeys=%s phrase=%s '
+                'freq=%s user_freq=%s',
+                tabkeys, phrase, freq, user_freq)
         if not tabkeys or not phrase:
             return
         select_sqlstr = '''
@@ -829,12 +821,10 @@ class TabSqliteDb:
             # there is already such a phrase, i.e. add_phrase was called
             # in error, do nothing to avoid duplicate entries.
             if DEBUG_LEVEL > 1:
-                sys.stderr.write(
-                    'add_phrase() '
-                    + 'select_sqlstr=%(sql)s select_sqlargs=%(arg)s '
-                    % {'sql': select_sqlstr, 'arg': select_sqlargs}
-                    + 'already there!: results=%(r)s \n'
-                    % {'r': results})
+                LOGGER.debug(
+                    'select_sqlstr=%(sql)s select_sqlargs=%(arg)s '
+                    'already there!: results=%(r)s ',
+                    select_sqlstr, select_sqlargs, results)
             return
 
         insert_sqlstr = '''
@@ -848,9 +838,9 @@ class TabSqliteDb:
             'freq': freq,
             'user_freq': user_freq}
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'add_phrase() insert_sqlstr=%(sql)s insert_sqlargs=%(arg)s\n'
-                % {'sql': insert_sqlstr, 'arg': insert_sqlargs})
+            LOGGER.debug(
+                'insert_sqlstr=%s insert_sqlargs=%s',
+                insert_sqlstr, insert_sqlargs)
         try:
             self.db.execute(insert_sqlstr, insert_sqlargs)
             if commit:
@@ -899,10 +889,10 @@ class TabSqliteDb:
                 self.db.execute(
                     sqlstr, {'pinyin': pinyin, 'zi': zi, 'freq': freq})
             except Exception:
-                sys.stderr.write(
+                LOGGER.debug(
                     'Error when inserting into pinyin table. '
-                    + 'count=%(c)s pinyin=%(p)s zi=%(z)s freq=%(f)s\n'
-                    % {'c': count, 'p': pinyin, 'z': zi, 'f': freq})
+                    'count=%s pinyin=%s zi=%s freq=%s',
+                    count, pinyin, zi, freq)
                 import traceback
                 traceback.print_exc()
         self.db.commit()
@@ -921,10 +911,10 @@ class TabSqliteDb:
                 self.db.execute(
                     sqlstr, {'phrase': phrase, 'freq': freq})
             except Exception:
-                sys.stderr.write(
+                LOGGER.debug(
                     'Error when inserting into suggestion table. '
-                    + 'count=%(c)s phrase=%(p)s freq=%(f)s\n'
-                    % {'c': count, 'p': phrase, 'f': freq})
+                    'count=%s phrase=%s freq=%s',
+                    count, phrase, freq)
                 import traceback
                 traceback.print_exc()
         self.db.commit()
@@ -964,7 +954,7 @@ class TabSqliteDb:
         function does nothing.
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("drop_indexes()\n")
+            LOGGER.debug('drop_indexes()')
         return
 
     def create_indexes(self, _database, _commit=True):
@@ -980,7 +970,7 @@ class TabSqliteDb:
         be created here (and dropped in “drop_indexes()”).
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("create_indexes()\n")
+            LOGGER.debug('create_indexes()')
         return
 
     def big5_code(self, phrase):
@@ -1108,8 +1098,7 @@ class TabSqliteDb:
             tabkeys_for_like += '%%'
         sqlargs = {'tabkeys': tabkeys_for_like, 'escapechar': escapechar}
         if DEBUG_LEVEL > 1:
-            sys.stderr.write('select_words() sqlstr=%s sqlargs=%s\n'
-                             %(sqlstr, repr(sqlargs)))
+            LOGGER.debug('sqlstr=%s sqlargs=%s', sqlstr, repr(sqlargs))
         unfiltered_results = self.db.execute(sqlstr, sqlargs).fetchall()
         bitmask = None
         if chinese_mode == 0:
@@ -1148,7 +1137,7 @@ class TabSqliteDb:
             candidates=phrase_frequencies.values(),
             chinese_mode=chinese_mode)
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("select_words() best=%s\n" %repr(best))
+            LOGGER.debug('best=%s', repr(best))
         self._phrases_cache[tabkeys] = best
         return best
 
@@ -1217,7 +1206,7 @@ class TabSqliteDb:
                                             (phrase, max(freq, phrase_frequencies[phrase][1])))])
         candidates = phrase_frequencies.values()
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("select_suggestion_candidate() candidates=%s\n" %repr(candidates))
+            LOGGER.debug('candidates=%s', repr(candidates))
         maximum_number_of_candidates = 100
         engine_name = os.path.basename(self.filename).replace('.db', '')
 
@@ -1355,7 +1344,7 @@ class TabSqliteDb:
         else:
             goucima = u''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("get_goucima() goucima=%s\n" %goucima)
+            LOGGER.debug('goucima=%s', goucima)
         return goucima
 
     def parse_phrase(self, phrase):
@@ -1398,9 +1387,7 @@ class TabSqliteDb:
 
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'parse_phrase() phrase=%(p)s rules%(r)s\n'
-                % {'p': phrase, 'r': self.rules})
+            LOGGER.debug('phrase=%s rules%s', phrase, self.rules)
         if type(phrase) != type(u''):
             phrase = phrase.decode('UTF-8')
         # Shouldn’t this function try first whether the system database
@@ -1419,15 +1406,14 @@ class TabSqliteDb:
         elif len(phrase) > self.rules['above']:
             rule = self.rules[self.rules['above']]
         else:
-            sys.stderr.write(
-                'No rule for this phrase length. phrase=%(p)s rules=%(r)s\n'
-                %{'p': phrase, 'r': self.rules})
+            LOGGER.debug(
+                'No rule for this phrase length. phrase=%s rules=%s',
+                phrase, self.rules)
             return u''
         if len(rule) > self._mlen:
-            sys.stderr.write(
+            LOGGER.debug(
                 'Rule exceeds maximum key length. '
-                + 'rule=%(r)s self._mlen=%(m)s\n'
-                %{'r': rule, 'm': self._mlen})
+                'rule=%s self._mlen=%s', rule, self._mlen)
             return u''
         tabkeys = u''
         for (zi, ma) in rule:
@@ -1440,7 +1426,7 @@ class TabSqliteDb:
                 return u''
             tabkeys += tabkey
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("parse_phrase() tabkeys=%s\n" %tabkeys)
+            LOGGER.debug('tabkeys=%s', tabkeys)
         return tabkeys
 
     def is_in_system_database(self, tabkeys=u'', phrase=u''):
@@ -1449,9 +1435,7 @@ class TabSqliteDb:
         with a key sequence *starting* with “tabkeys”.
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'is_in_system_database() tabkeys=%(t)s phrase=%(p)s\n'
-                % {'t': tabkeys, 'p': phrase})
+            LOGGER.debug('tabkeys=%s phrase=%s', tabkeys, phrase)
         if not tabkeys or not phrase:
             return False
         sqlstr = '''
@@ -1461,11 +1445,9 @@ class TabSqliteDb:
         sqlargs = {'tabkeys': tabkeys+'%%', 'phrase': phrase}
         results = self.db.execute(sqlstr, sqlargs).fetchall()
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'is_in_system_database() tabkeys=%(t)s phrase=%(p)s '
-                % {'t': tabkeys, 'p': phrase}
-                + 'results=%(r)s\n'
-                % {'r': results})
+            LOGGER.debug(
+                'tabkeys=%s phrase=%s results=%s',
+                tabkeys, phrase, results)
         return bool(results)
 
     def user_frequency(self, tabkeys=u'', phrase=u''):
@@ -1481,9 +1463,7 @@ class TabSqliteDb:
 
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'user_frequency() tabkeys=%(t)s phrase=%(p)s\n'
-                % {'t': tabkeys, 'p': phrase})
+            LOGGER.debug('tabkeys=%s phrase=%s', tabkeys, phrase)
         if not tabkeys or not phrase:
             return 0
         sqlstr = '''
@@ -1493,7 +1473,7 @@ class TabSqliteDb:
         sqlargs = {'tabkeys': tabkeys, 'phrase': phrase}
         result = self.db.execute(sqlstr, sqlargs).fetchall()
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("user_frequency() result=%s\n" %result)
+            LOGGER.debug('result=%s', result)
         if result:
             return result[0][0]
         return 0
@@ -1507,9 +1487,7 @@ class TabSqliteDb:
         there.
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'check_phrase_internal() tabkey=%(t)s phrase=%(p)s\n'
-                % {'t': tabkeys, 'p': phrase})
+            LOGGER.debug('tabkey=%s phrase=%s', tabkeys, phrase)
         if type(phrase) != type(u''):
             phrase = phrase.decode('utf8')
         if type(tabkeys) != type(u''):
@@ -1611,9 +1589,9 @@ class TabSqliteDb:
     def extract_user_phrases(
             self, database_file='', old_database_version='0.0'):
         '''extract user phrases from database'''
-        sys.stderr.write(
+        LOGGER.debug(
             'Trying to recover the phrases from the old, '
-            + 'incompatible database.\n')
+            'incompatible database.')
         try:
             db = sqlite3.connect(database_file)
             db.execute('PRAGMA wal_checkpoint;')
@@ -1627,9 +1605,9 @@ class TabSqliteDb:
                 db.close()
                 phrases = sorted(
                     phrases, key=lambda x: (x[0], x[1], x[2], x[3]))
-                sys.stderr.write(
-                    'Recovered phrases from the old database: phrases=%s\n'
-                    % repr(phrases))
+                LOGGER.debug(
+                    'Recovered phrases from the old database: phrases=%s',
+                    repr(phrases))
                 return phrases[:]
             else:
                 # database is very old, it may still use many columns
@@ -1666,10 +1644,9 @@ class TabSqliteDb:
                 db.close()
                 phrases = sorted(
                     phrases, key=lambda x: (x[0], x[1], x[2], x[3]))
-                sys.stderr.write(
+                LOGGER.debug(
                     'Recovered phrases from the very old database: '
-                    + 'phrases=%s\n'
-                    % repr(phrases))
+                    'phrases=%s', repr(phrases))
                 return phrases[:]
         except:
             import traceback

@@ -26,9 +26,12 @@ Utility functions used in ibus-table
 '''
 
 import sys
+import logging
 from gi import require_version
 require_version('GLib', '2.0')
 from gi.repository import GLib
+
+LOGGER = logging.getLogger('ibus-table')
 
 def variant_to_value(variant):
     '''
@@ -36,6 +39,7 @@ def variant_to_value(variant):
     '''
     # pylint: disable=unidiomatic-typecheck
     if type(variant) != GLib.Variant:
+        LOGGER.info('not a GLib.Variant')
         return variant
     type_string = variant.get_type_string()
     if type_string == 's':
@@ -52,10 +56,13 @@ def variant_to_value(variant):
             return variant.dup_strv()[0]
         return variant.dup_strv()
     else:
-        print('error: unknown variant type: %s' %type_string)
+        LOGGER.error('unknown variant type: %s', type_string)
     return variant
 
 if __name__ == "__main__":
+    LOG_HANDLER = logging.StreamHandler(stream=sys.stderr)
+    LOGGER.setLevel(logging.DEBUG)
+    LOGGER.addHandler(LOG_HANDLER)
     import doctest
     (FAILED, ATTEMPTED) = doctest.testmod()
     if FAILED:

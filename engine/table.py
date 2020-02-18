@@ -35,6 +35,7 @@ import sys
 import os
 import re
 import time
+import logging
 from gettext import dgettext
 _ = lambda a: dgettext('ibus-table', a)
 N_ = lambda a: a
@@ -48,6 +49,8 @@ from gi.repository import GLib
 #import tabsqlitedb
 from gi.repository import GObject
 import it_util
+
+LOGGER = logging.getLogger('ibus-table')
 
 DEBUG_LEVEL = int(0)
 
@@ -282,6 +285,8 @@ class Editor(object):
                  single_wildcard_char, multi_wildcard_char,
                  auto_wildcard, full_width_letter, full_width_punct,
                  max_key_length, database):
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('Editor.__init__()')
         self.db = database
         self._gsettings = gsettings
         self._max_key_length = int(max_key_length)
@@ -380,9 +385,9 @@ class Editor(object):
         self._chinese_mode = it_util.variant_to_value(
             self._gsettings.get_user_value('chinesemode'))
         if self._chinese_mode != None and DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "Chinese mode found in Gsettings, mode=%s\n"
-                % self._chinese_mode)
+            LOGGER.debug(
+                'Chinese mode found in Gsettings, mode=%s',
+                self._chinese_mode)
         if self._chinese_mode is None:
             self._chinese_mode = self.get_default_chinese_mode()
 
@@ -449,34 +454,34 @@ class Editor(object):
         __db_chinese_mode = self.db.get_chinese_mode()
         if __db_chinese_mode >= 0:
             if DEBUG_LEVEL > 1:
-                sys.stderr.write(
-                    "get_default_chinese_mode(): "
-                    + "default Chinese mode found in database, mode=%s\n"
-                    %__db_chinese_mode)
+                LOGGER.debug(
+                    'get_default_chinese_mode(): '
+                    'default Chinese mode found in database, mode=%s',
+                    __db_chinese_mode)
             return __db_chinese_mode
         # otherwise
         try:
             if 'LC_ALL' in os.environ:
                 __lc = os.environ['LC_ALL'].split('.')[0].lower()
                 if DEBUG_LEVEL > 1:
-                    sys.stderr.write(
+                    LOGGER.debug(
                         'get_default_chinese_mode(): '
-                        + '__lc=%s found in LC_ALL\n'
-                        % __lc)
+                        '__lc=%s found in LC_ALL',
+                        __lc)
             elif 'LC_CTYPE' in os.environ:
                 __lc = os.environ['LC_CTYPE'].split('.')[0].lower()
                 if DEBUG_LEVEL > 1:
-                    sys.stderr.write(
+                    LOGGER.debug(
                         'get_default_chinese_mode(): '
-                        + '__lc=%s found in LC_CTYPE\n'
-                        % __lc)
+                        '__lc=%s found in LC_CTYPE',
+                        __lc)
             else:
                 __lc = os.environ['LANG'].split('.')[0].lower()
                 if DEBUG_LEVEL > 1:
-                    sys.stderr.write(
+                    LOGGER.debug(
                         'get_default_chinese_mode(): '
-                        + '__lc=%s  found in LANG\n'
-                        % __lc)
+                        '__lc=%s  found in LANG',
+                        __lc)
 
             if '_cn' in __lc or '_sg' in __lc:
                 # CN and SG should prefer traditional Chinese by default
@@ -491,16 +496,16 @@ class Editor(object):
                     # all Chinese characters and don’t prefer any
                     # variant:
                     if DEBUG_LEVEL > 1:
-                        sys.stderr.write(
-                            "get_default_chinese_mode(): last fallback, "
-                            + "database is Chinese but we don’t know "
-                            + "which variant.\n")
+                        LOGGER.debug(
+                            'get_default_chinese_mode(): last fallback, '
+                            'database is Chinese but we don’t know '
+                            'which variant.')
                     return 4 # show all Chinese characters
                 else:
                     if DEBUG_LEVEL > 1:
-                        sys.stderr.write(
-                            "get_default_chinese_mode(): last fallback, "
-                            + "database is not Chinese, returning 4.\n")
+                        LOGGER.debug(
+                            'get_default_chinese_mode(): last fallback, '
+                            'database is not Chinese, returning 4.')
                     return 4
         except:
             import traceback
@@ -512,7 +517,7 @@ class Editor(object):
         Clear all input, whether committed to preëdit or not.
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("clear_all_input_and_preedit()\n")
+            LOGGER.debug('clear_all_input_and_preedit()')
         self.clear_input_not_committed_to_preedit()
         self._u_chars = []
         self._strings = []
@@ -536,7 +541,7 @@ class Editor(object):
         Clear the input which has not yet been committed to preëdit.
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("clear_input_not_committed_to_preedit()\n")
+            LOGGER.debug('clear_input_not_committed_to_preedit()')
         self._chars_valid = u''
         self._chars_invalid = u''
         self._chars_valid_update_candidates_last = u''
@@ -830,10 +835,9 @@ class Editor(object):
         '''append table candidate to lookup table'''
         assert self._input_mode == TABLE_MODE
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "append_table_candidate() "
-                + "tabkeys=%(t)s phrase=%(p)s freq=%(f)s user_freq=%(u)s\n"
-                % {'t': tabkeys, 'p': phrase, 'f': freq, 'u': user_freq})
+            LOGGER.debug(
+                'tabkeys=%s phrase=%s freq=%s user_freq=%s',
+                tabkeys, phrase, freq, user_freq)
         if not tabkeys or not phrase:
             return
 
@@ -858,13 +862,10 @@ class Editor(object):
              # match as well.
             remaining_tabkeys = tabkeys
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "append_table_candidate() "
-                + "remaining_tabkeys=%(remaining_tabkeys)s "
-                % {'remaining_tabkeys': remaining_tabkeys}
-                + "self._chars_valid=%(chars_valid)s phrase=%(phrase)s\n"
-                % {'chars_valid': self._chars_valid,
-                   'phrase': phrase})
+            LOGGER.debug(
+                'remaining_tabkeys=%s '
+                'self._chars_valid=%s phrase=%s',
+                remaining_tabkeys, self._chars_valid, phrase)
         table_code = u''
 
         if self._input_mode != PINYIN_MODE:
@@ -920,10 +921,9 @@ class Editor(object):
         '''append pinyin candidate to lookup table'''
         assert self._input_mode == PINYIN_MODE
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "append_pinyin_candidate() "
-                + "tabkeys=%(t)s phrase=%(p)s freq=%(f)s user_freq=%(u)s\n"
-                % {'t': tabkeys, 'p': phrase, 'f': freq, 'u': user_freq})
+            LOGGER.debug(
+                'tabkeys=%s phrase=%s freq=%s user_freq=%s',
+                tabkeys, phrase, freq, user_freq)
         if not tabkeys or not phrase:
             return
 
@@ -940,13 +940,10 @@ class Editor(object):
              # match as well.
             remaining_tabkeys = tabkeys
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "append_pinyin_candidate() "
-                + "remaining_tabkeys=%(remaining_tabkeys)s "
-                % {'remaining_tabkeys': remaining_tabkeys}
-                + "self._chars_valid=%(chars_valid)s phrase=%(phrase)s\n"
-                % {'chars_valid': self._chars_valid,
-                   'phrase': phrase})
+            LOGGER.debug(
+                'remaining_tabkeys=%s '
+                'self._chars_valid=%s phrase=%s',
+                remaining_tabkeys, self._chars_valid, phrase)
 
         table_code = u''
 
@@ -1016,10 +1013,9 @@ class Editor(object):
         '''append suggestion candidate to lookup table'''
         assert self._input_mode == SUGGESTION_MODE
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "append_suggestion_candidate() "
-                + "tabkeys=%(x)s phrase=%(p)s freq=%(f)s user_freq=%(u)s\n"
-                % {'x': prefix, 'p': phrase, 'f': freq, 'u': user_freq})
+            LOGGER.debug(
+                'tabkeys=%s phrase=%s freq=%s user_freq=%s',
+                prefix, phrase, freq, user_freq)
         if not prefix or not phrase:
             return
 
@@ -1064,17 +1060,21 @@ class Editor(object):
         :rtype: Boolean
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'update_candidates() '
-                + 'self._chars_valid=%s ' % self._chars_valid
-                + 'self._chars_invalid=%s ' % self._chars_invalid
-                + 'self._chars_valid_update_candidates_last=%s '
-                % self._chars_valid_update_candidates_last
-                + 'self._chars_invalid_update_candidates_last=%s '
-                % self._chars_invalid_update_candidates_last
-                + 'self._candidates=%s ' % self._candidates
-                + 'self.db.startchars=%s ' % self.db.startchars
-                + 'self._strings=%s\n' % self._strings)
+            LOGGER.debug(
+                'self._chars_valid=%s '
+                'self._chars_invalid=%s '
+                'self._chars_valid_update_candidates_last=%s '
+                'self._chars_invalid_update_candidates_last=%s '
+                'self._candidates=%s '
+                'self.db.startchars=%s '
+                'self._strings=%s',
+                self._chars_valid,
+                self._chars_invalid,
+                self._chars_valid_update_candidates_last,
+                self._chars_invalid_update_candidates_last,
+                self._candidates,
+                self.db.startchars,
+                self._strings)
         if (self._input_mode != SUGGESTION_MODE
             and
             self._chars_valid == self._chars_valid_update_candidates_last
@@ -1404,7 +1404,7 @@ class Editor(object):
     def remove_char(self):
         '''Process remove_char Key Event'''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("remove_char()\n")
+            LOGGER.debug('remove_char()')
         if self.get_input_chars():
             self.pop_input()
             return
@@ -1467,9 +1467,8 @@ class TabEngine(IBus.Engine):
         self._engine_name = os.path.basename(
             self.db.filename).replace('.db', '').replace(' ', '_')
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'TabEngine.__init__() self._engine_name = %s\n'
-                % self._engine_name)
+            LOGGER.debug(
+                'self._engine_name = %s', self._engine_name)
 
         self._gsettings = Gio.Settings(
             schema='org.freedesktop.ibus.engine.table',
@@ -1629,10 +1628,10 @@ class TabEngine(IBus.Engine):
                 if IBus.KEY_space not in self._commit_keys:
                     self._commit_keys.append(IBus.KEY_space)
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "self._page_down_keys=%s\n" %repr(self._page_down_keys))
-            sys.stderr.write(
-                "self._commit_keys=%s\n" %repr(self._commit_keys))
+            LOGGER.debug(
+                'self._page_down_keys=%s', repr(self._page_down_keys))
+            LOGGER.debug(
+                'self._commit_keys=%s', repr(self._commit_keys))
 
         # 0 = Direct input, i.e. table input OFF (aka “English input mode”),
         #     most characters are just passed through to the application
@@ -2319,9 +2318,7 @@ class TabEngine(IBus.Engine):
         :type update_gsettings: boolean
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "set_space_key_behavior_mode(%s)\n"
-                %mode)
+            LOGGER.debug('mode=%s', mode)
         if mode is True:
             # space is used as a page down key and not as a commit key:
             if IBus.KEY_space not in self._page_down_keys:
@@ -2335,12 +2332,10 @@ class TabEngine(IBus.Engine):
             if IBus.KEY_space not in self._commit_keys:
                 self._commit_keys.append(IBus.KEY_space)
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'set_space_key_behavior_mode(): self._page_down_keys=%s\n'
-                % repr(self._page_down_keys))
-            sys.stderr.write(
-                'set_space_key_behavior_mode(): self._commit_keys=%s\n'
-                % repr(self._commit_keys))
+            LOGGER.debug(
+                'self._page_down_keys=%s', repr(self._page_down_keys))
+            LOGGER.debug(
+                'self._commit_keys=%s', repr(self._commit_keys))
         if update_gsettings:
             self._gsettings.set_value(
                 "spacekeybehavior",
@@ -2406,9 +2401,7 @@ class TabEngine(IBus.Engine):
         :type update_gsettings: boolean
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "set_lookup_table_orientation(%s)\n"
-                %orientation)
+            LOGGER.debug('orientation(%s)', orientation)
         if orientation == self._editor._orientation:
             return
         if orientation >= 0 and orientation <= 2:
@@ -2439,9 +2432,7 @@ class TabEngine(IBus.Engine):
         :type update_gsettings: boolean
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "set_page_size(%s)\n"
-                %page_size)
+            LOGGER.debug('page_size=%s', page_size)
         if page_size == self._editor._page_size:
             return
         if page_size > len(self._editor._select_keys):
@@ -2569,7 +2560,7 @@ class TabEngine(IBus.Engine):
         :type update_gsettings: boolean
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write('set_chinese_mode(%s)\n' %mode)
+            LOGGER.debug('mode=%s', mode)
         if mode == self._editor._chinese_mode:
             return
         self._editor._chinese_mode = mode
@@ -2600,9 +2591,8 @@ class TabEngine(IBus.Engine):
         Initialize or update a ibus property menu
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "_init_or_update_property_menu() menu=%s current_mode=%s\n"
-                %(repr(menu), current_mode))
+            LOGGER.debug(
+                'menu=%s current_mode=%s', repr(menu), current_mode)
         key = menu['key']
         update_prop = bool(key in self._prop_dict)
         sub_properties = menu['sub_properties']
@@ -2729,10 +2719,8 @@ class TabEngine(IBus.Engine):
         Handle clicks on properties
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                'do_property_activate() '
-                + 'ibus_property=%(p)s prop_state=%(ps)s\n'
-                % {'p': ibus_property, 'ps': prop_state})
+            LOGGER.debug(
+                'ibus_property=%s prop_state=%s', ibus_property, prop_state)
         if ibus_property == "setup":
             self._start_setup()
             return
@@ -2961,8 +2949,7 @@ class TabEngine(IBus.Engine):
         :type tabkeys: String
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("commit_string() phrase=%(p)s\n"
-                             %{'p': phrase})
+            LOGGER.debug('phrase=%s', phrase)
         self._prefix = phrase
         self._editor.clear_all_input_and_preedit()
         self._update_ui()
@@ -2984,7 +2971,8 @@ class TabEngine(IBus.Engine):
         Returns “True” if something was committed, “False” if not.
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("commit_everything_unless_invalid()\n")
+            LOGGER.debug('self._editor._chars_invalid=%s',
+                         self._editor._chars_invalid)
         if self._editor._chars_invalid:
             return False
 
@@ -3061,9 +3049,9 @@ class TabEngine(IBus.Engine):
         :rtype: Boolean
         '''
         if DEBUG_LEVEL > 0:
-            sys.stderr.write('_match_hotkey() typed key: %s\n' %key)
-            sys.stderr.write('trying to match: keyval=%s state=%s\n'
-                             %(keyval, state))
+            LOGGER.debug('typed key: %s', key)
+            LOGGER.debug('trying to match: keyval=%s state=%s',
+                         keyval, state)
         # Match only when keys are released
         state = state | IBus.ModifierType.RELEASE_MASK
         if key.val == keyval and (key.state & state) == state:
@@ -3072,10 +3060,10 @@ class TabEngine(IBus.Engine):
             if (self._prev_key
                     and key.val == self._prev_key.val):
                 if DEBUG_LEVEL > 0:
-                    sys.stderr.write('_match_hotkey(): *Match*!\n')
+                    LOGGER.debug('*Match*!')
                 return True
 
-        sys.stderr.write('_match_hotkey(): No match!\n')
+        LOGGER.debug('No match!')
         return False
 
     def do_candidate_clicked(self, index, _button, _state):
@@ -3130,7 +3118,7 @@ class TabEngine(IBus.Engine):
         modifier means Key Pressed
         '''
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("do_process_key_event()\n")
+            LOGGER.debug("do_process_key_event()\n")
         if (self._has_input_purpose
                 and self._input_purpose
                 in [IBus.InputPurpose.PASSWORD, IBus.InputPurpose.PIN]):
@@ -3138,9 +3126,7 @@ class TabEngine(IBus.Engine):
 
         key = KeyEvent(keyval, keycode, state)
         if DEBUG_LEVEL > 1:
-            sys.stderr.write(
-                "process_key_event() "
-                "KeyEvent object: %s" % key)
+            LOGGER.debug('KeyEvent object: %s', key)
 
         result = self._process_key_event(key)
         self._prev_key = key
@@ -3255,8 +3241,7 @@ class TabEngine(IBus.Engine):
         direct input.
         '''
         if DEBUG_LEVEL > 0:
-            sys.stderr.write('_table_mode_process_key_event() ')
-            sys.stderr.write('repr(key)=%(key)s\n' %{'key': key})
+            LOGGER.debug('repr(key)=%s', repr(key))
         # Change pinyin mode
         # (change only if the editor is empty. When the editor
         # is not empty, the right shift key should commit to preëdit
@@ -3334,11 +3319,10 @@ class TabEngine(IBus.Engine):
                          (IBus.ModifierType.MOD1_MASK |
                           IBus.ModifierType.CONTROL_MASK))):
                 if DEBUG_LEVEL > 0:
-                    sys.stderr.write(
-                        '_table_mode_process_key_event() '
-                        + 'leading invalid input: '
-                        + 'repr(keychar)=%(keychar)s\n'
-                        % {'keychar': keychar})
+                    LOGGER.debug(
+                        'leading invalid input: '
+                        'keychar=%s',
+                        keychar)
                 if ascii_ispunct(keychar):
                     trans_char = self.cond_punct_translate(keychar)
                 else:
@@ -3534,10 +3518,8 @@ class TabEngine(IBus.Engine):
                      or (self._editor._input_mode == PINYIN_MODE
                          and keychar in (self._pinyin_valid_input_chars)))):
             if DEBUG_LEVEL > 0:
-                sys.stderr.write(
-                    '_table_mode_process_key_event() valid input: '
-                    + 'repr(keychar)=%(keychar)s\n'
-                    % {'keychar': keychar})
+                LOGGER.debug(
+                    'valid input: keychar=%s', keychar)
 
             # change input mode to previous input mode
             if self._editor._input_mode == SUGGESTION_MODE:
@@ -3658,10 +3640,8 @@ class TabEngine(IBus.Engine):
         # fullwidth or halfwidth.
         if keychar:
             if DEBUG_LEVEL > 0:
-                sys.stderr.write(
-                    '_table_mode_process_key_event() trailing invalid input: '
-                    + 'repr(keychar)=%(keychar)s\n'
-                    % {'keychar': keychar})
+                LOGGER.debug(
+                    'trailing invalid input: keychar=%s', keychar)
             if not self._editor._candidates:
                 self.commit_string(self._editor.get_preedit_tabkeys_complete())
             else:
@@ -3683,7 +3663,7 @@ class TabEngine(IBus.Engine):
 
     def do_focus_in(self):
         if DEBUG_LEVEL > 1:
-            sys.stderr.write("do_focus_in()")
+            LOGGER.debug('do_focus_in()')
         if self._on:
             self.register_properties(self.properties)
             self._init_or_update_property_menu(
@@ -3724,8 +3704,8 @@ class TabEngine(IBus.Engine):
         Called when a value in the settings has been changed.
         '''
         value = it_util.variant_to_value(self._gsettings.get_value(key))
-        sys.stderr.write('Settings changed for engine “%s”: key=%s value=%s\n'
-                         %(self._engine_name, key, value))
+        LOGGER.debug('Settings changed for engine “%s”: key=%s value=%s',
+                     self._engine_name, key, value)
         if key == u'inputmode':
             self.set_input_mode(value)
             return
@@ -3776,10 +3756,13 @@ class TabEngine(IBus.Engine):
         if key == u'autowildcard':
             self.set_autowildcard_mode(value, update_gsettings=False)
             return
-        sys.stderr.write('Unknown key\n')
+        LOGGER.debug('Unknown key')
         return
 
 if __name__ == "__main__":
+    LOG_HANDLER = logging.StreamHandler(stream=sys.stderr)
+    LOGGER.setLevel(logging.DEBUG)
+    LOGGER.addHandler(LOG_HANDLER)
     import doctest
     (FAILED, ATTEMPTED) = doctest.testmod()
     if FAILED:

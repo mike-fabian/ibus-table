@@ -2000,7 +2000,7 @@ class TabEngine(IBus.Engine):
     def set_input_mode(self, mode=1):
         '''Sets whether direct input or the current table is used.
 
-        :param mode: Whether to use Pinyin.
+        :param mode: Whether to use direct input.
                      0: Use direct input.
                      1: Use the current table.
         :type mode: Integer, 0 or 1.

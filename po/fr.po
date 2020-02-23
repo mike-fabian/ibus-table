@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-02-18 14:16+0100\n"
-"PO-Revision-Date: 2020-01-19 01:47+0000\n"
+"PO-Revision-Date: 2020-02-23 17:38+0000\n"
 "Last-Translator: Julien Humbert <julroy67@gmail.com>\n"
-"Language-Team: French <https://translate.stg.fedoraproject.org/projects/ibus-"
-"table/app/fr/>\n"
+"Language-Team: French <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.10.3\n"
+"X-Generator: Weblate 3.11.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -192,27 +192,23 @@ msgstr "Basculer vers le mode pinyin"
 
 #: engine/table.py:1897
 msgid "Suggestion disabled"
-msgstr ""
+msgstr "Suggestion désactivée"
 
 #: engine/table.py:1898 engine/table.py:1904
-#, fuzzy
-#| msgid "Switch to pinyin mode"
 msgid "Switch to suggestion mode"
-msgstr "Basculer vers le mode pinyin"
+msgstr "Basculer vers le mode de suggestion"
 
 #: engine/table.py:1903
 msgid "Suggestion enabled"
-msgstr ""
+msgstr "Suggestion activée"
 
 #: engine/table.py:1908
 msgid "Suggestion mode"
-msgstr ""
+msgstr "Mode de suggestion"
 
 #: engine/table.py:1909
-#, fuzzy
-#| msgid "Switch Input mode"
 msgid "Switch suggestion mode"
-msgstr "Changer de mode de saisie"
+msgstr "Changer de mode de suggestion"
 
 #: engine/table.py:1918
 msgid "Multiple character match"

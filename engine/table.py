@@ -54,10 +54,6 @@ LOGGER = logging.getLogger('ibus-table')
 
 DEBUG_LEVEL = int(0)
 
-(TABLE_MODE,
- PINYIN_MODE,
- SUGGESTION_MODE) = range(3)
-
 def ascii_ispunct(character):
     '''
     Use our own function instead of ascii.ispunct()
@@ -284,7 +280,7 @@ class Editor(object):
     def __init__(self, gsettings, valid_input_chars, pinyin_valid_input_chars,
                  single_wildcard_char, multi_wildcard_char,
                  auto_wildcard, full_width_letter, full_width_punct,
-                 max_key_length, database):
+                 max_key_length, input_mode, sg_mode, database):
         if DEBUG_LEVEL > 1:
             LOGGER.debug('Editor.__init__()')
         self.db = database
@@ -366,11 +362,18 @@ class Editor(object):
             page_size=self._page_size,
             select_keys=self._select_keys,
             orientation=self._orientation)
-        # self._input_mode: which input mode
-        self._input_mode = TABLE_MODE
-        self._prev_input_mode = TABLE_MODE
+        # 0 = Direct input, i.e. table input OFF (aka “English input mode”),
+        #     most characters are just passed through to the application
+        #     (but some fullwidth ↔ halfwidth conversion may be done even
+        #     in this mode, depending on the settings)
+        # 1 = Table input ON (aka “Table input mode”, “Chinese mode”)
+        self._input_mode = input_mode
+        # self._py_mode: whether in pinyin mode
+        self._py_mode = False
         # self._prefix: the previous commit character or phrase
         self._prefix = u''
+        self._sg_mode = sg_mode
+        self._sg_mode_active = False
         # self._onechar: whether we only select single character
         self._onechar = it_util.variant_to_value(self._gsettings.get_value(
             'onechar'))
@@ -522,8 +525,7 @@ class Editor(object):
         self._strings = []
         self._cursor_precommit = 0
         self._prefix = u''
-        if self._input_mode == SUGGESTION_MODE:
-            self._input_mode = self._prev_input_mode
+        self._sg_mode_active = False
         self.update_candidates()
 
     def is_empty(self):
@@ -557,12 +559,12 @@ class Editor(object):
         Returns “True” if candidates were found, “False” if not.
         '''
         if (self._chars_invalid
-                or (self._input_mode != PINYIN_MODE
+                or (not self._py_mode
                     and (char not in
                          self._valid_input_chars
                          + self._single_wildcard_char
                          + self._multi_wildcard_char))
-                or (self._input_mode == PINYIN_MODE
+                or (self._py_mode
                     and (char not in
                          self._pinyin_valid_input_chars
                          + self._single_wildcard_char
@@ -748,7 +750,7 @@ class Editor(object):
         single string
 
         '''
-        if self._input_mode == SUGGESTION_MODE:
+        if self._sg_mode_active:
             if self._candidates:
                 return self._candidates[
                     int(self._lookup_table.get_cursor_pos())][0]
@@ -833,7 +835,7 @@ class Editor(object):
     def append_table_candidate(
             self, tabkeys=u'', phrase=u'', freq=0, user_freq=0):
         '''append table candidate to lookup table'''
-        assert self._input_mode == TABLE_MODE
+        assert self._input_mode == 1
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'tabkeys=%s phrase=%s freq=%s user_freq=%s',
@@ -868,7 +870,7 @@ class Editor(object):
                 remaining_tabkeys, self._chars_valid, phrase)
         table_code = u''
 
-        if self._input_mode != PINYIN_MODE:
+        if not self._py_mode:
             remaining_tabkeys_new = u''
             for char in remaining_tabkeys:
                 if char in self._prompt_characters:
@@ -919,7 +921,8 @@ class Editor(object):
     def append_pinyin_candidate(
             self, tabkeys=u'', phrase=u'', freq=0, user_freq=0):
         '''append pinyin candidate to lookup table'''
-        assert self._input_mode == PINYIN_MODE
+        assert self._input_mode == 1
+        assert self._py_mode
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'tabkeys=%s phrase=%s freq=%s user_freq=%s',
@@ -947,7 +950,7 @@ class Editor(object):
 
         table_code = u''
 
-        if self.db._is_chinese and self._input_mode == PINYIN_MODE:
+        if self.db._is_chinese and self._py_mode:
             # restore tune symbol
             remaining_tabkeys = remaining_tabkeys.replace(
                 '!', '↑1').replace(
@@ -1011,7 +1014,8 @@ class Editor(object):
     def append_suggestion_candidate(
             self, prefix=u'', phrase=u'', freq=0, user_freq=0):
         '''append suggestion candidate to lookup table'''
-        assert self._input_mode == SUGGESTION_MODE
+        assert self._input_mode == 1
+        assert self._sg_mode
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'tabkeys=%s phrase=%s freq=%s user_freq=%s',
@@ -1075,7 +1079,7 @@ class Editor(object):
                 self._candidates,
                 self.db.startchars,
                 self._strings)
-        if (self._input_mode != SUGGESTION_MODE
+        if (not self._sg_mode_active
             and
             self._chars_valid == self._chars_valid_update_candidates_last
                 and
@@ -1088,18 +1092,18 @@ class Editor(object):
         self._chars_invalid_update_candidates_last = self._chars_invalid
         self._lookup_table.clear()
         self._lookup_table.set_cursor_visible(True)
-        if self._input_mode != SUGGESTION_MODE:
+        if not self._sg_mode_active:
             if self._chars_invalid or not self._chars_valid:
                 self._candidates = []
                 self._candidates_previous = self._candidates
                 return False
-        if self._input_mode == PINYIN_MODE and self.db._is_chinese:
+        if not self._sg_mode_active and self._py_mode and self.db._is_chinese:
             self._candidates = self.db.select_chinese_characters_by_pinyin(
                 tabkeys=self._chars_valid,
                 chinese_mode=self._chinese_mode,
                 single_wildcard_char=self._single_wildcard_char,
                 multi_wildcard_char=self._multi_wildcard_char)
-        elif self._input_mode == TABLE_MODE:
+        elif not self._sg_mode_active:
             self._candidates = self.db.select_words(
                 tabkeys=self._chars_valid,
                 onechar=self._onechar,
@@ -1107,7 +1111,7 @@ class Editor(object):
                 single_wildcard_char=self._single_wildcard_char,
                 multi_wildcard_char=self._multi_wildcard_char,
                 auto_wildcard=self._auto_wildcard)
-        elif self._input_mode == SUGGESTION_MODE:
+        elif self._sg_mode_active and self._sg_mode:
             self._candidates = self.db.select_suggestion_candidate(
                 self._prefix)
         else:
@@ -1121,7 +1125,7 @@ class Editor(object):
         # This is needed to make it possible to input the wildcard
         # characters themselves, if “?” acted only as a wildcard
         # it would be impossible to input a fullwidth question mark.
-        if self._input_mode != SUGGESTION_MODE:
+        if not self._sg_mode_active:
             if (self._chars_valid
                 in [self._single_wildcard_char, self._multi_wildcard_char]):
                 wildcard_key = self._chars_valid
@@ -1159,11 +1163,11 @@ class Editor(object):
 
     def commit_to_preedit(self):
         '''Add selected phrase in lookup table to preëdit string'''
-        if self._input_mode != SUGGESTION_MODE:
+        if not self._sg_mode_active:
             if not self._chars_valid:
                 return False
         if self._candidates:
-            if self._input_mode in (TABLE_MODE, PINYIN_MODE):
+            if not self._sg_mode_active:
                 phrase = self._candidates[self.get_cursor_pos()][1]
                 self._u_chars.insert(
                     self._cursor_precommit,
@@ -1171,7 +1175,7 @@ class Editor(object):
                 self._strings.insert(
                     self._cursor_precommit, phrase)
                 self._prefix = phrase
-            elif self._input_mode == SUGGESTION_MODE:
+            elif self._sg_mode_active:
                 phrase = self._candidates[self.get_cursor_pos()][0]
                 phrase = phrase[len(self._prefix):]
                 self._u_chars.insert(self._cursor_precommit,
@@ -1179,7 +1183,7 @@ class Editor(object):
                 self._strings.insert(self._cursor_precommit,
                                      phrase)
                 self._prefix = u''
-                self._input_mode = self._prev_input_mode
+                self._sg_mode_active = False
             else:
                 assert False
             self._cursor_precommit += 1
@@ -1227,7 +1231,7 @@ class Editor(object):
                         u' ('
                         + tabkeys_right[i]+u' '+strings_right[i]
                         + u')')
-            if self._input_mode == PINYIN_MODE:
+            if self._py_mode:
                 aux_string = aux_string.replace(
                     '!', '1').replace(
                         '@', '2').replace(
@@ -1289,19 +1293,19 @@ class Editor(object):
             endpos = looklen + psize
             batch = self._candidates[looklen:endpos]
             for candidate in batch:
-                if self._input_mode == TABLE_MODE:
+                if self._input_mode and not self._py_mode and not self._sg_mode_active:
                     self.append_table_candidate(
                         tabkeys=candidate[0],
                         phrase=candidate[1],
                         freq=candidate[2],
                         user_freq=candidate[3])
-                elif self._input_mode == PINYIN_MODE:
+                elif self._input_mode and self._py_mode and not self._sg_mode_active:
                     self.append_pinyin_candidate(
                         tabkeys=candidate[0],
                         phrase=candidate[1],
                         freq=candidate[2],
                         user_freq=candidate[3])
-                elif self._input_mode == SUGGESTION_MODE:
+                elif self._input_mode and self._sg_mode_active:
                     self.append_suggestion_candidate(
                         prefix=self._prefix,
                         phrase=candidate[0],
@@ -1502,8 +1506,8 @@ class TabEngine(IBus.Engine):
         if self._ime_py:
             self._ime_py = bool(self._ime_py.lower() == u'true')
         else:
-            print('We could not find "pinyin_mode" entry in database, '
-                  + 'is it an outdated database?')
+            LOGGER.info('We could not find "pinyin_mode" entry in database, '
+                         'is it an outdated database?')
             self._ime_py = False
 
         # self._ime_sg: Indicates whether this table supports suggestion mode
@@ -1511,8 +1515,8 @@ class TabEngine(IBus.Engine):
         if self._ime_sg:
             self._ime_sg = bool(self._ime_sg.lower() == u'true')
         else:
-            print('We could not find "suggestion_mode" entry in database, '
-                  + 'is it an outdated database?')
+            LOGGER.info('We could not find "suggestion_mode" entry in database, '
+                         'is it an outdated database?')
             self._ime_sg = False
 
         self._symbol = self.db.ime_properties.get('symbol')
@@ -1741,6 +1745,8 @@ class TabEngine(IBus.Engine):
                               self._full_width_letter,
                               self._full_width_punct,
                               self._max_key_length,
+                              self._input_mode,
+                              self._sg_mode,
                               self.db)
 
         self.chinese_mode_properties = {
@@ -2031,6 +2037,7 @@ class TabEngine(IBus.Engine):
         if mode == self._input_mode:
             return
         self._input_mode = mode
+        self._editor._input_mode = mode
         # Not saved to Gsettings on purpose. In the setup tool one
         # can select whether “Table input” or “Direct input” should
         # be the default when the input method starts. But when
@@ -2073,12 +2080,7 @@ class TabEngine(IBus.Engine):
         # The pinyin mode is never saved to GSettings on purpose
         self._editor.commit_to_preedit()
         self._py_mode = mode
-        if mode:
-            self._editor._input_mode = PINYIN_MODE
-            self._editor._prev_input_mode = PINYIN_MODE
-        else:
-            self._editor._input_mode = TABLE_MODE
-            self._editor._prev_input_mode = TABLE_MODE
+        self._editor._py_mode = mode
         self._init_or_update_property_menu(
             self.pinyin_mode_menu, mode)
         if mode:
@@ -2114,12 +2116,7 @@ class TabEngine(IBus.Engine):
             return
         self._editor.commit_to_preedit()
         self._sg_mode = mode
-        if self._py_mode:
-            self._editor._input_mode = PINYIN_MODE
-            self._editor._prev_input_mode = PINYIN_MODE
-        else:
-            self._editor._input_mode = TABLE_MODE
-            self._editor._prev_input_mode = TABLE_MODE
+        self._editor._sg_mode = mode
         self._init_or_update_property_menu(
             self.suggestion_mode_menu, mode)
         self._update_ui()
@@ -2843,7 +2840,7 @@ class TabEngine(IBus.Engine):
     def _update_preedit(self):
         '''Update Preedit String in UI'''
 
-        if self._editor._input_mode == SUGGESTION_MODE:
+        if self._editor._sg_mode_active:
             self.hide_preedit_text()
             return
 
@@ -2851,7 +2848,7 @@ class TabEngine(IBus.Engine):
         left_of_current_edit = u''.join(preedit_string_parts[0])
         current_edit = preedit_string_parts[1]
         right_of_current_edit = u''.join(preedit_string_parts[2])
-        if self._editor._input_mode == TABLE_MODE:
+        if self._editor._input_mode and not self._editor._sg_mode_active:
             current_edit_new = u''
             for char in current_edit:
                 if char in self._editor._prompt_characters:
@@ -2906,7 +2903,7 @@ class TabEngine(IBus.Engine):
 
     def _update_aux(self):
         '''Update Aux String in UI'''
-        if self._editor._input_mode == SUGGESTION_MODE:
+        if self._editor._sg_mode_active:
             return u''
 
         aux_string = self._editor.get_aux_strings()
@@ -2945,7 +2942,7 @@ class TabEngine(IBus.Engine):
             self.hide_lookup_table()
             return
 
-        if self._editor._input_mode != SUGGESTION_MODE:
+        if self._editor._input_mode and not self._editor._sg_mode_active:
             if self._editor.is_empty():
                 self.hide_lookup_table()
                 return
@@ -3022,7 +3019,7 @@ class TabEngine(IBus.Engine):
         if self._editor._chars_invalid:
             return False
 
-        if self._editor._input_mode == SUGGESTION_MODE:
+        if self._editor._input_mode and self._editor._sg_mode_active:
             self._editor.commit_to_preedit()
 
         if not self._editor.is_empty():
@@ -3561,19 +3558,18 @@ class TabEngine(IBus.Engine):
                 and (keychar in (self._valid_input_chars
                                  + self._single_wildcard_char
                                  + self._multi_wildcard_char)
-                     or (self._editor._input_mode == PINYIN_MODE
+                     or (self._editor._input_mode and self._editor._py_mode
                          and keychar in self._pinyin_valid_input_chars))):
             if DEBUG_LEVEL > 0:
                 LOGGER.debug(
                     'valid input: keychar=%s', keychar)
 
-            # change input mode to previous input mode
-            if self._editor._input_mode == SUGGESTION_MODE:
-                assert self._editor._prev_input_mode != SUGGESTION_MODE
+            # Deactivate suggestion mode:
+            if self._editor._input_mode and self._editor._sg_mode_active:
                 self._editor.clear_all_input_and_preedit()
-                self._editor._input_mode = self._editor._prev_input_mode
+                self._editor._sg_mode_active = False
 
-            if self._editor._input_mode == PINYIN_MODE:
+            if self._editor._input_mode and self._editor._py_mode:
                 if ((len(self._editor._chars_valid)
                      == self._max_key_length_pinyin)
                         or (len(self._editor._chars_valid) > 1
@@ -3582,7 +3578,7 @@ class TabEngine(IBus.Engine):
                         self.commit_everything_unless_invalid()
                     else:
                         self._editor.commit_to_preedit()
-            elif self._editor._input_mode == TABLE_MODE:
+            elif self._editor._input_mode and not self._editor._py_mode:
                 if ((len(self._editor._chars_valid)
                      == self._max_key_length)
                         or (len(self._editor._chars_valid)
@@ -3639,9 +3635,8 @@ class TabEngine(IBus.Engine):
                     self.commit_string(u' ')
 
             if self._sg_mode \
-               and self._editor._input_mode in (TABLE_MODE, PINYIN_MODE):
-                self._editor._prev_input_mode = self._editor._input_mode
-                self._editor._input_mode = SUGGESTION_MODE
+               and self._editor._input_mode and not self._editor._sg_mode_active:
+                self._editor._sg_mode_active = True
 
             self._editor.update_candidates()
             self._update_ui()
@@ -3665,9 +3660,8 @@ class TabEngine(IBus.Engine):
                     tabkeys=self._editor.get_preedit_tabkeys_complete())
 
             if self._sg_mode \
-               and self._editor._input_mode in (TABLE_MODE, PINYIN_MODE):
-                self._editor._prev_input_mode = self._editor._input_mode
-                self._editor._input_mode = SUGGESTION_MODE
+               and self._editor._input_mode and not self._editor._sg_mode_active:
+                self._editor._sg_mode_active = True
 
             self._editor.update_candidates()
             self._update_ui()

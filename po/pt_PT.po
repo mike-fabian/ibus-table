@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-02-18 14:16+0100\n"
-"PO-Revision-Date: 2020-01-23 09:10+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2020-03-01 15:38+0000\n"
+"Last-Translator: Manuela Silva <mmsrs@sky.com>\n"
 "Language-Team: Portuguese (Portugal) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/pt_PT/>\n"
 "Language: pt_PT\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 3.10.3\n"
+"X-Generator: Weblate 3.11.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -192,27 +192,23 @@ msgstr "Mudar modo pinyin"
 
 #: engine/table.py:1897
 msgid "Suggestion disabled"
-msgstr ""
+msgstr "Sugestão desativada"
 
 #: engine/table.py:1898 engine/table.py:1904
-#, fuzzy
-#| msgid "Switch to pinyin mode"
 msgid "Switch to suggestion mode"
-msgstr "Mudar para modo pinyin"
+msgstr "Mudar para modo de sugestão"
 
 #: engine/table.py:1903
 msgid "Suggestion enabled"
-msgstr ""
+msgstr "Sugestão ativada"
 
 #: engine/table.py:1908
 msgid "Suggestion mode"
-msgstr ""
+msgstr "Modo de sugestão"
 
 #: engine/table.py:1909
-#, fuzzy
-#| msgid "Switch Input mode"
 msgid "Switch suggestion mode"
-msgstr "Mudar modo de entrada"
+msgstr "Mudar modo de sugestão"
 
 #: engine/table.py:1918
 msgid "Multiple character match"
@@ -247,20 +243,25 @@ msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
 msgstr ""
+"Mude para o modo de confirmação normal (as confirmações automáticas entram "
+"no pré-editar, e não na aplicação. Isto permite definições automáticas de "
+"novos atalhos)"
 
 #: engine/table.py:1953
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
 msgstr ""
+"Mude para o modo de confirmação direta (as confirmações automáticas entram "
+"diretamente na aplicação)"
 
 #: engine/table.py:1958
 msgid "Auto commit mode"
-msgstr "Modo de implementar automático"
+msgstr "Modo de confirmação automática"
 
 #: engine/table.py:1959
 msgid "Switch autocommit mode"
-msgstr ""
+msgstr "Mudar modo de confirmação automática"
 
 #: engine/table.py:2705
 msgid "Setup"
@@ -269,7 +270,7 @@ msgstr "Configuração"
 #: engine/table.py:2708
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
-msgstr "Configurar ibus-table “%(engine-name)s”"
+msgstr "Configurar tabela ibus “%(engine-name)s”"
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"
@@ -285,6 +286,10 @@ msgid ""
 "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
 "CangJie, …. But some tables for other languages are available as well."
 msgstr ""
+"Tabela Ibus é uma estrutura de método de entrada para métodos de entrada "
+"baseados em tabela. É utilizado principalmente para os métodos de entrada "
+"chineses, tais como ZhengMa, WuBi, ErBi, CangJie, …. Mas também estão "
+"disponíveis algumas tabelas para outros idiomas."
 
 #: setup/main.py:149
 msgid "IBUS_ENGINE_NAME environment variable is not set."
@@ -383,30 +388,48 @@ msgid ""
 "matches without any particular filtering on traditional\n"
 "versus simplified Chinese."
 msgstr ""
+"“Chinês Simplificado” mostra apenas carateres \n"
+"utilizados no chinês simplificado. “Chinês Traditional”\n"
+"mostra apenas carateres utilziados no chinês tradicional.\n"
+"“Chinês Simplificado antes do tradicional” mostra todos\n"
+"os carateres mas coloca os carateres simplificados\n"
+"no topo da lista de candidatos. “Chinês Tradicional antes\n"
+"do simplificado” coloca os carateres tradicionais no topo\n"
+"da lista de candidatos. “Todos os carateres” mostra apenas\n"
+"todas as correspondências sem qualquer filtragem em\n"
+"particular no chinês tradicional ''versus'' o chinês simplificado."
 
 #: setup/ibus-table-preferences.ui:340
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
+"Se utiliza as letras de largura total ou metade\n"
+"da largura no modo de entrada de tabela."
 
 #: setup/ibus-table-preferences.ui:357
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
+"Se utiliza a pontuação de largura total ou metade\n"
+"da largura no modo de entrada de tabela."
 
 #: setup/ibus-table-preferences.ui:374
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
+"Se utiliza as letras de largura total ou metade\n"
+"da largura no modo de entrada direta."
 
 #: setup/ibus-table-preferences.ui:391
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
 msgstr ""
+"Se utiliza a pontuação de largura total ou metade\n"
+"da largura no modo de entrada direta."
 
 #: setup/ibus-table-preferences.ui:411
 msgid "Chinese mode:"
@@ -437,6 +460,12 @@ msgid ""
 "halfwidth may still happen in direct input mode.\n"
 "“Table input” means the input method is on."
 msgstr ""
+"“Entrada direta” é quase o mesmo que o método de\n"
+"entrada, onde, por exemplo, não utilizado, a maioria dos\n"
+"carateres passam apenas para a aplicação. Mas ainda\n"
+"poderá ocorrer alguma conversão entre a largura total e\n"
+"a metade no modo de entrada direta. “Entrada de Tabela”\n"
+"significa que o método de entrada está ativado."
 
 #: setup/ibus-table-preferences.ui:514
 msgid "<b>Inital state</b>"
@@ -447,6 +476,8 @@ msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
 msgstr ""
+"Se a tabela de pesquisa que mostra os candidatos\n"
+"deverá ser vertical ou horizontal."
 
 #: setup/ibus-table-preferences.ui:568
 msgid ""
@@ -455,6 +486,10 @@ msgid ""
 "pages in the lookup table using the page up/down\n"
 "keys or the arrow up/down keys."
 msgstr ""
+"O número máximo de candidatos numa\n"
+"página da tabela de pesquisa. Pode mudar de\n"
+"páginas nesta tabela utilizando as teclas\n"
+" \"PgUp\"/\"PgDn\" ou as teclas seta para cima/baixo."
 
 #: setup/ibus-table-preferences.ui:592
 msgid "Orientation:"
@@ -476,6 +511,11 @@ msgid ""
 "input methods like the Russian “translit”, hiding the\n"
 "candidate lists is better."
 msgstr ""
+"Se as listas de candidato deverão sdr mostradas ou ocultadas.\n"
+"Para os métodos de entrada chineses, normalmente um quer\n"
+"as listas de candidato para serem mostradas. Mas para alguns\n"
+"métodos de entrada não chineses, tais como russo “translit”, \n"
+"ocultar as listas de candidato é o melhor."
 
 #: setup/ibus-table-preferences.ui:661
 msgid "<b>Candidate list</b>"
@@ -534,11 +574,11 @@ msgstr "Compor:"
 
 #: setup/ibus-table-preferences.ui:830
 msgid "Auto select:"
-msgstr "Auto selecionar:"
+msgstr "Auto-selecionar:"
 
 #: setup/ibus-table-preferences.ui:846
 msgid "Auto commit mode:"
-msgstr "Modo de implementar automático"
+msgstr "Modo de confirmação automática:"
 
 #: setup/ibus-table-preferences.ui:862
 msgid "Behavior of space key:"
@@ -563,6 +603,8 @@ msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
+"O caráter de substituição para corresponder qualquer caráter único.\n"
+"Toque RETURN ou ENTER para confirmar depois de alterar este cárater."
 
 #: setup/ibus-table-preferences.ui:943
 msgid "Multi wildcard character:"

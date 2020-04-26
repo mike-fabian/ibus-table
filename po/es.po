@@ -1,20 +1,21 @@
 # Máximo Castañeda Riloba <mcrcctm@gmail.com>, 2017. #zanata
 # Mike FABIAN <mfabian@redhat.com>, 2019, 2020.
+# Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-02-18 14:16+0100\n"
-"PO-Revision-Date: 2020-01-07 12:47+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: Spanish <https://translate.stg.fedoraproject.org/projects/"
+"PO-Revision-Date: 2020-04-26 03:40+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
+"Language-Team: Spanish <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.9.1\n"
+"X-Generator: Weblate 4.0.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -24,7 +25,7 @@ msgstr "Chino simplificado"
 
 #: engine/table.py:1733
 msgid "Switch to “Simplified Chinese only”."
-msgstr "Cambia al modo “sólo chino simplificado”."
+msgstr "Cambiar al modo «solo chino simplificado»."
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
@@ -34,7 +35,7 @@ msgstr "Chino tradicional"
 
 #: engine/table.py:1742
 msgid "Switch to “Traditional Chinese only”."
-msgstr "Cambia al modo “sólo chino tradicional”."
+msgstr "Cambiar al modo «solo chino tradicional»."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -43,11 +44,11 @@ msgstr "Cambia al modo “sólo chino tradicional”."
 #. lists.
 #: engine/table.py:1752
 msgid "Simplified Chinese first"
-msgstr "Primero chino simplificado"
+msgstr "Chino simplificado primero"
 
 #: engine/table.py:1754
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr "Cambia al modo “chino simplificado antes que el tradicional”."
+msgstr "Cambiar al modo «chino simplificado antes que el tradicional»."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -56,11 +57,11 @@ msgstr "Cambia al modo “chino simplificado antes que el tradicional”."
 #. lists.
 #: engine/table.py:1764
 msgid "Traditional Chinese first"
-msgstr "Primero chino tradicional"
+msgstr "Chino tradicional primero"
 
 #: engine/table.py:1766
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr "Cambia al modo “chino tradicional antes que el simplificado”."
+msgstr "Cambiar al modo «chino tradicional antes que el simplificado»."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -73,7 +74,7 @@ msgstr "Todos los caracteres chinos"
 
 #: engine/table.py:1777
 msgid "Switch to “All Chinese characters”."
-msgstr "Cambia al modo “todos los caracteres chinos”."
+msgstr "Cambiar al modo «todos los caracteres chinos»."
 
 #: engine/table.py:1781
 msgid "Chinese mode"
@@ -81,7 +82,7 @@ msgstr "Modo chino"
 
 #: engine/table.py:1782
 msgid "Switch Chinese mode"
-msgstr "Cambia al modo chino"
+msgstr "Cambiar al modo chino"
 
 #: engine/table.py:1792
 msgid "English"
@@ -89,7 +90,7 @@ msgstr "Inglés"
 
 #: engine/table.py:1793
 msgid "Switch to English input"
-msgstr "Cambia a modo de entrada en inglés"
+msgstr "Cambiar a la entrada en inglés"
 
 #: engine/table.py:1800
 msgid "Chinese"
@@ -97,7 +98,7 @@ msgstr "Chino"
 
 #: engine/table.py:1801
 msgid "Switch to Chinese input"
-msgstr "Cambia a modo de entrada en chino"
+msgstr "Cambiar a la entrada en chino"
 
 #: engine/table.py:1809 engine/table.py:1951 setup/ibus-table-preferences.ui:36
 msgid "Direct"
@@ -105,7 +106,7 @@ msgstr "Directa"
 
 #: engine/table.py:1810
 msgid "Switch to direct input"
-msgstr "Cambia a modo de entrada directa"
+msgstr "Cambiar a la entrada directa"
 
 #: engine/table.py:1815 engine/table.py:1876
 msgid "Table"
@@ -113,7 +114,7 @@ msgstr "Tabla"
 
 #: engine/table.py:1816
 msgid "Switch to table input"
-msgstr "Cambia a modo de entrada de tabla"
+msgstr "Cambiar a la entrada por tabla"
 
 #: engine/table.py:1824
 msgid "Input mode"
@@ -121,55 +122,55 @@ msgstr "Modo de entrada"
 
 #: engine/table.py:1825
 msgid "Switch Input mode"
-msgstr "Cambia el modo de entrada"
+msgstr "Cambiar el modo de entrada"
 
 #: engine/table.py:1834 engine/table.py:1855 setup/ibus-table-preferences.ui:98
 #: setup/ibus-table-preferences.ui:112 setup/ibus-table-preferences.ui:182
 #: setup/ibus-table-preferences.ui:196
 msgid "Half"
-msgstr "Medio"
+msgstr "Media"
 
 #: engine/table.py:1835
 msgid "Switch to halfwidth letters"
-msgstr "Cambia a caracteres de medio ancho"
+msgstr "Cambiar a caracteres de anchura media"
 
 #: engine/table.py:1840 engine/table.py:1861
 #: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
 #: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
 msgid "Full"
-msgstr "Completo"
+msgstr "Completa"
 
 #: engine/table.py:1841
 msgid "Switch to fullwidth letters"
-msgstr "Cambia a caracteres de ancho completo"
+msgstr "Cambia a caracteres de anchura completa"
 
 #: engine/table.py:1845
 msgid "Letter width"
-msgstr "Ancho de caracteres"
+msgstr "Anchura de caracteres"
 
 #: engine/table.py:1846
 msgid "Switch letter width"
-msgstr "Cambia el ancho de caracteres"
+msgstr "Cambiar la anchura de caracteres"
 
 #: engine/table.py:1856
 msgid "Switch to halfwidth punctuation"
-msgstr "Cambia a puntuación de medio ancho"
+msgstr "Cambiar a puntuación de anchura media"
 
 #: engine/table.py:1862
 msgid "Switch to fullwidth punctuation"
-msgstr "Cambia a puntuación de ancho completo"
+msgstr "Cambiar a puntuación de anchura completa"
 
 #: engine/table.py:1866
 msgid "Punctuation width"
-msgstr "Ancho de puntuación"
+msgstr "Anchura de puntuación"
 
 #: engine/table.py:1867
 msgid "Switch punctuation width"
-msgstr "Cambia el ancho de la puntuación"
+msgstr "Cambiar la anchura de la puntuación"
 
 #: engine/table.py:1877
 msgid "Switch to table mode"
-msgstr "Cambia a modo de tabla"
+msgstr "Cambiar a modo por tabla"
 
 #: engine/table.py:1882
 msgid "Pinyin"
@@ -189,27 +190,23 @@ msgstr "Cambia el modo pinyin"
 
 #: engine/table.py:1897
 msgid "Suggestion disabled"
-msgstr ""
+msgstr "Sugerencia desactivada"
 
 #: engine/table.py:1898 engine/table.py:1904
-#, fuzzy
-#| msgid "Switch to pinyin mode"
 msgid "Switch to suggestion mode"
-msgstr "Cambia al modo pinyin"
+msgstr "Cambiar al modo de sugerencias"
 
 #: engine/table.py:1903
 msgid "Suggestion enabled"
-msgstr ""
+msgstr "Sugerencia activada"
 
 #: engine/table.py:1908
 msgid "Suggestion mode"
-msgstr ""
+msgstr "Modo de sugerencias"
 
 #: engine/table.py:1909
-#, fuzzy
-#| msgid "Switch Input mode"
 msgid "Switch suggestion mode"
-msgstr "Cambia el modo de entrada"
+msgstr "Cambiar modo de sugerencias"
 
 #: engine/table.py:1918
 msgid "Multiple character match"
@@ -221,7 +218,7 @@ msgstr "Pasa a la búsqueda de coincidencias de varios caracteres a la vez"
 
 #: engine/table.py:1925
 msgid "Single character match"
-msgstr "Coincidencia de un sólo carácter"
+msgstr "Coincidencia de un solo carácter"
 
 #: engine/table.py:1927
 msgid "Switch to matching only single characters"
@@ -275,7 +272,7 @@ msgstr "Configura ibus-table “%(engine-name)s”"
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"
-msgstr "Ibus Table"
+msgstr "Tabla de IBus"
 
 #: ibus-table.appdata.xml:6
 msgid "Table based input method"
@@ -350,7 +347,7 @@ msgstr "Frase"
 
 #: setup/ibus-table-preferences.ui:157
 msgid "Single Char"
-msgstr "Carácter"
+msgstr "Carácter único"
 
 #: setup/ibus-table-preferences.ui:168
 msgid "Commit"
@@ -387,14 +384,14 @@ msgid ""
 "matches without any particular filtering on traditional\n"
 "versus simplified Chinese."
 msgstr ""
-"“Chino simplificado” sólo muestra caracteres usados\n"
-"en el chino simplificado. “Chino tradicional” sólo\n"
-"muestra caracteres usados en el chino tradicional.\n"
-"“Chino simplificado antes que el tradicional” muestra\n"
+"«Chino simplificado» muestra solo caracteres usados\n"
+"en el chino simplificado. «Chino tradicional» muestra\n"
+"solo caracteres usados en el chino tradicional.\n"
+"«Chino simplificado antes que el tradicional» muestra\n"
 "todos los caracteres pero da preferencia a los del\n"
-"simplificado en la lista de candidatos. “Chino\n"
-"tradicional antes que el simplificado” da preferencia\n"
-"a los del tradicional. “Todos los caracteres chinos”\n"
+"simplificado en la lista de candidatos. «Chino\n"
+"tradicional antes que el simplificado» da preferencia\n"
+"a los del tradicional. «Todos los caracteres chinos»\n"
 "muestra todas las coincidencias sin filtrar por el\n"
 "tipo de carácter del que se trate."
 
@@ -403,32 +400,32 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
-"Si se deben usar letras de ancho medio o\n"
-"completo en el modo de entrada de tabla."
+"Si se deben usar letras de anchura media o\n"
+"completa en el modo de entrada de tabla."
 
 #: setup/ibus-table-preferences.ui:357
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
-"Si se debe usar puntuación de ancho medio\n"
-"o completo en el modo de entrada de tabla."
+"Si se debe usar puntuación de anchura media\n"
+"o completa en el modo de entrada de tabla."
 
 #: setup/ibus-table-preferences.ui:374
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
-"Si se deben usar letras de ancho medio o\n"
-"completo en el modo de entrada directa."
+"Si se deben usar letras de anchura media o\n"
+"completa en el modo de entrada directa."
 
 #: setup/ibus-table-preferences.ui:391
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
 msgstr ""
-"Si se debe usar puntuación de ancho medio\n"
-"o completo en el modo de entrada directa."
+"Si se debe usar puntuación de anchura media\n"
+"o completa en el modo de entrada directa."
 
 #: setup/ibus-table-preferences.ui:411
 msgid "Chinese mode:"
@@ -436,19 +433,19 @@ msgstr "Modo de chino:"
 
 #: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"
-msgstr "Ancho de letra con entrada de tabla:"
+msgstr "Anchura de letra con entrada de tabla:"
 
 #: setup/ibus-table-preferences.ui:443
 msgid "Table input punctuation width:"
-msgstr "Ancho de puntuación con entrada de tabla:"
+msgstr "Anchura de puntuación con entrada de tabla:"
 
 #: setup/ibus-table-preferences.ui:459
 msgid "Direct input letter width:"
-msgstr "Ancho de letra con entrada directa:"
+msgstr "Anchura de letra con entrada directa:"
 
 #: setup/ibus-table-preferences.ui:475
 msgid "Direct input punctuation width:"
-msgstr "Ancho de puntuación con entrada directa:"
+msgstr "Anchura de puntuación con entrada directa:"
 
 #: setup/ibus-table-preferences.ui:488
 msgid ""
@@ -459,12 +456,12 @@ msgid ""
 "halfwidth may still happen in direct input mode.\n"
 "“Table input” means the input method is on."
 msgstr ""
-"La “entrada directa” viene a ser como si se\n"
+"La «entrada directa» viene a ser como si se\n"
 "desactivara el método de entrada, casi todos los\n"
 "caracteres pasan directamente a la aplicación,\n"
 "aunque puede haber alguna conversión entre\n"
-"caracteres de ancho medio y completo.\n"
-"“Entrada de tabla” significa que el método de\n"
+"caracteres de anchura media y completa.\n"
+"«Entrada por tabla» significa que el método de\n"
 "entrada está activo."
 
 #: setup/ibus-table-preferences.ui:514
@@ -626,7 +623,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:911
 msgid "Single wildcard character:"
-msgstr "Comodín de carácter:"
+msgstr "Comodín de carácter único:"
 
 #: setup/ibus-table-preferences.ui:924
 msgid ""
@@ -682,15 +679,15 @@ msgid ""
 msgstr ""
 "<small>\n"
 "<b>Autores:</b>\n"
-"Yuwei YU (‘acevery’)\n"
+"Yuwei YU («acevery»)\n"
 "Peng Huang\n"
 "BYVoid\n"
 "Peng Wu\n"
 "\n"
-"<b>Colaboradores:</b>\n"
+"<b>Contribuidores:</b>\n"
 "koterpilla\n"
 "Zerng07\n"
-"Caius ‘kaio’ Chance\n"
+"Caius «kaio» Chance\n"
 "Mike FABIAN\n"
 "Bernard Nauwelaerts\n"
 "Xiaojun Ma\n"

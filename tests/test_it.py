@@ -246,11 +246,23 @@ def set_default_settings():
     ENGINE.set_suggestion_mode(False)
 
 def set_up(engine_name):
+    '''
+    Setup an ibus table engine
+
+    :param engine_name: The name of the engine to setup
+    :type engine_name: String
+    :return: True if the engine could be setup successfully, False if not.
+    :rtype: Boolean
+    '''
     global TABSQLITEDB
     global ENGINE
     bus = IBus.Bus()
     db_dir = '/usr/share/ibus-table/tables'
     db_file = os.path.join(db_dir, engine_name + '.db')
+    if not os.path.isfile(db_file):
+        TABSQLITEDB = None
+        ENGINE = None
+        return False
     TABSQLITEDB = tabsqlitedb.TabSqliteDb(
         filename=db_file, user_db=':memory:')
     ENGINE = TabEngine(
@@ -260,13 +272,21 @@ def set_up(engine_name):
         unit_test=True)
     backup_original_settings()
     set_default_settings()
+    return True
 
 def tear_down():
-    restore_original_settings()
+    global TABSQLITEDB
+    global ENGINE
+    if ENGINE:
+        restore_original_settings()
+        TABSQLITEDB = None
+        ENGINE = None
 
 class WubiJidian86TestCase(unittest.TestCase):
     def setUp(self):
-        set_up('wubi-jidian86')
+        engine_name = 'wubi-jidian86'
+        if not set_up(engine_name):
+            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
 
     def tearDown(self):
         tear_down()
@@ -529,7 +549,9 @@ class WubiJidian86TestCase(unittest.TestCase):
 
 class Stroke5TestCase(unittest.TestCase):
     def setUp(self):
-        set_up('stroke5')
+        engine_name = 'stroke5'
+        if not set_up(engine_name):
+            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
 
     def tearDown(self):
         tear_down()
@@ -548,7 +570,9 @@ class Stroke5TestCase(unittest.TestCase):
 
 class TelexTestCase(unittest.TestCase):
     def setUp(self):
-        set_up('telex')
+        engine_name = 'telex'
+        if not set_up(engine_name):
+            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
 
     def tearDown(self):
         tear_down()
@@ -591,7 +615,9 @@ class TelexTestCase(unittest.TestCase):
 
 class TranslitTestCase(unittest.TestCase):
     def setUp(self):
-        set_up('translit')
+        engine_name ='translit'
+        if not set_up(engine_name):
+            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
 
     def tearDown(self):
         tear_down()
@@ -635,7 +661,9 @@ class TranslitTestCase(unittest.TestCase):
 
 class Cangjie5TestCase(unittest.TestCase):
     def setUp(self):
-        set_up('cangjie5')
+        engine_name = 'cangjie5'
+        if not set_up(engine_name):
+            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
 
     def tearDown(self):
         tear_down()
@@ -665,7 +693,9 @@ class Cangjie5TestCase(unittest.TestCase):
 
 class IpaXSampaTestCase(unittest.TestCase):
     def setUp(self):
-        set_up('ipa-x-sampa')
+        engine_name = 'ipa-x-sampa'
+        if not set_up(engine_name):
+            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
 
     def tearDown(self):
         tear_down()
@@ -687,7 +717,9 @@ class IpaXSampaTestCase(unittest.TestCase):
 
 class LatexTestCase(unittest.TestCase):
     def setUp(self):
-        set_up('latex')
+        engine_name = 'latex'
+        if not set_up(engine_name):
+            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
 
     def tearDown(self):
         tear_down()

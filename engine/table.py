@@ -1476,6 +1476,27 @@ class TabEngine(IBus.Engine):
             path='/org/freedesktop/ibus/engine/table/%s/' %self._engine_name)
         self._gsettings.connect('changed', self.on_gsettings_value_changed)
 
+        self._prop_dict = {}
+        self._sub_props_dict = {}
+        self.main_prop_list = []
+        self.chinese_mode_menu = {}
+        self.chinese_mode_properties = {}
+        self.input_mode_menu = {}
+        self.input_mode_properties = {}
+        self.letter_width_menu = {}
+        self.letter_width_properties = {}
+        self.punctuation_width_menu = {}
+        self.punctuation_width_properties = {}
+        self.pinyin_mode_menu = {}
+        self.pinyin_mode_properties = {}
+        self.suggestion_mode_menu = {}
+        self.suggestion_mode_properties = {}
+        self.onechar_mode_menu = {}
+        self.onechar_mode_properties = {}
+        self.autocommit_mode_menu = {}
+        self.autocommit_mode_properties = {}
+        self._setup_property = None
+
         # self._ime_py: Indicates whether this table supports pinyin mode
         self._ime_py = self.db.ime_properties.get('pinyin_mode')
         if self._ime_py:
@@ -1961,7 +1982,6 @@ class TabEngine(IBus.Engine):
             'shortcut_hint': '(Ctrl-/)',
             'sub_properties': self.autocommit_mode_properties
         }
-        self._prop_dict = {}
         self._init_properties()
 
         self._on = False
@@ -1974,6 +1994,9 @@ class TabEngine(IBus.Engine):
 
         self.sync_timeout_id = GObject.timeout_add_seconds(
             1, self._sync_user_db)
+
+        LOGGER.info(
+            '********** Initialized and ready for input: **********')
 
     def reset(self):
         '''Clear the preëdit and close the lookup table
@@ -2594,13 +2617,12 @@ class TabEngine(IBus.Engine):
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'menu=%s current_mode=%s', repr(menu), current_mode)
-        key = menu['key']
-        update_prop = bool(key in self._prop_dict)
-        sub_properties = menu['sub_properties']
-        for prop in sub_properties:
-            if sub_properties[prop]['number'] == int(current_mode):
-                symbol = sub_properties[prop]['symbol']
-                icon = sub_properties[prop]['icon']
+        menu_key = menu['key']
+        sub_properties_dict = menu['sub_properties']
+        for prop in sub_properties_dict:
+            if sub_properties_dict[prop]['number'] == int(current_mode):
+                symbol = sub_properties_dict[prop]['symbol']
+                icon = sub_properties_dict[prop]['icon']
                 label = '%(label)s (%(symbol)s) %(shortcut_hint)s' % {
                     'label': menu['label'],
                     'symbol': symbol,
@@ -2608,61 +2630,85 @@ class TabEngine(IBus.Engine):
                 tooltip = '%(tooltip)s\n%(shortcut_hint)s' % {
                     'tooltip': menu['tooltip'],
                     'shortcut_hint': menu['shortcut_hint']}
-        self._prop_dict[key] = IBus.Property(
-            key=key,
-            prop_type=IBus.PropType.MENU,
-            label=IBus.Text.new_from_string(label),
-            symbol=IBus.Text.new_from_string(symbol),
-            icon=os.path.join(self._icon_dir, icon),
-            tooltip=IBus.Text.new_from_string(tooltip),
-            sensitive=True,
-            visible=True,
-            state=IBus.PropState.UNCHECKED,
-            sub_props=None)
-        self._prop_dict[key].set_sub_props(
-            self._init_sub_properties(
-                sub_properties, current_mode=current_mode))
-        if update_prop:
-            self.properties.update_property(self._prop_dict[key])
-            self.update_property(self._prop_dict[key])
-        else:
-            self.properties.append(self._prop_dict[key])
-
-    def _init_sub_properties(self, modes, current_mode=0):
-        '''
-        Initialize the sub properties of the ibus property menus.
-        '''
-        sub_props = IBus.PropList()
-        for mode in sorted(modes, key=lambda x: (modes[x]['number'])):
-            sub_props.append(IBus.Property(
-                key=mode,
-                prop_type=IBus.PropType.RADIO,
-                label=IBus.Text.new_from_string(modes[mode]['label']),
-                icon=os.path.join(modes[mode]['icon']),
-                tooltip=IBus.Text.new_from_string(modes[mode]['tooltip']),
-                sensitive=True,
-                visible=True,
+        visible = True
+        self._init_or_update_sub_properties(
+            menu_key, sub_properties_dict, current_mode=current_mode)
+        if not menu_key in self._prop_dict: # initialize property
+            self._prop_dict[menu_key] = IBus.Property(
+                key=menu_key,
+                prop_type=IBus.PropType.MENU,
+                label=IBus.Text.new_from_string(label),
+                symbol=IBus.Text.new_from_string(symbol),
+                icon=os.path.join(self._icon_dir, icon),
+                tooltip=IBus.Text.new_from_string(tooltip),
+                sensitive=visible,
+                visible=visible,
                 state=IBus.PropState.UNCHECKED,
-                sub_props=None))
-        i = 0
-        while sub_props.get(i) is not None:
-            prop = sub_props.get(i)
-            key = prop.get_key()
-            self._prop_dict[key] = prop
-            if modes[key]['number'] == int(current_mode):
-                prop.set_state(IBus.PropState.CHECKED)
+                sub_props=self._sub_props_dict[menu_key])
+            self.main_prop_list.append(self._prop_dict[menu_key])
+        else: # update the property
+            self._prop_dict[menu_key].set_label(
+                IBus.Text.new_from_string(label))
+            self._prop_dict[menu_key].set_symbol(
+                IBus.Text.new_from_string(symbol))
+            self._prop_dict[menu_key].set_icon(
+                os.path.join(self._icon_dir, icon))
+            self._prop_dict[menu_key].set_tooltip(
+                IBus.Text.new_from_string(tooltip))
+            self._prop_dict[menu_key].set_sensitive(visible)
+            self._prop_dict[menu_key].set_visible(visible)
+            self.update_property(self._prop_dict[menu_key]) # important!
+
+    def _init_or_update_sub_properties(self, menu_key, modes, current_mode=0):
+        '''
+        Initialize or update the sub-properties of a property menu entry.
+        '''
+        if not menu_key in self._sub_props_dict:
+            update = False
+            self._sub_props_dict[menu_key] = IBus.PropList()
+        else:
+            update = True
+        visible = True
+        for mode in sorted(modes, key=lambda x: (modes[x]['number'])):
+            if modes[mode]['number'] == int(current_mode):
+                state = IBus.PropState.CHECKED
             else:
-                prop.set_state(IBus.PropState.UNCHECKED)
-            self.update_property(prop) # important!
-            i += 1
-        return sub_props
+                state = IBus.PropState.UNCHECKED
+            label = modes[mode]['label']
+            if 'tooltip' in modes[mode]:
+                tooltip = modes[mode]['tooltip']
+            else:
+                tooltip = ''
+            if not update: # initialize property
+                self._prop_dict[mode] = IBus.Property(
+                    key=mode,
+                    prop_type=IBus.PropType.RADIO,
+                    label=IBus.Text.new_from_string(label),
+                    icon=os.path.join(modes[mode]['icon']),
+                    tooltip=IBus.Text.new_from_string(tooltip),
+                    sensitive=visible,
+                    visible=visible,
+                    state=state,
+                    sub_props=None)
+                self._sub_props_dict[menu_key].append(
+                    self._prop_dict[mode])
+            else: # update property
+                self._prop_dict[mode].set_label(
+                    IBus.Text.new_from_string(label))
+                self._prop_dict[mode].set_tooltip(
+                    IBus.Text.new_from_string(tooltip))
+                self._prop_dict[mode].set_sensitive(visible)
+                self._prop_dict[mode].set_visible(visible)
+                self._prop_dict[mode].set_state(state)
+                self.update_property(self._prop_dict[mode]) # important!
 
     def _init_properties(self):
         '''
         Initialize the ibus property menus
         '''
         self._prop_dict = {}
-        self.properties = IBus.PropList()
+        self._sub_props_dict = {}
+        self.main_prop_list = IBus.PropList()
 
         self._init_or_update_property_menu(
             self.input_mode_menu,
@@ -2710,9 +2756,8 @@ class TabEngine(IBus.Engine):
                 % {'engine-name': self._engine_name}),
             sensitive=True,
             visible=True)
-        self.properties.append(self._setup_property)
-
-        self.register_properties(self.properties)
+        self.main_prop_list.append(self._setup_property)
+        self.register_properties(self.main_prop_list)
 
     def do_property_activate(
             self, ibus_property, prop_state=IBus.PropState.UNCHECKED):
@@ -3666,10 +3711,7 @@ class TabEngine(IBus.Engine):
         if DEBUG_LEVEL > 1:
             LOGGER.debug('do_focus_in()')
         if self._on:
-            self.register_properties(self.properties)
-            self._init_or_update_property_menu(
-                self.input_mode_menu,
-                self._input_mode)
+            self.register_properties(self.main_prop_list)
             self._update_ui()
 
     def do_focus_out(self):

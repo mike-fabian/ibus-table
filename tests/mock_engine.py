@@ -222,6 +222,9 @@ class MockProperty:
     def set_tooltip(self, ibus_text):
         self.mock_property_tooltip = ibus_text.get_text()
 
+    def set_icon(self, icon_path):
+        self.mock_property_icon = icon_path
+
     def set_sensitive(self, sensitive):
         self.mock_property_sensitive = sensitive
 

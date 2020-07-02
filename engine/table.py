@@ -18,14 +18,14 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 '''
 This file implements the ibus engine for ibus-table
 '''
+
+# “Wrong continued indentation”: pylint: disable=bad-continuation
 
 __all__ = (
     "TabEngine",
@@ -200,7 +200,9 @@ def unichar_half_to_full(char):
         if half <= code < half + size:
             if sys.version_info >= (3, 0, 0):
                 return chr(full + code - half)
+            # pylint: disable=undefined-variable
             return unichr(full + code - half)
+            # pylint: enable=undefined-variable
     return char
 
 def unichar_full_to_half(char):
@@ -225,7 +227,9 @@ def unichar_full_to_half(char):
         if full <= code < full + size:
             if sys.version_info >= (3, 0, 0):
                 return chr(half + code - full)
+            # pylint: disable=undefined-variable
             return unichr(half + code - full)
+            # pylint: enable=undefined-variable
     return char
 
 SAVE_USER_COUNT_MAX = 16
@@ -492,24 +496,22 @@ class Editor(object):
             elif '_hk' in __lc or '_tw' in __lc or '_mo' in __lc:
                 # HK, TW, and MO should prefer traditional Chinese by default
                 return 3 # show traditional Chinese first
+            if self.db._is_chinese:
+                # This table is used for Chinese, but we don’t
+                # know for which variant. Therefore, better show
+                # all Chinese characters and don’t prefer any
+                # variant:
+                if DEBUG_LEVEL > 1:
+                    LOGGER.debug(
+                        'get_default_chinese_mode(): last fallback, '
+                        'database is Chinese but we don’t know '
+                        'which variant.')
             else:
-                if self.db._is_chinese:
-                    # This table is used for Chinese, but we don’t
-                    # know for which variant. Therefore, better show
-                    # all Chinese characters and don’t prefer any
-                    # variant:
-                    if DEBUG_LEVEL > 1:
-                        LOGGER.debug(
-                            'get_default_chinese_mode(): last fallback, '
-                            'database is Chinese but we don’t know '
-                            'which variant.')
-                    return 4 # show all Chinese characters
-                else:
-                    if DEBUG_LEVEL > 1:
-                        LOGGER.debug(
-                            'get_default_chinese_mode(): last fallback, '
-                            'database is not Chinese, returning 4.')
-                    return 4
+                if DEBUG_LEVEL > 1:
+                    LOGGER.debug(
+                        'get_default_chinese_mode(): last fallback, '
+                        'database is not Chinese, returning 4.')
+            return 4 # show all Chinese characters
         except:
             LOGGER.exception('Exception in get_default_chinese_mode()')
             return 4
@@ -1293,13 +1295,15 @@ class Editor(object):
             endpos = looklen + psize
             batch = self._candidates[looklen:endpos]
             for candidate in batch:
-                if self._input_mode and not self._py_mode and not self._sg_mode_active:
+                if (self._input_mode
+                    and not self._py_mode and not self._sg_mode_active):
                     self.append_table_candidate(
                         tabkeys=candidate[0],
                         phrase=candidate[1],
                         freq=candidate[2],
                         user_freq=candidate[3])
-                elif self._input_mode and self._py_mode and not self._sg_mode_active:
+                elif (self._input_mode
+                      and self._py_mode and not self._sg_mode_active):
                     self.append_pinyin_candidate(
                         tabkeys=candidate[0],
                         phrase=candidate[1],
@@ -1434,8 +1438,7 @@ class Editor(object):
                 pos = page*page_size
             self._lookup_table.set_cursor_pos(pos)
             return True
-        else:
-            return False
+        return False
 
     def one_candidate(self):
         '''Return true if there is only one candidate'''
@@ -1507,7 +1510,7 @@ class TabEngine(IBus.Engine):
             self._ime_py = bool(self._ime_py.lower() == u'true')
         else:
             LOGGER.info('We could not find "pinyin_mode" entry in database, '
-                         'is it an outdated database?')
+                        'is it an outdated database?')
             self._ime_py = False
 
         # self._ime_sg: Indicates whether this table supports suggestion mode
@@ -1515,8 +1518,9 @@ class TabEngine(IBus.Engine):
         if self._ime_sg:
             self._ime_sg = bool(self._ime_sg.lower() == u'true')
         else:
-            LOGGER.info('We could not find "suggestion_mode" entry in database, '
-                         'is it an outdated database?')
+            LOGGER.info(
+                'We could not find "suggestion_mode" entry in database, '
+                'is it an outdated database?')
             self._ime_sg = False
 
         self._symbol = self.db.ime_properties.get('symbol')
@@ -1672,6 +1676,8 @@ class TabEngine(IBus.Engine):
         self._prev_char = None
         self._double_quotation_state = False
         self._single_quotation_state = False
+        # self._prefix: the previous commit character or phrase
+        self._prefix = u''
         self._py_mode = False
         self._sg_mode = False
 
@@ -2904,7 +2910,7 @@ class TabEngine(IBus.Engine):
     def _update_aux(self):
         '''Update Aux String in UI'''
         if self._editor._sg_mode_active:
-            return u''
+            return
 
         aux_string = self._editor.get_aux_strings()
         if self._editor._candidates:
@@ -3620,22 +3626,22 @@ class TabEngine(IBus.Engine):
                 self.commit_everything_unless_invalid()
                 self._update_ui()
                 return True
-            else:
-                if (self._auto_commit and self._editor.one_candidate()
-                        and
-                        (self._editor._chars_valid
-                         == self._editor._candidates[0][0])):
-                    self.commit_everything_unless_invalid()
-                self._update_ui()
-                return True
+            if (self._auto_commit and self._editor.one_candidate()
+                    and
+                    (self._editor._chars_valid
+                     == self._editor._candidates[0][0])):
+                self.commit_everything_unless_invalid()
+            self._update_ui()
+            return True
 
         if key.val in self._commit_keys:
             if self.commit_everything_unless_invalid():
                 if self._editor._auto_select:
                     self.commit_string(u' ')
 
-            if self._sg_mode \
-               and self._editor._input_mode and not self._editor._sg_mode_active:
+            if (self._sg_mode
+                and self._editor._input_mode
+                and not self._editor._sg_mode_active):
                 self._editor._sg_mode_active = True
 
             self._editor.update_candidates()
@@ -3659,8 +3665,9 @@ class TabEngine(IBus.Engine):
                     self._editor.get_preedit_string_complete(),
                     tabkeys=self._editor.get_preedit_tabkeys_complete())
 
-            if self._sg_mode \
-               and self._editor._input_mode and not self._editor._sg_mode_active:
+            if (self._sg_mode
+                and self._editor._input_mode
+                and not self._editor._sg_mode_active):
                 self._editor._sg_mode_active = True
 
             self._editor.update_candidates()

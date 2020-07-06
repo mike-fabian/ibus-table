@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-02-18 14:16+0100\n"
-"PO-Revision-Date: 2020-04-16 18:40+0000\n"
+"PO-Revision-Date: 2020-07-06 06:56+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/tr/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0.1\n"
+"X-Generator: Weblate 4.1.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -401,7 +401,7 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
-"Tablo giriş modunda tam genişlikli  mi\n"
+"Tablo giriş modunda tam genişlikli mi\n"
 "yarım genişlikli mi harflerin kullanılacağı."
 
 #: setup/ibus-table-preferences.ui:357
@@ -409,7 +409,7 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
-"Tablo giriş modunda tam genişlikli  mi yarım\n"
+"Tablo giriş modunda tam genişlikli mi yarım\n"
 "genişlikli mi noktalama işaretlerinin kullanılacağı."
 
 #: setup/ibus-table-preferences.ui:374
@@ -417,7 +417,7 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
-"Doğrudan giriş modunda tam genişlikli  mi\n"
+"Doğrudan giriş modunda tam genişlikli mi\n"
 "yarım genişlikli mi harflerin kullanılacağı."
 
 #: setup/ibus-table-preferences.ui:391
@@ -425,7 +425,7 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
 msgstr ""
-"Doğrudan giriş modunda tam genişlikli  mi yarım\n"
+"Doğrudan giriş modunda tam genişlikli mi yarım\n"
 "genişlikli mi noktalama işaretlerinin kullanılacağı."
 
 #: setup/ibus-table-preferences.ui:411

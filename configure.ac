@@ -54,6 +54,15 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Define to the read-only 
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION(0.16.1)
 
+AC_ARG_ENABLE([installed-tests],
+    [AS_HELP_STRING([--enable-installed-tests],
+                   [Enable to install tests])],
+    [enable_installed_tests=$enableval],
+    [enable_installed_tests=no]
+)
+
+AM_CONDITIONAL([ENABLE_INSTALLED_TESTS], [test x"$enable_installed_tests" = x"yes"])
+
 # OUTPUT files
 AC_CONFIG_FILES([po/Makefile.in
     Makefile

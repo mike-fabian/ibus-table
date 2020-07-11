@@ -1,13 +1,14 @@
 # Pany <geekpany@gmail.com>, 2014. #zanata
 # Tian Shixiong <tiansworld@fedoraproject.org>, 2014. #zanata
 # Anonymous <noreply@weblate.org>, 2019, 2020.
+# Boyuan Yang <073plan@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-07-02 15:00+0200\n"
-"PO-Revision-Date: 2020-07-08 22:38+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2020-07-11 15:27+0000\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -25,7 +26,7 @@ msgstr "简体中文"
 
 #: engine/table.py:1767
 msgid "Switch to “Simplified Chinese only”."
-msgstr "切换为“仅简体中文”"
+msgstr "切换为“仅简体中文”。"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
@@ -34,9 +35,8 @@ msgid "Traditional Chinese"
 msgstr "繁体中文"
 
 #: engine/table.py:1776
-#, fuzzy
 msgid "Switch to “Traditional Chinese only”."
-msgstr "切換至「繁體字中文」"
+msgstr "切换为“仅繁体中文”。"
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -49,7 +49,7 @@ msgstr "简体中文优先"
 
 #: engine/table.py:1788
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr "切换为“简体中文先于繁体中文”"
+msgstr "切换为“简体中文先于繁体中文”。"
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -62,7 +62,7 @@ msgstr "繁体中文优先"
 
 #: engine/table.py:1800
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr "切换为”繁体中文先于简体中文“"
+msgstr "切换为“繁体中文先于简体中文”。"
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -191,47 +191,39 @@ msgstr "切换拼音模式"
 
 #: engine/table.py:1931
 msgid "Suggestion disabled"
-msgstr ""
+msgstr "已禁用建议"
 
 #: engine/table.py:1932 engine/table.py:1938
-#, fuzzy
-#| msgid "Switch to pinyin mode"
 msgid "Switch to suggestion mode"
-msgstr "切换为拼音模式"
+msgstr "切换为建议模式"
 
 #: engine/table.py:1937
 msgid "Suggestion enabled"
-msgstr ""
+msgstr "已启用建议"
 
 #: engine/table.py:1942
 msgid "Suggestion mode"
-msgstr ""
+msgstr "建议模式"
 
 #: engine/table.py:1943
-#, fuzzy
-#| msgid "Switch Input mode"
 msgid "Switch suggestion mode"
-msgstr "切换输入模式"
+msgstr "切换建议模式"
 
 #: engine/table.py:1952
-#, fuzzy
 msgid "Multiple character match"
-msgstr "多字符比对"
+msgstr "多字符匹配"
 
 #: engine/table.py:1954
-#, fuzzy
 msgid "Switch to matching multiple characters at once"
-msgstr "切换到一次比对多字符"
+msgstr "切换到一次匹配多个字符"
 
 #: engine/table.py:1959
-#, fuzzy
 msgid "Single character match"
-msgstr "单字符比对"
+msgstr "单字符匹配"
 
 #: engine/table.py:1961
-#, fuzzy
 msgid "Switch to matching only single characters"
-msgstr "切换至仅比对单字符"
+msgstr "切换至仅匹配单字符"
 
 #: engine/table.py:1965
 msgid "Onechar mode"
@@ -409,7 +401,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:411
 msgid "Chinese mode:"
-msgstr "中文模式"
+msgstr "中文模式："
 
 #: setup/ibus-table-preferences.ui:427
 msgid "Table input letter width:"
@@ -439,7 +431,7 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:514
 msgid "<b>Inital state</b>"
-msgstr ""
+msgstr "<b>初始状态</b>"
 
 #: setup/ibus-table-preferences.ui:551
 msgid ""
@@ -457,15 +449,15 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:592
 msgid "Orientation:"
-msgstr "定位："
+msgstr "方向："
 
 #: setup/ibus-table-preferences.ui:608
 msgid "Page size:"
-msgstr "页面大小"
+msgstr "页面大小："
 
 #: setup/ibus-table-preferences.ui:624
 msgid "Show candidate list"
-msgstr ""
+msgstr "显示候选列表"
 
 #: setup/ibus-table-preferences.ui:637
 msgid ""
@@ -478,11 +470,11 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:661
 msgid "<b>Candidate list</b>"
-msgstr ""
+msgstr "<b>候选列表</b>"
 
 #: setup/ibus-table-preferences.ui:681
 msgid "Settings"
-msgstr "设置："
+msgstr "设置"
 
 #: setup/ibus-table-preferences.ui:724
 msgid ""
@@ -533,19 +525,19 @@ msgstr ""
 
 #: setup/ibus-table-preferences.ui:830
 msgid "Auto select:"
-msgstr ""
+msgstr "自动选择："
 
 #: setup/ibus-table-preferences.ui:846
 msgid "Auto commit mode:"
-msgstr "自动提交模式"
+msgstr "自动提交模式："
 
 #: setup/ibus-table-preferences.ui:862
 msgid "Behavior of space key:"
-msgstr ""
+msgstr "空格键的行为："
 
 #: setup/ibus-table-preferences.ui:878
 msgid "Auto wildcard:"
-msgstr ""
+msgstr "自动通配符："
 
 #: setup/ibus-table-preferences.ui:891
 msgid ""
@@ -554,9 +546,8 @@ msgid ""
 msgstr ""
 
 #: setup/ibus-table-preferences.ui:911
-#, fuzzy
 msgid "Single wildcard character:"
-msgstr "单字符比对"
+msgstr "单通配符字符："
 
 #: setup/ibus-table-preferences.ui:924
 msgid ""

@@ -26,6 +26,8 @@ This file implements the test cases for the unit tests of ibus-table
 import sys
 import os
 import unittest
+import importlib
+import mock
 
 from gi import require_version
 require_version('IBus', '1.0')
@@ -39,14 +41,25 @@ from mock_engine import MockEngine
 from mock_engine import MockLookupTable
 from mock_engine import MockProperty
 from mock_engine import MockPropList
-sys.modules["gi.repository.IBus"].Engine = MockEngine
-sys.modules["gi.repository.IBus"].LookupTable = MockLookupTable
-sys.modules["gi.repository.IBus"].Property = MockProperty
-sys.modules["gi.repository.IBus"].PropList = MockPropList
 
 sys.path.insert(0, "../engine")
-from table import *
+import table
 import tabsqlitedb
+import ibus_table_location
+sys.path.pop(0)
+
+ENGINE_PATCHER = mock.patch.object(
+    IBus, 'Engine', new=MockEngine)
+LOOKUP_TABLE_PATCHER = mock.patch.object(
+    IBus, 'LookupTable', new=MockLookupTable)
+PROPERTY_PATCHER = mock.patch.object(
+    IBus, 'Property', new=MockProperty)
+PROP_LIST_PATCHER = mock.patch.object(
+    IBus, 'PropList', new=MockPropList)
+IBUS_ENGINE = IBus.Engine
+IBUS_LOOKUP_TABLE = IBus.LookupTable
+IBUS_PROPERTY = IBus.Property
+IBUS_PROP_LIST = IBus.PropList
 
 ENGINE = None
 TABSQLITEDB = None
@@ -254,8 +267,33 @@ def set_up(engine_name):
     :return: True if the engine could be setup successfully, False if not.
     :rtype: Boolean
     '''
+    global ENGINE_PATCHER
+    global LOOKUP_TABLE_PATCHER
+    global PROPERTY_PATCHER
+    global PROP_LIST_PATCHER
+    global IBUS_ENGINE
+    global IBUS_LOOKUP_TABLE
+    global IBUS_PROPERTY
+    global IBUS_PROP_LIST
     global TABSQLITEDB
     global ENGINE
+    ENGINE_PATCHER.start()
+    LOOKUP_TABLE_PATCHER.start()
+    PROPERTY_PATCHER.start()
+    PROP_LIST_PATCHER.start()
+    assert IBus.Engine is not IBUS_ENGINE
+    assert IBus.Engine is MockEngine
+    assert IBus.LookupTable is not IBUS_LOOKUP_TABLE
+    assert IBus.LookupTable is MockLookupTable
+    assert IBus.Property is not IBUS_PROPERTY
+    assert IBus.Property is MockProperty
+    assert IBus.PropList is not IBUS_PROP_LIST
+    assert IBus.PropList is MockPropList
+    # Reload the table module so that the patches
+    # are applied to TabEngine:
+    sys.path.insert(0, '../engine')
+    importlib.reload(table)
+    sys.path.pop(0)
     bus = IBus.Bus()
     db_dir = '/usr/share/ibus-table/tables'
     db_file = os.path.join(db_dir, engine_name + '.db')
@@ -265,7 +303,7 @@ def set_up(engine_name):
         return False
     TABSQLITEDB = tabsqlitedb.TabSqliteDb(
         filename=db_file, user_db=':memory:')
-    ENGINE = TabEngine(
+    ENGINE = table.TabEngine(
         bus,
         '/com/redhat/IBus/engines/table/%s/engine/0' %engine_name,
         TABSQLITEDB,
@@ -275,12 +313,33 @@ def set_up(engine_name):
     return True
 
 def tear_down():
+    global ENGINE_PATCHER
+    global LOOKUP_TABLE_PATCHER
+    global PROPERTY_PATCHER
+    global PROP_LIST_PATCHER
+    global IBUS_ENGINE
+    global IBUS_LOOKUP_TABLE
+    global IBUS_PROPERTY
+    global IBUS_PROP_LIST
     global TABSQLITEDB
     global ENGINE
     if ENGINE:
         restore_original_settings()
         TABSQLITEDB = None
         ENGINE = None
+    # Remove the patches from the IBus stuff:
+    ENGINE_PATCHER.stop()
+    LOOKUP_TABLE_PATCHER.stop()
+    PROPERTY_PATCHER.stop()
+    PROP_LIST_PATCHER.stop()
+    assert IBus.Engine is IBUS_ENGINE
+    assert IBus.Engine is not MockEngine
+    assert IBus.LookupTable is IBUS_LOOKUP_TABLE
+    assert IBus.LookupTable is not MockLookupTable
+    assert IBus.Property is IBUS_PROPERTY
+    assert IBus.Property is not MockProperty
+    assert IBus.PropList is IBUS_PROP_LIST
+    assert IBus.PropList is not MockPropList
 
 class WubiJidian86TestCase(unittest.TestCase):
     def setUp(self):

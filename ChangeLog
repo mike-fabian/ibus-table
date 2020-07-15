@@ -1,4 +1,193 @@
-commit 658d9b325c0512d34f67f7ded33af84144688c1e
+commit 2d02b1b9bf711dc417a13e55f5a106e931332923
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jul 15 13:59:15 2020 +0200
+
+    Release 1.10.1
+
+commit 422fbed8f48d051f0bf82387f6100c6d1b1b3aa8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jul 17 11:37:12 2020 +0200
+
+    Skip GUI test if wubi-jidian86 table is not installed
+
+commit 23c55adc85cb2b445eeb6e92310301874d31774e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jul 16 09:03:27 2020 +0200
+
+    Add *.log and *.trs to tests/.gitignore
+
+commit b0a49bee0e50edaa5d1b80e5a9c72301671d219d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jul 15 13:56:25 2020 +0200
+
+    Fix warnings and errors in ibus-table.appdata.xml
+
+commit 07ee590b63392b96498901e40c04521ac3fb491c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jul 15 18:17:19 2020 +0200
+
+    Before set_up() returns False it needs to call tear_down()
+    
+    This is necessary to call the stop() functions of the patchers.
+    
+    Because if setUp() of a test case decides to skip, tearDown() is
+    apparently not called.
+
+commit 88d29d203c310928719c66a52262a2fb98c5b2dd
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 13 20:41:35 2020 +0200
+
+    Better way to patch the IBus stuff with the mock classes in the unit tests
+
+commit d4d0fba272581686139438cbe7d08c7df0b19ca9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jul 7 20:11:24 2020 +0200
+
+    Add a GTK test for CI
+
+commit 767809be71b3bc58e068b98ed7f4d77ffaf79f3c
+Author: Weblate <noreply@weblate.org>
+Date:   Sat Jul 11 17:27:42 2020 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+
+commit 91b7c8621da06e9327d2f330d53e0b81b208c8d2
+Author: Boyuan Yang <073plan@gmail.com>
+Date:   Sat Jul 11 17:27:42 2020 +0200
+
+    Translated using Weblate (Chinese (Simplified))
+    
+    Currently translated at 76.7% (89 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_CN/
+
+commit 4b50f8fc926c335d66693abaffd9045471965f5f
+Author: Boyuan Yang <byang@debian.org>
+Date:   Mon Feb 17 16:23:14 2020 -0500
+
+    Make output of ibus-table-createdb deterministic
+    
+    With this patch, the output of ibus-table-createdb would be of determined order as proposed by the Reproducible Builds project (https://reproducible-builds.org/).
+    
+    Downstream Debian bug report can be found at https://bugs.debian.org/797521 .
+    
+    Even though python's dict has become ordered since Python 3.6+, a `sorted()` function would be harmless and benefit users of Python 3.5, like users of Debian 9.
+
+commit dad98d15fab198f621ceb247eb885a893c1c4940
+Author: Côme Borsoi <fedora@borsoi.fr>
+Date:   Fri Jul 10 04:27:40 2020 +0200
+
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+
+commit 853ac39817e49a661fc8d4a6e2b726cfa1bfedbf
+Author: Weblate <noreply@weblate.org>
+Date:   Fri Jul 10 04:27:39 2020 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    
+    Translated using Weblate (Persian)
+    
+    Currently translated at 6.8% (8 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fa/
+    
+    Translated using Weblate (Chinese (Traditional))
+    
+    Currently translated at 75.8% (88 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_TW/
+    
+    Translated using Weblate (Chinese (Simplified))
+    
+    Currently translated at 62.0% (72 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_CN/
+    
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 21.5% (25 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    
+    Translated using Weblate (Czech)
+    
+    Currently translated at 19.8% (23 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/cs/
+    
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+
+commit efbe7099e192411f5b5c61572a33d17d7747a9c6
+Author: Weblate <noreply@weblate.org>
+Date:   Tue Jul 7 23:27:42 2020 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+
+commit 7ae75294368fd2c037e62dc8d12271b48b0f5c41
+Author: Côme Borsoi <fedora@borsoi.fr>
+Date:   Tue Jul 7 23:27:39 2020 +0200
+
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+
+commit 82c22dafbd2dd113d229eeb3e8fa5706b735d59b
+Author: Weblate <noreply@weblate.org>
+Date:   Mon Jul 6 08:56:21 2020 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+
+commit a402ab611153a43a1053acd2eb6beb286b720581
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Mon Jul 6 08:56:21 2020 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (116 of 116 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit 5d3179a2100d6a2b2bb0838cb0b841eb18a916e1
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Feb 17 16:25:03 2020 +0100
 

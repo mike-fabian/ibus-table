@@ -300,6 +300,7 @@ def set_up(engine_name):
     if not os.path.isfile(db_file):
         TABSQLITEDB = None
         ENGINE = None
+        tear_down()
         return False
     TABSQLITEDB = tabsqlitedb.TabSqliteDb(
         filename=db_file, user_db=':memory:')

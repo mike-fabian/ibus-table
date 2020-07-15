@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="inputmethod">
-  <id>table.xml</id>
+  <id>org.freedesktop.ibus.engine.table</id>
   <metadata_license>CC0-1.0</metadata_license>
   <name>Ibus Table</name>
   <summary>Table based input method</summary>
@@ -22,253 +22,266 @@
     <release version="1.10.0" date="2020-07-01" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
-            Add suggestion mode feature
-            (Resolves: https://github.com/mike-fabian/ibus-table/pull/9
-            https://bugzilla.redhat.com/show_bug.cgi?id=835376)
-          </li>
-          <li>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.10.0</url>
+      <issues>
+          <issue url="https://bugzilla.redhat.com/show_bug.cgi?id=835376">
+            rhbz#835376: Add suggestion mode feature
+          </issue>
+          <issue url="https://github.com/mike-fabian/ibus-table/pull/9">
+            github-pull#9: Add suggestion mode feature
+          </issue>
+          <issue>
             Add test cases for suggestion mode feature
-          </li>
-          <li>
+          </issue>
+          <issue>
             Fix problems with the behaviour of the property menus
-          </li>
-          <li>
+          </issue>
+          <issue>
             Use python logging module with log file rotation instead
             of writing to stdout/stderr
-          </li>
-          <li>
+          </issue>
+          <issue>
             Update translations from Weblate (updated de, es, fr, pt_BR, pt_PT, tr, uk)
-          </li>
-        </ul>
-      </description>
+          </issue>
+      </issues>
     </release>
     <release version="1.9.25" date="2020-02-12" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
-            Fix crash when changing some options using the menu or the floating panel
-            (Resolves: https://github.com/mike-fabian/ibus-table/issues/26)
-          </li>
-          <li>
-            Translation updates (pt_PT)
-          </li>
-        </ul>
       </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.25</url>
+      <issues>
+          <issue url="https://github.com/mike-fabian/ibus-table/issues/26">
+            github-mike-fabian-issue#26: Fix crash when changing some
+            options using the menu or the floating panel
+          </issue>
+          <issue>
+            Translation updates (pt_PT)
+          </issue>
+      </issues>
     </release>
     <release version="1.9.24" date="2020-01-22" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
-            Fixed two typos in message ids (Thanks to Rafael Fontenelle)
-          </li>
-          <li>
-            Translation updates (tr, fr, fa, pt, uk)
-          </li>
-          <li>
-            New test cases for ibus-table-others
-          </li>
-        </ul>
       </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.24</url>
+      <issues>
+          <issue>
+            Fixed two typos in message ids (Thanks to Rafael Fontenelle)
+          </issue>
+          <issue>
+            Translation updates (tr, fr, fa, pt, uk)
+          </issue>
+          <issue>
+            New test cases for ibus-table-others
+          </issue>
+      </issues>
     </release>
     <release version="1.9.23" date="2020-01-07" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
-            Add exist_ok=True in os.makedirs(path, exist_ok=True) to
-            avoid failure due to race condition. Resolves:
-            https://bugzilla.redhat.com/show_bug.cgi?id=1786652
-          </li>
-          <li>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.23</url>
+      <issues>
+          <issue url="https://bugzilla.redhat.com/show_bug.cgi?id=1786652">
+            rhbz#1786652: Add exist_ok=True in os.makedirs(path, exist_ok=True) to
+            avoid failure due to race condition.
+          </issue>
+          <issue>
             Move MockEngine classes into a separate file and make
             test_itb.py runnable standalone
-          </li>
-          <li>
+          </issue>
+          <issue>
             Add new test case for ibus-table-others-1.3.10 (latex
             table additions)
-          </li>
-          <li>
+          </issue>
+          <issue>
             Translation updates for several languages (French at 100%
             now, Brazilian Portuguese at 100% now, Porguguese
             (Portugal) new and now at 31.5%)
-          </li>
-        </ul>
-      </description>
+          </issue>
+      </issues>
     </release>
     <release version="1.9.22" date="2019-12-17" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.22</url>
+      <issues>
+          <issue>
             Added Turkish translation from Weblate, 100% translated
-          </li>
-          <li>
+          </issue>
+          <issue>
             Minor translation updates some other languages
             (Punctuation fixes).
-          </li>
-        </ul>
-      </description>
+          </issue>
+      </issues>
     </release>
     <release version="1.9.21" date="2018-08-03" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.21</url>
+      <issues>
+          <issue>
             Migrate IBusConfig to GSettings. Resolves:
             https://github.com/mike-fabian/ibus-table/issues/4
-          </li>
-          <li>
+          </issue>
+          <issue>
             Add a test suite
-          </li>
-          <li>
+          </issue>
+          <issue>
             Add missing tags to ibus-table-createdb.sgml. Resolves:
             https://github.com/mike-fabian/ibus-table/issues/3
-          </li>
-        </ul>
-      </description>
+          </issue>
+      </issues>
     </release>
     <release version="1.9.20" date="2018-05-03" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
-            Draw InputMode text instead of icon into panel on non-Gnome desktops. Resolves:
-            https://github.com/mike-fabian/ibus-table/issues/6
-          </li>
-          <li>
-            Make it work with Python2 again
-          </li>
-        </ul>
       </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.20</url>
+      <issues>
+          <issue url="https://github.com/mike-fabian/ibus-table/issues/6">
+            github-mike-fabian-issue#6: Draw InputMode text instead of
+            icon into panel on non-Gnome desktops.
+          </issue>
+          <issue>
+            Make it work with Python2 again
+          </issue>
+      </issues>
     </release>
     <release version="1.9.19" date="2018-04-30" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
-            Sync phrases cache from/to external storage (thanks to heiher).
-          </li>
-          <li>
-            Update translations from zanata (cs new)
-          </li>
-        </ul>
       </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.19</url>
+      <issues>
+          <issue>
+            Sync phrases cache from/to external storage (thanks to heiher).
+          </issue>
+          <issue>
+            Update translations from zanata (cs new)
+          </issue>
+      </issues>
     </release>
     <release version="1.9.18" date="2017-08-02" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.18</url>
+      <issues>
+          <issue>
             Update translations from zanata (pt_BR updated, es new)
-          </li>
-          <li>
+          </issue>
+          <issue>
             Don't query user database if user define phrase and
             dynamic adjust are disabled (thanks to heiher)
-          </li>
-          <li>
+          </issue>
+          <issue>
             Enable hash map based cache for user database enabled
             (thanks to heiher)
-          </li>
-          <li>
+          </issue>
+          <issue>
             Import hash map based cache for table database (thanks to
             heiher)
-          </li>
-          <li>
+          </issue>
+          <issue>
             Install appstream metadata to /usr/share/metainfo/ (thanks
             to jbicha)
-          </li>
-          <li>
+          </issue>
+          <issue>
             Fix some appdata validation issues (thanks to jbicha)
-          </li>
-          <li>
+          </issue>
+          <issue>
             Fix bug in Unihan_Variants.txt, 著 U+8457 is both
             simplified *and* traditional Chinese (thanks to heiher)
-          </li>
-        </ul>
-      </description>
+          </issue>
+      </issues>
     </release>
     <release version="1.9.17" date="2017-06-01" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.17</url>
+      <issues>
+          <issue>
             Load .desktop file for ibus-setup-table correctly under
             Gnome Wayland
-          </li>
-          <li>
+          </issue>
+          <issue>
             Set WM_CLASS of ibus-setup-table correctly
-          </li>
-        </ul>
-      </description>
+          </issue>
+      </issues>
     </release>
     <release version="1.9.16" date="2017-01-17" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.16</url>
+      <issues>
+          <issue>
             Avoid running initialization code of
             ibus_table_location.py when using ibus-table-createdb.
-          </li>
-          <li>
-            Make it work on Python 3.6 (Unbreak sqlite on Python 3.6)
-            (Resolves: rhbz#1413580).
-          </li>
-        </ul>
-      </description>
+          </issue>
+          <issue url="https://bugzilla.redhat.com/show_bug.cgi?id=1413580">
+            rhbz#1413580: Make it work on Python 3.6 (Unbreak sqlite
+            on Python 3.6)
+          </issue>
+      </issues>
     </release>
     <release version="1.9.15" date="2017-01-16" urgency="medium">
       <description>
-        <p>This new stable release includes these changes:
-        <ul>
-          <li>
-            Update translations from zanata (ca, de, fr, uk updated)
-          </li>
-          <li>
-            Improve README
-          </li>
-          <li>
-            Point to new home-page in the “About” tab.
-          </li>
-        </ul>
-        </p>
+        <p>This new stable release includes these changes:</p>
       </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.15</url>
+      <issues>
+          <issue>
+            Update translations from zanata (ca, de, fr, uk updated)
+          </issue>
+          <issue>
+            Improve README
+          </issue>
+          <issue>
+            Point to new home-page in the “About” tab.
+          </issue>
+      </issues>
     </release>
     <release version="1.9.14" date="2016-08-24" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.14</url>
+      <issues>
+          <issue>
             Fix bug in Unihan_Variants.txt, 乾 U+4E7E is both
             simplified and traditional Chinese (thanks to heiher)
-          </li>
-          <li>
+          </issue>
+          <issue>
             Update Unihan_Variants.txt from “2015-04-30 Unicode 8.0.0”
             to “2016-06-01 Unicode 9.0.0”
-          </li>
-          <li>
+          </issue>
+          <issue>
             Regenerate engine/chinese_variants.py
-          </li>
-          <li>
+          </issue>
+          <issue>
             Add test case for 乾 to make sure it is detected as both
             traditional and simplified Chinese
-          </li>
-        </ul>
-      </description>
+          </issue>
+      </issues>
     </release>
     <release version="1.9.13" date="2016-08-23" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
-        <ul>
-          <li>
-            When ignoring key release events, “False” should be
-            returned, not “True” (Resolves: rhbz#1369514)
-          </li>
-        </ul>
       </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.9.13</url>
+      <issues>
+          <issue url="https://bugzilla.redhat.com/show_bug.cgi?id=1369514">
+            rhbz#1369514: When ignoring key release events, “False” should be
+            returned, not “True”
+          </issue>
+      </issues>
     </release>
   </releases>
   <translation type="gettext">ibus-table</translation>

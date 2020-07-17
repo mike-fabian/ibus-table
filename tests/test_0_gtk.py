@@ -85,6 +85,10 @@ def printerr(sentence):
         pass
 
 @unittest.skipUnless(
+    os.path.isfile(
+        os.path.join('/usr/share/ibus-table/tables', ENGINE_NAME + '.db')),
+    '%s.db is not installed.' % ENGINE_NAME + '.db')
+@unittest.skipUnless(
     'XDG_SESSION_TYPE' in os.environ
     and os.environ['XDG_SESSION_TYPE'] in ('x11', 'wayland'),
     'XDG_SESSION_TYPE is neither "x11" nor "wayland".')

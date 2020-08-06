@@ -391,14 +391,14 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '工')
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+        self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
         ENGINE.set_suggestion_mode(True)
         ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '工')
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '工工')
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['工作人员 673 0',
                           '工作会议 310 0',
                           '工作报告 267 0',
@@ -418,7 +418,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '工工作人员爱')
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['爱因斯坦 1109 0',
                           '爱情故事 519 0',
                           '爱国主义 191 0',
@@ -533,7 +533,7 @@ class WubiJidian86TestCase(unittest.TestCase):
     def test_chinese_mode(self):
         ENGINE.set_chinese_mode(mode=0) # show simplified Chinese only
         ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['以  418261033 0',
                           '能 ex 1820000000 0',
                           '能 exx 1820000000 0',
@@ -545,10 +545,10 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '台 kf 486000000 0',
                           '难忘 wyn 404000000 0'])
         ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+        self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
         ENGINE.set_chinese_mode(mode=1) # show traditional Chinese only
         ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['以  418261033 0',
                           '能 ex 1820000000 0',
                           '能 exx 1820000000 0',
@@ -560,10 +560,10 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '能 e 306980312 0',
                           '能力 elt 274000000 0'])
         ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+        self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
         ENGINE.set_chinese_mode(mode=2) # show simplified Chinese first
         ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['以  418261033 0',
                           '能 ex 1820000000 0',
                           '能 exx 1820000000 0',
@@ -575,10 +575,10 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '台 kf 486000000 0',
                           '难忘 wyn 404000000 0'])
         ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+        self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
         ENGINE.set_chinese_mode(mode=3) # show traditional Chinese first
         ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['以  418261033 0',
                           '能 ex 1820000000 0',
                           '能 exx 1820000000 0',
@@ -590,10 +590,10 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '能 e 306980312 0',
                           '能力 elt 274000000 0'])
         ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+        self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
         ENGINE.set_chinese_mode(mode=4) # show all characters
         ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['以  418261033 0',
                           '能 ex 1820000000 0',
                           '能 exx 1820000000 0',
@@ -605,7 +605,7 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '台 kf 486000000 0',
                           '难忘 wyn 404000000 0'])
         ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates, [])
+        self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
 
 class Stroke5TestCase(unittest.TestCase):
     def setUp(self):
@@ -739,14 +739,14 @@ class Cangjie5TestCase(unittest.TestCase):
     def test_type_one_char_and_check_auxiliary(self):
         ENGINE.do_process_key_event(IBus.KEY_d, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '木')
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates[8],
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[8],
                          '林 木 1000 0')
         ENGINE.do_process_key_event(IBus.KEY_v, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_i, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '機')
         self.assertEqual(ENGINE.mock_auxiliary_text, '木女戈戈 (1 / 1)')
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['機  1000 0'])
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '機')
@@ -770,7 +770,7 @@ class IpaXSampaTestCase(unittest.TestCase):
 
     def test_single_char_commit_with_f3(self):
         ENGINE.do_process_key_event(IBus.KEY_at, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['ə  0 0', 'ɘ \\ 0 0', 'ɚ ` 0 0'])
         ENGINE.do_process_key_event(IBus.KEY_F3, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, 'ɚ')
@@ -818,7 +818,7 @@ class LatexTestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_b, 0, 0)
         # Lookup table shows only the first page, subsequent
         # pages are added on demand as a speed optimization:
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['¯ ar 0 0',
                           '⊥ ot 0 0',
                           'β eta 0 0',
@@ -833,7 +833,7 @@ class LatexTestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_b, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Page_Down, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['β eta 0 1', # user freq for β increased to 1
                           '¯ ar 0 0',
                           '⊥ ot 0 0',
@@ -852,15 +852,15 @@ class LatexTestCase(unittest.TestCase):
                           '⊞ oxplus 0 0',
                           '⊼ arwedge 0 0',
                           '⋀ igwedge 0 0'])
-        self.assertEqual(ENGINE._editor._lookup_table.get_cursor_pos(), 9)
+        self.assertEqual(ENGINE._lookup_table.get_cursor_pos(), 9)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.get_cursor_pos(), 15)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates[0:18],
+        self.assertEqual(ENGINE._lookup_table.get_cursor_pos(), 15)
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[0:18],
                          ['β eta 0 1', # user freq for β increased to 1
                           '¯ ar 0 0',
                           '⊥ ot 0 0',
@@ -884,7 +884,7 @@ class LatexTestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_b, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Page_Down, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['β eta 0 1', # user freq for β increased to 1
                           '⊞ oxplus 0 1', # user freq for ⊞ increased to 1
                           '¯ ar 0 0',
@@ -903,14 +903,14 @@ class LatexTestCase(unittest.TestCase):
                           '≬ etween 0 0',
                           '⊼ arwedge 0 0',
                           '⋀ igwedge 0 0'])
-        self.assertEqual(ENGINE._editor._lookup_table.get_cursor_pos(), 9)
+        self.assertEqual(ENGINE._lookup_table.get_cursor_pos(), 9)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Down, 0, 0)
-        self.assertEqual(ENGINE._editor._lookup_table.get_cursor_pos(), 15)
+        self.assertEqual(ENGINE._lookup_table.get_cursor_pos(), 15)
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, 'β⊞≬')
 

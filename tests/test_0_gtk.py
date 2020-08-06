@@ -187,7 +187,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         if signal_name == 'NameOwnerChanged':
             pass
         if signal_name == 'UpdateLookupTable':
-            table = self.__engine._editor.get_lookup_table()
+            table = self.__engine.get_lookup_table()
             if table.get_number_of_candidates() == 0:
                 return
             self.__lookup_test()

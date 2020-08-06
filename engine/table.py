@@ -279,26 +279,304 @@ class KeyEvent:
                self.mod5,
                self.release))
 
-class Editor(object):
-    '''Hold user inputs chars and preedit string'''
-    def __init__(self, gsettings, valid_input_chars, pinyin_valid_input_chars,
-                 single_wildcard_char, multi_wildcard_char,
-                 auto_wildcard, full_width_letter, full_width_punct,
-                 max_key_length, input_mode, sg_mode, database):
+########################
+### Engine Class #####
+####################
+class TabEngine(IBus.Engine):
+    '''The IM Engine for Tables'''
+
+    def __init__(self, bus, obj_path, db, unit_test=False):
+        super(TabEngine, self).__init__(connection=bus.get_connection(),
+                                        object_path=obj_path)
+        global DEBUG_LEVEL
+        try:
+            DEBUG_LEVEL = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
+        except (TypeError, ValueError):
+            DEBUG_LEVEL = int(0)
+        self._unit_test = unit_test
+        self._input_purpose = 0
+        self._has_input_purpose = False
+        if hasattr(IBus, 'InputPurpose'):
+            self._has_input_purpose = True
+        self._bus = bus
+        # this is the backend sql db we need for our IME
+        # we receive this db from IMEngineFactory
+        #self.db = tabsqlitedb.TabSqliteDb( name = dbname )
+        self.db = db
+        self._setup_pid = 0
+        self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
+                                       os.path.sep, 'icons', os.path.sep)
+        self._engine_name = os.path.basename(
+            self.db.filename).replace('.db', '').replace(' ', '_')
         if DEBUG_LEVEL > 1:
-            LOGGER.debug('Editor.__init__()')
-        self.db = database
-        self._gsettings = gsettings
-        self._max_key_length = int(max_key_length)
+            LOGGER.debug(
+                'self._engine_name = %s', self._engine_name)
+
+        self._gsettings = Gio.Settings(
+            schema='org.freedesktop.ibus.engine.table',
+            path='/org/freedesktop/ibus/engine/table/%s/' %self._engine_name)
+        self._gsettings.connect('changed', self.on_gsettings_value_changed)
+
+        self._prop_dict = {}
+        self._sub_props_dict = {}
+        self.main_prop_list = []
+        self.chinese_mode_menu = {}
+        self.chinese_mode_properties = {}
+        self.input_mode_menu = {}
+        self.input_mode_properties = {}
+        self.letter_width_menu = {}
+        self.letter_width_properties = {}
+        self.punctuation_width_menu = {}
+        self.punctuation_width_properties = {}
+        self.pinyin_mode_menu = {}
+        self.pinyin_mode_properties = {}
+        self.suggestion_mode_menu = {}
+        self.suggestion_mode_properties = {}
+        self.onechar_mode_menu = {}
+        self.onechar_mode_properties = {}
+        self.autocommit_mode_menu = {}
+        self.autocommit_mode_properties = {}
+        self._setup_property = None
+
+        # self._ime_py: Indicates whether this table supports pinyin mode
+        self._ime_py = self.db.ime_properties.get('pinyin_mode')
+        if self._ime_py:
+            self._ime_py = bool(self._ime_py.lower() == u'true')
+        else:
+            LOGGER.info('We could not find "pinyin_mode" entry in database, '
+                        'is it an outdated database?')
+            self._ime_py = False
+
+        # self._ime_sg: Indicates whether this table supports suggestion mode
+        self._ime_sg = self.db.ime_properties.get('suggestion_mode')
+        if self._ime_sg:
+            self._ime_sg = bool(self._ime_sg.lower() == u'true')
+        else:
+            LOGGER.info(
+                'We could not find "suggestion_mode" entry in database, '
+                'is it an outdated database?')
+            self._ime_sg = False
+
+        self._symbol = self.db.ime_properties.get('symbol')
+        if self._symbol is None or self._symbol == u'':
+            self._symbol = self.db.ime_properties.get('status_prompt')
+        if self._symbol is None:
+            self._symbol = u''
+        # some Chinese tables have “STATUS_PROMPT = CN” replace it
+        # with the shorter and nicer “中”:
+        if self._symbol == u'CN':
+            self._symbol = u'中'
+        # workaround for the translit and translit-ua tables which
+        # have 2 character symbols. '☑' + self._symbol then is
+        # 3 characters and currently gnome-shell ignores symbols longer
+        # than 3 characters:
+        if self._symbol == u'Ya':
+            self._symbol = u'Я'
+        if self._symbol == u'Yi':
+            self._symbol = u'Ї'
+        # now we check and update the valid input characters
+        self._valid_input_chars = self.db.ime_properties.get(
+            'valid_input_chars')
+        self._pinyin_valid_input_chars = u'abcdefghijklmnopqrstuvwxyz!@#$%'
+
+        self._single_wildcard_char = it_util.variant_to_value(
+            self._gsettings.get_user_value('singlewildcardchar'))
+        if self._single_wildcard_char is None:
+            self._single_wildcard_char = self.db.ime_properties.get(
+                'single_wildcard_char')
+        if self._single_wildcard_char is None:
+            self._single_wildcard_char = it_util.variant_to_value(
+                self._gsettings.get_value('singlewildcardchar'))
+        if len(self._single_wildcard_char) > 1:
+            self._single_wildcard_char = self._single_wildcard_char[0]
+
+        self._multi_wildcard_char = it_util.variant_to_value(
+            self._gsettings.get_user_value('multiwildcardchar'))
+        if self._multi_wildcard_char is None:
+            self._multi_wildcard_char = self.db.ime_properties.get(
+                'multi_wildcard_char')
+        if self._multi_wildcard_char is None:
+            self._multi_wildcard_char = it_util.variant_to_value(
+                self._gsettings.get_value('multiwildcardchar'))
+        if len(self._multi_wildcard_char) > 1:
+            self._multi_wildcard_char = self._multi_wildcard_char[0]
+
+        self._auto_wildcard = it_util.variant_to_value(
+            self._gsettings.get_user_value('autowildcard'))
+        if self._auto_wildcard is None:
+            if self.db.ime_properties.get('auto_wildcard') is not None:
+                self._auto_wildcard = self.db.ime_properties.get(
+                    'auto_wildcard').lower() == u'true'
+        if self._auto_wildcard is None:
+            self._auto_wildcard = it_util.variant_to_value(
+                self._gsettings.get_value('autowildcard'))
+
+        self._max_key_length = int(
+            self.db.ime_properties.get('max_key_length'))
         self._max_key_length_pinyin = 7
-        self._valid_input_chars = valid_input_chars
-        self._pinyin_valid_input_chars = pinyin_valid_input_chars
-        self._single_wildcard_char = single_wildcard_char
-        self._multi_wildcard_char = multi_wildcard_char
-        self._auto_wildcard = auto_wildcard
-        self._full_width_letter = full_width_letter
-        self._full_width_punct = full_width_punct
-        #
+
+        self._page_up_keys = [
+            IBus.KEY_Page_Up,
+            IBus.KEY_KP_Prior, # identical to IBus.KEY_KP_Page_UP!
+            IBus.KEY_KP_Page_Up,
+            IBus.KEY_minus
+        ]
+        self._page_down_keys = [
+            IBus.KEY_Page_Down,
+            IBus.KEY_KP_Next, # identical to IBus.KEY_KP_Page_Down!
+            IBus.KEY_KP_Page_Down,
+            IBus.KEY_equal
+        ]
+        # If page up or page down keys are defined in the database,
+        # use the values from the database instead of the above
+        # hardcoded defaults:
+        page_up_keys_csv = self.db.ime_properties.get('page_up_keys')
+        page_down_keys_csv = self.db.ime_properties.get('page_down_keys')
+        if page_up_keys_csv:
+            self._page_up_keys = [
+                IBus.keyval_from_name(x)
+                for x in page_up_keys_csv.split(',')]
+        if page_down_keys_csv:
+            self._page_down_keys = [
+                IBus.keyval_from_name(x)
+                for x in page_down_keys_csv.split(',')]
+        # Remove keys from the page up/down keys if they are needed
+        # for input (for example, '=' or '-' could well be needed for
+        # input. Input is more important):
+        for character in (
+                self._valid_input_chars
+                + self._single_wildcard_char
+                + self._multi_wildcard_char):
+            keyval = IBus.unicode_to_keyval(character)
+            if keyval in self._page_up_keys:
+                self._page_up_keys.remove(keyval)
+            if keyval in self._page_down_keys:
+                self._page_down_keys.remove(keyval)
+        self._commit_keys = [IBus.KEY_space]
+        # If commit keys are are defined in the database, use the
+        # value from the database instead of the above hardcoded
+        # default:
+        commit_keys_csv = self.db.ime_properties.get('commit_keys')
+        if commit_keys_csv:
+            self._commit_keys = [
+                IBus.keyval_from_name(x)
+                for x in commit_keys_csv.split(',')]
+        # If commit keys conflict with page up/down keys, remove them
+        # from the page up/down keys (They cannot really be used for
+        # both at the same time. Theoretically, keys from the page
+        # up/down keys could still be used to commit when the number
+        # of candidates is 0 because then there is nothing to
+        # page. But that would be only confusing):
+        for keyval in self._commit_keys:
+            if keyval in self._page_up_keys:
+                self._page_up_keys.remove(keyval)
+            if keyval in self._page_down_keys:
+                self._page_down_keys.remove(keyval)
+        # Finally, check the user setting, i.e. the Gsettings value
+        # “spacekeybehavior” and let the user have the last word
+        # how to use the space key:
+        spacekeybehavior = it_util.variant_to_value(
+            self._gsettings.get_user_value('spacekeybehavior'))
+        if spacekeybehavior is not None:
+            if spacekeybehavior is True:
+                # space is used as a page down key and not as a commit key:
+                if IBus.KEY_space not in self._page_down_keys:
+                    self._page_down_keys.append(IBus.KEY_space)
+                if IBus.KEY_space in self._commit_keys:
+                    self._commit_keys.remove(IBus.KEY_space)
+            if spacekeybehavior is False:
+                # space is used as a commit key and not used as a
+                # page down key:
+                if IBus.KEY_space in self._page_down_keys:
+                    self._page_down_keys.remove(IBus.KEY_space)
+                if IBus.KEY_space not in self._commit_keys:
+                    self._commit_keys.append(IBus.KEY_space)
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug(
+                'self._page_down_keys=%s', repr(self._page_down_keys))
+            LOGGER.debug(
+                'self._commit_keys=%s', repr(self._commit_keys))
+
+        # 0 = Direct input, i.e. table input OFF (aka “English input mode”),
+        #     most characters are just passed through to the application
+        #     (but some fullwidth ↔ halfwidth conversion may be done even
+        #     in this mode, depending on the settings)
+        # 1 = Table input ON (aka “Table input mode”, “Chinese mode”)
+        self._input_mode = it_util.variant_to_value(
+            self._gsettings.get_value('inputmode'))
+
+        # self._prev_key: hold the key event last time.
+        self._prev_key = None
+        self._prev_char = None
+        self._double_quotation_state = False
+        self._single_quotation_state = False
+        # self._prefix: the previous commit character or phrase
+        self._prefix = u''
+        self._py_mode = False
+        self._sg_mode = False
+        self._sg_mode_active = False
+
+        self._full_width_letter = [
+            it_util.variant_to_value(
+                self._gsettings.get_value('endeffullwidthletter')),
+            it_util.variant_to_value(
+                self._gsettings.get_user_value('tabdeffullwidthletter'))
+            ]
+        if self._full_width_letter[1] is None:
+            if self.db.ime_properties.get('def_full_width_letter'):
+                self._full_width_letter[1] = self.db.ime_properties.get(
+                    'def_full_width_letter').lower() == u'true'
+        if self._full_width_letter[1] is None:
+            self._full_width_letter[1] = it_util.variant_to_value(
+                self._gsettings.get_value('tabdeffullwidthletter'))
+
+        self._full_width_punct = [
+            it_util.variant_to_value(
+                self._gsettings.get_value('endeffullwidthpunct')),
+            it_util.variant_to_value(
+                self._gsettings.get_user_value('tabdeffullwidthpunct'))
+            ]
+        if self._full_width_punct[1] is None:
+            if self.db.ime_properties.get('def_full_width_punct'):
+                self._full_width_punct[1] = self.db.ime_properties.get(
+                    'def_full_width_punct').lower() == u'true'
+        if self._full_width_punct[1] is None:
+            self._full_width_punct[1] = it_util.variant_to_value(
+                self._gsettings.get_value('tabdeffullwidthpunct'))
+
+        self._auto_commit = it_util.variant_to_value(
+            self._gsettings.get_user_value('autocommit'))
+        if self._auto_commit is None:
+            if self.db.ime_properties.get('auto_commit'):
+                self._auto_commit = self.db.ime_properties.get(
+                    'auto_commit').lower() == u'true'
+        if self._auto_commit is None:
+            self._auto_commit = it_util.variant_to_value(
+                self._gsettings.get_value('autocommit'))
+
+        # If auto select is true, then the first candidate phrase will
+        # be selected automatically during typing. Auto select is true
+        # by default for the stroke5 table for example.
+        self._auto_select = it_util.variant_to_value(
+            self._gsettings.get_user_value('autoselect'))
+        if self._auto_select is None:
+            if self.db.ime_properties.get('auto_select') is not None:
+                self._auto_select = self.db.ime_properties.get(
+                    'auto_select').lower() == u'true'
+        if self._auto_select is None:
+            self._auto_select = it_util.variant_to_value(
+                self._gsettings.get_value('autoselect'))
+
+        self._always_show_lookup = it_util.variant_to_value(
+            self._gsettings.get_user_value('alwaysshowlookup'))
+        if self._always_show_lookup is None:
+            if self.db.ime_properties.get('always_show_lookup') is not None:
+                self._always_show_lookup = self.db.ime_properties.get(
+                    'always_show_lookup').lower() == u'true'
+        if self._always_show_lookup is None:
+            self._always_show_lookup = it_util.variant_to_value(
+                self._gsettings.get_value('alwaysshowlookup'))
+
         # The values below will be reset in
         # self.clear_input_not_committed_to_preedit()
         self._chars_valid = u''    # valid user input in table mode
@@ -366,18 +644,7 @@ class Editor(object):
             page_size=self._page_size,
             select_keys=self._select_keys,
             orientation=self._orientation)
-        # 0 = Direct input, i.e. table input OFF (aka “English input mode”),
-        #     most characters are just passed through to the application
-        #     (but some fullwidth ↔ halfwidth conversion may be done even
-        #     in this mode, depending on the settings)
-        # 1 = Table input ON (aka “Table input mode”, “Chinese mode”)
-        self._input_mode = input_mode
-        # self._py_mode: whether in pinyin mode
-        self._py_mode = False
-        # self._prefix: the previous commit character or phrase
-        self._prefix = u''
-        self._sg_mode = sg_mode
-        self._sg_mode_active = False
+
         # self._onechar: whether we only select single character
         self._onechar = it_util.variant_to_value(self._gsettings.get_value(
             'onechar'))
@@ -410,6 +677,261 @@ class Editor(object):
         if self._auto_select is None:
             self._auto_select = it_util.variant_to_value(
                 self._gsettings.get_value('autoselect'))
+
+        self.chinese_mode_properties = {
+            'ChineseMode.Simplified': {
+                'number': 0,
+                'symbol': '簡',
+                'icon': 'sc-mode.svg',
+                # Translators: This is the menu entry to select
+                # when one wants to input only Simplified Chinese.
+                'label': _('Simplified Chinese'),
+                'tooltip':
+                _('Switch to “Simplified Chinese only”.')},
+            'ChineseMode.Traditional': {
+                'number': 1,
+                'symbol': '繁',
+                'icon': 'tc-mode.svg',
+                # Translators: This is the menu entry to select
+                # when one wants to input only Traditonal Chinese
+                'label': _('Traditional Chinese'),
+                'tooltip':
+                _('Switch to “Traditional Chinese only”.')},
+            'ChineseMode.SimplifiedFirst': {
+                'number': 2,
+                'symbol': '簡/大',
+                'icon': 'scb-mode.svg',
+                # Translators: This is the menu entry to select when
+                # one wants to input both Simplified and Traditional
+                # Chinese but wants the Simplified Chinese to be
+                # preferred, i.e. shown higher up in the candidate
+                # lists.
+                'label': _('Simplified Chinese first'),
+                'tooltip':
+                _('Switch to “Simplified Chinese before traditional”.')},
+            'ChineseMode.TraditionalFirst': {
+                'number': 3,
+                'symbol': '繁/大',
+                'icon': 'tcb-mode.svg',
+                # Translators: This is the menu entry to select when
+                # one wants to input both Simplified and Traditional
+                # Chinese but wants the Traditional Chinese to be
+                # preferred, i.e. shown higher up in the candidate
+                # lists.
+                'label': _('Traditional Chinese first'),
+                'tooltip':
+                _('Switch to “Traditional Chinese before simplified”.')},
+            'ChineseMode.All': {
+                'number': 4,
+                'symbol': '大',
+                'icon': 'cb-mode.svg',
+                # Translators: This is the menu entry to select when
+                # one wants to input both Simplified and Traditional
+                # Chinese and has no particular preference whether
+                # simplified or traditional characters should be higher
+                # up in the candidate lists.
+                'label': _('All Chinese characters'),
+                'tooltip': _('Switch to “All Chinese characters”.')}
+        }
+        self.chinese_mode_menu = {
+            'key': 'ChineseMode',
+            'label': _('Chinese mode'),
+            'tooltip': _('Switch Chinese mode'),
+            'shortcut_hint': '(Ctrl-;)',
+            'sub_properties': self.chinese_mode_properties
+        }
+        if self.db._is_chinese:
+            self.input_mode_properties = {
+                'InputMode.Direct': {
+                    'number': 0,
+                    'symbol': '英',
+                    'icon': 'english.svg',
+                    'label': _('English'),
+                    'tooltip': _('Switch to English input')},
+                'InputMode.Table': {
+                    'number': 1,
+                    'symbol': '中',
+                    'symbol_table': '中',
+                    'symbol_pinyin': '拼音',
+                    'icon': 'chinese.svg',
+                    'label': _('Chinese'),
+                    'tooltip': _('Switch to Chinese input')}
+            }
+        else:
+            self.input_mode_properties = {
+                'InputMode.Direct': {
+                    'number': 0,
+                    'symbol': '☐' + self._symbol,
+                    'icon': 'english.svg',
+                    'label': _('Direct'),
+                    'tooltip': _('Switch to direct input')},
+                'InputMode.Table': {
+                    'number': 1,
+                    'symbol': '☑' + self._symbol,
+                    'icon': 'ibus-table.svg',
+                    'label': _('Table'),
+                    'tooltip': _('Switch to table input')}
+            }
+        # The symbol of the property “InputMode” is displayed
+        # in the input method indicator of the Gnome3 panel.
+        # This depends on the property name “InputMode” and
+        # is case sensitive!
+        self.input_mode_menu = {
+            'key': 'InputMode',
+            'label': _('Input mode'),
+            'tooltip': _('Switch Input mode'),
+            'shortcut_hint': '(Left Shift)',
+            'sub_properties': self.input_mode_properties
+        }
+        self.letter_width_properties = {
+            'LetterWidth.Half': {
+                'number': 0,
+                'symbol': '◑',
+                'icon': 'half-letter.svg',
+                'label': _('Half'),
+                'tooltip': _('Switch to halfwidth letters')},
+            'LetterWidth.Full': {
+                'number': 1,
+                'symbol': '●',
+                'icon': 'full-letter.svg',
+                'label': _('Full'),
+                'tooltip': _('Switch to fullwidth letters')}
+        }
+        self.letter_width_menu = {
+            'key': 'LetterWidth',
+            'label': _('Letter width'),
+            'tooltip': _('Switch letter width'),
+            'shortcut_hint': '(Shift-Space)',
+            'sub_properties': self.letter_width_properties
+        }
+        self.punctuation_width_properties = {
+            'PunctuationWidth.Half': {
+                'number': 0,
+                'symbol': ',.',
+                'icon': 'half-punct.svg',
+                'label': _('Half'),
+                'tooltip': _('Switch to halfwidth punctuation')},
+            'PunctuationWidth.Full': {
+                'number': 1,
+                'symbol': '、。',
+                'icon': 'full-punct.svg',
+                'label': _('Full'),
+                'tooltip': _('Switch to fullwidth punctuation')}
+        }
+        self.punctuation_width_menu = {
+            'key': 'PunctuationWidth',
+            'label': _('Punctuation width'),
+            'tooltip': _('Switch punctuation width'),
+            'shortcut_hint': '(Ctrl-.)',
+            'sub_properties': self.punctuation_width_properties
+        }
+        self.pinyin_mode_properties = {
+            'PinyinMode.Table': {
+                'number': 0,
+                'symbol': '☐ 拼音',
+                'icon': 'tab-mode.svg',
+                'label': _('Table'),
+                'tooltip': _('Switch to table mode')},
+            'PinyinMode.Pinyin': {
+                'number': 1,
+                'symbol': '☑ 拼音',
+                'icon': 'py-mode.svg',
+                'label': _('Pinyin'),
+                'tooltip': _('Switch to pinyin mode')}
+        }
+        self.pinyin_mode_menu = {
+            'key': 'PinyinMode',
+            'label': _('Pinyin mode'),
+            'tooltip': _('Switch pinyin mode'),
+            'shortcut_hint': '(Right Shift)',
+            'sub_properties': self.pinyin_mode_properties
+        }
+        self.suggestion_mode_properties = {
+            'SuggestionMode.Disabled': {
+                'number': 0,
+                'symbol': '☐ 联想',
+                'icon': 'tab-mode.svg',
+                'label': _('Suggestion disabled'),
+                'tooltip': _('Switch to suggestion mode')},
+            'SuggestionMode.Enabled': {
+                'number': 1,
+                'symbol': '☑ 联想',
+                'icon': 'tab-mode.svg',
+                'label': _('Suggestion enabled'),
+                'tooltip': _('Switch to suggestion mode')}
+        }
+        self.suggestion_mode_menu = {
+            'key': 'SuggestionMode',
+            'label': _('Suggestion mode'),
+            'tooltip': _('Switch suggestion mode'),
+            'shortcut_hint': '',
+            'sub_properties': self.suggestion_mode_properties
+        }
+        self.onechar_mode_properties = {
+            'OneCharMode.Phrase': {
+                'number': 0,
+                'symbol': '☐ 1',
+                'icon': 'phrase.svg',
+                'label': _('Multiple character match'),
+                'tooltip':
+                _('Switch to matching multiple characters at once')},
+            'OneCharMode.OneChar': {
+                'number': 1,
+                'symbol': '☑ 1',
+                'icon': 'onechar.svg',
+                'label': _('Single character match'),
+                'tooltip':
+                _('Switch to matching only single characters')}
+        }
+        self.onechar_mode_menu = {
+            'key': 'OneCharMode',
+            'label': _('Onechar mode'),
+            'tooltip': _('Switch onechar mode'),
+            'shortcut_hint': '(Ctrl-,)',
+            'sub_properties': self.onechar_mode_properties
+        }
+        self.autocommit_mode_properties = {
+            'AutoCommitMode.Direct': {
+                'number': 0,
+                'symbol': '☐ ↑',
+                'icon': 'ncommit.svg',
+                'label': _('Normal'),
+                'tooltip':
+                _('Switch to normal commit mode '
+                  + '(automatic commits go into the preedit '
+                  + 'instead of into the application. '
+                  + 'This enables automatic definitions of new shortcuts)')},
+            'AutoCommitMode.Normal': {
+                'number': 1,
+                'symbol': '☑ ↑',
+                'icon': 'acommit.svg',
+                'label': _('Direct'),
+                'tooltip':
+                _('Switch to direct commit mode '
+                  + '(automatic commits go directly into the application)')}
+        }
+        self.autocommit_mode_menu = {
+            'key': 'AutoCommitMode',
+            'label': _('Auto commit mode'),
+            'tooltip': _('Switch autocommit mode'),
+            'shortcut_hint': '(Ctrl-/)',
+            'sub_properties': self.autocommit_mode_properties
+        }
+        self._init_properties()
+
+        self._on = False
+        self._save_user_count = 0
+        self._save_user_start = time.time()
+
+        self._save_user_count_max = SAVE_USER_COUNT_MAX
+        self._save_user_timeout = SAVE_USER_TIMEOUT
+        self.reset()
+
+        self.sync_timeout_id = GObject.timeout_add_seconds(
+            1, self._sync_user_db)
+
+        LOGGER.info(
+            '********** Initialized and ready for input: **********')
 
     def get_new_lookup_table(
             self, page_size=10,
@@ -1444,576 +1966,10 @@ class Editor(object):
         '''Return true if there is only one candidate'''
         return len(self._candidates) == 1
 
-
-########################
-### Engine Class #####
-####################
-class TabEngine(IBus.Engine):
-    '''The IM Engine for Tables'''
-
-    def __init__(self, bus, obj_path, db, unit_test=False):
-        super(TabEngine, self).__init__(connection=bus.get_connection(),
-                                        object_path=obj_path)
-        global DEBUG_LEVEL
-        try:
-            DEBUG_LEVEL = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
-        except (TypeError, ValueError):
-            DEBUG_LEVEL = int(0)
-        self._unit_test = unit_test
-        self._input_purpose = 0
-        self._has_input_purpose = False
-        if hasattr(IBus, 'InputPurpose'):
-            self._has_input_purpose = True
-        self._bus = bus
-        # this is the backend sql db we need for our IME
-        # we receive this db from IMEngineFactory
-        #self.db = tabsqlitedb.TabSqliteDb( name = dbname )
-        self.db = db
-        self._setup_pid = 0
-        self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
-                                       os.path.sep, 'icons', os.path.sep)
-        self._engine_name = os.path.basename(
-            self.db.filename).replace('.db', '').replace(' ', '_')
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug(
-                'self._engine_name = %s', self._engine_name)
-
-        self._gsettings = Gio.Settings(
-            schema='org.freedesktop.ibus.engine.table',
-            path='/org/freedesktop/ibus/engine/table/%s/' %self._engine_name)
-        self._gsettings.connect('changed', self.on_gsettings_value_changed)
-
-        self._prop_dict = {}
-        self._sub_props_dict = {}
-        self.main_prop_list = []
-        self.chinese_mode_menu = {}
-        self.chinese_mode_properties = {}
-        self.input_mode_menu = {}
-        self.input_mode_properties = {}
-        self.letter_width_menu = {}
-        self.letter_width_properties = {}
-        self.punctuation_width_menu = {}
-        self.punctuation_width_properties = {}
-        self.pinyin_mode_menu = {}
-        self.pinyin_mode_properties = {}
-        self.suggestion_mode_menu = {}
-        self.suggestion_mode_properties = {}
-        self.onechar_mode_menu = {}
-        self.onechar_mode_properties = {}
-        self.autocommit_mode_menu = {}
-        self.autocommit_mode_properties = {}
-        self._setup_property = None
-
-        # self._ime_py: Indicates whether this table supports pinyin mode
-        self._ime_py = self.db.ime_properties.get('pinyin_mode')
-        if self._ime_py:
-            self._ime_py = bool(self._ime_py.lower() == u'true')
-        else:
-            LOGGER.info('We could not find "pinyin_mode" entry in database, '
-                        'is it an outdated database?')
-            self._ime_py = False
-
-        # self._ime_sg: Indicates whether this table supports suggestion mode
-        self._ime_sg = self.db.ime_properties.get('suggestion_mode')
-        if self._ime_sg:
-            self._ime_sg = bool(self._ime_sg.lower() == u'true')
-        else:
-            LOGGER.info(
-                'We could not find "suggestion_mode" entry in database, '
-                'is it an outdated database?')
-            self._ime_sg = False
-
-        self._symbol = self.db.ime_properties.get('symbol')
-        if self._symbol is None or self._symbol == u'':
-            self._symbol = self.db.ime_properties.get('status_prompt')
-        if self._symbol is None:
-            self._symbol = u''
-        # some Chinese tables have “STATUS_PROMPT = CN” replace it
-        # with the shorter and nicer “中”:
-        if self._symbol == u'CN':
-            self._symbol = u'中'
-        # workaround for the translit and translit-ua tables which
-        # have 2 character symbols. '☑' + self._symbol then is
-        # 3 characters and currently gnome-shell ignores symbols longer
-        # than 3 characters:
-        if self._symbol == u'Ya':
-            self._symbol = u'Я'
-        if self._symbol == u'Yi':
-            self._symbol = u'Ї'
-        # now we check and update the valid input characters
-        self._valid_input_chars = self.db.ime_properties.get(
-            'valid_input_chars')
-        self._pinyin_valid_input_chars = u'abcdefghijklmnopqrstuvwxyz!@#$%'
-
-        self._single_wildcard_char = it_util.variant_to_value(
-            self._gsettings.get_user_value('singlewildcardchar'))
-        if self._single_wildcard_char is None:
-            self._single_wildcard_char = self.db.ime_properties.get(
-                'single_wildcard_char')
-        if self._single_wildcard_char is None:
-            self._single_wildcard_char = it_util.variant_to_value(
-                self._gsettings.get_value('singlewildcardchar'))
-        if len(self._single_wildcard_char) > 1:
-            self._single_wildcard_char = self._single_wildcard_char[0]
-
-        self._multi_wildcard_char = it_util.variant_to_value(
-            self._gsettings.get_user_value('multiwildcardchar'))
-        if self._multi_wildcard_char is None:
-            self._multi_wildcard_char = self.db.ime_properties.get(
-                'multi_wildcard_char')
-        if self._multi_wildcard_char is None:
-            self._multi_wildcard_char = it_util.variant_to_value(
-                self._gsettings.get_value('multiwildcardchar'))
-        if len(self._multi_wildcard_char) > 1:
-            self._multi_wildcard_char = self._multi_wildcard_char[0]
-
-        self._auto_wildcard = it_util.variant_to_value(
-            self._gsettings.get_user_value('autowildcard'))
-        if self._auto_wildcard is None:
-            if self.db.ime_properties.get('auto_wildcard') is not None:
-                self._auto_wildcard = self.db.ime_properties.get(
-                    'auto_wildcard').lower() == u'true'
-        if self._auto_wildcard is None:
-            self._auto_wildcard = it_util.variant_to_value(
-                self._gsettings.get_value('autowildcard'))
-
-        self._max_key_length = int(
-            self.db.ime_properties.get('max_key_length'))
-        self._max_key_length_pinyin = 7
-
-        self._page_up_keys = [
-            IBus.KEY_Page_Up,
-            IBus.KEY_KP_Prior, # identical to IBus.KEY_KP_Page_UP!
-            IBus.KEY_KP_Page_Up,
-            IBus.KEY_minus
-        ]
-        self._page_down_keys = [
-            IBus.KEY_Page_Down,
-            IBus.KEY_KP_Next, # identical to IBus.KEY_KP_Page_Down!
-            IBus.KEY_KP_Page_Down,
-            IBus.KEY_equal
-        ]
-        # If page up or page down keys are defined in the database,
-        # use the values from the database instead of the above
-        # hardcoded defaults:
-        page_up_keys_csv = self.db.ime_properties.get('page_up_keys')
-        page_down_keys_csv = self.db.ime_properties.get('page_down_keys')
-        if page_up_keys_csv:
-            self._page_up_keys = [
-                IBus.keyval_from_name(x)
-                for x in page_up_keys_csv.split(',')]
-        if page_down_keys_csv:
-            self._page_down_keys = [
-                IBus.keyval_from_name(x)
-                for x in page_down_keys_csv.split(',')]
-        # Remove keys from the page up/down keys if they are needed
-        # for input (for example, '=' or '-' could well be needed for
-        # input. Input is more important):
-        for character in (
-                self._valid_input_chars
-                + self._single_wildcard_char
-                + self._multi_wildcard_char):
-            keyval = IBus.unicode_to_keyval(character)
-            if keyval in self._page_up_keys:
-                self._page_up_keys.remove(keyval)
-            if keyval in self._page_down_keys:
-                self._page_down_keys.remove(keyval)
-        self._commit_keys = [IBus.KEY_space]
-        # If commit keys are are defined in the database, use the
-        # value from the database instead of the above hardcoded
-        # default:
-        commit_keys_csv = self.db.ime_properties.get('commit_keys')
-        if commit_keys_csv:
-            self._commit_keys = [
-                IBus.keyval_from_name(x)
-                for x in commit_keys_csv.split(',')]
-        # If commit keys conflict with page up/down keys, remove them
-        # from the page up/down keys (They cannot really be used for
-        # both at the same time. Theoretically, keys from the page
-        # up/down keys could still be used to commit when the number
-        # of candidates is 0 because then there is nothing to
-        # page. But that would be only confusing):
-        for keyval in self._commit_keys:
-            if keyval in self._page_up_keys:
-                self._page_up_keys.remove(keyval)
-            if keyval in self._page_down_keys:
-                self._page_down_keys.remove(keyval)
-        # Finally, check the user setting, i.e. the Gsettings value
-        # “spacekeybehavior” and let the user have the last word
-        # how to use the space key:
-        spacekeybehavior = it_util.variant_to_value(
-            self._gsettings.get_user_value('spacekeybehavior'))
-        if spacekeybehavior is not None:
-            if spacekeybehavior is True:
-                # space is used as a page down key and not as a commit key:
-                if IBus.KEY_space not in self._page_down_keys:
-                    self._page_down_keys.append(IBus.KEY_space)
-                if IBus.KEY_space in self._commit_keys:
-                    self._commit_keys.remove(IBus.KEY_space)
-            if spacekeybehavior is False:
-                # space is used as a commit key and not used as a
-                # page down key:
-                if IBus.KEY_space in self._page_down_keys:
-                    self._page_down_keys.remove(IBus.KEY_space)
-                if IBus.KEY_space not in self._commit_keys:
-                    self._commit_keys.append(IBus.KEY_space)
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug(
-                'self._page_down_keys=%s', repr(self._page_down_keys))
-            LOGGER.debug(
-                'self._commit_keys=%s', repr(self._commit_keys))
-
-        # 0 = Direct input, i.e. table input OFF (aka “English input mode”),
-        #     most characters are just passed through to the application
-        #     (but some fullwidth ↔ halfwidth conversion may be done even
-        #     in this mode, depending on the settings)
-        # 1 = Table input ON (aka “Table input mode”, “Chinese mode”)
-        self._input_mode = it_util.variant_to_value(
-            self._gsettings.get_value('inputmode'))
-
-        # self._prev_key: hold the key event last time.
-        self._prev_key = None
-        self._prev_char = None
-        self._double_quotation_state = False
-        self._single_quotation_state = False
-        # self._prefix: the previous commit character or phrase
-        self._prefix = u''
-        self._py_mode = False
-        self._sg_mode = False
-
-        self._full_width_letter = [
-            it_util.variant_to_value(
-                self._gsettings.get_value('endeffullwidthletter')),
-            it_util.variant_to_value(
-                self._gsettings.get_user_value('tabdeffullwidthletter'))
-            ]
-        if self._full_width_letter[1] is None:
-            if self.db.ime_properties.get('def_full_width_letter'):
-                self._full_width_letter[1] = self.db.ime_properties.get(
-                    'def_full_width_letter').lower() == u'true'
-        if self._full_width_letter[1] is None:
-            self._full_width_letter[1] = it_util.variant_to_value(
-                self._gsettings.get_value('tabdeffullwidthletter'))
-
-        self._full_width_punct = [
-            it_util.variant_to_value(
-                self._gsettings.get_value('endeffullwidthpunct')),
-            it_util.variant_to_value(
-                self._gsettings.get_user_value('tabdeffullwidthpunct'))
-            ]
-        if self._full_width_punct[1] is None:
-            if self.db.ime_properties.get('def_full_width_punct'):
-                self._full_width_punct[1] = self.db.ime_properties.get(
-                    'def_full_width_punct').lower() == u'true'
-        if self._full_width_punct[1] is None:
-            self._full_width_punct[1] = it_util.variant_to_value(
-                self._gsettings.get_value('tabdeffullwidthpunct'))
-
-        self._auto_commit = it_util.variant_to_value(
-            self._gsettings.get_user_value('autocommit'))
-        if self._auto_commit is None:
-            if self.db.ime_properties.get('auto_commit'):
-                self._auto_commit = self.db.ime_properties.get(
-                    'auto_commit').lower() == u'true'
-        if self._auto_commit is None:
-            self._auto_commit = it_util.variant_to_value(
-                self._gsettings.get_value('autocommit'))
-
-        # If auto select is true, then the first candidate phrase will
-        # be selected automatically during typing. Auto select is true
-        # by default for the stroke5 table for example.
-        self._auto_select = it_util.variant_to_value(
-            self._gsettings.get_user_value('autoselect'))
-        if self._auto_select is None:
-            if self.db.ime_properties.get('auto_select') is not None:
-                self._auto_select = self.db.ime_properties.get(
-                    'auto_select').lower() == u'true'
-        if self._auto_select is None:
-            self._auto_select = it_util.variant_to_value(
-                self._gsettings.get_value('autoselect'))
-
-        self._always_show_lookup = it_util.variant_to_value(
-            self._gsettings.get_user_value('alwaysshowlookup'))
-        if self._always_show_lookup is None:
-            if self.db.ime_properties.get('always_show_lookup') is not None:
-                self._always_show_lookup = self.db.ime_properties.get(
-                    'always_show_lookup').lower() == u'true'
-        if self._always_show_lookup is None:
-            self._always_show_lookup = it_util.variant_to_value(
-                self._gsettings.get_value('alwaysshowlookup'))
-
-        self._editor = Editor(self._gsettings,
-                              self._valid_input_chars,
-                              self._pinyin_valid_input_chars,
-                              self._single_wildcard_char,
-                              self._multi_wildcard_char,
-                              self._auto_wildcard,
-                              self._full_width_letter,
-                              self._full_width_punct,
-                              self._max_key_length,
-                              self._input_mode,
-                              self._sg_mode,
-                              self.db)
-
-        self.chinese_mode_properties = {
-            'ChineseMode.Simplified': {
-                'number': 0,
-                'symbol': '簡',
-                'icon': 'sc-mode.svg',
-                # Translators: This is the menu entry to select
-                # when one wants to input only Simplified Chinese.
-                'label': _('Simplified Chinese'),
-                'tooltip':
-                _('Switch to “Simplified Chinese only”.')},
-            'ChineseMode.Traditional': {
-                'number': 1,
-                'symbol': '繁',
-                'icon': 'tc-mode.svg',
-                # Translators: This is the menu entry to select
-                # when one wants to input only Traditonal Chinese
-                'label': _('Traditional Chinese'),
-                'tooltip':
-                _('Switch to “Traditional Chinese only”.')},
-            'ChineseMode.SimplifiedFirst': {
-                'number': 2,
-                'symbol': '簡/大',
-                'icon': 'scb-mode.svg',
-                # Translators: This is the menu entry to select when
-                # one wants to input both Simplified and Traditional
-                # Chinese but wants the Simplified Chinese to be
-                # preferred, i.e. shown higher up in the candidate
-                # lists.
-                'label': _('Simplified Chinese first'),
-                'tooltip':
-                _('Switch to “Simplified Chinese before traditional”.')},
-            'ChineseMode.TraditionalFirst': {
-                'number': 3,
-                'symbol': '繁/大',
-                'icon': 'tcb-mode.svg',
-                # Translators: This is the menu entry to select when
-                # one wants to input both Simplified and Traditional
-                # Chinese but wants the Traditional Chinese to be
-                # preferred, i.e. shown higher up in the candidate
-                # lists.
-                'label': _('Traditional Chinese first'),
-                'tooltip':
-                _('Switch to “Traditional Chinese before simplified”.')},
-            'ChineseMode.All': {
-                'number': 4,
-                'symbol': '大',
-                'icon': 'cb-mode.svg',
-                # Translators: This is the menu entry to select when
-                # one wants to input both Simplified and Traditional
-                # Chinese and has no particular preference whether
-                # simplified or traditional characters should be higher
-                # up in the candidate lists.
-                'label': _('All Chinese characters'),
-                'tooltip': _('Switch to “All Chinese characters”.')}
-        }
-        self.chinese_mode_menu = {
-            'key': 'ChineseMode',
-            'label': _('Chinese mode'),
-            'tooltip': _('Switch Chinese mode'),
-            'shortcut_hint': '(Ctrl-;)',
-            'sub_properties': self.chinese_mode_properties
-        }
-        if self.db._is_chinese:
-            self.input_mode_properties = {
-                'InputMode.Direct': {
-                    'number': 0,
-                    'symbol': '英',
-                    'icon': 'english.svg',
-                    'label': _('English'),
-                    'tooltip': _('Switch to English input')},
-                'InputMode.Table': {
-                    'number': 1,
-                    'symbol': '中',
-                    'symbol_table': '中',
-                    'symbol_pinyin': '拼音',
-                    'icon': 'chinese.svg',
-                    'label': _('Chinese'),
-                    'tooltip': _('Switch to Chinese input')}
-            }
-        else:
-            self.input_mode_properties = {
-                'InputMode.Direct': {
-                    'number': 0,
-                    'symbol': '☐' + self._symbol,
-                    'icon': 'english.svg',
-                    'label': _('Direct'),
-                    'tooltip': _('Switch to direct input')},
-                'InputMode.Table': {
-                    'number': 1,
-                    'symbol': '☑' + self._symbol,
-                    'icon': 'ibus-table.svg',
-                    'label': _('Table'),
-                    'tooltip': _('Switch to table input')}
-            }
-        # The symbol of the property “InputMode” is displayed
-        # in the input method indicator of the Gnome3 panel.
-        # This depends on the property name “InputMode” and
-        # is case sensitive!
-        self.input_mode_menu = {
-            'key': 'InputMode',
-            'label': _('Input mode'),
-            'tooltip': _('Switch Input mode'),
-            'shortcut_hint': '(Left Shift)',
-            'sub_properties': self.input_mode_properties
-        }
-        self.letter_width_properties = {
-            'LetterWidth.Half': {
-                'number': 0,
-                'symbol': '◑',
-                'icon': 'half-letter.svg',
-                'label': _('Half'),
-                'tooltip': _('Switch to halfwidth letters')},
-            'LetterWidth.Full': {
-                'number': 1,
-                'symbol': '●',
-                'icon': 'full-letter.svg',
-                'label': _('Full'),
-                'tooltip': _('Switch to fullwidth letters')}
-        }
-        self.letter_width_menu = {
-            'key': 'LetterWidth',
-            'label': _('Letter width'),
-            'tooltip': _('Switch letter width'),
-            'shortcut_hint': '(Shift-Space)',
-            'sub_properties': self.letter_width_properties
-        }
-        self.punctuation_width_properties = {
-            'PunctuationWidth.Half': {
-                'number': 0,
-                'symbol': ',.',
-                'icon': 'half-punct.svg',
-                'label': _('Half'),
-                'tooltip': _('Switch to halfwidth punctuation')},
-            'PunctuationWidth.Full': {
-                'number': 1,
-                'symbol': '、。',
-                'icon': 'full-punct.svg',
-                'label': _('Full'),
-                'tooltip': _('Switch to fullwidth punctuation')}
-        }
-        self.punctuation_width_menu = {
-            'key': 'PunctuationWidth',
-            'label': _('Punctuation width'),
-            'tooltip': _('Switch punctuation width'),
-            'shortcut_hint': '(Ctrl-.)',
-            'sub_properties': self.punctuation_width_properties
-        }
-        self.pinyin_mode_properties = {
-            'PinyinMode.Table': {
-                'number': 0,
-                'symbol': '☐ 拼音',
-                'icon': 'tab-mode.svg',
-                'label': _('Table'),
-                'tooltip': _('Switch to table mode')},
-            'PinyinMode.Pinyin': {
-                'number': 1,
-                'symbol': '☑ 拼音',
-                'icon': 'py-mode.svg',
-                'label': _('Pinyin'),
-                'tooltip': _('Switch to pinyin mode')}
-        }
-        self.pinyin_mode_menu = {
-            'key': 'PinyinMode',
-            'label': _('Pinyin mode'),
-            'tooltip': _('Switch pinyin mode'),
-            'shortcut_hint': '(Right Shift)',
-            'sub_properties': self.pinyin_mode_properties
-        }
-        self.suggestion_mode_properties = {
-            'SuggestionMode.Disabled': {
-                'number': 0,
-                'symbol': '☐ 联想',
-                'icon': 'tab-mode.svg',
-                'label': _('Suggestion disabled'),
-                'tooltip': _('Switch to suggestion mode')},
-            'SuggestionMode.Enabled': {
-                'number': 1,
-                'symbol': '☑ 联想',
-                'icon': 'tab-mode.svg',
-                'label': _('Suggestion enabled'),
-                'tooltip': _('Switch to suggestion mode')}
-        }
-        self.suggestion_mode_menu = {
-            'key': 'SuggestionMode',
-            'label': _('Suggestion mode'),
-            'tooltip': _('Switch suggestion mode'),
-            'shortcut_hint': '',
-            'sub_properties': self.suggestion_mode_properties
-        }
-        self.onechar_mode_properties = {
-            'OneCharMode.Phrase': {
-                'number': 0,
-                'symbol': '☐ 1',
-                'icon': 'phrase.svg',
-                'label': _('Multiple character match'),
-                'tooltip':
-                _('Switch to matching multiple characters at once')},
-            'OneCharMode.OneChar': {
-                'number': 1,
-                'symbol': '☑ 1',
-                'icon': 'onechar.svg',
-                'label': _('Single character match'),
-                'tooltip':
-                _('Switch to matching only single characters')}
-        }
-        self.onechar_mode_menu = {
-            'key': 'OneCharMode',
-            'label': _('Onechar mode'),
-            'tooltip': _('Switch onechar mode'),
-            'shortcut_hint': '(Ctrl-,)',
-            'sub_properties': self.onechar_mode_properties
-        }
-        self.autocommit_mode_properties = {
-            'AutoCommitMode.Direct': {
-                'number': 0,
-                'symbol': '☐ ↑',
-                'icon': 'ncommit.svg',
-                'label': _('Normal'),
-                'tooltip':
-                _('Switch to normal commit mode '
-                  + '(automatic commits go into the preedit '
-                  + 'instead of into the application. '
-                  + 'This enables automatic definitions of new shortcuts)')},
-            'AutoCommitMode.Normal': {
-                'number': 1,
-                'symbol': '☑ ↑',
-                'icon': 'acommit.svg',
-                'label': _('Direct'),
-                'tooltip':
-                _('Switch to direct commit mode '
-                  + '(automatic commits go directly into the application)')}
-        }
-        self.autocommit_mode_menu = {
-            'key': 'AutoCommitMode',
-            'label': _('Auto commit mode'),
-            'tooltip': _('Switch autocommit mode'),
-            'shortcut_hint': '(Ctrl-/)',
-            'sub_properties': self.autocommit_mode_properties
-        }
-        self._init_properties()
-
-        self._on = False
-        self._save_user_count = 0
-        self._save_user_start = time.time()
-
-        self._save_user_count_max = SAVE_USER_COUNT_MAX
-        self._save_user_timeout = SAVE_USER_TIMEOUT
-        self.reset()
-
-        self.sync_timeout_id = GObject.timeout_add_seconds(
-            1, self._sync_user_db)
-
-        LOGGER.info(
-            '********** Initialized and ready for input: **********')
-
     def reset(self):
         '''Clear the preëdit and close the lookup table
         '''
-        self._editor.clear_all_input_and_preedit()
+        self.clear_all_input_and_preedit()
         self._double_quotation_state = False
         self._single_quotation_state = False
         self._prev_key = None
@@ -2043,7 +1999,7 @@ class TabEngine(IBus.Engine):
         if mode == self._input_mode:
             return
         self._input_mode = mode
-        self._editor._input_mode = mode
+        self._input_mode = mode
         # Not saved to Gsettings on purpose. In the setup tool one
         # can select whether “Table input” or “Direct input” should
         # be the default when the input method starts. But when
@@ -2084,9 +2040,8 @@ class TabEngine(IBus.Engine):
         if mode == self._py_mode:
             return
         # The pinyin mode is never saved to GSettings on purpose
-        self._editor.commit_to_preedit()
+        self.commit_to_preedit()
         self._py_mode = mode
-        self._editor._py_mode = mode
         self._init_or_update_property_menu(
             self.pinyin_mode_menu, mode)
         if mode:
@@ -2120,9 +2075,8 @@ class TabEngine(IBus.Engine):
             return
         if mode == self._sg_mode:
             return
-        self._editor.commit_to_preedit()
+        self.commit_to_preedit()
         self._sg_mode = mode
-        self._editor._sg_mode = mode
         self._init_or_update_property_menu(
             self.suggestion_mode_menu, mode)
         self._update_ui()
@@ -2151,9 +2105,9 @@ class TabEngine(IBus.Engine):
         :type update_gsettings: Boolean
 
         '''
-        if mode == self._editor._onechar:
+        if mode == self._onechar:
             return
-        self._editor._onechar = mode
+        self._onechar = mode
         self._init_or_update_property_menu(
             self.onechar_mode_menu, mode)
         self.db.reset_phrases_cache()
@@ -2168,7 +2122,7 @@ class TabEngine(IBus.Engine):
 
         :rtype: Boolean
         '''
-        return self._editor._onechar
+        return self._onechar
 
     def set_autocommit_mode(self, mode=False, update_gsettings=True):
         '''Sets whether automatic commits go into the preëdit or into the
@@ -2221,7 +2175,6 @@ class TabEngine(IBus.Engine):
         if mode == self._auto_select:
             return
         self._auto_select = mode
-        self._editor._auto_select = mode
         if update_gsettings:
             self._gsettings.set_value(
                 "autoselect",
@@ -2251,7 +2204,6 @@ class TabEngine(IBus.Engine):
         if mode == self._auto_wildcard:
             return
         self._auto_wildcard = mode
-        self._editor._auto_wildcard = mode
         self.db.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
@@ -2281,7 +2233,6 @@ class TabEngine(IBus.Engine):
         if char == self._single_wildcard_char:
             return
         self._single_wildcard_char = char
-        self._editor._single_wildcard_char = char
         self.db.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
@@ -2313,7 +2264,6 @@ class TabEngine(IBus.Engine):
         if char == self._multi_wildcard_char:
             return
         self._multi_wildcard_char = char
-        self._editor._multi_wildcard_char = char
         self.db.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
@@ -2429,11 +2379,11 @@ class TabEngine(IBus.Engine):
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('orientation(%s)', orientation)
-        if orientation == self._editor._orientation:
+        if orientation == self._orientation:
             return
         if 0 <= orientation <= 2:
-            self._editor._orientation = orientation
-            self._editor._lookup_table.set_orientation(orientation)
+            self._orientation = orientation
+            self._lookup_table.set_orientation(orientation)
             if update_gsettings:
                 self._gsettings.set_value(
                     'lookuptableorientation',
@@ -2444,7 +2394,7 @@ class TabEngine(IBus.Engine):
 
         :rtype: integer
         '''
-        return self._editor._orientation
+        return self._orientation
 
     def set_page_size(self, page_size, update_gsettings=True):
         '''Sets the page size of the lookup table
@@ -2460,17 +2410,17 @@ class TabEngine(IBus.Engine):
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('page_size=%s', page_size)
-        if page_size == self._editor._page_size:
+        if page_size == self._page_size:
             return
-        if page_size > len(self._editor._select_keys):
-            page_size = len(self._editor._select_keys)
+        if page_size > len(self._select_keys):
+            page_size = len(self._select_keys)
         if page_size < 1:
             page_size = 1
-        self._editor._page_size = page_size
-        self._editor._lookup_table = self._editor.get_new_lookup_table(
-            page_size=self._editor._page_size,
-            select_keys=self._editor._select_keys,
-            orientation=self._editor._orientation)
+        self._page_size = page_size
+        self._lookup_table = self.get_new_lookup_table(
+            page_size=self._page_size,
+            select_keys=self._select_keys,
+            orientation=self._orientation)
         self.reset()
         if update_gsettings:
             self._gsettings.set_value(
@@ -2482,7 +2432,7 @@ class TabEngine(IBus.Engine):
 
         :rtype: integer
         '''
-        return self._editor._page_size
+        return self._page_size
 
     def set_letter_width(
             self, mode=False, input_mode=0, update_gsettings=True):
@@ -2504,7 +2454,6 @@ class TabEngine(IBus.Engine):
         if mode == self._full_width_letter[input_mode]:
             return
         self._full_width_letter[input_mode] = mode
-        self._editor._full_width_letter[input_mode] = mode
         if input_mode == self._input_mode:
             self._init_or_update_property_menu(
                 self.letter_width_menu, mode)
@@ -2546,7 +2495,6 @@ class TabEngine(IBus.Engine):
         if mode == self._full_width_punct[input_mode]:
             return
         self._full_width_punct[input_mode] = mode
-        self._editor._full_width_punct[input_mode] = mode
         if input_mode == self._input_mode:
             self._init_or_update_property_menu(
                 self.punctuation_width_menu, mode)
@@ -2588,9 +2536,9 @@ class TabEngine(IBus.Engine):
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('mode=%s', mode)
-        if mode == self._editor._chinese_mode:
+        if mode == self._chinese_mode:
             return
-        self._editor._chinese_mode = mode
+        self._chinese_mode = mode
         self.db.reset_phrases_cache()
         self._init_or_update_property_menu(
             self.chinese_mode_menu, mode)
@@ -2611,7 +2559,7 @@ class TabEngine(IBus.Engine):
 
         :rtype: Integer
         '''
-        return self._editor._chinese_mode
+        return self._chinese_mode
 
     def _init_or_update_property_menu(self, menu, current_mode=0):
         '''
@@ -2717,10 +2665,10 @@ class TabEngine(IBus.Engine):
             self.input_mode_menu,
             self._input_mode)
 
-        if self.db._is_chinese and self._editor._chinese_mode != -1:
+        if self.db._is_chinese and self._chinese_mode != -1:
             self._init_or_update_property_menu(
                 self.chinese_mode_menu,
-                self._editor._chinese_mode)
+                self._chinese_mode)
 
         if self.db._is_cjk:
             self._init_or_update_property_menu(
@@ -2743,7 +2691,7 @@ class TabEngine(IBus.Engine):
         if self.db._is_cjk:
             self._init_or_update_property_menu(
                 self.onechar_mode_menu,
-                self._editor._onechar)
+                self._onechar)
 
         if self.db.user_can_define_phrase and self.db.rules:
             self._init_or_update_property_menu(
@@ -2816,7 +2764,7 @@ class TabEngine(IBus.Engine):
             return
         if (ibus_property.startswith(self.chinese_mode_menu['key']+'.')
                 and self.db._is_chinese
-                and self._editor._chinese_mode != -1):
+                and self._chinese_mode != -1):
             self.set_chinese_mode(
                 self.chinese_mode_properties[ibus_property]['number'])
             return
@@ -2846,19 +2794,19 @@ class TabEngine(IBus.Engine):
     def _update_preedit(self):
         '''Update Preedit String in UI'''
 
-        if self._editor._sg_mode_active:
+        if self._sg_mode_active:
             self.hide_preedit_text()
             return
 
-        preedit_string_parts = self._editor.get_preedit_string_parts()
+        preedit_string_parts = self.get_preedit_string_parts()
         left_of_current_edit = u''.join(preedit_string_parts[0])
         current_edit = preedit_string_parts[1]
         right_of_current_edit = u''.join(preedit_string_parts[2])
-        if self._editor._input_mode and not self._editor._sg_mode_active:
+        if self._input_mode and not self._sg_mode_active:
             current_edit_new = u''
             for char in current_edit:
-                if char in self._editor._prompt_characters:
-                    current_edit_new += self._editor._prompt_characters[char]
+                if char in self._prompt_characters:
+                    current_edit_new += self._prompt_characters[char]
                 else:
                     current_edit_new += char
             current_edit = current_edit_new
@@ -2882,12 +2830,12 @@ class TabEngine(IBus.Engine):
                 color_right,
                 len(left_of_current_edit) + len(current_edit),
                 len(preedit_string_complete)))
-        if self._editor._chars_invalid:
+        if self._chars_invalid:
             attrs.append(
                 IBus.attr_foreground_new(
                     color_invalid,
                     len(left_of_current_edit) + len(current_edit)
-                    - len(self._editor._chars_invalid),
+                    - len(self._chars_invalid),
                     len(left_of_current_edit) + len(current_edit)
                     ))
         attrs.append(
@@ -2905,18 +2853,18 @@ class TabEngine(IBus.Engine):
                                   attr.get_end_index())
             i += 1
         super(TabEngine, self).update_preedit_text(
-            text, self._editor.get_caret(), True)
+            text, self.get_caret(), True)
 
     def _update_aux(self):
         '''Update Aux String in UI'''
-        if self._editor._sg_mode_active:
+        if self._sg_mode_active:
             return
 
-        aux_string = self._editor.get_aux_strings()
-        if self._editor._candidates:
+        aux_string = self.get_aux_strings()
+        if self._candidates:
             aux_string += u' (%d / %d)' % (
-                self._editor._lookup_table.get_cursor_pos() +1,
-                self._editor._lookup_table.get_number_of_candidates())
+                self._lookup_table.get_cursor_pos() +1,
+                self._lookup_table.get_number_of_candidates())
         if aux_string:
             attrs = IBus.AttrList()
             attrs.append(IBus.attr_foreground_new(
@@ -2939,7 +2887,7 @@ class TabEngine(IBus.Engine):
 
     def _update_lookup_table(self):
         '''Update Lookup Table in UI'''
-        if not self._editor._candidates:
+        if not self._candidates:
             # Also make sure to hide lookup table if there are
             # no candidates to display. On f17, this makes no
             # difference but gnome-shell in f18 will display
@@ -2948,8 +2896,8 @@ class TabEngine(IBus.Engine):
             self.hide_lookup_table()
             return
 
-        if self._editor._input_mode and not self._editor._sg_mode_active:
-            if self._editor.is_empty():
+        if self._input_mode and not self._sg_mode_active:
+            if self.is_empty():
                 self.hide_lookup_table()
                 return
 
@@ -2957,7 +2905,7 @@ class TabEngine(IBus.Engine):
             self.hide_lookup_table()
             return
 
-        self.update_lookup_table(self._editor.get_lookup_table(), True)
+        self.update_lookup_table(self.get_lookup_table(), True)
 
     def _update_ui(self):
         '''Update User Interface'''
@@ -3000,9 +2948,9 @@ class TabEngine(IBus.Engine):
         if DEBUG_LEVEL > 1:
             LOGGER.debug('phrase=%s', phrase)
         self._prefix = phrase
-        self._editor.clear_all_input_and_preedit()
+        self.clear_all_input_and_preedit()
         self._update_ui()
-        self._editor._prefix = phrase
+        self._prefix = phrase
 
         super(TabEngine, self).commit_text(IBus.Text.new_from_string(phrase))
         if phrase:
@@ -3020,19 +2968,19 @@ class TabEngine(IBus.Engine):
         Returns “True” if something was committed, “False” if not.
         '''
         if DEBUG_LEVEL > 1:
-            LOGGER.debug('self._editor._chars_invalid=%s',
-                         self._editor._chars_invalid)
-        if self._editor._chars_invalid:
+            LOGGER.debug('self._chars_invalid=%s',
+                         self._chars_invalid)
+        if self._chars_invalid:
             return False
 
-        if self._editor._input_mode and self._editor._sg_mode_active:
-            self._editor.commit_to_preedit()
+        if self._input_mode and self._sg_mode_active:
+            self.commit_to_preedit()
 
-        if not self._editor.is_empty():
-            self._editor.commit_to_preedit()
+        if not self.is_empty():
+            self.commit_to_preedit()
 
-        self.commit_string(self._editor.get_preedit_string_complete(),
-                           tabkeys=self._editor.get_preedit_tabkeys_complete())
+        self.commit_string(self.get_preedit_string_complete(),
+                           tabkeys=self.get_preedit_tabkeys_complete())
         return True
 
     def _convert_to_full_width(self, char):
@@ -3116,11 +3064,11 @@ class TabEngine(IBus.Engine):
         return False
 
     def do_candidate_clicked(self, index, _button, _state):
-        if self._editor.commit_to_preedit_current_page(index):
+        if self.commit_to_preedit_current_page(index):
             # commits to preëdit
             self.commit_string(
-                self._editor.get_preedit_string_complete(),
-                tabkeys=self._editor.get_preedit_tabkeys_complete())
+                self.get_preedit_string_complete(),
+                tabkeys=self.get_preedit_tabkeys_complete())
             return True
         return False
 
@@ -3191,7 +3139,7 @@ class TabEngine(IBus.Engine):
         and is passed through.
         '''
         # Match mode switch hotkey
-        if (self._editor.is_empty()
+        if (self.is_empty()
                 and (self._match_hotkey(
                     key, IBus.KEY_Shift_L,
                     IBus.ModifierType.SHIFT_MASK))):
@@ -3292,11 +3240,12 @@ class TabEngine(IBus.Engine):
         if DEBUG_LEVEL > 0:
             LOGGER.debug('repr(key)=%s', repr(key))
         # Change pinyin mode
-        # (change only if the editor is empty. When the editor
-        # is not empty, the right shift key should commit to preëdit
-        # and not change the pinyin mode).
+        #
+        # (change only if empty. When it is not empty, the right shift
+        # key should commit to preëdit and not change the pinyin
+        # mode).
         if (self._ime_py
-                and self._editor.is_empty()
+                and self.is_empty()
                 and self._match_hotkey(
                     key, IBus.KEY_Shift_R,
                     IBus.ModifierType.SHIFT_MASK)):
@@ -3309,7 +3258,7 @@ class TabEngine(IBus.Engine):
                 or self._match_hotkey(
                     key, IBus.KEY_Shift_L,
                     IBus.ModifierType.SHIFT_MASK)):
-            res = self._editor.commit_to_preedit()
+            res = self.commit_to_preedit()
             self._update_ui()
             return res
 
@@ -3317,7 +3266,7 @@ class TabEngine(IBus.Engine):
         if (self._match_hotkey(
                 key, IBus.KEY_Alt_L,
                 IBus.ModifierType.MOD1_MASK)):
-            res = self._editor.cycle_next_cand()
+            res = self.cycle_next_cand()
             self._update_ui()
             return res
 
@@ -3325,7 +3274,7 @@ class TabEngine(IBus.Engine):
         if (self._match_hotkey(
                 key, IBus.KEY_comma,
                 IBus.ModifierType.CONTROL_MASK) and self.db._is_cjk):
-            self.set_onechar_mode(not self._editor._onechar)
+            self.set_onechar_mode(not self._onechar)
             return True
 
         # Match direct commit mode switch hotkey
@@ -3340,7 +3289,7 @@ class TabEngine(IBus.Engine):
         if (self._match_hotkey(
                 key, IBus.KEY_semicolon,
                 IBus.ModifierType.CONTROL_MASK) and self.db._is_chinese):
-            self.set_chinese_mode((self._editor._chinese_mode+1) % 5)
+            self.set_chinese_mode((self._chinese_mode+1) % 5)
             return True
 
         # Ignore key release events
@@ -3357,8 +3306,8 @@ class TabEngine(IBus.Engine):
         #
         # This is the first character typed, if it is invalid
         # input, handle it immediately here, if it is valid, continue.
-        if (self._editor.is_empty()
-                and not self._editor.get_preedit_string_complete()):
+        if (self.is_empty()
+                and not self.get_preedit_string_complete()):
             if ((keychar not in (
                     self._valid_input_chars
                     + self._single_wildcard_char
@@ -3388,8 +3337,8 @@ class TabEngine(IBus.Engine):
             return True
 
         if key.val in (IBus.KEY_Return, IBus.KEY_KP_Enter):
-            if (self._editor.is_empty()
-                    and not self._editor.get_preedit_string_complete()):
+            if (self.is_empty()
+                    and not self.get_preedit_string_complete()):
                 # When IBus.KEY_Return is typed,
                 # IBus.keyval_to_unicode(key.val) returns a non-empty
                 # string. But when IBus.KEY_KP_Enter is typed it
@@ -3401,11 +3350,11 @@ class TabEngine(IBus.Engine):
                 # IBus.KEY_KP_Enter to the application:
                 return self._return_false(key.val, key.code, key.state)
             if self._auto_select:
-                self._editor.commit_to_preedit()
-                commit_string = self._editor.get_preedit_string_complete()
+                self.commit_to_preedit()
+                commit_string = self.get_preedit_string_complete()
                 self.commit_string(commit_string)
                 return self._return_false(key.val, key.code, key.state)
-            commit_string = self._editor.get_preedit_tabkeys_complete()
+            commit_string = self.get_preedit_tabkeys_complete()
             self.commit_string(commit_string)
             return True
 
@@ -3429,95 +3378,95 @@ class TabEngine(IBus.Engine):
             # committed here and “False” is returned to pass the Tab
             # character through to the bash to complete the file name
             # to “шшш”.
-            self._editor.commit_to_preedit()
-            self.commit_string(self._editor.get_preedit_string_complete())
+            self.commit_to_preedit()
+            self.commit_string(self.get_preedit_string_complete())
             return self._return_false(key.val, key.code, key.state)
 
         if key.val in (IBus.KEY_Down, IBus.KEY_KP_Down):
-            if not self._editor.get_preedit_string_complete():
+            if not self.get_preedit_string_complete():
                 return self._return_false(key.val, key.code, key.state)
-            res = self._editor.cursor_down()
+            res = self.cursor_down()
             self._update_ui()
             return res
 
         if key.val in (IBus.KEY_Up, IBus.KEY_KP_Up):
-            if not self._editor.get_preedit_string_complete():
+            if not self.get_preedit_string_complete():
                 return self._return_false(key.val, key.code, key.state)
-            res = self._editor.cursor_up()
+            res = self.cursor_up()
             self._update_ui()
             return res
 
         if (key.val in (IBus.KEY_Left, IBus.KEY_KP_Left)
                 and key.state & IBus.ModifierType.CONTROL_MASK):
-            if not self._editor.get_preedit_string_complete():
+            if not self.get_preedit_string_complete():
                 return self._return_false(key.val, key.code, key.state)
-            self._editor.control_arrow_left()
+            self.control_arrow_left()
             self._update_ui()
             return True
 
         if (key.val in (IBus.KEY_Right, IBus.KEY_KP_Right)
                 and key.state & IBus.ModifierType.CONTROL_MASK):
-            if not self._editor.get_preedit_string_complete():
+            if not self.get_preedit_string_complete():
                 return self._return_false(key.val, key.code, key.state)
-            self._editor.control_arrow_right()
+            self.control_arrow_right()
             self._update_ui()
             return True
 
         if key.val in (IBus.KEY_Left, IBus.KEY_KP_Left):
-            if not self._editor.get_preedit_string_complete():
+            if not self.get_preedit_string_complete():
                 return self._return_false(key.val, key.code, key.state)
-            self._editor.arrow_left()
+            self.arrow_left()
             self._update_ui()
             return True
 
         if key.val in (IBus.KEY_Right, IBus.KEY_KP_Right):
-            if not self._editor.get_preedit_string_complete():
+            if not self.get_preedit_string_complete():
                 return self._return_false(key.val, key.code, key.state)
-            self._editor.arrow_right()
+            self.arrow_right()
             self._update_ui()
             return True
 
         if (key.val == IBus.KEY_BackSpace
                 and key.state & IBus.ModifierType.CONTROL_MASK):
-            if not self._editor.get_preedit_string_complete():
+            if not self.get_preedit_string_complete():
                 return self._return_false(key.val, key.code, key.state)
-            self._editor.remove_preedit_before_cursor()
+            self.remove_preedit_before_cursor()
             self._update_ui()
             return True
 
         if key.val == IBus.KEY_BackSpace:
-            if not self._editor.get_preedit_string_complete():
+            if not self.get_preedit_string_complete():
                 return self._return_false(key.val, key.code, key.state)
-            self._editor.remove_char()
+            self.remove_char()
             self._update_ui()
             return True
 
         if (key.val == IBus.KEY_Delete
                 and key.state & IBus.ModifierType.CONTROL_MASK):
-            if not self._editor.get_preedit_string_complete():
+            if not self.get_preedit_string_complete():
                 return self._return_false(key.val, key.code, key.state)
-            self._editor.remove_preedit_after_cursor()
+            self.remove_preedit_after_cursor()
             self._update_ui()
             return True
 
         if key.val == IBus.KEY_Delete:
-            if not self._editor.get_preedit_string_complete():
+            if not self.get_preedit_string_complete():
                 return self._return_false(key.val, key.code, key.state)
-            self._editor.delete()
+            self.delete()
             self._update_ui()
             return True
 
-        if (key.val in self._editor.get_select_keys()
-                and self._editor._candidates
+        if (key.val in self.get_select_keys()
+                and self._candidates
                 and key.state & IBus.ModifierType.CONTROL_MASK):
-            res = self._editor.select_key(key.val)
+            res = self.select_key(key.val)
             self._update_ui()
             return res
 
-        if (key.val in self._editor.get_select_keys()
-                and self._editor._candidates
+        if (key.val in self.get_select_keys()
+                and self._candidates
                 and key.state & IBus.ModifierType.MOD1_MASK):
-            res = self._editor.remove_candidate_from_user_database(key.val)
+            res = self.remove_candidate_from_user_database(key.val)
             self._update_ui()
             return res
 
@@ -3564,40 +3513,40 @@ class TabEngine(IBus.Engine):
                 and (keychar in (self._valid_input_chars
                                  + self._single_wildcard_char
                                  + self._multi_wildcard_char)
-                     or (self._editor._input_mode and self._editor._py_mode
+                     or (self._input_mode and self._py_mode
                          and keychar in self._pinyin_valid_input_chars))):
             if DEBUG_LEVEL > 0:
                 LOGGER.debug(
                     'valid input: keychar=%s', keychar)
 
             # Deactivate suggestion mode:
-            if self._editor._input_mode and self._editor._sg_mode_active:
-                self._editor.clear_all_input_and_preedit()
-                self._editor._sg_mode_active = False
+            if self._input_mode and self._sg_mode_active:
+                self.clear_all_input_and_preedit()
+                self._sg_mode_active = False
 
-            if self._editor._input_mode and self._editor._py_mode:
-                if ((len(self._editor._chars_valid)
+            if self._input_mode and self._py_mode:
+                if ((len(self._chars_valid)
                      == self._max_key_length_pinyin)
-                        or (len(self._editor._chars_valid) > 1
-                            and self._editor._chars_valid[-1] in '!@#$%')):
+                        or (len(self._chars_valid) > 1
+                            and self._chars_valid[-1] in '!@#$%')):
                     if self._auto_commit:
                         self.commit_everything_unless_invalid()
                     else:
-                        self._editor.commit_to_preedit()
-            elif self._editor._input_mode and not self._editor._py_mode:
-                if ((len(self._editor._chars_valid)
+                        self.commit_to_preedit()
+            elif self._input_mode and not self._py_mode:
+                if ((len(self._chars_valid)
                      == self._max_key_length)
-                        or (len(self._editor._chars_valid)
+                        or (len(self._chars_valid)
                             in self.db.possible_tabkeys_lengths)):
                     if self._auto_commit:
                         self.commit_everything_unless_invalid()
                     else:
-                        self._editor.commit_to_preedit()
+                        self.commit_to_preedit()
             else:
                 assert False
-            res = self._editor.add_input(keychar)
+            res = self.add_input(keychar)
             if not res:
-                if self._auto_select and self._editor._candidates_previous:
+                if self._auto_select and self._candidates_previous:
                     # Used for example for the Russian transliteration method
                     # “translit”, which uses “auto select”.
                     # The “translit” table contains:
@@ -3620,57 +3569,57 @@ class TabEngine(IBus.Engine):
                     # fail, commit first of the previous candidates,
                     # i.e. “sh ш” and feed the “s” into the
                     # key event handler again.
-                    self._editor.pop_input()
+                    self.pop_input()
                     self.commit_everything_unless_invalid()
                     return self._table_mode_process_key_event(key)
                 self.commit_everything_unless_invalid()
                 self._update_ui()
                 return True
-            if (self._auto_commit and self._editor.one_candidate()
+            if (self._auto_commit and self.one_candidate()
                     and
-                    (self._editor._chars_valid
-                     == self._editor._candidates[0][0])):
+                    (self._chars_valid
+                     == self._candidates[0][0])):
                 self.commit_everything_unless_invalid()
             self._update_ui()
             return True
 
         if key.val in self._commit_keys:
             if self.commit_everything_unless_invalid():
-                if self._editor._auto_select:
+                if self._auto_select:
                     self.commit_string(u' ')
 
             if (self._sg_mode
-                and self._editor._input_mode
-                and not self._editor._sg_mode_active):
-                self._editor._sg_mode_active = True
+                and self._input_mode
+                and not self._sg_mode_active):
+                self._sg_mode_active = True
 
-            self._editor.update_candidates()
+            self.update_candidates()
             self._update_ui()
             return True
 
-        if key.val in self._page_down_keys and self._editor._candidates:
-            res = self._editor.page_down()
+        if key.val in self._page_down_keys and self._candidates:
+            res = self.page_down()
             self._update_ui()
             return res
 
-        if key.val in self._page_up_keys and self._editor._candidates:
-            res = self._editor.page_up()
+        if key.val in self._page_up_keys and self._candidates:
+            res = self.page_up()
             self._update_ui()
             return res
 
-        if (key.val in self._editor.get_select_keys()
-                and self._editor._candidates):
-            if self._editor.select_key(key.val): # commits to preëdit
+        if (key.val in self.get_select_keys()
+                and self._candidates):
+            if self.select_key(key.val): # commits to preëdit
                 self.commit_string(
-                    self._editor.get_preedit_string_complete(),
-                    tabkeys=self._editor.get_preedit_tabkeys_complete())
+                    self.get_preedit_string_complete(),
+                    tabkeys=self.get_preedit_tabkeys_complete())
 
             if (self._sg_mode
-                and self._editor._input_mode
-                and not self._editor._sg_mode_active):
-                self._editor._sg_mode_active = True
+                and self._input_mode
+                and not self._sg_mode_active):
+                self._sg_mode_active = True
 
-            self._editor.update_candidates()
+            self.update_candidates()
             self._update_ui()
             return True
 
@@ -3689,11 +3638,11 @@ class TabEngine(IBus.Engine):
             if DEBUG_LEVEL > 0:
                 LOGGER.debug(
                     'trailing invalid input: keychar=%s', keychar)
-            if not self._editor._candidates:
-                self.commit_string(self._editor.get_preedit_tabkeys_complete())
+            if not self._candidates:
+                self.commit_string(self.get_preedit_tabkeys_complete())
             else:
-                self._editor.commit_to_preedit()
-                self.commit_string(self._editor.get_preedit_string_complete())
+                self.commit_to_preedit()
+                self.commit_string(self.get_preedit_string_complete())
             if ascii_ispunct(keychar):
                 self.commit_string(self.cond_punct_translate(keychar))
             else:
@@ -3718,7 +3667,7 @@ class TabEngine(IBus.Engine):
     def do_focus_out(self):
         if self._has_input_purpose:
             self._input_purpose = 0
-        self._editor.clear_all_input_and_preedit()
+        self.clear_all_input_and_preedit()
 
     def do_set_content_type(self, purpose, _hints):
         if self._has_input_purpose:
@@ -3732,13 +3681,13 @@ class TabEngine(IBus.Engine):
         self._on = False
 
     def do_page_up(self):
-        if self._editor.page_up():
+        if self.page_up():
             self._update_ui()
             return True
         return False
 
     def do_page_down(self):
-        if self._editor.page_down():
+        if self.page_down():
             self._update_ui()
             return True
         return False

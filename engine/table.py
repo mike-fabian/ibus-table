@@ -294,6 +294,9 @@ class TabEngine(IBus.Engine):
         self.autocommit_mode_properties = {}
         self._setup_property = None
 
+        self._keybindings = {}
+        self._hotkeys = None
+
         # self._ime_py: Indicates whether this table supports pinyin mode
         self._ime_py = self.db.ime_properties.get('pinyin_mode')
         if self._ime_py:
@@ -449,6 +452,8 @@ class TabEngine(IBus.Engine):
                     self._commit_keys.append(IBus.KEY_space)
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
+                'self._page_up_keys=%s', repr(self._page_up_keys))
+            LOGGER.debug(
                 'self._page_down_keys=%s', repr(self._page_down_keys))
             LOGGER.debug(
                 'self._commit_keys=%s', repr(self._commit_keys))
@@ -584,14 +589,16 @@ class TabEngine(IBus.Engine):
 
         select_keys_csv = self.db.get_select_keys()
         if select_keys_csv is None:
-            select_keys_csv = '1,2,3,4,5,6,7,8,9'
+            select_keys_csv = '1,2,3,4,5,6,7,8,9,0'
+        self._select_key_names = [
+            name.strip() for name in select_keys_csv.split(',')][:10]
         self._select_keys = [
-            IBus.keyval_from_name(y)
-            for y in [x.strip() for x in select_keys_csv.split(",")]]
+            IBus.keyval_from_name(name) for name in self._select_key_names]
         self._page_size = it_util.variant_to_value(
             self._gsettings.get_user_value('lookuptablepagesize'))
-        if self._page_size is None or self._page_size > len(self._select_keys):
-            self._page_size = len(self._select_keys)
+        if (self._page_size is None
+            or self._page_size > len(self._select_key_names)):
+            self._page_size = len(self._select_key_names)
         self._orientation = it_util.variant_to_value(
             self._gsettings.get_user_value('lookuptableorientation'))
         if self._orientation is None:
@@ -633,6 +640,18 @@ class TabEngine(IBus.Engine):
         if self._auto_select is None:
             self._auto_select = it_util.variant_to_value(
                 self._gsettings.get_value('autoselect'))
+
+        self._commit_key_names = [
+            IBus.keyval_name(keyval) for keyval in self._commit_keys]
+        self._page_down_key_names = [
+            IBus.keyval_name(keyval) for keyval in self._page_down_keys]
+        self._page_up_key_names = [
+            IBus.keyval_name(keyval) for keyval in self._page_up_keys]
+        user_keybindings = it_util.variant_to_value(
+            self._gsettings.get_user_value('keybindings'))
+        if not user_keybindings:
+            user_keybindings = {}
+        self.set_keybindings(user_keybindings, update_gsettings=False)
 
         self.chinese_mode_properties = {
             'ChineseMode.Simplified': {
@@ -693,7 +712,8 @@ class TabEngine(IBus.Engine):
             'key': 'ChineseMode',
             'label': _('Chinese mode'),
             'tooltip': _('Switch Chinese mode'),
-            'shortcut_hint': '(Ctrl-;)',
+            'shortcut_hint': repr(
+                self._keybindings['switch_to_next_chinese_mode']),
             'sub_properties': self.chinese_mode_properties
         }
         if self.db._is_chinese:
@@ -736,7 +756,8 @@ class TabEngine(IBus.Engine):
             'key': 'InputMode',
             'label': _('Input mode'),
             'tooltip': _('Switch Input mode'),
-            'shortcut_hint': '(Left Shift)',
+            'shortcut_hint': repr(
+                self._keybindings['toggle_input_mode_on_off']),
             'sub_properties': self.input_mode_properties
         }
         self.letter_width_properties = {
@@ -757,7 +778,8 @@ class TabEngine(IBus.Engine):
             'key': 'LetterWidth',
             'label': _('Letter width'),
             'tooltip': _('Switch letter width'),
-            'shortcut_hint': '(Shift-Space)',
+            'shortcut_hint': repr(
+                self._keybindings['toggle_letter_width']),
             'sub_properties': self.letter_width_properties
         }
         self.punctuation_width_properties = {
@@ -778,7 +800,8 @@ class TabEngine(IBus.Engine):
             'key': 'PunctuationWidth',
             'label': _('Punctuation width'),
             'tooltip': _('Switch punctuation width'),
-            'shortcut_hint': '(Ctrl-.)',
+            'shortcut_hint': repr(
+                self._keybindings['toggle_punctuation_width']),
             'sub_properties': self.punctuation_width_properties
         }
         self.pinyin_mode_properties = {
@@ -799,7 +822,8 @@ class TabEngine(IBus.Engine):
             'key': 'PinyinMode',
             'label': _('Pinyin mode'),
             'tooltip': _('Switch pinyin mode'),
-            'shortcut_hint': '(Right Shift)',
+            'shortcut_hint': repr(
+                self._keybindings['toggle_pinyin_mode']),
             'sub_properties': self.pinyin_mode_properties
         }
         self.suggestion_mode_properties = {
@@ -820,7 +844,8 @@ class TabEngine(IBus.Engine):
             'key': 'SuggestionMode',
             'label': _('Suggestion mode'),
             'tooltip': _('Switch suggestion mode'),
-            'shortcut_hint': '',
+            'shortcut_hint': repr(
+                self._keybindings['toggle_suggestion_mode']),
             'sub_properties': self.suggestion_mode_properties
         }
         self.onechar_mode_properties = {
@@ -843,7 +868,8 @@ class TabEngine(IBus.Engine):
             'key': 'OneCharMode',
             'label': _('Onechar mode'),
             'tooltip': _('Switch onechar mode'),
-            'shortcut_hint': '(Ctrl-,)',
+            'shortcut_hint': repr(
+                self._keybindings['toggle_onechar_mode']),
             'sub_properties': self.onechar_mode_properties
         }
         self.autocommit_mode_properties = {
@@ -870,7 +896,8 @@ class TabEngine(IBus.Engine):
             'key': 'AutoCommitMode',
             'label': _('Auto commit mode'),
             'tooltip': _('Switch autocommit mode'),
-            'shortcut_hint': '(Ctrl-/)',
+            'shortcut_hint': repr(
+                self._keybindings['toggle_autocommit_mode']),
             'sub_properties': self.autocommit_mode_properties
         }
         self._init_properties()
@@ -911,15 +938,6 @@ class TabEngine(IBus.Engine):
                 IBus.Text.new_from_string("%s." %IBus.keyval_name(keycode)))
         lookup_table.set_orientation(orientation)
         return lookup_table
-
-    def get_select_keys(self):
-        """
-        Returns the list of key codes for the select keys.
-        For example, if the select keys are ["1", "2", ...] the
-        key codes are [49, 50, ...]. If the select keys are
-        ["F1", "F2", ...] the key codes are [65470, 65471, ...]
-        """
-        return self._select_keys
 
     def get_default_chinese_mode(self):
         '''
@@ -1841,13 +1859,12 @@ class TabEngine(IBus.Engine):
         return self.commit_to_preedit_current_page(
             self._select_keys.index(keycode))
 
-    def remove_candidate_from_user_database(self, keycode):
-        '''Remove a candidate displayed in the lookup table from the user
+    def remove_candidate_from_user_database(self, index):
+        '''Remove the candidate shown at index in the lookup table from the user
         database.
 
-        The candidate indicated by the selection key with the key code
-        “keycode” is removed, if possible.  If it is not in the user
-        database at all, nothing happens.
+        If that candidate is not in the user database at all, nothing
+        happens.
 
         If this is a candidate which is also in the system database,
         removing it from the user database only means that its user
@@ -1857,10 +1874,16 @@ class TabEngine(IBus.Engine):
         If this is a candidate which is user defined and not in the system
         database, it will not match at all anymore after removing it.
 
+        :param index: The index in the current page of the lookup table.
+                      The topmost candidate has the index 0 (and usually the
+                      label “1”)
+        :type index: Integer
+        :return: True if successful, False if not
+        :rtype: Boolean
+
         '''
-        if keycode not in self._select_keys:
-            return False
-        index = self._select_keys.index(keycode)
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('index=%s', index)
         cursor_pos = self._lookup_table.get_cursor_pos()
         cursor_in_page = self._lookup_table.get_cursor_in_page()
         current_page_start = cursor_pos - cursor_in_page
@@ -1903,7 +1926,7 @@ class TabEngine(IBus.Engine):
             return
         self.remove_preedit_character_after_cursor()
 
-    def cycle_next_cand(self):
+    def select_next_candidate_in_current_page(self):
         '''Cycle cursor to next candidate in the page.'''
         total = len(self._candidates)
 
@@ -1914,6 +1937,21 @@ class TabEngine(IBus.Engine):
             pos += 1
             if pos >= (page+1)*page_size or pos >= total:
                 pos = page*page_size
+            self._lookup_table.set_cursor_pos(pos)
+            return True
+        return False
+
+    def select_previous_candidate_in_current_page(self):
+        '''Cycle cursor to previous candidate in the page.'''
+        total = len(self._candidates)
+
+        if total > 0:
+            page_size = self._lookup_table.get_page_size()
+            pos = self._lookup_table.get_cursor_pos()
+            page = int(pos/page_size)
+            pos -= 1
+            if pos < page*page_size or pos < 0:
+                pos = min(((page + 1) * page_size) - 1, total)
             self._lookup_table.set_cursor_pos(pos)
             return True
         return False
@@ -1943,6 +1981,98 @@ class TabEngine(IBus.Engine):
             self.db.sync_usrdb()
             self._save_user_count = 0
         super(TabEngine, self).destroy()
+
+    def set_keybindings(self, keybindings, update_gsettings=True):
+        '''Set current key bindings
+
+        :param keybindings: The key bindings to use
+        :type keybindings: Dictionary of key bindings for commands
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the Gsettings key changed
+                                 to avoid endless loops when the Gsettings
+                                 key is changed twice in a short time.
+        :type update_gsettings: boolean
+        '''
+        new_keybindings = {}
+        # Get the default settings from the generic schema for all databases:
+        new_keybindings = it_util.variant_to_value(
+            self._gsettings.get_default_value('keybindings'))
+        # Override with the default settings from the specific database:
+        new_keybindings['commit'] = self._commit_key_names
+        for index, name in enumerate(self._select_key_names):
+            new_keybindings[
+                'commit_candidate_%s' % (index + 1)
+            ] = [name]
+            new_keybindings[
+                'commit_candidate_to_preedit_%s' % (index + 1)
+            ] = ['Control+' + name]
+            new_keybindings[
+                'remove_candidate_%s' % (index + 1)
+            ] = ['Mod1+' + name]
+        new_keybindings['lookup_table_page_down'] = self._page_down_key_names
+        new_keybindings['lookup_table_page_up'] = self._page_up_key_names
+        # Update with the possibly changed settings:
+        it_util.dict_update_existing_keys(new_keybindings, keybindings)
+        self._keybindings = new_keybindings
+        # Update hotkeys:
+        self._hotkeys = it_util.HotKeys(self._keybindings)
+        # Some property menus have tooltips which show hints for the
+        # key bindings. These may need to be updated if the key
+        # bindings have changed.
+        #
+        # I don’t check whether the key bindings really have changed,
+        # just update all the properties anyway.
+        #
+        # But update them only if the properties have already been
+        # initialized. At program start they might still be empty at
+        # the time when self.set_keybindings() is called.
+        if self._prop_dict:
+            if self.chinese_mode_menu:
+                self.chinese_mode_menu['shortcut_hint'] = (
+                    repr(self._keybindings['switch_to_next_chinese_mode']))
+            if self.input_mode_menu:
+                self.input_mode_menu['shortcut_hint'] = (
+                    repr(self._keybindings['toggle_input_mode_on_off']))
+            if self.letter_width_menu:
+                self.letter_width_menu['shortcut_hint'] = (
+                    repr(self._keybindings['toggle_letter_width']))
+            if self.punctuation_width_menu:
+               self.punctuation_width_menu['shortcut_hint'] = (
+                   repr(self._keybindings['toggle_punctuation_width']))
+            if self.pinyin_mode_menu:
+               self.pinyin_mode_menu['shortcut_hint'] = (
+                   repr(self._keybindings['toggle_pinyin_mode']))
+            if self.suggestion_mode_menu:
+               self.suggestion_mode_menu['shortcut_hint'] = (
+                   repr(self._keybindings['toggle_suggestion_mode']))
+            if self.onechar_mode_menu:
+               self.onechar_mode_menu['shortcut_hint'] = (
+                   repr(self._keybindings['toggle_onechar_mode']))
+            if self.autocommit_mode_menu:
+               self.autocommit_mode_menu['shortcut_hint'] = (
+                   repr(self._keybindings['toggle_autocommit_mode']))
+            self._init_properties()
+        if update_gsettings:
+            variant_dict = GLib.VariantDict(GLib.Variant('a{sv}', {}))
+            for command in sorted(self._keybindings):
+                variant_array = GLib.Variant.new_array(
+                    GLib.VariantType('s'),
+                    [GLib.Variant.new_string(x)
+                     for x in self._keybindings[command]])
+                variant_dict.insert_value(command, variant_array)
+            self._gsettings.set_value(
+                'keybindings',
+                variant_dict.end())
+
+    def get_keybindings(self):
+        '''Get current key bindings
+
+        :rtype: Python dictionary of key bindings for commands
+        '''
+        # It is important to return a copy, we do not want to change
+        # the private member variable directly.
+        return self._keybindings.copy()
 
     def set_input_mode(self, mode=1):
         '''Sets whether direct input or the current table is used.
@@ -2264,11 +2394,21 @@ class TabEngine(IBus.Engine):
                 self._page_down_keys.remove(IBus.KEY_space)
             if IBus.KEY_space not in self._commit_keys:
                 self._commit_keys.append(IBus.KEY_space)
+        self._commit_key_names = [
+            IBus.keyval_name(keyval) for keyval in self._commit_keys]
+        self._page_down_key_names = [
+            IBus.keyval_name(keyval) for keyval in self._page_down_keys]
+        self._keybindings['commit'] = self._commit_key_names
+        self._keybindings['lookup_table_page_down'] = self._page_down_key_names
+        # Update hotkeys:
+        self._hotkeys = it_util.HotKeys(self._keybindings)
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'self._page_down_keys=%s', repr(self._page_down_keys))
             LOGGER.debug(
                 'self._commit_keys=%s', repr(self._commit_keys))
+            LOGGER.debug(
+                'self._keybindings=%s', repr(self._keybindings))
         if update_gsettings:
             self._gsettings.set_value(
                 "spacekeybehavior",
@@ -2368,8 +2508,8 @@ class TabEngine(IBus.Engine):
             LOGGER.debug('page_size=%s', page_size)
         if page_size == self._page_size:
             return
-        if page_size > len(self._select_keys):
-            page_size = len(self._select_keys)
+        if page_size > len(self._select_key_names):
+            page_size = len(self._select_key_names)
         if page_size < 1:
             page_size = 1
         self._page_size = page_size
@@ -2987,38 +3127,6 @@ class TabEngine(IBus.Engine):
 
         return unichar_half_to_full(char)
 
-    def _match_hotkey(self, key, keyval, state):
-        '''Check whether “key” matches a “hotkey” specified by “keyval” and
-        “state”.
-
-        Returns True if there is a match, False if not.
-
-        :param key: The key typed
-        :type key: KeyEvent object
-        :param keyval: The key value to match against
-        :type keyval: Integer
-        :param state: The state of the modifier keys to match against.
-        :type state: Integer
-        :rtype: Boolean
-        '''
-        if DEBUG_LEVEL > 0:
-            LOGGER.debug('typed key: %s', key)
-            LOGGER.debug('trying to match: keyval=%s state=%s',
-                         keyval, state)
-        # Match only when keys are released
-        state = state | IBus.ModifierType.RELEASE_MASK
-        if key.val == keyval and (key.state & state) == state:
-            # If it is a key release event, the previous key
-            # must have been the same key pressed down.
-            if (self._prev_key
-                    and key.val == self._prev_key.val):
-                if DEBUG_LEVEL > 0:
-                    LOGGER.debug('*Match*!')
-                return True
-
-        LOGGER.debug('No match!')
-        return False
-
     def do_candidate_clicked(self, index, _button, _state):
         if self.commit_to_preedit_current_page(index):
             # commits to preëdit
@@ -3026,6 +3134,147 @@ class TabEngine(IBus.Engine):
                 self.get_preedit_string_complete(),
                 tabkeys=self.get_preedit_tabkeys_complete())
             return True
+        return False
+
+    def _handle_hotkeys(self, key):
+        '''
+        Handle hotkey commands
+
+        Returns True if the key was completely handled, False if not.
+
+        :param key: The typed key. If this is a hotkey,
+                    execute the command for this hotkey.
+        :type key: KeyEvent object
+        :rtype: Boolean
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('KeyEvent object: %s\n', key)
+            LOGGER.debug('self._hotkeys=%s\n', str(self._hotkeys))
+
+        if (self._prev_key, key, 'cancel') in self._hotkeys:
+            self.reset()
+            self._update_ui()
+            return True
+
+        if (self._ime_sg
+            and (self._prev_key, key,
+                 'toggle_suggestion_mode') in self._hotkeys):
+            self.set_suggestion_mode(not self._sg_mode)
+            return True
+
+        # Change pinyin mode.
+        #
+        # Should be above committing to preedit because the default
+        # key for changing the pinyin mode is Shift_R and the default
+        # keys for committing to preedit are Shift_R and Shift_L.
+        #
+        # (change only if empty. When it is not empty, the right shift
+        # key should commit to preëdit and not change the pinyin
+        # mode).
+        if (self._ime_py
+            and self.is_empty()
+            and (self._prev_key, key,
+                 'toggle_pinyin_mode') in self._hotkeys):
+            self.set_pinyin_mode(not self._py_mode)
+            return True
+
+        if (self._prev_key, key, 'commit_to_preedit') in self._hotkeys:
+            res = self.commit_to_preedit()
+            self._update_ui()
+            return res
+
+        if (self._prev_key, key,
+            'select_next_candidate_in_current_page') in self._hotkeys:
+            res = self.select_next_candidate_in_current_page()
+            self._update_ui()
+            return res
+
+        if (self._prev_key, key,
+            'select_previous_candidate_in_current_page') in self._hotkeys:
+            res = self.select_previous_candidate_in_current_page()
+            self._update_ui()
+            return res
+
+        if (self.db._is_cjk
+            and (self._prev_key, key, 'toggle_onechar_mode') in self._hotkeys):
+            self.set_onechar_mode(not self._onechar)
+            return True
+
+        if (self.db.user_can_define_phrase and self.db.rules
+            and (self._prev_key, key,
+                 'toggle_autocommit_mode') in self._hotkeys):
+            self.set_autocommit_mode(not self._auto_commit)
+            return True
+
+        if (self.db._is_chinese
+            and (self._prev_key, key,
+                 'switch_to_next_chinese_mode') in self._hotkeys):
+            self.set_chinese_mode((self._chinese_mode+1) % 5)
+            return True
+
+        if ((self._prev_key, key, 'commit') in self._hotkeys
+            and (self._u_chars
+                 or not self.is_empty()
+                 or self._sg_mode_active)):
+            if self.commit_everything_unless_invalid():
+                if self._auto_select:
+                    self.commit_string(u' ')
+
+            if (self._sg_mode
+                and self._input_mode
+                and not self._sg_mode_active):
+                self._sg_mode_active = True
+
+            self.update_candidates()
+            self._update_ui()
+            return True
+
+        if self._candidates:
+            if (self._prev_key, key,
+                'lookup_table_page_down') in self._hotkeys:
+                res = self.page_down()
+                self._update_ui()
+                return res
+
+            if (self._prev_key, key,
+                'lookup_table_page_up') in self._hotkeys:
+                res = self.page_up()
+                self._update_ui()
+                return res
+
+            for index in range(0, 10):
+                if ((self._prev_key, key,
+                     'commit_candidate_to_preedit_%s' % (index + 1))
+                    in self._hotkeys):
+                    res = self.commit_to_preedit_current_page(index)
+                    self._update_ui()
+                    return res
+
+            for index in range(0, 10):
+                if ((self._prev_key, key,
+                     'remove_candidate_%s' % (index + 1))
+                    in self._hotkeys):
+                    res = self.remove_candidate_from_user_database(index)
+                    self._update_ui()
+                    return res
+
+            for index in range(0, 10):
+                if ((self._prev_key, key, 'commit_candidate_%s' % (index + 1))
+                    in self._hotkeys):
+                    if self.commit_to_preedit_current_page(index):
+                        self.commit_string(
+                            self.get_preedit_string_complete(),
+                            tabkeys=self.get_preedit_tabkeys_complete())
+
+                        if (self._sg_mode
+                            and self._input_mode
+                            and not self._sg_mode_active):
+                            self._sg_mode_active = True
+
+                        self.update_candidates()
+                        self._update_ui()
+                        return True
+
         return False
 
     def _return_false(self, keyval, keycode, state):
@@ -3094,39 +3343,30 @@ class TabEngine(IBus.Engine):
         Returns False if the key event has not been handled completely
         and is passed through.
         '''
-        # Match mode switch hotkey
         if (self.is_empty()
-                and (self._match_hotkey(
-                    key, IBus.KEY_Shift_L,
-                    IBus.ModifierType.SHIFT_MASK))):
+            and (self._prev_key, key,
+                 'toggle_input_mode_on_off') in self._hotkeys):
             self.set_input_mode(int(not self._input_mode))
             return True
 
-        # Match fullwidth/halfwidth letter mode switch hotkey
         if self.db._is_cjk:
-            if (key.val == IBus.KEY_space
-                    and key.state & IBus.ModifierType.SHIFT_MASK
-                    and not key.state & IBus.ModifierType.RELEASE_MASK):
-                # Ignore when Shift+Space was pressed, the key release
-                # event will toggle the fullwidth/halfwidth letter mode, we
-                # don’t want to insert an extra space on the key press
-                # event.
-                return True
-            if (self._match_hotkey(
-                    key, IBus.KEY_space,
-                    IBus.ModifierType.SHIFT_MASK)):
+            if (self._prev_key, key,
+                'toggle_letter_width') in self._hotkeys:
                 self.set_letter_width(
                     not self._full_width_letter[self._input_mode],
                     input_mode=self._input_mode)
                 return True
 
-        # Match full half punct mode switch hotkey
-        if (self._match_hotkey(
-                key, IBus.KEY_period,
-                IBus.ModifierType.CONTROL_MASK) and self.db._is_cjk):
-            self.set_punctuation_width(
-                not self._full_width_punct[self._input_mode],
-                input_mode=self._input_mode)
+        if self.db._is_cjk:
+            if (self._prev_key, key,
+                'toggle_punctuation_width') in self._hotkeys:
+                self.set_punctuation_width(
+                    not self._full_width_punct[self._input_mode],
+                    input_mode=self._input_mode)
+                return True
+
+        if (self._prev_key, key, 'setup') in self._hotkeys:
+            self._start_setup()
             return True
 
         if self._input_mode:
@@ -3195,62 +3435,12 @@ class TabEngine(IBus.Engine):
         '''
         if DEBUG_LEVEL > 0:
             LOGGER.debug('repr(key)=%s', repr(key))
-        # Change pinyin mode
-        #
-        # (change only if empty. When it is not empty, the right shift
-        # key should commit to preëdit and not change the pinyin
-        # mode).
-        if (self._ime_py
-                and self.is_empty()
-                and self._match_hotkey(
-                    key, IBus.KEY_Shift_R,
-                    IBus.ModifierType.SHIFT_MASK)):
-            self.set_pinyin_mode(not self._py_mode)
-            return True
-        # process commit to preedit
-        if (self._match_hotkey(
-                key, IBus.KEY_Shift_R,
-                IBus.ModifierType.SHIFT_MASK)
-                or self._match_hotkey(
-                    key, IBus.KEY_Shift_L,
-                    IBus.ModifierType.SHIFT_MASK)):
-            res = self.commit_to_preedit()
-            self._update_ui()
-            return res
 
-        # Left ALT key to cycle candidates in the current page.
-        if (self._match_hotkey(
-                key, IBus.KEY_Alt_L,
-                IBus.ModifierType.MOD1_MASK)):
-            res = self.cycle_next_cand()
-            self._update_ui()
-            return res
-
-        # Match single char mode switch hotkey
-        if (self._match_hotkey(
-                key, IBus.KEY_comma,
-                IBus.ModifierType.CONTROL_MASK) and self.db._is_cjk):
-            self.set_onechar_mode(not self._onechar)
+        if self._handle_hotkeys(key):
             return True
 
-        # Match direct commit mode switch hotkey
-        if (self._match_hotkey(
-                key, IBus.KEY_slash,
-                IBus.ModifierType.CONTROL_MASK)
-                and  self.db.user_can_define_phrase and self.db.rules):
-            self.set_autocommit_mode(not self._auto_commit)
-            return True
-
-        # Match Chinese mode shift
-        if (self._match_hotkey(
-                key, IBus.KEY_semicolon,
-                IBus.ModifierType.CONTROL_MASK) and self.db._is_chinese):
-            self.set_chinese_mode((self._chinese_mode+1) % 5)
-            return True
-
-        # Ignore key release events
-        # (Must be below all self._match_hotkey() callse
-        # because these match on a release event).
+        # Ignore key release events (Should be below all hotkey matches
+        # because some of them might match on a release event)
         if key.state & IBus.ModifierType.RELEASE_MASK:
             return self._return_false(key.val, key.code, key.state)
 
@@ -3286,11 +3476,6 @@ class TabEngine(IBus.Engine):
                     return self._return_false(key.val, key.code, key.state)
                 self.commit_string(trans_char)
                 return True
-
-        if key.val == IBus.KEY_Escape:
-            self.reset()
-            self._update_ui()
-            return True
 
         if key.val in (IBus.KEY_Return, IBus.KEY_KP_Enter):
             if (self.is_empty()
@@ -3412,20 +3597,6 @@ class TabEngine(IBus.Engine):
             self._update_ui()
             return True
 
-        if (key.val in self.get_select_keys()
-                and self._candidates
-                and key.state & IBus.ModifierType.CONTROL_MASK):
-            res = self.select_key(key.val)
-            self._update_ui()
-            return res
-
-        if (key.val in self.get_select_keys()
-                and self._candidates
-                and key.state & IBus.ModifierType.MOD1_MASK):
-            res = self.remove_candidate_from_user_database(key.val)
-            self._update_ui()
-            return res
-
         # now we ignore all other hotkeys
         if (key.state
                 & (IBus.ModifierType.CONTROL_MASK
@@ -3539,46 +3710,6 @@ class TabEngine(IBus.Engine):
             self._update_ui()
             return True
 
-        if key.val in self._commit_keys:
-            if self.commit_everything_unless_invalid():
-                if self._auto_select:
-                    self.commit_string(u' ')
-
-            if (self._sg_mode
-                and self._input_mode
-                and not self._sg_mode_active):
-                self._sg_mode_active = True
-
-            self.update_candidates()
-            self._update_ui()
-            return True
-
-        if key.val in self._page_down_keys and self._candidates:
-            res = self.page_down()
-            self._update_ui()
-            return res
-
-        if key.val in self._page_up_keys and self._candidates:
-            res = self.page_up()
-            self._update_ui()
-            return res
-
-        if (key.val in self.get_select_keys()
-                and self._candidates):
-            if self.select_key(key.val): # commits to preëdit
-                self.commit_string(
-                    self.get_preedit_string_complete(),
-                    tabkeys=self.get_preedit_tabkeys_complete())
-
-            if (self._sg_mode
-                and self._input_mode
-                and not self._sg_mode_active):
-                self._sg_mode_active = True
-
-            self.update_candidates()
-            self._update_ui()
-            return True
-
         # Section to handle trailing invalid input:
         #
         # If the key has still not been handled when this point is
@@ -3655,6 +3786,9 @@ class TabEngine(IBus.Engine):
         value = it_util.variant_to_value(self._gsettings.get_value(key))
         LOGGER.debug('Settings changed for engine “%s”: key=%s value=%s',
                      self._engine_name, key, value)
+        if key == u'keybindings':
+            self.set_keybindings(value, update_gsettings=False)
+            return
         if key == u'inputmode':
             self.set_input_mode(value)
             return

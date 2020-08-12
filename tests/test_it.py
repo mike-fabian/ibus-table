@@ -25,6 +25,7 @@ This file implements the test cases for the unit tests of ibus-table
 
 import sys
 import os
+import logging
 import unittest
 import importlib
 import mock
@@ -32,6 +33,8 @@ import mock
 from gi import require_version
 require_version('IBus', '1.0')
 from gi.repository import IBus
+
+LOGGER = logging.getLogger('ibus-table')
 
 # Get more verbose output in the test log:
 os.environ['IBUS_TABLE_DEBUG_LEVEL'] = '255'
@@ -79,9 +82,11 @@ ORIG_SINGLE_WILDCARD_CHAR = None
 ORIG_MULTI_WILDCARD_CHAR = None
 ORIG_PINYIN_MODE = None
 ORIG_SUGGESTION_MODE = None
+ORIG_KEYBINDINGS = None
 
 def backup_original_settings():
     global ENGINE
+    global ORIG_KEYBINDINGS
     global ORIG_INPUT_MODE
     global ORIG_CHINESE_MODE
     global ORIG_LETTER_WIDTH
@@ -98,6 +103,7 @@ def backup_original_settings():
     global ORIG_MULTI_WILDCARD_CHAR
     global ORIG_PINYIN_MODE
     global ORIG_SUGGESTION_MODE
+    ORIG_KEYBINDINGS = ENGINE.get_keybindings()
     ORIG_INPUT_MODE = ENGINE.get_input_mode()
     ORIG_CHINESE_MODE = ENGINE.get_chinese_mode()
     ORIG_LETTER_WIDTH = ENGINE.get_letter_width()
@@ -117,6 +123,7 @@ def backup_original_settings():
 
 def restore_original_settings():
     global ENGINE
+    global ORIG_KEYBINDINGS
     global ORIG_INPUT_MODE
     global ORIG_CHINESE_MODE
     global ORIG_LETTER_WIDTH
@@ -133,22 +140,38 @@ def restore_original_settings():
     global ORIG_MULTI_WILDCARD_CHAR
     global ORIG_PINYIN_MODE
     global ORIG_SUGGESTION_MODE
+    ENGINE.set_keybindings(
+        ORIG_KEYBINDINGS, update_gsettings=False)
     ENGINE.set_input_mode(ORIG_INPUT_MODE)
-    ENGINE.set_chinese_mode(ORIG_CHINESE_MODE)
-    ENGINE.set_letter_width(ORIG_LETTER_WIDTH[0], input_mode=0)
-    ENGINE.set_letter_width(ORIG_LETTER_WIDTH[1], input_mode=1)
-    ENGINE.set_punctuation_width(ORIG_PUNCTUATION_WIDTH[0], input_mode=0)
-    ENGINE.set_punctuation_width(ORIG_PUNCTUATION_WIDTH[1], input_mode=1)
-    ENGINE.set_always_show_lookup(ORIG_ALWAYS_SHOW_LOOKUP)
-    ENGINE.set_lookup_table_orientation(ORIG_LOOKUP_TABLE_ORIENTATION)
-    ENGINE.set_page_size(ORIG_PAGE_SIZE)
-    ENGINE.set_onechar_mode(ORIG_ONECHAR_MODE)
-    ENGINE.set_autoselect_mode(ORIG_AUTOSELECT_MODE)
-    ENGINE.set_autocommit_mode(ORIG_AUTOCOMMIT_MODE)
-    ENGINE.set_space_key_behavior_mode(ORIG_SPACE_KEY_BEHAVIOR_MODE)
-    ENGINE.set_autowildcard_mode(ORIG_AUTOWILDCARD_MODE)
-    ENGINE.set_single_wildcard_char(ORIG_SINGLE_WILDCARD_CHAR)
-    ENGINE.set_multi_wildcard_char(ORIG_MULTI_WILDCARD_CHAR)
+    ENGINE.set_chinese_mode(
+        ORIG_CHINESE_MODE, update_gsettings=False)
+    ENGINE.set_letter_width(
+        ORIG_LETTER_WIDTH[0], input_mode=0, update_gsettings=False)
+    ENGINE.set_letter_width(
+        ORIG_LETTER_WIDTH[1], input_mode=1, update_gsettings=False)
+    ENGINE.set_punctuation_width(
+        ORIG_PUNCTUATION_WIDTH[0], input_mode=0, update_gsettings=False)
+    ENGINE.set_punctuation_width(
+        ORIG_PUNCTUATION_WIDTH[1], input_mode=1, update_gsettings=False)
+    ENGINE.set_always_show_lookup(
+        ORIG_ALWAYS_SHOW_LOOKUP, update_gsettings=False)
+    ENGINE.set_lookup_table_orientation(
+        ORIG_LOOKUP_TABLE_ORIENTATION, update_gsettings=False)
+    ENGINE.set_page_size(
+        ORIG_PAGE_SIZE, update_gsettings=False)
+    ENGINE.set_onechar_mode(ORIG_ONECHAR_MODE, update_gsettings=False)
+    ENGINE.set_autoselect_mode(
+        ORIG_AUTOSELECT_MODE, update_gsettings=False)
+    ENGINE.set_autocommit_mode(
+        ORIG_AUTOCOMMIT_MODE, update_gsettings=False)
+    ENGINE.set_space_key_behavior_mode(
+        ORIG_SPACE_KEY_BEHAVIOR_MODE, update_gsettings=False)
+    ENGINE.set_autowildcard_mode(
+        ORIG_AUTOWILDCARD_MODE, update_gsettings=False)
+    ENGINE.set_single_wildcard_char(
+        ORIG_SINGLE_WILDCARD_CHAR, update_gsettings=False)
+    ENGINE.set_multi_wildcard_char(
+        ORIG_MULTI_WILDCARD_CHAR, update_gsettings=False)
     ENGINE.set_pinyin_mode(ORIG_PINYIN_MODE)
     ENGINE.set_suggestion_mode(ORIG_SUGGESTION_MODE)
 
@@ -160,55 +183,66 @@ def set_default_settings():
     language_filter = TABSQLITEDB.ime_properties.get('language_filter')
     if language_filter in ('cm0', 'cm1', 'cm2', 'cm3', 'cm4'):
         chinese_mode = int(language_filter[-1])
-    ENGINE.set_chinese_mode(mode=chinese_mode)
+    ENGINE.set_chinese_mode(
+        mode=chinese_mode, update_gsettings=False)
 
     letter_width_mode = False
     def_full_width_letter = TABSQLITEDB.ime_properties.get(
         'def_full_width_letter')
     if def_full_width_letter:
         letter_width_mode = (def_full_width_letter.lower() == u'true')
-    ENGINE.set_letter_width(mode=False, input_mode=0)
-    ENGINE.set_letter_width(mode=letter_width_mode, input_mode=1)
+    ENGINE.set_letter_width(
+        mode=False, input_mode=0, update_gsettings=False)
+    ENGINE.set_letter_width(
+        mode=letter_width_mode, input_mode=1, update_gsettings=False)
 
     punctuation_width_mode = False
     def_full_width_punct = TABSQLITEDB.ime_properties.get(
         'def_full_width_punct')
     if def_full_width_punct:
         punctuation_width_mode = (def_full_width_punct.lower() == u'true')
-    ENGINE.set_punctuation_width(mode=False, input_mode=0)
-    ENGINE.set_punctuation_width(mode=punctuation_width_mode, input_mode=1)
+    ENGINE.set_punctuation_width(
+        mode=False, input_mode=0, update_gsettings=False)
+    ENGINE.set_punctuation_width(
+        mode=punctuation_width_mode, input_mode=1, update_gsettings=False)
 
     always_show_lookup_mode = True
     always_show_lookup = TABSQLITEDB.ime_properties.get(
         'always_show_lookup')
     if always_show_lookup:
         always_show_lookup_mode = (always_show_lookup.lower() == u'true')
-    ENGINE.set_always_show_lookup(always_show_lookup_mode)
+    ENGINE.set_always_show_lookup(
+        always_show_lookup_mode, update_gsettings=False)
 
     orientation = TABSQLITEDB.get_orientation()
-    ENGINE.set_lookup_table_orientation(orientation)
+    ENGINE.set_lookup_table_orientation(
+        orientation, update_gsettings=False)
 
     page_size = 6
     select_keys_csv = TABSQLITEDB.ime_properties.get('select_keys')
     # select_keys_csv is something like: "1,2,3,4,5,6,7,8,9,0"
     if select_keys_csv:
         page_size = len(select_keys_csv.split(","))
-    ENGINE.set_page_size(page_size)
+    ENGINE.set_page_size(
+        page_size, update_gsettings=False)
 
     onechar = False
-    ENGINE.set_onechar_mode(onechar)
+    ENGINE.set_onechar_mode(
+        onechar, update_gsettings=False)
 
     auto_select_mode = False
     auto_select = TABSQLITEDB.ime_properties.get('auto_select')
     if auto_select:
         auto_select_mode = (auto_select.lower() == u'true')
-    ENGINE.set_autoselect_mode(auto_select_mode)
+    ENGINE.set_autoselect_mode(
+        auto_select_mode, update_gsettings=False)
 
     auto_commit_mode = False
     auto_commit = TABSQLITEDB.ime_properties.get('auto_commit')
     if auto_commit:
         auto_commit_mode = (auto_commit.lower() == u'true')
-    ENGINE.set_autocommit_mode(auto_commit_mode)
+    ENGINE.set_autocommit_mode(
+        auto_commit_mode, update_gsettings=False)
 
     space_key_behavior_mode = False
     # if space is a page down key, set the option
@@ -231,13 +265,15 @@ def set_default_settings():
             for x in commit_keys_csv.split(',')]
     if IBus.KEY_space in commit_keys:
         space_key_behavior_mode = False
-    ENGINE.set_space_key_behavior_mode(space_key_behavior_mode)
+    ENGINE.set_space_key_behavior_mode(
+        space_key_behavior_mode, update_gsettings=False)
 
     auto_wildcard_mode = True
     auto_wildcard = TABSQLITEDB.ime_properties.get('auto_wildcard')
     if auto_wildcard:
         auto_wildcard_mode = (auto_wildcard.lower() == u'true')
-    ENGINE.set_autowildcard_mode(auto_wildcard_mode)
+    ENGINE.set_autowildcard_mode(
+        auto_wildcard_mode, update_gsettings=False)
 
     single_wildcard_char = TABSQLITEDB.ime_properties.get(
         'single_wildcard_char')
@@ -245,7 +281,8 @@ def set_default_settings():
         single_wildcard_char = u''
     if len(single_wildcard_char) > 1:
         single_wildcard_char = single_wildcard_char[0]
-    ENGINE.set_single_wildcard_char(single_wildcard_char)
+    ENGINE.set_single_wildcard_char(
+        single_wildcard_char, update_gsettings=False)
 
     multi_wildcard_char = TABSQLITEDB.ime_properties.get(
         'multi_wildcard_char')
@@ -253,10 +290,26 @@ def set_default_settings():
         multi_wildcard_char = u''
     if len(multi_wildcard_char) > 1:
         multi_wildcard_char = multi_wildcard_char[0]
-    ENGINE.set_multi_wildcard_char(multi_wildcard_char)
+    ENGINE.set_multi_wildcard_char(
+        multi_wildcard_char, update_gsettings=False)
 
     ENGINE.set_pinyin_mode(False)
     ENGINE.set_suggestion_mode(False)
+
+    page_up_keys_csv = TABSQLITEDB.ime_properties.get(
+        'page_up_keys')
+    if page_up_keys_csv:
+        page_up_keys = [
+            IBus.keyval_from_name(x)
+            for x in page_up_keys_csv.split(',')]
+    ENGINE._commit_key_names = [
+        IBus.keyval_name(keyval) for keyval in commit_keys]
+    ENGINE._page_down_key_names = [
+        IBus.keyval_name(keyval) for keyval in page_down_keys]
+    ENGINE._page_up_key_names = [
+        IBus.keyval_name(keyval) for keyval in page_up_keys]
+    user_keybindings={}
+    ENGINE.set_keybindings(user_keybindings, update_gsettings=False)
 
 def set_up(engine_name):
     '''
@@ -303,7 +356,7 @@ def set_up(engine_name):
         tear_down()
         return False
     TABSQLITEDB = tabsqlitedb.TabSqliteDb(
-        filename=db_file, user_db=':memory:')
+        filename=db_file, user_db=':memory:', unit_test=True)
     ENGINE = table.TabEngine(
         bus,
         '/com/redhat/IBus/engines/table/%s/engine/0' %engine_name,
@@ -358,6 +411,242 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '工')
+
+    def test_toggle_suggestion_mode_with_keybinding(self):
+        if not ENGINE._ime_sg:
+            self.skipTest("This engine does not have a suggestion mode.")
+        self.assertEqual(ENGINE.get_suggestion_mode(), False)
+        ENGINE.do_process_key_event(
+            IBus.KEY_F6, 0,
+            IBus.ModifierType.SUPER_MASK | IBus.ModifierType.MOD4_MASK)
+        self.assertEqual(ENGINE.get_suggestion_mode(), True)
+        ENGINE.do_process_key_event(
+            IBus.KEY_F6, 0,
+            IBus.ModifierType.SUPER_MASK | IBus.ModifierType.MOD4_MASK)
+        self.assertEqual(ENGINE.get_suggestion_mode(), False)
+
+    def test_toggle_input_mode_with_keybinding(self):
+        self.assertEqual(ENGINE.get_input_mode(), 1)
+        ENGINE.do_process_key_event(
+            IBus.KEY_Shift_L, 0,
+            IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+        # This should have successfully switched, although there was
+        # only a key release, no key press. Matching on modifiers keys
+        # like Shift_L matches only on key release and checks whether
+        # the previous key pressed was exactly the same key (To avoid
+        # matching on something like “Shift_L” + “a”).  But when this
+        # is very first key event after the startup of ibus-table, the
+        # previous key is still empty. The it_util.HotKey class then
+        # assumes that the previous key was the same automatically.
+        self.assertEqual(ENGINE.get_input_mode(), 0)
+        ENGINE.do_process_key_event(
+            IBus.KEY_Shift_L, 0,
+            IBus.ModifierType.SHIFT_MASK)
+        ENGINE.do_process_key_event(
+            IBus.KEY_Control_L, 0,
+            IBus.ModifierType.CONTROL_MASK)
+        ENGINE.do_process_key_event(
+            IBus.KEY_Shift_L, 0,
+            IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+        # This should have failed to switch because the key before the
+        # release of “Shift_L” was not a “Shift_L” key.
+        self.assertEqual(ENGINE.get_input_mode(), 0)
+        ENGINE.do_process_key_event(
+            IBus.KEY_Shift_L, 0,
+            IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+        # This switch should succeed because the previous key was
+        # also a “Shift_L” (also a key release, but this doesn’t matter
+        # I don’t check for this case as it cannot happen in reality).
+        self.assertEqual(ENGINE.get_input_mode(), 1)
+
+    def test_switch_to_next_chinese_mode_with_keybinding(self):
+        self.assertEqual(ENGINE.get_chinese_mode(), 2)
+        # Now change with the keybinding:
+        ENGINE.do_process_key_event(IBus.KEY_semicolon, 0, IBus.ModifierType.CONTROL_MASK)
+        self.assertEqual(ENGINE.get_chinese_mode(), 3)
+
+    def test_toggle_onechar_mode_with_keybinding(self):
+        self.assertEqual(ENGINE.get_onechar_mode(), False)
+        ENGINE.set_onechar_mode(True, update_gsettings=False)
+        self.assertEqual(ENGINE.get_onechar_mode(), True)
+        ENGINE.set_onechar_mode(False, update_gsettings=False)
+        self.assertEqual(ENGINE.get_onechar_mode(), False)
+        # Now change with the keybinding:
+        ENGINE.do_process_key_event(IBus.KEY_comma, 0, IBus.ModifierType.CONTROL_MASK)
+        self.assertEqual(ENGINE.get_onechar_mode(), True)
+        ENGINE.do_process_key_event(IBus.KEY_comma, 0, IBus.ModifierType.CONTROL_MASK)
+        self.assertEqual(ENGINE.get_onechar_mode(), False)
+
+    def test_toggle_autocommit_mode_with_keybinding(self):
+        self.assertEqual(ENGINE.get_autocommit_mode(), False)
+        ENGINE.set_autocommit_mode(True, update_gsettings=False)
+        self.assertEqual(ENGINE.get_autocommit_mode(), True)
+        ENGINE.set_autocommit_mode(False, update_gsettings=False)
+        self.assertEqual(ENGINE.get_autocommit_mode(), False)
+        # Now change with the keybinding:
+        ENGINE.do_process_key_event(IBus.KEY_slash, 0, IBus.ModifierType.CONTROL_MASK)
+        self.assertEqual(ENGINE.get_autocommit_mode(), True)
+        ENGINE.do_process_key_event(IBus.KEY_slash, 0, IBus.ModifierType.CONTROL_MASK)
+        self.assertEqual(ENGINE.get_autocommit_mode(), False)
+
+    def test_change_letter_width(self):
+        # The defaults come from the wubi-jidian86.txt source:
+        # DEF_FULL_WIDTH_LETTER = FALSE
+        self.assertEqual(ENGINE.get_letter_width(), [False, False])
+        ENGINE.set_letter_width(mode=True, input_mode=0, update_gsettings=False)
+        self.assertEqual(ENGINE.get_letter_width(), [True, False])
+        ENGINE.set_letter_width(mode=True, input_mode=1, update_gsettings=False)
+        self.assertEqual(ENGINE.get_letter_width(), [True, True])
+        # Restore the default:
+        ENGINE.set_letter_width(mode=False, input_mode=0, update_gsettings=False)
+        ENGINE.set_letter_width(mode=False, input_mode=1, update_gsettings=False)
+        self.assertEqual(ENGINE.get_letter_width(), [False, False])
+        # Now change it for input mode 1 with the default keybinding:
+        self.assertEqual(ENGINE.get_input_mode(), 1)
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, IBus.ModifierType.SHIFT_MASK)
+        self.assertEqual(ENGINE.get_letter_width(), [False, True])
+        # Restore it for input mode 1 with the default keybinding:
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, IBus.ModifierType.SHIFT_MASK)
+        self.assertEqual(ENGINE.get_letter_width(), [False, False])
+        # Now change it for input mode 0 with the default keybinding:
+        ENGINE.set_input_mode(0)
+        self.assertEqual(ENGINE.get_input_mode(), 0)
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, IBus.ModifierType.SHIFT_MASK)
+        self.assertEqual(ENGINE.get_letter_width(), [True, False])
+        # Restore it for input mode 0 with the default keybinding:
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, IBus.ModifierType.SHIFT_MASK)
+        self.assertEqual(ENGINE.get_letter_width(), [False, False])
+
+    def test_change_punctuation_width(self):
+        # The defaults come from the wubi-jidian86.txt source:
+        # DEF_FULL_WIDTH_PUNCT = TRUE
+        self.assertEqual(ENGINE.get_punctuation_width(), [False, True])
+        ENGINE.set_punctuation_width(mode=True, input_mode=0, update_gsettings=False)
+        self.assertEqual(ENGINE.get_punctuation_width(), [True, True])
+        ENGINE.set_punctuation_width(mode=False, input_mode=1, update_gsettings=False)
+        self.assertEqual(ENGINE.get_punctuation_width(), [True, False])
+        # Restore the default:
+        ENGINE.set_punctuation_width(mode=False, input_mode=0, update_gsettings=False)
+        ENGINE.set_punctuation_width(mode=False, input_mode=1, update_gsettings=False)
+        self.assertEqual(ENGINE.get_punctuation_width(), [False, False])
+        # Now change it for input mode 1 with the default keybinding:
+        self.assertEqual(ENGINE.get_input_mode(), 1)
+        ENGINE.do_process_key_event(IBus.KEY_period, 0, IBus.ModifierType.CONTROL_MASK)
+        self.assertEqual(ENGINE.get_punctuation_width(), [False, True])
+        # Restore it for input mode 1 with the default keybinding:
+        ENGINE.do_process_key_event(IBus.KEY_period, 0, IBus.ModifierType.CONTROL_MASK)
+        self.assertEqual(ENGINE.get_punctuation_width(), [False, False])
+        # Now change it for input mode 0 with the default keybinding:
+        ENGINE.set_input_mode(0)
+        self.assertEqual(ENGINE.get_input_mode(), 0)
+        ENGINE.do_process_key_event(IBus.KEY_period, 0, IBus.ModifierType.CONTROL_MASK)
+        self.assertEqual(ENGINE.get_punctuation_width(), [True, False])
+        # Restore it for input mode 0 with the default keybinding:
+        ENGINE.do_process_key_event(IBus.KEY_period, 0, IBus.ModifierType.CONTROL_MASK)
+        self.assertEqual(ENGINE.get_punctuation_width(), [False, False])
+
+    def test_next_and_previous_candidates_in_page(self):
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        print(ENGINE._lookup_table.mock_candidates)
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+                         ['工  99454797 0',
+                          '区 qi 1730000000 0',
+                          '或 kg 1250000000 0',
+                          '或 kgd 1250000000 0',
+                          '其 dw 1150000000 0',
+                          '其 dwu 1150000000 0',
+                          '其他 dwb 685000000 0',
+                          '世界 nlw 684000000 0',
+                          '花 wx 598000000 0',
+                          '花 wxb 598000000 0'])
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        # Go one candidate down in the candidate list:
+        ENGINE.do_process_key_event(
+            IBus.KEY_Alt_L, 0,
+            IBus.ModifierType.MOD1_MASK)
+        ENGINE.do_process_key_event(
+            IBus.KEY_Alt_L, 0,
+            IBus.ModifierType.MOD1_MASK | IBus.ModifierType.RELEASE_MASK)
+        self.assertEqual(ENGINE.mock_preedit_text, '区')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        # Go one candidate up in the candidate list:
+        ENGINE.do_process_key_event(
+            IBus.KEY_Alt_L, 0,
+            IBus.ModifierType.MOD1_MASK
+            | IBus.ModifierType.CONTROL_MASK)
+        ENGINE.do_process_key_event(
+            IBus.KEY_Alt_L, 0,
+            IBus.ModifierType.MOD1_MASK
+            | IBus.ModifierType.CONTROL_MASK
+            | IBus.ModifierType.RELEASE_MASK)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        # Go three candidates up in the candidate list
+        # (should wrap around in the current page):
+        #
+        # 1
+        ENGINE.do_process_key_event(
+            IBus.KEY_Alt_L, 0,
+            IBus.ModifierType.MOD1_MASK
+            | IBus.ModifierType.CONTROL_MASK)
+        ENGINE.do_process_key_event(
+            IBus.KEY_Alt_L, 0,
+            IBus.ModifierType.MOD1_MASK
+            | IBus.ModifierType.CONTROL_MASK
+            | IBus.ModifierType.RELEASE_MASK)
+        # 2
+        ENGINE.do_process_key_event(
+            IBus.KEY_Alt_L, 0,
+            IBus.ModifierType.MOD1_MASK
+            | IBus.ModifierType.CONTROL_MASK)
+        ENGINE.do_process_key_event(
+            IBus.KEY_Alt_L, 0,
+            IBus.ModifierType.MOD1_MASK
+            | IBus.ModifierType.CONTROL_MASK
+            | IBus.ModifierType.RELEASE_MASK)
+        # 3
+        ENGINE.do_process_key_event(
+            IBus.KEY_Alt_L, 0,
+            IBus.ModifierType.MOD1_MASK
+            | IBus.ModifierType.CONTROL_MASK)
+        ENGINE.do_process_key_event(
+            IBus.KEY_Alt_L, 0,
+            IBus.ModifierType.MOD1_MASK
+            | IBus.ModifierType.CONTROL_MASK
+            | IBus.ModifierType.RELEASE_MASK)
+        self.assertEqual(ENGINE.mock_preedit_text, '世界')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '世界')
+
+    def test_cancel_key_binding_changed(self):
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        # This 'Insert' does not 'cancel' because the default key for
+        # 'cancel' is 'Escape':
+        ENGINE.do_process_key_event(IBus.KEY_Insert, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, '工')
+        # Changing the key binding for 'cancel':
+        ENGINE.set_keybindings({
+            'cancel': ['Insert'],
+            }, update_gsettings=False)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        self.assertEqual(ENGINE.mock_committed_text, '工')
+        # Now this 'Insert' should cancel, i.e. empty the preedit:
+        ENGINE.do_process_key_event(IBus.KEY_Insert, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工')
+        # And as the preedit is empty now, there is nothing to commit
+        # and the 'space' key just adds a space:
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, '工 ')
 
     def test_pinyin_mode(self):
         # Pinyin mode is False by default:
@@ -444,6 +733,7 @@ class WubiJidian86TestCase(unittest.TestCase):
             IBus.KEY_Shift_L, 0,
             IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工')
+        self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE.do_process_key_event(IBus.KEY_b, 0, 0)
         ENGINE.do_process_key_event(
             IBus.KEY_Shift_R, 0,
@@ -452,6 +742,7 @@ class WubiJidian86TestCase(unittest.TestCase):
             IBus.KEY_Shift_R, 0,
             IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工了')
+        self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
         ENGINE.do_process_key_event(
             IBus.KEY_Shift_R, 0,
@@ -460,6 +751,7 @@ class WubiJidian86TestCase(unittest.TestCase):
             IBus.KEY_Shift_R, 0,
             IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工了以')
+        self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE.do_process_key_event(IBus.KEY_d, 0, 0)
         ENGINE.do_process_key_event(
             IBus.KEY_Shift_L, 0,
@@ -468,9 +760,14 @@ class WubiJidian86TestCase(unittest.TestCase):
             IBus.KEY_Shift_L, 0,
             IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工了以在')
+        self.assertEqual(ENGINE.mock_committed_text, '')
         # Move left two characters in the preëdit:
         ENGINE.do_process_key_event(IBus.KEY_Left, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Left, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工了以在')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        self.assertEqual(ENGINE._chars_valid, '')
+        self.assertEqual(ENGINE._chars_invalid, '')
         # Switch to pinyin mode by pressing and releasing the right
         # shift key:
         ENGINE.do_process_key_event(
@@ -479,9 +776,14 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE.do_process_key_event(
             IBus.KEY_Shift_R, 0,
             IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+        self.assertEqual(ENGINE.get_pinyin_mode(), True)
+        self.assertEqual(ENGINE.mock_preedit_text, '工了以在')
+        self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE.do_process_key_event(IBus.KEY_n, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_numbersign, 0, 0)
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        self.assertEqual(ENGINE.mock_preedit_text, '工了你以在')
         ENGINE.do_process_key_event(
             IBus.KEY_Shift_L, 0,
             IBus.ModifierType.SHIFT_MASK)
@@ -489,10 +791,15 @@ class WubiJidian86TestCase(unittest.TestCase):
             IBus.KEY_Shift_L, 0,
             IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工了你以在')
+        self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE.do_process_key_event(IBus.KEY_h, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_o, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工了你好以在')
+        self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE.do_process_key_event(IBus.KEY_numbersign, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工了你好以在')
+        self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE.do_process_key_event(
             IBus.KEY_Shift_L, 0,
             IBus.ModifierType.SHIFT_MASK)
@@ -500,13 +807,17 @@ class WubiJidian86TestCase(unittest.TestCase):
             IBus.KEY_Shift_L, 0,
             IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工了你好以在')
+        self.assertEqual(ENGINE.mock_committed_text, '')
         # Move right two characters in the preëdit
         # (triggers a commit to preëdit):
         ENGINE.do_process_key_event(IBus.KEY_Right, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_Right, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工了你好以在')
+        self.assertEqual(ENGINE.mock_committed_text, '')
         self.assertEqual(ENGINE.mock_auxiliary_text, 'd dhf dhfd\t#: abwd')
         # commit the preëdit:
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '工了你好以在')
         # Switch out of pinyin mode:
         ENGINE.do_process_key_event(
@@ -515,6 +826,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE.do_process_key_event(
             IBus.KEY_Shift_R, 0,
             IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+        self.assertEqual(ENGINE.get_pinyin_mode(), False)
         # “abwd” shown on the right of the auxiliary text above shows the
         # newly defined shortcut for this phrase. Let’s  try to type
         # the same phrase again using the new shortcut:
@@ -531,7 +843,8 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '工了你好以在工了你好以在')
 
     def test_chinese_mode(self):
-        ENGINE.set_chinese_mode(mode=0) # show simplified Chinese only
+        ENGINE.set_chinese_mode(
+            mode=0, update_gsettings=False) # show simplified Chinese only
         ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
         self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['以  418261033 0',
@@ -546,7 +859,8 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '难忘 wyn 404000000 0'])
         ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
         self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
-        ENGINE.set_chinese_mode(mode=1) # show traditional Chinese only
+        ENGINE.set_chinese_mode(
+            mode=1, update_gsettings=False) # show traditional Chinese only
         ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
         self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['以  418261033 0',
@@ -561,7 +875,8 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '能力 elt 274000000 0'])
         ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
         self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
-        ENGINE.set_chinese_mode(mode=2) # show simplified Chinese first
+        ENGINE.set_chinese_mode(
+            mode=2, update_gsettings=False) # show simplified Chinese first
         ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
         self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['以  418261033 0',
@@ -576,7 +891,8 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '难忘 wyn 404000000 0'])
         ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
         self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
-        ENGINE.set_chinese_mode(mode=3) # show traditional Chinese first
+        ENGINE.set_chinese_mode(
+            mode=3, update_gsettings=False) # show traditional Chinese first
         ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
         self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['以  418261033 0',
@@ -591,7 +907,8 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '能力 elt 274000000 0'])
         ENGINE.do_process_key_event(IBus.KEY_BackSpace, 0, 0)
         self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
-        ENGINE.set_chinese_mode(mode=4) # show all characters
+        ENGINE.set_chinese_mode(
+            mode=4, update_gsettings=False) # show all characters
         ENGINE.do_process_key_event(IBus.KEY_c, 0, 0)
         self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['以  418261033 0',
@@ -794,7 +1111,10 @@ class LatexTestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_p, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_h, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, 'α')
+        self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, 'α')
 
     def test_single_char_commit_with_space_fraktur(self):
@@ -812,6 +1132,32 @@ class LatexTestCase(unittest.TestCase):
         ENGINE.do_process_key_event(IBus.KEY_F, 0, 0)
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '𝔉')
+
+    def test_toggle_input_mode_on_off(self):
+        ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_l, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_p, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_h, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, 'α')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'α')
+        ENGINE.do_process_key_event(IBus.KEY_Shift_L, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_Shift_L, 0, IBus.ModifierType.RELEASE_MASK)
+        ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_l, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_p, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_h, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'α\\alpha')
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'α\\alpha ')
 
     def test_single_char_commit_with_f3(self):
         ENGINE.do_process_key_event(IBus.KEY_backslash, 0, 0)
@@ -915,4 +1261,7 @@ class LatexTestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, 'β⊞≬')
 
 if __name__ == '__main__':
+    LOG_HANDLER = logging.StreamHandler(stream=sys.stderr)
+    LOGGER.setLevel(logging.DEBUG)
+    LOGGER.addHandler(LOG_HANDLER)
     unittest.main()

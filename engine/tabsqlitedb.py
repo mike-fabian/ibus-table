@@ -142,7 +142,8 @@ class TabSqliteDb:
            indidated that this is a user defined phrase.
     '''
     def __init__(
-            self, filename=None, user_db=None, create_database=False):
+            self, filename=None, user_db=None, create_database=False,
+            unit_test=False):
         global DEBUG_LEVEL
         try:
             DEBUG_LEVEL = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
@@ -192,8 +193,8 @@ class TabSqliteDb:
             'commit_keys':'space',
             # 'forward_keys':'Return',
             'select_keys':'1,2,3,4,5,6,7,8,9,0',
-            'page_up_keys':'Page_Up,minus',
-            'page_down_keys':'Page_Down,equal',
+            'page_up_keys':'Page_Up,KP_Page_Up,KP_Prior,minus',
+            'page_down_keys':'Page_Down,KP_Page_Down,KP_Next,equal',
             'status_prompt':'',
             'def_full_width_punct':'true',
             'def_full_width_letter':'false',
@@ -275,7 +276,8 @@ class TabSqliteDb:
         tables_path = path.join(ibus_table_location.data_home(), 'tables')
         cache_name = os.path.basename(self.filename).replace('.db', '.cache')
         self.cache_path = path.join(tables_path, cache_name)
-        self.load_phrases_cache()
+        if not unit_test:
+            self.load_phrases_cache()
 
         if not user_db or create_database:
             # No user database requested or we are

@@ -19,6 +19,26 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.11.0" date="2020-08-16" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.10.1</url>
+      <issues>
+        <issue url="https://github.com/ibus/ibus/issues/2241">
+          github-ibus-issue#2241: Make key bindings configurable.
+
+          Only via the command line for the moment, not yet easy to do
+          for normal users. I have to rewrite the setup tool
+          eventually to make that possible.
+
+          This rewrite of the handling of the key bindings also fixes
+          the problem reported in github-ibus-issue#2241 that the
+          Shift_L key cannot switch between Chinese and English mode
+          when using google-chrome.
+        </issue>
+      </issues>
+    </release>
     <release version="1.10.1" date="2020-07-15" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

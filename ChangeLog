@@ -1,4 +1,41 @@
-commit 2d02b1b9bf711dc417a13e55f5a106e931332923
+commit aded9f34abd4b58af1651952986b73af8bbdf424
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Aug 16 02:27:58 2020 +0200
+
+    Release 1.11.0
+
+commit 2e5890971b6bfe4775d1916a732611502aeeda52
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Aug 16 02:31:58 2020 +0200
+
+    Update ibus-table.pot (only line numbers changed)
+
+commit 2bd3392c223619255c9a0ce68345b2716cfdb829
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 12 11:09:57 2020 +0200
+
+    Make key bindings configurable
+    
+    Only via the command line for the moment, not yet easy to do for
+    normal users. I have to rewrite the setup tool eventually to make that
+    possible.
+
+commit 7e02ee75852218afa27dc0d6e6430a33b34f8e64
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 12 10:17:02 2020 +0200
+
+    Move KeyEvent class to it_util.py to make it usable from the setup tool
+
+commit 9309c393173289819330c79810d608cabd9b31a5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 6 16:00:03 2020 +0200
+
+    Merge Editor class into TabEngine class
+    
+    It makes no sense to have an extra class “Editor” when TabEngine needs
+    to access most internals of the Editor class all the time.
+
+commit a30872906dd4a6661e2793d8288ee44b2e360aae
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Jul 15 13:59:15 2020 +0200
 

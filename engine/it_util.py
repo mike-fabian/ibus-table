@@ -54,9 +54,9 @@ def variant_to_value(variant):
     type_string = variant.get_type_string()
     if type_string == 's':
         return variant.get_string()
-    elif type_string == 'i':
+    if type_string == 'i':
         return variant.get_int32()
-    elif type_string == 'b':
+    if type_string == 'b':
         return variant.get_boolean()
     if type_string == 'v':
         return variant.unpack()
@@ -161,7 +161,7 @@ class KeyEvent:
                self.release))
 
 def keyevent_to_keybinding(keyevent):
-    keybinding=''
+    keybinding = ''
     if keyevent.shift:
         keybinding += 'Shift+'
     if keyevent.lock:
@@ -238,9 +238,9 @@ class HotKeys:
         key = command_key_tuple[1]
         prev_key = command_key_tuple[0]
         if prev_key is None:
-            # When ibus-table has just started and the very first key is pressed
-            # prev_key is not yet set. In that case, assume that it is the same
-            # as the current key:
+            # When ibus-table has just started and the very first key
+            # is pressed prev_key is not yet set. In that case, assume
+            # that it is the same as the current key:
             prev_key = key
         val = key.val
         state = key.state # Do not change key.state, only the copy!

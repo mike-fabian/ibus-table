@@ -989,7 +989,7 @@ class TabEngine(IBus.Engine):
             if '_cn' in __lc or '_sg' in __lc:
                 # CN and SG should prefer traditional Chinese by default
                 return 2 # show simplified Chinese first
-            elif '_hk' in __lc or '_tw' in __lc or '_mo' in __lc:
+            if '_hk' in __lc or '_tw' in __lc or '_mo' in __lc:
                 # HK, TW, and MO should prefer traditional Chinese by default
                 return 3 # show traditional Chinese first
             if self.db._is_chinese:
@@ -2038,20 +2038,20 @@ class TabEngine(IBus.Engine):
                 self.letter_width_menu['shortcut_hint'] = (
                     repr(self._keybindings['toggle_letter_width']))
             if self.punctuation_width_menu:
-               self.punctuation_width_menu['shortcut_hint'] = (
-                   repr(self._keybindings['toggle_punctuation_width']))
+                self.punctuation_width_menu['shortcut_hint'] = (
+                    repr(self._keybindings['toggle_punctuation_width']))
             if self.pinyin_mode_menu:
-               self.pinyin_mode_menu['shortcut_hint'] = (
-                   repr(self._keybindings['toggle_pinyin_mode']))
+                self.pinyin_mode_menu['shortcut_hint'] = (
+                    repr(self._keybindings['toggle_pinyin_mode']))
             if self.suggestion_mode_menu:
-               self.suggestion_mode_menu['shortcut_hint'] = (
-                   repr(self._keybindings['toggle_suggestion_mode']))
+                self.suggestion_mode_menu['shortcut_hint'] = (
+                    repr(self._keybindings['toggle_suggestion_mode']))
             if self.onechar_mode_menu:
-               self.onechar_mode_menu['shortcut_hint'] = (
-                   repr(self._keybindings['toggle_onechar_mode']))
+                self.onechar_mode_menu['shortcut_hint'] = (
+                    repr(self._keybindings['toggle_onechar_mode']))
             if self.autocommit_mode_menu:
-               self.autocommit_mode_menu['shortcut_hint'] = (
-                   repr(self._keybindings['toggle_autocommit_mode']))
+                self.autocommit_mode_menu['shortcut_hint'] = (
+                    repr(self._keybindings['toggle_autocommit_mode']))
             self._init_properties()
         if update_gsettings:
             variant_dict = GLib.VariantDict(GLib.Variant('a{sv}', {}))
@@ -3103,7 +3103,7 @@ class TabEngine(IBus.Engine):
         if char in special_punct_dict.keys():
             if char in [u"\\", u"^", u"_", u"$"]:
                 return special_punct_dict[char]
-            elif self._input_mode:
+            if self._input_mode:
                 return special_punct_dict[char]
 
         # special puncts w/ further conditions
@@ -3114,12 +3114,12 @@ class TabEngine(IBus.Engine):
                     and chr(self._prev_key.val) == self._prev_char):
                 return u"."
             return u"。" # 。U+3002 IDEOGRAPHIC FULL STOP
-        elif char == u"\"":
+        if char == u"\"":
             self._double_quotation_state = not self._double_quotation_state
             if self._double_quotation_state:
                 return u"“" # “ U+201C LEFT DOUBLE QUOTATION MARK
             return u"”" # ” U+201D RIGHT DOUBLE QUOTATION MARK
-        elif char == u"'":
+        if char == u"'":
             self._single_quotation_state = not self._single_quotation_state
             if self._single_quotation_state:
                 return u"‘" # ‘ U+2018 LEFT SINGLE QUOTATION MARK

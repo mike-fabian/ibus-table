@@ -627,7 +627,7 @@ class TabEngine(IBus.Engine):
                 'Chinese mode found in Gsettings, mode=%s',
                 self._chinese_mode)
         if self._chinese_mode is None:
-            self._chinese_mode = self.get_default_chinese_mode()
+            self._chinese_mode = it_util.get_default_chinese_mode(self.db)
 
         # If auto select is true, then the first candidate phrase will
         # be selected automatically during typing. Auto select is true
@@ -939,79 +939,6 @@ class TabEngine(IBus.Engine):
                 IBus.Text.new_from_string("%s." %IBus.keyval_name(keycode)))
         lookup_table.set_orientation(orientation)
         return lookup_table
-
-    def get_default_chinese_mode(self):
-        '''
-        Use db value or LC_CTYPE in your box to determine the _chinese_mode
-
-        0 means to show simplified Chinese only
-        1 means to show traditional Chinese only
-        2 means to show all characters but show simplified Chinese first
-        3 means to show all characters but show traditional Chinese first
-        4 means to show all characters
-
-        If nothing can be found return 4 to avoid any special
-        Chinese filtering or sorting.
-
-        '''
-        # use db value, if applicable
-        __db_chinese_mode = self.db.get_chinese_mode()
-        if __db_chinese_mode >= 0:
-            if DEBUG_LEVEL > 1:
-                LOGGER.debug(
-                    'get_default_chinese_mode(): '
-                    'default Chinese mode found in database, mode=%s',
-                    __db_chinese_mode)
-            return __db_chinese_mode
-        # otherwise
-        try:
-            if 'LC_ALL' in os.environ:
-                __lc = os.environ['LC_ALL'].split('.')[0].lower()
-                if DEBUG_LEVEL > 1:
-                    LOGGER.debug(
-                        'get_default_chinese_mode(): '
-                        '__lc=%s found in LC_ALL',
-                        __lc)
-            elif 'LC_CTYPE' in os.environ:
-                __lc = os.environ['LC_CTYPE'].split('.')[0].lower()
-                if DEBUG_LEVEL > 1:
-                    LOGGER.debug(
-                        'get_default_chinese_mode(): '
-                        '__lc=%s found in LC_CTYPE',
-                        __lc)
-            else:
-                __lc = os.environ['LANG'].split('.')[0].lower()
-                if DEBUG_LEVEL > 1:
-                    LOGGER.debug(
-                        'get_default_chinese_mode(): '
-                        '__lc=%s  found in LANG',
-                        __lc)
-
-            if '_cn' in __lc or '_sg' in __lc:
-                # CN and SG should prefer traditional Chinese by default
-                return 2 # show simplified Chinese first
-            if '_hk' in __lc or '_tw' in __lc or '_mo' in __lc:
-                # HK, TW, and MO should prefer traditional Chinese by default
-                return 3 # show traditional Chinese first
-            if self.db._is_chinese:
-                # This table is used for Chinese, but we don’t
-                # know for which variant. Therefore, better show
-                # all Chinese characters and don’t prefer any
-                # variant:
-                if DEBUG_LEVEL > 1:
-                    LOGGER.debug(
-                        'get_default_chinese_mode(): last fallback, '
-                        'database is Chinese but we don’t know '
-                        'which variant.')
-            else:
-                if DEBUG_LEVEL > 1:
-                    LOGGER.debug(
-                        'get_default_chinese_mode(): last fallback, '
-                        'database is not Chinese, returning 4.')
-            return 4 # show all Chinese characters
-        except:
-            LOGGER.exception('Exception in get_default_chinese_mode()')
-            return 4
 
     def clear_all_input_and_preedit(self):
         '''

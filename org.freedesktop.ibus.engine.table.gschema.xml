@@ -103,5 +103,13 @@
     <key name="autowildcard" type="b">
       <default>true</default>
     </key>
+    <key name="debuglevel" type="i">
+      <default>0</default>
+      <summary>Debug level</summary>
+      <description>
+        When greater than 0, debug information may be printed to the
+        log file and debug information may also be shown graphically.
+      </description>
+    </key>
   </schema>
 </schemalist>

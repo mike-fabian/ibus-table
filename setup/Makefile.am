@@ -21,7 +21,7 @@
 setup_table_PYTHON = \
 	main.py \
 	version.py \
-	ibus-table-preferences.ui \
+	i18n.py \
 	$(NULL)
 setup_tabledir = $(datadir)/ibus-table/setup
 

@@ -70,6 +70,7 @@ AC_CONFIG_FILES([po/Makefile.in
     engine/ibus-engine-table
     engine/ibus-table-createdb
     engine/table.xml.in
+    engine/version.py
     data/Makefile
     icons/Makefile
     tables/Makefile

@@ -33,6 +33,7 @@ engine_table_PYTHON = \
 	tabcreatedb.py \
 	tabsqlitedb.py \
 	it_util.py \
+	version.py \
 	$(NULL)
 engine_table_DATA = \
 	$(NULL)
@@ -46,6 +47,7 @@ engine_DATA = table.xml
 enginedir = $(datadir)/ibus/component
 
 EXTRA_DIST = \
+	version.py.in \
 	ibus-table-createdb.in \
 	ibus-engine-table.in \
 	table.xml.in \

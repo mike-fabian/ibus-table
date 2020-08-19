@@ -5,4 +5,3 @@ engine/tabcreatedb.py
 engine/factory.py
 ibus-table.appdata.xml
 setup/main.py
-setup/ibus-table-preferences.ui

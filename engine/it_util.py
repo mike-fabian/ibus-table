@@ -27,13 +27,25 @@ Utility functions used in ibus-table
 
 import sys
 import logging
+import gettext
 from gi import require_version
 require_version('GLib', '2.0')
 from gi.repository import GLib
+require_version('Gdk', '3.0')
+from gi.repository import Gdk
+require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import GObject
 require_version('IBus', '1.0')
 from gi.repository import IBus
 
+import version
+
 LOGGER = logging.getLogger('ibus-table')
+
+DOMAINNAME = 'ibus-table'
+_ = lambda a: gettext.dgettext(DOMAINNAME, a)
+N_ = lambda a: a
 
 # When matching keybindings, only the bits in the following mask are
 # considered for key.state:
@@ -64,6 +76,187 @@ def variant_to_value(variant):
         return variant.unpack()
     LOGGER.error('unknown variant type: %s', type_string)
     return variant
+
+def get_default_chinese_mode(database):
+    '''
+    Use database value or LC_CTYPE in your box to determine the
+    Chinese mode
+
+    0 means to show simplified Chinese only
+    1 means to show traditional Chinese only
+    2 means to show all characters but show simplified Chinese first
+    3 means to show all characters but show traditional Chinese first
+    4 means to show all characters
+
+    If nothing can be found return 4 to avoid any special
+    Chinese filtering or sorting.
+
+    '''
+    # use db value, if applicable
+    database_chinese_mode = database.get_chinese_mode()
+    if database_chinese_mode >= 0:
+        LOGGER.info(
+            'get_default_chinese_mode(): '
+            'default Chinese mode found in database, mode=%s',
+            database_chinese_mode)
+        return database_chinese_mode
+    # otherwise
+    try:
+        if 'LC_ALL' in os.environ:
+            __lc = os.environ['LC_ALL'].split('.')[0].lower()
+            LOGGER.info(
+                'get_default_chinese_mode(): '
+                '__lc=%s found in LC_ALL',
+                __lc)
+        elif 'LC_CTYPE' in os.environ:
+            __lc = os.environ['LC_CTYPE'].split('.')[0].lower()
+            LOGGER.info(
+                'get_default_chinese_mode(): '
+                '__lc=%s found in LC_CTYPE',
+                __lc)
+        else:
+            __lc = os.environ['LANG'].split('.')[0].lower()
+            LOGGER.info(
+                'get_default_chinese_mode(): '
+                '__lc=%s  found in LANG',
+                __lc)
+
+        if '_cn' in __lc or '_sg' in __lc:
+            # CN and SG should prefer traditional Chinese by default
+            return 2 # show simplified Chinese first
+        if '_hk' in __lc or '_tw' in __lc or '_mo' in __lc:
+            # HK, TW, and MO should prefer traditional Chinese by default
+            return 3 # show traditional Chinese first
+        if database._is_chinese:
+            # This table is used for Chinese, but we don’t
+            # know for which variant. Therefore, better show
+            # all Chinese characters and don’t prefer any
+            # variant:
+            LOGGER.info(
+                'get_default_chinese_mode(): last fallback, '
+                'database is Chinese but we don’t know '
+                'which variant, returning 4.')
+        else:
+            LOGGER.info(
+                'get_default_chinese_mode(): last fallback, '
+                'database is not Chinese, returning 4.')
+        return 4 # show all Chinese characters
+    except:
+        LOGGER.exception('Exception in get_default_chinese_mode(), '
+                         'returning 4.')
+        return 4
+
+def get_default_keybindings(gsettings, database):
+    default_keybindings = variant_to_value(
+        gsettings.get_default_value('keybindings'))
+    # Now update the default keybindings from gsettings with
+    # keybindings found in the database:
+    valid_input_chars = database.ime_properties.get('valid_input_chars')
+    select_keys_csv = database.get_select_keys()
+    if select_keys_csv is None:
+        select_keys_csv = '1,2,3,4,5,6,7,8,9,0'
+    select_keybindings = [
+        name.strip() for name in select_keys_csv.split(',')][:10]
+    if len(select_keybindings) < 10:
+        select_keybindings += [
+            'VoidSymbol'] * (10 - len(select_keybindings))
+    commit_keybindings = default_keybindings['commit']
+    commit_keys_csv = database.ime_properties.get('commit_keys')
+    if commit_keys_csv:
+        commit_keybindings = [
+            name.strip() for name in commit_keys_csv.split(',')]
+    default_keybindings['commit'] = commit_keybindings
+    page_down_keybindings = default_keybindings['lookup_table_page_down']
+    page_down_keys_csv = database.ime_properties.get('page_down_keys')
+    if page_down_keys_csv:
+        page_down_keybindings = [
+            name.strip() for name in page_down_keys_csv.split(',')]
+    page_up_keybindings = default_keybindings['lookup_table_page_up']
+    page_up_keys_csv = database.ime_properties.get('page_up_keys')
+    if page_up_keys_csv:
+        page_up_keybindings = [
+            name.strip() for name in page_up_keys_csv.split(',')]
+    # If commit keys conflict with page up/down keys, remove them
+    # from the page up/down keys (They cannot really be used for
+    # both at the same time. Theoretically, keys from the page
+    # up/down keys could still be used to commit when the number
+    # of candidates is 0 because then there is nothing to
+    # page. But that would be only confusing):
+    for name in commit_keybindings:
+        if name in page_down_keybindings:
+            page_down_keybindings.remove(name)
+        if name in page_up_keybindings:
+            page_up_keybindings.remove(name)
+    # Several tables have = and/or - in the list of valid input chars.
+    # In that case they should be removed from the 'lookup_table_page_down'
+    # and 'lookup_table_page_up' keybindings:
+    if '-' in valid_input_chars:
+        if 'minus' in page_up_keybindings:
+            page_up_keybindings.remove('minus')
+        if 'minus' in page_down_keybindings:
+            page_down_keybindings.remove('minus')
+    if '=' in valid_input_chars:
+        if 'equal' in page_up_keybindings:
+            page_up_keybindings.remove('equal')
+        if 'equal' in page_down_keybindings:
+            page_down_keybindings.remove('equal')
+    default_keybindings['lookup_table_page_down'] = page_down_keybindings
+    default_keybindings['lookup_table_page_up'] = page_up_keybindings
+    for index, name in enumerate(select_keybindings):
+        # Currently the cns11643 table has:
+        #
+        #     SELECT_KEYS = 1,2,3,4,5,6,7,8,9,0
+        #
+        # and
+        #
+        #     VALID_INPUT_CHARS = 0123456789abcdef
+        #
+        #
+        # Then the digit “1” could be interpreted either as an
+        # input character or as a select key but of course not
+        # both. If the meaning as a select key were preferred,
+        # this would make some input impossible which probably
+        # makes the whole input method useless. If the meaning as
+        # an input character is preferred, this makes selection
+        # using that key impossible.  Making selection by key
+        # impossible is not nice either, but it is not a complete
+        # show stopper as there are still other possibilities to
+        # select, for example using the arrow-up/arrow-down keys
+        # or click with the mouse.
+        #
+        # And we don’t have to make selection by key completely
+        # impossible, we can use F1, ..., F10 instead of the digits
+        # if the digits are valid input chars.
+        #
+        # Of course one should maybe consider fixing the conflict
+        # between the keys by using different SELECT_KEYS in that
+        # table.
+        if name in list(valid_input_chars):
+            name = 'F' + str(index)
+        default_keybindings[
+            'commit_candidate_%s' % (index + 1)
+        ] = [name]
+        default_keybindings[
+            'commit_candidate_to_preedit_%s' % (index + 1)
+        ] = ['Control+' + name]
+        default_keybindings[
+            'remove_candidate_%s' % (index + 1)
+        ] = ['Mod1+' + name]
+        if name in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0'):
+            default_keybindings[
+                'commit_candidate_%s' % (index + 1)
+            ].append('KP_' + name)
+            default_keybindings[
+                'commit_candidate_to_preedit_%s' % (index + 1)
+            ].append('Control+KP_' + name)
+            default_keybindings[
+                'remove_candidate_%s' % (index + 1)
+            ].append('Mod1+KP_' + name)
+    for command in default_keybindings:
+        for keybinding in default_keybindings[command]:
+            if 'VoidSymbol' in keybinding:
+                default_keybindings[command].remove(keybinding)
+    return default_keybindings
 
 def dict_update_existing_keys(pdict, other_pdict):
     '''Update values of existing keys in a Python dict from another Python dict
@@ -283,6 +476,128 @@ class HotKeys:
 
     def __str__(self):
         return repr(self._hotkeys)
+
+class ItKeyInputDialog(Gtk.MessageDialog):
+    def __init__(
+            self,
+            # Translators: This is used in the title bar of a dialog window
+            # requesting that the user types a key to be used as a new
+            # key binding for a command.
+            title=_('Key input'),
+            parent=None):
+        Gtk.Dialog.__init__(
+            self,
+            title=title,
+            parent=parent)
+        self.add_button(_('Cancel'), Gtk.ResponseType.CANCEL)
+        self.set_modal(True)
+        self.set_markup(
+            '<big><b>%s</b></big>'
+            # Translators: This is from the dialog to enter a key or a
+            # key combination to be used as a key binding for a
+            # command.
+            % _('Please press a key (or a key combination)'))
+        self.format_secondary_text(
+            # Translators: This is from the dialog to enter a key or a
+            # key combination to be used as a key binding for a
+            # command.
+            _('The dialog will be closed when the key is released'))
+        self.connect('key_press_event', self.on_key_press_event)
+        self.connect('key_release_event', self.on_key_release_event)
+        if parent:
+            self.set_transient_for(parent.get_toplevel())
+        self.show()
+
+    def on_key_press_event(# pylint: disable=no-self-use
+            self, widget, event):
+        widget.e = (event.keyval,
+                    event.get_state() & KEYBINDING_STATE_MASK)
+        return True
+
+    def on_key_release_event(# pylint: disable=no-self-use
+            self, widget, _event):
+        widget.response(Gtk.ResponseType.OK)
+        return True
+
+class ItAboutDialog(Gtk.AboutDialog):
+    def  __init__(self, parent=None):
+        Gtk.AboutDialog.__init__(self, parent=parent)
+        self.set_modal(True)
+        # An empty string in aboutdialog.set_logo_icon_name('')
+        # prevents an ugly default icon to be shown.
+        #     self.set_logo_icon_name('')
+        # But it looks nicer if we do not use this and use
+        #  Gtk.Window.set_default_icon_from_file(icon_file_name)
+        # in the main window of the setup tool
+        self.set_title('码 IBus Table %s' %version.get_version())
+        self.set_program_name('码 IBus Table')
+        self.set_version(version.get_version())
+        self.set_comments(
+            _('Table input method for IBus.'))
+        self.set_copyright(
+            'Copyright © 2009-2012 Peng Huang,\n'
+            'Copyright © 2012-2020 Mike FABIAN')
+        self.set_authors([
+            'Yuwei YU (“acevery”)',
+            'Peng Huang',
+            'BYVoid',
+            'Peng Wu',
+            'Caius ‘kaio’ Chance',
+            'Mike FABIAN <maiku.fabian@gmail.com>',
+            'Contributors:',
+            'koterpilla',
+            'Zerng07',
+            'Mike FABIAN',
+            'Bernard Nauwelaerts',
+            'Xiaojun Ma',
+            'mozbugbox',
+            'Seán de Búrca',
+            ])
+        self.set_translator_credits(
+            # Translators: put your names here, one name per line.
+            _('translator-credits'))
+        # self.set_artists('')
+        self.set_documenters([
+            'Mike FABIAN <maiku.fabian@gmail.com>',
+            ])
+        self.set_website(
+            'http://mike-fabian.github.io/ibus-table')
+        self.set_website_label(
+            _('Online documentation:')
+            + ' ' + 'http://mike-fabian.github.io/ibus-table')
+        self.set_license('''
+        This library is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Lesser General Public License as published by
+        the Free Software Foundation, either version 2.1 of the License, or
+        (at your option) any later version.
+
+        This library is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Lesser General Public License for more details.
+
+        You should have received a copy of the GNU Lesser General Public License
+        along with this program.  If not, see <http://www.gnu.org/licenses/>
+        ''')
+        self.set_wrap_license(True)
+        # overrides the above .set_license()
+        self.set_license_type(Gtk.License.LGPL_2_1)
+        self.connect('response', self.on_close_aboutdialog)
+        if parent:
+            self.set_transient_for(parent.get_toplevel())
+        self.show()
+
+    def on_close_aboutdialog( # pylint: disable=no-self-use
+            self, _about_dialog, _response):
+        '''
+        The “About” dialog has been closed by the user
+
+        :param _about_dialog: The “About” dialog
+        :type _about_dialog: GtkDialog object
+        :param _response: The response when the “About” dialog was closed
+        :type _response: Gtk.ResponseType enum
+        '''
+        self.destroy()
 
 if __name__ == "__main__":
     LOG_HANDLER = logging.StreamHandler(stream=sys.stderr)

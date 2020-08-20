@@ -2085,7 +2085,6 @@ class TabEngine(IBus.Engine):
         if mode == self._input_mode:
             return
         self._input_mode = mode
-        self._input_mode = mode
         # Not saved to Gsettings on purpose. In the setup tool one
         # can select whether “Table input” or “Direct input” should
         # be the default when the input method starts. But when

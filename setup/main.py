@@ -210,7 +210,7 @@ class PreferencesDialog:
                         self.__is_cjk = True
         self.__user_can_define_phrase = False
         user_can_define_phrase = self.tabsqlitedb.ime_properties.get(
-            'user_can-define_phrase')
+            'user_can_define_phrase')
         if user_can_define_phrase:
             self.__user_can_define_phrase = (
                 user_can_define_phrase.lower() == u'true')

@@ -34,6 +34,7 @@ __all__ = (
 import sys
 import os
 import re
+import copy
 import time
 import logging
 from gettext import dgettext
@@ -1994,6 +1995,12 @@ class TabEngine(IBus.Engine):
                                  key is changed twice in a short time.
         :type update_gsettings: boolean
         '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug(
+                '(%s, update_gsettings = %s)', keybindings, update_gsettings)
+        if not isinstance(keybindings, dict):
+            return
+        keybindings = copy.deepcopy(keybindings)
         new_keybindings = {}
         # Get the default settings from the generic schema for all databases:
         new_keybindings = it_util.variant_to_value(

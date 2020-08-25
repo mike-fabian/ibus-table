@@ -1757,17 +1757,6 @@ class TabEngine(IBus.Engine):
             return True
         return res
 
-    def select_key(self, keycode):
-        '''
-        Commit a candidate which was selected by typing a selection key
-        from the lookup table to the preedit. Does not yet “really”
-        commit the candidate, only to the preedit.
-        '''
-        if keycode not in self._select_keys:
-            return False
-        return self.commit_to_preedit_current_page(
-            self._select_keys.index(keycode))
-
     def remove_candidate_from_user_database(self, index):
         '''Remove the candidate shown at index in the lookup table from the user
         database.

@@ -250,6 +250,7 @@ class TabEngine(IBus.Engine):
             DEBUG_LEVEL = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
         except (TypeError, ValueError):
             DEBUG_LEVEL = int(0)
+
         self._unit_test = unit_test
         self._input_purpose = 0
         self._has_input_purpose = False
@@ -338,6 +339,14 @@ class TabEngine(IBus.Engine):
         self._valid_input_chars = self.db.ime_properties.get(
             'valid_input_chars')
         self._pinyin_valid_input_chars = u'abcdefghijklmnopqrstuvwxyz!@#$%'
+
+        self._debug_level = it_util.variant_to_value(
+            self._gsettings.get_value('debuglevel'))
+        if self._debug_level < 0:
+            self._debug_level = 0 # minimum
+        if self._debug_level > 255:
+            self._debug_level = 255 # maximum
+        DEBUG_LEVEL = self._debug_level
 
         self._single_wildcard_char = it_util.variant_to_value(
             self._gsettings.get_user_value('singlewildcardchar'))
@@ -1808,6 +1817,40 @@ class TabEngine(IBus.Engine):
             self.db.sync_usrdb()
             self._save_user_count = 0
         super(TabEngine, self).destroy()
+
+    def set_debug_level(self, debug_level, update_gsettings=True):
+        '''Sets the debug level
+
+        :param debug_level: The debug level
+        :type debug_level: integer >= 0 and <= 255
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the Gsettings key changed
+                                 to avoid endless loops when the Gsettings
+                                 key is changed twice in a short time.
+        :type update_gsettings: boolean
+        '''
+        global DEBUG_LEVEL
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug(
+                '(%s, update_gsettings = %s)', debug_level, update_gsettings)
+        if debug_level == self._debug_level:
+            return
+        if 0 <= debug_level <= 255:
+            self._debug_level = debug_level
+            DEBUG_LEVEL = debug_level
+            self.reset()
+            if update_gsettings:
+                self._gsettings.set_value(
+                    'debuglevel',
+                    GLib.Variant.new_int32(debug_level))
+
+    def get_debug_level(self):
+        '''Returns the current debug level
+
+        :rtype: integer
+        '''
+        return self._debug_level
 
     def set_keybindings(self, keybindings, update_gsettings=True):
         '''Set current key bindings
@@ -3541,6 +3584,9 @@ class TabEngine(IBus.Engine):
         value = it_util.variant_to_value(self._gsettings.get_value(key))
         LOGGER.debug('Settings changed for engine “%s”: key=%s value=%s',
                      self._engine_name, key, value)
+        if key == u'debuglevel':
+            self.set_debug_level(value, update_gsettings=False)
+            return
         if key == u'keybindings':
             self.set_keybindings(value, update_gsettings=False)
             return

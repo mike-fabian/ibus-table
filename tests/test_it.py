@@ -82,6 +82,7 @@ ORIG_MULTI_WILDCARD_CHAR = None
 ORIG_PINYIN_MODE = None
 ORIG_SUGGESTION_MODE = None
 ORIG_KEYBINDINGS = None
+ORIG_DEBUG_LEVEL = None
 
 def backup_original_settings():
     global ENGINE
@@ -101,6 +102,7 @@ def backup_original_settings():
     global ORIG_MULTI_WILDCARD_CHAR
     global ORIG_PINYIN_MODE
     global ORIG_SUGGESTION_MODE
+    global ORIG_DEBUG_LEVEL
     ORIG_KEYBINDINGS = ENGINE.get_keybindings()
     ORIG_INPUT_MODE = ENGINE.get_input_mode()
     ORIG_CHINESE_MODE = ENGINE.get_chinese_mode()
@@ -117,6 +119,7 @@ def backup_original_settings():
     ORIG_MULTI_WILDCARD_CHAR = ENGINE.get_multi_wildcard_char()
     ORIG_PINYIN_MODE = ENGINE.get_pinyin_mode()
     ORIG_SUGGESTION_MODE = ENGINE.get_suggestion_mode()
+    ORIG_DEBUG_LEVEL = ENGINE.get_debug_level()
 
 def restore_original_settings():
     global ENGINE
@@ -136,6 +139,7 @@ def restore_original_settings():
     global ORIG_MULTI_WILDCARD_CHAR
     global ORIG_PINYIN_MODE
     global ORIG_SUGGESTION_MODE
+    global ORIG_DEBUG_LEVEL
     ENGINE.set_keybindings(
         ORIG_KEYBINDINGS, update_gsettings=False)
     ENGINE.set_input_mode(ORIG_INPUT_MODE)
@@ -168,6 +172,7 @@ def restore_original_settings():
         ORIG_MULTI_WILDCARD_CHAR, update_gsettings=False)
     ENGINE.set_pinyin_mode(ORIG_PINYIN_MODE)
     ENGINE.set_suggestion_mode(ORIG_SUGGESTION_MODE)
+    ENGINE.set_debug_level(ORIG_DEBUG_LEVEL, update_gsettings=False)
 
 def set_default_settings():
     global ENGINE
@@ -292,6 +297,9 @@ def set_default_settings():
         IBus.keyval_name(keyval) for keyval in page_up_keys]
     user_keybindings={}
     ENGINE.set_keybindings(user_keybindings, update_gsettings=False)
+
+    # Get more verbose output in the test log:
+    ENGINE.set_debug_level(255)
 
 def set_up(engine_name):
     '''

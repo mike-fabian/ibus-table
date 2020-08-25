@@ -375,71 +375,6 @@ class TabEngine(IBus.Engine):
             self.db.ime_properties.get('max_key_length'))
         self._max_key_length_pinyin = 7
 
-        self._page_up_keys = [
-            IBus.KEY_Page_Up,
-            IBus.KEY_KP_Prior, # identical to IBus.KEY_KP_Page_UP!
-            IBus.KEY_KP_Page_Up,
-            IBus.KEY_minus
-        ]
-        self._page_down_keys = [
-            IBus.KEY_Page_Down,
-            IBus.KEY_KP_Next, # identical to IBus.KEY_KP_Page_Down!
-            IBus.KEY_KP_Page_Down,
-            IBus.KEY_equal
-        ]
-        # If page up or page down keys are defined in the database,
-        # use the values from the database instead of the above
-        # hardcoded defaults:
-        page_up_keys_csv = self.db.ime_properties.get('page_up_keys')
-        page_down_keys_csv = self.db.ime_properties.get('page_down_keys')
-        if page_up_keys_csv:
-            self._page_up_keys = [
-                IBus.keyval_from_name(x)
-                for x in page_up_keys_csv.split(',')]
-        if page_down_keys_csv:
-            self._page_down_keys = [
-                IBus.keyval_from_name(x)
-                for x in page_down_keys_csv.split(',')]
-        # Remove keys from the page up/down keys if they are needed
-        # for input (for example, '=' or '-' could well be needed for
-        # input. Input is more important):
-        for character in (
-                self._valid_input_chars
-                + self._single_wildcard_char
-                + self._multi_wildcard_char):
-            keyval = IBus.unicode_to_keyval(character)
-            if keyval in self._page_up_keys:
-                self._page_up_keys.remove(keyval)
-            if keyval in self._page_down_keys:
-                self._page_down_keys.remove(keyval)
-        self._commit_keys = [IBus.KEY_space]
-        # If commit keys are are defined in the database, use the
-        # value from the database instead of the above hardcoded
-        # default:
-        commit_keys_csv = self.db.ime_properties.get('commit_keys')
-        if commit_keys_csv:
-            self._commit_keys = [
-                IBus.keyval_from_name(x)
-                for x in commit_keys_csv.split(',')]
-        # If commit keys conflict with page up/down keys, remove them
-        # from the page up/down keys (They cannot really be used for
-        # both at the same time. Theoretically, keys from the page
-        # up/down keys could still be used to commit when the number
-        # of candidates is 0 because then there is nothing to
-        # page. But that would be only confusing):
-        for keyval in self._commit_keys:
-            if keyval in self._page_up_keys:
-                self._page_up_keys.remove(keyval)
-            if keyval in self._page_down_keys:
-                self._page_down_keys.remove(keyval)
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug(
-                'self._page_up_keys=%s', repr(self._page_up_keys))
-            LOGGER.debug(
-                'self._page_down_keys=%s', repr(self._page_down_keys))
-            LOGGER.debug(
-                'self._commit_keys=%s', repr(self._commit_keys))
-
         # 0 = Direct input, i.e. table input OFF (aka “English input mode”),
         #     most characters are just passed through to the application
         #     (but some fullwidth ↔ halfwidth conversion may be done even
@@ -569,27 +504,6 @@ class TabEngine(IBus.Engine):
         self._prompt_characters = eval(
             self.db.ime_properties.get('char_prompts'))
 
-        select_keys_csv = self.db.get_select_keys()
-        if select_keys_csv is None:
-            select_keys_csv = '1,2,3,4,5,6,7,8,9,0'
-        self._select_key_names = [
-            name.strip() for name in select_keys_csv.split(',')][:10]
-        self._select_keys = [
-            IBus.keyval_from_name(name) for name in self._select_key_names]
-        self._page_size = it_util.variant_to_value(
-            self._gsettings.get_user_value('lookuptablepagesize'))
-        if (self._page_size is None
-            or self._page_size > len(self._select_key_names)):
-            self._page_size = len(self._select_key_names)
-        self._orientation = it_util.variant_to_value(
-            self._gsettings.get_user_value('lookuptableorientation'))
-        if self._orientation is None:
-            self._orientation = self.db.get_orientation()
-        self._lookup_table = self.get_new_lookup_table(
-            page_size=self._page_size,
-            select_keys=self._select_keys,
-            orientation=self._orientation)
-
         # self._onechar: whether we only select single character
         self._onechar = it_util.variant_to_value(self._gsettings.get_value(
             'onechar'))
@@ -623,17 +537,33 @@ class TabEngine(IBus.Engine):
             self._auto_select = it_util.variant_to_value(
                 self._gsettings.get_value('autoselect'))
 
-        self._commit_key_names = [
-            IBus.keyval_name(keyval) for keyval in self._commit_keys]
-        self._page_down_key_names = [
-            IBus.keyval_name(keyval) for keyval in self._page_down_keys]
-        self._page_up_key_names = [
-            IBus.keyval_name(keyval) for keyval in self._page_up_keys]
+        self._default_keybindings = it_util.get_default_keybindings(
+            self._gsettings, self.db)
+
+        self._page_size = it_util.variant_to_value(
+            self._gsettings.get_default_value('lookuptablepagesize'))
+        for index in range(1, 10):
+            if not self._default_keybindings[
+                    'commit_candidate_%s' % (index + 1)]:
+                self._page_size = min(index, self._page_size)
+                break
+        user_page_size = it_util.variant_to_value(
+            self._gsettings.get_user_value('lookuptablepagesize'))
+        if not user_page_size is None:
+            self._page_size = user_page_size
+
+        self._orientation = it_util.variant_to_value(
+            self._gsettings.get_user_value('lookuptableorientation'))
+        if self._orientation is None:
+            self._orientation = self.db.get_orientation()
+
         user_keybindings = it_util.variant_to_value(
             self._gsettings.get_user_value('keybindings'))
         if not user_keybindings:
             user_keybindings = {}
         self.set_keybindings(user_keybindings, update_gsettings=False)
+
+        self._lookup_table = self.get_new_lookup_table()
 
         self.chinese_mode_properties = {
             'ChineseMode.Simplified': {
@@ -898,27 +828,26 @@ class TabEngine(IBus.Engine):
         LOGGER.info(
             '********** Initialized and ready for input: **********')
 
-    def get_new_lookup_table(
-            self, page_size=10,
-            select_keys=(49, 50, 51, 52, 53, 54, 55, 56, 57, 48),
-            orientation=IBus.Orientation.VERTICAL):
+    def get_new_lookup_table(self):
         '''
-        (49, 50, 51, 52, 53, 54, 55, 56, 57, 48( are the key codes
-        for the characters ('1', '2', '3', '4', '5', '6', '7', '8', '0')
+        Get a new lookup table
         '''
-        if page_size < 1:
-            page_size = 1
-        if page_size > len(select_keys):
-            page_size = len(select_keys)
-        lookup_table = IBus.LookupTable(
-            page_size=page_size,
-            cursor_pos=0,
-            cursor_visible=True,
-            round=True)
-        for keycode in select_keys:
-            lookup_table.append_label(
-                IBus.Text.new_from_string("%s." %IBus.keyval_name(keycode)))
-        lookup_table.set_orientation(orientation)
+        lookup_table = IBus.LookupTable()
+        lookup_table.clear()
+        lookup_table.set_page_size(self._page_size)
+        lookup_table.set_orientation(self._orientation)
+        lookup_table.set_cursor_visible(True)
+        lookup_table.set_round(True)
+        for index in range(0, 10):
+            label = ''
+            if self._keybindings['commit_candidate_%s' % (index + 1)]:
+                keybinding = self._keybindings[
+                    'commit_candidate_%s' % (index + 1)][0]
+                key = it_util.keybinding_to_keyevent(keybinding)
+                label = keybinding
+                if key.unicode and not key.name.startswith('KP_'):
+                    label = key.unicode
+            lookup_table.append_label(IBus.Text.new_from_string(label))
         return lookup_table
 
     def clear_all_input_and_preedit(self):
@@ -1898,29 +1827,15 @@ class TabEngine(IBus.Engine):
         if not isinstance(keybindings, dict):
             return
         keybindings = copy.deepcopy(keybindings)
-        new_keybindings = {}
-        # Get the default settings from the generic schema for all databases:
-        new_keybindings = it_util.variant_to_value(
-            self._gsettings.get_default_value('keybindings'))
-        # Override with the default settings from the specific database:
-        new_keybindings['commit'] = self._commit_key_names
-        for index, name in enumerate(self._select_key_names):
-            new_keybindings[
-                'commit_candidate_%s' % (index + 1)
-            ] = [name]
-            new_keybindings[
-                'commit_candidate_to_preedit_%s' % (index + 1)
-            ] = ['Control+' + name]
-            new_keybindings[
-                'remove_candidate_%s' % (index + 1)
-            ] = ['Mod1+' + name]
-        new_keybindings['lookup_table_page_down'] = self._page_down_key_names
-        new_keybindings['lookup_table_page_up'] = self._page_up_key_names
-        # Update with the possibly changed settings:
-        it_util.dict_update_existing_keys(new_keybindings, keybindings)
-        self._keybindings = new_keybindings
+        self._keybindings = copy.deepcopy(self._default_keybindings)
+        # Update the default settings with the possibly changed settings:
+        it_util.dict_update_existing_keys(self._keybindings, keybindings)
         # Update hotkeys:
         self._hotkeys = it_util.HotKeys(self._keybindings)
+        # New keybindings might have changed the keys to commit candidates
+        # from the lookup table and then the labels of the lookup table
+        # might need to be updated:
+        self._lookup_table = self.get_new_lookup_table()
         # Some property menus have tooltips which show hints for the
         # key bindings. These may need to be updated if the key
         # bindings have changed.
@@ -2347,15 +2262,16 @@ class TabEngine(IBus.Engine):
             LOGGER.debug('page_size=%s', page_size)
         if page_size == self._page_size:
             return
-        if page_size > len(self._select_key_names):
-            page_size = len(self._select_key_names)
+        for index in range(1, 10):
+            if not self._default_keybindings[
+                    'commit_candidate_%s' % (index + 1)]:
+                page_size = min(index, page_size)
+                break
         if page_size < 1:
             page_size = 1
         self._page_size = page_size
-        self._lookup_table = self.get_new_lookup_table(
-            page_size=self._page_size,
-            select_keys=self._select_keys,
-            orientation=self._orientation)
+        # get a new lookup table to adapt to the new page size:
+        self._lookup_table = self.get_new_lookup_table()
         self.reset()
         if update_gsettings:
             self._gsettings.set_value(

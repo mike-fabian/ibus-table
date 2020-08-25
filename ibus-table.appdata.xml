@@ -19,11 +19,52 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.12.0" date="2020-08-26" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.12.0</url>
+      <issues>
+        <issue url="https://github.com/kaio/ibus-table/issues/57">
+          github-kaio-issue#57: New setup tool, now keybindings can be
+          configured with a GUI.
+        </issue>
+        <issue url="https://bugzilla.redhat.com/show_bug.cgi?id=1133127">
+          rhbz#1133127: The new setup tool also solves this bug, the
+          hotkey for switching to direct input mode is also
+          configurable now.
+        </issue>
+        <issue url="https://github.com/kaio/ibus-table/issues/63">
+          github-kaio-issue#63: Put exact (except tone) pinyin matches
+          next after exact matches in the candidate list.
+        </issue>
+        <issue>
+          Allow lookup table orientation “System Default” in the setup
+        </issue>
+        <issue>
+          Remove “spacekeybehavior” option.
+
+          Now all keybindings are configurable. Therefore, the option
+          to choose the behaviour of the space key makes no sense
+          anymore.
+
+          In the setup tool, there is now a new tab to configure all
+          the keybindings, one can configure the behaviour of the
+          space key there as well.
+        </issue>
+        <issue>
+          Added a 'debuglevel' option
+        </issue>
+        <issue>
+          Update translations from Weblate (updated ca, cs, de, es, fa, fr, ja, pt_BR, pt_PT, uk, zh_TW, zh_HK, zh_CN)
+        </issue>
+      </issues>
+    </release>
     <release version="1.11.0" date="2020-08-16" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
       </description>
-      <url>https://github.com/kaio/ibus-table/releases/tag/1.10.1</url>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.11.0</url>
       <issues>
         <issue url="https://github.com/ibus/ibus/issues/2241">
           github-ibus-issue#2241: Make key bindings configurable.

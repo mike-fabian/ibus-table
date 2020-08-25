@@ -1,16 +1,259 @@
-commit aded9f34abd4b58af1651952986b73af8bbdf424
+commit 1c1ffbbfbe6092d85f678c6d3a4878b1b053446d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 26 00:31:39 2020 +0200
+
+    Release 1.12.0
+
+commit 6b5e5205cd76456e3acc578220f0f698c350e2f2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 26 12:29:50 2020 +0200
+
+    Put exact (except tone) pinyin matches next after exact matches in the candidate list
+    
+    Resolves: https://github.com/kaio/ibus-table/issues/63
+
+commit cfc1ca83aa64e3e995709e18d304295da64dd7f3
+Author: Yuri Chornoivan <yurchor@ukr.net>
+Date:   Wed Aug 26 10:24:44 2020 +0200
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (127 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+
+commit 53e4382017d8626c7676968d43ffcf8ccb59f5c6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 26 10:24:43 2020 +0200
+
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 31.4% (40 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    
+    Translated using Weblate (French)
+    
+    Currently translated at 97.6% (124 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+
+commit bd532cb1b36b52047b50bfaf847052ea3892d929
+Author: Anonymous <noreply@weblate.org>
+Date:   Wed Aug 26 10:24:43 2020 +0200
+
+    Translated using Weblate (Persian)
+    
+    Currently translated at 10.2% (13 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fa/
+    
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 86.6% (110 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+    
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 97.6% (124 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    
+    Translated using Weblate (Chinese (Traditional))
+    
+    Currently translated at 67.7% (86 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_TW/
+    
+    Translated using Weblate (Chinese (Hong Kong))
+    
+    Currently translated at 11.0% (14 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_HK/
+    
+    Translated using Weblate (Chinese (Simplified))
+    
+    Currently translated at 65.3% (83 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_CN/
+    
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 93.7% (119 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 97.6% (124 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    
+    Translated using Weblate (Czech)
+    
+    Currently translated at 36.2% (46 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/cs/
+    
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 92.1% (117 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+    
+    Translated using Weblate (French)
+    
+    Currently translated at 97.6% (124 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+    
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 31.4% (40 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+
+commit 0b4272cec4744c6879be81ad2990e4e2368e78ea
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 26 02:10:18 2020 +0200
+
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 29.1% (37 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (127 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+
+commit ed42e3d209e80b837b2882de4c32cd4c81c4a1d3
+Author: Weblate <noreply@weblate.org>
+Date:   Wed Aug 26 02:10:17 2020 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+
+commit 500b8cfdaf8ce5c1e637c72811808a635d3a7c58
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 26 00:19:51 2020 +0200
+
+    Update ibus-table.pot
+
+commit 7c94515e64421c139901aa22887399587bcec31e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 25 22:47:01 2020 +0200
+
+    Use new 'debuglevel' option
+
+commit 29bfe8a88d2ef56bc99f51d2bbae813cb470a5e1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 25 18:41:09 2020 +0200
+
+    Sync new default keybinding handling from the setup tool to table.py
+
+commit f4c57c2c1bc46dd4d5d25a5d60c59f3df304c791
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 25 19:01:21 2020 +0200
+
+    Remove unused function select_key(self, keycode)
+
+commit 85a8e5f72b7c3dffe77f4dd76dbec64ebe70d13c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 25 16:25:42 2020 +0200
+
+    Remove “spacekeybehavior” option
+    
+    Now all keybindings are configurable. Therefore, the option to choose
+    the behaviour of the space key makes no sense anymore.
+    
+    In the setup tool, there is now a new tab to configure all the keybindings,
+    one can configure the behaviour of the space key there as well.
+
+commit 23db98cec23069d3ebd2f3b217dd51e6bbaa4722
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 19 15:12:19 2020 +0200
+
+    New setup tool, now keybindings can be configured with a GUI
+    
+    Resolves: https://github.com/kaio/ibus-table/issues/57
+    Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=1133127
+
+commit 1b7f00a39802fe2c4a87b337f8913b7f8162ecb8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Aug 24 09:40:17 2020 +0200
+
+    Use deep copy in set_keybindings()
+
+commit 4e48dfb25e06d70b2c0cbd8d7777a943e386f637
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Aug 22 02:50:26 2020 +0200
+
+    Fix typo in old setup tool which mistakenly disabled the autocommit combobox for wubi-jidian86
+
+commit b08006c8495f2d2c4849a385231d9e3ca88b45bc
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 20 15:20:26 2020 +0200
+
+    Allow lookup table orientation “System Default” in old setup tool
+
+commit a3ffdbf1cfad29cd3b3c807ff1968add9e9f3ec8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 25 16:05:15 2020 +0200
+
+    Use unit_test=True when instantiating Tabsqlitedb in test_0_gtk.py
+    
+    To avoid failing tests because of the cache.
+
+commit d5b6fd7dd5bce1f28354b0b707b43b9591031b93
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 20 11:58:21 2020 +0200
+
+    Remove redundant line
+
+commit 06edda1ed8becf7e9215b1219830265b53835ba9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 18 19:22:38 2020 +0200
+
+    Fix some pylint warnings
+
+commit 8120e5fa3597a021d6a3b50f132dcbcae4501829
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Sun Aug 16 02:27:58 2020 +0200
 
     Release 1.11.0
 
-commit 2e5890971b6bfe4775d1916a732611502aeeda52
+commit 1c4966d076c8ed63a3f9754ab8a805ed2443a746
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Sun Aug 16 02:31:58 2020 +0200
 
     Update ibus-table.pot (only line numbers changed)
 
-commit 2bd3392c223619255c9a0ce68345b2716cfdb829
+commit 2c97c38301b762830cecf3996ad4c5b230b41164
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Aug 12 11:09:57 2020 +0200
 
@@ -19,6 +262,13 @@ Date:   Wed Aug 12 11:09:57 2020 +0200
     Only via the command line for the moment, not yet easy to do for
     normal users. I have to rewrite the setup tool eventually to make that
     possible.
+    
+    Resolves: https://github.com/ibus/ibus/issues/2241
+    
+    This rewrite of the handling of the key bindings also fixes the
+    problem reported in https://github.com/ibus/ibus/issues/2241
+    that the Shift_L key cannot switch between Chinese and English mode
+    when using google-chrome.
 
 commit 7e02ee75852218afa27dc0d6e6430a33b34f8e64
 Author: Mike FABIAN <mfabian@redhat.com>

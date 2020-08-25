@@ -91,9 +91,6 @@
     <key name="alwaysshowlookup" type="b">
       <default>true</default>
     </key>
-    <key name="spacekeybehavior" type="b">
-      <default>false</default>
-    </key>
     <key name="singlewildcardchar" type="s">
       <default>''</default>
     </key>

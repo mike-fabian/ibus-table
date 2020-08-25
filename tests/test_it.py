@@ -76,7 +76,6 @@ ORIG_PAGE_SIZE = None
 ORIG_ONECHAR_MODE = None
 ORIG_AUTOSELECT_MODE = None
 ORIG_AUTOCOMMIT_MODE = None
-ORIG_SPACE_KEY_BEHAVIOR_MODE = None
 ORIG_AUTOWILDCARD_MODE = None
 ORIG_SINGLE_WILDCARD_CHAR = None
 ORIG_MULTI_WILDCARD_CHAR = None
@@ -97,7 +96,6 @@ def backup_original_settings():
     global ORIG_ONECHAR_MODE
     global ORIG_AUTOSELECT_MODE
     global ORIG_AUTOCOMMIT_MODE
-    global ORIG_SPACE_KEY_BEHAVIOR_MODE
     global ORIG_AUTOWILDCARD_MODE
     global ORIG_SINGLE_WILDCARD_CHAR
     global ORIG_MULTI_WILDCARD_CHAR
@@ -114,7 +112,6 @@ def backup_original_settings():
     ORIG_ONECHAR_MODE = ENGINE.get_onechar_mode()
     ORIG_AUTOSELECT_MODE = ENGINE.get_autoselect_mode()
     ORIG_AUTOCOMMIT_MODE = ENGINE.get_autocommit_mode()
-    ORIG_SPACE_KEY_BEHAVIOR_MODE = ENGINE.get_space_key_behavior_mode()
     ORIG_AUTOWILDCARD_MODE = ENGINE.get_autowildcard_mode()
     ORIG_SINGLE_WILDCARD_CHAR = ENGINE.get_single_wildcard_char()
     ORIG_MULTI_WILDCARD_CHAR = ENGINE.get_multi_wildcard_char()
@@ -134,7 +131,6 @@ def restore_original_settings():
     global ORIG_ONECHAR_MODE
     global ORIG_AUTOSELECT_MODE
     global ORIG_AUTOCOMMIT_MODE
-    global ORIG_SPACE_KEY_BEHAVIOR_MODE
     global ORIG_AUTOWILDCARD_MODE
     global ORIG_SINGLE_WILDCARD_CHAR
     global ORIG_MULTI_WILDCARD_CHAR
@@ -164,8 +160,6 @@ def restore_original_settings():
         ORIG_AUTOSELECT_MODE, update_gsettings=False)
     ENGINE.set_autocommit_mode(
         ORIG_AUTOCOMMIT_MODE, update_gsettings=False)
-    ENGINE.set_space_key_behavior_mode(
-        ORIG_SPACE_KEY_BEHAVIOR_MODE, update_gsettings=False)
     ENGINE.set_autowildcard_mode(
         ORIG_AUTOWILDCARD_MODE, update_gsettings=False)
     ENGINE.set_single_wildcard_char(
@@ -244,29 +238,17 @@ def set_default_settings():
     ENGINE.set_autocommit_mode(
         auto_commit_mode, update_gsettings=False)
 
-    space_key_behavior_mode = False
-    # if space is a page down key, set the option
-    # “spacekeybehavior” to “True”:
     page_down_keys_csv = TABSQLITEDB.ime_properties.get(
         'page_down_keys')
     if page_down_keys_csv:
         page_down_keys = [
             IBus.keyval_from_name(x)
             for x in page_down_keys_csv.split(',')]
-    if IBus.KEY_space in page_down_keys:
-        space_key_behavior_mode = True
-    # if space is a commit key, set the option
-    # “spacekeybehavior” to “False” (overrides if space is
-    # also a page down key):
     commit_keys_csv = TABSQLITEDB.ime_properties.get('commit_keys')
     if commit_keys_csv:
         commit_keys = [
             IBus.keyval_from_name(x)
             for x in commit_keys_csv.split(',')]
-    if IBus.KEY_space in commit_keys:
-        space_key_behavior_mode = False
-    ENGINE.set_space_key_behavior_mode(
-        space_key_behavior_mode, update_gsettings=False)
 
     auto_wildcard_mode = True
     auto_wildcard = TABSQLITEDB.ime_properties.get('auto_wildcard')

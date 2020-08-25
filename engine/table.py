@@ -432,25 +432,6 @@ class TabEngine(IBus.Engine):
                 self._page_up_keys.remove(keyval)
             if keyval in self._page_down_keys:
                 self._page_down_keys.remove(keyval)
-        # Finally, check the user setting, i.e. the Gsettings value
-        # “spacekeybehavior” and let the user have the last word
-        # how to use the space key:
-        spacekeybehavior = it_util.variant_to_value(
-            self._gsettings.get_user_value('spacekeybehavior'))
-        if spacekeybehavior is not None:
-            if spacekeybehavior is True:
-                # space is used as a page down key and not as a commit key:
-                if IBus.KEY_space not in self._page_down_keys:
-                    self._page_down_keys.append(IBus.KEY_space)
-                if IBus.KEY_space in self._commit_keys:
-                    self._commit_keys.remove(IBus.KEY_space)
-            if spacekeybehavior is False:
-                # space is used as a commit key and not used as a
-                # page down key:
-                if IBus.KEY_space in self._page_down_keys:
-                    self._page_down_keys.remove(IBus.KEY_space)
-                if IBus.KEY_space not in self._commit_keys:
-                    self._commit_keys.append(IBus.KEY_space)
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'self._page_up_keys=%s', repr(self._page_up_keys))
@@ -2297,70 +2278,6 @@ class TabEngine(IBus.Engine):
         '''
         return self._multi_wildcard_char
 
-    def set_space_key_behavior_mode(self, mode=False, update_gsettings=True):
-        '''Sets the behaviour of the space key
-
-        :param mode: How the space key should behave
-        :type mode: Boolean
-                    True: space is used as a page down key
-                          and not as a commit key.
-                    False: space is used as a commit key
-                           and not used as a page down key
-        :param update_gsettings: Whether to write the change to Gsettings.
-                                 Set this to False if this method is
-                                 called because the dconf key changed
-                                 to avoid endless loops when the dconf
-                                 key is changed twice in a short time.
-        :type update_gsettings: boolean
-        '''
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug('mode=%s', mode)
-        if mode is True:
-            # space is used as a page down key and not as a commit key:
-            if IBus.KEY_space not in self._page_down_keys:
-                self._page_down_keys.append(IBus.KEY_space)
-            if IBus.KEY_space in self._commit_keys:
-                self._commit_keys.remove(IBus.KEY_space)
-        if mode is False:
-            # space is used as a commit key and not used as a page down key:
-            if IBus.KEY_space in self._page_down_keys:
-                self._page_down_keys.remove(IBus.KEY_space)
-            if IBus.KEY_space not in self._commit_keys:
-                self._commit_keys.append(IBus.KEY_space)
-        self._commit_key_names = [
-            IBus.keyval_name(keyval) for keyval in self._commit_keys]
-        self._page_down_key_names = [
-            IBus.keyval_name(keyval) for keyval in self._page_down_keys]
-        self._keybindings['commit'] = self._commit_key_names
-        self._keybindings['lookup_table_page_down'] = self._page_down_key_names
-        # Update hotkeys:
-        self._hotkeys = it_util.HotKeys(self._keybindings)
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug(
-                'self._page_down_keys=%s', repr(self._page_down_keys))
-            LOGGER.debug(
-                'self._commit_keys=%s', repr(self._commit_keys))
-            LOGGER.debug(
-                'self._keybindings=%s', repr(self._keybindings))
-        if update_gsettings:
-            self._gsettings.set_value(
-                "spacekeybehavior",
-                GLib.Variant.new_boolean(mode))
-
-    def get_space_key_behavior_mode(self):
-        '''
-        Returns the current space key behaviour mode.
-
-        :rtype: Boolean
-        '''
-        mode = False
-        if IBus.KEY_space in self._page_down_keys:
-            mode = True
-        if IBus.KEY_space in self._commit_keys:
-            # commit key behaviour overrides the page down behaviour
-            mode = False
-        return mode
-
     def set_always_show_lookup(self, mode=False, update_gsettings=True):
         '''Sets the whether the lookup table is shown.
 
@@ -3759,9 +3676,6 @@ class TabEngine(IBus.Engine):
             return
         if key == u'alwaysshowlookup':
             self.set_always_show_lookup(value, update_gsettings=False)
-            return
-        if key == u'spacekeybehavior':
-            self.set_space_key_behavior_mode(value, update_gsettings=False)
             return
         if key == u'singlewildcardchar':
             self.set_single_wildcard_char(value, update_gsettings=False)

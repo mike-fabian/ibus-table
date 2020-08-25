@@ -205,7 +205,8 @@ class SimpleGtkTestCase(unittest.TestCase):
         object_path = '%s/%d' % (self.ENGINE_PATH, self.__id)
         db_dir = '/usr/share/ibus-table/tables'
         db_file = os.path.join(db_dir, engine_name + '.db')
-        database = tabsqlitedb.TabSqliteDb(filename=db_file, user_db=':memory:')
+        database = tabsqlitedb.TabSqliteDb(
+            filename=db_file, user_db=':memory:', unit_test=True)
         self.__engine = table.TabEngine(
             self.__bus,
             object_path,

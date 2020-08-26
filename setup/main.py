@@ -20,7 +20,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>
+# along with this library.  If not, see <http://www.gnu.org/licenses/>
 
 '''
 The setup tool for ibus-table.
@@ -38,7 +38,6 @@ import locale
 import copy
 import logging
 import logging.handlers
-from time import strftime
 import dbus
 import dbus.service
 
@@ -62,14 +61,7 @@ require_version('Pango', '1.0')
 from gi.repository import Pango
 require_version('IBus', '1.0')
 from gi.repository import IBus
-from i18n import DOMAINNAME, _, init as i18n_init
-
-IMPORT_LANGTABLE_SUCCESSFUL = False
-try:
-    import langtable
-    IMPORT_LANGTABLE_SUCCESSFUL = True
-except (ImportError,):
-    IMPORT_LANGTABLE_SUCCESSFUL = False
+from i18n import _, init as i18n_init
 
 sys.path = [sys.path[0]+'/../engine'] + sys.path
 import tabsqlitedb
@@ -468,7 +460,8 @@ class SetupUI(Gtk.Window):
         if not self.__is_cjk:
             self._table_full_width_punctuation_mode_combobox.set_button_sensitivity(
                 Gtk.SensitivityType.OFF)
-        self._table_full_width_punctuation_mode_store = Gtk.ListStore(str, bool)
+        self._table_full_width_punctuation_mode_store = Gtk.ListStore(
+            str, bool)
         self._table_full_width_punctuation_mode_store.append(
             # Translators: This is the mode to use half width punctuation
             # while in “Table input” mode.
@@ -553,7 +546,8 @@ class SetupUI(Gtk.Window):
         if not self.__is_cjk:
             self._direct_full_width_punctuation_mode_combobox.set_button_sensitivity(
                 Gtk.SensitivityType.OFF)
-        self._direct_full_width_punctuation_mode_store = Gtk.ListStore(str, bool)
+        self._direct_full_width_punctuation_mode_store = Gtk.ListStore(
+            str, bool)
         self._direct_full_width_punctuation_mode_store.append(
             # Translators: This is the mode to use half width punctuation
             # while in “Direct input” mode.
@@ -1023,6 +1017,22 @@ class SetupUI(Gtk.Window):
         self._gsettings.connect('changed', self.on_gsettings_value_changed)
 
     def _fill_settings_dict(self):
+        '''Fill a dictionary with the default and user settings for all
+        settings keys.
+
+        The default settings start with the defaults from the
+        gsettings schema. Some of these generic default values may be
+        overridden by more specific default settings coming from the
+        specific database of this table input method. After this
+        possible modification from the database we have the final default
+        settings for this specific table input method.
+
+        The user settings start with a copy of these final default settings,
+        then they are possibly modified by user gsettings.
+
+        Keeping a copy of the default settings in the settings dictionary
+        makes it easy to revert some or all settings to the defaults.
+        '''
         self._settings_dict = {}
 
         default_single_wildcard_char = it_util.variant_to_value(
@@ -1072,7 +1082,7 @@ class SetupUI(Gtk.Window):
             'user': user_keybindings,
             'set_function': self.set_keybindings}
 
-        default_always_show_lookup =  it_util.variant_to_value(
+        default_always_show_lookup = it_util.variant_to_value(
             self._gsettings.get_default_value('alwaysshowlookup'))
         if self.tabsqlitedb.ime_properties.get('always_show_lookup'):
             default_always_show_lookup = (
@@ -1160,7 +1170,8 @@ class SetupUI(Gtk.Window):
         user_table_full_width_letter_mode = it_util.variant_to_value(
             self._gsettings.get_user_value('tabdeffullwidthletter'))
         if user_table_full_width_letter_mode is None:
-            user_table_full_width_letter_mode = default_table_full_width_letter_mode
+            user_table_full_width_letter_mode = (
+                default_table_full_width_letter_mode)
 
         self._settings_dict['tabdeffullwidthletter'] = {
             'default': default_table_full_width_letter_mode,
@@ -1262,8 +1273,6 @@ class SetupUI(Gtk.Window):
             'default': default_autowildcard_mode,
             'user': user_autowildcard_mode,
             'set_function': self.set_autowildcard_mode}
-
-        return
 
     def __run_message_dialog(self, message, message_type=Gtk.MessageType.INFO):
         '''Run a dialog to show an error or warning message'''
@@ -2371,12 +2380,12 @@ class HelpWindow(Gtk.Window):
 
 if __name__ == '__main__':
     if _ARGS.no_debug:
-        log_handler = logging.NullHandler()
+        LOG_HANDLER = logging.NullHandler()
     else:
-        logfile = os.path.join(
+        LOGFILE = os.path.join(
             ibus_table_location.cache_home(), 'setup-debug.log')
-        log_handler = logging.handlers.TimedRotatingFileHandler(
-            logfile,
+        LOG_HANDLER = logging.handlers.TimedRotatingFileHandler(
+            LOGFILE,
             when='H',
             interval=6,
             backupCount=7,
@@ -2384,13 +2393,13 @@ if __name__ == '__main__':
             delay=False,
             utc=False,
             atTime=None)
-        log_formatter = logging.Formatter(
+        LOG_FORMATTER = logging.Formatter(
             '%(asctime)s %(filename)s '
             'line %(lineno)d %(funcName)s %(levelname)s: '
             '%(message)s')
-        log_handler.setFormatter(log_formatter)
+        LOG_HANDLER.setFormatter(LOG_FORMATTER)
         LOGGER.setLevel(logging.DEBUG)
-        LOGGER.addHandler(log_handler)
+        LOGGER.addHandler(LOG_HANDLER)
         LOGGER.info('********** STARTING **********')
 
     # Workaround for

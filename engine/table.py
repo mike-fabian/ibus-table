@@ -242,7 +242,7 @@ SAVE_USER_TIMEOUT = 30 # in seconds
 class TabEngine(IBus.Engine):
     '''The IM Engine for Tables'''
 
-    def __init__(self, bus, obj_path, db, unit_test=False):
+    def __init__(self, bus, obj_path, database, unit_test=False):
         super(TabEngine, self).__init__(connection=bus.get_connection(),
                                         object_path=obj_path)
         global DEBUG_LEVEL
@@ -260,12 +260,12 @@ class TabEngine(IBus.Engine):
         # this is the backend sql db we need for our IME
         # we receive this db from IMEngineFactory
         #self.db = tabsqlitedb.TabSqliteDb( name = dbname )
-        self.db = db
+        self.database = database
         self._setup_pid = 0
         self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
                                        os.path.sep, 'icons', os.path.sep)
         self._engine_name = os.path.basename(
-            self.db.filename).replace('.db', '').replace(' ', '_')
+            self.database.filename).replace('.db', '').replace(' ', '_')
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'self._engine_name = %s', self._engine_name)
@@ -300,7 +300,7 @@ class TabEngine(IBus.Engine):
         self._hotkeys = None
 
         # self._ime_py: Indicates whether this table supports pinyin mode
-        self._ime_py = self.db.ime_properties.get('pinyin_mode')
+        self._ime_py = self.database.ime_properties.get('pinyin_mode')
         if self._ime_py:
             self._ime_py = bool(self._ime_py.lower() == u'true')
         else:
@@ -309,7 +309,7 @@ class TabEngine(IBus.Engine):
             self._ime_py = False
 
         # self._ime_sg: Indicates whether this table supports suggestion mode
-        self._ime_sg = self.db.ime_properties.get('suggestion_mode')
+        self._ime_sg = self.database.ime_properties.get('suggestion_mode')
         if self._ime_sg:
             self._ime_sg = bool(self._ime_sg.lower() == u'true')
         else:
@@ -318,9 +318,9 @@ class TabEngine(IBus.Engine):
                 'is it an outdated database?')
             self._ime_sg = False
 
-        self._symbol = self.db.ime_properties.get('symbol')
+        self._symbol = self.database.ime_properties.get('symbol')
         if self._symbol is None or self._symbol == u'':
-            self._symbol = self.db.ime_properties.get('status_prompt')
+            self._symbol = self.database.ime_properties.get('status_prompt')
         if self._symbol is None:
             self._symbol = u''
         # some Chinese tables have “STATUS_PROMPT = CN” replace it
@@ -336,7 +336,7 @@ class TabEngine(IBus.Engine):
         if self._symbol == u'Yi':
             self._symbol = u'Ї'
         # now we check and update the valid input characters
-        self._valid_input_chars = self.db.ime_properties.get(
+        self._valid_input_chars = self.database.ime_properties.get(
             'valid_input_chars')
         self._pinyin_valid_input_chars = u'abcdefghijklmnopqrstuvwxyz!@#$%'
 
@@ -351,7 +351,7 @@ class TabEngine(IBus.Engine):
         self._single_wildcard_char = it_util.variant_to_value(
             self._gsettings.get_user_value('singlewildcardchar'))
         if self._single_wildcard_char is None:
-            self._single_wildcard_char = self.db.ime_properties.get(
+            self._single_wildcard_char = self.database.ime_properties.get(
                 'single_wildcard_char')
         if self._single_wildcard_char is None:
             self._single_wildcard_char = it_util.variant_to_value(
@@ -362,7 +362,7 @@ class TabEngine(IBus.Engine):
         self._multi_wildcard_char = it_util.variant_to_value(
             self._gsettings.get_user_value('multiwildcardchar'))
         if self._multi_wildcard_char is None:
-            self._multi_wildcard_char = self.db.ime_properties.get(
+            self._multi_wildcard_char = self.database.ime_properties.get(
                 'multi_wildcard_char')
         if self._multi_wildcard_char is None:
             self._multi_wildcard_char = it_util.variant_to_value(
@@ -373,15 +373,15 @@ class TabEngine(IBus.Engine):
         self._auto_wildcard = it_util.variant_to_value(
             self._gsettings.get_user_value('autowildcard'))
         if self._auto_wildcard is None:
-            if self.db.ime_properties.get('auto_wildcard') is not None:
-                self._auto_wildcard = self.db.ime_properties.get(
+            if self.database.ime_properties.get('auto_wildcard') is not None:
+                self._auto_wildcard = self.database.ime_properties.get(
                     'auto_wildcard').lower() == u'true'
         if self._auto_wildcard is None:
             self._auto_wildcard = it_util.variant_to_value(
                 self._gsettings.get_value('autowildcard'))
 
         self._max_key_length = int(
-            self.db.ime_properties.get('max_key_length'))
+            self.database.ime_properties.get('max_key_length'))
         self._max_key_length_pinyin = 7
 
         # 0 = Direct input, i.e. table input OFF (aka “English input mode”),
@@ -410,8 +410,8 @@ class TabEngine(IBus.Engine):
                 self._gsettings.get_user_value('tabdeffullwidthletter'))
             ]
         if self._full_width_letter[1] is None:
-            if self.db.ime_properties.get('def_full_width_letter'):
-                self._full_width_letter[1] = self.db.ime_properties.get(
+            if self.database.ime_properties.get('def_full_width_letter'):
+                self._full_width_letter[1] = self.database.ime_properties.get(
                     'def_full_width_letter').lower() == u'true'
         if self._full_width_letter[1] is None:
             self._full_width_letter[1] = it_util.variant_to_value(
@@ -424,8 +424,8 @@ class TabEngine(IBus.Engine):
                 self._gsettings.get_user_value('tabdeffullwidthpunct'))
             ]
         if self._full_width_punct[1] is None:
-            if self.db.ime_properties.get('def_full_width_punct'):
-                self._full_width_punct[1] = self.db.ime_properties.get(
+            if self.database.ime_properties.get('def_full_width_punct'):
+                self._full_width_punct[1] = self.database.ime_properties.get(
                     'def_full_width_punct').lower() == u'true'
         if self._full_width_punct[1] is None:
             self._full_width_punct[1] = it_util.variant_to_value(
@@ -434,8 +434,8 @@ class TabEngine(IBus.Engine):
         self._auto_commit = it_util.variant_to_value(
             self._gsettings.get_user_value('autocommit'))
         if self._auto_commit is None:
-            if self.db.ime_properties.get('auto_commit'):
-                self._auto_commit = self.db.ime_properties.get(
+            if self.database.ime_properties.get('auto_commit'):
+                self._auto_commit = self.database.ime_properties.get(
                     'auto_commit').lower() == u'true'
         if self._auto_commit is None:
             self._auto_commit = it_util.variant_to_value(
@@ -447,8 +447,8 @@ class TabEngine(IBus.Engine):
         self._auto_select = it_util.variant_to_value(
             self._gsettings.get_user_value('autoselect'))
         if self._auto_select is None:
-            if self.db.ime_properties.get('auto_select') is not None:
-                self._auto_select = self.db.ime_properties.get(
+            if self.database.ime_properties.get('auto_select') is not None:
+                self._auto_select = self.database.ime_properties.get(
                     'auto_select').lower() == u'true'
         if self._auto_select is None:
             self._auto_select = it_util.variant_to_value(
@@ -457,8 +457,9 @@ class TabEngine(IBus.Engine):
         self._always_show_lookup = it_util.variant_to_value(
             self._gsettings.get_user_value('alwaysshowlookup'))
         if self._always_show_lookup is None:
-            if self.db.ime_properties.get('always_show_lookup') is not None:
-                self._always_show_lookup = self.db.ime_properties.get(
+            if (self.database.ime_properties.get('always_show_lookup')
+                is not None):
+                self._always_show_lookup = self.database.ime_properties.get(
                     'always_show_lookup').lower() == u'true'
         if self._always_show_lookup is None:
             self._always_show_lookup = it_util.variant_to_value(
@@ -511,7 +512,7 @@ class TabEngine(IBus.Engine):
         self._cursor_precommit = 0
 
         self._prompt_characters = eval(
-            self.db.ime_properties.get('char_prompts'))
+            self.database.ime_properties.get('char_prompts'))
 
         # self._onechar: whether we only select single character
         self._onechar = it_util.variant_to_value(self._gsettings.get_value(
@@ -531,7 +532,8 @@ class TabEngine(IBus.Engine):
                 'Chinese mode found in Gsettings, mode=%s',
                 self._chinese_mode)
         if self._chinese_mode is None:
-            self._chinese_mode = it_util.get_default_chinese_mode(self.db)
+            self._chinese_mode = it_util.get_default_chinese_mode(
+                self.database)
 
         # If auto select is true, then the first candidate phrase will
         # be selected automatically during typing. Auto select is true
@@ -539,15 +541,15 @@ class TabEngine(IBus.Engine):
         self._auto_select = it_util.variant_to_value(
             self._gsettings.get_user_value('autoselect'))
         if self._auto_select is None:
-            if self.db.ime_properties.get('auto_select') is not None:
-                self._auto_select = self.db.ime_properties.get(
+            if self.database.ime_properties.get('auto_select') is not None:
+                self._auto_select = self.database.ime_properties.get(
                     'auto_select').lower() == u'true'
         if self._auto_select is None:
             self._auto_select = it_util.variant_to_value(
                 self._gsettings.get_value('autoselect'))
 
         self._default_keybindings = it_util.get_default_keybindings(
-            self._gsettings, self.db)
+            self._gsettings, self.database)
 
         self._page_size = it_util.variant_to_value(
             self._gsettings.get_default_value('lookuptablepagesize'))
@@ -564,7 +566,7 @@ class TabEngine(IBus.Engine):
         self._orientation = it_util.variant_to_value(
             self._gsettings.get_user_value('lookuptableorientation'))
         if self._orientation is None:
-            self._orientation = self.db.get_orientation()
+            self._orientation = self.database.get_orientation()
 
         user_keybindings = it_util.variant_to_value(
             self._gsettings.get_user_value('keybindings'))
@@ -637,7 +639,7 @@ class TabEngine(IBus.Engine):
                 self._keybindings['switch_to_next_chinese_mode']),
             'sub_properties': self.chinese_mode_properties
         }
-        if self.db._is_chinese:
+        if self.database._is_chinese:
             self.input_mode_properties = {
                 'InputMode.Direct': {
                     'number': 0,
@@ -946,9 +948,9 @@ class TabEngine(IBus.Engine):
         tail = self._strings[index][index_in_phrase:]
         self._u_chars.pop(index)
         self._strings.pop(index)
-        self._u_chars.insert(index, self.db.parse_phrase(head))
+        self._u_chars.insert(index, self.database.parse_phrase(head))
         self._strings.insert(index, head)
-        self._u_chars.insert(index+1, self.db.parse_phrase(tail))
+        self._u_chars.insert(index+1, self.database.parse_phrase(tail))
         self._strings.insert(index+1, tail)
 
     def remove_preedit_before_cursor(self):
@@ -1295,7 +1297,7 @@ class TabEngine(IBus.Engine):
 
         table_code = u''
 
-        if self.db._is_chinese and self._py_mode:
+        if self.database._is_chinese and self._py_mode:
             # restore tune symbol
             remaining_tabkeys = remaining_tabkeys.replace(
                 '!', '↑1').replace(
@@ -1309,13 +1311,13 @@ class TabEngine(IBus.Engine):
             # Wubi or Cangjie code. So get that code from the table
             # and display it as well to help the user learn that code.
             # The Wubi tables contain several codes for the same
-            # character, therefore self.db.find_zi_code(phrase) may
+            # character, therefore self.database.find_zi_code(phrase) may
             # return a list. The last code in that list is the full
             # table code for that characters, other entries in that
             # list are shorter substrings of the full table code which
             # are not interesting to display. Therefore, we use only
             # the last element of the list of table codes.
-            possible_table_codes = self.db.find_zi_code(phrase)
+            possible_table_codes = self.database.find_zi_code(phrase)
             if possible_table_codes:
                 table_code = possible_table_codes[-1]
             table_code_new = u''
@@ -1415,14 +1417,14 @@ class TabEngine(IBus.Engine):
                 'self._chars_valid_update_candidates_last=%s '
                 'self._chars_invalid_update_candidates_last=%s '
                 'self._candidates=%s '
-                'self.db.startchars=%s '
+                'self.database.startchars=%s '
                 'self._strings=%s',
                 self._chars_valid,
                 self._chars_invalid,
                 self._chars_valid_update_candidates_last,
                 self._chars_invalid_update_candidates_last,
                 self._candidates,
-                self.db.startchars,
+                self.database.startchars,
                 self._strings)
         if (not self._sg_mode_active
             and
@@ -1442,14 +1444,17 @@ class TabEngine(IBus.Engine):
                 self._candidates = []
                 self._candidates_previous = self._candidates
                 return False
-        if not self._sg_mode_active and self._py_mode and self.db._is_chinese:
-            self._candidates = self.db.select_chinese_characters_by_pinyin(
-                tabkeys=self._chars_valid,
-                chinese_mode=self._chinese_mode,
-                single_wildcard_char=self._single_wildcard_char,
-                multi_wildcard_char=self._multi_wildcard_char)
+        if (not self._sg_mode_active
+            and self._py_mode
+            and self.database._is_chinese):
+            self._candidates = (
+                self.database.select_chinese_characters_by_pinyin(
+                    tabkeys=self._chars_valid,
+                    chinese_mode=self._chinese_mode,
+                    single_wildcard_char=self._single_wildcard_char,
+                    multi_wildcard_char=self._multi_wildcard_char))
         elif not self._sg_mode_active:
-            self._candidates = self.db.select_words(
+            self._candidates = self.database.select_words(
                 tabkeys=self._chars_valid,
                 onechar=self._onechar,
                 chinese_mode=self._chinese_mode,
@@ -1457,7 +1462,7 @@ class TabEngine(IBus.Engine):
                 multi_wildcard_char=self._multi_wildcard_char,
                 auto_wildcard=self._auto_wildcard)
         elif self._sg_mode_active and self._sg_mode:
-            self._candidates = self.db.select_suggestion_candidate(
+            self._candidates = self.database.select_suggestion_candidate(
                 self._prefix)
         else:
             assert False
@@ -1612,11 +1617,11 @@ class TabEngine(IBus.Engine):
                 char = self._strings[-1][0]
             else:
                 char = self._strings[self._cursor_precommit][0]
-            aux_string = u' '.join(self.db.find_zi_code(char))
+            aux_string = u' '.join(self.database.find_zi_code(char))
         cstr = u''.join(self._strings)
-        if self.db.user_can_define_phrase:
+        if self.database.user_can_define_phrase:
             if len(cstr) > 1:
-                aux_string += (u'\t#: ' + self.db.parse_phrase(cstr))
+                aux_string += (u'\t#: ' + self.database.parse_phrase(cstr))
         aux_string_new = u''
         for char in aux_string:
             if char in self._prompt_characters:
@@ -1696,8 +1701,8 @@ class TabEngine(IBus.Engine):
         return res
 
     def remove_candidate_from_user_database(self, index):
-        '''Remove the candidate shown at index in the lookup table from the user
-        database.
+        '''Remove the candidate shown at index in the lookup table
+        from the user database.
 
         If that candidate is not in the user database at all, nothing
         happens.
@@ -1726,7 +1731,7 @@ class TabEngine(IBus.Engine):
         real_index = current_page_start + index
         if len(self._candidates) > real_index: # this index is valid
             candidate = self._candidates[real_index]
-            self.db.remove_phrase(
+            self.database.remove_phrase(
                 tabkeys=candidate[0], phrase=candidate[1], commit=True)
             # call update_candidates() to get a new SQL query.  The
             # input has not really changed, therefore we must clear
@@ -1814,7 +1819,7 @@ class TabEngine(IBus.Engine):
         self.reset()
         self.do_focus_out()
         if self._save_user_count > 0:
-            self.db.sync_usrdb()
+            self.database.sync_usrdb()
             self._save_user_count = 0
         super(TabEngine, self).destroy()
 
@@ -2057,7 +2062,7 @@ class TabEngine(IBus.Engine):
         self._onechar = mode
         self._init_or_update_property_menu(
             self.onechar_mode_menu, mode)
-        self.db.reset_phrases_cache()
+        self.database.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
                 "onechar",
@@ -2151,7 +2156,7 @@ class TabEngine(IBus.Engine):
         if mode == self._auto_wildcard:
             return
         self._auto_wildcard = mode
-        self.db.reset_phrases_cache()
+        self.database.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
                 "autowildcard",
@@ -2180,7 +2185,7 @@ class TabEngine(IBus.Engine):
         if char == self._single_wildcard_char:
             return
         self._single_wildcard_char = char
-        self.db.reset_phrases_cache()
+        self.database.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
                 "singlewildcardchar",
@@ -2211,7 +2216,7 @@ class TabEngine(IBus.Engine):
         if char == self._multi_wildcard_char:
             return
         self._multi_wildcard_char = char
-        self.db.reset_phrases_cache()
+        self.database.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
                 "multiwildcardchar",
@@ -2433,7 +2438,7 @@ class TabEngine(IBus.Engine):
         if mode == self._chinese_mode:
             return
         self._chinese_mode = mode
-        self.db.reset_phrases_cache()
+        self.database.reset_phrases_cache()
         self._init_or_update_property_menu(
             self.chinese_mode_menu, mode)
         if update_gsettings:
@@ -2559,12 +2564,12 @@ class TabEngine(IBus.Engine):
             self.input_mode_menu,
             self._input_mode)
 
-        if self.db._is_chinese and self._chinese_mode != -1:
+        if self.database._is_chinese and self._chinese_mode != -1:
             self._init_or_update_property_menu(
                 self.chinese_mode_menu,
                 self._chinese_mode)
 
-        if self.db._is_cjk:
+        if self.database._is_cjk:
             self._init_or_update_property_menu(
                 self.letter_width_menu,
                 self._full_width_letter[self._input_mode])
@@ -2582,12 +2587,12 @@ class TabEngine(IBus.Engine):
                 self.suggestion_mode_menu,
                 self._sg_mode)
 
-        if self.db._is_cjk:
+        if self.database._is_cjk:
             self._init_or_update_property_menu(
                 self.onechar_mode_menu,
                 self._onechar)
 
-        if self.db.user_can_define_phrase and self.db.rules:
+        if self.database.user_can_define_phrase and self.database.rules:
             self._init_or_update_property_menu(
                 self.autocommit_mode_menu,
                 self._auto_commit)
@@ -2634,30 +2639,31 @@ class TabEngine(IBus.Engine):
                 bool(self.suggestion_mode_properties[ibus_property]['number']))
             return
         if (ibus_property.startswith(self.onechar_mode_menu['key']+'.')
-                and self.db._is_cjk):
+                and self.database._is_cjk):
             self.set_onechar_mode(
                 bool(self.onechar_mode_properties[ibus_property]['number']))
             return
         if (ibus_property.startswith(self.autocommit_mode_menu['key']+'.')
-                and self.db.user_can_define_phrase and self.db.rules):
+                and self.database.user_can_define_phrase
+                and self.database.rules):
             self.set_autocommit_mode(
                 bool(self.autocommit_mode_properties[ibus_property]['number']))
             return
         if (ibus_property.startswith(self.letter_width_menu['key']+'.')
-                and self.db._is_cjk):
+                and self.database._is_cjk):
             self.set_letter_width(
                 bool(self.letter_width_properties[ibus_property]['number']),
                 input_mode=self._input_mode)
             return
         if (ibus_property.startswith(self.punctuation_width_menu['key']+'.')
-                and self.db._is_cjk):
+                and self.database._is_cjk):
             self.set_punctuation_width(
                 bool(self.punctuation_width_properties[
                     ibus_property]['number']),
                 input_mode=self._input_mode)
             return
         if (ibus_property.startswith(self.chinese_mode_menu['key']+'.')
-                and self.db._is_chinese
+                and self.database._is_chinese
                 and self._chinese_mode != -1):
             self.set_chinese_mode(
                 self.chinese_mode_properties[ibus_property]['number'])
@@ -2811,7 +2817,7 @@ class TabEngine(IBus.Engine):
         """Check the given phrase and update save user db info"""
         if not tabkeys or not phrase:
             return
-        self.db.check_phrase(tabkeys=tabkeys, phrase=phrase)
+        self.database.check_phrase(tabkeys=tabkeys, phrase=phrase)
 
         if self._save_user_count <= 0:
             self._save_user_start = time.time()
@@ -2824,7 +2830,7 @@ class TabEngine(IBus.Engine):
             time_delta = now - self._save_user_start
             if (self._save_user_count > self._save_user_count_max or
                     time_delta >= self._save_user_timeout):
-                self.db.sync_usrdb()
+                self.database.sync_usrdb()
                 self._save_user_count = 0
                 self._save_user_start = now
         return True
@@ -2993,18 +2999,18 @@ class TabEngine(IBus.Engine):
             self._update_ui()
             return res
 
-        if (self.db._is_cjk
+        if (self.database._is_cjk
             and (self._prev_key, key, 'toggle_onechar_mode') in self._hotkeys):
             self.set_onechar_mode(not self._onechar)
             return True
 
-        if (self.db.user_can_define_phrase and self.db.rules
+        if (self.database.user_can_define_phrase and self.database.rules
             and (self._prev_key, key,
                  'toggle_autocommit_mode') in self._hotkeys):
             self.set_autocommit_mode(not self._auto_commit)
             return True
 
-        if (self.db._is_chinese
+        if (self.database._is_chinese
             and (self._prev_key, key,
                  'switch_to_next_chinese_mode') in self._hotkeys):
             self.set_chinese_mode((self._chinese_mode+1) % 5)
@@ -3147,7 +3153,7 @@ class TabEngine(IBus.Engine):
             self.set_input_mode(int(not self._input_mode))
             return True
 
-        if self.db._is_cjk:
+        if self.database._is_cjk:
             if (self._prev_key, key,
                 'toggle_letter_width') in self._hotkeys:
                 self.set_letter_width(
@@ -3155,7 +3161,7 @@ class TabEngine(IBus.Engine):
                     input_mode=self._input_mode)
                 return True
 
-        if self.db._is_cjk:
+        if self.database._is_cjk:
             if (self._prev_key, key,
                 'toggle_punctuation_width') in self._hotkeys:
                 self.set_punctuation_width(
@@ -3181,7 +3187,7 @@ class TabEngine(IBus.Engine):
         :rtype: String
 
         '''
-        if self._full_width_letter[self._input_mode] and self.db._is_cjk:
+        if self._full_width_letter[self._input_mode] and self.database._is_cjk:
             return self._convert_to_full_width(char)
         return char
 
@@ -3195,7 +3201,7 @@ class TabEngine(IBus.Engine):
         :rtype: String
 
         '''
-        if self._full_width_punct[self._input_mode] and self.db._is_cjk:
+        if self._full_width_punct[self._input_mode] and self.database._is_cjk:
             return self._convert_to_full_width(char)
         return char
 
@@ -3256,7 +3262,8 @@ class TabEngine(IBus.Engine):
                     self._valid_input_chars
                     + self._single_wildcard_char
                     + self._multi_wildcard_char)
-                 or (self.db.startchars and keychar not in self.db.startchars))
+                 or (self.database.startchars
+                     and keychar not in self.database.startchars))
                     and (not key.state &
                          (IBus.ModifierType.MOD1_MASK |
                           IBus.ModifierType.CONTROL_MASK))):
@@ -3462,7 +3469,7 @@ class TabEngine(IBus.Engine):
                 if ((len(self._chars_valid)
                      == self._max_key_length)
                         or (len(self._chars_valid)
-                            in self.db.possible_tabkeys_lengths)):
+                            in self.database.possible_tabkeys_lengths)):
                     if self._auto_commit:
                         self.commit_everything_unless_invalid()
                     else:

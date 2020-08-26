@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-08-26 00:14+0200\n"
-"PO-Revision-Date: 2020-07-10 02:27+0000\n"
-"Last-Translator: Côme Borsoi <fedora@borsoi.fr>\n"
-"Language-Team: French <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/fr/>\n"
+"PO-Revision-Date: 2020-08-26 08:18+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: French <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.1.1\n"
+"X-Generator: Weblate 4.2.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -316,10 +316,8 @@ msgstr ""
 "langues sont également disponibles."
 
 #: setup/main.py:119 setup/main.py:177
-#, fuzzy
-#| msgid "IBus Table %s Preferences"
 msgid "Preferences"
-msgstr "Préférences d’IBus Table %s"
+msgstr "Préférences"
 
 #: setup/main.py:211
 msgid "About"
@@ -331,7 +329,7 @@ msgstr "Restaurer les valeurs par défaut"
 
 #: setup/main.py:225 setup/main.py:2358
 msgid "_Close"
-msgstr ""
+msgstr "_Fermer"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
@@ -362,7 +360,7 @@ msgstr "Détails"
 #. existing key bindings
 #: setup/main.py:284 setup/main.py:733
 msgid "Key bindings"
-msgstr ""
+msgstr "Raccourcis clavier"
 
 #: setup/main.py:298
 #, fuzzy
@@ -569,10 +567,8 @@ msgid "Vertical"
 msgstr "Verticale"
 
 #: setup/main.py:655
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "System default"
-msgstr "Restaurer les valeurs par défaut"
+msgstr "Par défaut pour le système"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
@@ -594,43 +590,37 @@ msgstr ""
 
 #: setup/main.py:700
 msgid "Current key bindings:"
-msgstr ""
+msgstr "Raccourcis clavier actuels :"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
 #: setup/main.py:726
-#, fuzzy
-#| msgid "Commit"
 msgid "Command"
-msgstr "Valider"
+msgstr "Commander"
 
 #: setup/main.py:753
 msgid "Edit"
-msgstr ""
+msgstr "Modifier"
 
 #: setup/main.py:757
 msgid "Edit the key bindings for the selected command"
-msgstr ""
+msgstr "Modifier les raccourcis clavier pour la commande sélectionnée"
 
 #: setup/main.py:764 setup/main.py:1776
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set to default"
-msgstr "Restaurer les valeurs par défaut"
+msgstr "Réinitialiser"
 
 #: setup/main.py:768 setup/main.py:1781
 msgid "Set default key bindings for the selected command"
-msgstr ""
+msgstr "Remettre le raccourcis clavier par défaut pour la commande sélectionnée"
 
 #: setup/main.py:775
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set all to default"
-msgstr "Restaurer les valeurs par défaut"
+msgstr "Tout réinitialiser"
 
 #: setup/main.py:779
 msgid "Set default key bindings for all commands"
-msgstr ""
+msgstr "Remettre le raccourcis clavier par défaut pour toutes les commandes"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
@@ -764,29 +754,32 @@ msgstr ""
 #. debug information may also be shown graphically.
 #: setup/main.py:997
 msgid "Debug level:"
-msgstr ""
+msgstr "Niveau de débogage :"
 
 #: setup/main.py:999
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
 msgstr ""
+"Quand supérieur à 0, les informations de débogue peuvent être imprimées dans "
+"le fichier journal et les informations de débogage peuvent également être "
+"montrées graphiquement."
 
 #: setup/main.py:1286
 msgid "Are you sure?"
-msgstr ""
+msgstr "Confirmez-vous ?"
 
 #: setup/main.py:1288
 msgid "_Cancel"
-msgstr ""
+msgstr "_Annuler"
 
 #: setup/main.py:1289
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: setup/main.py:1321
 msgid "Another instance of this app is already running."
-msgstr ""
+msgstr "Une autre instance de cette application est déjà en cours d’exécution."
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -798,15 +791,15 @@ msgstr ""
 #: setup/main.py:1730
 #, python-format
 msgid "Edit key bindings for command “%s”"
-msgstr ""
+msgstr "Modifier le raccourcis clavier pour la commande \"%s\""
 
 #: setup/main.py:1757
 msgid "Add a key binding"
-msgstr ""
+msgstr "Ajouter un raccourcis claviers"
 
 #: setup/main.py:1769
 msgid "Remove selected key binding"
-msgstr ""
+msgstr "Supprimer le raccourcis clavier sélectionné"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -818,10 +811,12 @@ msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
 msgstr ""
+"Voulez-vous vraiment redéfinir les raccourcis claviers pour toutes les "
+"commandes ?"
 
 #: setup/main.py:2411
 msgid "ibus is not running."
-msgstr ""
+msgstr "Ibus n’est pas lancé."
 
 #~ msgid "IBUS_ENGINE_NAME environment variable is not set."
 #~ msgstr "IBUS_ENGINE_NAME n’est pas définie."

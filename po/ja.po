@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-08-26 00:14+0200\n"
-"PO-Revision-Date: 2020-08-26 00:10+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"PO-Revision-Date: 2020-08-26 08:06+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Japanese <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/ja/>\n"
 "Language: ja\n"
@@ -675,7 +675,7 @@ msgstr ""
 #. debug information may also be shown graphically.
 #: setup/main.py:997
 msgid "Debug level:"
-msgstr ""
+msgstr "デバッグレベル"
 
 #: setup/main.py:999
 msgid ""
@@ -709,7 +709,7 @@ msgstr ""
 #: setup/main.py:1730
 #, python-format
 msgid "Edit key bindings for command “%s”"
-msgstr ""
+msgstr "コマンド %s のキー割り当ての編集"
 
 #: setup/main.py:1757
 msgid "Add a key binding"
@@ -732,7 +732,7 @@ msgstr "すべてのコマンドのキーバインディングをデフォルト
 
 #: setup/main.py:2411
 msgid "ibus is not running."
-msgstr ""
+msgstr "ibus が起動していません。"
 
 #~ msgid "Input mode:"
 #~ msgstr "入力モード:"

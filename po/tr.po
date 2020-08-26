@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-08-26 00:14+0200\n"
-"PO-Revision-Date: 2020-07-06 06:56+0000\n"
-"Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
-"Language-Team: Turkish <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/tr/>\n"
+"PO-Revision-Date: 2020-08-26 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Turkish <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.1.1\n"
+"X-Generator: Weblate 4.2.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -315,10 +315,8 @@ msgstr ""
 "tablolar bulunmaktadır."
 
 #: setup/main.py:119 setup/main.py:177
-#, fuzzy
-#| msgid "IBus Table %s Preferences"
 msgid "Preferences"
-msgstr "%s IBus Tablosu tercihleri"
+msgstr "Tercihler"
 
 #: setup/main.py:211
 msgid "About"
@@ -330,7 +328,7 @@ msgstr "Tüm öntanımlıları geri yükle"
 
 #: setup/main.py:225 setup/main.py:2358
 msgid "_Close"
-msgstr ""
+msgstr "_Kapat"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
@@ -361,7 +359,7 @@ msgstr "Ayrıntılar"
 #. existing key bindings
 #: setup/main.py:284 setup/main.py:733
 msgid "Key bindings"
-msgstr ""
+msgstr "Tuş atamaları"
 
 #: setup/main.py:298
 #, fuzzy
@@ -566,10 +564,8 @@ msgid "Vertical"
 msgstr "Dikey"
 
 #: setup/main.py:655
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "System default"
-msgstr "Tüm öntanımlıları geri yükle"
+msgstr "Sistem ön tanımlı değeri"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
@@ -591,43 +587,37 @@ msgstr ""
 
 #: setup/main.py:700
 msgid "Current key bindings:"
-msgstr ""
+msgstr "Mevcut tuş atamaları:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
 #: setup/main.py:726
-#, fuzzy
-#| msgid "Commit"
 msgid "Command"
-msgstr "Seçim"
+msgstr "Komut"
 
 #: setup/main.py:753
 msgid "Edit"
-msgstr ""
+msgstr "Düzenle"
 
 #: setup/main.py:757
 msgid "Edit the key bindings for the selected command"
-msgstr ""
+msgstr "Seçili komut için tuş atamalarını düzenle"
 
 #: setup/main.py:764 setup/main.py:1776
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set to default"
-msgstr "Tüm öntanımlıları geri yükle"
+msgstr "Ön tanımlıya ayarla"
 
 #: setup/main.py:768 setup/main.py:1781
 msgid "Set default key bindings for the selected command"
-msgstr ""
+msgstr "Seçili komut için ön tanımlı tuş atamalarını ayarla"
 
 #: setup/main.py:775
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set all to default"
-msgstr "Tüm öntanımlıları geri yükle"
+msgstr "Tümünü ön tanımlıya ayarla"
 
 #: setup/main.py:779
 msgid "Set default key bindings for all commands"
-msgstr ""
+msgstr "Tüm komutlar için ön tanımlı tuş atamalarını ayarla"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
@@ -762,29 +752,31 @@ msgstr ""
 #. debug information may also be shown graphically.
 #: setup/main.py:997
 msgid "Debug level:"
-msgstr ""
+msgstr "Hata ayıklama seviyesi:"
 
 #: setup/main.py:999
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
 msgstr ""
+"0'dan büyük olduğunda, hata ayıklama bilgisi log dosyasına yazdırılabilir ve "
+"hata ayıklama bilgisi grafiksel olarak da gösterilebilir."
 
 #: setup/main.py:1286
 msgid "Are you sure?"
-msgstr ""
+msgstr "Emin misiniz?"
 
 #: setup/main.py:1288
 msgid "_Cancel"
-msgstr ""
+msgstr "_İptal"
 
 #: setup/main.py:1289
 msgid "_OK"
-msgstr ""
+msgstr "_Tamam"
 
 #: setup/main.py:1321
 msgid "Another instance of this app is already running."
-msgstr ""
+msgstr "Bu uygulamanın başka bir örneği zaten çalışıyor."
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -796,15 +788,15 @@ msgstr ""
 #: setup/main.py:1730
 #, python-format
 msgid "Edit key bindings for command “%s”"
-msgstr ""
+msgstr "“%s” komutu için atanan tuşları düzenle"
 
 #: setup/main.py:1757
 msgid "Add a key binding"
-msgstr ""
+msgstr "Tuş ataması ekle"
 
 #: setup/main.py:1769
 msgid "Remove selected key binding"
-msgstr ""
+msgstr "Seçilen tuş atamalarını kaldır"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -816,10 +808,12 @@ msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
 msgstr ""
+"Tüm komutların tuş atamalarını ön tanımlılarına ayarlamayı gerçekten istiyor "
+"musunuz?"
 
 #: setup/main.py:2411
 msgid "ibus is not running."
-msgstr ""
+msgstr "ibus çalışmıyor."
 
 #~ msgid "IBUS_ENGINE_NAME environment variable is not set."
 #~ msgstr "IBUS_ENGINE_NAME ortam değişkeni tanımlı değil."

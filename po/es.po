@@ -1,21 +1,22 @@
 # Máximo Castañeda Riloba <mcrcctm@gmail.com>, 2017. #zanata
 # Mike FABIAN <mfabian@redhat.com>, 2019, 2020.
 # Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2020.
+# Anonymous <noreply@weblate.org>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-08-26 00:14+0200\n"
-"PO-Revision-Date: 2020-04-26 03:40+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
-"Language-Team: Spanish <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/es/>\n"
+"PO-Revision-Date: 2020-08-26 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Spanish <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.0.1\n"
+"X-Generator: Weblate 4.2.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -312,10 +313,8 @@ msgstr ""
 "CangJie, aunque también hay tablas para otros idiomas."
 
 #: setup/main.py:119 setup/main.py:177
-#, fuzzy
-#| msgid "IBus Table %s Preferences"
 msgid "Preferences"
-msgstr "Preferencias de IBus Table %s"
+msgstr "Preferencias"
 
 #: setup/main.py:211
 msgid "About"
@@ -327,7 +326,7 @@ msgstr "Restablecer valores predeterminados"
 
 #: setup/main.py:225 setup/main.py:2358
 msgid "_Close"
-msgstr ""
+msgstr "Ce_rrar"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
@@ -358,7 +357,7 @@ msgstr "Detalles"
 #. existing key bindings
 #: setup/main.py:284 setup/main.py:733
 msgid "Key bindings"
-msgstr ""
+msgstr "Atajos de teclado"
 
 #: setup/main.py:298
 #, fuzzy
@@ -564,10 +563,8 @@ msgid "Vertical"
 msgstr "Vertical"
 
 #: setup/main.py:655
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "System default"
-msgstr "Restablecer valores predeterminados"
+msgstr "Predeterminado del sistema"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
@@ -589,43 +586,38 @@ msgstr ""
 
 #: setup/main.py:700
 msgid "Current key bindings:"
-msgstr ""
+msgstr "Atajos de teclado actuales:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
 #: setup/main.py:726
-#, fuzzy
-#| msgid "Commit"
 msgid "Command"
-msgstr "Asentar"
+msgstr "Orden"
 
 #: setup/main.py:753
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: setup/main.py:757
 msgid "Edit the key bindings for the selected command"
-msgstr ""
+msgstr "Editar los atajos de teclado de la orden seleccionada"
 
 #: setup/main.py:764 setup/main.py:1776
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set to default"
-msgstr "Restablecer valores predeterminados"
+msgstr "Establecer valor predeterminado"
 
 #: setup/main.py:768 setup/main.py:1781
 msgid "Set default key bindings for the selected command"
 msgstr ""
+"Establecer los atajos de teclado predeterminados de la orden seleccionada"
 
 #: setup/main.py:775
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set all to default"
-msgstr "Restablecer valores predeterminados"
+msgstr "Establecer todo a valores predeterminados"
 
 #: setup/main.py:779
 msgid "Set default key bindings for all commands"
-msgstr ""
+msgstr "Establecer los atajos de teclado predeterminados de todas las órdenes"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
@@ -757,29 +749,31 @@ msgstr ""
 #. debug information may also be shown graphically.
 #: setup/main.py:997
 msgid "Debug level:"
-msgstr ""
+msgstr "Nivel de depuración:"
 
 #: setup/main.py:999
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
 msgstr ""
+"Cuando es superior a 0, es posible guardar la información de depuración en "
+"el archivo de registro e incluso mostrarla gráficamente."
 
 #: setup/main.py:1286
 msgid "Are you sure?"
-msgstr ""
+msgstr "¿Lo confirma?"
 
 #: setup/main.py:1288
 msgid "_Cancel"
-msgstr ""
+msgstr "_Cancelar"
 
 #: setup/main.py:1289
 msgid "_OK"
-msgstr ""
+msgstr "_Aceptar"
 
 #: setup/main.py:1321
 msgid "Another instance of this app is already running."
-msgstr ""
+msgstr "Ya está ejecutándose otro ejemplar de la aplicación."
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -791,15 +785,15 @@ msgstr ""
 #: setup/main.py:1730
 #, python-format
 msgid "Edit key bindings for command “%s”"
-msgstr ""
+msgstr "Editar los atajos de teclado de la orden «%s»"
 
 #: setup/main.py:1757
 msgid "Add a key binding"
-msgstr ""
+msgstr "Añadir un atajo de teclado"
 
 #: setup/main.py:1769
 msgid "Remove selected key binding"
-msgstr ""
+msgstr "Quitar el atajo de teclado seleccionado"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -811,10 +805,12 @@ msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
 msgstr ""
+"¿Confirma que quiere restablecer los valores predeterminados de los atajos "
+"de todas las órdenes?"
 
 #: setup/main.py:2411
 msgid "ibus is not running."
-msgstr ""
+msgstr "ibus no está ejecutándose."
 
 #~ msgid "IBUS_ENGINE_NAME environment variable is not set."
 #~ msgstr "No se ha establecido la variable de entorno IBUS_ENGINE_NAME."

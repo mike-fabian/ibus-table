@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-08-26 00:14+0200\n"
-"PO-Revision-Date: 2020-05-22 10:40+0000\n"
-"Last-Translator: Manuela Silva <mmsrs@sky.com>\n"
+"PO-Revision-Date: 2020-08-26 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Portuguese (Portugal) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/pt_PT/>\n"
 "Language: pt_PT\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.0.4\n"
+"X-Generator: Weblate 4.2.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -315,10 +315,8 @@ msgstr ""
 "disponíveis algumas tabelas para outros idiomas."
 
 #: setup/main.py:119 setup/main.py:177
-#, fuzzy
-#| msgid "IBus Table %s Preferences"
 msgid "Preferences"
-msgstr "Tabela IBus %s - Preferências"
+msgstr "Preferências"
 
 #: setup/main.py:211
 msgid "About"
@@ -330,7 +328,7 @@ msgstr "Restaurar todas as predefinições"
 
 #: setup/main.py:225 setup/main.py:2358
 msgid "_Close"
-msgstr ""
+msgstr "_Fechar"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
@@ -566,10 +564,8 @@ msgid "Vertical"
 msgstr "Vertical"
 
 #: setup/main.py:655
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "System default"
-msgstr "Restaurar todas as predefinições"
+msgstr "Predefinição do sistema"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
@@ -596,34 +592,28 @@ msgstr ""
 #. Translators: Column heading of the table listing the
 #. existing key bindings
 #: setup/main.py:726
-#, fuzzy
-#| msgid "Commit"
 msgid "Command"
-msgstr "Implementar"
+msgstr "Comando"
 
 #: setup/main.py:753
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: setup/main.py:757
 msgid "Edit the key bindings for the selected command"
 msgstr ""
 
 #: setup/main.py:764 setup/main.py:1776
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set to default"
-msgstr "Restaurar todas as predefinições"
+msgstr "Definir para predefinição"
 
 #: setup/main.py:768 setup/main.py:1781
 msgid "Set default key bindings for the selected command"
 msgstr ""
 
 #: setup/main.py:775
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set all to default"
-msgstr "Restaurar todas as predefinições"
+msgstr "Definir tudo para predefinição"
 
 #: setup/main.py:779
 msgid "Set default key bindings for all commands"
@@ -762,7 +752,7 @@ msgstr ""
 #. debug information may also be shown graphically.
 #: setup/main.py:997
 msgid "Debug level:"
-msgstr ""
+msgstr "Nível de depuração:"
 
 #: setup/main.py:999
 msgid ""
@@ -776,7 +766,7 @@ msgstr ""
 
 #: setup/main.py:1288
 msgid "_Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: setup/main.py:1289
 msgid "_OK"

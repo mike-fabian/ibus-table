@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-08-26 00:14+0200\n"
-"PO-Revision-Date: 2020-07-11 15:27+0000\n"
-"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
+"PO-Revision-Date: 2020-08-26 08:24+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.1.1\n"
+"X-Generator: Weblate 4.2.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -305,10 +305,8 @@ msgid ""
 msgstr ""
 
 #: setup/main.py:119 setup/main.py:177
-#, fuzzy
-#| msgid "IBus Table %s Preferences"
 msgid "Preferences"
-msgstr "IBus Table %s 偏好设置"
+msgstr "首选项"
 
 #: setup/main.py:211
 msgid "About"
@@ -320,7 +318,7 @@ msgstr "全部重置为默认"
 
 #: setup/main.py:225 setup/main.py:2358
 msgid "_Close"
-msgstr ""
+msgstr "关闭（_C）"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
@@ -525,10 +523,8 @@ msgid "Vertical"
 msgstr "纵向"
 
 #: setup/main.py:655
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "System default"
-msgstr "全部重置为默认"
+msgstr "系统默认"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
@@ -551,14 +547,12 @@ msgstr ""
 #. Translators: Column heading of the table listing the
 #. existing key bindings
 #: setup/main.py:726
-#, fuzzy
-#| msgid "Commit"
 msgid "Command"
-msgstr "提交"
+msgstr "命令"
 
 #: setup/main.py:753
 msgid "Edit"
-msgstr ""
+msgstr "编辑"
 
 #: setup/main.py:757
 msgid "Edit the key bindings for the selected command"
@@ -686,7 +680,7 @@ msgstr ""
 #. debug information may also be shown graphically.
 #: setup/main.py:997
 msgid "Debug level:"
-msgstr ""
+msgstr "调试级别"
 
 #: setup/main.py:999
 msgid ""
@@ -700,11 +694,11 @@ msgstr ""
 
 #: setup/main.py:1288
 msgid "_Cancel"
-msgstr ""
+msgstr "取消(_C)"
 
 #: setup/main.py:1289
 msgid "_OK"
-msgstr ""
+msgstr "确定(_O)"
 
 #: setup/main.py:1321
 msgid "Another instance of this app is already running."

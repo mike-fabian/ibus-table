@@ -3,5 +3,6 @@ engine/main.py
 engine/tabsqlitedb.py
 engine/tabcreatedb.py
 engine/factory.py
+engine/it_util.py
 ibus-table.appdata.xml
 setup/main.py

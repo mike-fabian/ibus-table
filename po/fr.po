@@ -1,6 +1,6 @@
 # Alexandre Moine <nobrakal@gmail.com>, 2016. #zanata
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2016. #zanata, 2019.
-# Mike FABIAN <mfabian@redhat.com>, 2019.
+# Mike FABIAN <mfabian@redhat.com>, 2019, 2020.
 # Julien Humbert <julroy67@gmail.com>, 2019, 2020.
 # Anonymous <noreply@weblate.org>, 2020.
 # Côme Borsoi <fedora@borsoi.fr>, 2020.
@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-08-26 00:14+0200\n"
-"PO-Revision-Date: 2020-08-26 08:18+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2020-08-26 08:24+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: French <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/fr/>\n"
 "Language: fr\n"
@@ -596,7 +596,7 @@ msgstr "Raccourcis clavier actuels :"
 #. existing key bindings
 #: setup/main.py:726
 msgid "Command"
-msgstr "Commander"
+msgstr "Commande"
 
 #: setup/main.py:753
 msgid "Edit"

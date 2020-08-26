@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2020-07-02 15:00+0200\n"
+"POT-Creation-Date: 2020-08-26 00:14+0200\n"
 "PO-Revision-Date: 2020-07-11 15:27+0000\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
@@ -20,21 +20,25 @@ msgstr ""
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
-#: engine/table.py:1765 setup/ibus-table-preferences.ui:75
+#. Translators: This is the setting to use only
+#. simplified Chinese
+#: engine/table.py:584 setup/main.py:378
 msgid "Simplified Chinese"
 msgstr "简体中文"
 
-#: engine/table.py:1767
+#: engine/table.py:586
 msgid "Switch to “Simplified Chinese only”."
 msgstr "切换为“仅简体中文”。"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
-#: engine/table.py:1774 setup/ibus-table-preferences.ui:78
+#. Translators: This is the setting to use only
+#. traditional Chinese
+#: engine/table.py:593 setup/main.py:382
 msgid "Traditional Chinese"
 msgstr "繁体中文"
 
-#: engine/table.py:1776
+#: engine/table.py:595
 msgid "Switch to “Traditional Chinese only”."
 msgstr "切换为“仅繁体中文”。"
 
@@ -43,11 +47,11 @@ msgstr "切换为“仅繁体中文”。"
 #. Chinese but wants the Simplified Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:1786
+#: engine/table.py:605
 msgid "Simplified Chinese first"
 msgstr "简体中文优先"
 
-#: engine/table.py:1788
+#: engine/table.py:607
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr "切换为“简体中文先于繁体中文”。"
 
@@ -56,11 +60,11 @@ msgstr "切换为“简体中文先于繁体中文”。"
 #. Chinese but wants the Traditional Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:1798
+#: engine/table.py:617
 msgid "Traditional Chinese first"
 msgstr "繁体中文优先"
 
-#: engine/table.py:1800
+#: engine/table.py:619
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr "切换为“繁体中文先于简体中文”。"
 
@@ -69,199 +73,218 @@ msgstr "切换为“繁体中文先于简体中文”。"
 #. Chinese and has no particular preference whether
 #. simplified or traditional characters should be higher
 #. up in the candidate lists.
-#: engine/table.py:1810 setup/ibus-table-preferences.ui:87
+#. Translators: This is the setting to use both
+#. simplified and traditional Chinese in no
+#. particular order
+#: engine/table.py:629 setup/main.py:397
 msgid "All Chinese characters"
 msgstr "所有中文字符"
 
-#: engine/table.py:1811
+#: engine/table.py:630
 msgid "Switch to “All Chinese characters”."
 msgstr "切换到“所有中文字符”。"
 
-#: engine/table.py:1815
+#: engine/table.py:634
 msgid "Chinese mode"
 msgstr "中文模式"
 
-#: engine/table.py:1816
+#: engine/table.py:635
 msgid "Switch Chinese mode"
 msgstr "切换中文模式"
 
-#: engine/table.py:1826
+#: engine/table.py:646
 msgid "English"
 msgstr "英文"
 
-#: engine/table.py:1827
+#: engine/table.py:647
 msgid "Switch to English input"
 msgstr "切换到英文输入"
 
-#: engine/table.py:1834
+#: engine/table.py:654
 msgid "Chinese"
 msgstr "中文"
 
-#: engine/table.py:1835
+#: engine/table.py:655
 msgid "Switch to Chinese input"
 msgstr "切换到中文输入"
 
-#: engine/table.py:1843 engine/table.py:1985 setup/ibus-table-preferences.ui:36
+#: engine/table.py:663 engine/table.py:811 setup/main.py:901
 msgid "Direct"
 msgstr "直接"
 
-#: engine/table.py:1844
+#: engine/table.py:664
 msgid "Switch to direct input"
 msgstr "切换到直接输入"
 
-#: engine/table.py:1849 engine/table.py:1910
+#: engine/table.py:669 engine/table.py:733
 msgid "Table"
 msgstr "表格"
 
-#: engine/table.py:1850
+#: engine/table.py:670
 msgid "Switch to table input"
 msgstr "切换为表格输入"
 
-#: engine/table.py:1858
+#. Translators: A combobox to choose the input mode
+#. (“Direct input” or “Table input”)
+#: engine/table.py:678 setup/main.py:308
 msgid "Input mode"
 msgstr "输入模式"
 
-#: engine/table.py:1859
+#: engine/table.py:679
 msgid "Switch Input mode"
 msgstr "切换输入模式"
 
-#: engine/table.py:1868 engine/table.py:1889 setup/ibus-table-preferences.ui:98
-#: setup/ibus-table-preferences.ui:112 setup/ibus-table-preferences.ui:182
-#: setup/ibus-table-preferences.ui:196
+#. Translators: This is the mode to use half width letters
+#. while in “Table input” mode.
+#. Translators: This is the mode to use half width punctuation
+#. while in “Table input” mode.
+#. Translators: This is the mode to use half width letters
+#. while in “Direct input” mode.
+#. Translators: This is the mode to use half width punctuation
+#. while in “Direct input” mode.
+#: engine/table.py:689 engine/table.py:711 setup/main.py:434 setup/main.py:475
+#: setup/main.py:518 setup/main.py:560
 msgid "Half"
 msgstr "半角"
 
-#: engine/table.py:1869
+#: engine/table.py:690
 msgid "Switch to halfwidth letters"
 msgstr "切换为半角字符"
 
-#: engine/table.py:1874 engine/table.py:1895
-#: setup/ibus-table-preferences.ui:101 setup/ibus-table-preferences.ui:115
-#: setup/ibus-table-preferences.ui:185 setup/ibus-table-preferences.ui:199
+#. Translators: This is the mode to use full width letters
+#. while in “Table input” mode.
+#. Translators: This is the mode to use full width punctuation
+#. while in “Table input” mode.
+#. Translators: This is the mode to use full width letters
+#. while in “Direct input” mode.
+#. Translators: This is the mode to use full width punctuation
+#. while in “Direct input” mode.
+#: engine/table.py:695 engine/table.py:717 setup/main.py:438 setup/main.py:479
+#: setup/main.py:522 setup/main.py:564
 msgid "Full"
 msgstr "全角"
 
-#: engine/table.py:1875
+#: engine/table.py:696
 msgid "Switch to fullwidth letters"
 msgstr "切换为全角字符"
 
-#: engine/table.py:1879
+#: engine/table.py:700
 msgid "Letter width"
 msgstr "字符宽度"
 
-#: engine/table.py:1880
+#: engine/table.py:701
 msgid "Switch letter width"
 msgstr "切换字符宽度"
 
-#: engine/table.py:1890
+#: engine/table.py:712
 msgid "Switch to halfwidth punctuation"
 msgstr "切换为半角标点"
 
-#: engine/table.py:1896
+#: engine/table.py:718
 msgid "Switch to fullwidth punctuation"
 msgstr "切换为全角标点"
 
-#: engine/table.py:1900
+#: engine/table.py:722
 msgid "Punctuation width"
 msgstr "标点宽度"
 
-#: engine/table.py:1901
+#: engine/table.py:723
 msgid "Switch punctuation width"
 msgstr "切换标点宽度"
 
-#: engine/table.py:1911
+#: engine/table.py:734
 msgid "Switch to table mode"
 msgstr "切换为表格模式"
 
-#: engine/table.py:1916
+#: engine/table.py:739
 msgid "Pinyin"
 msgstr "拼音"
 
-#: engine/table.py:1917
+#: engine/table.py:740
 msgid "Switch to pinyin mode"
 msgstr "切换为拼音模式"
 
-#: engine/table.py:1921
+#: engine/table.py:744
 msgid "Pinyin mode"
 msgstr "拼音模式"
 
-#: engine/table.py:1922
+#: engine/table.py:745
 msgid "Switch pinyin mode"
 msgstr "切换拼音模式"
 
-#: engine/table.py:1931
+#: engine/table.py:755
 msgid "Suggestion disabled"
 msgstr "已禁用建议"
 
-#: engine/table.py:1932 engine/table.py:1938
+#: engine/table.py:756 engine/table.py:762
 msgid "Switch to suggestion mode"
 msgstr "切换为建议模式"
 
-#: engine/table.py:1937
+#: engine/table.py:761
 msgid "Suggestion enabled"
 msgstr "已启用建议"
 
-#: engine/table.py:1942
+#: engine/table.py:766
 msgid "Suggestion mode"
 msgstr "建议模式"
 
-#: engine/table.py:1943
+#: engine/table.py:767
 msgid "Switch suggestion mode"
 msgstr "切换建议模式"
 
-#: engine/table.py:1952
+#: engine/table.py:777
 msgid "Multiple character match"
 msgstr "多字符匹配"
 
-#: engine/table.py:1954
+#: engine/table.py:779
 msgid "Switch to matching multiple characters at once"
 msgstr "切换到一次匹配多个字符"
 
-#: engine/table.py:1959
+#: engine/table.py:784
 msgid "Single character match"
 msgstr "单字符匹配"
 
-#: engine/table.py:1961
+#: engine/table.py:786
 msgid "Switch to matching only single characters"
 msgstr "切换至仅匹配单字符"
 
-#: engine/table.py:1965
+#: engine/table.py:790
 msgid "Onechar mode"
 msgstr "一字模式"
 
-#: engine/table.py:1966
+#: engine/table.py:791
 msgid "Switch onechar mode"
 msgstr "切换一字模式"
 
-#: engine/table.py:1975 setup/ibus-table-preferences.ui:33
+#: engine/table.py:801 setup/main.py:899
 msgid "Normal"
 msgstr "普通"
 
-#: engine/table.py:1977
+#: engine/table.py:803
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
 msgstr ""
 
-#: engine/table.py:1987
+#: engine/table.py:813
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
 msgstr ""
 
-#: engine/table.py:1992
+#: engine/table.py:818
 msgid "Auto commit mode"
 msgstr "自动提交模式"
 
-#: engine/table.py:1993
+#: engine/table.py:819
 msgid "Switch autocommit mode"
 msgstr "切换自动提交模式"
 
-#: engine/table.py:2755
+#: engine/table.py:2597
 msgid "Setup"
 msgstr "设置"
 
-#: engine/table.py:2758
+#: engine/table.py:2600
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "配置 ibus-table “%(engine-name)s”"
@@ -281,87 +304,94 @@ msgid ""
 "CangJie, …. But some tables for other languages are available as well."
 msgstr ""
 
-#: setup/main.py:153
-msgid "IBUS_ENGINE_NAME environment variable is not set."
-msgstr "IBUS_ENGINE_NAME 环境变量尚未设置。"
-
-#: setup/main.py:157
-msgid "Cannot determine the engine name. Please use the --engine-name option."
-msgstr "无法确定引擎名称。请使用 --engine-name 选项。"
-
-#: setup/main.py:177
-#, python-format
-msgid "IBus Table engine %s is not available"
-msgstr "IBus Table 引擎 %s 不可用"
-
-#: setup/main.py:339
-#, python-format
-msgid "IBus Table %s Preferences"
+#: setup/main.py:119 setup/main.py:177
+#, fuzzy
+#| msgid "IBus Table %s Preferences"
+msgid "Preferences"
 msgstr "IBus Table %s 偏好设置"
 
-#: setup/ibus-table-preferences.ui:19 setup/ibus-table-preferences.ui:47
-#: setup/ibus-table-preferences.ui:61
-msgid "No"
-msgstr "否"
+#: setup/main.py:211
+msgid "About"
+msgstr "关于"
 
-#: setup/ibus-table-preferences.ui:22 setup/ibus-table-preferences.ui:50
-#: setup/ibus-table-preferences.ui:64
-msgid "Yes"
-msgstr "是"
-
-#: setup/ibus-table-preferences.ui:81
-msgid "Simplified Chinese before traditional"
-msgstr "简体中文先于繁体中文"
-
-#: setup/ibus-table-preferences.ui:84
-msgid "Traditional Chinese before simplified"
-msgstr "繁体中文先于简体中文"
-
-#: setup/ibus-table-preferences.ui:126
-msgid "Direct input"
-msgstr "直接输入"
-
-#: setup/ibus-table-preferences.ui:129
-msgid "Table input"
-msgstr "表格输入"
-
-#: setup/ibus-table-preferences.ui:140
-msgid "Horizontal"
-msgstr "横向"
-
-#: setup/ibus-table-preferences.ui:143
-msgid "Vertical"
-msgstr "纵向"
-
-#: setup/ibus-table-preferences.ui:154
-msgid "Phrase"
-msgstr "词组"
-
-#: setup/ibus-table-preferences.ui:157
-msgid "Single Char"
-msgstr "单字"
-
-#: setup/ibus-table-preferences.ui:168
-msgid "Commit"
-msgstr "提交"
-
-#: setup/ibus-table-preferences.ui:171
-msgid "Next Page"
-msgstr "下一页"
-
-#: setup/ibus-table-preferences.ui:223
+#: setup/main.py:217
 msgid "Restore all defaults"
 msgstr "全部重置为默认"
 
-#: setup/ibus-table-preferences.ui:227
-msgid "Restore defaults as specified in the database for this engine."
-msgstr "重置为该引擎数据库中指定的预设值。"
+#: setup/main.py:225 setup/main.py:2358
+msgid "_Close"
+msgstr ""
 
-#: setup/ibus-table-preferences.ui:302
-msgid "Input mode:"
-msgstr "输入模式："
+#. Translators: This is the label of a tab in the setup tool.
+#. Here the user can set up some options which influence the
+#. behaviour of ibus-table.
+#: setup/main.py:248
+msgid "Settings"
+msgstr "设置"
 
-#: setup/ibus-table-preferences.ui:315
+#. Translators: This is the label of a tab in the setup tool.
+#. Here the user can set up some options which influence how
+#. ibus-typing-booster looks like, i.e. something like whether
+#. extra info should be shown on top of the candidate list and
+#. how many entries one page of the candidate list should have.
+#. Also one can choose here which colours to use for different
+#. types of candidates (candidates from the user database, from
+#. dictionaries, or from spellchecking) and/or whether
+#. diffent types of candidates should be marked with labels.
+#: setup/main.py:270
+msgid "Details"
+msgstr "详情"
+
+#. Translators: This is the label of a tab in the setup tool.
+#. Here the user can customize the key bindings to execute
+#. certain commands of ibus-table. For example which key to use
+#. to commit, which key to use to move to the next candidate
+#. etc...
+#. Translators: Column heading of the table listing the
+#. existing key bindings
+#: setup/main.py:284 setup/main.py:733
+msgid "Key bindings"
+msgstr ""
+
+#: setup/main.py:298
+#, fuzzy
+#| msgid "<b>Inital state</b>"
+msgid "Initial state"
+msgstr "<b>初始状态</b>"
+
+#: setup/main.py:310
+msgid ""
+"“Direct input” is almost the same as if the\n"
+"input method were off, i.e. not used at all, most\n"
+"characters just get passed to the application.\n"
+"But some conversion between fullwidth and\n"
+"halfwidth may still happen in direct input mode.\n"
+"“Table input” means the input method is on."
+msgstr ""
+
+#. Translators: This is the setting to use 'Direct input'
+#. which means that almost all keys are passed directly
+#. to the application, in other words the input method
+#. is (mostly) switched off.
+#: setup/main.py:327
+msgid "Direct input"
+msgstr "直接输入"
+
+#. Translators: This is the setting to use a 'Table input'
+#. which means that the keys typed are transformed according
+#. to the table used, in other words the input method is
+#. switched on.
+#: setup/main.py:333
+msgid "Table input"
+msgstr "表格输入"
+
+#. Translators: A combobox to choose the variant of
+#. Chinese which should be preferred.
+#: setup/main.py:354
+msgid "Chinese mode:"
+msgstr "中文模式："
+
+#: setup/main.py:356
 msgid ""
 "“Simplified Chinese” shows only characters \n"
 "used in simplified Chinese. “Traditional Chinese”\n"
@@ -375,91 +405,85 @@ msgid ""
 "versus simplified Chinese."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:340
+#. Translators: This is the setting to use both
+#. simplified and traditional Chinese but prefer
+#. simplified Chinese
+#: setup/main.py:387
+msgid "Simplified Chinese before traditional"
+msgstr "简体中文先于繁体中文"
+
+#. Translators: This is the setting to use both
+#. simplified and traditional Chinese but prefer
+#. traditional Chinese
+#: setup/main.py:392
+msgid "Traditional Chinese before simplified"
+msgstr "繁体中文先于简体中文"
+
+#. Translators: A combobox to choose the letter width
+#. while in “Table input” mode.
+#: setup/main.py:418
+msgid "Table input letter width:"
+msgstr ""
+
+#: setup/main.py:420
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:357
+#. Translators: A combobox to choose the punctuation width
+#. while in “Table input” mode.
+#: setup/main.py:459
+msgid "Table input punctuation width:"
+msgstr ""
+
+#: setup/main.py:461
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:374
+#. Translators: A combobox to choose the letter width
+#. while in “Direct input” mode.
+#: setup/main.py:502
+msgid "Direct input letter width:"
+msgstr ""
+
+#: setup/main.py:504
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:391
+#. Translators: A combobox to choose the punctuation width
+#. while in “Direct input” mode.
+#: setup/main.py:544
+msgid "Direct input punctuation width:"
+msgstr ""
+
+#: setup/main.py:546
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:411
-msgid "Chinese mode:"
-msgstr "中文模式："
+#: setup/main.py:585
+#, fuzzy
+#| msgid "<b>Candidate list</b>"
+msgid "Candidate list"
+msgstr "<b>候选列表</b>"
 
-#: setup/ibus-table-preferences.ui:427
-msgid "Table input letter width:"
-msgstr ""
-
-#: setup/ibus-table-preferences.ui:443
-msgid "Table input punctuation width:"
-msgstr ""
-
-#: setup/ibus-table-preferences.ui:459
-msgid "Direct input letter width:"
-msgstr ""
-
-#: setup/ibus-table-preferences.ui:475
-msgid "Direct input punctuation width:"
-msgstr ""
-
-#: setup/ibus-table-preferences.ui:488
-msgid ""
-"“Direct input” is almost the same as if the\n"
-"input method were off, i.e. not used at all, most\n"
-"characters just get passed to the application.\n"
-"But some conversion between fullwidth and\n"
-"halfwidth may still happen in direct input mode.\n"
-"“Table input” means the input method is on."
-msgstr ""
-
-#: setup/ibus-table-preferences.ui:514
-msgid "<b>Inital state</b>"
-msgstr "<b>初始状态</b>"
-
-#: setup/ibus-table-preferences.ui:551
-msgid ""
-"Whether the lookup table showing the candidates\n"
-"should be vertical or horizontal."
-msgstr ""
-
-#: setup/ibus-table-preferences.ui:568
-msgid ""
-"The maximum number of candidates in\n"
-"one page of the lookup table. You can switch\n"
-"pages in the lookup table using the page up/down\n"
-"keys or the arrow up/down keys."
-msgstr ""
-
-#: setup/ibus-table-preferences.ui:592
-msgid "Orientation:"
-msgstr "方向："
-
-#: setup/ibus-table-preferences.ui:608
-msgid "Page size:"
-msgstr "页面大小："
-
-#: setup/ibus-table-preferences.ui:624
+#. Translators: A combobox to choose whether
+#. a candidate list should be shown or hidden.
+#. For Chinese input methods one usually wants the
+#. candidate list to be shown. But for some non-Chinese
+#. input methods like the Russian “translit”, hiding
+#. the candidate lists is better.
+#: setup/main.py:599
 msgid "Show candidate list"
 msgstr "显示候选列表"
 
-#: setup/ibus-table-preferences.ui:637
+#: setup/main.py:601
 msgid ""
 "Whether candidate lists should be shown or hidden.\n"
 "For Chinese input methods one usually wants the\n"
@@ -468,15 +492,105 @@ msgid ""
 "candidate lists is better."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:661
-msgid "<b>Candidate list</b>"
-msgstr "<b>候选列表</b>"
+#. Translators: This is the setting to avoid showing
+#. candidate lists.
+#: setup/main.py:615 setup/main.py:856 setup/main.py:932
+msgid "No"
+msgstr "否"
 
-#: setup/ibus-table-preferences.ui:681
-msgid "Settings"
-msgstr "设置"
+#. Translators: This is the setting to show
+#. candidate lists.
+#: setup/main.py:619 setup/main.py:858 setup/main.py:934
+msgid "Yes"
+msgstr "是"
 
-#: setup/ibus-table-preferences.ui:724
+#. Translators: A combobox to choose whether the candidate
+#. window should be drawn horizontally or vertically.
+#: setup/main.py:640
+msgid "Orientation:"
+msgstr "方向："
+
+#: setup/main.py:642
+msgid ""
+"Whether the lookup table showing the candidates\n"
+"should be vertical or horizontal."
+msgstr ""
+
+#: setup/main.py:651
+msgid "Horizontal"
+msgstr "横向"
+
+#: setup/main.py:653
+msgid "Vertical"
+msgstr "纵向"
+
+#: setup/main.py:655
+#, fuzzy
+#| msgid "Restore all defaults"
+msgid "System default"
+msgstr "全部重置为默认"
+
+#. Translators: Here one can choose how many suggestion
+#. candidates to show in one page of the candidate list.
+#: setup/main.py:676
+msgid "Page size:"
+msgstr "页面大小："
+
+#: setup/main.py:678
+msgid ""
+"The maximum number of candidates in\n"
+"one page of the lookup table. You can switch\n"
+"pages in the lookup table using the page up/down\n"
+"keys or the arrow up/down keys."
+msgstr ""
+
+#: setup/main.py:700
+msgid "Current key bindings:"
+msgstr ""
+
+#. Translators: Column heading of the table listing the
+#. existing key bindings
+#: setup/main.py:726
+#, fuzzy
+#| msgid "Commit"
+msgid "Command"
+msgstr "提交"
+
+#: setup/main.py:753
+msgid "Edit"
+msgstr ""
+
+#: setup/main.py:757
+msgid "Edit the key bindings for the selected command"
+msgstr ""
+
+#: setup/main.py:764 setup/main.py:1776
+#, fuzzy
+#| msgid "Restore all defaults"
+msgid "Set to default"
+msgstr "全部重置为默认"
+
+#: setup/main.py:768 setup/main.py:1781
+msgid "Set default key bindings for the selected command"
+msgstr ""
+
+#: setup/main.py:775
+#, fuzzy
+#| msgid "Restore all defaults"
+msgid "Set all to default"
+msgstr "全部重置为默认"
+
+#: setup/main.py:779
+msgid "Set default key bindings for all commands"
+msgstr ""
+
+#. Translators: A combobox to choose whether only single
+#. character candidates should be shown.
+#: setup/main.py:799
+msgid "Compose:"
+msgstr ""
+
+#: setup/main.py:801
 msgid ""
 "If this is set to “single char”, only single\n"
 "character candidates will be shown. If it is\n"
@@ -484,7 +598,21 @@ msgid ""
 "several characters may be shown."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:743
+#: setup/main.py:815
+msgid "Phrase"
+msgstr "词组"
+
+#: setup/main.py:817
+msgid "Single Char"
+msgstr "单字"
+
+#. Translators: A combobox to choose whether the first
+#. candidate will be automatically selected during typing.
+#: setup/main.py:837
+msgid "Auto select:"
+msgstr "自动选择："
+
+#: setup/main.py:839
 msgid ""
 "If set to “Yes”, this does the following 4 things:\n"
 "1) When typing “Return”, commit the \n"
@@ -498,7 +626,13 @@ msgid ""
 "   the Russian “translit”)"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:768
+#. Translators: A combobox to choose whether automatic
+#. commits go into the preëdit or into the application
+#: setup/main.py:878
+msgid "Auto commit mode:"
+msgstr "自动提交模式："
+
+#: setup/main.py:880
 msgid ""
 "Committing with the commit keys or with the mouse\n"
 "always commits to the application. This option is about\n"
@@ -511,110 +645,167 @@ msgid ""
 "to preedit."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:792
-msgid ""
-"If you choose the space key to do “Next page”,\n"
-" you can only commit using the selection keys\n"
-"(i.e. the labels in front of the candidates in the\n"
-"lookup table) or using the mouse."
-msgstr ""
-
-#: setup/ibus-table-preferences.ui:814
-msgid "Compose:"
-msgstr ""
-
-#: setup/ibus-table-preferences.ui:830
-msgid "Auto select:"
-msgstr "自动选择："
-
-#: setup/ibus-table-preferences.ui:846
-msgid "Auto commit mode:"
-msgstr "自动提交模式："
-
-#: setup/ibus-table-preferences.ui:862
-msgid "Behavior of space key:"
-msgstr "空格键的行为："
-
-#: setup/ibus-table-preferences.ui:878
+#. Translators: A combobox to choose whether a wildcard
+#. should be automatically appended to the input.
+#: setup/main.py:921
 msgid "Auto wildcard:"
 msgstr "自动通配符："
 
-#: setup/ibus-table-preferences.ui:891
+#: setup/main.py:923
 msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:911
+#. Translators: This single character is a placeholder
+#. to match a any single character
+#: setup/main.py:954
 msgid "Single wildcard character:"
 msgstr "单通配符字符："
 
-#: setup/ibus-table-preferences.ui:924
+#: setup/main.py:956
 msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:943
+#. Translators: This single character is a placeholder
+#. to match a any number of characters
+#: setup/main.py:975
 msgid "Multi wildcard character:"
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:956
+#: setup/main.py:977
 msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
 
-#: setup/ibus-table-preferences.ui:976
-msgid "<b>Details</b>"
-msgstr "<b>详情</b>"
-
-#: setup/ibus-table-preferences.ui:999
-msgid "Details"
-msgstr "详情"
-
-#: setup/ibus-table-preferences.ui:1055
-msgid "Table input method for IBus"
-msgstr "适用于IBus的表输入法"
-
-#: setup/ibus-table-preferences.ui:1087
-msgid ""
-"<small>\n"
-"<b>Authors:</b>\n"
-"Yuwei YU (‘acevery’)\n"
-"Peng Huang\n"
-"BYVoid\n"
-"Peng Wu\n"
-"\n"
-"<b>Contributors:</b>\n"
-"koterpilla\n"
-"Zerng07\n"
-"Caius ‘kaio’ Chance\n"
-"Mike FABIAN\n"
-"Bernard Nauwelaerts\n"
-"Xiaojun Ma\n"
-"mozbugbox\n"
-"Seán de Búrca\n"
-"</small>"
+#. Translators: When the debug level is greater than 0,
+#. debug information may be printed to the log file and
+#. debug information may also be shown graphically.
+#: setup/main.py:997
+msgid "Debug level:"
 msgstr ""
-"<small>\n"
-"<b>作者：</b>\n"
-"Yuwei YU (‘acevery’)\n"
-"Peng Huang\n"
-"BYVoid\n"
-"吴鹏\n"
-"\n"
-"<b>贡献者：</b>\n"
-"koterpilla\n"
-"Zerng07\n"
-"Caius ‘kaio’ Chance\n"
-"Mike FABIAN\n"
-"Bernard Nauwelaerts\n"
-"Xiaojun Ma\n"
-"mozbugbox\n"
-"Seán de Búrca\n"
-"</small>"
 
-#: setup/ibus-table-preferences.ui:1186
-msgid "About"
-msgstr "关于"
+#: setup/main.py:999
+msgid ""
+"When greater than 0, debug information may be printed to the log file and "
+"debug information may also be shown graphically."
+msgstr ""
+
+#: setup/main.py:1286
+msgid "Are you sure?"
+msgstr ""
+
+#: setup/main.py:1288
+msgid "_Cancel"
+msgstr ""
+
+#: setup/main.py:1289
+msgid "_OK"
+msgstr ""
+
+#: setup/main.py:1321
+msgid "Another instance of this app is already running."
+msgstr ""
+
+#. Translators: This is the text in the centre of a small
+#. dialog window, trying to confirm whether the user is
+#. really sure to restore all default settings.
+#: setup/main.py:1382
+msgid "Do you really want to restore all default settings?"
+msgstr ""
+
+#: setup/main.py:1730
+#, python-format
+msgid "Edit key bindings for command “%s”"
+msgstr ""
+
+#: setup/main.py:1757
+msgid "Add a key binding"
+msgstr ""
+
+#: setup/main.py:1769
+msgid "Remove selected key binding"
+msgstr ""
+
+#. Translators: This is the text in the centre of a small
+#. dialog window, trying to confirm whether the user is
+#. really sure to reset the key bindings for *all* commands
+#. to their defaults. This cannot be reversed so the user
+#. should be really sure he wants to do that.
+#: setup/main.py:1828
+msgid ""
+"Do you really want to set the key bindings for all commands to their "
+"defaults?"
+msgstr ""
+
+#: setup/main.py:2411
+msgid "ibus is not running."
+msgstr ""
+
+#~ msgid "IBUS_ENGINE_NAME environment variable is not set."
+#~ msgstr "IBUS_ENGINE_NAME 环境变量尚未设置。"
+
+#~ msgid ""
+#~ "Cannot determine the engine name. Please use the --engine-name option."
+#~ msgstr "无法确定引擎名称。请使用 --engine-name 选项。"
+
+#~ msgid "IBus Table engine %s is not available"
+#~ msgstr "IBus Table 引擎 %s 不可用"
+
+#~ msgid "Next Page"
+#~ msgstr "下一页"
+
+#~ msgid "Restore defaults as specified in the database for this engine."
+#~ msgstr "重置为该引擎数据库中指定的预设值。"
+
+#~ msgid "Input mode:"
+#~ msgstr "输入模式："
+
+#~ msgid "Behavior of space key:"
+#~ msgstr "空格键的行为："
+
+#~ msgid "<b>Details</b>"
+#~ msgstr "<b>详情</b>"
+
+#~ msgid "Table input method for IBus"
+#~ msgstr "适用于IBus的表输入法"
+
+#~ msgid ""
+#~ "<small>\n"
+#~ "<b>Authors:</b>\n"
+#~ "Yuwei YU (‘acevery’)\n"
+#~ "Peng Huang\n"
+#~ "BYVoid\n"
+#~ "Peng Wu\n"
+#~ "\n"
+#~ "<b>Contributors:</b>\n"
+#~ "koterpilla\n"
+#~ "Zerng07\n"
+#~ "Caius ‘kaio’ Chance\n"
+#~ "Mike FABIAN\n"
+#~ "Bernard Nauwelaerts\n"
+#~ "Xiaojun Ma\n"
+#~ "mozbugbox\n"
+#~ "Seán de Búrca\n"
+#~ "</small>"
+#~ msgstr ""
+#~ "<small>\n"
+#~ "<b>作者：</b>\n"
+#~ "Yuwei YU (‘acevery’)\n"
+#~ "Peng Huang\n"
+#~ "BYVoid\n"
+#~ "吴鹏\n"
+#~ "\n"
+#~ "<b>贡献者：</b>\n"
+#~ "koterpilla\n"
+#~ "Zerng07\n"
+#~ "Caius ‘kaio’ Chance\n"
+#~ "Mike FABIAN\n"
+#~ "Bernard Nauwelaerts\n"
+#~ "Xiaojun Ma\n"
+#~ "mozbugbox\n"
+#~ "Seán de Búrca\n"
+#~ "</small>"

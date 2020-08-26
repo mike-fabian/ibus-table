@@ -993,6 +993,12 @@ class TabSqliteDb:
             code_point_function = self.big5_code
         else:
             code_point_function = lambda x: (1)
+        if self._is_chinese:
+            pinyin_exact_match_function = lambda x: (
+                - int(typed_tabkeys == x[:-1] and  x[-1] in '!@#$%')
+            )
+        else:
+            pinyin_exact_match_function = lambda x: (1)
         if chinese_mode in (2, 3) and self._is_chinese:
             if chinese_mode == 2:
                 bitmask = (1 << 0) # used in simplified Chinese
@@ -1003,6 +1009,7 @@ class TabSqliteDb:
                               - int(
                                   typed_tabkeys == x[0]
                               ), # exact matches first!
+                              pinyin_exact_match_function(x[0]),
                               -1*x[3],   # user_freq descending
                               # Prefer characters used in the
                               # desired Chinese variant:
@@ -1021,6 +1028,7 @@ class TabSqliteDb:
                           - int(
                               typed_tabkeys == x[0]
                           ), # exact matches first!
+                          pinyin_exact_match_function(x[0]),
                           -1*x[3],   # user_freq descending
                           -1*x[2],   # freq descending
                           len(x[0]), # len(tabkeys) ascending

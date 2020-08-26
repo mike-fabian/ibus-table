@@ -648,16 +648,127 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '工')
         ENGINE.set_pinyin_mode(True)
         ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
-        self.assertEqual(ENGINE.mock_preedit_text, '爱')
+        self.assertEqual(ENGINE.mock_preedit_text, '啊')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+                         ['啊 ↑5   kbsk 464000000 0',
+                          '阿 ↑1   bskg 319000000 0',
+                          '阿 ↑3   bskg 319000000 0',
+                          '阿 ↑4   bskg 319000000 0',
+                          '阿 ↑5   bskg 319000000 0',
+                          '吖 ↑1   kuhh 9910000 0',
+                          '腌 ↑1   edjn 4100000 0',
+                          '锕 ↑1   qbsk 1690000 0',
+                          '嗄 ↑2   kdht 1510000 0',
+                          '錒 ↑1   qbsk 503000 0'])
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
-        self.assertEqual(ENGINE.mock_committed_text, '工爱')
+        self.assertEqual(ENGINE.mock_committed_text, '工啊')
         ENGINE.set_pinyin_mode(False)
         ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '工')
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
-        self.assertEqual(ENGINE.mock_committed_text, '工爱工')
+        self.assertEqual(ENGINE.mock_committed_text, '工啊工')
+
+    def test_pinyin_mode_chinese_mode(self):
+        # Pinyin mode is False by default:
+        self.assertEqual(ENGINE.get_pinyin_mode(), False)
+        ENGINE.set_pinyin_mode(True)
+        ENGINE.set_chinese_mode(0) # simplified only
+        ENGINE.do_process_key_event(IBus.KEY_m, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_numbersign, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '吗')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+                         ['吗    kcg 959000000 0',
+                          '码    dcg 274000000 0',
+                          '马    cnng 236000000 0',
+                          '玛    gcg 51300000 0',
+                          '蚂    jcg 3110000 0',
+                          '杩    scg 1280000 0',
+                          '犸    qtcg 120000 0',
+                          '溤    icy 38700 0',
+                          '鰢    qocy 36500 0',
+                          '鷌    wvgc 25500 0'])
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '吗')
+        ENGINE.set_chinese_mode(1) # traditional only
+        ENGINE.do_process_key_event(IBus.KEY_m, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_numbersign, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '嗎')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+                         ['嗎    kcy 148000000 0',
+                          '馬    cghy 99400000 0',
+                          '碼    dcy 38600000 0',
+                          '瑪    gcy 15900000 0',
+                          '鎷    qcy 1650000 0',
+                          '螞    jcy 662000 0',
+                          '榪    scy 142000 0',
+                          '獁    qtcy 41200 0',
+                          '溤    icy 38700 0',
+                          '鰢    qocy 36500 0'])
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '吗嗎')
+        ENGINE.set_chinese_mode(2) # simplified first
+        ENGINE.do_process_key_event(IBus.KEY_m, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_numbersign, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '吗')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+                         ['吗    kcg 959000000 0',
+                          '码    dcg 274000000 0',
+                          '马    cnng 236000000 0',
+                          '玛    gcg 51300000 0',
+                          '蚂    jcg 3110000 0',
+                          '杩    scg 1280000 0',
+                          '犸    qtcg 120000 0',
+                          '溤    icy 38700 0',
+                          '鰢    qocy 36500 0',
+                          '鷌    wvgc 25500 0'])
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '吗嗎吗')
+        ENGINE.set_chinese_mode(3) # traditional first
+        ENGINE.do_process_key_event(IBus.KEY_m, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_numbersign, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '嗎')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+                         ['嗎    kcy 148000000 0',
+                          '馬    cghy 99400000 0',
+                          '碼    dcy 38600000 0',
+                          '瑪    gcy 15900000 0',
+                          '鎷    qcy 1650000 0',
+                          '螞    jcy 662000 0',
+                          '榪    scy 142000 0',
+                          '獁    qtcy 41200 0',
+                          '溤    icy 38700 0',
+                          '鰢    qocy 36500 0'])
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '吗嗎吗嗎')
+        ENGINE.set_chinese_mode(4) # all characters
+        ENGINE.do_process_key_event(IBus.KEY_m, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_numbersign, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '吗')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+                         ['吗    kcg 959000000 0',
+                          '码    dcg 274000000 0',
+                          '马    cnng 236000000 0',
+                          '嗎    kcy 148000000 0',
+                          '馬    cghy 99400000 0',
+                          '玛    gcg 51300000 0',
+                          '碼    dcy 38600000 0',
+                          '瑪    gcy 15900000 0',
+                          '蚂    jcg 3110000 0',
+                          '鎷    qcy 1650000 0'])
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '吗嗎吗嗎吗')
 
     def test_suggestion_mode(self):
         if not ENGINE._ime_sg:
@@ -693,10 +804,24 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '工工作人员')
         ENGINE.set_pinyin_mode(True)
         ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '啊')
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工工作人员啊')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+                         ['啊呀 145 0',
+                          '啊哈 103 0',
+                          '啊哟 23 0',
+                          '啊唷 7 0'])
+        ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工工作人员啊呀')
+        ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE.do_process_key_event(IBus.KEY_i, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '爱')
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
-        self.assertEqual(ENGINE.mock_committed_text, '工工作人员爱')
+        self.assertEqual(ENGINE.mock_committed_text, '工工作人员啊呀爱')
         self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['爱因斯坦 1109 0',
                           '爱情故事 519 0',
@@ -710,7 +835,7 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '爱理不理 32 0'])
         ENGINE.do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
-        self.assertEqual(ENGINE.mock_committed_text, '工工作人员爱因斯坦')
+        self.assertEqual(ENGINE.mock_committed_text, '工工作人员啊呀爱因斯坦')
 
     def test_commit_to_preedit_switching_to_pinyin_defining_a_phrase(self):
         ENGINE.do_process_key_event(IBus.KEY_a, 0, 0)

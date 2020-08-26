@@ -3591,58 +3591,52 @@ class TabEngine(IBus.Engine):
         value = it_util.variant_to_value(self._gsettings.get_value(key))
         LOGGER.debug('Settings changed for engine “%s”: key=%s value=%s',
                      self._engine_name, key, value)
-        if key == u'debuglevel':
-            self.set_debug_level(value, update_gsettings=False)
-            return
-        if key == u'keybindings':
-            self.set_keybindings(value, update_gsettings=False)
-            return
-        if key == u'inputmode':
-            self.set_input_mode(value)
-            return
-        if key == u'autoselect':
-            self.set_autoselect_mode(value, update_gsettings=False)
-            return
-        if key == u'autocommit':
-            self.set_autocommit_mode(value, update_gsettings=False)
-            return
-        if key == u'chinesemode':
-            self.set_chinese_mode(value, update_gsettings=False)
-            return
-        if key == u'endeffullwidthletter':
-            self.set_letter_width(value, input_mode=0, update_gsettings=False)
-            return
-        if key == u'endeffullwidthpunct':
-            self.set_punctuation_width(
-                value, input_mode=0, update_gsettings=False)
-            return
-        if key == u'lookuptableorientation':
-            self.set_lookup_table_orientation(value, update_gsettings=False)
-            return
-        if key == u'lookuptablepagesize':
-            self.set_page_size(value, update_gsettings=False)
-            return
-        if key == u'onechar':
-            self.set_onechar_mode(value, update_gsettings=False)
-            return
-        if key == u'tabdeffullwidthletter':
-            self.set_letter_width(value, input_mode=1, update_gsettings=False)
-            return
-        if key == u'tabdeffullwidthpunct':
-            self.set_punctuation_width(
-                value, input_mode=1, update_gsettings=False)
-            return
-        if key == u'alwaysshowlookup':
-            self.set_always_show_lookup(value, update_gsettings=False)
-            return
-        if key == u'singlewildcardchar':
-            self.set_single_wildcard_char(value, update_gsettings=False)
-            return
-        if key == u'multiwildcardchar':
-            self.set_multi_wildcard_char(value, update_gsettings=False)
-            return
-        if key == u'autowildcard':
-            self.set_autowildcard_mode(value, update_gsettings=False)
+        set_functions = {
+            'debuglevel':
+            {'set_function': self.set_debug_level, 'kwargs': {}},
+            'keybindings':
+            {'set_function': self.set_keybindings, 'kwargs': {}},
+            'autoselect':
+            {'set_function': self.set_autoselect_mode, 'kwargs': {}},
+            'autocommit':
+            {'set_function': self.set_autocommit_mode, 'kwargs': {}},
+            'chinesemode':
+            {'set_function': self.set_chinese_mode, 'kwargs': {}},
+            'lookuptableorientation':
+            {'set_function': self.set_lookup_table_orientation, 'kwargs': {}},
+            'lookuptablepagesize':
+            {'set_function': self.set_page_size, 'kwargs': {}},
+            'onechar':
+            {'set_function': self.set_onechar_mode, 'kwargs': {}},
+            'alwaysshowlookup':
+            {'set_function': self.set_always_show_lookup, 'kwargs': {}},
+            'singlewildcardchar':
+            {'set_function': self.set_single_wildcard_char, 'kwargs': {}},
+            'multiwildcardchar':
+            {'set_function': self.set_multi_wildcard_char, 'kwargs': {}},
+            'autowildcard':
+            {'set_function': self.set_autowildcard_mode, 'kwargs': {}},
+            'endeffullwidthletter':
+            {'set_function': self.set_letter_width,
+             'kwargs': dict(input_mode=0)},
+            'endeffullwidthpunct':
+            {'set_function': self.set_punctuation_width,
+             'kwargs': dict(input_mode=0)},
+            'tabdeffullwidthletter':
+            {'set_function': self.set_letter_width,
+             'kwargs': dict(input_mode=1)},
+            'tabdeffullwidthpunct':
+            {'set_function': self.set_punctuation_width,
+             'kwargs': dict(input_mode=1)},
+            'inputmode':
+            {'set_function': self.set_input_mode, 'kwargs': {}},
+        }
+        if key in set_functions:
+            set_function = set_functions[key]['set_function']
+            kwargs = set_functions[key]['kwargs']
+            if key != 'inputmode':
+                kwargs.update(dict(update_gsettings=False))
+            set_function(value, **kwargs)
             return
         LOGGER.debug('Unknown key')
         return

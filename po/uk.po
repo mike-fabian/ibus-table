@@ -6,17 +6,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-08-26 00:14+0200\n"
-"PO-Revision-Date: 2020-02-23 17:38+0000\n"
+"PO-Revision-Date: 2020-08-26 08:24+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
-"Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/uk/>\n"
+"Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 3.11.2\n"
+"X-Generator: Weblate 4.2.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -315,10 +315,8 @@ msgstr ""
 "інших мов."
 
 #: setup/main.py:119 setup/main.py:177
-#, fuzzy
-#| msgid "IBus Table %s Preferences"
 msgid "Preferences"
-msgstr "Налаштування таблиці IBus %s"
+msgstr "Налаштування"
 
 #: setup/main.py:211
 msgid "About"
@@ -330,7 +328,7 @@ msgstr "Відновити усі типові значення"
 
 #: setup/main.py:225 setup/main.py:2358
 msgid "_Close"
-msgstr ""
+msgstr "З_акрити"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
@@ -361,13 +359,11 @@ msgstr "Подробиці"
 #. existing key bindings
 #: setup/main.py:284 setup/main.py:733
 msgid "Key bindings"
-msgstr ""
+msgstr "Прив'язки клавіш"
 
 #: setup/main.py:298
-#, fuzzy
-#| msgid "<b>Inital state</b>"
 msgid "Initial state"
-msgstr "<b>Початковий стан</b>"
+msgstr "Початковий стан"
 
 #: setup/main.py:310
 msgid ""
@@ -504,10 +500,8 @@ msgstr ""
 "у режимі безпосереднього введення: повноширинну чи півширинну."
 
 #: setup/main.py:585
-#, fuzzy
-#| msgid "<b>Candidate list</b>"
 msgid "Candidate list"
-msgstr "<b>Список варіантів</b>"
+msgstr "Список варіантів"
 
 #. Translators: A combobox to choose whether
 #. a candidate list should be shown or hidden.
@@ -569,10 +563,8 @@ msgid "Vertical"
 msgstr "Вертикально"
 
 #: setup/main.py:655
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "System default"
-msgstr "Відновити усі типові значення"
+msgstr "Типові для системи"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
@@ -595,43 +587,37 @@ msgstr ""
 
 #: setup/main.py:700
 msgid "Current key bindings:"
-msgstr ""
+msgstr "Поточні прив'язки клавіш:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
 #: setup/main.py:726
-#, fuzzy
-#| msgid "Commit"
 msgid "Command"
-msgstr "Надіслати"
+msgstr "Команда"
 
 #: setup/main.py:753
 msgid "Edit"
-msgstr ""
+msgstr "Змінити"
 
 #: setup/main.py:757
 msgid "Edit the key bindings for the selected command"
-msgstr ""
+msgstr "Змінити прив'язки клавіш для позначеної команди"
 
 #: setup/main.py:764 setup/main.py:1776
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set to default"
-msgstr "Відновити усі типові значення"
+msgstr "Встановити типові"
 
 #: setup/main.py:768 setup/main.py:1781
 msgid "Set default key bindings for the selected command"
-msgstr ""
+msgstr "Встановити типові прив'язки клавіш для позначеної команди"
 
 #: setup/main.py:775
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set all to default"
-msgstr "Відновити усі типові значення"
+msgstr "Встановити типові для усіх"
 
 #: setup/main.py:779
 msgid "Set default key bindings for all commands"
-msgstr ""
+msgstr "Встановити типові прив'язки клавіш для усіх команд"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
@@ -769,49 +755,52 @@ msgstr ""
 #. debug information may also be shown graphically.
 #: setup/main.py:997
 msgid "Debug level:"
-msgstr ""
+msgstr "Рівень діагностики:"
 
 #: setup/main.py:999
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
 msgstr ""
+"Якщо має значення більше за 0, до файла журналу може бути виведено "
+"діагностичні дані, діагностичні дані також може бути показано у графічному "
+"інтерфейсі."
 
 #: setup/main.py:1286
 msgid "Are you sure?"
-msgstr ""
+msgstr "Ви серйозно?"
 
 #: setup/main.py:1288
 msgid "_Cancel"
-msgstr ""
+msgstr "_Скасувати"
 
 #: setup/main.py:1289
 msgid "_OK"
-msgstr ""
+msgstr "_Гаразд"
 
 #: setup/main.py:1321
 msgid "Another instance of this app is already running."
-msgstr ""
+msgstr "Уже запущено інший екземпляр цієї програми."
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
 #: setup/main.py:1382
 msgid "Do you really want to restore all default settings?"
-msgstr ""
+msgstr "Ви справді хочете відновити усі типові параметри?"
 
 #: setup/main.py:1730
 #, python-format
 msgid "Edit key bindings for command “%s”"
-msgstr ""
+msgstr "Змінити прив'язку клавіш для команди «%s»"
 
 #: setup/main.py:1757
 msgid "Add a key binding"
-msgstr ""
+msgstr "Додати прив'язку клавіш"
 
 #: setup/main.py:1769
 msgid "Remove selected key binding"
-msgstr ""
+msgstr "Вилучити позначену прив'язку клавіш"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -822,11 +811,11 @@ msgstr ""
 msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
-msgstr ""
+msgstr "Ви справді хочете встановити типові прив'язки клавіш для усіх команд?"
 
 #: setup/main.py:2411
 msgid "ibus is not running."
-msgstr ""
+msgstr "ibus не запущено."
 
 #~ msgid "IBUS_ENGINE_NAME environment variable is not set."
 #~ msgstr "Змінну середовища IBUS_ENGINE_NAME не визначено."

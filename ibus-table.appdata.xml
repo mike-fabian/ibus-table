@@ -19,6 +19,34 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.12.1" date="2020-09-04" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.12.1</url>
+      <issues>
+        <issue>
+          Enable compose support.
+        </issue>
+        <issue>
+          Add buttons to move key bindings for a command up or down.
+        </issue>
+        <issue>
+          Fix the code which resolves conflicts between SELECT_KEYS
+          and VALID_INPUT_CHARS
+        </issue>
+        <issue>
+          Make translations of 'Edit key bindings for command “%s”' work
+        </issue>
+        <issue>
+          Added it_util.py to POTFILES, it had translatable strings for
+          the “About” dialog and the key settings dialog.
+        </issue>
+        <issue>
+          Update translations from Weblate (updated ca, de, fr, tr, uk)
+        </issue>
+      </issues>
+    </release>
     <release version="1.12.0" date="2020-08-26" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

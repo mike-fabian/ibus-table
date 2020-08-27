@@ -1,10 +1,250 @@
-commit 1c1ffbbfbe6092d85f678c6d3a4878b1b053446d
+commit 8dc4d56048454af69ca7fc2033bcd4320032f27d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 27 09:49:46 2020 +0200
+
+    Release 1.12.1
+
+commit 2ba14131533a902b306730c56ada717fe3d8e992
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Sep 3 11:57:00 2020 +0200
+
+    Code cleanup in the handling of hotkeys
+
+commit 73e11e01028e51899d4b556e47c6f9f38c9ee093
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Sep 3 13:45:46 2020 +0200
+
+    Work around timing problem updating gsettings in test_it.py
+
+commit 3721b7d0847c676373a621999682233e284266f4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 2 11:05:47 2020 +0200
+
+    Enable compose support
+
+commit 3f72398c89f4b501cd13abe65b08a3f5a95039d4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Aug 31 16:15:11 2020 +0200
+
+    Move key event debug log entry
+
+commit c3b4e6cb0ad37564147dcbd40feb34644248cb2c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Aug 30 15:04:12 2020 +0200
+
+    Add some more comments for translators
+
+commit 4da208705f77e8843210485c9a40bf4bdb10a3dd
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Aug 30 14:35:48 2020 +0200
+
+    Add buttons to move key bindings for a command up or down
+    
+    The order of key bindings for a certain command may matter a bit in some cases.
+    
+    For example, currently the first key binding for the command
+    “commit_candidate_<number>” is used to label the candidate
+    with that number in the lookup table.
+
+commit 82d373647197e2ba551a9426970e73e61c1fc63a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Aug 30 12:53:53 2020 +0200
+
+    Fix the code which resolves conflicts between SELECT_KEYS and VALID_INPUT_CHARS
+
+commit 58b6a224274bb6bf310c841d7df997c85d8fd5d3
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Aug 30 12:43:19 2020 +0200
+
+    Remove obsolete comment
+    
+    This comment is obsolete because the configurable key bindings.  A
+    similar comment is now in it_util.py above the code which replaces
+    SELECT_KEYS = 1,2,3,4,5,6,7,8,9,0 found in a table where the digits
+    are also valid input with SELECT_KEYS =
+    F1,F2,F3,F4,F5,F6,F7,F8,F9,F10.
+
+commit ee82ecd6692df27457e39d1afdaef767fb780a08
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 27 17:58:54 2020 +0200
+
+    Improve a Translators: comment
+
+commit de5e3096e527cd060406166fee7589ec21299fd2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 27 12:33:24 2020 +0200
+
+    Make translations of 'Edit key bindings for command “%s”' work
+
+commit 0a99e79c991b6dc719545da85fb2fdb26d8bd225
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 26 18:09:56 2020 +0200
+
+    Rewrite on_gsettings_value_changed() in table.py
+
+commit 51fcd35f3d96f4bf7bd76052232dfd902674bda4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 26 23:34:15 2020 +0200
+
+    Fix some pylint warnings
+
+commit 6e1ebe86a4a9d991b55686c11c2eca8c64594f7f
+Author: Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>
+Date:   Thu Sep 3 07:07:12 2020 +0200
+
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (136 of 136 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+
+commit 2fa11bbc93c050ee7e7468b3b15d057d023fb7a9
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Wed Sep 2 12:12:53 2020 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (136 of 136 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit 5dda845db4c2fef30ef1e5f8bd61f6130e1ae026
+Author: Yuri Chornoivan <yurchor@ukr.net>
+Date:   Wed Sep 2 11:34:16 2020 +0200
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (136 of 136 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+
+commit e48f132af2496ac74beea41a4b83890ad38e016b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 2 11:22:03 2020 +0200
+
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (136 of 136 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+
+commit 22f93c217715a546c92ccb3e0cfc0c2a70c204bf
+Author: Weblate <noreply@weblate.org>
+Date:   Wed Sep 2 11:22:03 2020 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+
+commit fd1fc0ddeade9c4b3723b1c93cfd29fd28762d21
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 2 11:13:23 2020 +0200
+
+    Update ibus-table.pot
+
+commit 1b91dc6e406c046c69ec55137bae8ecf8383e06c
+Author: Anonymous <noreply@weblate.org>
+Date:   Tue Sep 1 12:28:11 2020 +0200
+
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 91.7% (123 of 134 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+
+commit 27501441c8c61c01c3ef8d562634db97144507fb
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Thu Aug 27 17:53:20 2020 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (134 of 134 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit c0e8466b8c90edbc250189c1e9b0ac602cdbfbf5
+Author: Yuri Chornoivan <yurchor@ukr.net>
+Date:   Thu Aug 27 09:43:15 2020 +0200
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (134 of 134 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+
+commit 64803a30a127a5dfcf911d44c69304c88c7b3f15
+Author: Julien Humbert <julroy67@gmail.com>
+Date:   Thu Aug 27 09:43:15 2020 +0200
+
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (134 of 134 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+
+commit 2b5485a590d4236fbcca9ddfb34c52c8b6b859b8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 27 09:43:14 2020 +0200
+
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (134 of 134 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+
+commit 1b7abb048d7a1521f5af680b577a480ba761ed86
+Author: Weblate <noreply@weblate.org>
+Date:   Thu Aug 27 09:43:14 2020 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+
+commit 5413469f9f06a55ef06bb1f3c9da4cd5f64b7ac3
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 27 00:15:33 2020 +0200
+
+    Update ibus-table.pot (New translatable strings from it_util.py)
+
+commit c65614a875bcc968386807c9b9a7bfa3efae447d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Aug 27 00:12:38 2020 +0200
+
+    Add engine/it_util to POTFILES (The about and the key input dialogs are there)
+
+commit 4b395bb645961220aabacbb70a31be04fe15482e
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Wed Aug 26 23:07:48 2020 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (127 of 127 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+
+commit f7f4089d22cc5c6ede22124a7d5dbf1e711e5963
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Aug 26 00:31:39 2020 +0200
 
     Release 1.12.0
 
-commit 6b5e5205cd76456e3acc578220f0f698c350e2f2
+commit 9239878729427a7e6672ba471123235f8601b6a5
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Aug 26 12:29:50 2020 +0200
 

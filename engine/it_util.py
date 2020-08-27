@@ -553,6 +553,8 @@ class ItAboutDialog(Gtk.AboutDialog):
             ])
         self.set_translator_credits(
             # Translators: put your names here, one name per line.
+            # The list of names of the translators for the current locale
+            # will be displayed in the “About ibus-table” dialog.
             _('translator-credits'))
         # self.set_artists('')
         self.set_documenters([

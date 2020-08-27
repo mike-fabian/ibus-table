@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-08-27 00:15+0200\n"
-"PO-Revision-Date: 2020-08-26 21:07+0000\n"
+"PO-Revision-Date: 2020-08-27 15:53+0000\n"
 "Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
-"Language-Team: Turkish <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/tr/>\n"
+"Language-Team: Turkish <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -299,47 +299,39 @@ msgstr "Ibus-table \"%(engine-name)s\" yapılandır"
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
 #: engine/it_util.py:484
-#, fuzzy
-#| msgid "Table input"
 msgid "Key input"
-msgstr "Tablo girişi"
+msgstr "Tuş girişi"
 
 #: engine/it_util.py:490
-#, fuzzy
-#| msgid "_Cancel"
 msgid "Cancel"
-msgstr "_İptal"
+msgstr "İptal"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:497
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "Lütfen bir tuşa (veya tuş dizisine) basın"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:502
 msgid "The dialog will be closed when the key is released"
-msgstr ""
+msgstr "Tuş serbest bırakıldığında iletişim kutusu kapatılacaktır"
 
 #: engine/it_util.py:534
-#, fuzzy
-#| msgid "Table input method for IBus"
 msgid "Table input method for IBus."
-msgstr "IBus için tablo giriş yöntemi"
+msgstr "IBus için tablo giriş yöntemi."
 
 #. Translators: put your names here, one name per line.
 #: engine/it_util.py:556
 msgid "translator-credits"
-msgstr ""
+msgstr "Oğuz Ersen"
 
 #: engine/it_util.py:564
-#, fuzzy
-#| msgid "Orientation:"
 msgid "Online documentation:"
-msgstr "Yön:"
+msgstr "Çevrim içi belgelendirme:"
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"

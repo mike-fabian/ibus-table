@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-08-27 00:15+0200\n"
-"PO-Revision-Date: 2020-08-26 08:24+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: French <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/fr/>\n"
+"PO-Revision-Date: 2020-08-27 07:43+0000\n"
+"Last-Translator: Julien Humbert <julroy67@gmail.com>\n"
+"Language-Team: French <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -300,47 +300,39 @@ msgstr "Configurer ibus-table « %(engine-name)s »"
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
 #: engine/it_util.py:484
-#, fuzzy
-#| msgid "Table input"
 msgid "Key input"
-msgstr "Saisie en table"
+msgstr "Entrez une touche"
 
 #: engine/it_util.py:490
-#, fuzzy
-#| msgid "_Cancel"
 msgid "Cancel"
-msgstr "_Annuler"
+msgstr "Annuler"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:497
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "Appuyez sur une touche (ou une combinaison de touches)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:502
 msgid "The dialog will be closed when the key is released"
-msgstr ""
+msgstr "La boite de dialogue se fermera quand la touche sera relâchée"
 
 #: engine/it_util.py:534
-#, fuzzy
-#| msgid "Table input method for IBus"
 msgid "Table input method for IBus."
-msgstr "Méthode de saisie en table pour IBus"
+msgstr "Méthode de saisie en table pour IBus."
 
 #. Translators: put your names here, one name per line.
 #: engine/it_util.py:556
 msgid "translator-credits"
-msgstr ""
+msgstr "Julien Humbert <julroy67@gmail.com>, 2020"
 
 #: engine/it_util.py:564
-#, fuzzy
-#| msgid "Orientation:"
 msgid "Online documentation:"
-msgstr "Orientation :"
+msgstr "Documentation en ligne :"
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"
@@ -409,10 +401,8 @@ msgid "Key bindings"
 msgstr "Raccourcis clavier"
 
 #: setup/main.py:290
-#, fuzzy
-#| msgid "<b>Inital state</b>"
 msgid "Initial state"
-msgstr "<b>État initial</b>"
+msgstr "État initial"
 
 #: setup/main.py:302
 msgid ""
@@ -549,10 +539,8 @@ msgstr ""
 "ou demi-chasse lors de la saisie directe."
 
 #: setup/main.py:579
-#, fuzzy
-#| msgid "<b>Candidate list</b>"
 msgid "Candidate list"
-msgstr "<b>Liste des candidats</b>"
+msgstr "Liste des candidats"
 
 #. Translators: A combobox to choose whether
 #. a candidate list should be shown or hidden.
@@ -833,7 +821,7 @@ msgstr "Une autre instance de cette application est déjà en cours d’exécuti
 #. really sure to restore all default settings.
 #: setup/main.py:1391
 msgid "Do you really want to restore all default settings?"
-msgstr ""
+msgstr "Souhaitez-vous vraiment rétablir tous les paramètres par défaut ?"
 
 #: setup/main.py:1739
 #, python-format

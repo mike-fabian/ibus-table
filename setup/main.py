@@ -779,6 +779,7 @@ class SetupUI(Gtk.Window):
         self._keybindings_action_area.add(self._keybindings_all_default_button)
         self._keybindings_selected_command = ''
         self._keybindings_edit_popover_selected_keybinding = ''
+        self._keybindings_edit_popover_selected_keybinding_index = -1
         self._keybindings_edit_popover_listbox = None
         self._keybindings_edit_popover = None
         self._keybindings_edit_popover_scroll = None
@@ -1630,13 +1631,26 @@ class SetupUI(Gtk.Window):
         :type listbox_row: Gtk.ListBoxRow object
         '''
         if  listbox_row:
-            self._keybindings_edit_popover_selected_keybinding = (
-                listbox_row.get_child().get_text().split(' ')[0])
-            self._keybindings_edit_popover_remove_button.set_sensitive(True)
-        else:
-            # all rows have been unselected
-            self._keybindings_edit_popover_selected_keybinding = ''
-            self._keybindings_edit_popover_remove_button.set_sensitive(False)
+            keybinding = listbox_row.get_child().get_text()
+            index = listbox_row.get_index()
+            user_keybindings = self._settings_dict['keybindings']['user']
+            command = self._keybindings_selected_command
+            if (keybinding and command
+                and keybinding in user_keybindings[command]):
+                self._keybindings_edit_popover_selected_keybinding = keybinding
+                self._keybindings_edit_popover_selected_keybinding_index = index
+                self._keybindings_edit_popover_remove_button.set_sensitive(
+                    True)
+                self._keybindings_edit_popover_up_button.set_sensitive(index > 0)
+                self._keybindings_edit_popover_down_button.set_sensitive(
+                    index < len(user_keybindings[command]) - 1)
+                return
+        # all rows have been unselected
+        self._keybindings_edit_popover_selected_keybinding = ''
+        self._keybindings_edit_popover_selected_keybinding_index = -1
+        self._keybindings_edit_popover_remove_button.set_sensitive(False)
+        self._keybindings_edit_popover_up_button.set_sensitive(False)
+        self._keybindings_edit_popover_down_button.set_sensitive(False)
 
     def on_keybindings_edit_popover_add_button_clicked(self, *_args):
         '''
@@ -1671,6 +1685,56 @@ class SetupUI(Gtk.Window):
             self._fill_keybindings_edit_popover_listbox()
             self.set_keybindings(user_keybindings)
 
+    def on_keybindings_edit_popover_up_button_clicked(self, *_args):
+        '''
+        Signal handler called when the “up” button to move
+        a key binding up has been clicked.
+        '''
+        index = self._keybindings_edit_popover_selected_keybinding_index
+        command = self._keybindings_selected_command
+        keybinding = self._keybindings_edit_popover_selected_keybinding
+        user_keybindings = self._settings_dict['keybindings']['user']
+        if not 0 < index < len(user_keybindings[command]):
+            # This should not happen, one should not be able
+            # to click the up button in this case, just return
+            return
+        user_keybindings[command] = (
+            user_keybindings[command][:index - 1]
+            + [user_keybindings[command][index]]
+            + [user_keybindings[command][index - 1]]
+            + user_keybindings[command][index + 1:])
+        self.set_keybindings(user_keybindings, update_gsettings=True)
+        self._fill_keybindings_edit_popover_listbox()
+        self._keybindings_edit_popover_selected_keybinding_index = index - 1
+        self._keybindings_edit_popover_selected_keybinding = keybinding
+        self._keybindings_edit_popover_listbox.select_row(
+            self._keybindings_edit_popover_listbox.get_row_at_index(index - 1))
+
+    def on_keybindings_edit_popover_down_button_clicked(self, *_args):
+        '''
+        Signal handler called when the “down” button to move
+        a key binding down has been clicked.
+        '''
+        index = self._keybindings_edit_popover_selected_keybinding_index
+        command = self._keybindings_selected_command
+        keybinding = self._keybindings_edit_popover_selected_keybinding
+        user_keybindings = self._settings_dict['keybindings']['user']
+        if not 0 <= index < len(user_keybindings[command]) - 1:
+            # This should not happen, one should not be able
+            # to click the up button in this case, just return
+            return
+        user_keybindings[command] = (
+            user_keybindings[command][:index]
+            + [user_keybindings[command][index + 1]]
+            + [user_keybindings[command][index]]
+            + user_keybindings[command][index + 2:])
+        self.set_keybindings(user_keybindings, update_gsettings=True)
+        self._fill_keybindings_edit_popover_listbox()
+        self._keybindings_edit_popover_selected_keybinding_index = index + 1
+        self._keybindings_edit_popover_selected_keybinding = keybinding
+        self._keybindings_edit_popover_listbox.select_row(
+            self._keybindings_edit_popover_listbox.get_row_at_index(index + 1))
+
     def on_keybindings_edit_popover_default_button_clicked(self, *_args):
         '''
         Signal handler called when the “Default” button to set
@@ -1694,6 +1758,8 @@ class SetupUI(Gtk.Window):
         self._keybindings_edit_popover_listbox = Gtk.ListBox()
         self._keybindings_edit_popover_scroll.add(
             self._keybindings_edit_popover_listbox)
+        self._keybindings_edit_popover_selected_keybinding = ''
+        self._keybindings_edit_popover_selected_keybinding_index = -1
         self._keybindings_edit_popover_listbox.set_visible(True)
         self._keybindings_edit_popover_listbox.set_vexpand(True)
         self._keybindings_edit_popover_listbox.set_selection_mode(
@@ -1715,6 +1781,8 @@ class SetupUI(Gtk.Window):
             label.set_margin_bottom(margin)
             self._keybindings_edit_popover_listbox.insert(label, -1)
         self._keybindings_edit_popover_remove_button.set_sensitive(False)
+        self._keybindings_edit_popover_up_button.set_sensitive(False)
+        self._keybindings_edit_popover_down_button.set_sensitive(False)
         self._keybindings_edit_popover_listbox.show_all()
 
     def _create_and_show_keybindings_edit_popover(self):
@@ -1781,6 +1849,28 @@ class SetupUI(Gtk.Window):
             'clicked', self.on_keybindings_edit_popover_remove_button_clicked)
         self._keybindings_edit_popover_remove_button.set_sensitive(False)
         self._keybindings_edit_popover_default_button = Gtk.Button()
+        self._keybindings_edit_popover_up_button = Gtk.Button()
+        keybindings_edit_popover_up_button_label = Gtk.Label()
+        keybindings_edit_popover_up_button_label.set_text(
+            '<span size="xx-large"><b>↑</b></span>')
+        keybindings_edit_popover_up_button_label.set_use_markup(True)
+        self._keybindings_edit_popover_up_button.add(
+            keybindings_edit_popover_up_button_label)
+        self._keybindings_edit_popover_up_button.set_tooltip_text(
+            _('Move key binding up'))
+        self._keybindings_edit_popover_up_button.connect(
+            'clicked', self.on_keybindings_edit_popover_up_button_clicked)
+        self._keybindings_edit_popover_down_button = Gtk.Button()
+        keybindings_edit_popover_down_button_label = Gtk.Label()
+        keybindings_edit_popover_down_button_label.set_text(
+            '<span size="xx-large"><b>↓</b></span>')
+        keybindings_edit_popover_down_button_label.set_use_markup(True)
+        self._keybindings_edit_popover_down_button.add(
+            keybindings_edit_popover_down_button_label)
+        self._keybindings_edit_popover_down_button.set_tooltip_text(
+            _('Move key binding down'))
+        self._keybindings_edit_popover_down_button.connect(
+            'clicked', self.on_keybindings_edit_popover_down_button_clicked)
         keybindings_edit_popover_default_button_label = Gtk.Label()
         keybindings_edit_popover_default_button_label.set_text(
             _('Set to default'))
@@ -1796,6 +1886,10 @@ class SetupUI(Gtk.Window):
             self._keybindings_edit_popover_add_button)
         keybindings_edit_popover_button_box.add(
             self._keybindings_edit_popover_remove_button)
+        keybindings_edit_popover_button_box.add(
+            self._keybindings_edit_popover_up_button)
+        keybindings_edit_popover_button_box.add(
+            self._keybindings_edit_popover_down_button)
         keybindings_edit_popover_button_box.add(
             self._keybindings_edit_popover_default_button)
         self._keybindings_edit_popover.add(keybindings_edit_popover_vbox)

@@ -229,8 +229,11 @@ def get_default_keybindings(gsettings, database):
         # Of course one should maybe consider fixing the conflict
         # between the keys by using different SELECT_KEYS in that
         # table.
-        if name in list(valid_input_chars):
-            name = 'F' + str(index)
+        if len(name) == 1 and name in list(valid_input_chars):
+            if name in '123456789':
+                name = 'F' + name
+            elif name == '0':
+                name = 'F10'
         default_keybindings[
             'commit_candidate_%s' % (index + 1)
         ] = [name]

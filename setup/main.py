@@ -299,6 +299,8 @@ class SetupUI(Gtk.Window):
             # (“Direct input” or “Table input”)
             _('Input mode'))
         self._input_mode_label.set_tooltip_text(
+            # Translators: A tooltip for the label of the combobox to
+            # choose the input mode (“Direct input” or “Table input”).
             _('“Direct input” is almost the same as if the\n'
               'input method were off, i.e. not used at all, most\n'
               'characters just get passed to the application.\n'
@@ -345,6 +347,8 @@ class SetupUI(Gtk.Window):
             # Chinese which should be preferred.
             _('Chinese mode:'))
         self._chinese_mode_label.set_tooltip_text(
+            # Translators: A tooltip for the label of the combobox to
+            # choose which variant of Chinese should be preferred.
             _('“Simplified Chinese” shows only characters \n'
               'used in simplified Chinese. “Traditional Chinese”\n'
               'shows only characters used in traditional Chinese.\n'
@@ -409,6 +413,8 @@ class SetupUI(Gtk.Window):
             # while in “Table input” mode.
             _('Table input letter width:'))
         self._table_full_width_letter_mode_label.set_tooltip_text(
+            # Translators: A tooltip for the label of the combobox to
+            # choose the letter width while in “Table input” mode.
             _('Whether to use fullwidth or halfwidth\n'
               'letters in table input mode.'))
         self._table_full_width_letter_mode_label.set_xalign(0)
@@ -450,6 +456,8 @@ class SetupUI(Gtk.Window):
             # while in “Table input” mode.
             _('Table input punctuation width:'))
         self._table_full_width_punctuation_mode_label.set_tooltip_text(
+            # Translators: A tooltip for the label of the combobox to
+            # choose the punctuation width while in “Table input” mode.
             _('Whether to use fullwidth or halfwidth\n'
               'punctuation in table input mode.'))
         self._table_full_width_punctuation_mode_label.set_xalign(0)
@@ -494,6 +502,8 @@ class SetupUI(Gtk.Window):
             # while in “Direct input” mode.
             _('Direct input letter width:'))
         self._direct_full_width_letter_mode_label.set_tooltip_text(
+            # Translators: A tooltip for the label of the combobox to
+            # choose the letter width while in “Direct input” mode.
             _('Whether to use fullwidth or halfwidth\n'
               'letters in direct input mode.'))
         self._direct_full_width_letter_mode_label.set_xalign(0)
@@ -536,6 +546,8 @@ class SetupUI(Gtk.Window):
             # while in “Direct input” mode.
             _('Direct input punctuation width:'))
         self._direct_full_width_punctuation_mode_label.set_tooltip_text(
+            # Translators: A tooltip for the label of the combobox to
+            # choose the punctuation width while in “Direct input” mode.
             _('Whether to use fullwidth or halfwidth\n'
               'punctuation in direct input mode.'))
         self._direct_full_width_punctuation_mode_label.set_xalign(0)
@@ -592,6 +604,9 @@ class SetupUI(Gtk.Window):
             # the candidate lists is better.
             _('Show candidate list'))
         self._always_show_lookup_label.set_tooltip_text(
+            # Translit: A tooltip for the label of the combobox to
+            # choose whether a candidate list should be shown or
+            # hidden.
             _('Whether candidate lists should be shown or hidden.\n'
               'For Chinese input methods one usually wants the\n'
               'candidate lists to be shown. But for some non-Chinese\n'
@@ -633,6 +648,9 @@ class SetupUI(Gtk.Window):
             # window should be drawn horizontally or vertically.
             _('Orientation:'))
         self._lookup_table_orientation_label.set_tooltip_text(
+            # Translators: A tooltip for the label of the combobox to
+            # choose whether the candidate window should be drawn
+            # horizontally or vertically.
             _('Whether the lookup table showing the candidates\n'
               'should be vertical or horizontal.'))
         self._lookup_table_orientation_label.set_xalign(0)
@@ -669,6 +687,9 @@ class SetupUI(Gtk.Window):
         # candidates to show in one page of the candidate list.
         self._page_size_label.set_text(_('Page size:'))
         self._page_size_label.set_tooltip_text(
+            # Translators: A tooltip for the label of the adjustment
+            # for the number of candidates to show in one page of the
+            # candidate list.
             _('The maximum number of candidates in\n'
               'one page of the lookup table. You can switch\n'
               'pages in the lookup table using the page up/down\n'
@@ -748,6 +769,8 @@ class SetupUI(Gtk.Window):
         self._keybindings_edit_button.add(
             self._keybindings_edit_button_label)
         self._keybindings_edit_button.set_tooltip_text(
+            # Translators: A tooltip for the button to edit
+            # the keybindings for the selected command.
             _('Edit the key bindings for the selected command'))
         self._keybindings_edit_button.set_sensitive(False)
         self._keybindings_edit_button.connect(
@@ -759,6 +782,8 @@ class SetupUI(Gtk.Window):
         self._keybindings_default_button.add(
             self._keybindings_default_button_label)
         self._keybindings_default_button.set_tooltip_text(
+            # Translators: A tooltip for the button to set
+            # the default key bindings for the selected command.
             _('Set default key bindings for the selected command'))
         self._keybindings_default_button.set_sensitive(False)
         self._keybindings_default_button.connect(
@@ -770,6 +795,8 @@ class SetupUI(Gtk.Window):
         self._keybindings_all_default_button.add(
             self._keybindings_all_default_button_label)
         self._keybindings_all_default_button.set_tooltip_text(
+            # Translators: A tooltip for the button to set the
+            # key bindings to default for all commands.
             _('Set default key bindings for all commands'))
         self._keybindings_all_default_button.set_sensitive(True)
         self._keybindings_all_default_button.connect(
@@ -793,6 +820,9 @@ class SetupUI(Gtk.Window):
             # character candidates should be shown.
             _('Compose:'))
         self._onechar_mode_label.set_tooltip_text(
+            # Translators: A tooltip for label of the combobox to
+            # choose whether only single character candidates should
+            # be shown.
             _('If this is set to “single char”, only single\n'
               'character candidates will be shown. If it is\n'
               'set to “Phrase” candidates consisting of\n'
@@ -831,6 +861,9 @@ class SetupUI(Gtk.Window):
             # candidate will be automatically selected during typing.
             _('Auto select:'))
         self._autoselect_mode_label.set_tooltip_text(
+            # Translators: A tooltip for the label of the combobox to
+            # choose whether the first candidate will be automatically
+            # select during typing.
             _('If set to “Yes”, this does the following 4 things:\n'
               '1) When typing “Return”, commit the \n'
               '   candidate + line-feed\n'
@@ -872,6 +905,9 @@ class SetupUI(Gtk.Window):
             # commits go into the preëdit or into the application
             _('Auto commit mode:'))
         self._autocommit_mode_label.set_tooltip_text(
+            # Translators; A tooltip for the label of the combobox to
+            # choose whether automatic commits go into the preëdit or
+            # into the application.
             _('Committing with the commit keys or with the mouse\n'
               'always commits to the application. This option is about\n'
               '“automatic” commits which may happen when\n'
@@ -915,6 +951,9 @@ class SetupUI(Gtk.Window):
             # should be automatically appended to the input.
             _('Auto wildcard:'))
         self._autowildcard_mode_label.set_tooltip_text(
+            # Translators: A tooltip for the label of the combobox to
+            # choose whether a wildcard should be automatically
+            # appended to the input.
             _('If yes, a multi wildcard will be automatically\n'
               'appended to the end of the input string.'))
         self._autowildcard_mode_label.set_xalign(0)
@@ -948,6 +987,9 @@ class SetupUI(Gtk.Window):
             # to match a any single character
             _('Single wildcard character:'))
         self._single_wildcard_char_label.set_tooltip_text(
+            # Translators: This is a tooltip for the label of the
+            # entry where one can choose the wildcard to match a
+            # single character.
             _('The wildcard to match any single character.\n'
               'Type RETURN or ENTER to confirm after changing the wildcard.'))
         self._single_wildcard_char_label.set_xalign(0)
@@ -969,6 +1011,9 @@ class SetupUI(Gtk.Window):
             # to match a any number of characters
             _('Multi wildcard character:'))
         self._multi_wildcard_char_label.set_tooltip_text(
+            # Translators: This is a tooltip for the label of the
+            # entry where one can choose the wildcard to match any
+            # number of candidates.
             _('The wildcard used to match any number of characters.\n'
               'Type RETURN or ENTER to confirm after changing the wildcard.'))
         self._multi_wildcard_char_label.set_xalign(0)
@@ -991,6 +1036,8 @@ class SetupUI(Gtk.Window):
             # debug information may also be shown graphically.
             _('Debug level:'))
         self._debug_level_label.set_tooltip_text(
+            # Translators: This is a tooltip for the label for the
+            # adjustment of the debug level.
             _('When greater than 0, debug information may be '
               'printed to the log file and debug information '
               'may also be shown graphically.'))
@@ -1832,6 +1879,8 @@ class SetupUI(Gtk.Window):
         self._keybindings_edit_popover_add_button.add(
             keybindings_edit_popover_add_button_label)
         self._keybindings_edit_popover_add_button.set_tooltip_text(
+            # Translators: This is a tooltip for the button to add a
+            # key binding.
             _('Add a key binding'))
         self._keybindings_edit_popover_add_button.connect(
             'clicked', self.on_keybindings_edit_popover_add_button_clicked)
@@ -1844,6 +1893,8 @@ class SetupUI(Gtk.Window):
         self._keybindings_edit_popover_remove_button.add(
             keybindings_edit_popover_remove_button_label)
         self._keybindings_edit_popover_remove_button.set_tooltip_text(
+            # Translators: This is a tooltip for the button to remove
+            # the selected key binding.
             _('Remove selected key binding'))
         self._keybindings_edit_popover_remove_button.connect(
             'clicked', self.on_keybindings_edit_popover_remove_button_clicked)
@@ -1857,6 +1908,8 @@ class SetupUI(Gtk.Window):
         self._keybindings_edit_popover_up_button.add(
             keybindings_edit_popover_up_button_label)
         self._keybindings_edit_popover_up_button.set_tooltip_text(
+            # Translators: This is a tooltip for the button to move
+            # the selected key binding up (higher in priority).
             _('Move key binding up'))
         self._keybindings_edit_popover_up_button.connect(
             'clicked', self.on_keybindings_edit_popover_up_button_clicked)
@@ -1868,6 +1921,8 @@ class SetupUI(Gtk.Window):
         self._keybindings_edit_popover_down_button.add(
             keybindings_edit_popover_down_button_label)
         self._keybindings_edit_popover_down_button.set_tooltip_text(
+            # Translators: This is a tooltip for the button to move
+            # the selected key binding down (lower in priority).
             _('Move key binding down'))
         self._keybindings_edit_popover_down_button.connect(
             'clicked', self.on_keybindings_edit_popover_down_button_clicked)
@@ -1878,6 +1933,8 @@ class SetupUI(Gtk.Window):
         self._keybindings_edit_popover_default_button.add(
             keybindings_edit_popover_default_button_label)
         self._keybindings_edit_popover_default_button.set_tooltip_text(
+            # Translators: This is a tooltip for the button to set
+            # the key bindings for the selected command to the default.
             _('Set default key bindings for the selected command'))
         self._keybindings_edit_popover_default_button.connect(
             'clicked', self.on_keybindings_edit_popover_default_button_clicked)

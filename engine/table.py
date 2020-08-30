@@ -3412,35 +3412,6 @@ class TabEngine(IBus.Engine):
             return self._return_false(key.val, key.code, key.state)
 
         # Section to handle valid input characters:
-        #
-        # All keys which could possibly conflict with the valid input
-        # characters should be checked below this section. These are
-        # SELECT_KEYS, PAGE_UP_KEYS, PAGE_DOWN_KEYS, and COMMIT_KEYS.
-        #
-        # For example, consider a table has
-        #
-        #     SELECT_KEYS = 1,2,3,4,5,6,7,8,9,0
-        #
-        # and
-        #
-        #     VALID_INPUT_CHARS = 0123456789abcdef
-        #
-        # (Currently the cns11643 table has this, for example)
-        #
-        # Then the digit “1” could be interpreted either as an input
-        # character or as a select key but of course not both. If the
-        # meaning as a select key or page down key were preferred,
-        # this would make some input impossible which probably makes
-        # the whole input method useless. If the meaning as an input
-        # character is preferred, this makes selection using that key
-        # impossible.  Making selection by key impossible is not nice
-        # either, but it is not a complete show stopper as there are
-        # still other possibilities to select, for example using the
-        # arrow-up/arrow-down keys or click with the mouse.
-        #
-        # Of course one should maybe consider fixing the conflict
-        # between the keys by using different SELECT_KEYS and/or
-        # PAGE_UP_KEYS/PAGE_DOWN_KEYS in that table ...
         if (keychar
                 and (keychar in (self._valid_input_chars
                                  + self._single_wildcard_char

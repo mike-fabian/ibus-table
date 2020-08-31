@@ -3123,16 +3123,14 @@ class TabEngine(IBus.Engine):
         Key Events include Key Press and Key Release,
         modifier means Key Pressed
         '''
+        key = it_util.KeyEvent(keyval, keycode, state)
         if DEBUG_LEVEL > 1:
-            LOGGER.debug("do_process_key_event()\n")
+            LOGGER.debug('KeyEvent object: %s', key)
+
         if (self._has_input_purpose
                 and self._input_purpose
                 in [IBus.InputPurpose.PASSWORD, IBus.InputPurpose.PIN]):
             return self._return_false(keyval, keycode, state)
-
-        key = it_util.KeyEvent(keyval, keycode, state)
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug('KeyEvent object: %s', key)
 
         result = self._process_key_event(key)
         self._prev_key = key

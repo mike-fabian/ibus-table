@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-08-27 00:15+0200\n"
-"PO-Revision-Date: 2020-08-26 08:24+0000\n"
+"PO-Revision-Date: 2020-09-01 10:28+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Catalan <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/ca/>\n"
+"Language-Team: Catalan <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -299,34 +299,28 @@ msgstr "Configura l'ibus-table “%(engine-name)s”"
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
 #: engine/it_util.py:484
-#, fuzzy
-#| msgid "Table input"
 msgid "Key input"
-msgstr "Entrada de taula"
+msgstr "Entrada de tecles"
 
 #: engine/it_util.py:490
-#, fuzzy
-#| msgid "_Cancel"
 msgid "Cancel"
-msgstr "_Cancel·la"
+msgstr "Cancel·la"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:497
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "Premeu una tecla (o una combinació de tecles)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:502
 msgid "The dialog will be closed when the key is released"
-msgstr ""
+msgstr "El diàleg es tancarà quan es deixi anar la tecla"
 
 #: engine/it_util.py:534
-#, fuzzy
-#| msgid "Table input method for IBus"
 msgid "Table input method for IBus."
 msgstr "Mètode d'entrada de taula per a l'IBus"
 
@@ -336,10 +330,8 @@ msgid "translator-credits"
 msgstr ""
 
 #: engine/it_util.py:564
-#, fuzzy
-#| msgid "Orientation:"
 msgid "Online documentation:"
-msgstr "Orientació:"
+msgstr "Documentació en línia:"
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"

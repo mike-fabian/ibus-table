@@ -6,10 +6,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-09-02 11:12+0200\n"
-"PO-Revision-Date: 2020-08-27 07:43+0000\n"
+"PO-Revision-Date: 2020-09-02 09:34+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
-"Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/uk/>\n"
+"Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -898,18 +898,14 @@ msgstr "Вилучити позначену прив'язку клавіш"
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
 #: setup/main.py:1913
-#, fuzzy
-#| msgid "Add a key binding"
 msgid "Move key binding up"
-msgstr "Додати прив'язку клавіш"
+msgstr "Пересунути прив'язку клавіш вище"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
 #: setup/main.py:1926
-#, fuzzy
-#| msgid "Add a key binding"
 msgid "Move key binding down"
-msgstr "Додати прив'язку клавіш"
+msgstr "Пересунути прив'язку клавіш нижче"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is

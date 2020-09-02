@@ -94,6 +94,9 @@ class MockEngine:
     def hide_lookup_table(self):
         pass
 
+    def connect(self, *args):
+        pass
+
 class MockLookupTable:
     def __init__(self, page_size = 9, cursor_pos = 0, cursor_visible = False, round = True):
         self.clear()

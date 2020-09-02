@@ -239,7 +239,7 @@ SAVE_USER_TIMEOUT = 30 # in seconds
 ########################
 ### Engine Class #####
 ####################
-class TabEngine(IBus.Engine):
+class TabEngine(IBus.EngineSimple):
     '''The IM Engine for Tables'''
 
     def __init__(self, bus, obj_path, database, unit_test=False):
@@ -835,6 +835,8 @@ class TabEngine(IBus.Engine):
 
         self.sync_timeout_id = GObject.timeout_add_seconds(
             1, self._sync_user_db)
+
+        self.connect('process-key-event', self.__do_process_key_event)
 
         LOGGER.info(
             '********** Initialized and ready for input: **********')
@@ -3118,7 +3120,13 @@ class TabEngine(IBus.Engine):
             return True
         return False
 
-    def do_process_key_event(self, keyval, keycode, state):
+    def __do_process_key_event(self, _obj, keyval, keycode, state):
+        '''
+        This function is connected to the 'process-key-event' signal.
+        '''
+        return self._do_process_key_event(keyval, keycode, state)
+
+    def _do_process_key_event(self, keyval, keycode, state):
         '''Process Key Events
         Key Events include Key Press and Key Release,
         modifier means Key Pressed

@@ -2942,86 +2942,163 @@ class TabEngine(IBus.EngineSimple):
             return True
         return False
 
-    def _handle_hotkeys(self, key):
-        '''
-        Handle hotkey commands
+    def _command_setup(self):
+        '''Handle hotkey for the command “setup”
 
-        Returns True if the key was completely handled, False if not.
-
-        :param key: The typed key. If this is a hotkey,
-                    execute the command for this hotkey.
-        :type key: KeyEvent object
+        :return: True if the key was completely handled, False if not.
         :rtype: Boolean
         '''
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug('KeyEvent object: %s\n', key)
-            LOGGER.debug('self._hotkeys=%s\n', str(self._hotkeys))
+        self._start_setup()
+        return True
 
-        if (self._prev_key, key, 'cancel') in self._hotkeys:
-            self.reset()
-            self._update_ui()
-            return True
+    def _command_toggle_input_mode_on_off(self):
+        '''Handle hotkey for the command “toggle_input_mode_on_off”
 
-        if (self._ime_sg
-            and (self._prev_key, key,
-                 'toggle_suggestion_mode') in self._hotkeys):
-            self.set_suggestion_mode(not self._sg_mode)
-            return True
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if not self.is_empty():
+            return False
+        self.set_input_mode(int(not self._input_mode))
+        return True
 
-        # Change pinyin mode.
-        #
-        # Should be above committing to preedit because the default
-        # key for changing the pinyin mode is Shift_R and the default
-        # keys for committing to preedit are Shift_R and Shift_L.
-        #
-        # (change only if empty. When it is not empty, the right shift
-        # key should commit to preëdit and not change the pinyin
-        # mode).
-        if (self._ime_py
-            and self.is_empty()
-            and (self._prev_key, key,
-                 'toggle_pinyin_mode') in self._hotkeys):
-            self.set_pinyin_mode(not self._py_mode)
-            return True
+    def _command_toggle_letter_width(self):
+        '''Handle hotkey for the command “toggle_letter_width”
 
-        if (self._prev_key, key, 'commit_to_preedit') in self._hotkeys:
-            res = self.commit_to_preedit()
-            self._update_ui()
-            return res
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if not self.database._is_cjk:
+            return False
+        self.set_letter_width(
+            not self._full_width_letter[self._input_mode],
+            input_mode=self._input_mode)
+        return True
 
-        if (self._prev_key, key,
-            'select_next_candidate_in_current_page') in self._hotkeys:
-            res = self.select_next_candidate_in_current_page()
-            self._update_ui()
-            return res
+    def _command_toggle_punctuation_width(self):
+        '''Handle hotkey for the command “toggle_punctuation_width”
 
-        if (self._prev_key, key,
-            'select_previous_candidate_in_current_page') in self._hotkeys:
-            res = self.select_previous_candidate_in_current_page()
-            self._update_ui()
-            return res
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if not self.database._is_cjk:
+            return False
+        self.set_punctuation_width(
+            not self._full_width_punct[self._input_mode],
+            input_mode=self._input_mode)
+        return True
 
-        if (self.database._is_cjk
-            and (self._prev_key, key, 'toggle_onechar_mode') in self._hotkeys):
-            self.set_onechar_mode(not self._onechar)
-            return True
+    def _command_cancel(self):
+        '''Handle hotkey for the command “cancel”
 
-        if (self.database.user_can_define_phrase and self.database.rules
-            and (self._prev_key, key,
-                 'toggle_autocommit_mode') in self._hotkeys):
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        self.reset()
+        self._update_ui()
+        return True
+
+    def _command_toggle_suggestion_mode(self):
+        '''Handle hotkey for the command “toggle_suggestion_mode”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if not self._ime_sg:
+            return False
+        self.set_suggestion_mode(not self._sg_mode)
+        return True
+
+    def _command_commit_to_preedit(self):
+        '''Handle hotkey for the command “commit_to_preedit”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if self.is_empty():
+            return False
+        res = self.commit_to_preedit()
+        self._update_ui()
+        return res
+
+    def _command_toggle_pinyin_mode(self):
+        '''Handle hotkey for the command “toggle_pinyin_mode”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if not (self._ime_py and self.is_empty()):
+            # Change pinyin mode only if empty. When it is not empty
+            # the default Shift_R should commit to preedit and nto
+            # change the pinyin mode.
+            return False
+        self.set_pinyin_mode(not self._py_mode)
+        return True
+
+    def _command_select_next_candidate_in_current_page(self):
+        '''Handle hotkey for the command
+        “select_next_candidate_in_current_page”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        res = self.select_next_candidate_in_current_page()
+        self._update_ui()
+        return res
+
+    def _command_select_previous_candidate_in_current_page(self):
+        '''Handle hotkey for the command
+        “select_previous_candidate_in_current_page”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        res = self.select_previous_candidate_in_current_page()
+        self._update_ui()
+        return res
+
+    def _command_toggle_onechar_mode(self):
+        '''Handle hotkey for the command “toggle_onechar_mode”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if not self.database._is_cjk:
+            return False
+        self.set_onechar_mode(not self._onechar)
+        return True
+
+    def _command_toggle_autocommit_mode(self):
+        '''Handle hotkey for the command “toggle_autocommit_mode”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if self.database.user_can_define_phrase and self.database.rules:
             self.set_autocommit_mode(not self._auto_commit)
             return True
+        return False
 
-        if (self.database._is_chinese
-            and (self._prev_key, key,
-                 'switch_to_next_chinese_mode') in self._hotkeys):
-            self.set_chinese_mode((self._chinese_mode+1) % 5)
-            return True
+    def _command_switch_to_next_chinese_mode(self):
+        '''Handle hotkey for the command “switch_to_next_chinese_mode”
 
-        if ((self._prev_key, key, 'commit') in self._hotkeys
-            and (self._u_chars
-                 or not self.is_empty()
-                 or self._sg_mode_active)):
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if not self.database._is_chinese:
+            return False
+        self.set_chinese_mode((self._chinese_mode+1) % 5)
+        return True
+
+    def _command_commit(self):
+        '''Handle hotkey for the command “commit”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if (self._u_chars
+            or not self.is_empty()
+            or self._sg_mode_active):
             if self.commit_everything_unless_invalid():
                 if self._auto_select:
                     self.commit_string(u' ')
@@ -3034,53 +3111,369 @@ class TabEngine(IBus.EngineSimple):
             self.update_candidates()
             self._update_ui()
             return True
+        return False
 
-        if self._candidates:
-            if (self._prev_key, key,
-                'lookup_table_page_down') in self._hotkeys:
-                res = self.page_down()
-                self._update_ui()
-                return res
+    def _command_lookup_table_page_down(self):
+        '''Handle hotkey for the command “lookup_table_page_down”
 
-            if (self._prev_key, key,
-                'lookup_table_page_up') in self._hotkeys:
-                res = self.page_up()
-                self._update_ui()
-                return res
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if not self._candidates:
+            return False
+        res = self.page_down()
+        self._update_ui()
+        return res
 
-            for index in range(0, 10):
-                if ((self._prev_key, key,
-                     'commit_candidate_to_preedit_%s' % (index + 1))
-                    in self._hotkeys):
-                    res = self.commit_to_preedit_current_page(index)
-                    self._update_ui()
-                    return res
+    def _command_lookup_table_page_up(self):
+        '''Handle hotkey for the command “lookup_table_page_up”
 
-            for index in range(0, 10):
-                if ((self._prev_key, key,
-                     'remove_candidate_%s' % (index + 1))
-                    in self._hotkeys):
-                    res = self.remove_candidate_from_user_database(index)
-                    self._update_ui()
-                    return res
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        if not self._candidates:
+            return False
+        res = self.page_up()
+        self._update_ui()
+        return res
 
-            for index in range(0, 10):
-                if ((self._prev_key, key, 'commit_candidate_%s' % (index + 1))
-                    in self._hotkeys):
-                    if self.commit_to_preedit_current_page(index):
-                        self.commit_string(
-                            self.get_preedit_string_complete(),
-                            tabkeys=self.get_preedit_tabkeys_complete())
+    def _execute_commit_candidate_to_preedit_number(self, number):
+        '''Execute the hotkey command “commit_candidate_to_preedit_<number>”
 
-                        if (self._sg_mode
-                            and self._input_mode
-                            and not self._sg_mode_active):
-                            self._sg_mode_active = True
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        :param number: The number of the candidate
+        :type number: Integer
+        '''
+        if not self._candidates:
+            return False
+        index = number - 1
+        res = self.commit_to_preedit_current_page(index)
+        self._update_ui()
+        return res
 
-                        self.update_candidates()
-                        self._update_ui()
-                        return True
+    def _command_commit_candidate_to_preedit_1(self):
+        '''Handle hotkey for the command “commit_candidate_to_preedit_1”
 
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_commit_candidate_to_preedit_number(1)
+
+    def _command_commit_candidate_to_preedit_2(self):
+        '''Handle hotkey for the command “commit_candidate_to_preedit_2”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_commit_candidate_to_preedit_number(2)
+
+    def _command_commit_candidate_to_preedit_3(self):
+        '''Handle hotkey for the command “commit_candidate_to_preedit_3”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_commit_candidate_to_preedit_number(3)
+
+    def _command_commit_candidate_to_preedit_4(self):
+        '''Handle hotkey for the command “commit_candidate_to_preedit_4”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_commit_candidate_to_preedit_number(4)
+
+    def _command_commit_candidate_to_preedit_5(self):
+        '''Handle hotkey for the command “commit_candidate_to_preedit_5”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_commit_candidate_to_preedit_number(5)
+
+    def _command_commit_candidate_to_preedit_6(self):
+        '''Handle hotkey for the command “commit_candidate_to_preedit_6”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_commit_candidate_to_preedit_number(6)
+
+    def _command_commit_candidate_to_preedit_7(self):
+        '''Handle hotkey for the command “commit_candidate_to_preedit_7”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_commit_candidate_to_preedit_number(7)
+
+    def _command_commit_candidate_to_preedit_8(self):
+        '''Handle hotkey for the command “commit_candidate_to_preedit_8”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_commit_candidate_to_preedit_number(8)
+
+    def _command_commit_candidate_to_preedit_9(self):
+        '''Handle hotkey for the command “commit_candidate_to_preedit_9”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_commit_candidate_to_preedit_number(9)
+
+    def _command_commit_candidate_to_preedit_10(self):
+        '''Handle hotkey for the command “commit_candidate_to_preedit_10”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_commit_candidate_to_preedit_number(10)
+
+    def _execute_remove_candidate_number(self, number):
+        '''Execute the hotkey command “remove_candidate_<number>”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        :param number: The number of the candidate
+        :type number: Integer
+        '''
+        if not self._candidates:
+            return False
+        index = number - 1
+        res = self.remove_candidate_from_user_database(index)
+        self._update_ui()
+        return res
+
+    def _command_remove_candidate_1(self):
+        '''Handle hotkey for the command “remove_candidate_1”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_remove_candidate_number(1)
+
+    def _command_remove_candidate_2(self):
+        '''Handle hotkey for the command “remove_candidate_2”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_remove_candidate_number(2)
+
+    def _command_remove_candidate_3(self):
+        '''Handle hotkey for the command “remove_candidate_3”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_remove_candidate_number(3)
+
+    def _command_remove_candidate_4(self):
+        '''Handle hotkey for the command “remove_candidate_4”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_remove_candidate_number(4)
+
+    def _command_remove_candidate_5(self):
+        '''Handle hotkey for the command “remove_candidate_5”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_remove_candidate_number(5)
+
+    def _command_remove_candidate_6(self):
+        '''Handle hotkey for the command “remove_candidate_6”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_remove_candidate_number(6)
+
+    def _command_remove_candidate_7(self):
+        '''Handle hotkey for the command “remove_candidate_7”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_remove_candidate_number(7)
+
+    def _command_remove_candidate_8(self):
+        '''Handle hotkey for the command “remove_candidate_8”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_remove_candidate_number(8)
+
+    def _command_remove_candidate_9(self):
+        '''Handle hotkey for the command “remove_candidate_9”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_remove_candidate_number(9)
+
+    def _command_remove_candidate_10(self):
+        '''Handle hotkey for the command “remove_candidate_10”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_remove_candidate_number(10)
+
+    def _execute_command_commit_candidate_number(self, number):
+        '''Execute the hotkey command “commit_candidate_<number>”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        :param number: The number of the candidate
+        :type number: Integer
+        '''
+        if not self._candidates:
+            return False
+        index = number - 1
+        if self.commit_to_preedit_current_page(index):
+            self.commit_string(
+                self.get_preedit_string_complete(),
+                tabkeys=self.get_preedit_tabkeys_complete())
+
+            if (self._sg_mode
+                and self._input_mode
+                and not self._sg_mode_active):
+                self._sg_mode_active = True
+
+            self.update_candidates()
+            self._update_ui()
+            return True
+        return False
+
+    def _command_commit_candidate_1(self):
+        '''Handle hotkey for the command “commit_candidate_1”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_command_commit_candidate_number(1)
+
+    def _command_commit_candidate_2(self):
+        '''Handle hotkey for the command “commit_candidate_2”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_command_commit_candidate_number(2)
+
+    def _command_commit_candidate_3(self):
+        '''Handle hotkey for the command “commit_candidate_3”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_command_commit_candidate_number(3)
+
+    def _command_commit_candidate_4(self):
+        '''Handle hotkey for the command “commit_candidate_4”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_command_commit_candidate_number(4)
+
+    def _command_commit_candidate_5(self):
+        '''Handle hotkey for the command “commit_candidate_5”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_command_commit_candidate_number(5)
+
+    def _command_commit_candidate_6(self):
+        '''Handle hotkey for the command “commit_candidate_6”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_command_commit_candidate_number(6)
+
+    def _command_commit_candidate_7(self):
+        '''Handle hotkey for the command “commit_candidate_7”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_command_commit_candidate_number(7)
+
+    def _command_commit_candidate_8(self):
+        '''Handle hotkey for the command “commit_candidate_8”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_command_commit_candidate_number(8)
+
+    def _command_commit_candidate_9(self):
+        '''Handle hotkey for the command “commit_candidate_9”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_command_commit_candidate_number(9)
+
+    def _command_commit_candidate_10(self):
+        '''Handle hotkey for the command “commit_candidate_10”
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        '''
+        return self._execute_command_commit_candidate_number(10)
+
+    def _handle_hotkeys(self, key, commands=()):
+        '''Handle hotkey commands
+
+        :return: True if the key was completely handled, False if not.
+        :rtype: Boolean
+        :param key: The typed key. If this is a hotkey,
+                    execute the command for this hotkey.
+        :type key: KeyEvent object
+        :param commands: A list of commands to check whether
+                         the key matches the keybinding for one of
+                         these commands.
+                         If the list of commands is empty, check
+                         *all* commands in the self._keybindings
+                         dictionary.
+        :type commands: List of strings
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('KeyEvent object: %s\n', key)
+        if DEBUG_LEVEL > 5:
+            LOGGER.debug('self._hotkeys=%s\n', str(self._hotkeys))
+
+        if not commands:
+            # If no specific command list to match is given, try to
+            # match against all commands. Sorting shouldn’t really
+            # matter, but maybe better do it sorted, then it is done
+            # in the same order as the commands are displayed in the
+            # setup tool.
+            commands = sorted(self._keybindings.keys())
+        for command in commands:
+            if (self._prev_key, key, command) in self._hotkeys:
+                if DEBUG_LEVEL > 1:
+                    LOGGER.debug('matched command=%s', command)
+                command_function_name = '_command_%s' % command
+                try:
+                    command_function = getattr(self, command_function_name)
+                except (AttributeError,):
+                    LOGGER.exception('There is no function %s',
+                                     command_function_name)
+                    return False
+                if command_function():
+                    return True
         return False
 
     def _return_false(self, keyval, keycode, state):
@@ -3153,33 +3546,15 @@ class TabEngine(IBus.EngineSimple):
         Returns False if the key event has not been handled completely
         and is passed through.
         '''
-        if (self.is_empty()
-            and (self._prev_key, key,
-                 'toggle_input_mode_on_off') in self._hotkeys):
-            self.set_input_mode(int(not self._input_mode))
+        if self._handle_hotkeys(
+                key, commands=['toggle_input_mode_on_off',
+                               'toggle_letter_width',
+                               'toggle_punctuation_width',
+                               'setup']):
             return True
-
-        if self.database._is_cjk:
-            if (self._prev_key, key,
-                'toggle_letter_width') in self._hotkeys:
-                self.set_letter_width(
-                    not self._full_width_letter[self._input_mode],
-                    input_mode=self._input_mode)
-                return True
-
-        if self.database._is_cjk:
-            if (self._prev_key, key,
-                'toggle_punctuation_width') in self._hotkeys:
-                self.set_punctuation_width(
-                    not self._full_width_punct[self._input_mode],
-                    input_mode=self._input_mode)
-                return True
-
-        if (self._prev_key, key, 'setup') in self._hotkeys:
-            self._start_setup()
-            return True
-
         if self._input_mode:
+            if self._handle_hotkeys(key):
+                return True
             return self._table_mode_process_key_event(key)
         return self._english_mode_process_key_event(key)
 
@@ -3245,9 +3620,6 @@ class TabEngine(IBus.EngineSimple):
         '''
         if DEBUG_LEVEL > 0:
             LOGGER.debug('repr(key)=%s', repr(key))
-
-        if self._handle_hotkeys(key):
-            return True
 
         # Ignore key release events (Should be below all hotkey matches
         # because some of them might match on a release event)

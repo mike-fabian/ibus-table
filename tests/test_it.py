@@ -26,6 +26,7 @@ This file implements the test cases for the unit tests of ibus-table
 import sys
 import os
 import logging
+import time
 import unittest
 import importlib
 import mock
@@ -474,9 +475,19 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE.set_onechar_mode(False, update_gsettings=False)
         self.assertEqual(ENGINE.get_onechar_mode(), False)
         # Now change with the keybinding:
-        ENGINE._do_process_key_event(IBus.KEY_comma, 0, IBus.ModifierType.CONTROL_MASK)
+        ENGINE._do_process_key_event(
+            IBus.KEY_comma, 0, IBus.ModifierType.CONTROL_MASK)
         self.assertEqual(ENGINE.get_onechar_mode(), True)
-        ENGINE._do_process_key_event(IBus.KEY_comma, 0, IBus.ModifierType.CONTROL_MASK)
+        # Using the keybinding updates gsettings,
+        # wait until the update is effective:
+        time.sleep(1)
+        self.assertEqual(ENGINE.get_onechar_mode(), True)
+        ENGINE._do_process_key_event(
+            IBus.KEY_comma, 0, IBus.ModifierType.CONTROL_MASK)
+        self.assertEqual(ENGINE.get_onechar_mode(), False)
+        # Using the keybinding updates gsettings,
+        # wait until the update is effective:
+        time.sleep(1)
         self.assertEqual(ENGINE.get_onechar_mode(), False)
 
     def test_toggle_autocommit_mode_with_keybinding(self):
@@ -486,9 +497,19 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE.set_autocommit_mode(False, update_gsettings=False)
         self.assertEqual(ENGINE.get_autocommit_mode(), False)
         # Now change with the keybinding:
-        ENGINE._do_process_key_event(IBus.KEY_slash, 0, IBus.ModifierType.CONTROL_MASK)
+        ENGINE._do_process_key_event(
+            IBus.KEY_slash, 0, IBus.ModifierType.CONTROL_MASK)
         self.assertEqual(ENGINE.get_autocommit_mode(), True)
-        ENGINE._do_process_key_event(IBus.KEY_slash, 0, IBus.ModifierType.CONTROL_MASK)
+        # Using the keybinding updates gsettings,
+        # wait until the update is effective:
+        time.sleep(1)
+        self.assertEqual(ENGINE.get_autocommit_mode(), True)
+        ENGINE._do_process_key_event(
+            IBus.KEY_slash, 0, IBus.ModifierType.CONTROL_MASK)
+        self.assertEqual(ENGINE.get_autocommit_mode(), False)
+        # Using the keybinding updates gsettings,
+        # wait until the update is effective:
+        time.sleep(1)
         self.assertEqual(ENGINE.get_autocommit_mode(), False)
 
     def test_change_letter_width(self):

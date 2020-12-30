@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.1.20080819\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-09-02 11:12+0200\n"
-"PO-Revision-Date: 2020-08-26 08:24+0000\n"
+"PO-Revision-Date: 2020-12-30 13:36+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Hong Kong) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_HK/>\n"
@@ -17,16 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.2.1\n"
+"X-Generator: Weblate 4.4\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
 #. Translators: This is the setting to use only
 #. simplified Chinese
 #: engine/table.py:586 setup/main.py:374
-#, fuzzy
 msgid "Simplified Chinese"
-msgstr "切換成簡體模式"
+msgstr "簡體中文"
 
 #: engine/table.py:588
 #, fuzzy
@@ -38,14 +37,12 @@ msgstr "切換成簡體模式"
 #. Translators: This is the setting to use only
 #. traditional Chinese
 #: engine/table.py:595 setup/main.py:378
-#, fuzzy
 msgid "Traditional Chinese"
-msgstr "切換成繁體模式"
+msgstr "繁體中文"
 
 #: engine/table.py:597
-#, fuzzy
 msgid "Switch to “Traditional Chinese only”."
-msgstr "切換成繁體模式"
+msgstr "切換至繁體中文模式"
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -330,8 +327,6 @@ msgid "Key input"
 msgstr "切換成直接輸出模式，亦即單項結果即時輸出"
 
 #: engine/it_util.py:493
-#, fuzzy
-#| msgid "_Cancel"
 msgid "Cancel"
 msgstr "取消(_C)"
 
@@ -340,7 +335,7 @@ msgstr "取消(_C)"
 #. command.
 #: engine/it_util.py:500
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "請按快捷鍵"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
@@ -359,6 +354,10 @@ msgstr ""
 #: engine/it_util.py:561
 msgid "translator-credits"
 msgstr ""
+"Ding-Yi Chen 陳定彞 <dchen@redhat.com>, 2009\n"
+"Cheng-Chia Tseng <pswo10680@gmail.com>, 2010\n"
+"Terry Chuang <tchuang@redhat.com>, 2014\n"
+"tomoe_musashi <hkg.musashi@gmail.com>, 2015"
 
 #: engine/it_util.py:569
 msgid "Online documentation:"

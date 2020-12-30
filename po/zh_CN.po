@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-09-02 11:12+0200\n"
-"PO-Revision-Date: 2020-08-26 08:24+0000\n"
+"PO-Revision-Date: 2020-12-30 13:36+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_CN/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.2.1\n"
+"X-Generator: Weblate 4.4\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -293,30 +293,26 @@ msgstr "配置 ibus-table “%(engine-name)s”"
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
 #: engine/it_util.py:487
-#, fuzzy
-#| msgid "Table input"
 msgid "Key input"
-msgstr "表格输入"
+msgstr "输入的键盘码"
 
 #: engine/it_util.py:493
-#, fuzzy
-#| msgid "_Cancel"
 msgid "Cancel"
-msgstr "取消(_C)"
+msgstr "取消"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:500
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "请按一个键盘按键（或者组合按键）"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:505
 msgid "The dialog will be closed when the key is released"
-msgstr ""
+msgstr "当按键被按下，这个对话框将会自动关闭"
 
 #: engine/it_util.py:537
 #, fuzzy
@@ -332,10 +328,8 @@ msgid "translator-credits"
 msgstr ""
 
 #: engine/it_util.py:569
-#, fuzzy
-#| msgid "Orientation:"
 msgid "Online documentation:"
-msgstr "方向："
+msgstr "线上文档："
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"
@@ -397,7 +391,7 @@ msgstr "详情"
 #. existing key bindings
 #: setup/main.py:276 setup/main.py:748
 msgid "Key bindings"
-msgstr ""
+msgstr "快捷键映射"
 
 #: setup/main.py:290
 #, fuzzy
@@ -611,7 +605,7 @@ msgstr ""
 
 #: setup/main.py:715
 msgid "Current key bindings:"
-msgstr ""
+msgstr "当前快捷键绑定："
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
@@ -627,13 +621,11 @@ msgstr "编辑"
 #. the keybindings for the selected command.
 #: setup/main.py:774
 msgid "Edit the key bindings for the selected command"
-msgstr ""
+msgstr "编辑所选命令的按键绑定"
 
 #: setup/main.py:781 setup/main.py:1931
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set to default"
-msgstr "全部重置为默认"
+msgstr "设置为默认"
 
 #. Translators: A tooltip for the button to set
 #. the default key bindings for the selected command.
@@ -641,13 +633,11 @@ msgstr "全部重置为默认"
 #. the key bindings for the selected command to the default.
 #: setup/main.py:787 setup/main.py:1938
 msgid "Set default key bindings for the selected command"
-msgstr ""
+msgstr "设置所选命令的默认键绑定"
 
 #: setup/main.py:794
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set all to default"
-msgstr "全部重置为默认"
+msgstr "全部设置为默认值"
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
@@ -783,7 +773,7 @@ msgstr "调试级别"
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
-msgstr ""
+msgstr "当大于0时，调试信息可以打印到日志文件，并且调试信息也可以图形方式显示。"
 
 #: setup/main.py:1343
 msgid "Are you sure?"

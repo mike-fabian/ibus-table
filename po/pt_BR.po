@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-09-02 11:12+0200\n"
-"PO-Revision-Date: 2020-08-26 08:24+0000\n"
+"PO-Revision-Date: 2020-12-30 13:36+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/pt_BR/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.2.1\n"
+"X-Generator: Weblate 4.4\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -304,30 +304,26 @@ msgstr "Configura “%(engine-name)s” do ibus-table"
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
 #: engine/it_util.py:487
-#, fuzzy
-#| msgid "Table input"
 msgid "Key input"
-msgstr "Entrada da tabela"
+msgstr "Entrada de teclado"
 
 #: engine/it_util.py:493
-#, fuzzy
-#| msgid "_Cancel"
 msgid "Cancel"
-msgstr "_Cancelar"
+msgstr "Cancelar"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:500
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "Pressione uma tecla (ou uma combinação de teclas)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:505
 msgid "The dialog will be closed when the key is released"
-msgstr ""
+msgstr "O diálogo será fechado quando a chave é liberada"
 
 #: engine/it_util.py:537
 #, fuzzy
@@ -340,13 +336,11 @@ msgstr "O método de entrada da tabela para IBus"
 #. will be displayed in the “About ibus-table” dialog.
 #: engine/it_util.py:561
 msgid "translator-credits"
-msgstr ""
+msgstr "Glaucia Cintra"
 
 #: engine/it_util.py:569
-#, fuzzy
-#| msgid "Orientation:"
 msgid "Online documentation:"
-msgstr "Orientação:"
+msgstr "Documentação online:"
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"

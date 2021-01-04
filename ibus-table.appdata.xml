@@ -19,6 +19,18 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.12.2" date="2021-01-04" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.12.2</url>
+      <issues>
+        <issue>
+          Update translations from Weblate (updated ca, cs, es, fa,
+          ja, pt_BR, pt_PT, tr, zh_CN, zh_HK, zh_TW)
+        </issue>
+      </issues>
+    </release>
     <release version="1.12.1" date="2020-09-04" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

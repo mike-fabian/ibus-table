@@ -1,4 +1,86 @@
-commit 8dc4d56048454af69ca7fc2033bcd4320032f27d
+commit f849814db69569307a3ab08d4a51f458744f0249
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 4 08:36:22 2021 +0100
+
+    Release 1.12.2
+
+commit 637a7ee7d2f590013d9a2006ea479c2eb7a90a83
+Author: Anonymous <noreply@weblate.org>
+Date:   Wed Dec 30 14:36:02 2020 +0100
+
+    Translated using Weblate (Persian)
+    
+    Currently translated at 11.0% (15 of 136 strings)
+    
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 83.8% (114 of 136 strings)
+    
+    Translated using Weblate (Chinese (Traditional) (zh_TW))
+    
+    Currently translated at 66.1% (90 of 136 strings)
+    
+    Translated using Weblate (Chinese (Hong Kong) (zh_HK))
+    
+    Currently translated at 14.7% (20 of 136 strings)
+    
+    Translated using Weblate (Chinese (Simplified) (zh_CN))
+    
+    Currently translated at 69.8% (95 of 136 strings)
+    
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 91.9% (125 of 136 strings)
+    
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 33.8% (46 of 136 strings)
+    
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 94.8% (129 of 136 strings)
+    
+    Translated using Weblate (Czech)
+    
+    Currently translated at 36.0% (49 of 136 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/cs/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fa/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_CN/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_HK/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_TW/
+    Translation: ibus-table/app
+
+commit b6ddf758988d0c65567efa93582569a3b9608e29
+Author: Anonymous <noreply@weblate.org>
+Date:   Tue Oct 13 12:28:10 2020 +0200
+
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 91.1% (124 of 136 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+    Translation: ibus-table/app
+
+commit 7b5a0c9f1e49740bf6c0b9227aa5ba9c4342a33d
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Fri Sep 18 19:29:22 2020 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (136 of 136 strings)
+    
+    Co-authored-by: Oğuz Ersen <oguzersen@protonmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    Translation: ibus-table/app
+
+commit 3b199801e8051034c1d1a0f5ffc317793f40478f
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Aug 27 09:49:46 2020 +0200
 

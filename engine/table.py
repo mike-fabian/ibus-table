@@ -2994,6 +2994,8 @@ class TabEngine(IBus.EngineSimple):
         :return: True if the key was completely handled, False if not.
         :rtype: Boolean
         '''
+        if self.is_empty():
+            return False
         self.reset()
         self._update_ui()
         return True

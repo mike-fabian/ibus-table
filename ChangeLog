@@ -1,4 +1,18 @@
-commit f849814db69569307a3ab08d4a51f458744f0249
+commit 5422f001ff8538b3e1f4f8ae554ab7fcc847ece6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 6 13:36:43 2021 +0100
+
+    Release 1.12.3
+
+commit 06d69f910604b3a593874dc8d046732e269295dd
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 4 16:02:21 2021 +0100
+
+    Pass the key for the command 'cancel' (default Esc) through if the preedit is empty
+    
+    Resolves: https://github.com/kaio/ibus-table/issues/64
+
+commit 96a56b913a3b7f6a42d3cdc30522fc83c8407c4b
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Jan 4 08:36:22 2021 +0100
 

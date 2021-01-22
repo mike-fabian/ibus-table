@@ -7,16 +7,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-09-02 11:12+0200\n"
-"PO-Revision-Date: 2020-12-30 13:36+0000\n"
+"PO-Revision-Date: 2021-01-13 13:36+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Spanish <https://translate.fedoraproject.org/projects/"
-"ibus-table/app/es/>\n"
+"Language-Team: Spanish <https://translate.fedoraproject.org/projects/ibus-"
+"table/app/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4\n"
+"X-Generator: Weblate 4.4.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -298,10 +298,8 @@ msgstr "Configura ibus-table “%(engine-name)s”"
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
 #: engine/it_util.py:487
-#, fuzzy
-#| msgid "Table input"
 msgid "Key input"
-msgstr "Entrada de tabla"
+msgstr "Entrada de tecla"
 
 #: engine/it_util.py:493
 msgid "Cancel"
@@ -322,8 +320,6 @@ msgid "The dialog will be closed when the key is released"
 msgstr "El diálogo se cerrará cuando la tecla sea liberada"
 
 #: engine/it_util.py:537
-#, fuzzy
-#| msgid "Table input method for IBus"
 msgid "Table input method for IBus."
 msgstr "Método de entrada basado en tabla para IBus"
 

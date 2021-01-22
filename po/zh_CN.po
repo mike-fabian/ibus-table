@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-09-02 11:12+0200\n"
-"PO-Revision-Date: 2020-12-30 13:36+0000\n"
+"PO-Revision-Date: 2021-01-13 13:36+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_CN/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.4\n"
+"X-Generator: Weblate 4.4.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -315,8 +315,6 @@ msgid "The dialog will be closed when the key is released"
 msgstr "当按键被按下，这个对话框将会自动关闭"
 
 #: engine/it_util.py:537
-#, fuzzy
-#| msgid "Table input method for IBus"
 msgid "Table input method for IBus."
 msgstr "适用于IBus的表输入法"
 
@@ -773,7 +771,8 @@ msgstr "调试级别"
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
-msgstr "当大于0时，调试信息可以打印到日志文件，并且调试信息也可以图形方式显示。"
+msgstr ""
+"当大于0时，调试信息可以打印到日志文件，并且调试信息也可以图形方式显示。"
 
 #: setup/main.py:1343
 msgid "Are you sure?"

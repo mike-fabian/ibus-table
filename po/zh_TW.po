@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-09-02 11:12+0200\n"
-"PO-Revision-Date: 2020-12-30 13:36+0000\n"
+"PO-Revision-Date: 2021-01-27 13:40+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_TW/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.4\n"
+"X-Generator: Weblate 4.4.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -877,7 +877,7 @@ msgstr ""
 
 #: setup/main.py:2572
 msgid "ibus is not running."
-msgstr ""
+msgstr "客端未執行。"
 
 #~ msgid "IBUS_ENGINE_NAME environment variable is not set."
 #~ msgstr "IBUS_ENGINE_NAME 環境變數尚未設定。"

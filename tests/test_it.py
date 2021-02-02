@@ -29,7 +29,7 @@ import logging
 import time
 import unittest
 import importlib
-import mock
+from unittest import mock
 
 from gi import require_version
 require_version('IBus', '1.0')

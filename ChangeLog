@@ -1,4 +1,70 @@
-commit b90e13e260900b0483ed098cf331758859e59126
+commit 8532e7ed369b7b8d28ceaa95449b97029b1b2c93
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Mar 4 21:19:01 2021 +0100
+
+    Release 1.12.5
+
+commit 3a7248b1b59903e68b10cc3a457c58e8e0ba9cd1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Mar 4 21:07:18 2021 +0100
+
+    Return False in _execute_command_commit_candidate_number(self, number) if number out of range
+    
+    Was reported as an issue in ibus-table-others with the ipa-x-sampa table.
+    But it is actually and ibus-table bug.
+    
+    When using a keybinding to commit a candidate with a certain number,
+    ibus-table crashed when the number was out of range of the currently
+    displayed lookup table.
+    
+    Resolves: https://github.com/moebiuscurve/ibus-table-others/issues/21
+
+commit b633b8c3eb9c3462bfd662677d52e6352c03be9a
+Author: Anonymous <noreply@weblate.org>
+Date:   Fri Mar 5 17:50:43 2021 +0100
+
+    Translated using Weblate (Sinhala)
+    
+    Currently translated at 4.4% (6 of 136 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/si/
+    Translation: ibus-table/app
+
+commit 6954a3290176461094a805a31cb707248bdfcbcd
+Author: Hela Basa <r45xveza@pm.me>
+Date:   Wed Mar 3 22:12:19 2021 +0100
+
+    Added translation using Weblate (Sinhala)
+    
+    Co-authored-by: Hela Basa <r45xveza@pm.me>
+
+commit f41791d752a7a398b57f88e07bb2871ae533ca1c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 2 11:42:49 2021 +0100
+
+    Use “from unittest import mock” instead of just “import mock”.
+    
+    Since Python 3.3, mock is part of unittest in the standard
+    library. The third-party `mock` library is a backport for older Python
+    versions.
+    
+    This makes it possible to remove the “BuildRequires:  python3-mock”
+    from the ibus-table.spec file.
+
+commit 0d542da882839de677a892530b19f459be1c1176
+Author: Anonymous <noreply@weblate.org>
+Date:   Wed Jan 27 14:40:04 2021 +0100
+
+    Translated using Weblate (Chinese (Traditional) (zh_TW))
+    
+    Currently translated at 66.9% (91 of 136 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_TW/
+    Translation: ibus-table/app
+
+commit 54a0f6fc8f05f322892cd78e219f6f0ae1eca618
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Sun Jan 24 19:09:29 2021 +0100
 

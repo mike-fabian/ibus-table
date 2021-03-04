@@ -3337,9 +3337,11 @@ class TabEngine(IBus.EngineSimple):
         :param number: The number of the candidate
         :type number: Integer
         '''
-        if not self._candidates:
+        if not self._candidates or number > len(self._candidates):
             return False
         index = number - 1
+        if not 0 <= index < self._page_size:
+            return False
         if self.commit_to_preedit_current_page(index):
             self.commit_string(
                 self.get_preedit_string_complete(),

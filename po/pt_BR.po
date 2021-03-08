@@ -2,15 +2,15 @@
 # Rodrigo de Araujo Sousa Fonseca <rodrigodearaujo@fedoraproject.org>, 2017. #zanata
 # Mike FABIAN <mfabian@redhat.com>, 2019, 2020.
 # Anonymous <noreply@weblate.org>, 2019, 2020.
-# Rafael Fontenelle <rafaelff@gnome.org>, 2020.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2020, 2021.
 # Adolfo Ketzer <reztek@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2020-09-02 11:12+0200\n"
-"PO-Revision-Date: 2021-01-13 13:36+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2021-03-08 02:01+0000\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.4.1\n"
+"X-Generator: Weblate 4.5.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -216,27 +216,23 @@ msgstr "Alterna o modo pinyin"
 
 #: engine/table.py:757
 msgid "Suggestion disabled"
-msgstr ""
+msgstr "Sugestões desabilitadas"
 
 #: engine/table.py:758 engine/table.py:764
-#, fuzzy
-#| msgid "Switch to pinyin mode"
 msgid "Switch to suggestion mode"
-msgstr "Alterna para modo pinyin"
+msgstr "Alterna para modo sugestão"
 
 #: engine/table.py:763
 msgid "Suggestion enabled"
-msgstr ""
+msgstr "Sugestão habilitada"
 
 #: engine/table.py:768
 msgid "Suggestion mode"
-msgstr ""
+msgstr "Modo sugestão"
 
 #: engine/table.py:769
-#, fuzzy
-#| msgid "Switch Input mode"
 msgid "Switch suggestion mode"
-msgstr "Alterna o modo de entrada"
+msgstr "Alterna o modo sugestão"
 
 #: engine/table.py:779
 msgid "Multiple character match"
@@ -327,7 +323,7 @@ msgstr "O diálogo será fechado quando a chave é liberada"
 
 #: engine/it_util.py:537
 msgid "Table input method for IBus."
-msgstr "O método de entrada da tabela para IBus"
+msgstr "O método de entrada da tabela para IBus."
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
@@ -407,10 +403,8 @@ msgid "Key bindings"
 msgstr "Associações de tecla"
 
 #: setup/main.py:290
-#, fuzzy
-#| msgid "<b>Inital state</b>"
 msgid "Initial state"
-msgstr "<b>Estado inicial</b>"
+msgstr "Estado inicial"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the input mode (“Direct input” or “Table input”).
@@ -563,10 +557,8 @@ msgstr ""
 "direita."
 
 #: setup/main.py:591
-#, fuzzy
-#| msgid "<b>Candidate list</b>"
 msgid "Candidate list"
-msgstr "<b>Lista de candidatos</b>"
+msgstr "Lista de candidatos"
 
 #. Translators: A combobox to choose whether
 #. a candidate list should be shown or hidden.
@@ -884,7 +876,7 @@ msgstr "Outra instância deste aplicativo já está em execução."
 #. really sure to restore all default settings.
 #: setup/main.py:1439
 msgid "Do you really want to restore all default settings?"
-msgstr ""
+msgstr "Você realmente deseja restaurar todas as configurações padrão?"
 
 #: setup/main.py:1854
 #, python-format
@@ -906,18 +898,14 @@ msgstr "Remover associação da tecla selecionada"
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
 #: setup/main.py:1913
-#, fuzzy
-#| msgid "Add a key binding"
 msgid "Move key binding up"
-msgstr "Adicionar uma associação de tecla"
+msgstr "Mover associação de tecla para cima"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
 #: setup/main.py:1926
-#, fuzzy
-#| msgid "Add a key binding"
 msgid "Move key binding down"
-msgstr "Adicionar uma associação de tecla"
+msgstr "Mover associação de tecla para baixo"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is

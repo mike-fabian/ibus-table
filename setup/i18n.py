@@ -34,8 +34,6 @@ def init():
     try:
         # for non-standard localedir
         locale.bindtextdomain(DOMAINNAME, localedir)
-        locale.bind_textdomain_codeset(DOMAINNAME, "UTF-8")
     except AttributeError:
         pass
     gettext.bindtextdomain(DOMAINNAME, localedir)
-    gettext.bind_textdomain_codeset(DOMAINNAME, "UTF-8")

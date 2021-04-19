@@ -1,4 +1,67 @@
-commit 8532e7ed369b7b8d28ceaa95449b97029b1b2c93
+commit a45f94a1878a4a3f90e798acf5aeff3bcf6befa4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 19 08:33:21 2021 +0200
+
+    Release 1.12.6
+
+commit c09f1fd4caf202e5250538ff830633ed321415d7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 3 09:17:57 2021 +0200
+
+    Update ibus-table.pot (Only line numbers changed)
+
+commit 7a090b62d8661c9b7debd0385a54c59ccf598a3d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon May 3 08:52:13 2021 +0200
+
+    In main.py “import factory” only when the --xml option is not used
+    
+    “import factory” is only needed in IMApp and not when using “python3
+    main.py --xml”.  And importing factory imports other stuff which
+    imports Gtk and that needs a display. By moving to import of factory
+    to where it is really needed it becomes possible to use the --xml option
+    in an environment where there is no display without getting an error
+    message like this:
+    
+       $ env -u DISPLAY python3 main.py --xml
+       Unable to init server: Could not connect: Connection refused
+    
+    The --xml option is used by “ibus write-cache” which is used during
+    rpm updates and then there is often no display and the above error
+    message appears.
+    
+    Resolves: rhbz#1955283
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=1955283
+
+commit da2548663d77fce75c22ffea8fc24d22e52e4cf9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 19 08:26:57 2021 +0200
+
+    Make the keybindings treeview sortable by clicking the column headers
+
+commit 3d9a20562d0c5ad9efeefb90b14e578e5e3ac478
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Mar 10 17:27:02 2021 +0100
+
+    Remove deprecated bind_textdomain_codeset(DOMAINNAME, "UTF-8")
+    
+    https://docs.python.org/3.8/library/gettext.html
+    
+    says: “Deprecated since version 3.8, will be removed in version 3.10.”
+
+commit 60430f9d7177444dd2a646a602f628e0d8184ad8
+Author: Rafael Fontenelle <rafaelff@gnome.org>
+Date:   Mon Mar 8 03:01:47 2021 +0100
+
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 100.0% (136 of 136 strings)
+    
+    Co-authored-by: Rafael Fontenelle <rafaelff@gnome.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    Translation: ibus-table/app
+
+commit f54dde19af97817780c478907eee502c3476c593
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Mar 4 21:19:01 2021 +0100
 

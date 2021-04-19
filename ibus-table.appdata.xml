@@ -19,6 +19,23 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.12.6" date="2021-05-03" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.12.6</url>
+      <issues>
+        <issue url="https://bugzilla.redhat.com/show_bug.cgi?id=1955283">
+          In main.py “import factory” only when the --xml option is not used
+        </issue>
+        <issue>
+          Make the keybindings treeview sortable by clicking the column headers
+        </issue>
+        <issue>
+          Update translations from Weblate (update for pt_BR, now 100%)
+        </issue>
+      </issues>
+    </release>
     <release version="1.12.5" date="2021-03-04" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

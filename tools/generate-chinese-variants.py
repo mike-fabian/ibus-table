@@ -21,9 +21,6 @@
 import re
 import logging
 import sys
-if sys.version_info < (3, 0, 0):
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
 
 # Unihan_Variants.txt contains the following 2 lines:
 #
@@ -80,10 +77,7 @@ def read_unihan_variants(unihan_variants_file):
             if re.search('(kTraditionalVariant|kSimplifiedVariant)', line):
                 match = re.match(r'^U\+([0-9A-F]{4,5})', line)
                 if match:
-                    if sys.version_info >= (3, 0, 0): # Python3
-                        char = chr(int(match.group(1), 16))
-                    else:
-                        char = unichr(int(match.group(1), 16))
+                    char = chr(int(match.group(1), 16))
                     category = 0 # should never  stay at this value
                     if re.match(re.escape(match.group(0))
                                 + r'.*'
@@ -118,8 +112,6 @@ def detect_chinese_category_old(phrase):
     # 3rd bit means out of gbk
     category = 0
     # make sure that we got a unicode string
-    if type(phrase) != type(u''):
-        phrase = phrase.decode('utf8')
     tmp_phrase = ''.join(re.findall(u'['
                                     + u'\u4E00-\u9FCB'
                                     + u'\u3400-\u4DB5'
@@ -187,9 +179,6 @@ def write_variants_script(script_file):
 
     script_file.write('''
 import sys
-if sys.version_info < (3, 0, 0):
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
 ''')
 
     script_file.write('''
@@ -202,8 +191,6 @@ VARIANTS_TABLE = {
 ''')
 
     for phrase in sorted(VARIANTS_TABLE_ORIG):
-        if type(phrase) != type(u''):
-            phrase = phrase.decode('utf-8')
         script_file.write(
             "    u'" + phrase + "': "
             + "%s" %VARIANTS_TABLE_ORIG[phrase] + ",\n")
@@ -226,8 +213,6 @@ def detect_chinese_category(phrase):
     4 = 1 << 2       mixture of simplified and traditional Chinese
     \'\'\'
     # make sure that we got a unicode string
-    if type(phrase) != type(u''):
-        phrase = phrase.decode('utf8')
     if phrase in VARIANTS_TABLE:
         # the complete phrase is in VARIANTS_TABLE, just return the
         # value found:

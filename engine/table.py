@@ -225,11 +225,7 @@ def unichar_half_to_full(char):
     code = ord(char)
     for half, full, size in __HALF_FULL_TABLE:
         if half <= code < half + size:
-            if sys.version_info >= (3, 0, 0):
-                return chr(full + code - half)
-            # pylint: disable=undefined-variable
-            return unichr(full + code - half)
-            # pylint: enable=undefined-variable
+            return chr(full + code - half)
     return char
 
 def unichar_full_to_half(char):
@@ -252,11 +248,7 @@ def unichar_full_to_half(char):
     code = ord(char)
     for half, full, size in __HALF_FULL_TABLE:
         if full <= code < full + size:
-            if sys.version_info >= (3, 0, 0):
-                return chr(half + code - full)
-            # pylint: disable=undefined-variable
-            return unichr(half + code - full)
-            # pylint: enable=undefined-variable
+            return chr(half + code - full)
     return char
 
 SAVE_USER_COUNT_MAX = 16

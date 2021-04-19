@@ -19,9 +19,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-if sys.version_info < (3, 0, 0):
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
 
 VARIANTS_TABLE = {
     # Meaning of the bits in the values:
@@ -6101,8 +6098,6 @@ def detect_chinese_category(phrase):
     4 = 1 << 2       mixture of simplified and traditional Chinese
     '''
     # make sure that we got a unicode string
-    if type(phrase) != type(u''):
-        phrase = phrase.decode('utf8')
     if phrase in VARIANTS_TABLE:
         # the complete phrase is in VARIANTS_TABLE, just return the
         # value found:

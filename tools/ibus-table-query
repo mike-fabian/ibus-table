@@ -92,10 +92,7 @@ def print_result(table_sql, result):
     print("="*len(headers.rstrip()))
     for row in result:
         row = list(row)
-        if sys.version_info >= (3,0,0): # Python3
-            row_str = [str(x).strip() for x in row]
-        else:
-            row_str = [unicode(x).strip() for x in row]
+        row_str = [str(x).strip() for x in row]
         if len(row_str[1]) == 1:
             row_str[1] += "[U+{:X}]".format(ord(row_str[1]))
         line = format_str.format(*row_str)

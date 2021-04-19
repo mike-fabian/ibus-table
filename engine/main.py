@@ -346,10 +346,7 @@ def main():
         # encoding of the current locale, otherwise it might fail
         # if conversion into the encoding of the current locale is
         # not possible:
-        if sys.version_info >= (3, 0, 0):
-            sys.stdout.buffer.write((egsout+'\n').encode('utf-8'))
-        else:
-            sys.stdout.write((egsout+'\n').encode('utf-8'))
+        sys.stdout.buffer.write((egsout+'\n').encode('utf-8'))
         return 0
 
     if _OPTIONS.daemon:

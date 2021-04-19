@@ -35,9 +35,6 @@ import time
 import re
 import logging
 import chinese_variants
-if sys.version_info < (3, 0, 0):
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
 
 LOGGER = logging.getLogger('ibus-table')
 

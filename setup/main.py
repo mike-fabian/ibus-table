@@ -38,12 +38,12 @@ import locale
 import copy
 import logging
 import logging.handlers
-import dbus
-import dbus.service
+import dbus # type: ignore
+import dbus.service # type: ignore
 
-from gi import require_version
+from gi import require_version # type: ignore
 require_version('Gio', '2.0')
-from gi.repository import Gio
+from gi.repository import Gio # type: ignore
 require_version('GLib', '2.0')
 from gi.repository import GLib
 
@@ -2605,11 +2605,11 @@ class HelpWindow(Gtk.Window):
 
 if __name__ == '__main__':
     if _ARGS.no_debug:
-        LOG_HANDLER = logging.NullHandler()
+        LOG_HANDLER_NULL = logging.NullHandler()
     else:
         LOGFILE = os.path.join(
             ibus_table_location.cache_home(), 'setup-debug.log')
-        LOG_HANDLER = logging.handlers.TimedRotatingFileHandler(
+        LOG_HANDLER_TIME_ROTATE = logging.handlers.TimedRotatingFileHandler(
             LOGFILE,
             when='H',
             interval=6,
@@ -2622,9 +2622,9 @@ if __name__ == '__main__':
             '%(asctime)s %(filename)s '
             'line %(lineno)d %(funcName)s %(levelname)s: '
             '%(message)s')
-        LOG_HANDLER.setFormatter(LOG_FORMATTER)
+        LOG_HANDLER_TIME_ROTATE.setFormatter(LOG_FORMATTER)
         LOGGER.setLevel(logging.DEBUG)
-        LOGGER.addHandler(LOG_HANDLER)
+        LOGGER.addHandler(LOG_HANDLER_TIME_ROTATE)
         LOGGER.info('********** STARTING **********')
 
     # Workaround for

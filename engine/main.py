@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from typing import Any
 import os
 import re
 import sys
@@ -29,9 +30,9 @@ from signal import signal, SIGTERM, SIGINT
 import logging
 import logging.handlers
 
-from gi import require_version
+from gi import require_version # type: ignore
 require_version('IBus', '1.0')
-from gi.repository import IBus
+from gi.repository import IBus # type: ignore
 from gi.repository import GLib
 
 import tabsqlitedb
@@ -41,7 +42,7 @@ LOGGER = logging.getLogger('ibus-table')
 
 DEBUG_LEVEL = int(0)
 try:
-    DEBUG_LEVEL = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
+    DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
 except (TypeError, ValueError):
     DEBUG_LEVEL = int(0)
 
@@ -126,7 +127,7 @@ else:
     import factory
 
 class IMApp:
-    def __init__(self, dbfile, exec_by_ibus):
+    def __init__(self, dbfile, exec_by_ibus) -> None:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('IMApp.__init__(exec_by_ibus=%s)\n', exec_by_ibus)
         self.__mainloop = GLib.MainLoop()
@@ -146,21 +147,32 @@ class IMApp:
                 homepage='http://code.google.com/p/ibus/',
                 textdomain='ibus-table')
             # now we get IME info from self.__factory.db
-            engine_name = os.path.basename(
-                self.__factory.db.filename).replace('.db', '')
-            name = 'table:'+engine_name
-            longname = self.__factory.db.ime_properties.get("name")
-            description = self.__factory.db.ime_properties.get("description")
-            language = self.__factory.db.ime_properties.get("languages")
-            credit = self.__factory.db.ime_properties.get("credit")
-            author = self.__factory.db.ime_properties.get("author")
-            icon = self.__factory.db.ime_properties.get("icon")
+            engine_name = ''
+            name = ''
+            longname = ''
+            description = ''
+            language = 'en'
+            credit = ''
+            author = ''
+            icon = ''
+            layout = 'us'
+            symbol = ''
+            if self.__factory.db:
+                engine_name = os.path.basename(
+                    self.__factory.db.filename).replace('.db', '')
+                name = 'table:'+engine_name
+                longname = self.__factory.db.ime_properties.get("name")
+                description = self.__factory.db.ime_properties.get("description")
+                language = self.__factory.db.ime_properties.get("languages")
+                credit = self.__factory.db.ime_properties.get("credit")
+                author = self.__factory.db.ime_properties.get("author")
+                icon = self.__factory.db.ime_properties.get("icon")
+                layout = self.__factory.db.ime_properties.get("layout")
+                symbol = self.__factory.db.ime_properties.get("symbol")
             if icon:
                 icon = os.path.join(ICON_DIR, icon)
                 if not os.access(icon, os.F_OK):
                     icon = ''
-            layout = self.__factory.db.ime_properties.get("layout")
-            symbol = self.__factory.db.ime_properties.get("symbol")
             setup_arg = "{} --engine-name {}".format(SETUP_CMD, name)
             engine = IBus.EngineDesc(name=name,
                                      longname=longname,
@@ -176,7 +188,7 @@ class IMApp:
             self.__bus.register_component(self.__component)
 
 
-    def run(self):
+    def run(self) -> None:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('IMApp.run()\n')
         if _OPTIONS.profile:
@@ -184,12 +196,12 @@ class IMApp:
         self.__mainloop.run()
         self.__bus_destroy_cb()
 
-    def quit(self):
+    def quit(self) -> None:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('IMApp.quit()\n')
         self.__bus_destroy_cb()
 
-    def __bus_destroy_cb(self, bus=None):
+    def __bus_destroy_cb(self, bus=None) -> None:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('IMApp.__bus_destroy_cb(bus=%s)\n', bus)
         if self.destroyed:
@@ -210,11 +222,11 @@ class IMApp:
             stats.print_stats('table', 25)
             LOGGER.info('Profiling info:\n%s', stats_stream.getvalue())
 
-def cleanup(ima_ins):
+def cleanup(ima_ins: IMApp) -> None:
     ima_ins.quit()
     sys.exit()
 
-def indent(element, level=0):
+def indent(element: Any, level: int = 0) -> None:
     '''Use to format xml Element pretty :)'''
     i = "\n" + level*"    "
     if element:
@@ -230,21 +242,21 @@ def indent(element, level=0):
         if level and (not element.tail or not element.tail.strip()):
             element.tail = i
 
-def write_xml():
+def write_xml() -> None:
     '''
     Writes the XML to describe the engine(s) to standard output.
     '''
     # 1. we find all dbs in DB_DIR and extract the infos into
     #    Elements
     dbs = os.listdir(DB_DIR)
-    dbs = filter(lambda x: x.endswith('.db'), dbs)
+    dbs = list(filter(lambda x: x.endswith('.db'), dbs))
 
     _all_dbs = []
     for _db in dbs:
         _all_dbs.append(os.path.join(DB_DIR, _db))
     try:
         byo_dbs = os.listdir(BYO_DB_DIR)
-        byo_dbs = filter(lambda x: x.endswith('.db'), byo_dbs)
+        byo_dbs = list(filter(lambda x: x.endswith('.db'), byo_dbs))
         for _db in byo_dbs:
             _all_dbs.append(os.path.join(BYO_DB_DIR, _db))
     except OSError:

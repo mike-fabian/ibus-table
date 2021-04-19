@@ -27,34 +27,37 @@ The directories used are according to the
 see: http://standards.freedesktop.org/basedir-spec/latest/index.html
 '''
 
+from typing import Dict
 import os
 
-IBUS_TABLE_LOCATION = {
+IBUS_TABLE_LOCATION: Dict[str, str] = {
     'data': '',
     'lib': '',
     'data_home': '',
     'cache_home': '',
 }
 
-def data():
+def data() -> str:
     return IBUS_TABLE_LOCATION['data']
 
-def lib():
+def lib() -> str:
     return IBUS_TABLE_LOCATION['lib']
 
-def data_home():
+def data_home() -> str:
     return IBUS_TABLE_LOCATION['data_home']
 
-def cache_home():
+def cache_home() -> str:
     return IBUS_TABLE_LOCATION['cache_home']
 
-def _init():
-    IBUS_TABLE_LOCATION['data'] = os.getenv('IBUS_TABLE_LOCATION')
+def _init() -> None:
+    if os.getenv('IBUS_TABLE_LOCATION'):
+        IBUS_TABLE_LOCATION['data'] = str(os.getenv('IBUS_TABLE_LOCATION'))
     if (not IBUS_TABLE_LOCATION['data']
             or not os.path.exists(IBUS_TABLE_LOCATION['data'])):
         IBUS_TABLE_LOCATION['data'] = "/usr/share/ibus-table/"
 
-    IBUS_TABLE_LOCATION['lib'] = os.getenv('IBUS_TABLE_LIB_LOCATION')
+    if os.getenv('IBUS_TABLE_LIB_LOCATION'):
+        IBUS_TABLE_LOCATION['lib'] = str(os.getenv('IBUS_TABLE_LIB_LOCATION'))
     if (not IBUS_TABLE_LOCATION['lib']
             or not os.path.exists(IBUS_TABLE_LOCATION['lib'])):
         IBUS_TABLE_LOCATION['lib'] = "/usr/libexec"
@@ -63,10 +66,12 @@ def _init():
     # specific data files should be stored. If $XDG_DATA_HOME is either
     # not set or empty, a default equal to $HOME/.local/share should be
     # used.
-    IBUS_TABLE_LOCATION['data_home'] = os.getenv('IBUS_TABLE_DATA_HOME')
+    if os.getenv('IBUS_TABLE_DATA_HOME'):
+        IBUS_TABLE_LOCATION['data_home'] = str(os.getenv('IBUS_TABLE_DATA_HOME'))
     if (not IBUS_TABLE_LOCATION['data_home']
             or not os.path.exists(IBUS_TABLE_LOCATION['data_home'])):
-        IBUS_TABLE_LOCATION['data_home'] = os.getenv('XDG_DATA_HOME')
+        if os.getenv('XDG_DATA_HOME'):
+            IBUS_TABLE_LOCATION['data_home'] = str(os.getenv('XDG_DATA_HOME'))
     if (not IBUS_TABLE_LOCATION['data_home']
             or not os.path.exists(IBUS_TABLE_LOCATION['data_home'])):
         IBUS_TABLE_LOCATION['data_home'] = os.path.expanduser('~/.local/share')
@@ -79,10 +84,12 @@ def _init():
     # specific non-essential data files should be stored. If
     # $XDG_CACHE_HOME is either not set or empty, a default equal to
     # $HOME/.cache should be used.
-    IBUS_TABLE_LOCATION['cache_home'] = os.getenv('IBUS_TABLE_CACHE_HOME')
+    if os.getenv('IBUS_TABLE_CACHE_HOME'):
+        IBUS_TABLE_LOCATION['cache_home'] = str(os.getenv('IBUS_TABLE_CACHE_HOME'))
     if (not IBUS_TABLE_LOCATION['cache_home']
             or not os.path.exists(IBUS_TABLE_LOCATION['cache_home'])):
-        IBUS_TABLE_LOCATION['cache_home'] = os.getenv('XDG_CACHE_HOME')
+        if os.getenv('XDG_CACHE_HOME'):
+            IBUS_TABLE_LOCATION['cache_home'] = str(os.getenv('XDG_CACHE_HOME'))
     if (not IBUS_TABLE_LOCATION['cache_home']
             or not os.path.exists(IBUS_TABLE_LOCATION['cache_home'])):
         IBUS_TABLE_LOCATION['cache_home'] = os.path.expanduser('~/.cache')
@@ -92,11 +99,11 @@ def _init():
         os.makedirs(IBUS_TABLE_LOCATION['cache_home'], exist_ok=True)
 
 class __ModuleInitializer:
-    def __init__(self):
+    def __init__(self) -> None:
         _init()
         return
 
-    def __del__(self):
+    def __del__(self) -> None:
         return
 
 __module_init = __ModuleInitializer()

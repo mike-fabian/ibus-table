@@ -20,10 +20,8 @@
 '''
 Contains a function to return the current version number of ibus-table.
 '''
-def get_version():
+def get_version() -> str:
     '''
     Returns the current version number of ibus-table.
-
-    :rtype: String
     '''
     return '@VERSION@'

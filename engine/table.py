@@ -40,9 +40,9 @@ import logging
 from gettext import dgettext
 _ = lambda a: dgettext('ibus-table', a)
 N_ = lambda a: a
-from gi import require_version
+from gi import require_version # type: ignore
 require_version('IBus', '1.0')
-from gi.repository import IBus
+from gi.repository import IBus # type: ignore
 require_version('Gio', '2.0')
 from gi.repository import Gio
 require_version('GLib', '2.0')

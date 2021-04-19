@@ -18,6 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import Any
 import re
 import logging
 import sys
@@ -67,7 +68,7 @@ VARIANTS_TABLE_ORIG = {
 # keep the lines from Unihan_Variants.txt which were used for debugging
 VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED = {}
 
-def read_unihan_variants(unihan_variants_file):
+def read_unihan_variants(unihan_variants_file) -> None:
     '''
     Read the Unihan_Variants.txt file downloaded  from Unicode.org.
     '''
@@ -98,7 +99,7 @@ def read_unihan_variants(unihan_variants_file):
                         VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED[
                             char] = line
 
-def detect_chinese_category_old(phrase):
+def detect_chinese_category_old(phrase: str) -> int:
     '''
     Old function using encoding conversion to guess whether
     a text is simplified Chinese, traditional Chinese, both,
@@ -152,7 +153,7 @@ def detect_chinese_category_old(phrase):
         category |= (1 << 2)
     return category
 
-def write_variants_script(script_file):
+def write_variants_script(script_file) -> None:
     '''
     Write the generated Python script.
     '''
@@ -274,7 +275,7 @@ TEST_DATA = {
     u'著': 3,
     }
 
-def test_detection(generated_script):
+def test_detection(generated_script) -> None:
     '''
     Test whether the generated script does the detection correctly.
     '''
@@ -295,7 +296,7 @@ def test_detection(generated_script):
                          TEST_DATA[phrase])
     logging.info('All tests passed.')
 
-def compare_old_new_detection(phrase, generated_script):
+def compare_old_new_detection(phrase, generated_script) -> None:
     '''
     Only for debugging.
 
@@ -314,7 +315,7 @@ def compare_old_new_detection(phrase, generated_script):
             logging.debug(
                 VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED[phrase])
 
-def parse_args():
+def parse_args() -> Any:
     '''Parse the command line arguments'''
     import argparse
     parser = argparse.ArgumentParser(
@@ -337,7 +338,7 @@ def parse_args():
                         help='print debugging output')
     return parser.parse_args()
 
-def main():
+def main() -> None:
     '''Main program'''
     args = parse_args()
     log_level = logging.INFO
@@ -356,7 +357,7 @@ def main():
 
     test_detection(generated_script)
 
-    for phrase in generated_script.VARIANTS_TABLE:
+    for phrase in generated_script.VARIANTS_TABLE: # type: ignore
         compare_old_new_detection(phrase, generated_script)
 
 if __name__ == '__main__':

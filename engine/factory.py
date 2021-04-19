@@ -22,15 +22,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from typing import Dict
+from typing import Optional
 import os
 import re
 import logging
 from gettext import dgettext
 _ = lambda a: dgettext("ibus-table", a)
 N_ = lambda a: a
-from gi import require_version
+from gi import require_version # type: ignore
 require_version('IBus', '1.0')
-from gi.repository import IBus
+from gi.repository import IBus # type: ignore
 import table
 import tabsqlitedb
 
@@ -40,14 +42,16 @@ DEBUG_LEVEL = int(0)
 
 class EngineFactory(IBus.Factory):
     """Table IM Engine Factory"""
-    def __init__(self, bus, db=''):
+    def __init__(self, bus, db='') -> None:
         global DEBUG_LEVEL
         try:
-            DEBUG_LEVEL = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
+            DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
         except (TypeError, ValueError):
             DEBUG_LEVEL = int(0)
         if DEBUG_LEVEL > 1:
             LOGGER.debug('EngineFactory.__init__(bus=%s, db=%s)\n', bus, db)
+        self.db: Optional[tabsqlitedb.TabSqliteDb] = None
+        self.dbdict: Dict[str, tabsqlitedb.TabSqliteDb] = {}
         # db is the full path to the sql database
         if db:
             self.dbusname = os.path.basename(db).replace('.db', '')
@@ -55,9 +59,6 @@ class EngineFactory(IBus.Factory):
             self.db = tabsqlitedb.TabSqliteDb(filename=db, user_db=udb)
             self.db.db.commit()
             self.dbdict = {self.dbusname:self.db}
-        else:
-            self.db = None
-            self.dbdict = {}
 
         # init factory
         self.bus = bus
@@ -66,7 +67,7 @@ class EngineFactory(IBus.Factory):
         self.engine_id = 0
         self.engine_path = ''
 
-    def do_create_engine(self, engine_name):
+    def do_create_engine(self, engine_name) -> table.TabEngine:
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'EngineFactory.do_create_engine(engine_name=%s)\n',
@@ -79,16 +80,14 @@ class EngineFactory(IBus.Factory):
             if not self.db:
                 # first check self.dbdict
                 if not engine_name in self.dbdict:
-                    try:
+                    db_dir = '/usr/share/ibus-table/tables'
+                    if os.getenv('IBUS_TABLE_LOCATION'):
                         db_dir = os.path.join(
-                            os.getenv('IBUS_TABLE_LOCATION'), 'tables')
-                    except:
-                        db_dir = "/usr/share/ibus-table/tables"
+                            str(os.getenv('IBUS_TABLE_LOCATION')), 'tables')
                     db = os.path.join(db_dir, engine_name+'.db')
                     udb = engine_name+'-user.db'
                     if not os.path.exists(db):
-                        byo_db_dir = os.path.join(
-                            os.getenv('HOME'), '.ibus/byo-tables')
+                        byo_db_dir = os.path.expanduser('~/.ibus/byo-tables')
                         db = os.path.join(byo_db_dir, engine_name + '.db')
                     _sq_db = tabsqlitedb.TabSqliteDb(filename=db, user_db=udb)
                     _sq_db.db.commit()
@@ -104,7 +103,7 @@ class EngineFactory(IBus.Factory):
             LOGGER.exception('failed to create engine %s', engine_name)
             raise Exception('Cannot create engine %s' %engine_name)
 
-    def do_destroy(self):
+    def do_destroy(self) -> None:
         '''Destructor, which finish some task for IME'''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('EngineFactory.do_destroy()\n')

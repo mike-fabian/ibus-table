@@ -34,7 +34,7 @@ import tabsqlitedb
 
 _INVALID_KEYNAME_CHARS = " \t\r\n\"$&<>,+=#!()'|{}[]?~`;%\\"
 
-def gconf_valid_keyname(keyname):
+def gconf_valid_keyname(keyname: str) -> bool:
     """
     Keynames must be ascii, and must not contain any invalid characters
 
@@ -57,11 +57,11 @@ class InvalidTableName(Exception):
     """
     Raised when an invalid table name is given
     """
-    def __init__(self, name):
+    def __init__(self, name) -> None:
         super(InvalidTableName, self).__init__()
         self.table_name = name
 
-    def __str__(self):
+    def __str__(self) -> str:
         return ('Value of NAME attribute (%s) ' % self.table_name
                 + 'cannot contain any of %r ' % _INVALID_KEYNAME_CHARS
                 + 'and must be all ascii')

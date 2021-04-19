@@ -23,12 +23,19 @@
 Utility functions used in ibus-table
 '''
 
+from typing import Any
+from typing import List
+from typing import Tuple
+from typing import Dict
 import sys
+import os
 import logging
 import gettext
-from gi import require_version
+from gi import require_version # type: ignore
+require_version('Gio', '2.0')
+from gi.repository import Gio # type: ignore
 require_version('GLib', '2.0')
-from gi.repository import GLib
+from gi.repository import GLib # type: ignore
 require_version('Gdk', '3.0')
 from gi.repository import Gdk
 require_version('Gtk', '3.0')
@@ -38,6 +45,7 @@ require_version('IBus', '1.0')
 from gi.repository import IBus
 
 import version
+import tabsqlitedb
 
 LOGGER = logging.getLogger('ibus-table')
 
@@ -53,7 +61,7 @@ KEYBINDING_STATE_MASK = (
     & ~IBus.ModifierType.MOD2_MASK # Num Lock
 )
 
-def variant_to_value(variant):
+def variant_to_value(variant: GLib.Variant) -> Any:
     '''
     Convert a GLib variant to a value
     '''
@@ -75,7 +83,7 @@ def variant_to_value(variant):
     LOGGER.error('unknown variant type: %s', type_string)
     return variant
 
-def get_default_chinese_mode(database):
+def get_default_chinese_mode(database: tabsqlitedb.TabSqliteDb) -> int:
     '''
     Use database value or LC_CTYPE in your box to determine the
     Chinese mode
@@ -144,7 +152,9 @@ def get_default_chinese_mode(database):
                          'returning 4.')
         return 4
 
-def get_default_keybindings(gsettings, database):
+def get_default_keybindings(
+        gsettings: Gio.Settings,
+        database: tabsqlitedb.TabSqliteDb) -> Dict[str, List[str]]:
     default_keybindings = variant_to_value(
         gsettings.get_default_value('keybindings'))
     # Now update the default keybindings from gsettings with
@@ -259,7 +269,8 @@ def get_default_keybindings(gsettings, database):
                 default_keybindings[command].remove(keybinding)
     return default_keybindings
 
-def dict_update_existing_keys(pdict, other_pdict):
+def dict_update_existing_keys(
+        pdict: Dict[Any, Any], other_pdict: Dict[Any, Any]):
     '''Update values of existing keys in a Python dict from another Python dict
 
     Using pdict.update(other_pdict) would add keys and values from other_pdict
@@ -290,7 +301,7 @@ class KeyEvent:
     '''Key event class used to make the checking of details of the key
     event easy
     '''
-    def __init__(self, keyval, keycode, state):
+    def __init__(self, keyval: int, keycode: int, state: int) -> None:
         self.val = keyval
         self.code = keycode
         self.state = state
@@ -320,21 +331,25 @@ class KeyEvent:
         # MODIFIER_MASK: Modifier mask for the all the masks above
         self.modifier = self.state & IBus.ModifierType.MODIFIER_MASK != 0
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, KeyEvent):
+            return NotImplemented
         if (self.val == other.val
                 and self.code == other.code
                 and self.state == other.state):
             return True
         return False
 
-    def __ne__(self, other):
+    def __ne__(self, other: object) -> bool:
+        if not isinstance(other, KeyEvent):
+            return NotImplemented
         if (self.val != other.val
                 or self.code != other.code
                 or self.state != other.state):
             return True
         return False
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             "val=%s code=%s state=0x%08x name='%s' unicode='%s' "
             % (self.val,
@@ -354,7 +369,7 @@ class KeyEvent:
                self.mod5,
                self.release))
 
-def keyevent_to_keybinding(keyevent):
+def keyevent_to_keybinding(keyevent: KeyEvent) -> str:
     keybinding = ''
     if keyevent.shift:
         keybinding += 'Shift+'
@@ -381,7 +396,7 @@ def keyevent_to_keybinding(keyevent):
     keybinding += keyevent.name
     return keybinding
 
-def keybinding_to_keyevent(keybinding):
+def keybinding_to_keyevent(keybinding: str) -> KeyEvent:
     name = keybinding.split('+')[-1]
     keyval = IBus.keyval_from_name(name)
     state = 0
@@ -413,8 +428,8 @@ class HotKeys:
     '''Class to make checking whether a key matches a hotkey for a certain
     command easy
     '''
-    def __init__(self, keybindings):
-        self._hotkeys = {}
+    def __init__(self, keybindings: Dict[str, List[str]]) -> None:
+        self._hotkeys: Dict[str, List[Tuple[int, int]]] = {}
         for command in keybindings:
             for keybinding in keybindings[command]:
                 key = keybinding_to_keyevent(keybinding)
@@ -425,7 +440,8 @@ class HotKeys:
                 else:
                     self._hotkeys[command] = [(val, state)]
 
-    def __contains__(self, command_key_tuple):
+    def __contains__(
+            self, command_key_tuple: Tuple[KeyEvent, KeyEvent, str]) -> bool:
         if not isinstance(command_key_tuple, tuple):
             return False
         command = command_key_tuple[2]
@@ -475,7 +491,7 @@ class HotKeys:
                 return True
         return False
 
-    def __str__(self):
+    def __str__(self) -> str:
         return repr(self._hotkeys)
 
 class ItKeyInputDialog(Gtk.MessageDialog):
@@ -485,7 +501,7 @@ class ItKeyInputDialog(Gtk.MessageDialog):
             # requesting that the user types a key to be used as a new
             # key binding for a command.
             title=_('Key input'),
-            parent=None):
+            parent=None) -> None:
         Gtk.Dialog.__init__(
             self,
             title=title,
@@ -510,18 +526,18 @@ class ItKeyInputDialog(Gtk.MessageDialog):
         self.show()
 
     def on_key_press_event(# pylint: disable=no-self-use
-            self, widget, event):
+            self, widget, event) -> bool:
         widget.e = (event.keyval,
                     event.get_state() & KEYBINDING_STATE_MASK)
         return True
 
     def on_key_release_event(# pylint: disable=no-self-use
-            self, widget, _event):
+            self, widget, _event) -> bool:
         widget.response(Gtk.ResponseType.OK)
         return True
 
 class ItAboutDialog(Gtk.AboutDialog):
-    def  __init__(self, parent=None):
+    def  __init__(self, parent=None) -> None:
         Gtk.AboutDialog.__init__(self, parent=parent)
         self.set_modal(True)
         # An empty string in aboutdialog.set_logo_icon_name('')
@@ -591,7 +607,7 @@ class ItAboutDialog(Gtk.AboutDialog):
         self.show()
 
     def on_close_aboutdialog( # pylint: disable=no-self-use
-            self, _about_dialog, _response):
+            self, _about_dialog, _response) -> None:
         '''
         The “About” dialog has been closed by the user
 

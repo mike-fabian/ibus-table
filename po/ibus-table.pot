@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2020-09-02 11:12+0200\n"
+"POT-Creation-Date: 2021-05-03 09:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,7 +107,7 @@ msgstr ""
 msgid "Switch to Chinese input"
 msgstr ""
 
-#: engine/table.py:665 engine/table.py:813 setup/main.py:932
+#: engine/table.py:665 engine/table.py:813 setup/main.py:934
 msgid "Direct"
 msgstr ""
 
@@ -255,7 +255,7 @@ msgstr ""
 msgid "Switch onechar mode"
 msgstr ""
 
-#: engine/table.py:803 setup/main.py:930
+#: engine/table.py:803 setup/main.py:932
 msgid "Normal"
 msgstr ""
 
@@ -355,7 +355,7 @@ msgstr ""
 msgid "Restore all defaults"
 msgstr ""
 
-#: setup/main.py:217 setup/main.py:2519
+#: setup/main.py:217 setup/main.py:2521
 msgid "_Close"
 msgstr ""
 
@@ -542,13 +542,13 @@ msgstr ""
 
 #. Translators: This is the setting to avoid showing
 #. candidate lists.
-#: setup/main.py:624 setup/main.py:884 setup/main.py:966
+#: setup/main.py:624 setup/main.py:886 setup/main.py:968
 msgid "No"
 msgstr ""
 
 #. Translators: This is the setting to show
 #. candidate lists.
-#: setup/main.py:628 setup/main.py:886 setup/main.py:968
+#: setup/main.py:628 setup/main.py:888 setup/main.py:970
 msgid "Yes"
 msgstr ""
 
@@ -602,21 +602,21 @@ msgstr ""
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
-#: setup/main.py:741
+#: setup/main.py:740
 msgid "Command"
 msgstr ""
 
-#: setup/main.py:768
+#: setup/main.py:770
 msgid "Edit"
 msgstr ""
 
 #. Translators: A tooltip for the button to edit
 #. the keybindings for the selected command.
-#: setup/main.py:774
+#: setup/main.py:776
 msgid "Edit the key bindings for the selected command"
 msgstr ""
 
-#: setup/main.py:781 setup/main.py:1931
+#: setup/main.py:783 setup/main.py:1933
 msgid "Set to default"
 msgstr ""
 
@@ -624,30 +624,30 @@ msgstr ""
 #. the default key bindings for the selected command.
 #. Translators: This is a tooltip for the button to set
 #. the key bindings for the selected command to the default.
-#: setup/main.py:787 setup/main.py:1938
+#: setup/main.py:789 setup/main.py:1940
 msgid "Set default key bindings for the selected command"
 msgstr ""
 
-#: setup/main.py:794
+#: setup/main.py:796
 msgid "Set all to default"
 msgstr ""
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
-#: setup/main.py:800
+#: setup/main.py:802
 msgid "Set default key bindings for all commands"
 msgstr ""
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
-#: setup/main.py:821
+#: setup/main.py:823
 msgid "Compose:"
 msgstr ""
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
 #. be shown.
-#: setup/main.py:826
+#: setup/main.py:828
 msgid ""
 "If this is set to “single char”, only single\n"
 "character candidates will be shown. If it is\n"
@@ -655,24 +655,24 @@ msgid ""
 "several characters may be shown."
 msgstr ""
 
-#: setup/main.py:840
+#: setup/main.py:842
 msgid "Phrase"
 msgstr ""
 
-#: setup/main.py:842
+#: setup/main.py:844
 msgid "Single Char"
 msgstr ""
 
 #. Translators: A combobox to choose whether the first
 #. candidate will be automatically selected during typing.
-#: setup/main.py:862
+#: setup/main.py:864
 msgid "Auto select:"
 msgstr ""
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
 #. select during typing.
-#: setup/main.py:867
+#: setup/main.py:869
 msgid ""
 "If set to “Yes”, this does the following 4 things:\n"
 "1) When typing “Return”, commit the \n"
@@ -688,14 +688,14 @@ msgstr ""
 
 #. Translators: A combobox to choose whether automatic
 #. commits go into the preëdit or into the application
-#: setup/main.py:906
+#: setup/main.py:908
 msgid "Auto commit mode:"
 msgstr ""
 
 #. Translators; A tooltip for the label of the combobox to
 #. choose whether automatic commits go into the preëdit or
 #. into the application.
-#: setup/main.py:911
+#: setup/main.py:913
 msgid ""
 "Committing with the commit keys or with the mouse\n"
 "always commits to the application. This option is about\n"
@@ -710,14 +710,14 @@ msgstr ""
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
-#: setup/main.py:952
+#: setup/main.py:954
 msgid "Auto wildcard:"
 msgstr ""
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether a wildcard should be automatically
 #. appended to the input.
-#: setup/main.py:957
+#: setup/main.py:959
 msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
@@ -725,14 +725,14 @@ msgstr ""
 
 #. Translators: This single character is a placeholder
 #. to match a any single character
-#: setup/main.py:988
+#: setup/main.py:990
 msgid "Single wildcard character:"
 msgstr ""
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match a
 #. single character.
-#: setup/main.py:993
+#: setup/main.py:995
 msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
@@ -740,14 +740,14 @@ msgstr ""
 
 #. Translators: This single character is a placeholder
 #. to match a any number of characters
-#: setup/main.py:1012
+#: setup/main.py:1014
 msgid "Multi wildcard character:"
 msgstr ""
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match any
 #. number of candidates.
-#: setup/main.py:1017
+#: setup/main.py:1019
 msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
@@ -756,67 +756,67 @@ msgstr ""
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
 #. debug information may also be shown graphically.
-#: setup/main.py:1037
+#: setup/main.py:1039
 msgid "Debug level:"
 msgstr ""
 
 #. Translators: This is a tooltip for the label for the
 #. adjustment of the debug level.
-#: setup/main.py:1041
+#: setup/main.py:1043
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
 msgstr ""
 
-#: setup/main.py:1343
+#: setup/main.py:1345
 msgid "Are you sure?"
 msgstr ""
 
-#: setup/main.py:1345
+#: setup/main.py:1347
 msgid "_Cancel"
 msgstr ""
 
-#: setup/main.py:1346
+#: setup/main.py:1348
 msgid "_OK"
 msgstr ""
 
-#: setup/main.py:1378
+#: setup/main.py:1380
 msgid "Another instance of this app is already running."
 msgstr ""
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
-#: setup/main.py:1439
+#: setup/main.py:1441
 msgid "Do you really want to restore all default settings?"
 msgstr ""
 
-#: setup/main.py:1854
+#: setup/main.py:1856
 #, python-format
 msgid "Edit key bindings for command “%s”"
 msgstr ""
 
 #. Translators: This is a tooltip for the button to add a
 #. key binding.
-#: setup/main.py:1884
+#: setup/main.py:1886
 msgid "Add a key binding"
 msgstr ""
 
 #. Translators: This is a tooltip for the button to remove
 #. the selected key binding.
-#: setup/main.py:1898
+#: setup/main.py:1900
 msgid "Remove selected key binding"
 msgstr ""
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
-#: setup/main.py:1913
+#: setup/main.py:1915
 msgid "Move key binding up"
 msgstr ""
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
-#: setup/main.py:1926
+#: setup/main.py:1928
 msgid "Move key binding down"
 msgstr ""
 
@@ -825,12 +825,12 @@ msgstr ""
 #. really sure to reset the key bindings for *all* commands
 #. to their defaults. This cannot be reversed so the user
 #. should be really sure he wants to do that.
-#: setup/main.py:1989
+#: setup/main.py:1991
 msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
 msgstr ""
 
-#: setup/main.py:2572
+#: setup/main.py:2574
 msgid "ibus is not running."
 msgstr ""

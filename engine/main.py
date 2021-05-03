@@ -34,7 +34,6 @@ require_version('IBus', '1.0')
 from gi.repository import IBus
 from gi.repository import GLib
 
-import factory
 import tabsqlitedb
 import ibus_table_location
 
@@ -103,6 +102,28 @@ if _OPTIONS.profile:
     import pstats
     import io
     _PROFILE = cProfile.Profile()
+
+if  _OPTIONS.xml:
+    from locale import getdefaultlocale
+    from xml.etree.ElementTree import Element, SubElement, tostring
+else:
+    # Avoid importing factory when the --xml option is used because
+    # factory imports other stuff which imports Gtk and that needs a
+    # display.
+    #
+    # But by moving the import of factory here, it is possible to
+    # use the --xml option in an environment where there is no
+    # display without getting an error message like this:
+    #
+    #    $ env -u DISPLAY python3 main.py --xml
+    #    Unable to init server: Could not connect: Connection refused
+    #
+    # The --xml option is used by “ibus write-cache” which is used
+    # during rpm updates and then there is often no display and
+    # the above error message appears.
+    #
+    # See: https://bugzilla.redhat.com/show_bug.cgi?id=1955283
+    import factory
 
 class IMApp:
     def __init__(self, dbfile, exec_by_ibus):
@@ -233,8 +254,6 @@ def main():
         LOGGER.info('********** STARTING **********')
 
     if _OPTIONS.xml:
-        from locale import getdefaultlocale
-        from xml.etree.ElementTree import Element, SubElement, tostring
         # we will output the engines xml and return.
         # 1. we find all dbs in DB_DIR and extract the infos into
         #    Elements

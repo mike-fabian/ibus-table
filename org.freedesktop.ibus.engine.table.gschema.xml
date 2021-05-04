@@ -55,6 +55,9 @@
       <summary>List of keybindings</summary>
       <description>The list of configurable keybindings</description>
     </key>
+    <key name="darktheme" type="b">
+      <default>false</default>
+    </key>
     <key name="autoselect" type="b">
       <default>false</default>
     </key>

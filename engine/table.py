@@ -2008,7 +2008,7 @@ class TabEngine(IBus.EngineSimple):
         '''
         Set theme to dark theme on request
 
-        :type mode: Boolean
+        :type use_dark_theme: Boolean
         '''
         if use_dark_theme:
             theme = THEME_DARK

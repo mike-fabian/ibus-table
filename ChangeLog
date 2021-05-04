@@ -1,4 +1,297 @@
-commit a45f94a1878a4a3f90e798acf5aeff3bcf6befa4
+commit 9ee5b3e879a529c76030f6f239986470dda66c99
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 4 19:50:34 2021 +0200
+
+    Release 1.13.0
+
+commit a4f666a1615d74ff483e72dbe3dae3d1d10b0d5a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 6 12:07:21 2021 +0200
+
+    Update ibus-table.pot (Only line numbers changed)
+
+commit a602611304f381228a9ae18236670f30cf4c7743
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 6 12:03:47 2021 +0200
+
+    Add test case for the immediate switch between table and pinyin mode
+
+commit bc5bfdb63253389ac298c7bf49df9625725fca26
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 6 11:35:59 2021 +0200
+
+    Make switch to pinyin mode also happen immediately even when the preedit is not empty
+    
+    That is better for consistency.
+
+commit b89d1fd6a72a90b2b6575a59afa1d48ab8e10480
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 6 11:04:35 2021 +0200
+
+    Add test case for “Commit English input and then switch into direct mode”
+    
+    When toggle to direct mode from table mode, if the preedit is not
+    empty, commit the English input first. Then switch to direct input
+    mode.
+    
+    Related: https://github.com/kaio/ibus-table/issues/68
+
+commit 221acc4a876d4590cef677571f328bca819ced51
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 6 09:36:42 2021 +0200
+
+    Add more type hints and remove some Python2 compatibility stuff
+
+commit 9f7742183b3630f23c49baf9bcfc54a966532203
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 5 23:43:58 2021 +0200
+
+    Make rolling the mouse wheel in the candidate area of the lookup table work
+
+commit 0744db76aab12ca5fe400326a5e8a0326b4d86f6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 5 14:34:00 2021 +0200
+
+    Add more type hints
+
+commit 4ad5e60336662439c5b4285d525589e2108a5d2d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 5 13:56:23 2021 +0200
+
+    Use the same color_string_to_argb() function as in ibus-typing-booster
+
+commit e1cf7331fbafe1b378b78d6f92ec4cf9b0c5493c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 19 08:50:29 2021 +0200
+
+    Add some type hints
+
+commit 15ed3ecb80200c2404075a67c47f86e9e377391c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 19 08:37:56 2021 +0200
+
+    Add wrapper script for mypy to check type hints
+
+commit b0392d0540dcc0465778513337f4744b39d9fcd9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 5 13:15:29 2021 +0200
+
+    Move the writing of the XML into a function in main.py
+
+commit 9a662d751ec4c7c7996db9b4f4a72c508cde4586
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 19 08:58:34 2021 +0200
+
+    Remove Python2 compatibility stuff
+    
+    ibus-table doesn’t work with Python2 for a long time already
+
+commit 27030927c388210e464d4f4dbfecd5343bfaf498
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 4 19:06:06 2021 +0200
+
+    Improve readability by spelling out keyword option
+
+commit 0546f70e026f49dd0bef3a6ee5e96947c399cf5e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 4 19:05:36 2021 +0200
+
+    Improve function documentation
+
+commit 084488197e4b36db6da28f46c802041c21a2eae1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 4 18:11:37 2021 +0200
+
+    Fix a typo in a comment
+
+commit 56636c1f1421bbf2673f46d17ad414fb873c9514
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 4 10:10:48 2021 +0200
+
+    Fix typo in comment
+
+commit a0aa3646d82f96be1a0b8750d4e5713456dc78c2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 4 20:53:46 2021 +0200
+
+    Adapt the test case to the new default keybinding for commit_to_preedit
+    
+    Adapting this test case is also necessary because Shift_L now commits
+    English input and then switches to direct mode.
+    
+    Related: https://github.com/kaio/ibus-table/issues/68
+
+commit 0574308f10e6c7b9a3e9e0a79ed69e24bfe3b127
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 4 20:01:07 2021 +0200
+
+    Change the default keybinding for commit_to_preedit to ['Control+Shift_L', 'Control+Shift_R']
+    
+    Related: https://github.com/kaio/ibus-table/issues/68
+    
+    The previous default had a conflict with toggle_input_mode_on_off
+    and toggle_pinyin_mode:
+    
+        commit_to_preedit               ['Shift_R', 'Shift_L']
+        toogle_input_mode_on_off        ['Shift_L']
+        toggle_pinyin_mode              ['Shift_R']
+    
+    This conflict didn’t matter as the toggling of the modes was only done
+    when the preedit was empty and commit_to_preedit can only be done
+    when the preedit is not empty. So there was no real conflict in practice.
+    But now when toggle_input_mode_on_off is also done when the preedit is
+    not empty to fix https://github.com/kaio/ibus-table/issues/68, then
+    it is not possible to use the same keybindings for these commands.
+    
+    commit_to_preedit is probably used much more rarely than toggling the
+    input or the pinyin modes. So it is probably better to leave the
+    default keybindinds for toggling the input and pinyin modes as they
+    always were and change the default keybinding of commit_to_preedit.
+
+commit c17fecf3ee072bdb42a07867a7ad5fbe59bb64cc
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 4 19:04:13 2021 +0200
+
+    Add “darktheme” option to org.freedesktop.ibus.engine.table.gschema.xml
+    
+    Resolves: https://github.com/kaio/ibus-table/issues/67
+
+commit 23a6fd60be7374ad94728ca875902bc209e284c0
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sat Mar 27 14:50:16 2021 +0800
+
+    Show all the tabkeys when using wildcards
+    
+    When wildcards were used, most likely the user would like to learn
+    the exact tabkeys.
+
+commit 89eff501a06df712ae0166fc973752277ce6bd8a
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sat Mar 27 10:40:51 2021 +0800
+
+    Add use dark theme option to the setup applet
+    
+    Related: https://github.com/kaio/ibus-table/issues/67
+
+commit 915429f1be890ce166267c95086ff3c621e3bb3a
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Sat Mar 27 09:33:11 2021 +0800
+
+    Group color scheme into theme and dark theme
+    
+    The foreground colors should be different between normal light theme
+    and dark theme.
+    
+    Related: https://github.com/kaio/ibus-table/issues/67
+
+commit 36e83774df11c8b995b4500df15c60e6ffd922e7
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Fri Mar 26 22:57:07 2021 +0800
+
+    Apply a couple modes immediately when changed
+    
+    When change mode for Chinese_mode or onechar_mode, if the input is
+    not empty, update the candidates with the new mode setting.
+
+commit 3cd370115104e627123e642aa4d43a0a850e5e11
+Author: mozbugbox <mozbugbox@yahoo.com.au>
+Date:   Fri Mar 26 22:53:09 2021 +0800
+
+    Commit English input and then switch into direct mode
+    
+    When toggle to direct mode from table mode, if the preedit is not
+    empty, commit the English input first. Then switch to direct input
+    mode
+    
+    Resolves: https://github.com/kaio/ibus-table/issues/68
+
+commit 6e9d0ee4359c682b0b6f2a7f868745af520a456e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 4 09:54:56 2021 +0200
+
+    Clarify comment about the order of handling the hotkeys
+    
+    The keybindings treeview is sortable now, but the default is
+    alphabetic order of the commands.
+    
+    The order of handling the shortcuts is also in alphabetic order of the
+    commands.
+
+commit 9e91318040a50c2a9709d88b4678962191c4d22f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu May 6 16:16:45 2021 +0200
+
+    Translated using Weblate (Chinese (Simplified) (zh_CN))
+    
+    Currently translated at 100.0% (138 of 138 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_CN/
+    Translation: ibus-table/app
+
+commit 666fb9800db5de57396d4978b29399a4feebe69a
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Wed May 5 11:12:45 2021 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (138 of 138 strings)
+    
+    Co-authored-by: Oğuz Ersen <oguzersen@protonmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    Translation: ibus-table/app
+
+commit dc48c3b5fc8d81fa8f46240554abf33cab4a791e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 4 20:33:30 2021 +0200
+
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 33.3% (46 of 138 strings)
+    
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (138 of 138 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translation: ibus-table/app
+
+commit afad554f9a6e85b79ba1adc37a26aa414d13e437
+Author: Yuri Chornoivan <yurchor@ukr.net>
+Date:   Tue May 4 20:20:13 2021 +0200
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (138 of 138 strings)
+    
+    Co-authored-by: Yuri Chornoivan <yurchor@ukr.net>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+    Translation: ibus-table/app
+
+commit 19f342ef329b7967d0a31fc18a9aa90c030a6865
+Author: Weblate <noreply@weblate.org>
+Date:   Tue May 4 20:20:12 2021 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 1278ce6bd18e395349448dc7c14fce79bf094096
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 4 20:10:59 2021 +0200
+
+    Update ibus-table.pot, two new messages
+    
+    The two new messages are for the dark theme mode which will become
+    available in the next release.
+
+commit f4a027ebc4f094ba8912b003cec053d7996bbe57
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Apr 19 08:33:21 2021 +0200
 

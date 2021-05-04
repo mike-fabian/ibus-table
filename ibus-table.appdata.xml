@@ -19,6 +19,51 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.13.0" date="2021-05-04" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.13.0</url>
+      <issues>
+        <issue>
+          Make switch to pinyin mode also happen immediately even when
+          the preedit is not empty (For consistency)
+        </issue>
+        <issue>
+          Make rolling the mouse wheel in the candidate area of the lookup table work
+        </issue>
+        <issue url="https://github.com/kaio/ibus-table/issues/68">
+          Commit English input and then switch into direct mode
+        </issue>
+        <issue>
+          Apply a couple modes immediately when changed
+
+          When change mode for Chinese_mode or onechar_mode, if the
+          input is not empty, update the candidates with the new mode
+          setting.
+        </issue>
+        <issue url="https://github.com/kaio/ibus-table/issues/67">
+          Add a dark theme option
+        </issue>
+        <issue>
+          Show all the tabkeys when using wildcards
+
+          When wildcards were used, most likely the user would like to learn
+          the exact tabkeys.
+        </issue>
+        <issue>
+          Remove Python2 compatibility stuff (ibus-table doesn’t work
+          with Python2 for a long time already)
+        </issue>
+        <issue>
+          Start adding some type hints to improve code readability and to
+          enable checking type related errors using mypy
+        </issue>
+        <issue>
+          Update translations from Weblate (update for de, ja, tr, uk, zh_CN)
+        </issue>
+      </issues>
+    </release>
     <release version="1.12.6" date="2021-05-03" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

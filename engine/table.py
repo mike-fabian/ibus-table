@@ -3082,7 +3082,7 @@ class TabEngine(IBus.EngineSimple):
         '''
         if not (self._ime_py and self.is_empty()):
             # Change pinyin mode only if empty. When it is not empty
-            # the default Shift_R should commit to preedit and nto
+            # the default Shift_R should commit to preedit and not
             # change the pinyin mode.
             return False
         self.set_pinyin_mode(not self._py_mode)

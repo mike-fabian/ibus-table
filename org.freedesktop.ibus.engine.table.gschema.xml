@@ -6,7 +6,7 @@
         {
         'cancel': &lt;['Escape']&gt;,
         'commit': &lt;['space']&gt;,
-        'commit_to_preedit': &lt;['Shift_R', 'Shift_L']&gt;,
+        'commit_to_preedit': &lt;['Control+Shift_R', 'Control+Shift_L']&gt;,
         'commit_candidate_1': &lt;['1', 'KP_1']&gt;,
         'commit_candidate_2': &lt;['2', 'KP_2']&gt;,
         'commit_candidate_3': &lt;['3', 'KP_3']&gt;,

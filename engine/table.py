@@ -3462,8 +3462,8 @@ class TabEngine(IBus.EngineSimple):
             # If no specific command list to match is given, try to
             # match against all commands. Sorting shouldn’t really
             # matter, but maybe better do it sorted, then it is done
-            # in the same order as the commands are displayed in the
-            # setup tool.
+            # in the same order as the commands are displayed by
+            # default in the setup tool.
             commands = sorted(self._keybindings.keys())
         for command in commands:
             if (self._prev_key, key, command) in self._hotkeys:

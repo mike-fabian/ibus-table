@@ -876,37 +876,41 @@ class WubiJidian86TestCase(unittest.TestCase):
         # the left or the right shift key:
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_L, 0,
-            IBus.ModifierType.SHIFT_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK)
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_L, 0,
-            IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK
+            | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工')
         self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE._do_process_key_event(IBus.KEY_b, 0, 0)
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_R, 0,
-            IBus.ModifierType.SHIFT_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK)
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_R, 0,
-            IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK
+            | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工了')
         self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE._do_process_key_event(IBus.KEY_c, 0, 0)
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_R, 0,
-            IBus.ModifierType.SHIFT_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK)
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_R, 0,
-            IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK
+            | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工了以')
         self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE._do_process_key_event(IBus.KEY_d, 0, 0)
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_L, 0,
-            IBus.ModifierType.SHIFT_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK)
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_L, 0,
-            IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK
+            | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工了以在')
         self.assertEqual(ENGINE.mock_committed_text, '')
         # Move left two characters in the preëdit:
@@ -934,10 +938,11 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_preedit_text, '工了你以在')
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_L, 0,
-            IBus.ModifierType.SHIFT_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK)
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_L, 0,
-            IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK
+            | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工了你以在')
         self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE._do_process_key_event(IBus.KEY_h, 0, 0)
@@ -950,10 +955,11 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '')
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_L, 0,
-            IBus.ModifierType.SHIFT_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK)
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_L, 0,
-            IBus.ModifierType.SHIFT_MASK | IBus.ModifierType.RELEASE_MASK)
+            IBus.ModifierType.CONTROL_MASK | IBus.ModifierType.SHIFT_MASK
+            | IBus.ModifierType.RELEASE_MASK)
         self.assertEqual(ENGINE.mock_preedit_text, '工了你好以在')
         self.assertEqual(ENGINE.mock_committed_text, '')
         # Move right two characters in the preëdit

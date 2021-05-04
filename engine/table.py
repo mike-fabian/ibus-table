@@ -427,7 +427,7 @@ class TabEngine(IBus.EngineSimple):
         # self._prefix: the previous commit character or phrase
         self._prefix = u''
         self._py_mode = False
-        # sugguestion mode
+        # suggestion mode
         self._sg_mode = False
         self._sg_mode_active = False
 

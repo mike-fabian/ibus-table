@@ -605,7 +605,7 @@ class TabEngine(IBus.EngineSimple):
         use_dark_theme = it_util.variant_to_value(
             self._gsettings.get_user_value('darktheme'))
         if use_dark_theme:
-            self.set_dark_theme(True, False)
+            self.set_dark_theme(True, update_gsettings=False)
 
         self._lookup_table = self.get_new_lookup_table()
 

@@ -31,6 +31,13 @@ __all__ = (
     "TabEngine",
 )
 
+from typing import Any
+from typing import List
+from typing import Tuple
+from typing import Iterable
+from typing import Dict
+from typing import Union
+from typing import Optional
 import sys
 import os
 import re
@@ -105,7 +112,7 @@ def ascii_ispunct(character):
     '''
     return bool(character in '''!"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~''')
 
-THEME = {
+THEME: Dict[str, Union[bool, int]] = {
         "dark": False,
         "candidate_text": it_util.color_string_to_argb('#1973a2'),
         "system_phrase": it_util.color_string_to_argb('#000000'),
@@ -118,7 +125,7 @@ THEME = {
         "aux_text": it_util.color_string_to_argb('#9515b5'),
 }
 
-THEME_DARK = {
+THEME_DARK: Dict[str, Union[bool, int]] = {
         "dark": True,
         "candidate_text": it_util.color_string_to_argb('#7bc8f0'),
         "system_phrase": it_util.color_string_to_argb('#ffffff'),
@@ -131,7 +138,7 @@ THEME_DARK = {
         "aux_text": it_util.color_string_to_argb('#dd70f9'),
 }
 
-__HALF_FULL_TABLE = [
+__HALF_FULL_TABLE: List[Tuple[int, int, int]] = [
     (0x0020, 0x3000, 1),
     (0x0021, 0xFF01, 0x5E),
     (0x00A2, 0xFFE0, 2),
@@ -194,13 +201,11 @@ __HALF_FULL_TABLE = [
     (0xFFED, 0x25A0, 1),
     (0xFFEE, 0x25CB, 1)]
 
-def unichar_half_to_full(char):
+def unichar_half_to_full(char: str) -> str:
     '''
     Convert a character to full width if possible.
 
     :param char: A character to convert to full width
-    :type char: String
-    :rtype: String
 
     Examples:
 
@@ -217,7 +222,7 @@ def unichar_half_to_full(char):
             return chr(full + code - half)
     return char
 
-def unichar_full_to_half(char):
+def unichar_full_to_half(char: str) -> str:
     '''
     Convert a character to half width if possible.
 
@@ -249,12 +254,12 @@ SAVE_USER_TIMEOUT = 30 # in seconds
 class TabEngine(IBus.EngineSimple):
     '''The IM Engine for Tables'''
 
-    def __init__(self, bus, obj_path, database, unit_test=False):
+    def __init__(self, bus, obj_path, database, unit_test=False) -> None:
         super(TabEngine, self).__init__(connection=bus.get_connection(),
                                         object_path=obj_path)
         global DEBUG_LEVEL
         try:
-            DEBUG_LEVEL = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
+            DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
         except (TypeError, ValueError):
             DEBUG_LEVEL = int(0)
 
@@ -282,30 +287,30 @@ class TabEngine(IBus.EngineSimple):
             path='/org/freedesktop/ibus/engine/table/%s/' %self._engine_name)
         self._gsettings.connect('changed', self.on_gsettings_value_changed)
 
-        self._prop_dict = {}
-        self._sub_props_dict = {}
-        self.main_prop_list = []
-        self.chinese_mode_menu = {}
-        self.chinese_mode_properties = {}
-        self.input_mode_menu = {}
-        self.input_mode_properties = {}
-        self.letter_width_menu = {}
-        self.letter_width_properties = {}
-        self.punctuation_width_menu = {}
-        self.punctuation_width_properties = {}
-        self.pinyin_mode_menu = {}
-        self.pinyin_mode_properties = {}
-        self.suggestion_mode_menu = {}
-        self.suggestion_mode_properties = {}
-        self.onechar_mode_menu = {}
-        self.onechar_mode_properties = {}
-        self.autocommit_mode_menu = {}
-        self.autocommit_mode_properties = {}
-        self._setup_property = None
+        self._prop_dict: Dict[str, IBus.Property] = {}
+        self._sub_props_dict: Dict[str, IBus.PropList] = {}
+        self.main_prop_list: List[IBus.Property] = []
+        self.chinese_mode_menu: Dict[str, Any] = {}
+        self.chinese_mode_properties: Dict[str, Any] = {}
+        self.input_mode_menu: Dict[str, Any] = {}
+        self.input_mode_properties: Dict[str, Any] = {}
+        self.letter_width_menu: Dict[str, Any] = {}
+        self.letter_width_properties: Dict[str, Any] = {}
+        self.punctuation_width_menu: Dict[str, Any] = {}
+        self.punctuation_width_properties: Dict[str, Any] = {}
+        self.pinyin_mode_menu: Dict[str, Any] = {}
+        self.pinyin_mode_properties: Dict[str, Any] = {}
+        self.suggestion_mode_menu: Dict[str, Any] = {}
+        self.suggestion_mode_properties: Dict[str, Any] = {}
+        self.onechar_mode_menu: Dict[str, Any] = {}
+        self.onechar_mode_properties: Dict[str, Any] = {}
+        self.autocommit_mode_menu: Dict[str, Any] = {}
+        self.autocommit_mode_properties: Dict[str, Any] = {}
+        self._setup_property: Optional[IBus.Property] = None
         self.theme = THEME
 
-        self._keybindings = {}
-        self._hotkeys = None
+        self._keybindings: Dict[str, List[str]] = {}
+        self._hotkeys: Optional[it_util.HotKeys] = None
 
         # self._ime_py: Indicates whether this table supports pinyin mode
         self._ime_py = self.database.ime_properties.get('pinyin_mode')
@@ -401,8 +406,8 @@ class TabEngine(IBus.EngineSimple):
             self._gsettings.get_value('inputmode'))
 
         # self._prev_key: hold the key event last time.
-        self._prev_key = None
-        self._prev_char = None
+        self._prev_key: Optional[it_util.KeyEvent] = None
+        self._prev_char: Optional[str] = None
         self._double_quotation_state = False
         self._single_quotation_state = False
         # self._prefix: the previous commit character or phrase
@@ -412,6 +417,7 @@ class TabEngine(IBus.EngineSimple):
         self._sg_mode = False
         self._sg_mode_active = False
 
+        self._full_width_letter: List[Optional[bool]] = [None, None]
         self._full_width_letter = [
             it_util.variant_to_value(
                 self._gsettings.get_value('endeffullwidthletter')),
@@ -426,6 +432,7 @@ class TabEngine(IBus.EngineSimple):
             self._full_width_letter[1] = it_util.variant_to_value(
                 self._gsettings.get_value('tabdeffullwidthletter'))
 
+        self._full_width_punct: List[Optional[bool]] = [None, None]
         self._full_width_punct = [
             it_util.variant_to_value(
                 self._gsettings.get_value('endeffullwidthpunct')),
@@ -482,13 +489,13 @@ class TabEngine(IBus.EngineSimple):
         self._chars_invalid_update_candidates_last = u''
         # self._candidates holds the “best” candidates matching the user input
         # [(tabkeys, phrase, freq, user_freq), ...]
-        self._candidates = []
-        self._candidates_previous = []
+        self._candidates: List[Tuple[str, str, int, int]] = []
+        self._candidates_previous: List[Tuple[str, str, int, int]] = []
 
         # self._u_chars: holds the user input of the phrases which
         # have been automatically committed to preedit (but not yet
         # “really” committed).
-        self._u_chars = []
+        self._u_chars: List[str] = []
         # self._strings: holds the phrases which have been
         # automatically committed to preedit (but not yet “really”
         # committed).
@@ -514,7 +521,7 @@ class TabEngine(IBus.EngineSimple):
         # back from self._u_chars into self._chars_valid again and
         # the same candidate list is shown as before the last 'g' had
         # been entered.
-        self._strings = []
+        self._strings: List[str] = []
         # self._cursor_precommit: The cursor
         # position in the array of strings which have already been
         # committed to preëdit but not yet “really” committed.
@@ -855,7 +862,7 @@ class TabEngine(IBus.EngineSimple):
         LOGGER.info(
             '********** Initialized and ready for input: **********')
 
-    def get_new_lookup_table(self):
+    def get_new_lookup_table(self) -> IBus.LookupTable:
         '''
         Get a new lookup table
         '''
@@ -877,7 +884,7 @@ class TabEngine(IBus.EngineSimple):
             lookup_table.append_label(IBus.Text.new_from_string(label))
         return lookup_table
 
-    def clear_all_input_and_preedit(self):
+    def clear_all_input_and_preedit(self) -> None:
         '''
         Clear all input, whether committed to preëdit or not.
         '''
@@ -891,16 +898,14 @@ class TabEngine(IBus.EngineSimple):
         self._sg_mode_active = False
         self.update_candidates()
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         '''Checks whether the preëdit is empty
 
         Returns True if the preëdit is empty, False if not.
-
-        :rtype: boolean
         '''
         return self._chars_valid + self._chars_invalid == u''
 
-    def clear_input_not_committed_to_preedit(self):
+    def clear_input_not_committed_to_preedit(self) -> None:
         '''
         Clear the input which has not yet been committed to preëdit.
         '''
@@ -915,7 +920,7 @@ class TabEngine(IBus.EngineSimple):
         self._candidates = []
         self._candidates_previous = []
 
-    def add_input(self, char):
+    def add_input(self, char: str) -> bool:
         '''
         Add input character and update candidates.
 
@@ -938,7 +943,7 @@ class TabEngine(IBus.EngineSimple):
         res = self.update_candidates()
         return res
 
-    def pop_input(self):
+    def pop_input(self) -> str:
         '''remove and display last input char held'''
         last_input_char = ''
         if self._chars_invalid:
@@ -955,11 +960,12 @@ class TabEngine(IBus.EngineSimple):
         self.update_candidates()
         return last_input_char
 
-    def get_input_chars(self):
+    def get_input_chars(self) -> str:
         '''get characters held, valid and invalid'''
         return self._chars_valid + self._chars_invalid
 
-    def split_strings_committed_to_preedit(self, index, index_in_phrase):
+    def split_strings_committed_to_preedit(
+            self, index: int, index_in_phrase: int) -> None:
         head = self._strings[index][:index_in_phrase]
         tail = self._strings[index][index_in_phrase:]
         self._u_chars.pop(index)
@@ -969,7 +975,7 @@ class TabEngine(IBus.EngineSimple):
         self._u_chars.insert(index+1, self.database.parse_phrase(tail))
         self._strings.insert(index+1, tail)
 
-    def remove_preedit_before_cursor(self):
+    def remove_preedit_before_cursor(self) -> None:
         '''Remove preëdit left of cursor'''
         if self._chars_invalid:
             return
@@ -983,7 +989,7 @@ class TabEngine(IBus.EngineSimple):
         self._strings = self._strings[self._cursor_precommit:]
         self._cursor_precommit = 0
 
-    def remove_preedit_after_cursor(self):
+    def remove_preedit_after_cursor(self) -> None:
         '''Remove preëdit right of cursor'''
         if self._chars_invalid:
             return
@@ -997,7 +1003,7 @@ class TabEngine(IBus.EngineSimple):
         self._strings = self._strings[:self._cursor_precommit]
         self._cursor_precommit = len(self._strings)
 
-    def remove_preedit_character_before_cursor(self):
+    def remove_preedit_character_before_cursor(self) -> None:
         '''Remove character before cursor in strings comitted to preëdit'''
         if self._chars_invalid:
             return
@@ -1012,7 +1018,7 @@ class TabEngine(IBus.EngineSimple):
         self._strings.pop(self._cursor_precommit)
         self.update_candidates()
 
-    def remove_preedit_character_after_cursor(self):
+    def remove_preedit_character_after_cursor(self) -> None:
         '''Remove character after cursor in strings committed to preëdit'''
         if self._chars_invalid:
             return
@@ -1025,7 +1031,8 @@ class TabEngine(IBus.EngineSimple):
         self._u_chars.pop(self._cursor_precommit)
         self._strings.pop(self._cursor_precommit)
 
-    def get_preedit_tabkeys_parts(self):
+    def get_preedit_tabkeys_parts(
+            self) -> Tuple[Tuple[str, ...], str, Tuple[str, ...]]:
         '''Returns the tabkeys which were used to type the parts
         of the preëdit string.
 
@@ -1049,9 +1056,9 @@ class TabEngine(IBus.EngineSimple):
 
         when the wubi-jidian86 table is used.
         '''
-        left_of_current_edit = ()
+        left_of_current_edit: Tuple[str, ...] = ()
         current_edit = u''
-        right_of_current_edit = ()
+        right_of_current_edit: Tuple[str, ...] = ()
         if self.get_input_chars():
             current_edit = self.get_input_chars()
         if self._u_chars:
@@ -1061,7 +1068,7 @@ class TabEngine(IBus.EngineSimple):
                 self._u_chars[self._cursor_precommit:])
         return (left_of_current_edit, current_edit, right_of_current_edit)
 
-    def get_preedit_tabkeys_complete(self):
+    def get_preedit_tabkeys_complete(self) -> str:
         '''Returns the tabkeys which belong to the parts of the preëdit
         string as a single string
         '''
@@ -1072,7 +1079,8 @@ class TabEngine(IBus.EngineSimple):
                  + current_tabkeys
                  + u''.join(right_tabkeys))
 
-    def get_preedit_string_parts(self):
+    def get_preedit_string_parts(
+            self) -> Tuple[Tuple[str, ...], str, Tuple[str, ...]]:
         '''Returns the phrases which are parts of the preëdit string.
 
         Such as “(left_of_current_edit, current_edit, right_of_current_edit)”
@@ -1093,9 +1101,9 @@ class TabEngine(IBus.EngineSimple):
 
         when the wubi-jidian86 table is used.
         '''
-        left_of_current_edit = ()
+        left_of_current_edit: Tuple[str, ...] = ()
         current_edit = u''
-        right_of_current_edit = ()
+        right_of_current_edit: Tuple[str, ...] = ()
         if self._candidates:
             current_edit = self._candidates[
                 int(self._lookup_table.get_cursor_pos())][1]
@@ -1108,7 +1116,7 @@ class TabEngine(IBus.EngineSimple):
                 self._strings[self._cursor_precommit:])
         return (left_of_current_edit, current_edit, right_of_current_edit)
 
-    def get_preedit_string_complete(self):
+    def get_preedit_string_complete(self) -> str:
         '''Returns the phrases which are parts of the preëdit string as a
         single string
 
@@ -1127,7 +1135,7 @@ class TabEngine(IBus.EngineSimple):
                 + current_string
                 + u''.join(right_strings))
 
-    def get_caret(self):
+    def get_caret(self) -> int:
         '''Get caret position in preëdit string'''
         caret = 0
         if self._cursor_precommit and self._strings:
@@ -1140,7 +1148,7 @@ class TabEngine(IBus.EngineSimple):
             caret += len(self.get_input_chars())
         return caret
 
-    def arrow_left(self):
+    def arrow_left(self) -> None:
         '''Move cursor left in the preëdit string.'''
         if self._chars_invalid:
             return
@@ -1157,7 +1165,7 @@ class TabEngine(IBus.EngineSimple):
                 self._cursor_precommit-1, -1)
         self.update_candidates()
 
-    def arrow_right(self):
+    def arrow_right(self) -> None:
         '''Move cursor right in the preëdit string.'''
         if self._chars_invalid:
             return
@@ -1173,7 +1181,7 @@ class TabEngine(IBus.EngineSimple):
                 self._cursor_precommit-1, 1)
         self.update_candidates()
 
-    def control_arrow_left(self):
+    def control_arrow_left(self) -> None:
         '''Move cursor to the beginning of the preëdit string.'''
         if self._chars_invalid:
             return
@@ -1184,7 +1192,7 @@ class TabEngine(IBus.EngineSimple):
         self._cursor_precommit = 0
         self.update_candidates()
 
-    def control_arrow_right(self):
+    def control_arrow_right(self) -> None:
         '''Move cursor to the end of the preëdit string'''
         if self._chars_invalid:
             return
@@ -1196,7 +1204,7 @@ class TabEngine(IBus.EngineSimple):
         self.update_candidates()
 
     def append_table_candidate(
-            self, tabkeys=u'', phrase=u'', freq=0, user_freq=0):
+            self, tabkeys=u'', phrase=u'', freq=0, user_freq=0) -> None:
         '''append table candidate to lookup table'''
         assert self._input_mode == 1
         if DEBUG_LEVEL > 1:
@@ -1281,7 +1289,7 @@ class TabEngine(IBus.EngineSimple):
         self._lookup_table.set_cursor_visible(True)
 
     def append_pinyin_candidate(
-            self, tabkeys=u'', phrase=u'', freq=0, user_freq=0):
+            self, tabkeys=u'', phrase=u'', freq=0, user_freq=0) -> None:
         '''append pinyin candidate to lookup table'''
         assert self._input_mode == 1
         assert self._py_mode
@@ -1374,7 +1382,7 @@ class TabEngine(IBus.EngineSimple):
         self._lookup_table.set_cursor_visible(True)
 
     def append_suggestion_candidate(
-            self, prefix=u'', phrase=u'', freq=0, user_freq=0):
+            self, prefix=u'', phrase=u'', freq=0, user_freq=0) -> None:
         '''append suggestion candidate to lookup table'''
         assert self._input_mode == 1
         assert self._sg_mode
@@ -1417,15 +1425,13 @@ class TabEngine(IBus.EngineSimple):
         self._lookup_table.append_candidate(text)
         self._lookup_table.set_cursor_visible(True)
 
-    def update_candidates(self, force=False):
+    def update_candidates(self, force=False) -> bool:
         '''
         Searches for candidates and updates the lookuptable.
 
-        @force: Force update candidates even if no change to input
+        :param force: Force update candidates even if no change to input
 
         Returns “True” if candidates were found and “False” if not.
-
-        :rtype: Boolean
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
@@ -1525,7 +1531,7 @@ class TabEngine(IBus.EngineSimple):
             self._chars_invalid_update_candidates_last = self._chars_invalid
         return False
 
-    def commit_to_preedit(self):
+    def commit_to_preedit(self) -> bool:
         '''Add selected phrase in lookup table to preëdit string'''
         if not self._sg_mode_active:
             if not self._chars_valid:
@@ -1555,7 +1561,7 @@ class TabEngine(IBus.EngineSimple):
         self.update_candidates()
         return True
 
-    def commit_to_preedit_current_page(self, index):
+    def commit_to_preedit_current_page(self, index) -> bool:
         '''
         Commits the candidate at position “index” in the current
         page of the lookup table to the preëdit. Does not yet “really”
@@ -1571,7 +1577,7 @@ class TabEngine(IBus.EngineSimple):
         self._lookup_table.set_cursor_pos(real_index)
         return self.commit_to_preedit()
 
-    def get_aux_strings(self):
+    def get_aux_strings(self) -> str:
         '''Get aux strings'''
         input_chars = self.get_input_chars()
         if input_chars:
@@ -1644,7 +1650,7 @@ class TabEngine(IBus.EngineSimple):
                 aux_string_new += char
         return aux_string_new
 
-    def fill_lookup_table(self):
+    def fill_lookup_table(self) -> None:
         '''Fill more entries to self._lookup_table if needed.
 
         If the cursor in _lookup_table moved beyond current length,
@@ -1679,7 +1685,7 @@ class TabEngine(IBus.EngineSimple):
                 else:
                     assert False
 
-    def cursor_down(self):
+    def cursor_down(self) -> bool:
         '''Process Arrow Down Key Event
         Move Lookup Table cursor down'''
         self.fill_lookup_table()
@@ -1689,7 +1695,7 @@ class TabEngine(IBus.EngineSimple):
             return True
         return res
 
-    def cursor_up(self):
+    def cursor_up(self) -> bool:
         '''Process Arrow Up Key Event
         Move Lookup Table cursor up'''
         res = self._lookup_table.cursor_up()
@@ -1697,7 +1703,7 @@ class TabEngine(IBus.EngineSimple):
             return True
         return res
 
-    def page_down(self):
+    def page_down(self) -> bool:
         '''Process Page Down Key Event
         Move Lookup Table page down'''
         self.fill_lookup_table()
@@ -1706,7 +1712,7 @@ class TabEngine(IBus.EngineSimple):
             return True
         return res
 
-    def page_up(self):
+    def page_up(self) -> bool:
         '''Process Page Up Key Event
         move Lookup Table page up'''
         res = self._lookup_table.page_up()
@@ -1714,7 +1720,7 @@ class TabEngine(IBus.EngineSimple):
             return True
         return res
 
-    def remove_candidate_from_user_database(self, index):
+    def remove_candidate_from_user_database(self, index: int) -> bool:
         '''Remove the candidate shown at index in the lookup table
         from the user database.
 
@@ -1732,10 +1738,7 @@ class TabEngine(IBus.EngineSimple):
         :param index: The index in the current page of the lookup table.
                       The topmost candidate has the index 0 (and usually the
                       label “1”)
-        :type index: Integer
         :return: True if successful, False if not
-        :rtype: Boolean
-
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('index=%s', index)
@@ -1758,15 +1761,15 @@ class TabEngine(IBus.EngineSimple):
             return True
         return False
 
-    def get_cursor_pos(self):
+    def get_cursor_pos(self) -> int:
         '''get lookup table cursor position'''
         return self._lookup_table.get_cursor_pos()
 
-    def get_lookup_table(self):
+    def get_lookup_table(self) -> IBus.LookupTable:
         '''Get lookup table'''
         return self._lookup_table
 
-    def remove_char(self):
+    def remove_char(self) -> None:
         '''Process remove_char Key Event'''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('remove_char()')
@@ -1775,13 +1778,13 @@ class TabEngine(IBus.EngineSimple):
             return
         self.remove_preedit_character_before_cursor()
 
-    def delete(self):
+    def delete(self) -> None:
         '''Process delete Key Event'''
         if self.get_input_chars():
             return
         self.remove_preedit_character_after_cursor()
 
-    def select_next_candidate_in_current_page(self):
+    def select_next_candidate_in_current_page(self) -> bool:
         '''Cycle cursor to next candidate in the page.'''
         total = len(self._candidates)
 
@@ -1796,7 +1799,7 @@ class TabEngine(IBus.EngineSimple):
             return True
         return False
 
-    def select_previous_candidate_in_current_page(self):
+    def select_previous_candidate_in_current_page(self) -> bool:
         '''Cycle cursor to previous candidate in the page.'''
         total = len(self._candidates)
 
@@ -1811,11 +1814,11 @@ class TabEngine(IBus.EngineSimple):
             return True
         return False
 
-    def one_candidate(self):
+    def one_candidate(self) -> bool:
         '''Return true if there is only one candidate'''
         return len(self._candidates) == 1
 
-    def reset(self):
+    def reset(self) -> None:
         '''Clear the preëdit and close the lookup table
         '''
         self.clear_all_input_and_preedit()
@@ -1824,7 +1827,7 @@ class TabEngine(IBus.EngineSimple):
         self._prev_key = None
         self._update_ui()
 
-    def do_destroy(self):
+    def do_destroy(self) -> None:
         '''Called when this input engine is destroyed
         '''
         if self.sync_timeout_id > 0:
@@ -1837,17 +1840,16 @@ class TabEngine(IBus.EngineSimple):
             self._save_user_count = 0
         super(TabEngine, self).destroy()
 
-    def set_debug_level(self, debug_level, update_gsettings=True):
+    def set_debug_level(
+            self, debug_level: int, update_gsettings: bool = True) -> None:
         '''Sets the debug level
 
-        :param debug_level: The debug level
-        :type debug_level: integer >= 0 and <= 255
+        :param debug_level: The debug level (>= 0 and <= 255)
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the Gsettings key changed
                                  to avoid endless loops when the Gsettings
                                  key is changed twice in a short time.
-        :type update_gsettings: boolean
         '''
         global DEBUG_LEVEL
         if DEBUG_LEVEL > 1:
@@ -1864,24 +1866,21 @@ class TabEngine(IBus.EngineSimple):
                     'debuglevel',
                     GLib.Variant.new_int32(debug_level))
 
-    def get_debug_level(self):
-        '''Returns the current debug level
-
-        :rtype: integer
-        '''
+    def get_debug_level(self) -> int:
+        '''Returns the current debug level'''
         return self._debug_level
 
-    def set_keybindings(self, keybindings, update_gsettings=True):
+    def set_keybindings(self,
+                        keybindings: Union[Dict[str, List[str]], Any],
+                        update_gsettings: bool = True) -> None:
         '''Set current key bindings
 
         :param keybindings: The key bindings to use
-        :type keybindings: Dictionary of key bindings for commands
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the Gsettings key changed
                                  to avoid endless loops when the Gsettings
                                  key is changed twice in a short time.
-        :type update_gsettings: boolean
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
@@ -1946,22 +1945,18 @@ class TabEngine(IBus.EngineSimple):
                 'keybindings',
                 variant_dict.end())
 
-    def get_keybindings(self):
-        '''Get current key bindings
-
-        :rtype: Python dictionary of key bindings for commands
-        '''
+    def get_keybindings(self) -> Dict[str, List[str]]:
+        '''Get current key bindings'''
         # It is important to return a copy, we do not want to change
         # the private member variable directly.
         return self._keybindings.copy()
 
-    def set_input_mode(self, mode=1):
+    def set_input_mode(self, mode: int = 1):
         '''Sets whether direct input or the current table is used.
 
         :param mode: Whether to use direct input.
                      0: Use direct input.
                      1: Use the current table.
-        :type mode: Integer, 0 or 1.
         '''
         if mode == self._input_mode:
             return
@@ -1985,12 +1980,9 @@ class TabEngine(IBus.EngineSimple):
             self._full_width_punct[self._input_mode])
         self.reset()
 
-    def set_dark_theme(self, use_dark_theme=False, update_gsettings=True):
-        '''
-        Set theme to dark theme on request
-
-        :type use_dark_theme: Boolean
-        '''
+    def set_dark_theme(
+            self, use_dark_theme: bool = False, update_gsettings: bool = True):
+        '''Set theme to dark theme on request'''
         if use_dark_theme:
             theme = THEME_DARK
         else:
@@ -2004,15 +1996,13 @@ class TabEngine(IBus.EngineSimple):
                 "darktheme",
                 GLib.Variant.new_boolean(use_dark_theme))
 
-    def get_input_mode(self):
+    def get_input_mode(self) -> int:
         '''
         Return the current input mode, direct input: 0, table input: 1.
-
-        :rtype: Integer
         '''
         return self._input_mode
 
-    def set_pinyin_mode(self, mode=False):
+    def set_pinyin_mode(self, mode: bool = False) -> None:
         '''Sets whether Pinyin is used.
 
         :param mode: Whether to use Pinyin.
@@ -2040,21 +2030,16 @@ class TabEngine(IBus.EngineSimple):
             self._input_mode)
         self._update_ui()
 
-    def get_pinyin_mode(self):
-        '''
-        Return the current pinyin mode
-
-        :rtype: Boolean
-        '''
+    def get_pinyin_mode(self) -> bool:
+        '''Return the current pinyin mode'''
         return self._py_mode
 
-    def set_suggestion_mode(self, mode=False):
+    def set_suggestion_mode(self, mode: bool = False) -> None:
         '''Sets whether Suggestion is used.
 
         :param mode: Whether to use Suggestion.
                      True: Use Suggestion.
                      False: Not use Suggestion.
-        :type mode: Boolean
         '''
         if not self._ime_sg:
             return
@@ -2066,29 +2051,23 @@ class TabEngine(IBus.EngineSimple):
             self.suggestion_mode_menu, mode)
         self._update_ui()
 
-    def get_suggestion_mode(self):
-        '''
-        Return the current suggestion mode
-
-        :rtype: Boolean
-        '''
+    def get_suggestion_mode(self) -> bool:
+        '''Return the current suggestion mode'''
         return self._sg_mode
 
-    def set_onechar_mode(self, mode=False, update_gsettings=True):
+    def set_onechar_mode(
+            self, mode: bool = False, update_gsettings: bool = True) -> None:
         '''Sets whether only single characters should be matched in
         the database.
 
         :param mode: Whether only single characters should be matched.
                      True: Match only single characters.
                      False: Possibly match multiple characters at once.
-        :type mode: Boolean
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the dconf key changed
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
-        :type update_gsettings: Boolean
-
         '''
         if mode == self._onechar:
             return
@@ -2101,15 +2080,14 @@ class TabEngine(IBus.EngineSimple):
                 "onechar",
                 GLib.Variant.new_boolean(mode))
 
-    def get_onechar_mode(self):
+    def get_onechar_mode(self) -> bool:
         '''
         Returns whether only single characters are matched in the database.
-
-        :rtype: Boolean
         '''
         return self._onechar
 
-    def set_autocommit_mode(self, mode=False, update_gsettings=True):
+    def set_autocommit_mode(
+            self, mode: bool = False, update_gsettings: bool = True) -> None:
         '''Sets whether automatic commits go into the preëdit or into the
         application.
 
@@ -2117,14 +2095,11 @@ class TabEngine(IBus.EngineSimple):
                      or into the application.
                      True: Into the application.
                      False: Into the preëdit.
-        :type mode: Boolean
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the dconf key changed
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
-        :type update_gsettings: Boolean
-
         '''
         if mode == self._auto_commit:
             return
@@ -2136,15 +2111,12 @@ class TabEngine(IBus.EngineSimple):
                 "autocommit",
                 GLib.Variant.new_boolean(mode))
 
-    def get_autocommit_mode(self):
-        '''
-        Returns the current auto-commit mode.
-
-        :rtype: Boolean
-        '''
+    def get_autocommit_mode(self) -> bool:
+        '''Returns the current auto-commit mode'''
         return self._auto_commit
 
-    def set_autoselect_mode(self, mode=False, update_gsettings=True):
+    def set_autoselect_mode(
+            self, mode: bool = False, update_gsettings: bool = True) -> None:
         '''Sets whether the first candidate will be selected
         automatically during typing.
 
@@ -2165,26 +2137,21 @@ class TabEngine(IBus.EngineSimple):
                 "autoselect",
                 GLib.Variant.new_boolean(mode))
 
-    def get_autoselect_mode(self):
-        '''
-        Returns the current auto-select mode.
-
-        :rtype: Boolean
-        '''
+    def get_autoselect_mode(self) -> bool:
+        '''Returns the current auto-select mode'''
         return self._auto_select
 
-    def set_autowildcard_mode(self, mode=False, update_gsettings=True):
+    def set_autowildcard_mode(
+            self, mode: bool = False, update_gsettings: bool = True) -> None:
         '''Sets whether a wildcard should be automatically appended
         to the input.
 
         :param mode: Whether to append a wildcard automatically.
-        :type mode: Boolean
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the dconf key changed
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
-        :type update_gsettings: Boolean
         '''
         if mode == self._auto_wildcard:
             return
@@ -2195,25 +2162,21 @@ class TabEngine(IBus.EngineSimple):
                 "autowildcard",
                 GLib.Variant.new_boolean(mode))
 
-    def get_autowildcard_mode(self):
-        '''
-        Returns the  current automatic wildcard mode.
-
-        :rtype: Boolean
-        '''
+    def get_autowildcard_mode(self) -> bool:
+        '''Returns the  current automatic wildcard mode'''
         return self._auto_wildcard
 
-    def set_single_wildcard_char(self, char=u'', update_gsettings=True):
+    def set_single_wildcard_char(
+            self, char: str = u'', update_gsettings: bool = True) -> None:
         '''Sets the single wildchard character.
 
-        :param char: The character to use as a single wildcard.
-        :type char: String  of length 1.
+        :param char: The character to use as a single wildcard
+                     (String  of length 1).
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the dconf key changed
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
-        :type update_gsettings: Boolean
         '''
         if char == self._single_wildcard_char:
             return
@@ -2224,25 +2187,25 @@ class TabEngine(IBus.EngineSimple):
                 "singlewildcardchar",
                 GLib.Variant.new_string(char))
 
-    def get_single_wildcard_char(self):
+    def get_single_wildcard_char(self) -> str:
         '''
         Return the character currently used as a single wildcard.
 
-        :rtype: String of length 1.
+        (String of length 1.)
         '''
         return self._single_wildcard_char
 
-    def set_multi_wildcard_char(self, char=u'', update_gsettings=True):
+    def set_multi_wildcard_char(
+            self, char: str = u'', update_gsettings: bool = True) -> None:
         '''Sets the multi wildchard character.
 
         :param char: The character to use as a multi wildcard.
-        :type mode: String  of length 1.
+                     (String  of length 1.)
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the dconf key changed
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
-        :type update_gsettings: Boolean
         '''
         if len(char) > 1:
             char = char[0]
@@ -2255,27 +2218,25 @@ class TabEngine(IBus.EngineSimple):
                 "multiwildcardchar",
                 GLib.Variant.new_string(char))
 
-    def get_multi_wildcard_char(self):
+    def get_multi_wildcard_char(self) -> str:
         '''
         Return the character currently used as a multi wildcard.
-
-        :rtype: String of length 1.
+        (String of length 1.)
         '''
         return self._multi_wildcard_char
 
-    def set_always_show_lookup(self, mode=False, update_gsettings=True):
+    def set_always_show_lookup(
+            self, mode: bool = False, update_gsettings: bool = True) -> None:
         '''Sets the whether the lookup table is shown.
 
         :param mode: Whether to show the lookup table.
-        :type mode: Boolean
-                    True: Lookup table is shown
-                    False: Lookup table is hidden
+                     True: Lookup table is shown
+                     False: Lookup table is hidden
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the dconf key changed
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
-        :type update_gsettings: Boolean
         '''
         if mode == self._always_show_lookup:
             return
@@ -2285,28 +2246,24 @@ class TabEngine(IBus.EngineSimple):
                 "alwaysshowlookup",
                 GLib.Variant.new_boolean(mode))
 
-    def get_always_show_lookup(self):
-        '''
-        Returns whether the lookup table is shown or hidden.
-
-        :rtype: Boolean
-        '''
+    def get_always_show_lookup(self) -> bool:
+        '''Returns whether the lookup table is shown or hidden'''
         return self._always_show_lookup
 
-    def set_lookup_table_orientation(self, orientation, update_gsettings=True):
+    def set_lookup_table_orientation(
+            self, orientation: int, update_gsettings: bool = True) -> None:
         '''Sets the orientation of the lookup table
 
         :param orientation: The orientation of the lookup table
-        :type mode: 0 <= integer <= 2
-                    IBUS_ORIENTATION_HORIZONTAL = 0,
-                    IBUS_ORIENTATION_VERTICAL   = 1,
-                    IBUS_ORIENTATION_SYSTEM     = 2.
+                            0 <= orientation <= 2
+                            IBUS_ORIENTATION_HORIZONTAL = 0,
+                            IBUS_ORIENTATION_VERTICAL   = 1,
+                            IBUS_ORIENTATION_SYSTEM     = 2.
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the dconf key changed
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
-        :type update_gsettings: boolean
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('orientation(%s)', orientation)
@@ -2320,24 +2277,21 @@ class TabEngine(IBus.EngineSimple):
                     'lookuptableorientation',
                     GLib.Variant.new_int32(orientation))
 
-    def get_lookup_table_orientation(self):
-        '''Returns the current orientation of the lookup table
-
-        :rtype: integer
-        '''
+    def get_lookup_table_orientation(self) -> int:
+        '''Returns the current orientation of the lookup table'''
         return self._orientation
 
-    def set_page_size(self, page_size, update_gsettings=True):
+    def set_page_size(
+            self, page_size: int, update_gsettings: bool = True) -> None:
         '''Sets the page size of the lookup table
 
-        :param orientation: The orientation of the lookup table
-        :type mode: integer >= 1 and <= number of select keys
+        :param page_size: The page size of the lookup table
+                          1 <= page size <= number of select keys
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the dconf key changed
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
-        :type update_gsettings: boolean
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('page_size=%s', page_size)
@@ -2359,29 +2313,26 @@ class TabEngine(IBus.EngineSimple):
                 'lookuptablepagesize',
                 GLib.Variant.new_int32(page_size))
 
-    def get_page_size(self):
-        '''Returns the current page size of the lookup table
-
-        :rtype: integer
-        '''
+    def get_page_size(self) -> int:
+        '''Returns the current page size of the lookup table'''
         return self._page_size
 
     def set_letter_width(
-            self, mode=False, input_mode=0, update_gsettings=True):
+            self,
+            mode: bool = False,
+            input_mode: int = 0,
+            update_gsettings: bool = True) -> None:
         '''
         Sets whether full width letters should be used.
 
         :param mode: Whether to use full width letters
-        :type mode: Boolean
         :param input_mode: The input mode (direct input: 0, table: 1)
                            for which to set the full width letter mode.
-        :type input_mode: Integer
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the Gsettings key changed
                                  to avoid endless loops when the Gsettings
                                  key is changed twice in a short time.
-        :type update_gsettings: Boolean
         '''
         if mode == self._full_width_letter[input_mode]:
             return
@@ -2399,30 +2350,26 @@ class TabEngine(IBus.EngineSimple):
                     "endeffullwidthletter",
                     GLib.Variant.new_boolean(mode))
 
-    def get_letter_width(self):
-        '''
-        Return the current full width letter modes.
-
-        :rtype: [Boolean, Boolean]
-        '''
+    def get_letter_width(self) -> List[Optional[bool]]:
+        '''Return the current full width letter modes: [Boolean, Boolean]'''
         return self._full_width_letter
 
     def set_punctuation_width(
-            self, mode=False, input_mode=0, update_gsettings=True):
+            self,
+            mode: bool = False,
+            input_mode: int = 0,
+            update_gsettings: bool = True) -> None:
         '''
         Sets whether full width punctuation should be used.
 
         :param mode: Whether to use full width punctuation
-        :type mode: Boolean
         :param input_mode: The input mode (direct input: 0, table: 1)
                            for which to set the full width punctuation mode.
-        :type input_mode: Integer
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the Gsettings key changed
                                  to avoid endless loops when the Gsettings
                                  key is changed twice in a short time.
-        :type update_gsettings: Boolean
         '''
         if mode == self._full_width_punct[input_mode]:
             return
@@ -2440,15 +2387,13 @@ class TabEngine(IBus.EngineSimple):
                     "endeffullwidthpunct",
                     GLib.Variant.new_boolean(mode))
 
-    def get_punctuation_width(self):
-        '''
-        Return the current full width punctuation modes.
-
-        :rtype: [Boolean, Boolean]
+    def get_punctuation_width(self) -> List[Optional[bool]]:
+        '''Return the current full width punctuation modes: [Boolean, Boolean]
         '''
         return self._full_width_punct
 
-    def set_chinese_mode(self, mode=0, update_gsettings=True):
+    def set_chinese_mode(
+            self, mode: int = 0, update_gsettings: bool = True) -> None:
         '''Sets the candidate filter mode used for Chinese
 
         0 means to show simplified Chinese only
@@ -2457,14 +2402,12 @@ class TabEngine(IBus.EngineSimple):
         3 means to show all characters but show traditional Chinese first
         4 means to show all characters
 
-        :param mode: The Chinese filter mode
-        :type mode: integer >= 0 and <= 4
+        :param mode: The Chinese filter mode, 0 <= mode <= 4
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the dconf key changed
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
-        :type update_gsettings: boolean
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('mode=%s', mode)
@@ -2479,7 +2422,7 @@ class TabEngine(IBus.EngineSimple):
                 "chinesemode",
                 GLib.Variant.new_int32(mode))
 
-    def get_chinese_mode(self):
+    def get_chinese_mode(self) -> int:
         '''
         Return the current Chinese mode.
 
@@ -2488,18 +2431,21 @@ class TabEngine(IBus.EngineSimple):
         2 means to show all characters but show simplified Chinese first
         3 means to show all characters but show traditional Chinese first
         4 means to show all characters
-
-        :rtype: Integer
         '''
         return self._chinese_mode
 
-    def _init_or_update_property_menu(self, menu, current_mode=0):
+    def _init_or_update_property_menu(
+            self,
+            menu: Dict[str, Any],
+            current_mode: Union[int, bool, None] = 0) -> None:
         '''
         Initialize or update a ibus property menu
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'menu=%s current_mode=%s', repr(menu), current_mode)
+        if not current_mode:
+            current_mode = 0
         menu_key = menu['key']
         sub_properties_dict = menu['sub_properties']
         for prop in sub_properties_dict:
@@ -2542,7 +2488,11 @@ class TabEngine(IBus.EngineSimple):
             self._prop_dict[menu_key].set_visible(visible)
             self.update_property(self._prop_dict[menu_key]) # important!
 
-    def _init_or_update_sub_properties(self, menu_key, modes, current_mode=0):
+    def _init_or_update_sub_properties(
+            self,
+            menu_key: str,
+            modes: Dict[str, Any],
+            current_mode: int = 0) -> None:
         '''
         Initialize or update the sub-properties of a property menu entry.
         '''
@@ -2585,7 +2535,7 @@ class TabEngine(IBus.EngineSimple):
                 self._prop_dict[mode].set_state(state)
                 self.update_property(self._prop_dict[mode]) # important!
 
-    def _init_properties(self):
+    def _init_properties(self) -> None:
         '''
         Initialize the ibus property menus
         '''
@@ -2643,7 +2593,9 @@ class TabEngine(IBus.EngineSimple):
         self.register_properties(self.main_prop_list)
 
     def do_property_activate(
-            self, ibus_property, prop_state=IBus.PropState.UNCHECKED):
+            self,
+            ibus_property: str,
+            prop_state=IBus.PropState.UNCHECKED) -> None:
         '''
         Handle clicks on properties
         '''
@@ -2702,7 +2654,7 @@ class TabEngine(IBus.EngineSimple):
                 self.chinese_mode_properties[ibus_property]['number'])
             return
 
-    def _start_setup(self):
+    def _start_setup(self) -> None:
         '''
         Start the setup tool if it is not running yet.
         '''
@@ -2716,7 +2668,7 @@ class TabEngine(IBus.EngineSimple):
                 return
             self._setup_pid = 0
         setup_cmd = os.path.join(
-            os.getenv('IBUS_TABLE_LIB_LOCATION'),
+            str(os.getenv('IBUS_TABLE_LIB_LOCATION')),
             'ibus-setup-table')
         self._setup_pid = os.spawnl(
             os.P_NOWAIT,
@@ -2724,7 +2676,7 @@ class TabEngine(IBus.EngineSimple):
             'ibus-setup-table',
             '--engine-name table:%s' %self._engine_name)
 
-    def _update_preedit(self):
+    def _update_preedit(self) -> None:
         '''Update Preedit String in UI'''
 
         if self._sg_mode_active:
@@ -2788,7 +2740,7 @@ class TabEngine(IBus.EngineSimple):
         super(TabEngine, self).update_preedit_text(
             text, self.get_caret(), True)
 
-    def _update_aux(self):
+    def _update_aux(self) -> None:
         '''Update Aux String in UI'''
         if self._sg_mode_active:
             return
@@ -2818,7 +2770,7 @@ class TabEngine(IBus.EngineSimple):
         else:
             self.hide_auxiliary_text()
 
-    def _update_lookup_table(self):
+    def _update_lookup_table(self) -> None:
         '''Update Lookup Table in UI'''
         if not self._candidates:
             # Also make sure to hide lookup table if there are
@@ -2840,13 +2792,13 @@ class TabEngine(IBus.EngineSimple):
 
         self.update_lookup_table(self.get_lookup_table(), True)
 
-    def _update_ui(self):
+    def _update_ui(self) -> None:
         '''Update User Interface'''
         self._update_lookup_table()
         self._update_preedit()
         self._update_aux()
 
-    def _check_phrase(self, tabkeys=u'', phrase=u''):
+    def _check_phrase(self, tabkeys: str = u'', phrase: str = u'') -> None:
         """Check the given phrase and update save user db info"""
         if not tabkeys or not phrase:
             return
@@ -2856,7 +2808,7 @@ class TabEngine(IBus.EngineSimple):
             self._save_user_start = time.time()
         self._save_user_count += 1
 
-    def _sync_user_db(self):
+    def _sync_user_db(self) -> bool:
         """Save user db to disk"""
         if self._save_user_count >= 0:
             now = time.time()
@@ -2868,15 +2820,13 @@ class TabEngine(IBus.EngineSimple):
                 self._save_user_start = now
         return True
 
-    def commit_string(self, phrase, tabkeys=u''):
+    def commit_string(self, phrase: str, tabkeys: str = u'') -> None:
         '''
         Commit the string “phrase”, update the user database,
         and clear the preëdit.
 
         :param phrase: The text to commit
-        :type phrase: String
         :param tabkeys: The keys typed to produce this text
-        :type tabkeys: String
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('phrase=%s', phrase)
@@ -2892,7 +2842,7 @@ class TabEngine(IBus.EngineSimple):
             self._prev_char = None
         self._check_phrase(tabkeys=tabkeys, phrase=phrase)
 
-    def commit_everything_unless_invalid(self):
+    def commit_everything_unless_invalid(self) -> bool:
         '''
         Commits the current input to the preëdit and then
         commits the preëdit to the application unless there are
@@ -2916,7 +2866,7 @@ class TabEngine(IBus.EngineSimple):
                            tabkeys=self.get_preedit_tabkeys_complete())
         return True
 
-    def _convert_to_full_width(self, char):
+    def _convert_to_full_width(self, char: str) -> str:
         '''Convert half width character to full width'''
 
         # This function handles punctuation that does not comply to the
@@ -2964,7 +2914,7 @@ class TabEngine(IBus.EngineSimple):
 
         return unichar_half_to_full(char)
 
-    def do_candidate_clicked(self, index, _button, _state):
+    def do_candidate_clicked(self, index: int, _button, _state) -> bool:
         if self.commit_to_preedit_current_page(index):
             # commits to preëdit
             self.commit_string(
@@ -2973,20 +2923,18 @@ class TabEngine(IBus.EngineSimple):
             return True
         return False
 
-    def _command_setup(self):
+    def _command_setup(self) -> bool:
         '''Handle hotkey for the command “setup”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         self._start_setup()
         return True
 
-    def _command_toggle_input_mode_on_off(self):
+    def _command_toggle_input_mode_on_off(self) -> bool:
         '''Handle hotkey for the command “toggle_input_mode_on_off”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if not self.is_empty():
             commit_string = self.get_preedit_tabkeys_complete()
@@ -2994,11 +2942,10 @@ class TabEngine(IBus.EngineSimple):
         self.set_input_mode(int(not self._input_mode))
         return True
 
-    def _command_toggle_letter_width(self):
+    def _command_toggle_letter_width(self) -> bool:
         '''Handle hotkey for the command “toggle_letter_width”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if not self.database._is_cjk:
             return False
@@ -3007,11 +2954,10 @@ class TabEngine(IBus.EngineSimple):
             input_mode=self._input_mode)
         return True
 
-    def _command_toggle_punctuation_width(self):
+    def _command_toggle_punctuation_width(self) -> bool:
         '''Handle hotkey for the command “toggle_punctuation_width”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if not self.database._is_cjk:
             return False
@@ -3020,11 +2966,10 @@ class TabEngine(IBus.EngineSimple):
             input_mode=self._input_mode)
         return True
 
-    def _command_cancel(self):
+    def _command_cancel(self) -> bool:
         '''Handle hotkey for the command “cancel”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if self.is_empty():
             return False
@@ -3032,22 +2977,20 @@ class TabEngine(IBus.EngineSimple):
         self._update_ui()
         return True
 
-    def _command_toggle_suggestion_mode(self):
+    def _command_toggle_suggestion_mode(self) -> bool:
         '''Handle hotkey for the command “toggle_suggestion_mode”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if not self._ime_sg:
             return False
         self.set_suggestion_mode(not self._sg_mode)
         return True
 
-    def _command_commit_to_preedit(self):
+    def _command_commit_to_preedit(self) -> bool:
         '''Handle hotkey for the command “commit_to_preedit”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if self.is_empty():
             return False
@@ -3055,11 +2998,10 @@ class TabEngine(IBus.EngineSimple):
         self._update_ui()
         return res
 
-    def _command_toggle_pinyin_mode(self):
+    def _command_toggle_pinyin_mode(self) -> bool:
         '''Handle hotkey for the command “toggle_pinyin_mode”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if not (self._ime_py and self.is_empty()):
             # Change pinyin mode only if empty. When it is not empty
@@ -3069,33 +3011,30 @@ class TabEngine(IBus.EngineSimple):
         self.set_pinyin_mode(not self._py_mode)
         return True
 
-    def _command_select_next_candidate_in_current_page(self):
+    def _command_select_next_candidate_in_current_page(self) -> bool:
         '''Handle hotkey for the command
         “select_next_candidate_in_current_page”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         res = self.select_next_candidate_in_current_page()
         self._update_ui()
         return res
 
-    def _command_select_previous_candidate_in_current_page(self):
+    def _command_select_previous_candidate_in_current_page(self) -> bool:
         '''Handle hotkey for the command
         “select_previous_candidate_in_current_page”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         res = self.select_previous_candidate_in_current_page()
         self._update_ui()
         return res
 
-    def _command_toggle_onechar_mode(self):
+    def _command_toggle_onechar_mode(self) -> bool:
         '''Handle hotkey for the command “toggle_onechar_mode”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if not self.database._is_cjk:
             return False
@@ -3106,22 +3045,20 @@ class TabEngine(IBus.EngineSimple):
             self._update_ui()
         return True
 
-    def _command_toggle_autocommit_mode(self):
+    def _command_toggle_autocommit_mode(self) -> bool:
         '''Handle hotkey for the command “toggle_autocommit_mode”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if self.database.user_can_define_phrase and self.database.rules:
             self.set_autocommit_mode(not self._auto_commit)
             return True
         return False
 
-    def _command_switch_to_next_chinese_mode(self):
+    def _command_switch_to_next_chinese_mode(self) -> bool:
         '''Handle hotkey for the command “switch_to_next_chinese_mode”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if not self.database._is_chinese:
             return False
@@ -3132,11 +3069,10 @@ class TabEngine(IBus.EngineSimple):
             self._update_ui()
         return True
 
-    def _command_commit(self):
+    def _command_commit(self) -> bool:
         '''Handle hotkey for the command “commit”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if (self._u_chars
             or not self.is_empty()
@@ -3155,11 +3091,10 @@ class TabEngine(IBus.EngineSimple):
             return True
         return False
 
-    def _command_lookup_table_page_down(self):
+    def _command_lookup_table_page_down(self) -> bool:
         '''Handle hotkey for the command “lookup_table_page_down”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if not self._candidates:
             return False
@@ -3167,11 +3102,10 @@ class TabEngine(IBus.EngineSimple):
         self._update_ui()
         return res
 
-    def _command_lookup_table_page_up(self):
+    def _command_lookup_table_page_up(self) -> bool:
         '''Handle hotkey for the command “lookup_table_page_up”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         if not self._candidates:
             return False
@@ -3179,13 +3113,11 @@ class TabEngine(IBus.EngineSimple):
         self._update_ui()
         return res
 
-    def _execute_commit_candidate_to_preedit_number(self, number):
+    def _execute_commit_candidate_to_preedit_number(self, number: int) -> bool:
         '''Execute the hotkey command “commit_candidate_to_preedit_<number>”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         :param number: The number of the candidate
-        :type number: Integer
         '''
         if not self._candidates:
             return False
@@ -3194,93 +3126,81 @@ class TabEngine(IBus.EngineSimple):
         self._update_ui()
         return res
 
-    def _command_commit_candidate_to_preedit_1(self):
+    def _command_commit_candidate_to_preedit_1(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_to_preedit_1”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_commit_candidate_to_preedit_number(1)
 
-    def _command_commit_candidate_to_preedit_2(self):
+    def _command_commit_candidate_to_preedit_2(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_to_preedit_2”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_commit_candidate_to_preedit_number(2)
 
-    def _command_commit_candidate_to_preedit_3(self):
+    def _command_commit_candidate_to_preedit_3(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_to_preedit_3”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_commit_candidate_to_preedit_number(3)
 
-    def _command_commit_candidate_to_preedit_4(self):
+    def _command_commit_candidate_to_preedit_4(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_to_preedit_4”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_commit_candidate_to_preedit_number(4)
 
-    def _command_commit_candidate_to_preedit_5(self):
+    def _command_commit_candidate_to_preedit_5(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_to_preedit_5”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_commit_candidate_to_preedit_number(5)
 
-    def _command_commit_candidate_to_preedit_6(self):
+    def _command_commit_candidate_to_preedit_6(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_to_preedit_6”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_commit_candidate_to_preedit_number(6)
 
-    def _command_commit_candidate_to_preedit_7(self):
+    def _command_commit_candidate_to_preedit_7(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_to_preedit_7”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_commit_candidate_to_preedit_number(7)
 
-    def _command_commit_candidate_to_preedit_8(self):
+    def _command_commit_candidate_to_preedit_8(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_to_preedit_8”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_commit_candidate_to_preedit_number(8)
 
-    def _command_commit_candidate_to_preedit_9(self):
+    def _command_commit_candidate_to_preedit_9(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_to_preedit_9”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_commit_candidate_to_preedit_number(9)
 
-    def _command_commit_candidate_to_preedit_10(self):
+    def _command_commit_candidate_to_preedit_10(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_to_preedit_10”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_commit_candidate_to_preedit_number(10)
 
-    def _execute_remove_candidate_number(self, number):
+    def _execute_remove_candidate_number(self, number: int) -> bool:
         '''Execute the hotkey command “remove_candidate_<number>”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         :param number: The number of the candidate
-        :type number: Integer
         '''
         if not self._candidates:
             return False
@@ -3289,93 +3209,81 @@ class TabEngine(IBus.EngineSimple):
         self._update_ui()
         return res
 
-    def _command_remove_candidate_1(self):
+    def _command_remove_candidate_1(self) -> bool:
         '''Handle hotkey for the command “remove_candidate_1”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_remove_candidate_number(1)
 
-    def _command_remove_candidate_2(self):
+    def _command_remove_candidate_2(self) -> bool:
         '''Handle hotkey for the command “remove_candidate_2”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_remove_candidate_number(2)
 
-    def _command_remove_candidate_3(self):
+    def _command_remove_candidate_3(self) -> bool:
         '''Handle hotkey for the command “remove_candidate_3”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_remove_candidate_number(3)
 
-    def _command_remove_candidate_4(self):
+    def _command_remove_candidate_4(self) -> bool:
         '''Handle hotkey for the command “remove_candidate_4”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_remove_candidate_number(4)
 
-    def _command_remove_candidate_5(self):
+    def _command_remove_candidate_5(self) -> bool:
         '''Handle hotkey for the command “remove_candidate_5”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_remove_candidate_number(5)
 
-    def _command_remove_candidate_6(self):
+    def _command_remove_candidate_6(self) -> bool:
         '''Handle hotkey for the command “remove_candidate_6”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_remove_candidate_number(6)
 
-    def _command_remove_candidate_7(self):
+    def _command_remove_candidate_7(self) -> bool:
         '''Handle hotkey for the command “remove_candidate_7”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_remove_candidate_number(7)
 
-    def _command_remove_candidate_8(self):
+    def _command_remove_candidate_8(self) -> bool:
         '''Handle hotkey for the command “remove_candidate_8”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_remove_candidate_number(8)
 
-    def _command_remove_candidate_9(self):
+    def _command_remove_candidate_9(self) -> bool:
         '''Handle hotkey for the command “remove_candidate_9”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_remove_candidate_number(9)
 
-    def _command_remove_candidate_10(self):
+    def _command_remove_candidate_10(self) -> bool:
         '''Handle hotkey for the command “remove_candidate_10”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_remove_candidate_number(10)
 
-    def _execute_command_commit_candidate_number(self, number):
+    def _execute_command_commit_candidate_number(self, number: int) -> bool:
         '''Execute the hotkey command “commit_candidate_<number>”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         :param number: The number of the candidate
-        :type number: Integer
         '''
         if not self._candidates or number > len(self._candidates):
             return False
@@ -3397,101 +3305,91 @@ class TabEngine(IBus.EngineSimple):
             return True
         return False
 
-    def _command_commit_candidate_1(self):
+    def _command_commit_candidate_1(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_1”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_command_commit_candidate_number(1)
 
-    def _command_commit_candidate_2(self):
+    def _command_commit_candidate_2(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_2”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_command_commit_candidate_number(2)
 
-    def _command_commit_candidate_3(self):
+    def _command_commit_candidate_3(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_3”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_command_commit_candidate_number(3)
 
-    def _command_commit_candidate_4(self):
+    def _command_commit_candidate_4(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_4”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_command_commit_candidate_number(4)
 
-    def _command_commit_candidate_5(self):
+    def _command_commit_candidate_5(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_5”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_command_commit_candidate_number(5)
 
-    def _command_commit_candidate_6(self):
+    def _command_commit_candidate_6(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_6”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_command_commit_candidate_number(6)
 
-    def _command_commit_candidate_7(self):
+    def _command_commit_candidate_7(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_7”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_command_commit_candidate_number(7)
 
-    def _command_commit_candidate_8(self):
+    def _command_commit_candidate_8(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_8”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_command_commit_candidate_number(8)
 
-    def _command_commit_candidate_9(self):
+    def _command_commit_candidate_9(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_9”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_command_commit_candidate_number(9)
 
-    def _command_commit_candidate_10(self):
+    def _command_commit_candidate_10(self) -> bool:
         '''Handle hotkey for the command “commit_candidate_10”
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         '''
         return self._execute_command_commit_candidate_number(10)
 
-    def _handle_hotkeys(self, key, commands=()):
+    def _handle_hotkeys(
+            self,
+            key: it_util.KeyEvent,
+            commands: Iterable[str] = ()) -> bool:
         '''Handle hotkey commands
 
         :return: True if the key was completely handled, False if not.
-        :rtype: Boolean
         :param key: The typed key. If this is a hotkey,
                     execute the command for this hotkey.
-        :type key: KeyEvent object
         :param commands: A list of commands to check whether
                          the key matches the keybinding for one of
                          these commands.
                          If the list of commands is empty, check
                          *all* commands in the self._keybindings
                          dictionary.
-        :type commands: List of strings
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('KeyEvent object: %s\n', key)
@@ -3506,7 +3404,7 @@ class TabEngine(IBus.EngineSimple):
             # default in the setup tool.
             commands = sorted(self._keybindings.keys())
         for command in commands:
-            if (self._prev_key, key, command) in self._hotkeys:
+            if (self._prev_key, key, command) in self._hotkeys: # type: ignore
                 if DEBUG_LEVEL > 1:
                     LOGGER.debug('matched command=%s', command)
                 command_function_name = '_command_%s' % command
@@ -3520,7 +3418,7 @@ class TabEngine(IBus.EngineSimple):
                     return True
         return False
 
-    def _return_false(self, keyval, keycode, state):
+    def _return_false(self, keyval: int, keycode: int, state: int) -> bool:
         '''A replacement for “return False” in do_process_key_event()
 
         do_process_key_event should return “True” if a key event has
@@ -3557,13 +3455,15 @@ class TabEngine(IBus.EngineSimple):
             return True
         return False
 
-    def __do_process_key_event(self, _obj, keyval, keycode, state):
+    def __do_process_key_event(
+            self, _obj, keyval: int, keycode: int, state: int) -> bool:
         '''
         This function is connected to the 'process-key-event' signal.
         '''
         return self._do_process_key_event(keyval, keycode, state)
 
-    def _do_process_key_event(self, keyval, keycode, state):
+    def _do_process_key_event(
+            self, keyval: int, keycode: int, state: int) -> bool:
         '''Process Key Events
         Key Events include Key Press and Key Release,
         modifier means Key Pressed
@@ -3581,7 +3481,7 @@ class TabEngine(IBus.EngineSimple):
         self._prev_key = key
         return result
 
-    def _process_key_event(self, key):
+    def _process_key_event(self, key: it_util.KeyEvent) -> bool:
         '''
         Internal method to process key event
 
@@ -3602,35 +3502,29 @@ class TabEngine(IBus.EngineSimple):
             return self._table_mode_process_key_event(key)
         return self._english_mode_process_key_event(key)
 
-    def cond_letter_translate(self, char):
+    def cond_letter_translate(self, char: str) -> str:
         '''Converts “char” to full width *if* full width letter mode is on for
         the current input mode (direct input or table mode) *and* if
         the current table is for CJK.
 
         :param char: The character to maybe convert to full width
-        :type char: String
-        :rtype: String
-
         '''
         if self._full_width_letter[self._input_mode] and self.database._is_cjk:
             return self._convert_to_full_width(char)
         return char
 
-    def cond_punct_translate(self, char):
+    def cond_punct_translate(self, char: str) -> str:
         '''Converts “char” to full width *if* full width punctuation mode is
         on for the current input mode (direct input or table mode)
         *and* if the current table is for CJK.
 
         :param char: The character to maybe convert to full width
-        :type char: String
-        :rtype: String
-
         '''
         if self._full_width_punct[self._input_mode] and self.database._is_cjk:
             return self._convert_to_full_width(char)
         return char
 
-    def _english_mode_process_key_event(self, key):
+    def _english_mode_process_key_event(self, key: it_util.KeyEvent) -> bool:
         '''
         Process a key event in “English” (“Direct input”) mode.
         '''
@@ -3656,7 +3550,7 @@ class TabEngine(IBus.EngineSimple):
         self.commit_string(trans_char)
         return True
 
-    def _table_mode_process_key_event(self, key):
+    def _table_mode_process_key_event(self, key: it_util.KeyEvent) -> bool:
         '''
         Process a key event in “Table” mode, i.e. when the
         table is actually used and not switched off by using
@@ -3942,42 +3836,50 @@ class TabEngine(IBus.EngineSimple):
         # just pass it through to the application by returning “False”.
         return self._return_false(key.val, key.code, key.state)
 
-    def do_focus_in(self):
+    def do_focus_in(self) -> None:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('do_focus_in()')
         if self._on:
             self.register_properties(self.main_prop_list)
             self._update_ui()
 
-    def do_focus_out(self):
+    def do_focus_out(self) -> None:
         if self._has_input_purpose:
             self._input_purpose = 0
         self.clear_all_input_and_preedit()
 
-    def do_set_content_type(self, purpose, _hints):
+    def do_set_content_type(self, purpose: int, _hints: int) -> None:
         if self._has_input_purpose:
             self._input_purpose = purpose
 
-    def do_enable(self):
+    def do_enable(self) -> None:
         self._on = True
         self.do_focus_in()
 
-    def do_disable(self):
+    def do_disable(self) -> None:
         self._on = False
 
-    def do_page_up(self):
+    def do_page_up(self) -> bool:
+        '''Called when the page up button in the lookup table is clicked with
+        the mouse
+
+        '''
         if self.page_up():
             self._update_ui()
             return True
         return False
 
-    def do_page_down(self):
+    def do_page_down(self) -> bool:
+        '''Called when the page down button in the lookup table is clicked with
+        the mouse
+
+        '''
         if self.page_down():
             self._update_ui()
             return True
         return False
 
-    def on_gsettings_value_changed(self, _settings, key):
+    def on_gsettings_value_changed(self, _settings, key) -> None:
         '''
         Called when a value in the settings has been changed.
         '''
@@ -4030,8 +3932,8 @@ class TabEngine(IBus.EngineSimple):
             set_function = set_functions[key]['set_function']
             kwargs = set_functions[key]['kwargs']
             if key != 'inputmode':
-                kwargs.update(dict(update_gsettings=False))
-            set_function(value, **kwargs)
+                kwargs.update(dict(update_gsettings=False)) # type: ignore
+            set_function(value, **kwargs) # type: ignore
             return
         LOGGER.debug('Unknown key')
         return

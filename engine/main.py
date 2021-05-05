@@ -230,124 +230,129 @@ def indent(element, level=0):
         if level and (not element.tail or not element.tail.strip()):
             element.tail = i
 
-def main():
-    if not _OPTIONS.xml:
-        if not _OPTIONS.debug:
-            log_handler = logging.NullHandler()
+def write_xml():
+    '''
+    Writes the XML to describe the engine(s) to standard output.
+    '''
+    # 1. we find all dbs in DB_DIR and extract the infos into
+    #    Elements
+    dbs = os.listdir(DB_DIR)
+    dbs = filter(lambda x: x.endswith('.db'), dbs)
+
+    _all_dbs = []
+    for _db in dbs:
+        _all_dbs.append(os.path.join(DB_DIR, _db))
+    try:
+        byo_dbs = os.listdir(BYO_DB_DIR)
+        byo_dbs = filter(lambda x: x.endswith('.db'), byo_dbs)
+        for _db in byo_dbs:
+            _all_dbs.append(os.path.join(BYO_DB_DIR, _db))
+    except OSError:
+        # BYO_DB_DIR does not exist or is not accessible
+        pass
+
+    egs = Element('engines')
+    for _db in _all_dbs:
+        _sq_db = tabsqlitedb.TabSqliteDb(_db, user_db=None)
+        _engine = SubElement(egs, 'engine')
+
+        _name = SubElement(_engine, 'name')
+        engine_name = os.path.basename(_db).replace('.db', '')
+        _name.text = 'table:'+engine_name
+        setup_arg = "{} --engine-name {}".format(SETUP_CMD, _name.text)
+
+        _longname = SubElement(_engine, 'longname')
+        _longname.text = ''
+        # getdefaultlocale() returns something like ('ja_JP', 'UTF-8').
+        # In case of C/POSIX locale it returns (None, None)
+        _locale = getdefaultlocale()[0]
+        if _locale:
+            _locale = _locale.lower()
         else:
-            log_handler = logging.handlers.TimedRotatingFileHandler(
-                LOGFILE,
-                when='midnight',
-                interval=1,
-                backupCount=7,
-                encoding='UTF-8',
-                delay=False,
-                utc=False,
-                atTime=None)
-        log_formatter = logging.Formatter(
-            '%(asctime)s %(filename)s '
-            'line %(lineno)d %(funcName)s %(levelname)s: '
-            '%(message)s')
-        log_handler.setFormatter(log_formatter)
-        LOGGER.setLevel(logging.DEBUG)
-        LOGGER.addHandler(log_handler)
-        LOGGER.info('********** STARTING **********')
-
-    if _OPTIONS.xml:
-        # we will output the engines xml and return.
-        # 1. we find all dbs in DB_DIR and extract the infos into
-        #    Elements
-        dbs = os.listdir(DB_DIR)
-        dbs = filter(lambda x: x.endswith('.db'), dbs)
-
-        _all_dbs = []
-        for _db in dbs:
-            _all_dbs.append(os.path.join(DB_DIR, _db))
-        try:
-            byo_dbs = os.listdir(BYO_DB_DIR)
-            byo_dbs = filter(lambda x: x.endswith('.db'), byo_dbs)
-            for _db in byo_dbs:
-                _all_dbs.append(os.path.join(BYO_DB_DIR, _db))
-        except OSError:
-            # BYO_DB_DIR does not exist or is not accessible
-            pass
-
-        egs = Element('engines')
-        for _db in _all_dbs:
-            _sq_db = tabsqlitedb.TabSqliteDb(_db, user_db=None)
-            _engine = SubElement(egs, 'engine')
-
-            _name = SubElement(_engine, 'name')
-            engine_name = os.path.basename(_db).replace('.db', '')
-            _name.text = 'table:'+engine_name
-            setup_arg = "{} --engine-name {}".format(SETUP_CMD, _name.text)
-
-            _longname = SubElement(_engine, 'longname')
-            _longname.text = ''
-            # getdefaultlocale() returns something like ('ja_JP', 'UTF-8').
-            # In case of C/POSIX locale it returns (None, None)
-            _locale = getdefaultlocale()[0]
-            if _locale:
-                _locale = _locale.lower()
-            else:
-                _locale = 'en'
+            _locale = 'en'
+        _longname.text = _sq_db.ime_properties.get(
+            '.'.join(['name', _locale]))
+        if not _longname.text:
             _longname.text = _sq_db.ime_properties.get(
-                '.'.join(['name', _locale]))
-            if not _longname.text:
-                _longname.text = _sq_db.ime_properties.get(
-                    '.'.join(['name', _locale.split('_')[0]]))
-            if not _longname.text:
-                _longname.text = _sq_db.ime_properties.get('name')
-            if not _longname.text:
-                _longname.text = engine_name
+                '.'.join(['name', _locale.split('_')[0]]))
+        if not _longname.text:
+            _longname.text = _sq_db.ime_properties.get('name')
+        if not _longname.text:
+            _longname.text = engine_name
 
-            _language = SubElement(_engine, 'language')
-            _langs = _sq_db.ime_properties.get('languages')
-            if _langs:
-                _langs = _langs.split(',')
-                if len(_langs) == 1:
-                    _language.text = _langs[0].strip()
-                else:
-                    # we ignore the place
-                    _language.text = _langs[0].strip().split('_')[0]
+        _language = SubElement(_engine, 'language')
+        _langs = _sq_db.ime_properties.get('languages')
+        if _langs:
+            _langs = _langs.split(',')
+            if len(_langs) == 1:
+                _language.text = _langs[0].strip()
+            else:
+                # we ignore the place
+                _language.text = _langs[0].strip().split('_')[0]
 
-            _license = SubElement(_engine, 'license')
-            _license.text = _sq_db.ime_properties.get('license')
+        _license = SubElement(_engine, 'license')
+        _license.text = _sq_db.ime_properties.get('license')
 
-            _author = SubElement(_engine, 'author')
-            _author.text = _sq_db.ime_properties.get('author')
+        _author = SubElement(_engine, 'author')
+        _author.text = _sq_db.ime_properties.get('author')
 
-            _icon = SubElement(_engine, 'icon')
-            _icon_basename = _sq_db.ime_properties.get('icon')
-            if _icon_basename:
-                _icon.text = os.path.join(ICON_DIR, _icon_basename)
+        _icon = SubElement(_engine, 'icon')
+        _icon_basename = _sq_db.ime_properties.get('icon')
+        if _icon_basename:
+            _icon.text = os.path.join(ICON_DIR, _icon_basename)
 
-            _layout = SubElement(_engine, 'layout')
-            _layout.text = _sq_db.ime_properties.get('layout')
+        _layout = SubElement(_engine, 'layout')
+        _layout.text = _sq_db.ime_properties.get('layout')
 
-            _symbol = SubElement(_engine, 'symbol')
-            _symbol.text = _sq_db.ime_properties.get('symbol')
+        _symbol = SubElement(_engine, 'symbol')
+        _symbol.text = _sq_db.ime_properties.get('symbol')
 
-            _desc = SubElement(_engine, 'description')
-            _desc.text = _sq_db.ime_properties.get('description')
+        _desc = SubElement(_engine, 'description')
+        _desc.text = _sq_db.ime_properties.get('description')
 
-            _setup = SubElement(_engine, 'setup')
-            _setup.text = setup_arg
+        _setup = SubElement(_engine, 'setup')
+        _setup.text = setup_arg
 
-            _icon_prop_key = SubElement(_engine, 'icon_prop_key')
-            _icon_prop_key.text = 'InputMode'
+        _icon_prop_key = SubElement(_engine, 'icon_prop_key')
+        _icon_prop_key.text = 'InputMode'
 
-        # now format the xmlout pretty
-        indent(egs)
-        egsout = tostring(egs, encoding='utf8').decode('utf-8')
-        patt = re.compile(r'<\?.*\?>\n')
-        egsout = patt.sub('', egsout)
-        # Always write xml output in UTF-8 encoding, not in the
-        # encoding of the current locale, otherwise it might fail
-        # if conversion into the encoding of the current locale is
-        # not possible:
-        sys.stdout.buffer.write((egsout+'\n').encode('utf-8'))
+    # now format the xmlout pretty
+    indent(egs)
+    egsout = tostring(egs, encoding='utf8').decode('utf-8')
+    patt = re.compile(r'<\?.*\?>\n')
+    egsout = patt.sub('', egsout)
+    # Always write xml output in UTF-8 encoding, not in the
+    # encoding of the current locale, otherwise it might fail
+    # if conversion into the encoding of the current locale is
+    # not possible:
+    sys.stdout.buffer.write((egsout+'\n').encode('utf-8'))
+
+def main():
+    '''Main program'''
+    if _OPTIONS.xml:
+        write_xml()
         return 0
+
+    if not _OPTIONS.debug:
+        log_handler = logging.NullHandler()
+    else:
+        log_handler = logging.handlers.TimedRotatingFileHandler(
+            LOGFILE,
+            when='midnight',
+            interval=1,
+            backupCount=7,
+            encoding='UTF-8',
+            delay=False,
+            utc=False,
+            atTime=None)
+    log_formatter = logging.Formatter(
+        '%(asctime)s %(filename)s '
+        'line %(lineno)d %(funcName)s %(levelname)s: '
+        '%(message)s')
+    log_handler.setFormatter(log_formatter)
+    LOGGER.setLevel(logging.DEBUG)
+    LOGGER.addHandler(log_handler)
+    LOGGER.info('********** STARTING **********')
 
     if _OPTIONS.daemon:
         if os.fork():

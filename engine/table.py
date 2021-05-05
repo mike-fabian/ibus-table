@@ -3879,6 +3879,24 @@ class TabEngine(IBus.EngineSimple):
             return True
         return False
 
+    def do_cursor_up(self) -> bool:
+        '''Called when the mouse wheel is rolled up in the candidate area of
+        the lookup table
+
+        '''
+        res = self.cursor_up()
+        self._update_ui()
+        return res
+
+    def do_cursor_down(self) -> bool:
+        '''Called when the mouse wheel is rolled down in the candidate area of
+        the lookup table
+
+        '''
+        res = self.cursor_down()
+        self._update_ui()
+        return res
+
     def on_gsettings_value_changed(self, _settings, key) -> None:
         '''
         Called when a value in the settings has been changed.

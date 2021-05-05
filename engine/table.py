@@ -105,41 +105,30 @@ def ascii_ispunct(character):
     '''
     return bool(character in '''!"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~''')
 
-def argb(alpha, red, green, blue):
-    '''Returns a 32bit ARGB value'''
-    return (((alpha & 0xff)<<24)
-            + ((red & 0xff) << 16)
-            + ((green & 0xff) << 8)
-            + (blue & 0xff))
-
-def rgb(red, green, blue):
-    '''Returns a 32bit ARGB value with the alpha value set to fully opaque'''
-    return argb(255, red, green, blue)
-
 THEME = {
         "dark": False,
-        "candidate_text": rgb(0x19, 0x73, 0xa2),
-        "system_phrase": rgb(0x00, 0x00, 0x00),
-        "user_phrase": rgb(0x77, 0x00, 0xc3),
-        "system_phrase_unused": rgb(0x00, 0x00, 0x00),
-        "debug_text": rgb(0x00, 0xff, 0x00),
-        "preedit_left": rgb(0xf9, 0x0f, 0x0f),  # bright red
-        "preedit_right": rgb(0x1e, 0xdc, 0x1a),  # light green
-        "preedit_invalid": rgb(0xff, 0x00, 0xff),  # magenta
-        "aux_text": rgb(0x95, 0x15, 0xb5),
+        "candidate_text": it_util.color_string_to_argb('#1973a2'),
+        "system_phrase": it_util.color_string_to_argb('#000000'),
+        "user_phrase": it_util.color_string_to_argb('#7700c3'),
+        "system_phrase_unused": it_util.color_string_to_argb('#000000'),
+        "debug_text": it_util.color_string_to_argb('#00ff00'),
+        "preedit_left": it_util.color_string_to_argb('#f90f0f'), # bright red
+        "preedit_right": it_util.color_string_to_argb('#1edc1a'), # light green
+        "preedit_invalid": it_util.color_string_to_argb('#ff00ff'), # magenta
+        "aux_text": it_util.color_string_to_argb('#9515b5'),
 }
 
 THEME_DARK = {
         "dark": True,
-        "candidate_text": rgb(0x7b, 0xc8, 0xf0),
-        "system_phrase": rgb(0xff, 0xff, 0xff),
-        "user_phrase": rgb(0xc0, 0x78, 0xee),
-        "system_phrase_unused": rgb(0xf0, 0xf0, 0xf0),
-        "debug_text": rgb(0x00, 0xff, 0x00),
-        "preedit_left": rgb(0xf9, 0xf9, 0x0f),
-        "preedit_right": rgb(0x1e, 0xdc, 0x1a),
-        "preedit_invalid": rgb(0xff, 0x00, 0xff),
-        "aux_text": rgb(0xdd, 0x70, 0xf9),
+        "candidate_text": it_util.color_string_to_argb('#7bc8f0'),
+        "system_phrase": it_util.color_string_to_argb('#ffffff'),
+        "user_phrase": it_util.color_string_to_argb('#c078ee'),
+        "system_phrase_unused": it_util.color_string_to_argb('#f0f0f0'),
+        "debug_text": it_util.color_string_to_argb('#00ff00'),
+        "preedit_left": it_util.color_string_to_argb('#f9f90f'),
+        "preedit_right": it_util.color_string_to_argb('#1edc1a'),
+        "preedit_invalid": it_util.color_string_to_argb('#ff00ff'),
+        "aux_text": it_util.color_string_to_argb('#dd70f9'),
 }
 
 __HALF_FULL_TABLE = [

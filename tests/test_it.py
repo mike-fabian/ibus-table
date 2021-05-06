@@ -1018,6 +1018,39 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, 'a')
 
+    def test_switch_between_table_and_pinyin_mode(self):
+        '''
+        The switch between table and pinyin mode should happen immediately
+        even if the preedit is not empty
+        '''
+        ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '东')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        # Shift_R is the default key binding to switch between table
+        # and pinyin mode
+        ENGINE._do_process_key_event(
+            IBus.KEY_Shift_R, 0,
+            IBus.ModifierType.SHIFT_MASK)
+        ENGINE._do_process_key_event(
+            IBus.KEY_Shift_R, 0,
+            IBus.ModifierType.SHIFT_MASK
+            | IBus.ModifierType.RELEASE_MASK)
+        self.assertEqual(ENGINE.mock_preedit_text, '爱')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        ENGINE._do_process_key_event(
+            IBus.KEY_Shift_R, 0,
+            IBus.ModifierType.SHIFT_MASK)
+        ENGINE._do_process_key_event(
+            IBus.KEY_Shift_R, 0,
+            IBus.ModifierType.SHIFT_MASK
+            | IBus.ModifierType.RELEASE_MASK)
+        self.assertEqual(ENGINE.mock_preedit_text, '东')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '东')
+
     def test_chinese_mode(self):
         ENGINE.set_chinese_mode(
             mode=0, update_gsettings=False) # show simplified Chinese only

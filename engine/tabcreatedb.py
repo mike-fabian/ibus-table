@@ -24,6 +24,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from typing import Tuple
+from typing import List
+from typing import Iterable
+from typing import Dict
 import os
 import sys
 import bz2
@@ -169,7 +173,7 @@ if not _OPTIONS.name:
     sys.exit(2)
 
 def main():
-    def debug_print(message):
+    def debug_print(message: str) -> None:
         if _OPTIONS.debug:
             print(message)
 
@@ -184,10 +188,10 @@ def main():
                                  user_db=None,
                                  create_database=True)
 
-    def parse_source(f):
-        _attri = []
-        _table = []
-        _gouci = []
+    def parse_source(f: Iterable[str]) -> Tuple[List[str], List[str], List[str]]:
+        _attri: List[str] = []
+        _table: List[str] = []
+        _gouci: List[str] = []
         patt_com = re.compile(r'^###.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_conf = re.compile(r'[^\t]*=[^\t]*')
@@ -224,7 +228,7 @@ def main():
             # character is “aaaa”.  Therefore, the goucima of 工 is
             # “aaaa” (There is one other character with the same goucima
             # in  wubi-jidian86.txt, 㠭 also has the goucima “aaaa”).
-            gouci_dict = {}
+            gouci_dict: Dict[str, str] = {}
             for line in _table:
                 res = patt_table.match(line)
                 if res and len(res.group(2)) == 1:
@@ -239,16 +243,14 @@ def main():
 
         return (_attri, _table, _gouci)
 
-    def parse_pinyin(f):
-        _pinyins = []
+    def parse_pinyin(f: Iterable[str]) -> List[str]:
+        _pinyins: List[str] = []
         patt_com = re.compile(r'^#.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_py = re.compile(r'(.*)\t(.*)\t(.*)')
         patt_yin = re.compile(r'[a-z]+[1-5]')
 
         for line in f:
-            if type(line) != type(u''):
-                line = line.decode('utf-8')
             if (not patt_com.match(line)) and (not patt_blank.match(line)):
                 res = patt_py.match(line)
                 if res:
@@ -258,15 +260,13 @@ def main():
                                 % (res.group(1), yin, res.group(3)))
         return _pinyins[:]
 
-    def parse_suggestion(f):
-        _suggestions = []
+    def parse_suggestion(f: Iterable[str]) -> List[str]:
+        _suggestions: List[str] = []
         patt_com = re.compile(r'^#.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_sg = re.compile(r'(.*)\s+(.*)')
 
         for line in f:
-            if type(line) != type(u''):
-                line = line.decode('utf-8')
             if (not patt_com.match(line)) and (not patt_blank.match(line)):
                 res = patt_sg.match(line)
                 if res:
@@ -275,57 +275,45 @@ def main():
                     _suggestions.append("%s %s" % (phrase, freq))
         return _suggestions[:]
 
-    def parse_extra(f):
-        _extra = []
+    def parse_extra(f: Iterable[str]) -> List[str]:
+        _extra: List[str] = []
         patt_com = re.compile(r'^###.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_extra = re.compile(r'(.*)\t(.*)')
 
         for line in f:
-            if type(line) != type(u''):
-                line = line.decode('utf-8')
             if (not patt_com.match(line)) and (not patt_blank.match(line)):
                 if patt_extra.match(line):
                     _extra.append(line)
 
         return _extra
 
-    def pinyin_parser(f):
+    def pinyin_parser(f: Iterable[str]) -> Iterable[Tuple[str, str, str]]:
         for pinyin_line in f:
-            if type(pinyin_line) != type(u''):
-                pinyin_line = pinyin_line.decode('utf-8')
             _zi, _pinyin, _freq = pinyin_line.strip().split()
             yield (_pinyin, _zi, _freq)
 
-    def suggestion_parser(f):
+    def suggestion_parser(f: Iterable[str]) -> Iterable[Tuple[str, str]]:
         for suggestion_line in f:
-            if type(suggestion_line) != type(u''):
-                suggestion_line = suggestion_line.decode('utf-8')
             _phrase, _freq = suggestion_line.strip().split()
             yield (_phrase, _freq)
 
-    def phrase_parser(f):
-        phrase_list = []
+    def phrase_parser(f: Iterable[str]) -> List[Tuple[str, str, int, int]]:
+        phrase_list: List[Tuple[str, str, int, int]] = []
         for line in f:
-            if type(line) != type(u''):
-                line = line.decode('utf-8')
             xingma, phrase, freq = line.split('\t')[:3]
             if phrase == 'NOSYMBOL':
                 phrase = u''
             phrase_list.append((xingma, phrase, int(freq), 0))
         return phrase_list
 
-    def goucima_parser(f):
+    def goucima_parser(f: Iterable[str]) -> Iterable[Tuple[str, str]]:
         for line in f:
-            if type(line) != type(u''):
-                line = line.decode('utf-8')
             zi, gcm = line.strip().split()
             yield (zi, gcm)
 
-    def attribute_parser(f):
+    def attribute_parser(f: Iterable[str]) -> Iterable[Tuple[str, str]]:
         for line in f:
-            if type(line) != type(u''):
-                line = line.decode('utf-8')
             try:
                 attr, val = line.strip().split('=')
             except:
@@ -334,11 +322,9 @@ def main():
             val = val.strip()
             yield (attr, val)
 
-    def extra_parser(f):
-        extra_list = []
+    def extra_parser(f: Iterable[str]) -> List[Tuple[str, str, str, int]]:
+        extra_list: List[Tuple[str, str, str, int]] = []
         for line in f:
-            if type(line) != type(u''):
-                line = line.decode('utf-8')
             phrase, freq = line.strip().split()
             _tabkey = db.parse_phrase(phrase)
             if _tabkey:
@@ -347,7 +333,7 @@ def main():
                 print('No tabkeys found for “%s”, not adding.\n' %phrase)
         return extra_list
 
-    def get_char_prompts(f):
+    def get_char_prompts(f: Iterable[str]) -> Tuple[str, str]:
         '''
         Returns something like
 
@@ -356,11 +342,9 @@ def main():
         i.e. the attribute name "char_prompts" and as its value
         the string representation of a Python dictionary.
         '''
-        char_prompts = {}
+        char_prompts: Dict[str, str] = {}
         start = False
         for line in f:
-            if type(line) != type(u''):
-                line = line.decode('utf-8')
             if re.match(r'^BEGIN_CHAR_PROMPTS_DEFINITION', line):
                 start = True
                 continue
@@ -389,7 +373,8 @@ def main():
     patt_s = re.compile(r'.*\.bz2')
     _bz2s = patt_s.match(_OPTIONS.source)
     if _bz2s:
-        source = bz2.BZ2File(_OPTIONS.source, "r").read()
+        source = bz2.open(
+            _OPTIONS.source, mode='rt', encoding='UTF-8').read()
     else:
         source = open(_OPTIONS.source, mode='r', encoding='UTF-8').read()
     source = source.replace('\r\n', '\n')
@@ -423,9 +408,9 @@ def main():
         debug_print('\tLoad pinyin source \"%s\"' % _OPTIONS.pinyin)
         _bz2p = patt_s.match(_OPTIONS.pinyin)
         if _bz2p:
-            pinyin_s = bz2.BZ2File(_OPTIONS.pinyin, "r")
+            pinyin_s = bz2.open(_OPTIONS.pinyin, mode='rt', encoding='UTF-8')
         else:
-            pinyin_s = open(_OPTIONS.pinyin, 'r')
+            pinyin_s = open(_OPTIONS.pinyin, mode='r', encoding='UTF-8')
         debug_print('\tParsing pinyin source file ')
         pyline = parse_pinyin(pinyin_s)
         debug_print('\tPreapring pinyin entries')

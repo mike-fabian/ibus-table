@@ -996,6 +996,28 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '工了你好以在工了你好以在')
 
+    def test_switch_to_direct_mode_and_commit_english(self):
+        '''
+        When in Chinese mode and the preedit is not empty, switching to
+        direct mode should be possible and it should not discard the
+        input but commit as English.
+
+        See: https://github.com/kaio/ibus-table/issues/68
+        '''
+        ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        # Shift_L is the default key binding to switch to direct mode
+        ENGINE._do_process_key_event(
+            IBus.KEY_Shift_L, 0,
+            IBus.ModifierType.SHIFT_MASK)
+        ENGINE._do_process_key_event(
+            IBus.KEY_Shift_L, 0,
+            IBus.ModifierType.SHIFT_MASK
+            | IBus.ModifierType.RELEASE_MASK)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'a')
+
     def test_chinese_mode(self):
         ENGINE.set_chinese_mode(
             mode=0, update_gsettings=False) # show simplified Chinese only

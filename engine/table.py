@@ -2015,7 +2015,6 @@ class TabEngine(IBus.EngineSimple):
         if mode == self._py_mode:
             return
         # The pinyin mode is never saved to GSettings on purpose
-        self.commit_to_preedit()
         self._py_mode = mode
         self._init_or_update_property_menu(
             self.pinyin_mode_menu, mode)
@@ -3003,12 +3002,20 @@ class TabEngine(IBus.EngineSimple):
 
         :return: True if the key was completely handled, False if not.
         '''
-        if not (self._ime_py and self.is_empty()):
-            # Change pinyin mode only if empty. When it is not empty
-            # the default Shift_R should commit to preedit and not
-            # change the pinyin mode.
+        if not self._ime_py:
             return False
         self.set_pinyin_mode(not self._py_mode)
+        if not self.is_empty():
+            # Feed the current input in once again to get
+            # the candidates and preedit to update correctly
+            # for the new mode:
+            chars = self._chars_valid + self._chars_invalid
+            self._chars_valid = ''
+            self._chars_invalid = ''
+            for char in chars:
+                self.add_input(char)
+            self.update_candidates(force=True)
+            self._update_ui()
         return True
 
     def _command_select_next_candidate_in_current_page(self) -> bool:

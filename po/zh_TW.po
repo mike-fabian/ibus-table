@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2021-05-04 19:51+0200\n"
+"POT-Creation-Date: 2021-05-06 12:05+0200\n"
 "PO-Revision-Date: 2021-01-27 13:40+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
@@ -21,11 +21,11 @@ msgstr ""
 #. when one wants to input only Simplified Chinese.
 #. Translators: This is the setting to use only
 #. simplified Chinese
-#: engine/table.py:611 setup/main.py:374
+#: engine/table.py:607 setup/main.py:374
 msgid "Simplified Chinese"
 msgstr "簡體字中文"
 
-#: engine/table.py:613
+#: engine/table.py:609
 msgid "Switch to “Simplified Chinese only”."
 msgstr "切換至「僅簡體字中文」"
 
@@ -33,11 +33,11 @@ msgstr "切換至「僅簡體字中文」"
 #. when one wants to input only Traditonal Chinese
 #. Translators: This is the setting to use only
 #. traditional Chinese
-#: engine/table.py:620 setup/main.py:378
+#: engine/table.py:616 setup/main.py:378
 msgid "Traditional Chinese"
 msgstr "正體字中文"
 
-#: engine/table.py:622
+#: engine/table.py:618
 msgid "Switch to “Traditional Chinese only”."
 msgstr "切換至「正體字中文」"
 
@@ -46,11 +46,11 @@ msgstr "切換至「正體字中文」"
 #. Chinese but wants the Simplified Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:632
+#: engine/table.py:628
 msgid "Simplified Chinese first"
 msgstr "簡體字中文優先"
 
-#: engine/table.py:634
+#: engine/table.py:630
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr "切換至「簡體字中文先於正體字」"
 
@@ -59,11 +59,11 @@ msgstr "切換至「簡體字中文先於正體字」"
 #. Chinese but wants the Traditional Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:644
+#: engine/table.py:640
 msgid "Traditional Chinese first"
 msgstr "正體字中文優先"
 
-#: engine/table.py:646
+#: engine/table.py:642
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr "切換至「正體字中文先於簡體字」"
 
@@ -75,61 +75,61 @@ msgstr "切換至「正體字中文先於簡體字」"
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese in no
 #. particular order
-#: engine/table.py:656 setup/main.py:393
+#: engine/table.py:652 setup/main.py:393
 msgid "All Chinese characters"
 msgstr "所有中文字元"
 
-#: engine/table.py:657
+#: engine/table.py:653
 msgid "Switch to “All Chinese characters”."
 msgstr "切換至「所有中文字元」"
 
-#: engine/table.py:661
+#: engine/table.py:657
 msgid "Chinese mode"
 msgstr "中文模式"
 
-#: engine/table.py:662
+#: engine/table.py:658
 msgid "Switch Chinese mode"
 msgstr "切換中文模式"
 
-#: engine/table.py:673
+#: engine/table.py:669
 msgid "English"
 msgstr "英文"
 
-#: engine/table.py:674
+#: engine/table.py:670
 msgid "Switch to English input"
 msgstr "切換至英文輸入"
 
-#: engine/table.py:681
+#: engine/table.py:677
 msgid "Chinese"
 msgstr "中文"
 
-#: engine/table.py:682
+#: engine/table.py:678
 msgid "Switch to Chinese input"
 msgstr "切換至中文輸入"
 
-#: engine/table.py:690 engine/table.py:838 setup/main.py:934
+#: engine/table.py:686 engine/table.py:834 setup/main.py:934
 msgid "Direct"
 msgstr "直接"
 
-#: engine/table.py:691
+#: engine/table.py:687
 msgid "Switch to direct input"
 msgstr "切換至直接輸入"
 
-#: engine/table.py:696 engine/table.py:760
+#: engine/table.py:692 engine/table.py:756
 msgid "Table"
 msgstr "表格"
 
-#: engine/table.py:697
+#: engine/table.py:693
 msgid "Switch to table input"
 msgstr "切換至表格輸入"
 
 #. Translators: A combobox to choose the input mode
 #. (“Direct input” or “Table input”)
-#: engine/table.py:705 setup/main.py:300
+#: engine/table.py:701 setup/main.py:300
 msgid "Input mode"
 msgstr "輸入模式"
 
-#: engine/table.py:706
+#: engine/table.py:702
 msgid "Switch Input mode"
 msgstr "切換輸入模式"
 
@@ -141,12 +141,12 @@ msgstr "切換輸入模式"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use half width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:716 engine/table.py:738 setup/main.py:432 setup/main.py:476
+#: engine/table.py:712 engine/table.py:734 setup/main.py:432 setup/main.py:476
 #: setup/main.py:521 setup/main.py:566
 msgid "Half"
 msgstr "半形"
 
-#: engine/table.py:717
+#: engine/table.py:713
 msgid "Switch to halfwidth letters"
 msgstr "切換至半形字母"
 
@@ -158,112 +158,112 @@ msgstr "切換至半形字母"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use full width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:722 engine/table.py:744 setup/main.py:436 setup/main.py:480
+#: engine/table.py:718 engine/table.py:740 setup/main.py:436 setup/main.py:480
 #: setup/main.py:525 setup/main.py:570
 msgid "Full"
 msgstr "全形"
 
-#: engine/table.py:723
+#: engine/table.py:719
 msgid "Switch to fullwidth letters"
 msgstr "切換至全形字母"
 
-#: engine/table.py:727
+#: engine/table.py:723
 msgid "Letter width"
 msgstr "字母寬"
 
-#: engine/table.py:728
+#: engine/table.py:724
 msgid "Switch letter width"
 msgstr "切換字母寬度"
 
-#: engine/table.py:739
+#: engine/table.py:735
 msgid "Switch to halfwidth punctuation"
 msgstr "切換至半形標點"
 
-#: engine/table.py:745
+#: engine/table.py:741
 msgid "Switch to fullwidth punctuation"
 msgstr "切換至全形標點"
 
-#: engine/table.py:749
+#: engine/table.py:745
 msgid "Punctuation width"
 msgstr "標點寬"
 
-#: engine/table.py:750
+#: engine/table.py:746
 msgid "Switch punctuation width"
 msgstr "切換標點寬度"
 
-#: engine/table.py:761
+#: engine/table.py:757
 msgid "Switch to table mode"
 msgstr "切換至表格模式"
 
-#: engine/table.py:766
+#: engine/table.py:762
 msgid "Pinyin"
 msgstr "拼音"
 
-#: engine/table.py:767
+#: engine/table.py:763
 msgid "Switch to pinyin mode"
 msgstr "切換至拼音模式"
 
-#: engine/table.py:771
+#: engine/table.py:767
 msgid "Pinyin mode"
 msgstr "拼音模式"
 
-#: engine/table.py:772
+#: engine/table.py:768
 msgid "Switch pinyin mode"
 msgstr "切換拼音模式"
 
-#: engine/table.py:782
+#: engine/table.py:778
 msgid "Suggestion disabled"
 msgstr ""
 
-#: engine/table.py:783 engine/table.py:789
+#: engine/table.py:779 engine/table.py:785
 #, fuzzy
 #| msgid "Switch to pinyin mode"
 msgid "Switch to suggestion mode"
 msgstr "切換至拼音模式"
 
-#: engine/table.py:788
+#: engine/table.py:784
 msgid "Suggestion enabled"
 msgstr ""
 
-#: engine/table.py:793
+#: engine/table.py:789
 msgid "Suggestion mode"
 msgstr ""
 
-#: engine/table.py:794
+#: engine/table.py:790
 #, fuzzy
 #| msgid "Switch Input mode"
 msgid "Switch suggestion mode"
 msgstr "切換輸入模式"
 
-#: engine/table.py:804
+#: engine/table.py:800
 msgid "Multiple character match"
 msgstr "多字元比對"
 
-#: engine/table.py:806
+#: engine/table.py:802
 msgid "Switch to matching multiple characters at once"
 msgstr "切換至一次比對多字元"
 
-#: engine/table.py:811
+#: engine/table.py:807
 msgid "Single character match"
 msgstr "切換字元比對"
 
-#: engine/table.py:813
+#: engine/table.py:809
 msgid "Switch to matching only single characters"
 msgstr "切換至僅比對單一字元"
 
-#: engine/table.py:817
+#: engine/table.py:813
 msgid "Onechar mode"
 msgstr "一字模式"
 
-#: engine/table.py:818
+#: engine/table.py:814
 msgid "Switch onechar mode"
 msgstr "切換一字模式"
 
-#: engine/table.py:828 setup/main.py:932
+#: engine/table.py:824 setup/main.py:932
 msgid "Normal"
 msgstr "一般"
 
-#: engine/table.py:830
+#: engine/table.py:826
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
@@ -271,25 +271,25 @@ msgstr ""
 "切換至一般提交模式 (自動提入預先編輯區內而非程式內。這會啟用新快捷鍵的自動定"
 "義)"
 
-#: engine/table.py:840
+#: engine/table.py:836
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
 msgstr "切換至直接提交模式 (直接自動提入程式內)"
 
-#: engine/table.py:845
+#: engine/table.py:841
 msgid "Auto commit mode"
 msgstr "自動提交模式"
 
-#: engine/table.py:846
+#: engine/table.py:842
 msgid "Switch autocommit mode"
 msgstr "切換自動提交模式"
 
-#: engine/table.py:2646
+#: engine/table.py:2584
 msgid "Setup"
 msgstr "設置"
 
-#: engine/table.py:2649
+#: engine/table.py:2587
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "設定 ibus-table「%(engine-name)s」"
@@ -297,31 +297,31 @@ msgstr "設定 ibus-table「%(engine-name)s」"
 #. Translators: This is used in the title bar of a dialog window
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
-#: engine/it_util.py:487
+#: engine/it_util.py:539
 #, fuzzy
 #| msgid "Table input"
 msgid "Key input"
 msgstr "表格輸入"
 
-#: engine/it_util.py:493
+#: engine/it_util.py:545
 msgid "Cancel"
 msgstr "取消"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:500
+#: engine/it_util.py:552
 msgid "Please press a key (or a key combination)"
 msgstr "請按鍵盤按鍵 (或是按鍵組合)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:505
+#: engine/it_util.py:557
 msgid "The dialog will be closed when the key is released"
 msgstr ""
 
-#: engine/it_util.py:537
+#: engine/it_util.py:589
 #, fuzzy
 #| msgid "Table input letter width:"
 msgid "Table input method for IBus."
@@ -330,14 +330,14 @@ msgstr "表格輸入字母寬度："
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
 #. will be displayed in the “About ibus-table” dialog.
-#: engine/it_util.py:561
+#: engine/it_util.py:613
 msgid "translator-credits"
 msgstr ""
 "Whired Planck <fungdaat31@outlook.com>, 2020\n"
 "莊佳儒 <tchuang@redhat.com>\n"
 "Cheng-chia Tseng <pswo10680@gmail.com>, 2013"
 
-#: engine/it_util.py:569
+#: engine/it_util.py:621
 msgid "Online documentation:"
 msgstr "線上文件(_O)"
 

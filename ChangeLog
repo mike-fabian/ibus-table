@@ -1,4 +1,60 @@
-commit 9ee5b3e879a529c76030f6f239986470dda66c99
+commit 1fa654c403170cf3d58942d81af21069e280ef49
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 16 21:40:59 2021 +0200
+
+    Release 1.13.1
+
+commit 4acb1f35b898f6f0d0c6c30237a7705cd993ffd6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun May 16 21:34:59 2021 +0200
+
+    Fix reading the source file for the suggestions phrase.txt.bz2
+    
+    Problem was introduced by removing the Python2 compatibility stuff in:
+    
+        commit 221acc4a876d4590cef677571f328bca819ced51
+        Author: Mike FABIAN <mfabian@redhat.com>
+        Date:   Thu May 6 09:36:42 2021 +0200
+    
+            Add more type hints and remove some Python2 compatibility stuff
+
+commit 9efec48c10ae6720490f30407a5e0d4ede5f5953
+Author: Julien Humbert <julroy67@gmail.com>
+Date:   Sun May 16 21:28:38 2021 +0200
+
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (138 of 138 strings)
+    
+    Co-authored-by: Julien Humbert <julroy67@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+    Translation: ibus-table/app
+
+commit 407cb1520e65123361b69cc0f7297a643d0649f1
+Author: Anonymous <noreply@weblate.org>
+Date:   Sun May 9 10:02:14 2021 +0200
+
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 90.5% (125 of 138 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+    Translation: ibus-table/app
+
+commit 9807b49739c03fa308227500bfb6ff3f3935a14f
+Author: Weblate <noreply@weblate.org>
+Date:   Sat May 8 09:44:22 2021 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 5515afbef8d3a7360700a04ebaf35a18d6caff76
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue May 4 19:50:34 2021 +0200
 

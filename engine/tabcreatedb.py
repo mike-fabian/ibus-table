@@ -422,9 +422,11 @@ def main():
         debug_print('\tLoad suggestion source \"%s\"' % _OPTIONS.suggestion)
         _bz2p = patt_s.match(_OPTIONS.suggestion)
         if _bz2p:
-            suggestion_s = bz2.BZ2File(_OPTIONS.suggestion, "r")
+            suggestion_s = bz2.open(
+                _OPTIONS.suggestion, mode="rt", encoding='UTF-8')
         else:
-            suggestion_s = open(_OPTIONS.suggestion, 'r')
+            suggestion_s = open(
+                _OPTIONS.suggestion, mode='r', encoding='UTF-8')
         debug_print('\tParsing suggestion source file ')
         sgline = parse_suggestion(suggestion_s)
         debug_print('\tPreapring suggestion entries')

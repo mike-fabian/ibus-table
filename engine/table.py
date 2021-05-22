@@ -2829,7 +2829,6 @@ class TabEngine(IBus.EngineSimple):
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('phrase=%s', phrase)
-        self._prefix = phrase
         self.clear_all_input_and_preedit()
         self._update_ui()
         self._prefix = phrase

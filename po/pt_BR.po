@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2021-05-06 12:05+0200\n"
-"PO-Revision-Date: 2021-03-08 02:01+0000\n"
+"PO-Revision-Date: 2021-05-24 22:03+0000\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/pt_BR/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.5.1\n"
+"X-Generator: Weblate 4.6.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -842,14 +842,14 @@ msgstr ""
 #. the color scheme for a dark theme should be used.
 #: setup/main.py:1038
 msgid "Use dark theme:"
-msgstr ""
+msgstr "Usar tema escuro:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should
 #. be used.
 #: setup/main.py:1043
 msgid "If yes, the color scheme for a dark theme will be used."
-msgstr ""
+msgstr "Se sim, o esquema de cores para um tema escuro será usado."
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and

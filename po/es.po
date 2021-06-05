@@ -2,21 +2,22 @@
 # Mike FABIAN <mfabian@redhat.com>, 2019, 2020.
 # Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2020.
 # Anonymous <noreply@weblate.org>, 2020.
+# Emilio Herrera <ehespinosa57@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2021-05-06 12:05+0200\n"
-"PO-Revision-Date: 2021-01-13 13:36+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Spanish <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/es/>\n"
+"PO-Revision-Date: 2021-06-05 16:03+0000\n"
+"Last-Translator: Emilio Herrera <ehespinosa57@gmail.com>\n"
+"Language-Team: Spanish <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.4.1\n"
+"X-Generator: Weblate 4.6.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -400,10 +401,8 @@ msgid "Key bindings"
 msgstr "Atajos de teclado"
 
 #: setup/main.py:290
-#, fuzzy
-#| msgid "<b>Inital state</b>"
 msgid "Initial state"
-msgstr "<b>Estado inicial</b>"
+msgstr "Estado inicial"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the input mode (“Direct input” or “Table input”).
@@ -551,10 +550,8 @@ msgstr ""
 "o completa en el modo de entrada directa."
 
 #: setup/main.py:591
-#, fuzzy
-#| msgid "<b>Candidate list</b>"
 msgid "Candidate list"
-msgstr "<b>Lista de candidatos</b>"
+msgstr "Lista de candidatos"
 
 #. Translators: A combobox to choose whether
 #. a candidate list should be shown or hidden.
@@ -835,14 +832,14 @@ msgstr ""
 #. the color scheme for a dark theme should be used.
 #: setup/main.py:1038
 msgid "Use dark theme:"
-msgstr ""
+msgstr "Usar tema oscuro:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should
 #. be used.
 #: setup/main.py:1043
 msgid "If yes, the color scheme for a dark theme will be used."
-msgstr ""
+msgstr "Sí si, el esquema de color para un tema oscuro será usado."
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
@@ -882,7 +879,7 @@ msgstr "Ya está ejecutándose otro ejemplar de la aplicación."
 #. really sure to restore all default settings.
 #: setup/main.py:1474
 msgid "Do you really want to restore all default settings?"
-msgstr ""
+msgstr "¿Realmente quiere recuperar los ajustes predeterminados?"
 
 #: setup/main.py:1900
 #, python-format
@@ -904,18 +901,14 @@ msgstr "Quitar el atajo de teclado seleccionado"
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
 #: setup/main.py:1959
-#, fuzzy
-#| msgid "Add a key binding"
 msgid "Move key binding up"
-msgstr "Añadir un atajo de teclado"
+msgstr "Mover la vinculación de teclas hacia arriba"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
 #: setup/main.py:1972
-#, fuzzy
-#| msgid "Add a key binding"
 msgid "Move key binding down"
-msgstr "Añadir un atajo de teclado"
+msgstr "Mover la vinculación de teclas hacia abajo"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is

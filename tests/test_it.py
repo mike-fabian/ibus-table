@@ -720,9 +720,9 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '蚂    jcg 3110000 0',
                           '杩    scg 1280000 0',
                           '犸    qtcg 120000 0',
-                          '溤    icy 38700 0',
                           '鰢    qocy 36500 0',
-                          '鷌    wvgc 25500 0'])
+                          '鷌    wvgc 25500 0',
+                          '㐷    wcg 9070 0'])
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '吗')
@@ -758,9 +758,9 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '蚂    jcg 3110000 0',
                           '杩    scg 1280000 0',
                           '犸    qtcg 120000 0',
-                          '溤    icy 38700 0',
                           '鰢    qocy 36500 0',
-                          '鷌    wvgc 25500 0'])
+                          '鷌    wvgc 25500 0',
+                          '㐷    wcg 9070 0'])
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '吗嗎吗')

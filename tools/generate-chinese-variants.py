@@ -264,22 +264,25 @@ TEST_DATA = {
     u'a☺α烏': 2,
     u'台': 3,
     u'同': 3,
-    # Bug in Unihan_Variants.txt? Unihan_Variants.txt says this is
-    # “traditional Chinese only”:
-    u'覆': 3,
-    u'表': 3,
-    u'杰': 3,
-    u'面': 3,
-    u'系': 3,
-    u'乾': 3,
-    u'著': 3,
+    # Characters below this comments probably have buggy entries
+    # in Unihan_Variants.txt:
+    u'覆': 3, # U+8986
+    u'表': 3, # U+8868
+    u'杰': 3, # U+6770
+    u'面': 3, # U+9762
+    u'系': 3, # U+7CFB
+    u'乾': 3, # U+4E7E
+    u'著': 3, # U+8457 Patch by Heiher <r@hev.cc>
     }
 
-def test_detection(generated_script) -> None:
+def test_detection(generated_script) -> int:
     '''
     Test whether the generated script does the detection correctly.
+
+    Returns the number of errors found.
     '''
     logging.info('Testing detection ...')
+    error_count = 0
     for phrase in TEST_DATA:
         if (generated_script.detect_chinese_category(phrase)
                 != TEST_DATA[phrase]):
@@ -287,14 +290,14 @@ def test_detection(generated_script) -> None:
                   'detected as',
                   generated_script.detect_chinese_category(phrase),
                   'should have been', TEST_DATA[phrase],
-                  'Test failed. exiting...')
-            exit(1)
+                  'FAIL.')
+            error_count += 1
         else:
-            logging.info('phrase=%s %s detected as %d OK.',
+            logging.info('phrase=%s %s detected as %d PASS.',
                          phrase,
                          repr(phrase),
                          TEST_DATA[phrase])
-    logging.info('All tests passed.')
+    return error_count
 
 def compare_old_new_detection(phrase, generated_script) -> None:
     '''
@@ -355,7 +358,13 @@ def main() -> None:
     import imp
     generated_script = imp.load_source('dummy', args.outputfilename)
 
-    test_detection(generated_script)
+    logging.info('Testing detection ...')
+    error_count = test_detection(generated_script)
+    if error_count:
+        logging.info('FAIL: %s tests failed, exiting ...', error_count)
+        exit(1)
+    else:
+        logging.info('PASS: All tests passed.')
 
     for phrase in generated_script.VARIANTS_TABLE: # type: ignore
         compare_old_new_detection(phrase, generated_script)

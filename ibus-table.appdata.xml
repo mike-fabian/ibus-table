@@ -19,6 +19,26 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.13.2" date="2021-06-08" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.13.2</url>
+      <issues>
+        <issue url="https://github.com/kaio/ibus-table/issues/74">
+          github-kaio-issue#74: Fix bug in Unihan_Variants.txt, 只
+          U+53EA is both simplified *and* traditional Chinese
+        </issue>
+        <issue>
+          Update Chinese variant detection by Unihan_Variants.txt to
+          the version “2021-05-18 Unicode 14.0.0” (draft version of
+          Unicode 14)
+        </issue>
+        <issue>
+          Update translations from Weblate (updates for es (100%), pt_BR (100%))
+        </issue>
+      </issues>
+    </release>
     <release version="1.13.1" date="2021-05-16" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

@@ -1,4 +1,78 @@
-commit 1fa654c403170cf3d58942d81af21069e280ef49
+commit aa9fdaf64613a730348e4bfd8814cd51f132f275
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 8 14:29:49 2021 +0200
+
+    Release  1.13.2
+
+commit 9bd693e7fa446786212d70357539765acbe3c372
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 8 13:59:59 2021 +0200
+
+    Fix bug in Unihan_Variants.txt, 只 U+53EA is both simplified *and* traditional Chinese
+    
+    Resolves: https://github.com/kaio/ibus-table/issues/74
+
+commit 2c02c5652e45547502ef3a6cc24c9d75beb83922
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 8 14:17:02 2021 +0200
+
+    Small improvements to the test function in generate-chinese-variants.py
+    
+    (Don’t exit after the first fail, do all tests and print a summary)
+
+commit 7a8a23dbe988dcdba100cb32caca228fdb2c7c93
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 8 14:13:41 2021 +0200
+
+    Regenerate engine/chinese_variants.py for Unihan_Variants.txt from “2021-05-18 Unicode 14.0.0”
+    
+    (Including our fixes which are not yet included upstream)
+
+commit c37452a7bf49ccfd0f2062a3e90085022cb3735b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 8 13:58:22 2021 +0200
+
+    Keep our fixes to Unihan_Variants which are not yet included upstream
+
+commit 68bffbdde2f98399abd430d749bcbfcfc361aaa6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 8 13:40:25 2021 +0200
+
+    Update Unihan_Variants.txt from “2017-05-14 Unicode 10.0.0” to “2021-05-18 Unicode 14.0.0”
+    
+    (From the current draft version of Unicode 14.0.0)
+
+commit bd85760453498920be33aaf5eab9313115ff8945
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat May 22 07:59:09 2021 +0200
+
+    Remove redundant line
+
+commit b59e0bc0b8aa6a6d25fe337c013be714fd4d3721
+Author: Emilio Herrera <ehespinosa57@gmail.com>
+Date:   Sat Jun 5 18:03:19 2021 +0200
+
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 100.0% (138 of 138 strings)
+    
+    Co-authored-by: Emilio Herrera <ehespinosa57@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translation: ibus-table/app
+
+commit 93d39887ef87e83525f395d5ccdc74ef6ec8fc62
+Author: Rafael Fontenelle <rafaelff@gnome.org>
+Date:   Tue May 25 00:03:31 2021 +0200
+
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 100.0% (138 of 138 strings)
+    
+    Co-authored-by: Rafael Fontenelle <rafaelff@gnome.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    Translation: ibus-table/app
+
+commit 34218eb71047896e6256e7666c779abae55f0754
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Sun May 16 21:40:59 2021 +0200
 

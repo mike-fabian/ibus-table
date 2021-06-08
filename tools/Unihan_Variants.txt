@@ -1695,7 +1695,7 @@ U+53E2	kSemanticVariant	U+6A37<kFenn
 U+53E2	kSimplifiedVariant	U+4E1B
 U+53E8	kSemanticVariant	U+9955<kMeyerWempe
 U+53EA	kSemanticVariant	U+5B50<kLau
-U+53EA	kTraditionalVariant	U+96BB
+U+53EA	kTraditionalVariant	U+53EA U+96BB
 U+53EB	kSemanticVariant	U+544C<kLau,kMatthews,kMeyerWempe
 U+53F0	kSemanticVariant	U+81FA<kHKGlyph,kLau
 U+53F0	kSimplifiedVariant	U+53F0

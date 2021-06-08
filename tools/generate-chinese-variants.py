@@ -273,6 +273,7 @@ TEST_DATA = {
     u'系': 3, # U+7CFB
     u'乾': 3, # U+4E7E
     u'著': 3, # U+8457 Patch by Heiher <r@hev.cc>
+    u'只': 3, # U+53EA, see: https://github.com/kaio/ibus-table/issues/74
     }
 
 def test_detection(generated_script) -> int:

@@ -274,6 +274,19 @@ TEST_DATA = {
     u'乾': 3, # U+4E7E
     u'著': 3, # U+8457 Patch by Heiher <r@hev.cc>
     u'只': 3, # U+53EA, see: https://github.com/kaio/ibus-table/issues/74
+    # Problems reported in https://github.com/ibus/ibus/issues/2323
+    u'着': 3, # U+7740, used in HK
+    u'枱': 3, # U+67B1, used in HK (correct already, no SC variant entry in Unihan_Variants.txt)
+    u'云': 3, # U+4E91, used in HK and TW
+    u'裡': 3, # U+88E1, (Untypable in S) used in all places same meaning as 裏
+    u'復': 3, # U+5FA9, (Untypable in S) used in all places same meaning in S, diff in T
+    u'采': 3, # U+91C7, (Untypable in T) used in Hong Kong, not sure about TW
+    # http://dict.revised.moe.edu.tw/cgi-bin/cbdic/gsweb.cgi has 采, i.e. probably
+    # it is used in TW
+    u'吓': 3, # U+5413, (Untypable in T) used in Cantonese.
+    u'尸': 3, # U+5C38, (Untypable in T) idk where it is used, but Cangjie has that as a radical.
+    u'揾': 3, # U+63FE, used in HK
+    # (TW seems to use only 搵, see http://dict.revised.moe.edu.tw/cgi-bin/cbdic/gsweb.cgi)
     }
 
 def test_detection(generated_script) -> int:

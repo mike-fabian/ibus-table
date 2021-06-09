@@ -19,6 +19,20 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.13.3" date="2021-06-09" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.13.3</url>
+      <issues>
+        <issue url="https://github.com/ibus/ibus/issues/2323">
+          github-ibus-issue#2323: Fix a few more bugs in
+          Unihan_Variants.txt, the characters 着枱云裡復采吓尸揾 are
+          used both in simplified and traditional Chinese (some of
+          them in traditional Chinese in Hong Kong only).
+        </issue>
+      </issues>
+    </release>
     <release version="1.13.2" date="2021-06-08" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

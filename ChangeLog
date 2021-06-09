@@ -1,10 +1,30 @@
-commit aa9fdaf64613a730348e4bfd8814cd51f132f275
+commit 6d4ec21d6a8fceaff98488c72b7dcdb94117c326
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jun 9 17:47:30 2021 +0200
+
+    Release 1.13.3
+
+commit 5ed1cc16b398e0161e63ef35421d94166caf56c0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jun 9 17:29:46 2021 +0200
+
+    Fix some more bugs in Unihan_Variants.txt
+    
+    Resolves: https://github.com/ibus/ibus/issues/2323
+
+commit 521054fc811a72161673aea07b55062a34df8d52
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jun 9 15:46:17 2021 +0200
+
+    Move test characters which are already fixed in Unicode up in generate-chinese-variants.py
+
+commit d14b2d8d5a573ecd8eb3996187002a429aec9254
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Jun 8 14:29:49 2021 +0200
 
     Release  1.13.2
 
-commit 9bd693e7fa446786212d70357539765acbe3c372
+commit 6384e217f7283d12b1bdabbc10da4d2cf2e4f94a
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Jun 8 13:59:59 2021 +0200
 
@@ -12,13 +32,19 @@ Date:   Tue Jun 8 13:59:59 2021 +0200
     
     Resolves: https://github.com/kaio/ibus-table/issues/74
 
-commit 2c02c5652e45547502ef3a6cc24c9d75beb83922
+commit 5406e5badb03d2719b47f9878f64969afc304bce
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Jun 8 14:17:02 2021 +0200
 
     Small improvements to the test function in generate-chinese-variants.py
     
     (Don’t exit after the first fail, do all tests and print a summary)
+
+commit 7152e2eaa01a9cb234e7e4a6f02174684f4ac42c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 8 14:40:50 2021 +0200
+
+    Adapt test case to update of Unihan_Variants.txt
 
 commit 7a8a23dbe988dcdba100cb32caca228fdb2c7c93
 Author: Mike FABIAN <mfabian@redhat.com>

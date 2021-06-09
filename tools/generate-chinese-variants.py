@@ -264,12 +264,12 @@ TEST_DATA = {
     u'a☺α烏': 2,
     u'台': 3,
     u'同': 3,
+    u'表': 3, # U+8868
+    u'面': 3, # U+9762
     # Characters below this comments probably have buggy entries
     # in Unihan_Variants.txt:
     u'覆': 3, # U+8986
-    u'表': 3, # U+8868
     u'杰': 3, # U+6770
-    u'面': 3, # U+9762
     u'系': 3, # U+7CFB
     u'乾': 3, # U+4E7E
     u'著': 3, # U+8457 Patch by Heiher <r@hev.cc>

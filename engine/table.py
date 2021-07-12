@@ -42,6 +42,13 @@ import re
 import copy
 import time
 import logging
+IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
+try:
+    import simpleaudio # type: ignore
+    IMPORT_SIMPLEAUDIO_SUCCESSFUL = True
+except (ImportError,):
+    IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
+
 from gettext import dgettext
 _ = lambda a: dgettext('ibus-table', a)
 N_ = lambda a: a
@@ -402,6 +409,15 @@ class TabEngine(IBus.EngineSimple):
         # 1 = Table input ON (aka “Table input mode”, “Chinese mode”)
         self._input_mode = it_util.variant_to_value(
             self._gsettings.get_value('inputmode'))
+
+        self._error_sound_object: Optional[simpleaudio.WaveObject] = None
+        self._error_sound_file = ''
+        self._error_sound = it_util.variant_to_value(
+            self._gsettings.get_value('errorsound'))
+        self.set_error_sound_file(
+            it_util.variant_to_value(
+                self._gsettings.get_value('errorsoundfile')),
+            update_gsettings=False)
 
         # self._prev_key: hold the key event last time.
         self._prev_key: Optional[it_util.KeyEvent] = None
@@ -1868,6 +1884,83 @@ class TabEngine(IBus.EngineSimple):
         '''Returns the current debug level'''
         return self._debug_level
 
+    def set_error_sound(
+            self, error_sound: bool, update_gsettings: bool = True) -> None:
+        '''Sets whether a sound is played on error or not
+
+        :param error_sound: True if a sound is played on error, False if not
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the Gsettings key changed
+                                 to avoid endless loops when the Gsettings
+                                 key is changed twice in a short time.
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug(
+                '(%s, update_gsettings = %s)', error_sound, update_gsettings)
+        if error_sound == self._error_sound:
+            return
+        self._error_sound = error_sound
+        if update_gsettings:
+            self._gsettings.set_value(
+                'errorsound',
+                GLib.Variant.new_boolean(error_sound))
+
+    def get_error_sound(self) -> bool:
+        '''Returns whether a sound is played on error or not'''
+        return self._error_sound
+
+    def set_error_sound_file(
+            self, path: str = u'', update_gsettings: bool = True) -> None:
+        '''Sets the path of the .wav file containing the sound
+        to play on error.
+
+        :param path: The path of the .wav file containing the error sound
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the dconf key changed
+                                 to avoid endless loops when the dconf
+                                 key is changed twice in a short time.
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug(
+                '(%s, update_gsettings = %s)', path, update_gsettings)
+        if path == self._error_sound_file:
+            return
+        self._error_sound_file = path
+        if update_gsettings:
+            self._gsettings.set_value(
+                "errorsoundfile",
+                GLib.Variant.new_string(path))
+        path = os.path.expanduser(path)
+        if not IMPORT_SIMPLEAUDIO_SUCCESSFUL:
+            LOGGER.info(
+                'No sound because python3-simpleaudio is not available.')
+        else:
+            if not os.path.isfile(path):
+                LOGGER.info('Sound file %s does not exist.', path)
+            elif not os.access(path, os.R_OK):
+                LOGGER.info('Sound file %s not readable.', path)
+            else:
+                try:
+                    LOGGER.info(
+                        'Trying to initialize error sound from %s', path)
+                    self._error_sound_object = (
+                        simpleaudio.WaveObject.from_wave_file(path))
+                    LOGGER.info('Error sound initialized.')
+                except (FileNotFoundError, PermissionError):
+                    LOGGER.exception(
+                        'Initializing error sound object failed.')
+                except:
+                    LOGGER.exception(
+                        'Initializing error sound object failed.')
+
+    def get_error_sound_file(self) -> str:
+        '''
+        Return the path of the .wav file containing the error sound.
+        '''
+        return self._error_sound_file
+
     def set_keybindings(self,
                         keybindings: Union[Dict[str, List[str]], Any],
                         update_gsettings: bool = True) -> None:
@@ -2713,6 +2806,8 @@ class TabEngine(IBus.EngineSimple):
                 len(left_of_current_edit) + len(current_edit),
                 len(preedit_string_complete)))
         if self._chars_invalid:
+            if self._error_sound and self._error_sound_object:
+                dummy = self._error_sound_object.play()
             attrs.append(
                 IBus.attr_foreground_new(
                     color_invalid,
@@ -3911,6 +4006,10 @@ class TabEngine(IBus.EngineSimple):
         set_functions = {
             'debuglevel':
             {'set_function': self.set_debug_level, 'kwargs': {}},
+            'errorsound':
+            {'set_function': self.set_error_sound, 'kwargs': {}},
+            'errorsoundfile':
+            {'set_function': self.set_error_sound_file, 'kwargs': {}},
             'keybindings':
             {'set_function': self.set_keybindings, 'kwargs': {}},
             'autoselect':

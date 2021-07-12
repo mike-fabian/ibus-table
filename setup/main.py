@@ -28,6 +28,8 @@ The setup tool for ibus-table.
 
 # “Wrong continued indentation”: pylint: disable=bad-continuation
 
+from typing import Union
+from typing import Any
 import sys
 import os
 import re
@@ -1054,6 +1056,44 @@ class SetupUI(Gtk.Window):
         self._use_dark_theme_combobox.connect(
             "changed", self.on_use_dark_theme_combobox_changed)
 
+        self._error_sound_checkbutton = Gtk.CheckButton(
+            # Translators: A checkbox where one can choose whether a
+            # sound is played on error
+            label=_('Play sound file on error'))
+        self._error_sound_checkbutton.set_tooltip_text(
+            _('Here you can choose whether a sound file is played '
+              + 'if an error occurs. '
+              + 'If the simpleaudio module for Python3 is not installled, '
+              + 'this option does nothing.'))
+        self._error_sound_checkbutton.set_hexpand(False)
+        self._error_sound_checkbutton.set_vexpand(False)
+        self._options_details_grid.attach(
+            self._error_sound_checkbutton, 0, 11, 1, 1)
+        self._error_sound_checkbutton.set_active(
+            self._settings_dict['errorsound']['user'])
+        self._error_sound_checkbutton.connect(
+            'clicked', self.on_error_sound_checkbutton)
+
+        self._error_sound_file_button = Gtk.Button()
+        self._error_sound_file_button_box = Gtk.HBox()
+        self._error_sound_file_button_label = Gtk.Label()
+        self._error_sound_file_button_label.set_text(
+            self._settings_dict['errorsoundfile']['user'])
+        self._error_sound_file_button_label.set_use_markup(True)
+        self._error_sound_file_button_label.set_max_width_chars(
+            40)
+        self._error_sound_file_button_label.set_line_wrap(False)
+        self._error_sound_file_button_label.set_ellipsize(
+            Pango.EllipsizeMode.START)
+        self._error_sound_file_button_box.pack_start(
+            self._error_sound_file_button_label, False, False, 0)
+        self._error_sound_file_button.add(
+            self._error_sound_file_button_box)
+        self._options_details_grid.attach(
+            self._error_sound_file_button, 1, 11, 1, 1)
+        self._error_sound_file_button.connect(
+            'clicked', self.on_error_sound_file_button)
+
         self._debug_level_label = Gtk.Label()
         self._debug_level_label.set_text(
             # Translators: When the debug level is greater than 0,
@@ -1068,7 +1108,7 @@ class SetupUI(Gtk.Window):
               'may also be shown graphically.'))
         self._debug_level_label.set_xalign(0)
         self._options_details_grid.attach(
-            self._debug_level_label, 0, 11, 1, 1)
+            self._debug_level_label, 0, 12, 1, 1)
 
         self._debug_level_adjustment = Gtk.SpinButton()
         self._debug_level_adjustment.set_visible(True)
@@ -1076,7 +1116,7 @@ class SetupUI(Gtk.Window):
         self._debug_level_adjustment.set_increments(1.0, 1.0)
         self._debug_level_adjustment.set_range(0.0, 255.0)
         self._options_details_grid.attach(
-            self._debug_level_adjustment, 1, 11, 1, 1)
+            self._debug_level_adjustment, 1, 12, 1, 1)
         self._debug_level_adjustment.set_value(
             self._settings_dict['debuglevel']['user'])
         self._debug_level_adjustment.connect(
@@ -1233,6 +1273,26 @@ class SetupUI(Gtk.Window):
             'default': default_dark_theme,
             'user': user_dark_theme,
             'set_function': self.set_dark_theme}
+
+        default_error_sound = it_util.variant_to_value(
+            self._gsettings.get_default_value('errorsound'))
+        user_error_sound = it_util.variant_to_value(
+            self._gsettings.get_value('errorsound'))
+
+        self._settings_dict['errorsound'] = {
+            'default': default_error_sound,
+            'user': user_error_sound,
+            'set_function': self.set_error_sound}
+
+        default_error_sound_file = it_util.variant_to_value(
+            self._gsettings.get_default_value('errorsoundfile'))
+        user_error_sound_file = it_util.variant_to_value(
+            self._gsettings.get_value('errorsoundfile'))
+
+        self._settings_dict['errorsoundfile'] = {
+            'default': default_error_sound_file,
+            'user': user_error_sound_file,
+            'set_function': self.set_error_sound_file}
 
         default_debug_level = it_util.variant_to_value(
             self._gsettings.get_default_value('debuglevel'))
@@ -1660,6 +1720,42 @@ class SetupUI(Gtk.Window):
         else:
             use_dark_theme = False
         self.set_dark_theme(use_dark_theme, update_gsettings=True)
+
+    def on_error_sound_checkbutton(self, widget: Gtk.CheckButton) -> None:
+        '''
+        The checkbutton whether to play a sound file on error.
+
+        :param widget: The check button clicked
+        '''
+        self.set_error_sound(widget.get_active(), update_gsettings=True)
+
+    def on_error_sound_file_button(
+            self, _widget: Gtk.Button) -> None:
+        '''
+        The button to select the .wav sound file to be played on error.
+        '''
+        self._error_sound_file_button.set_sensitive(False)
+        filename = ''
+        chooser = Gtk.FileChooserDialog(
+            title=_('Select .wav sound file:'),
+            parent=self,
+            action=Gtk.FileChooserAction.OPEN)
+        chooser.add_button(_('_Cancel'), Gtk.ResponseType.CANCEL)
+        chooser.add_button(_('_OK'), Gtk.ResponseType.OK)
+        chooser.set_current_folder(os.path.dirname(
+            self._settings_dict['errorsoundfile']['user']))
+        response = chooser.run()
+        if response == Gtk.ResponseType.OK:
+            filename = chooser.get_filename()
+        chooser.destroy()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
+        if filename:
+            self._error_sound_file_button_label.set_text(
+                filename)
+            self.set_error_sound_file(
+                filename, update_gsettings=True)
+        self._error_sound_file_button.set_sensitive(True)
 
     def on_debug_level_adjustment_value_changed(self, _widget):
         '''
@@ -2479,6 +2575,52 @@ class SetupUI(Gtk.Window):
             else:
                 active_id = "no"
             self._use_dark_theme_combobox.set_active_id(active_id)
+
+    def set_error_sound(
+            self, error_sound: bool, update_gsettings: bool = True) -> None:
+        '''Sets the whether to play a sound on error.
+
+        :param error_sound: Whether to play a sound on error
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the Gsettings key changed
+                                 to avoid endless loops when the Gsettings
+                                 key is changed twice in a short time.
+        :type update_gsettings: boolean
+        '''
+        LOGGER.info(
+            '(%s, update_gsettings = %s)', error_sound, update_gsettings)
+        self._settings_dict['errorsound']['user'] = error_sound
+        if update_gsettings:
+            self._gsettings.set_value(
+                'errorsound',
+                GLib.Variant.new_boolean(error_sound))
+        else:
+            self._error_sound_checkbutton.set_active(error_sound)
+
+    def set_error_sound_file(
+            self,
+            path: Union[str, Any],
+            update_gsettings: bool = True) -> None:
+        '''Sets the path of file containing the sound to play on error.
+
+        :param path: Full path of the .wav file containing the error sound.
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the Gsettings key changed
+                                 to avoid endless loops when the Gsettings
+                                 key is changed twice in a short time.
+        '''
+        LOGGER.info(
+            '(%s, update_gsettings = %s)', path, update_gsettings)
+        self._settings_dict['errorsoundfile']['user'] = path
+        if update_gsettings:
+            self._gsettings.set_value(
+                'errorsoundfile',
+                GLib.Variant.new_string(path))
+        else:
+            self._error_sound_file_button_label.set_text(
+                path)
 
     def set_debug_level(self, debug_level, update_gsettings=True):
         '''Sets the debug level

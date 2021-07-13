@@ -25,8 +25,6 @@
 This file implements the ibus engine for ibus-table
 '''
 
-# “Wrong continued indentation”: pylint: disable=bad-continuation
-
 __all__ = (
     "TabEngine",
 )

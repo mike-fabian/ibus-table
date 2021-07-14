@@ -246,15 +246,6 @@ class TabSqliteDb:
                 + 'is it an outdated database?')
             self.user_can_define_phrase = False
 
-        self.dynamic_adjust = self.ime_properties.get('dynamic_adjust')
-        if self.dynamic_adjust:
-            self.dynamic_adjust = bool(self.dynamic_adjust.lower() == u'true')
-        else:
-            print(
-                'Could not find "dynamic_adjust" entry from database, '
-                + 'is it an outdated database?')
-            self.dynamic_adjust = False
-
         self.suggestion_mode = self.ime_properties.get('suggestion_mode')
         if self.suggestion_mode:
             self.suggestion_mode = bool(
@@ -1038,7 +1029,7 @@ class TabSqliteDb:
     def select_words(
             self, tabkeys=u'', onechar=False, chinese_mode=4,
             single_wildcard_char=u'', multi_wildcard_char=u'',
-            auto_wildcard=False):
+            auto_wildcard=False, dynamic_adjust=False):
         '''
         Get matching phrases for tabkeys from the database.
         '''
@@ -1053,7 +1044,7 @@ class TabSqliteDb:
             # for some users really like to select only single characters
             one_char_condition = ' AND length(phrase)=1 '
 
-        if self.user_can_define_phrase or self.dynamic_adjust:
+        if self.user_can_define_phrase or dynamic_adjust:
             sqlstr = '''
             SELECT tabkeys, phrase, freq, user_freq FROM
             (
@@ -1469,7 +1460,7 @@ class TabSqliteDb:
             return result[0][0]
         return 0
 
-    def check_phrase(self, tabkeys=u'', phrase=u''):
+    def check_phrase(self, tabkeys=u'', phrase=u'', dynamic_adjust=False):
         '''Adjust user_freq in user database if necessary.
 
         Also, if the phrase is not in the system database, and it is a
@@ -1487,7 +1478,7 @@ class TabSqliteDb:
             return
         if self._is_chinese and phrase in CHINESE_NOCHECK_CHARS:
             return
-        if not self.dynamic_adjust:
+        if not dynamic_adjust:
             if not self.user_can_define_phrase or not self.is_chinese:
                 return
             tabkeys = self.parse_phrase(phrase)

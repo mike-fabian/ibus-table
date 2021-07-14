@@ -366,6 +366,17 @@ class TabEngine(IBus.EngineSimple):
             self._debug_level = 255 # maximum
         DEBUG_LEVEL = self._debug_level
 
+        self._dynamic_adjust = self.database.ime_properties.get(
+            'dynamic_adjust')
+        if self._dynamic_adjust:
+            self._dynamic_adjust = bool(
+                self._dynamic_adjust.lower() == u'true')
+        else:
+            LOGGER.info(
+                'Could not find "dynamic_adjust" entry from database, '
+                + 'is it an outdated database?')
+            self._dynamic_adjust = False
+
         self._single_wildcard_char = it_util.variant_to_value(
             self._gsettings.get_user_value('singlewildcardchar'))
         if self._single_wildcard_char is None:
@@ -1494,7 +1505,8 @@ class TabEngine(IBus.EngineSimple):
                 chinese_mode=self._chinese_mode,
                 single_wildcard_char=self._single_wildcard_char,
                 multi_wildcard_char=self._multi_wildcard_char,
-                auto_wildcard=self._auto_wildcard)
+                auto_wildcard=self._auto_wildcard,
+                dynamic_adjust=self._dynamic_adjust)
         elif self._sg_mode_active and self._sg_mode:
             self._candidates = self.database.select_suggestion_candidate(
                 self._prefix)
@@ -2894,7 +2906,10 @@ class TabEngine(IBus.EngineSimple):
         """Check the given phrase and update save user db info"""
         if not tabkeys or not phrase:
             return
-        self.database.check_phrase(tabkeys=tabkeys, phrase=phrase)
+        self.database.check_phrase(
+            tabkeys=tabkeys,
+            phrase=phrase,
+            dynamic_adjust=self._dynamic_adjust)
 
         if self._save_user_count <= 0:
             self._save_user_start = time.time()

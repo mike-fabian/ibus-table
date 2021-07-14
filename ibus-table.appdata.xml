@@ -19,6 +19,32 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.14.0" date="2021-07-21" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.13.5</url>
+      <issues>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/70">
+          github-mike-fabian-issue#70: Add option to choose whether to
+          use DYNAMIC_ADJUST at runtime
+        </issue>
+        <issue url="https://github.com/kaio/ibus-table/issues/75">
+          github-kaio-issue#75: Add options to play sound file on error
+        </issue>
+        <issue>
+          Use checkbuttons instead of [Yes/No] comboboxes
+        </issue>
+        <issue>
+          Hide options which make no sense for certain tables instead
+          of just graying them out
+        </issue>
+        <issue>
+          Update translations from Weblate (updates for ca, cs, de
+          (100%), pt_BR, tr (100%), uk (100%), zh_CN)
+        </issue>
+      </issues>
+    </release>
     <release version="1.13.3" date="2021-06-09" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

@@ -1369,6 +1369,12 @@ class LatexTestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, 'α\\alpha ')
 
     def test_single_char_commit_with_f3(self):
+        # The latex.txt table in ibus-table-others-1.3.12 has
+        # SELECT_KEYS = F1,F2,F3,F4,F5,F6,F7,F8,F9,F10
+        # the older version in ibus-table-others-1.3.11
+        # has SELECT_KEYS = F1,F2,F3,F4,F5,F6,F7,F8,F9
+        # To make this test work for both versions, set the page size to 9:
+        ENGINE.set_page_size(9)
         ENGINE._do_process_key_event(IBus.KEY_backslash, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_b, 0, 0)
         # Lookup table shows only the first page, subsequent

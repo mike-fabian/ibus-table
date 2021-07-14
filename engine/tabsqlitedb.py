@@ -246,16 +246,6 @@ class TabSqliteDb:
                 + 'is it an outdated database?')
             self.user_can_define_phrase = False
 
-        self.suggestion_mode = self.ime_properties.get('suggestion_mode')
-        if self.suggestion_mode:
-            self.suggestion_mode = bool(
-                self.suggestion_mode.lower() == u'true')
-        else:
-            print(
-                'Could not find "suggestion_mode" entry from database, '
-                + 'is it an outdated database?')
-            self.suggestion_mode = False
-
         self.rules = self.get_rules()
         self.possible_tabkeys_lengths = self.get_possible_tabkeys_lengths()
         self.startchars = self.get_start_chars()

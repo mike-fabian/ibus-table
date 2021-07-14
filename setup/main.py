@@ -139,9 +139,11 @@ class SetupUI(Gtk.Window):
         if not os.path.exists(database_filename):
             LOGGER.error('Cannot open database %s', database_filename)
             sys.exit(1)
+        user_database_filename = os.path.basename(database_filename).replace(
+            '.db', '-user.db')
         self.tabsqlitedb = tabsqlitedb.TabSqliteDb(
             filename=database_filename,
-            user_db=None,
+            user_db=user_database_filename,
             create_database=False)
 
         self.__is_chinese = False
@@ -836,6 +838,44 @@ class SetupUI(Gtk.Window):
         self._keybindings_edit_popover_down_button = None
 
         _options_details_grid_row = 0
+        self._dynamic_adjust_checkbutton = Gtk.CheckButton(
+            # Translators: A checkbox where one can choose whether the
+            # order of the candidates is dynamically adjusted according
+            # to how often the candidates are used.
+            label=_('Dynamic adjust'))
+        self._dynamic_adjust_checkbutton.set_tooltip_text(
+            _('Here you can choose whether the order of the candidates is '
+              + 'dynamically adjusted according to how often the candidates '
+              + 'are used.'))
+        self._dynamic_adjust_checkbutton.set_hexpand(False)
+        self._dynamic_adjust_checkbutton.set_vexpand(False)
+        self._options_details_grid.attach(
+            self._dynamic_adjust_checkbutton, 0, _options_details_grid_row, 1, 1)
+        self._dynamic_adjust_checkbutton.set_active(
+            self._settings_dict['dynamicadjust']['user'])
+        self._dynamic_adjust_checkbutton.connect(
+            'clicked', self.on_dynamic_adjust_checkbutton)
+        self._dynamic_adjust_forget_button = Gtk.Button()
+        self._dynamic_adjust_forget_button_box = Gtk.HBox()
+        self._dynamic_adjust_forget_button_label = Gtk.Label()
+        self._dynamic_adjust_forget_button_label.set_text(
+            _('Delete all learned data'))
+        self._dynamic_adjust_forget_button_label.set_use_markup(True)
+        self._dynamic_adjust_forget_button_label.set_max_width_chars(
+            40)
+        self._dynamic_adjust_forget_button_label.set_line_wrap(False)
+        self._dynamic_adjust_forget_button_label.set_ellipsize(
+            Pango.EllipsizeMode.START)
+        self._dynamic_adjust_forget_button_box.pack_start(
+            self._dynamic_adjust_forget_button_label, False, False, 0)
+        self._dynamic_adjust_forget_button.add(
+            self._dynamic_adjust_forget_button_box)
+        self._options_details_grid.attach(
+            self._dynamic_adjust_forget_button, 1, _options_details_grid_row, 1, 1)
+        self._dynamic_adjust_forget_button.connect(
+            'clicked', self.on_dynamic_adjust_forget_button)
+
+        _options_details_grid_row += 1
         self._onechar_mode_label = Gtk.Label()
         self._onechar_mode_label.set_text(
             # Translators: A combobox to choose whether only single
@@ -1295,6 +1335,22 @@ class SetupUI(Gtk.Window):
             'user': user_dark_theme,
             'set_function': self.set_dark_theme}
 
+        default_dynamic_adjust = it_util.variant_to_value(
+            self._gsettings.get_default_value('dynamicadjust'))
+        if self.tabsqlitedb.ime_properties.get('dynamic_adjust'):
+            default_dynamic_adjust = (
+                self.tabsqlitedb.ime_properties.get(
+                    'dynamic_adjust').lower() == 'true')
+        user_dynamic_adjust = it_util.variant_to_value(
+            self._gsettings.get_user_value('dynamicadjust'))
+        if user_dynamic_adjust is None:
+            user_dynamic_adjust = default_dynamic_adjust
+
+        self._settings_dict['dynamicadjust'] = {
+            'default': default_dynamic_adjust,
+            'user': user_dynamic_adjust,
+            'set_function': self.set_dynamic_adjust}
+
         default_error_sound = it_util.variant_to_value(
             self._gsettings.get_default_value('errorsound'))
         user_error_sound = it_util.variant_to_value(
@@ -1744,6 +1800,37 @@ class SetupUI(Gtk.Window):
         else:
             use_dark_theme = False
         self.set_dark_theme(use_dark_theme, update_gsettings=True)
+
+    def on_dynamic_adjust_checkbutton(self, widget: Gtk.CheckButton) -> None:
+        '''
+        The checkbutton whether to dynamically adjust the candidates
+
+        :param widget: The check button clicked
+        '''
+        self.set_dynamic_adjust(widget.get_active(), update_gsettings=True)
+
+    def on_dynamic_adjust_forget_button(
+            self, _widget: Gtk.Button) -> None:
+        '''
+        The button to select forget how often candidates were used
+        '''
+        self._dynamic_adjust_forget_button.set_sensitive(False)
+        response = self._run_are_you_sure_dialog(
+            # Translators: This is the text in the centre of a small
+            # dialog window, trying to confirm whether the user is
+            # really sure to to delete all the data
+            # ibus-typing-booster has learned from what the user has
+            # typed or from text files the user has given as input to
+            # learn from. If the user has used ibus-typing-booster for
+            # a long time, predictions are much better than in the
+            # beginning because of the learning from user
+            # input. Deleting this learned data cannot be reversed. So
+            # the user should be really sure he really wants to do that.
+            _('Do you really want to delete all '
+              + 'data learned from typing and selecting candidates?'))
+        if response == Gtk.ResponseType.OK:
+            self.tabsqlitedb.remove_all_phrases_from_user_db()
+        self._dynamic_adjust_forget_button.set_sensitive(True)
 
     def on_error_sound_checkbutton(self, widget: Gtk.CheckButton) -> None:
         '''
@@ -2618,6 +2705,30 @@ class SetupUI(Gtk.Window):
             else:
                 active_id = "no"
             self._use_dark_theme_combobox.set_active_id(active_id)
+
+    def set_dynamic_adjust(
+            self,
+            dynamic_adjust: bool,
+            update_gsettings: bool = True) -> None:
+        '''Sets the whether dynamically adjust the candidates according to
+        how often they are used.
+
+        :param dynamic_adjust: Whether to dynamically adjust the candidates
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the Gsettings key changed
+                                 to avoid endless loops when the Gsettings
+                                 key is changed twice in a short time.
+        '''
+        LOGGER.info(
+            '(%s, update_gsettings = %s)', dynamic_adjust, update_gsettings)
+        self._settings_dict['dynamicadjust']['user'] = dynamic_adjust
+        if update_gsettings:
+            self._gsettings.set_value(
+                'dynamicadjust',
+                GLib.Variant.new_boolean(dynamic_adjust))
+        else:
+            self._dynamic_adjust_checkbutton.set_active(dynamic_adjust)
 
     def set_error_sound(
             self,

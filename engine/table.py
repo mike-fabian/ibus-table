@@ -366,16 +366,21 @@ class TabEngine(IBus.EngineSimple):
             self._debug_level = 255 # maximum
         DEBUG_LEVEL = self._debug_level
 
-        self._dynamic_adjust = self.database.ime_properties.get(
-            'dynamic_adjust')
-        if self._dynamic_adjust:
-            self._dynamic_adjust = bool(
-                self._dynamic_adjust.lower() == u'true')
-        else:
-            LOGGER.info(
-                'Could not find "dynamic_adjust" entry from database, '
-                + 'is it an outdated database?')
-            self._dynamic_adjust = False
+        self._dynamic_adjust = it_util.variant_to_value(
+            self._gsettings.get_user_value('dynamicadjust'))
+        if self._dynamic_adjust is None:
+            self._dynamic_adjust = self.database.ime_properties.get(
+                'dynamic_adjust')
+            if self._dynamic_adjust:
+                self._dynamic_adjust = bool(
+                    self._dynamic_adjust.lower() == u'true')
+            else:
+                LOGGER.info(
+                    'Could not find "dynamic_adjust" entry from database, '
+                    + 'is it an outdated database?')
+        if self._dynamic_adjust is None:
+            self._dynamic_adjust = it_util.variant_to_value(
+                self._gsettings.get_value('dynamicadjust'))
 
         self._single_wildcard_char = it_util.variant_to_value(
             self._gsettings.get_user_value('singlewildcardchar'))
@@ -1895,6 +1900,33 @@ class TabEngine(IBus.EngineSimple):
     def get_debug_level(self) -> int:
         '''Returns the current debug level'''
         return self._debug_level
+
+    def set_dynamic_adjust(
+            self, dynamic_adjust: bool, update_gsettings: bool = True) -> None:
+        '''Sets whether dynamic adjustment of the candidates is used.
+
+        :param dynamic_adjust: True if dynamic adjustment is used, False if not
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the Gsettings key changed
+                                 to avoid endless loops when the Gsettings
+                                 key is changed twice in a short time.
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug(
+                '(%s, update_gsettings = %s)', dynamic_adjust, update_gsettings)
+        if dynamic_adjust == self._dynamic_adjust:
+            return
+        self._dynamic_adjust = dynamic_adjust
+        self.database.reset_phrases_cache()
+        if update_gsettings:
+            self._gsettings.set_value(
+                'dynamicadjust',
+                GLib.Variant.new_boolean(dynamic_adjust))
+
+    def get_dynamic_adjust(self) -> bool:
+        '''Returns whether dynamic adjustment of the candidates is used.'''
+        return self._dynamic_adjust
 
     def set_error_sound(
             self, error_sound: bool, update_gsettings: bool = True) -> None:
@@ -4021,6 +4053,8 @@ class TabEngine(IBus.EngineSimple):
         set_functions = {
             'debuglevel':
             {'set_function': self.set_debug_level, 'kwargs': {}},
+            'dynamicadjust':
+            {'set_function': self.set_dynamic_adjust, 'kwargs': {}},
             'errorsound':
             {'set_function': self.set_error_sound, 'kwargs': {}},
             'errorsoundfile':

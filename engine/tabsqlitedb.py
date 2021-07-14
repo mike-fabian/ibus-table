@@ -1540,6 +1540,8 @@ class TabSqliteDb:
             self, tabkeys=u'', phrase=u'', database='user_db', commit=True):
         '''Remove phrase from database
         '''
+        LOGGER.info('Removing tabkeys=%s, phrase=%, database=%s commit=%s',
+                    tabkeys, phrase, database, commit)
         if not phrase:
             return
         if tabkeys:
@@ -1557,6 +1559,21 @@ class TabSqliteDb:
         if commit:
             self.db.commit()
         self.invalidate_phrases_cache(tabkeys)
+
+    def remove_all_phrases_from_user_db(self) -> None:
+        '''
+        Remove all phrases from the user database, i.e. delete all the
+        data learned from user input.
+        '''
+        LOGGER.info('Removing all phrases from the user database.')
+        try:
+            self.db.execute('DELETE FROM user_db.phrases;')
+            self.db.commit()
+            self.db.execute('PRAGMA wal_checkpoint;')
+            self.reset_phrases_cache()
+        except Exception:
+            LOGGER.exception(
+                'Unexpected error removing all phrases from database.')
 
     def extract_user_phrases(
             self, database_file='', old_database_version='0.0'):

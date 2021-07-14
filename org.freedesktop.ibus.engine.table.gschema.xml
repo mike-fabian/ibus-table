@@ -103,6 +103,9 @@
     <key name="autowildcard" type="b">
       <default>true</default>
     </key>
+    <key name="dynamicadjust" type="b">
+      <default>true</default>
+    </key>
     <key name="errorsound" type="b">
       <default>true</default>
     </key>

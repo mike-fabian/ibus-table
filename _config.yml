@@ -12,8 +12,8 @@ description: > # this means to ignore newlines until "baseurl:"
     IBus-Table is the IM Engine framework for table-based input methods, 
     mostly Chinese input methods such as ZhengMa, WuBi, ErBi, CangJie.
 baseurl: "/ibus-table" # the subpath of your site, e.g. /blog
-url: "https://kaio.github.io" # the base hostname & protocol for your site
-github_username:  kaio
+url: "https://mike-fabian.github.io" # the base hostname & protocol for your site
+github_username:  mike-fabian
 
 # Build settings
 markdown: kramdown

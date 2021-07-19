@@ -613,16 +613,15 @@ class SetupUI(Gtk.Window):
             0, _options_grid_row, 2, 1)
 
         _options_grid_row += 1
-        self._always_show_lookup_label = Gtk.Label()
-        self._always_show_lookup_label.set_text(
+        self._always_show_lookup_checkbutton = Gtk.CheckButton(
             # Translators: A combobox to choose whether
             # a candidate list should be shown or hidden.
             # For Chinese input methods one usually wants the
             # candidate list to be shown. But for some non-Chinese
             # input methods like the Russian “translit”, hiding
             # the candidate lists is better.
-            _('Show candidate list'))
-        self._always_show_lookup_label.set_tooltip_text(
+            label=_('Show candidate list'))
+        self._always_show_lookup_checkbutton.set_tooltip_text(
             # Translit: A tooltip for the label of the combobox to
             # choose whether a candidate list should be shown or
             # hidden.
@@ -631,34 +630,14 @@ class SetupUI(Gtk.Window):
               'candidate lists to be shown. But for some non-Chinese\n'
               'input methods like the Russian “translit”, hiding the\n'
               'candidate lists is better.'))
-        self._always_show_lookup_label.set_xalign(0)
+        self._always_show_lookup_checkbutton.set_hexpand(False)
+        self._always_show_lookup_checkbutton.set_vexpand(False)
         self._options_grid.attach(
-            self._always_show_lookup_label, 0, _options_grid_row, 1, 1)
-        self._always_show_lookup_combobox = Gtk.ComboBox()
-        self._always_show_lookup_store = Gtk.ListStore(str, bool)
-        self._always_show_lookup_store.append(
-            # Translators: This is the setting to avoid showing
-            # candidate lists.
-            [_('No'), False])
-        self._always_show_lookup_store.append(
-            # Translators: This is the setting to show
-            # candidate lists.
-            [_('Yes'), True])
-        self._always_show_lookup_combobox.set_model(
-            self._always_show_lookup_store)
-        renderer_text = Gtk.CellRendererText()
-        self._always_show_lookup_combobox.pack_start(
-            renderer_text, True)
-        self._always_show_lookup_combobox.add_attribute(
-            renderer_text, "text", 0)
-        for index, item in enumerate(self._always_show_lookup_store):
-            if self._settings_dict['alwaysshowlookup']['user'] == item[1]:
-                self._always_show_lookup_combobox.set_active(index)
-        self._options_grid.attach(
-            self._always_show_lookup_combobox, 1, _options_grid_row, 1, 1)
-        self._always_show_lookup_combobox.connect(
-            "changed",
-            self.on_always_show_lookup_combobox_changed)
+            self._always_show_lookup_checkbutton, 0, _options_grid_row, 2, 1)
+        self._always_show_lookup_checkbutton.set_active(
+            self._settings_dict['alwaysshowlookup']['user'])
+        self._always_show_lookup_checkbutton.connect(
+            "clicked", self.on_always_show_lookup_checkbutton)
 
         _options_grid_row += 1
         self._lookup_table_orientation_label = Gtk.Label()
@@ -1726,17 +1705,10 @@ class SetupUI(Gtk.Window):
             self.set_direct_full_width_punctuation_mode(
                 mode, update_gsettings=True)
 
-    def on_always_show_lookup_combobox_changed(self, widget) -> None:
-        '''
-        A change of the display preference of the lookup table has been
-        requested with the combobox
-        '''
-        tree_iter = widget.get_active_iter()
-        if tree_iter is not None:
-            model = widget.get_model()
-            mode = model[tree_iter][1]
-            self.set_always_show_lookup(
-                mode, update_gsettings=True)
+    def on_always_show_lookup_checkbutton(
+            self, widget: Gtk.CheckButton) -> None:
+        '''The checkbutton for always show lookup has been clicked'''
+        self.set_always_show_lookup(widget.get_active(), update_gsettings=True)
 
     def on_use_dark_theme_checkbutton(self, widget: Gtk.CheckButton) -> None:
         '''The checkbutton for the dark theme has been clicked'''
@@ -2612,9 +2584,7 @@ class SetupUI(Gtk.Window):
                 'alwaysshowlookup',
                 GLib.Variant.new_boolean(mode))
         else:
-            for index, item in enumerate(self._input_mode_store):
-                if self._settings_dict['alwaysshowlookup']['user'] == item[1]:
-                    self._always_show_lookup_combobox.set_active(index)
+            self._always_show_lookup_checkbutton.set_active(mode)
 
     def set_dark_theme(
             self,

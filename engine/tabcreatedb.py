@@ -19,10 +19,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 from typing import Tuple
 from typing import List
@@ -62,7 +60,7 @@ class InvalidTableName(Exception):
     Raised when an invalid table name is given
     """
     def __init__(self, name) -> None:
-        super(InvalidTableName, self).__init__()
+        super().__init__()
         self.table_name = name
 
     def __str__(self) -> str:
@@ -188,7 +186,8 @@ def main():
                                  user_db=None,
                                  create_database=True)
 
-    def parse_source(f: Iterable[str]) -> Tuple[List[str], List[str], List[str]]:
+    def parse_source(
+            f: Iterable[str]) -> Tuple[List[str], List[str], List[str]]:
         _attri: List[str] = []
         _table: List[str] = []
         _gouci: List[str] = []

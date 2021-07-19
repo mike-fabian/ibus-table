@@ -40,7 +40,6 @@ require_version('Gdk', '3.0')
 from gi.repository import Gdk
 require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from gi.repository import GObject
 require_version('IBus', '1.0')
 from gi.repository import IBus
 

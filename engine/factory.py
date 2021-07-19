@@ -17,10 +17,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 from typing import Dict
 from typing import Optional
@@ -62,8 +60,8 @@ class EngineFactory(IBus.Factory):
 
         # init factory
         self.bus = bus
-        super(EngineFactory, self).__init__(connection=bus.get_connection(),
-                                            object_path=IBus.PATH_FACTORY)
+        super().__init__(connection=bus.get_connection(),
+                         object_path=IBus.PATH_FACTORY)
         self.engine_id = 0
         self.engine_path = ''
 
@@ -112,4 +110,4 @@ class EngineFactory(IBus.Factory):
         for _db in self.dbdict:
             self.dbdict[_db].sync_usrdb()
         ##print "Have synced user db\n"
-        super(EngineFactory, self).destroy()
+        super().destroy()

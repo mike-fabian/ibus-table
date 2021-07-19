@@ -18,7 +18,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License
+# You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 '''
@@ -260,8 +260,8 @@ class TabEngine(IBus.EngineSimple):
     '''The IM Engine for Tables'''
 
     def __init__(self, bus, obj_path, database, unit_test=False) -> None:
-        super(TabEngine, self).__init__(connection=bus.get_connection(),
-                                        object_path=obj_path)
+        super().__init__(connection=bus.get_connection(),
+                         object_path=obj_path)
         global DEBUG_LEVEL
         try:
             DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
@@ -1480,8 +1480,10 @@ class TabEngine(IBus.EngineSimple):
                 self.database.startchars,
                 self._strings)
         if (not force and not self._sg_mode_active
-            and self._chars_valid == self._chars_valid_update_candidates_last
-            and self._chars_invalid == self._chars_invalid_update_candidates_last):
+            and
+            self._chars_valid == self._chars_valid_update_candidates_last
+            and
+            self._chars_invalid == self._chars_invalid_update_candidates_last):
             # The input did not change since we came here last, do
             # nothing and leave candidates and lookup table unchanged:
             return bool(self._candidates)
@@ -1869,7 +1871,7 @@ class TabEngine(IBus.EngineSimple):
         if self._save_user_count > 0:
             self.database.sync_usrdb()
             self._save_user_count = 0
-        super(TabEngine, self).destroy()
+        super().destroy()
 
     def set_debug_level(
             self, debug_level: int, update_gsettings: bool = True) -> None:
@@ -1914,7 +1916,8 @@ class TabEngine(IBus.EngineSimple):
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
-                '(%s, update_gsettings = %s)', dynamic_adjust, update_gsettings)
+                '(%s, update_gsettings = %s)',
+                dynamic_adjust, update_gsettings)
         if dynamic_adjust == self._dynamic_adjust:
             return
         self._dynamic_adjust = dynamic_adjust
@@ -2832,7 +2835,7 @@ class TabEngine(IBus.EngineSimple):
         preedit_string_complete = (
             left_of_current_edit + current_edit + right_of_current_edit)
         if not preedit_string_complete:
-            super(TabEngine, self).update_preedit_text(
+            super().update_preedit_text(
                 IBus.Text.new_from_string(u''), 0, False)
             return
         color_left = self.theme["preedit_left"] # bright red
@@ -2873,7 +2876,7 @@ class TabEngine(IBus.EngineSimple):
                                   attr.get_start_index(),
                                   attr.get_end_index())
             i += 1
-        super(TabEngine, self).update_preedit_text(
+        super().update_preedit_text(
             text, self.get_caret(), True)
 
     def _update_aux(self) -> None:
@@ -2902,7 +2905,7 @@ class TabEngine(IBus.EngineSimple):
             visible = True
             if not aux_string or not self._always_show_lookup:
                 visible = False
-            super(TabEngine, self).update_auxiliary_text(text, visible)
+            super().update_auxiliary_text(text, visible)
         else:
             self.hide_auxiliary_text()
 
@@ -2973,7 +2976,7 @@ class TabEngine(IBus.EngineSimple):
         self._update_ui()
         self._prefix = phrase
 
-        super(TabEngine, self).commit_text(IBus.Text.new_from_string(phrase))
+        super().commit_text(IBus.Text.new_from_string(phrase))
         if phrase:
             self._prev_char = phrase[-1]
         else:
@@ -3685,8 +3688,6 @@ class TabEngine(IBus.EngineSimple):
                    |IBus.ModifierType.MOD1_MASK)):
             return self._return_false(key.val, key.code, key.state)
         keychar = IBus.keyval_to_unicode(key.val)
-        if type(keychar) != type(u''):
-            keychar = keychar.decode('UTF-8')
         if ascii_ispunct(keychar):
             trans_char = self.cond_punct_translate(keychar)
         else:
@@ -3711,8 +3712,6 @@ class TabEngine(IBus.EngineSimple):
             return self._return_false(key.val, key.code, key.state)
 
         keychar = IBus.keyval_to_unicode(key.val)
-        if type(keychar) != type(u''):
-            keychar = keychar.decode('UTF-8')
 
         # Section to handle leading invalid input:
         #

@@ -14,12 +14,9 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-#
-
-u'''
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>
+'''
 Get locations where ibus-table stores stuff.
 
 The directories used are according to the
@@ -67,7 +64,8 @@ def _init() -> None:
     # not set or empty, a default equal to $HOME/.local/share should be
     # used.
     if os.getenv('IBUS_TABLE_DATA_HOME'):
-        IBUS_TABLE_LOCATION['data_home'] = str(os.getenv('IBUS_TABLE_DATA_HOME'))
+        IBUS_TABLE_LOCATION['data_home'] = str(
+            os.getenv('IBUS_TABLE_DATA_HOME'))
     if (not IBUS_TABLE_LOCATION['data_home']
             or not os.path.exists(IBUS_TABLE_LOCATION['data_home'])):
         if os.getenv('XDG_DATA_HOME'):
@@ -85,11 +83,13 @@ def _init() -> None:
     # $XDG_CACHE_HOME is either not set or empty, a default equal to
     # $HOME/.cache should be used.
     if os.getenv('IBUS_TABLE_CACHE_HOME'):
-        IBUS_TABLE_LOCATION['cache_home'] = str(os.getenv('IBUS_TABLE_CACHE_HOME'))
+        IBUS_TABLE_LOCATION['cache_home'] = str(
+            os.getenv('IBUS_TABLE_CACHE_HOME'))
     if (not IBUS_TABLE_LOCATION['cache_home']
             or not os.path.exists(IBUS_TABLE_LOCATION['cache_home'])):
         if os.getenv('XDG_CACHE_HOME'):
-            IBUS_TABLE_LOCATION['cache_home'] = str(os.getenv('XDG_CACHE_HOME'))
+            IBUS_TABLE_LOCATION['cache_home'] = str(
+                os.getenv('XDG_CACHE_HOME'))
     if (not IBUS_TABLE_LOCATION['cache_home']
             or not os.path.exists(IBUS_TABLE_LOCATION['cache_home'])):
         IBUS_TABLE_LOCATION['cache_home'] = os.path.expanduser('~/.cache')
@@ -101,7 +101,6 @@ def _init() -> None:
 class __ModuleInitializer:
     def __init__(self) -> None:
         _init()
-        return
 
     def __del__(self) -> None:
         return

@@ -16,10 +16,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 from typing import Any
 import os
@@ -162,7 +160,8 @@ class IMApp:
                     self.__factory.db.filename).replace('.db', '')
                 name = 'table:'+engine_name
                 longname = self.__factory.db.ime_properties.get("name")
-                description = self.__factory.db.ime_properties.get("description")
+                description = self.__factory.db.ime_properties.get(
+                    "description")
                 language = self.__factory.db.ime_properties.get("languages")
                 credit = self.__factory.db.ime_properties.get("credit")
                 author = self.__factory.db.ime_properties.get("author")
@@ -339,11 +338,11 @@ def write_xml() -> None:
     # not possible:
     sys.stdout.buffer.write((egsout+'\n').encode('utf-8'))
 
-def main():
+def main() -> None:
     '''Main program'''
     if _OPTIONS.xml:
         write_xml()
-        return 0
+        return
 
     if not _OPTIONS.debug:
         log_handler = logging.NullHandler()

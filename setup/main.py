@@ -26,8 +26,6 @@
 The setup tool for ibus-table.
 '''
 
-# “Wrong continued indentation”: pylint: disable=bad-continuation
-
 from typing import Union
 from typing import Any
 from typing import Dict
@@ -195,8 +193,8 @@ class SetupUI(Gtk.Window):
         self.set_wmclass(
             'ibus-setup-table', 'IBus Table Preferences')
 
-        self.connect('destroy-event', self.on_destroy_event)
-        self.connect('delete-event', self.on_delete_event)
+        self.connect('destroy-event', self._on_destroy_event)
+        self.connect('delete-event', self._on_delete_event)
 
         self._main_container = Gtk.VBox()
         self.add(self._main_container)
@@ -215,7 +213,7 @@ class SetupUI(Gtk.Window):
         self._dialog_action_area.set_layout(Gtk.ButtonBoxStyle.EDGE)
         self._main_container.pack_end(self._dialog_action_area, True, True, 0)
         self._about_button = Gtk.Button(label=_('About'))
-        self._about_button.connect('clicked', self.on_about_button_clicked)
+        self._about_button.connect('clicked', self._on_about_button_clicked)
         self._dialog_action_area.add(self._about_button)
         self._restore_all_defaults_button = Gtk.Button()
         self._restore_all_defaults_button_label = Gtk.Label()
@@ -224,13 +222,13 @@ class SetupUI(Gtk.Window):
         self._restore_all_defaults_button.add(
             self._restore_all_defaults_button_label)
         self._restore_all_defaults_button.connect(
-            'clicked', self.on_restore_all_defaults_button_clicked)
+            'clicked', self._on_restore_all_defaults_button_clicked)
         self._dialog_action_area.add(self._restore_all_defaults_button)
         self._close_button = Gtk.Button()
         self._close_button_label = Gtk.Label()
         self._close_button_label.set_text_with_mnemonic(_('_Close'))
         self._close_button.add(self._close_button_label)
-        self._close_button.connect('clicked', self.on_close_clicked)
+        self._close_button.connect('clicked', self._on_close_clicked)
         self._dialog_action_area.add(self._close_button)
 
         grid_border_width = 10
@@ -352,7 +350,7 @@ class SetupUI(Gtk.Window):
                 self._input_mode_combobox.set_active(index)
         self._input_mode_combobox.connect(
             "changed",
-            self.on_input_mode_combobox_changed)
+            self._on_input_mode_combobox_changed)
         _options_grid_row += 1
         self._options_grid.attach(
             self._input_mode_label, 0, _options_grid_row, 1, 1)
@@ -415,7 +413,7 @@ class SetupUI(Gtk.Window):
                 self._chinese_mode_combobox.set_active(index)
         self._chinese_mode_combobox.connect(
             "changed",
-            self.on_chinese_mode_combobox_changed)
+            self._on_chinese_mode_combobox_changed)
         if self.__is_chinese:
             _options_grid_row += 1
             self._options_grid.attach(
@@ -456,7 +454,7 @@ class SetupUI(Gtk.Window):
                 self._table_full_width_letter_mode_combobox.set_active(index)
         self._table_full_width_letter_mode_combobox.connect(
             "changed",
-            self.on_table_full_width_letter_mode_combobox_changed)
+            self._on_table_full_width_letter_mode_combobox_changed)
         if self.__is_cjk:
             _options_grid_row += 1
             self._options_grid.attach(
@@ -466,50 +464,50 @@ class SetupUI(Gtk.Window):
                 self._table_full_width_letter_mode_combobox,
                 1, _options_grid_row, 1, 1)
 
-        self._table_full_width_punctuation_mode_label = Gtk.Label()
-        self._table_full_width_punctuation_mode_label.set_text(
+        self._table_full_width_punct_mode_label = Gtk.Label()
+        self._table_full_width_punct_mode_label.set_text(
             # Translators: A combobox to choose the punctuation width
             # while in “Table input” mode.
             _('Table input punctuation width:'))
-        self._table_full_width_punctuation_mode_label.set_tooltip_text(
+        self._table_full_width_punct_mode_label.set_tooltip_text(
             # Translators: A tooltip for the label of the combobox to
             # choose the punctuation width while in “Table input” mode.
             _('Whether to use fullwidth or halfwidth\n'
               'punctuation in table input mode.'))
-        self._table_full_width_punctuation_mode_label.set_xalign(0)
-        self._table_full_width_punctuation_mode_combobox = Gtk.ComboBox()
-        self._table_full_width_punctuation_mode_store = Gtk.ListStore(
+        self._table_full_width_punct_mode_label.set_xalign(0)
+        self._table_full_width_punct_mode_combobox = Gtk.ComboBox()
+        self._table_full_width_punct_mode_store = Gtk.ListStore(
             str, bool)
-        self._table_full_width_punctuation_mode_store.append(
+        self._table_full_width_punct_mode_store.append(
             # Translators: This is the mode to use half width punctuation
             # while in “Table input” mode.
             [_('Half'), False])
-        self._table_full_width_punctuation_mode_store.append(
+        self._table_full_width_punct_mode_store.append(
             # Translators: This is the mode to use full width punctuation
             # while in “Table input” mode.
             [_('Full'), True])
-        self._table_full_width_punctuation_mode_combobox.set_model(
-            self._table_full_width_punctuation_mode_store)
+        self._table_full_width_punct_mode_combobox.set_model(
+            self._table_full_width_punct_mode_store)
         renderer_text = Gtk.CellRendererText()
-        self._table_full_width_punctuation_mode_combobox.pack_start(
+        self._table_full_width_punct_mode_combobox.pack_start(
             renderer_text, True)
-        self._table_full_width_punctuation_mode_combobox.add_attribute(
+        self._table_full_width_punct_mode_combobox.add_attribute(
             renderer_text, "text", 0)
         for index, item in enumerate(
-                self._table_full_width_punctuation_mode_store):
+                self._table_full_width_punct_mode_store):
             if self._settings_dict['tabdeffullwidthpunct']['user'] == item[1]:
-                self._table_full_width_punctuation_mode_combobox.set_active(
+                self._table_full_width_punct_mode_combobox.set_active(
                     index)
-        self._table_full_width_punctuation_mode_combobox.connect(
+        self._table_full_width_punct_mode_combobox.connect(
             "changed",
-            self.on_table_full_width_punctuation_mode_combobox_changed)
+            self._on_table_full_width_punct_mode_combobox_changed)
         if self.__is_cjk:
             _options_grid_row += 1
             self._options_grid.attach(
-                self._table_full_width_punctuation_mode_label,
+                self._table_full_width_punct_mode_label,
                 0, _options_grid_row, 1, 1)
             self._options_grid.attach(
-                self._table_full_width_punctuation_mode_combobox,
+                self._table_full_width_punct_mode_combobox,
                 1, _options_grid_row, 1, 1)
 
         self._direct_full_width_letter_mode_label = Gtk.Label()
@@ -546,7 +544,7 @@ class SetupUI(Gtk.Window):
                 self._direct_full_width_letter_mode_combobox.set_active(index)
         self._direct_full_width_letter_mode_combobox.connect(
             "changed",
-            self.on_direct_full_width_letter_mode_combobox_changed)
+            self._on_direct_full_width_letter_mode_combobox_changed)
         if self.__is_cjk:
             _options_grid_row += 1
             self._options_grid.attach(
@@ -556,50 +554,50 @@ class SetupUI(Gtk.Window):
                 self._direct_full_width_letter_mode_combobox,
                 1, _options_grid_row, 1, 1)
 
-        self._direct_full_width_punctuation_mode_label = Gtk.Label()
-        self._direct_full_width_punctuation_mode_label.set_text(
+        self._direct_full_width_punct_mode_label = Gtk.Label()
+        self._direct_full_width_punct_mode_label.set_text(
             # Translators: A combobox to choose the punctuation width
             # while in “Direct input” mode.
             _('Direct input punctuation width:'))
-        self._direct_full_width_punctuation_mode_label.set_tooltip_text(
+        self._direct_full_width_punct_mode_label.set_tooltip_text(
             # Translators: A tooltip for the label of the combobox to
             # choose the punctuation width while in “Direct input” mode.
             _('Whether to use fullwidth or halfwidth\n'
               'punctuation in direct input mode.'))
-        self._direct_full_width_punctuation_mode_label.set_xalign(0)
-        self._direct_full_width_punctuation_mode_combobox = Gtk.ComboBox()
-        self._direct_full_width_punctuation_mode_store = Gtk.ListStore(
+        self._direct_full_width_punct_mode_label.set_xalign(0)
+        self._direct_full_width_punct_mode_combobox = Gtk.ComboBox()
+        self._direct_full_width_punct_mode_store = Gtk.ListStore(
             str, bool)
-        self._direct_full_width_punctuation_mode_store.append(
+        self._direct_full_width_punct_mode_store.append(
             # Translators: This is the mode to use half width punctuation
             # while in “Direct input” mode.
             [_('Half'), False])
-        self._direct_full_width_punctuation_mode_store.append(
+        self._direct_full_width_punct_mode_store.append(
             # Translators: This is the mode to use full width punctuation
             # while in “Direct input” mode.
             [_('Full'), True])
-        self._direct_full_width_punctuation_mode_combobox.set_model(
-            self._direct_full_width_punctuation_mode_store)
+        self._direct_full_width_punct_mode_combobox.set_model(
+            self._direct_full_width_punct_mode_store)
         renderer_text = Gtk.CellRendererText()
-        self._direct_full_width_punctuation_mode_combobox.pack_start(
+        self._direct_full_width_punct_mode_combobox.pack_start(
             renderer_text, True)
-        self._direct_full_width_punctuation_mode_combobox.add_attribute(
+        self._direct_full_width_punct_mode_combobox.add_attribute(
             renderer_text, "text", 0)
         for index, item in enumerate(
-                self._direct_full_width_punctuation_mode_store):
+                self._direct_full_width_punct_mode_store):
             if self._settings_dict['endeffullwidthpunct']['user'] == item[1]:
-                self._direct_full_width_punctuation_mode_combobox.set_active(
+                self._direct_full_width_punct_mode_combobox.set_active(
                     index)
-        self._direct_full_width_punctuation_mode_combobox.connect(
+        self._direct_full_width_punct_mode_combobox.connect(
             "changed",
-            self.on_direct_full_width_punctuation_mode_combobox_changed)
+            self._on_direct_full_width_punct_mode_combobox_changed)
         if self.__is_cjk:
             _options_grid_row += 1
             self._options_grid.attach(
-                self._direct_full_width_punctuation_mode_label,
+                self._direct_full_width_punct_mode_label,
                 0, _options_grid_row, 1, 1)
             self._options_grid.attach(
-                self._direct_full_width_punctuation_mode_combobox,
+                self._direct_full_width_punct_mode_combobox,
                 1, _options_grid_row, 1, 1)
 
         self._candidate_list_section_heading_label = Gtk.Label()
@@ -634,7 +632,7 @@ class SetupUI(Gtk.Window):
         self._always_show_lookup_checkbutton.set_active(
             self._settings_dict['alwaysshowlookup']['user'])
         self._always_show_lookup_checkbutton.connect(
-            "clicked", self.on_always_show_lookup_checkbutton)
+            "clicked", self._on_always_show_lookup_checkbutton)
         _options_grid_row += 1
         self._options_grid.attach(
             self._always_show_lookup_checkbutton, 0, _options_grid_row, 2, 1)
@@ -672,7 +670,7 @@ class SetupUI(Gtk.Window):
                 self._lookup_table_orientation_combobox.set_active(index)
         self._lookup_table_orientation_combobox.connect(
             "changed",
-            self.on_lookup_table_orientation_combobox_changed)
+            self._on_lookup_table_orientation_combobox_changed)
         _options_grid_row += 1
         self._options_grid.attach(
             self._lookup_table_orientation_label, 0, _options_grid_row, 1, 1)
@@ -701,7 +699,7 @@ class SetupUI(Gtk.Window):
         self._page_size_adjustment.set_value(
             self._settings_dict['lookuptablepagesize']['user'])
         self._page_size_adjustment.connect(
-            'value-changed', self.on_page_size_adjustment_value_changed)
+            'value-changed', self._on_page_size_adjustment_value_changed)
         _options_grid_row += 1
         self._options_grid.attach(
             self._page_size_label, 0, _options_grid_row, 1, 1)
@@ -749,9 +747,9 @@ class SetupUI(Gtk.Window):
         keybindings_treeview_column_1.set_sort_column_id(1)
         self._keybindings_treeview.append_column(keybindings_treeview_column_1)
         self._keybindings_treeview.get_selection().connect(
-            'changed', self.on_keybindings_treeview_row_selected)
+            'changed', self._on_keybindings_treeview_row_selected)
         self._keybindings_treeview.connect(
-            'row-activated', self.on_keybindings_treeview_row_activated)
+            'row-activated', self._on_keybindings_treeview_row_activated)
         self._keybindings_treeview_scroll.add(self._keybindings_treeview)
         self._keybindings_vbox.pack_start(
             self._keybindings_label, False, False, 0)
@@ -774,7 +772,7 @@ class SetupUI(Gtk.Window):
             _('Edit the key bindings for the selected command'))
         self._keybindings_edit_button.set_sensitive(False)
         self._keybindings_edit_button.connect(
-            'clicked', self.on_keybindings_edit_button_clicked)
+            'clicked', self._on_keybindings_edit_button_clicked)
         self._keybindings_default_button = Gtk.Button()
         self._keybindings_default_button_label = Gtk.Label()
         self._keybindings_default_button_label.set_text(
@@ -787,7 +785,7 @@ class SetupUI(Gtk.Window):
             _('Set default key bindings for the selected command'))
         self._keybindings_default_button.set_sensitive(False)
         self._keybindings_default_button.connect(
-            'clicked', self.on_keybindings_default_button_clicked)
+            'clicked', self._on_keybindings_default_button_clicked)
         self._keybindings_all_default_button = Gtk.Button()
         self._keybindings_all_default_button_label = Gtk.Label()
         self._keybindings_all_default_button_label.set_text(
@@ -800,7 +798,7 @@ class SetupUI(Gtk.Window):
             _('Set default key bindings for all commands'))
         self._keybindings_all_default_button.set_sensitive(True)
         self._keybindings_all_default_button.connect(
-            'clicked', self.on_keybindings_all_default_button_clicked)
+            'clicked', self._on_keybindings_all_default_button_clicked)
         self._keybindings_action_area.add(self._keybindings_edit_button)
         self._keybindings_action_area.add(self._keybindings_default_button)
         self._keybindings_action_area.add(self._keybindings_all_default_button)
@@ -832,7 +830,7 @@ class SetupUI(Gtk.Window):
         self._dynamic_adjust_checkbutton.set_active(
             self._settings_dict['dynamicadjust']['user'])
         self._dynamic_adjust_checkbutton.connect(
-            'clicked', self.on_dynamic_adjust_checkbutton)
+            'clicked', self._on_dynamic_adjust_checkbutton)
         self._dynamic_adjust_forget_button = Gtk.Button()
         self._dynamic_adjust_forget_button_box = Gtk.HBox()
         self._dynamic_adjust_forget_button_label = Gtk.Label()
@@ -849,12 +847,14 @@ class SetupUI(Gtk.Window):
         self._dynamic_adjust_forget_button.add(
             self._dynamic_adjust_forget_button_box)
         self._dynamic_adjust_forget_button.connect(
-            'clicked', self.on_dynamic_adjust_forget_button)
+            'clicked', self._on_dynamic_adjust_forget_button)
         _options_details_grid_row += 1
         self._options_details_grid.attach(
-            self._dynamic_adjust_checkbutton, 0, _options_details_grid_row, 1, 1)
+            self._dynamic_adjust_checkbutton,
+            0, _options_details_grid_row, 1, 1)
         self._options_details_grid.attach(
-            self._dynamic_adjust_forget_button, 1, _options_details_grid_row, 1, 1)
+            self._dynamic_adjust_forget_button,
+            1, _options_details_grid_row, 1, 1)
 
         self._onechar_mode_label = Gtk.Label()
         self._onechar_mode_label.set_text(
@@ -887,7 +887,7 @@ class SetupUI(Gtk.Window):
             if self._settings_dict['onechar']['user'] == item[1]:
                 self._onechar_mode_combobox.set_active(index)
         self._onechar_mode_combobox.connect(
-            "changed", self.on_onechar_mode_combobox_changed)
+            "changed", self._on_onechar_mode_combobox_changed)
         if self.__is_cjk:
             _options_details_grid_row += 1
             self._options_details_grid.attach(
@@ -920,10 +920,11 @@ class SetupUI(Gtk.Window):
         self._autoselect_mode_checkbutton.set_active(
             self._settings_dict['autoselect']['user'])
         self._autoselect_mode_checkbutton.connect(
-            'clicked', self.on_autoselect_mode_checkbutton)
+            'clicked', self._on_autoselect_mode_checkbutton)
         _options_details_grid_row += 1
         self._options_details_grid.attach(
-            self._autoselect_mode_checkbutton, 0, _options_details_grid_row, 2, 1)
+            self._autoselect_mode_checkbutton,
+            0, _options_details_grid_row, 2, 1)
 
         self._autocommit_mode_label = Gtk.Label()
         self._autocommit_mode_label.set_text(
@@ -961,7 +962,7 @@ class SetupUI(Gtk.Window):
             if self._settings_dict['autocommit']['user'] == item[1]:
                 self._autocommit_mode_combobox.set_active(index)
         self._autocommit_mode_combobox.connect(
-            "changed", self.on_autocommit_mode_combobox_changed)
+            "changed", self._on_autocommit_mode_combobox_changed)
         if self.__user_can_define_phrase and self.__rules:
             _options_details_grid_row += 1
             self._options_details_grid.attach(
@@ -986,10 +987,11 @@ class SetupUI(Gtk.Window):
         self._autowildcard_mode_checkbutton.set_active(
             self._settings_dict['autowildcard']['user'])
         self._autowildcard_mode_checkbutton.connect(
-            'clicked', self.on_autowildcard_mode_checkbutton)
+            'clicked', self._on_autowildcard_mode_checkbutton)
         _options_details_grid_row += 1
         self._options_details_grid.attach(
-            self._autowildcard_mode_checkbutton, 0, _options_details_grid_row, 2, 1)
+            self._autowildcard_mode_checkbutton,
+            0, _options_details_grid_row, 2, 1)
 
         self._single_wildcard_char_label = Gtk.Label()
         self._single_wildcard_char_label.set_text(
@@ -1008,7 +1010,7 @@ class SetupUI(Gtk.Window):
         self._single_wildcard_char_entry.set_text(
             self._settings_dict['singlewildcardchar']['user'])
         self._single_wildcard_char_entry.connect(
-            'notify::text', self.on_single_wildcard_char_entry)
+            'notify::text', self._on_single_wildcard_char_entry)
         _options_details_grid_row += 1
         self._options_details_grid.attach(
             self._single_wildcard_char_label,
@@ -1034,7 +1036,7 @@ class SetupUI(Gtk.Window):
         self._multi_wildcard_char_entry.set_text(
             self._settings_dict['multiwildcardchar']['user'])
         self._multi_wildcard_char_entry.connect(
-            'notify::text', self.on_multi_wildcard_char_entry)
+            'notify::text', self._on_multi_wildcard_char_entry)
         _options_details_grid_row += 1
         self._options_details_grid.attach(
             self._multi_wildcard_char_label,
@@ -1057,7 +1059,7 @@ class SetupUI(Gtk.Window):
         self._use_dark_theme_checkbutton.set_active(
             self._settings_dict['darktheme']['user'])
         self._use_dark_theme_checkbutton.connect(
-            'clicked', self.on_use_dark_theme_checkbutton)
+            'clicked', self._on_use_dark_theme_checkbutton)
         _options_details_grid_row += 1
         self._options_details_grid.attach(
             self._use_dark_theme_checkbutton,
@@ -1077,7 +1079,7 @@ class SetupUI(Gtk.Window):
         self._error_sound_checkbutton.set_active(
             self._settings_dict['errorsound']['user'])
         self._error_sound_checkbutton.connect(
-            'clicked', self.on_error_sound_checkbutton)
+            'clicked', self._on_error_sound_checkbutton)
         self._error_sound_file_button = Gtk.Button()
         self._error_sound_file_button_box = Gtk.HBox()
         self._error_sound_file_button_label = Gtk.Label()
@@ -1094,7 +1096,7 @@ class SetupUI(Gtk.Window):
         self._error_sound_file_button.add(
             self._error_sound_file_button_box)
         self._error_sound_file_button.connect(
-            'clicked', self.on_error_sound_file_button)
+            'clicked', self._on_error_sound_file_button)
         _options_details_grid_row += 1
         self._options_details_grid.attach(
             self._error_sound_checkbutton, 0, _options_details_grid_row, 1, 1)
@@ -1123,7 +1125,7 @@ class SetupUI(Gtk.Window):
             self._settings_dict['debuglevel']['user'])
         self._debug_level_adjustment.connect(
             'value-changed',
-            self.on_debug_level_adjustment_value_changed)
+            self._on_debug_level_adjustment_value_changed)
         _options_details_grid_row += 1
         self._options_details_grid.attach(
             self._debug_level_label, 0, _options_details_grid_row, 1, 1)
@@ -1134,7 +1136,7 @@ class SetupUI(Gtk.Window):
 
         self._notebook.set_current_page(0) # Has to be after show_all()
 
-        self._gsettings.connect('changed', self.on_gsettings_value_changed)
+        self._gsettings.connect('changed', self._on_gsettings_value_changed)
 
     def _fill_settings_dict(self) -> None:
         '''Fill a dictionary with the default and user settings for all
@@ -1344,23 +1346,23 @@ class SetupUI(Gtk.Window):
             'user': user_table_full_width_letter_mode,
             'set_function': self.set_table_full_width_letter_mode}
 
-        default_table_full_width_punctuation_mode = (
+        default_table_full_width_punct_mode = (
             it_util.variant_to_value(
                 self._gsettings.get_default_value('tabdeffullwidthpunct')))
         if self.tabsqlitedb.ime_properties.get('def_full_width_punct'):
-            default_table_full_width_punctuation_mode = (
+            default_table_full_width_punct_mode = (
                 self.tabsqlitedb.ime_properties.get(
                     'def_full_width_punct').lower() == 'true')
-        user_table_full_width_punctuation_mode = it_util.variant_to_value(
+        user_table_full_width_punct_mode = it_util.variant_to_value(
             self._gsettings.get_user_value('tabdeffullwidthpunct'))
-        if user_table_full_width_punctuation_mode is None:
-            user_table_full_width_punctuation_mode = (
-                default_table_full_width_punctuation_mode)
+        if user_table_full_width_punct_mode is None:
+            user_table_full_width_punct_mode = (
+                default_table_full_width_punct_mode)
 
         self._settings_dict['tabdeffullwidthpunct'] = {
-            'default': default_table_full_width_punctuation_mode,
-            'user': user_table_full_width_punctuation_mode,
-            'set_function': self.set_table_full_width_punctuation_mode}
+            'default': default_table_full_width_punct_mode,
+            'user': user_table_full_width_punct_mode,
+            'set_function': self.set_table_full_width_punct_mode}
 
         default_direct_full_width_letter_mode = it_util.variant_to_value(
             self._gsettings.get_default_value('endeffullwidthletter'))
@@ -1372,15 +1374,15 @@ class SetupUI(Gtk.Window):
             'user': user_direct_full_width_letter_mode,
             'set_function': self.set_direct_full_width_letter_mode}
 
-        default_direct_full_width_punctuation_mode = it_util.variant_to_value(
+        default_direct_full_width_punct_mode = it_util.variant_to_value(
             self._gsettings.get_default_value('endeffullwidthpunct'))
-        user_direct_full_width_punctuation_mode = it_util.variant_to_value(
+        user_direct_full_width_punct_mode = it_util.variant_to_value(
             self._gsettings.get_value('endeffullwidthpunct'))
 
         self._settings_dict['endeffullwidthpunct'] = {
-            'default': default_direct_full_width_punctuation_mode,
-            'user': user_direct_full_width_punctuation_mode,
-            'set_function': self.set_direct_full_width_punctuation_mode}
+            'default': default_direct_full_width_punct_mode,
+            'user': user_direct_full_width_punct_mode,
+            'set_function': self.set_direct_full_width_punct_mode}
 
         default_onechar_mode = it_util.variant_to_value(
             self._gsettings.get_default_value('onechar'))
@@ -1499,25 +1501,25 @@ class SetupUI(Gtk.Window):
         else:
             return False
 
-    def on_delete_event(self, *_args) -> None:
+    def _on_delete_event(self, *_args) -> None:
         '''
         The window has been deleted, probably by the window manager.
         '''
         Gtk.main_quit()
 
-    def on_destroy_event(self, *_args) -> None:
+    def _on_destroy_event(self, *_args) -> None:
         '''
         The window has been destroyed.
         '''
         Gtk.main_quit()
 
-    def on_close_clicked(self, *_args) -> None:
+    def _on_close_clicked(self, *_args) -> None:
         '''
         The button to close the dialog has been clicked.
         '''
         Gtk.main_quit()
 
-    def on_gsettings_value_changed(self, _settings, key) -> None:
+    def _on_gsettings_value_changed(self, _settings, key) -> None:
         '''
         Called when a value in the settings has been changed.
 
@@ -1536,7 +1538,7 @@ class SetupUI(Gtk.Window):
         LOGGER.error('Unknown key\n')
         return
 
-    def on_about_button_clicked(self, _button) -> None:
+    def _on_about_button_clicked(self, _button) -> None:
         '''
         The “About” button has been clicked
 
@@ -1545,7 +1547,7 @@ class SetupUI(Gtk.Window):
         '''
         it_util.ItAboutDialog()
 
-    def on_restore_all_defaults_button_clicked(self, _widget) -> None:
+    def _on_restore_all_defaults_button_clicked(self, _widget) -> None:
         '''
         Restore all default settings
         '''
@@ -1568,28 +1570,28 @@ class SetupUI(Gtk.Window):
             LOGGER.info('Restore all defaults cancelled.')
         self._restore_all_defaults_button.set_sensitive(True)
 
-    def on_single_wildcard_char_entry(self, widget, _property_spec) -> None:
+    def _on_single_wildcard_char_entry(self, widget, _property_spec) -> None:
         '''
         The character to be used as a single wildcard has been changed.
         '''
         self.set_single_wildcard_char(
             widget.get_text(), update_gsettings=True)
 
-    def on_multi_wildcard_char_entry(self, widget, _property_spec) -> None:
+    def _on_multi_wildcard_char_entry(self, widget, _property_spec) -> None:
         '''
         The character to be used as a multi wildcard has been changed.
         '''
         self.set_multi_wildcard_char(
             widget.get_text(), update_gsettings=True)
 
-    def on_page_size_adjustment_value_changed(self, _widget) -> None:
+    def _on_page_size_adjustment_value_changed(self, _widget) -> None:
         '''
         The page size of the lookup table has been changed.
         '''
         self.set_page_size(
             self._page_size_adjustment.get_value(), update_gsettings=True)
 
-    def on_lookup_table_orientation_combobox_changed(self, widget) -> None:
+    def _on_lookup_table_orientation_combobox_changed(self, widget) -> None:
         '''
         A change of the lookup table orientation has been requested
         with the combobox
@@ -1601,7 +1603,7 @@ class SetupUI(Gtk.Window):
             self.set_lookup_table_orientation(
                 orientation, update_gsettings=True)
 
-    def on_input_mode_combobox_changed(self, widget) -> None:
+    def _on_input_mode_combobox_changed(self, widget) -> None:
         '''
         A change of the input mode has been requested
         with the combobox
@@ -1613,7 +1615,7 @@ class SetupUI(Gtk.Window):
             self.set_input_mode(
                 input_mode, update_gsettings=True)
 
-    def on_chinese_mode_combobox_changed(self, widget) -> None:
+    def _on_chinese_mode_combobox_changed(self, widget) -> None:
         '''
         A change of the Chinese mode has been requested
         with the combobox
@@ -1625,7 +1627,7 @@ class SetupUI(Gtk.Window):
             self.set_chinese_mode(
                 input_mode, update_gsettings=True)
 
-    def on_onechar_mode_combobox_changed(self, widget) -> None:
+    def _on_onechar_mode_combobox_changed(self, widget) -> None:
         '''
         A change of the onechar mode has been requested
         with the combobox
@@ -1637,11 +1639,11 @@ class SetupUI(Gtk.Window):
             self.set_onechar_mode(
                 mode, update_gsettings=True)
 
-    def on_autoselect_mode_checkbutton(self, widget: Gtk.CheckButton) -> None:
+    def _on_autoselect_mode_checkbutton(self, widget: Gtk.CheckButton) -> None:
         '''The checkbutton for autoselect mode has been clicked'''
         self.set_autoselect_mode(widget.get_active(), update_gsettings=True)
 
-    def on_autocommit_mode_combobox_changed(self, widget) -> None:
+    def _on_autocommit_mode_combobox_changed(self, widget) -> None:
         '''
         A change of the autocommit mode has been requested
         with the combobox
@@ -1653,12 +1655,13 @@ class SetupUI(Gtk.Window):
             self.set_autocommit_mode(
                 mode, update_gsettings=True)
 
-    def on_autowildcard_mode_checkbutton(
+    def _on_autowildcard_mode_checkbutton(
             self, widget: Gtk.CheckButton) -> None:
         '''The checkbutton for autocommit mode has been clicked'''
         self.set_autowildcard_mode(widget.get_active(), update_gsettings=True)
 
-    def on_table_full_width_letter_mode_combobox_changed(self, widget) -> None:
+    def _on_table_full_width_letter_mode_combobox_changed(
+            self, widget) -> None:
         '''
         A change of the letter width when in “Table input” mode has been
         requested with the combobox
@@ -1670,7 +1673,7 @@ class SetupUI(Gtk.Window):
             self.set_table_full_width_letter_mode(
                 mode, update_gsettings=True)
 
-    def on_table_full_width_punctuation_mode_combobox_changed(
+    def _on_table_full_width_punct_mode_combobox_changed(
             self, widget) -> None:
         '''
         A change of the letter width when in “Table input” mode has been
@@ -1680,10 +1683,10 @@ class SetupUI(Gtk.Window):
         if tree_iter is not None:
             model = widget.get_model()
             mode = model[tree_iter][1]
-            self.set_table_full_width_punctuation_mode(
+            self.set_table_full_width_punct_mode(
                 mode, update_gsettings=True)
 
-    def on_direct_full_width_letter_mode_combobox_changed(
+    def _on_direct_full_width_letter_mode_combobox_changed(
             self, widget) -> None:
         '''
         A change of the letter width when in “Direct input” mode has been
@@ -1696,7 +1699,7 @@ class SetupUI(Gtk.Window):
             self.set_direct_full_width_letter_mode(
                 mode, update_gsettings=True)
 
-    def on_direct_full_width_punctuation_mode_combobox_changed(
+    def _on_direct_full_width_punct_mode_combobox_changed(
             self, widget) -> None:
         '''
         A change of the letter width when in “Direct input” mode has been
@@ -1706,19 +1709,19 @@ class SetupUI(Gtk.Window):
         if tree_iter is not None:
             model = widget.get_model()
             mode = model[tree_iter][1]
-            self.set_direct_full_width_punctuation_mode(
+            self.set_direct_full_width_punct_mode(
                 mode, update_gsettings=True)
 
-    def on_always_show_lookup_checkbutton(
+    def _on_always_show_lookup_checkbutton(
             self, widget: Gtk.CheckButton) -> None:
         '''The checkbutton for always show lookup has been clicked'''
         self.set_always_show_lookup(widget.get_active(), update_gsettings=True)
 
-    def on_use_dark_theme_checkbutton(self, widget: Gtk.CheckButton) -> None:
+    def _on_use_dark_theme_checkbutton(self, widget: Gtk.CheckButton) -> None:
         '''The checkbutton for the dark theme has been clicked'''
         self.set_dark_theme(widget.get_active(), update_gsettings=True)
 
-    def on_dynamic_adjust_checkbutton(self, widget: Gtk.CheckButton) -> None:
+    def _on_dynamic_adjust_checkbutton(self, widget: Gtk.CheckButton) -> None:
         '''
         The checkbutton whether to dynamically adjust the candidates
 
@@ -1726,7 +1729,7 @@ class SetupUI(Gtk.Window):
         '''
         self.set_dynamic_adjust(widget.get_active(), update_gsettings=True)
 
-    def on_dynamic_adjust_forget_button(
+    def _on_dynamic_adjust_forget_button(
             self, _widget: Gtk.Button) -> None:
         '''
         The button to select forget how often candidates were used
@@ -1749,7 +1752,7 @@ class SetupUI(Gtk.Window):
             self.tabsqlitedb.remove_all_phrases_from_user_db()
         self._dynamic_adjust_forget_button.set_sensitive(True)
 
-    def on_error_sound_checkbutton(self, widget: Gtk.CheckButton) -> None:
+    def _on_error_sound_checkbutton(self, widget: Gtk.CheckButton) -> None:
         '''
         The checkbutton whether to play a sound file on error.
 
@@ -1757,7 +1760,7 @@ class SetupUI(Gtk.Window):
         '''
         self.set_error_sound(widget.get_active(), update_gsettings=True)
 
-    def on_error_sound_file_button(
+    def _on_error_sound_file_button(
             self, _widget: Gtk.Button) -> None:
         '''
         The button to select the .wav sound file to be played on error.
@@ -1785,7 +1788,7 @@ class SetupUI(Gtk.Window):
                 filename, update_gsettings=True)
         self._error_sound_file_button.set_sensitive(True)
 
-    def on_debug_level_adjustment_value_changed(self, _widget) -> None:
+    def _on_debug_level_adjustment_value_changed(self, _widget) -> None:
         '''
         The value for the debug level has been changed.
         '''
@@ -1793,7 +1796,7 @@ class SetupUI(Gtk.Window):
             self._debug_level_adjustment.get_value(),
             update_gsettings=True)
 
-    def on_keybindings_treeview_row_activated(
+    def _on_keybindings_treeview_row_activated(
             self, _treeview, treepath, _treeviewcolumn) -> None:
         '''
         A row in the treeview listing the key bindings has been activated.
@@ -1822,7 +1825,7 @@ class SetupUI(Gtk.Window):
             return
         self._create_and_show_keybindings_edit_popover()
 
-    def on_keybindings_treeview_row_selected(self, selection) -> None:
+    def _on_keybindings_treeview_row_selected(self, selection) -> None:
         '''
         A row in the treeview listing the key bindings has been selected.
         '''
@@ -1837,7 +1840,7 @@ class SetupUI(Gtk.Window):
             self._keybindings_default_button.set_sensitive(False)
             self._keybindings_edit_button.set_sensitive(False)
 
-    def on_keybindings_edit_listbox_row_selected(
+    def _on_keybindings_edit_listbox_row_selected(
             self, _listbox: Gtk.ListBox, listbox_row: Gtk.ListBoxRow) -> None:
         '''
         Signal handler for selecting one of the key bindings
@@ -1856,7 +1859,8 @@ class SetupUI(Gtk.Window):
             if (keybinding and command
                 and keybinding in user_keybindings[command]):
                 self._keybindings_edit_popover_selected_keybinding = keybinding
-                self._keybindings_edit_popover_selected_keybinding_index = index
+                self._keybindings_edit_popover_selected_keybinding_index = (
+                    index)
                 if self._keybindings_edit_popover_remove_button:
                     self._keybindings_edit_popover_remove_button.set_sensitive(
                         True)
@@ -1877,7 +1881,7 @@ class SetupUI(Gtk.Window):
         if self._keybindings_edit_popover_down_button:
             self._keybindings_edit_popover_down_button.set_sensitive(False)
 
-    def on_keybindings_edit_popover_add_button_clicked(
+    def _on_keybindings_edit_popover_add_button_clicked(
             self, *_args) -> None:
         '''
         Signal handler called when the “Add” button to add
@@ -1897,7 +1901,7 @@ class SetupUI(Gtk.Window):
                 self._fill_keybindings_edit_popover_listbox()
                 self.set_keybindings(user_keybindings)
 
-    def on_keybindings_edit_popover_remove_button_clicked(
+    def _on_keybindings_edit_popover_remove_button_clicked(
             self, *_args) -> None:
         '''
         Signal handler called when the “Remove” button to remove
@@ -1912,7 +1916,7 @@ class SetupUI(Gtk.Window):
             self._fill_keybindings_edit_popover_listbox()
             self.set_keybindings(user_keybindings)
 
-    def on_keybindings_edit_popover_up_button_clicked(
+    def _on_keybindings_edit_popover_up_button_clicked(
             self, *_args) -> None:
         '''
         Signal handler called when the “up” button to move
@@ -1940,7 +1944,7 @@ class SetupUI(Gtk.Window):
                 self._keybindings_edit_popover_listbox.get_row_at_index(
                     index - 1))
 
-    def on_keybindings_edit_popover_down_button_clicked(
+    def _on_keybindings_edit_popover_down_button_clicked(
             self, *_args) -> None:
         '''
         Signal handler called when the “down” button to move
@@ -1968,7 +1972,7 @@ class SetupUI(Gtk.Window):
                 self._keybindings_edit_popover_listbox.get_row_at_index(
                     index + 1))
 
-    def on_keybindings_edit_popover_default_button_clicked(
+    def _on_keybindings_edit_popover_default_button_clicked(
             self, *_args) -> None:
         '''
         Signal handler called when the “Default” button to set
@@ -2004,7 +2008,7 @@ class SetupUI(Gtk.Window):
         self._keybindings_edit_popover_listbox.set_activate_on_single_click(
             True)
         self._keybindings_edit_popover_listbox.connect(
-            'row-selected', self.on_keybindings_edit_listbox_row_selected)
+            'row-selected', self._on_keybindings_edit_listbox_row_selected)
         user_keybindings = self._settings_dict['keybindings']['user']
         for keybinding in user_keybindings[self._keybindings_selected_command]:
             label = Gtk.Label()
@@ -2076,7 +2080,7 @@ class SetupUI(Gtk.Window):
             # key binding.
             _('Add a key binding'))
         self._keybindings_edit_popover_add_button.connect(
-            'clicked', self.on_keybindings_edit_popover_add_button_clicked)
+            'clicked', self._on_keybindings_edit_popover_add_button_clicked)
         self._keybindings_edit_popover_add_button.set_sensitive(True)
         self._keybindings_edit_popover_remove_button = Gtk.Button()
         keybindings_edit_popover_remove_button_label = Gtk.Label()
@@ -2090,7 +2094,7 @@ class SetupUI(Gtk.Window):
             # the selected key binding.
             _('Remove selected key binding'))
         self._keybindings_edit_popover_remove_button.connect(
-            'clicked', self.on_keybindings_edit_popover_remove_button_clicked)
+            'clicked', self._on_keybindings_edit_popover_remove_button_clicked)
         self._keybindings_edit_popover_remove_button.set_sensitive(False)
         self._keybindings_edit_popover_default_button = Gtk.Button()
         self._keybindings_edit_popover_up_button = Gtk.Button()
@@ -2105,7 +2109,7 @@ class SetupUI(Gtk.Window):
             # the selected key binding up (higher in priority).
             _('Move key binding up'))
         self._keybindings_edit_popover_up_button.connect(
-            'clicked', self.on_keybindings_edit_popover_up_button_clicked)
+            'clicked', self._on_keybindings_edit_popover_up_button_clicked)
         self._keybindings_edit_popover_down_button = Gtk.Button()
         keybindings_edit_popover_down_button_label = Gtk.Label()
         keybindings_edit_popover_down_button_label.set_text(
@@ -2118,7 +2122,7 @@ class SetupUI(Gtk.Window):
             # the selected key binding down (lower in priority).
             _('Move key binding down'))
         self._keybindings_edit_popover_down_button.connect(
-            'clicked', self.on_keybindings_edit_popover_down_button_clicked)
+            'clicked', self._on_keybindings_edit_popover_down_button_clicked)
         keybindings_edit_popover_default_button_label = Gtk.Label()
         keybindings_edit_popover_default_button_label.set_text(
             _('Set to default'))
@@ -2130,7 +2134,8 @@ class SetupUI(Gtk.Window):
             # the key bindings for the selected command to the default.
             _('Set default key bindings for the selected command'))
         self._keybindings_edit_popover_default_button.connect(
-            'clicked', self.on_keybindings_edit_popover_default_button_clicked)
+            'clicked',
+            self._on_keybindings_edit_popover_default_button_clicked)
         self._keybindings_edit_popover_default_button.set_sensitive(True)
         keybindings_edit_popover_button_box.add(
             self._keybindings_edit_popover_add_button)
@@ -2148,14 +2153,14 @@ class SetupUI(Gtk.Window):
             self._keybindings_edit_popover.popup()
         self._keybindings_edit_popover.show_all()
 
-    def on_keybindings_edit_button_clicked(self, *_args) -> None:
+    def _on_keybindings_edit_button_clicked(self, *_args) -> None:
         '''
         Signal handler called when the “edit” button to edit the
         key bindings for a command has been clicked.
         '''
         self._create_and_show_keybindings_edit_popover()
 
-    def on_keybindings_default_button_clicked(self, *_args) -> None:
+    def _on_keybindings_default_button_clicked(self, *_args) -> None:
         '''
         Signal handler called when the “Set to default” button to reset the
         key bindings for a command to the default has been clicked.
@@ -2167,7 +2172,7 @@ class SetupUI(Gtk.Window):
             user_keybindings[command] = default_keybindings[command].copy()
             self.set_keybindings(user_keybindings)
 
-    def on_keybindings_all_default_button_clicked(self, *_args) -> None:
+    def _on_keybindings_all_default_button_clicked(self, *_args) -> None:
         '''
         Signal handler called when the “Set all to default” button to reset the
         all key bindings top their defaults has been clicked.
@@ -2480,7 +2485,7 @@ class SetupUI(Gtk.Window):
                     self._table_full_width_letter_mode_combobox.set_active(
                         index)
 
-    def set_table_full_width_punctuation_mode(
+    def set_table_full_width_punct_mode(
             self,
             mode: bool = False,
             update_gsettings: bool = True) -> None:
@@ -2504,9 +2509,9 @@ class SetupUI(Gtk.Window):
                 GLib.Variant.new_boolean(mode))
         else:
             for index, item in enumerate(
-                    self._table_full_width_punctuation_mode_store):
+                    self._table_full_width_punct_mode_store):
                 if mode == item[1]:
-                    self._table_full_width_punctuation_mode_combobox.set_active(
+                    self._table_full_width_punct_mode_combobox.set_active(
                         index)
 
     def set_direct_full_width_letter_mode(
@@ -2538,7 +2543,7 @@ class SetupUI(Gtk.Window):
                     self._direct_full_width_letter_mode_combobox.set_active(
                         index)
 
-    def set_direct_full_width_punctuation_mode(
+    def set_direct_full_width_punct_mode(
             self,
             mode: bool = False,
             update_gsettings: bool = True) -> None:
@@ -2562,9 +2567,9 @@ class SetupUI(Gtk.Window):
                 GLib.Variant.new_boolean(mode))
         else:
             for index, item in enumerate(
-                    self._direct_full_width_punctuation_mode_store):
+                    self._direct_full_width_punct_mode_store):
                 if mode == item[1]:
-                    self._direct_full_width_punctuation_mode_combobox.set_active(
+                    self._direct_full_width_punct_mode_combobox.set_active(
                         index)
 
     def set_always_show_lookup(
@@ -2796,13 +2801,13 @@ class HelpWindow(Gtk.Window):
         self.close_button_label = Gtk.Label()
         self.close_button_label.set_text_with_mnemonic(_('_Close'))
         self.close_button.add(self.close_button_label)
-        self.close_button.connect("clicked", self.on_close_button_clicked)
+        self.close_button.connect("clicked", self._on_close_button_clicked)
         self.hbox = Gtk.HBox(spacing=0)
         self.hbox.pack_end(self.close_button, False, False, 0)
         self.vbox.pack_start(self.hbox, False, False, 5)
         self.show_all()
 
-    def on_close_button_clicked(self, _widget) -> None:
+    def _on_close_button_clicked(self, _widget) -> None:
         '''
         Close the input method help window when the close button is clicked
         '''

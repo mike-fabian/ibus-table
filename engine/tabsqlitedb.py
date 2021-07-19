@@ -18,23 +18,22 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this library.  If not, see <http://www.gnu.org/licenses/>
 '''
 Module for ibus-table to access the sqlite3 databases
 '''
 import os
 import os.path as path
-import sys
 import shutil
 import sqlite3
 import uuid
 import time
 import re
 import logging
+import json
 import chinese_variants
+import ibus_table_location
 
 LOGGER = logging.getLogger('ibus-table')
 
@@ -250,7 +249,6 @@ class TabSqliteDb:
         self.possible_tabkeys_lengths = self.get_possible_tabkeys_lengths()
         self.startchars = self.get_start_chars()
 
-        import ibus_table_location
         tables_path = path.join(ibus_table_location.data_home(), 'tables')
         cache_name = os.path.basename(self.filename).replace('.db', '.cache')
         self.cache_path = path.join(tables_path, cache_name)
@@ -338,8 +336,7 @@ class TabSqliteDb:
                                 self.get_number_of_columns_of_phrase_table(
                                     user_db))
                             self.old_phrases = None
-                        from time import strftime
-                        timestamp = strftime('-%Y-%m-%d_%H:%M:%S')
+                        timestamp = time.strftime('-%Y-%m-%d_%H:%M:%S')
                         LOGGER.debug(
                             'Renaming the incompatible database to "%s".',
                             user_db+timestamp)
@@ -350,7 +347,7 @@ class TabSqliteDb:
                         if os.path.exists(user_db+'-wal'):
                             os.rename(user_db+'-wal', user_db+'-wal'+timestamp)
                         LOGGER.debug(
-                            'Creating a new, empty database "s".', user_db)
+                            'Creating a new, empty database "%s".', user_db)
                         self.init_user_db(user_db)
                         LOGGER.debug(
                             'If user phrases were successfully recovered from '
@@ -381,8 +378,7 @@ class TabSqliteDb:
             ''' % user_db)
         except:
             LOGGER.debug('Could not open the database %s.', user_db)
-            from time import strftime
-            timestamp = strftime('-%Y-%m-%d_%H:%M:%S')
+            timestamp = time.strftime('-%Y-%m-%d_%H:%M:%S')
             LOGGER.debug('Renaming the incompatible database to "%s".',
                          user_db+timestamp)
             if os.path.exists(user_db):
@@ -492,7 +488,6 @@ class TabSqliteDb:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('load_phrases_cache()')
         try:
-            import json
             self._phrases_cache = json.load(open(self.cache_path, 'r'))
             snum = self._phrases_cache.get('serial_number')
             if not snum or (snum != self._snum):
@@ -515,7 +510,6 @@ class TabSqliteDb:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('save_phrases_cache()')
         try:
-            import json
             self._phrases_cache['serial_number'] = self._snum
             _cache_path = self.cache_path + '.tmp'
             # The system may be break stores on rebooting, so
@@ -629,7 +623,8 @@ class TabSqliteDb:
         '''
         select_sqlstr = 'SELECT val from main.ime WHERE attr = :attr'
         update_sqlstr = 'UPDATE main.ime SET val = :val WHERE attr = :attr;'
-        insert_sqlstr = 'INSERT INTO main.ime (attr, val) VALUES (:attr, :val);'
+        insert_sqlstr = (
+            'INSERT INTO main.ime (attr, val) VALUES (:attr, :val);')
         for attr, val in attrs:
             sqlargs = {'attr': attr, 'val': val}
             if self.db.execute(select_sqlstr, sqlargs).fetchall():
@@ -731,8 +726,6 @@ class TabSqliteDb:
     def get_no_check_chars(self):
         '''Get the characters which engine should not change freq'''
         _chars = self.ime_properties.get('no_check_chars')
-        if type(_chars) != type(u''):
-            _chars = _chars.decode('utf-8')
         return _chars
 
     def add_phrases(self, phrases, database='main'):
@@ -1360,8 +1353,6 @@ class TabSqliteDb:
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('phrase=%s rules%s', phrase, self.rules)
-        if type(phrase) != type(u''):
-            phrase = phrase.decode('UTF-8')
         # Shouldn’t this function try first whether the system database
         # already has an entry for this phrase and if yes return it
         # instead of constructing a new entry according to the rules?
@@ -1460,10 +1451,6 @@ class TabSqliteDb:
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('tabkey=%s phrase=%s', tabkeys, phrase)
-        if type(phrase) != type(u''):
-            phrase = phrase.decode('utf8')
-        if type(tabkeys) != type(u''):
-            tabkeys = tabkeys.decode('utf8')
         if not tabkeys or not phrase:
             return
         if self._is_chinese and phrase in CHINESE_NOCHECK_CHARS:
@@ -1525,8 +1512,6 @@ class TabSqliteDb:
         wqi	你	1490000000
         wqiy	你	1490000000
         '''
-        if type(phrase) != type(u''):
-            phrase = phrase.decode('utf8')
         sqlstr = '''
         SELECT tabkeys FROM main.phrases WHERE phrase = :phrase
         ORDER by length(tabkeys) ASC;
@@ -1540,7 +1525,7 @@ class TabSqliteDb:
             self, tabkeys=u'', phrase=u'', database='user_db', commit=True):
         '''Remove phrase from database
         '''
-        LOGGER.info('Removing tabkeys=%s, phrase=%, database=%s commit=%s',
+        LOGGER.info('Removing tabkeys=%s, phrase=%s, database=%s commit=%s',
                     tabkeys, phrase, database, commit)
         if not phrase:
             return

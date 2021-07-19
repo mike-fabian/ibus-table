@@ -299,17 +299,18 @@ class SetupUI(Gtk.Window):
             self._keybindings_vbox,
             self._keybindings_label)
 
-        _options_grid_row = 0
+        _options_grid_row = -1
+
         self._initial_state_section_heading_label = Gtk.Label()
         self._initial_state_section_heading_label.set_text(
             '<b>' + _('Initial state') + '</b>')
         self._initial_state_section_heading_label.set_use_markup(True)
         self._initial_state_section_heading_label.set_xalign(0)
+        _options_grid_row += 1
         self._options_grid.attach(
             self._initial_state_section_heading_label,
             _options_grid_row, 0, 2, 1)
 
-        _options_grid_row += 1
         self._input_mode_label = Gtk.Label()
         self._input_mode_label.set_text(
             # Translators: A combobox to choose the input mode
@@ -325,8 +326,6 @@ class SetupUI(Gtk.Window):
               'halfwidth may still happen in direct input mode.\n'
               '“Table input” means the input method is on.'))
         self._input_mode_label.set_xalign(0)
-        self._options_grid.attach(
-            self._input_mode_label, 0, _options_grid_row, 1, 1)
         self._input_mode_combobox = Gtk.ComboBox()
         self._input_mode_store = Gtk.ListStore(str, int)
         self._input_mode_store.append(
@@ -351,13 +350,15 @@ class SetupUI(Gtk.Window):
         for index, item in enumerate(self._input_mode_store):
             if self._settings_dict['inputmode']['user'] == item[1]:
                 self._input_mode_combobox.set_active(index)
-        self._options_grid.attach(
-            self._input_mode_combobox, 1, _options_grid_row, 1, 1)
         self._input_mode_combobox.connect(
             "changed",
             self.on_input_mode_combobox_changed)
-
         _options_grid_row += 1
+        self._options_grid.attach(
+            self._input_mode_label, 0, _options_grid_row, 1, 1)
+        self._options_grid.attach(
+            self._input_mode_combobox, 1, _options_grid_row, 1, 1)
+
         self._chinese_mode_label = Gtk.Label()
         self._chinese_mode_label.set_text(
             # Translators: A combobox to choose the variant of
@@ -377,12 +378,7 @@ class SetupUI(Gtk.Window):
               'matches without any particular filtering on traditional\n'
               'versus simplified Chinese.'))
         self._chinese_mode_label.set_xalign(0)
-        self._options_grid.attach(
-            self._chinese_mode_label, 0, _options_grid_row, 1, 1)
         self._chinese_mode_combobox = Gtk.ComboBox()
-        if not self.__is_chinese:
-            self._chinese_mode_combobox.set_button_sensitivity(
-                Gtk.SensitivityType.OFF)
         self._chinese_mode_store = Gtk.ListStore(str, int)
         self._chinese_mode_store.append(
             # Translators: This is the setting to use only
@@ -417,13 +413,16 @@ class SetupUI(Gtk.Window):
         for index, item in enumerate(self._chinese_mode_store):
             if self._settings_dict['chinesemode']['user'] == item[1]:
                 self._chinese_mode_combobox.set_active(index)
-        self._options_grid.attach(
-            self._chinese_mode_combobox, 1, _options_grid_row, 1, 1)
         self._chinese_mode_combobox.connect(
             "changed",
             self.on_chinese_mode_combobox_changed)
+        if self.__is_chinese:
+            _options_grid_row += 1
+            self._options_grid.attach(
+                self._chinese_mode_label, 0, _options_grid_row, 1, 1)
+            self._options_grid.attach(
+                self._chinese_mode_combobox, 1, _options_grid_row, 1, 1)
 
-        _options_grid_row += 1
         self._table_full_width_letter_mode_label = Gtk.Label()
         self._table_full_width_letter_mode_label.set_text(
             # Translators: A combobox to choose the letter width
@@ -435,13 +434,7 @@ class SetupUI(Gtk.Window):
             _('Whether to use fullwidth or halfwidth\n'
               'letters in table input mode.'))
         self._table_full_width_letter_mode_label.set_xalign(0)
-        self._options_grid.attach(
-            self._table_full_width_letter_mode_label,
-            0, _options_grid_row, 1, 1)
         self._table_full_width_letter_mode_combobox = Gtk.ComboBox()
-        if not self.__is_cjk:
-            self._table_full_width_letter_mode_combobox.set_button_sensitivity(
-                Gtk.SensitivityType.OFF)
         self._table_full_width_letter_mode_store = Gtk.ListStore(str, bool)
         self._table_full_width_letter_mode_store.append(
             # Translators: This is the mode to use half width letters
@@ -461,14 +454,18 @@ class SetupUI(Gtk.Window):
         for index, item in enumerate(self._table_full_width_letter_mode_store):
             if self._settings_dict['tabdeffullwidthletter']['user'] == item[1]:
                 self._table_full_width_letter_mode_combobox.set_active(index)
-        self._options_grid.attach(
-            self._table_full_width_letter_mode_combobox,
-            1, _options_grid_row, 1, 1)
         self._table_full_width_letter_mode_combobox.connect(
             "changed",
             self.on_table_full_width_letter_mode_combobox_changed)
+        if self.__is_cjk:
+            _options_grid_row += 1
+            self._options_grid.attach(
+                self._table_full_width_letter_mode_label,
+                0, _options_grid_row, 1, 1)
+            self._options_grid.attach(
+                self._table_full_width_letter_mode_combobox,
+                1, _options_grid_row, 1, 1)
 
-        _options_grid_row += 1
         self._table_full_width_punctuation_mode_label = Gtk.Label()
         self._table_full_width_punctuation_mode_label.set_text(
             # Translators: A combobox to choose the punctuation width
@@ -480,13 +477,7 @@ class SetupUI(Gtk.Window):
             _('Whether to use fullwidth or halfwidth\n'
               'punctuation in table input mode.'))
         self._table_full_width_punctuation_mode_label.set_xalign(0)
-        self._options_grid.attach(
-            self._table_full_width_punctuation_mode_label,
-            0, _options_grid_row, 1, 1)
         self._table_full_width_punctuation_mode_combobox = Gtk.ComboBox()
-        if not self.__is_cjk:
-            self._table_full_width_punctuation_mode_combobox.set_button_sensitivity(
-                Gtk.SensitivityType.OFF)
         self._table_full_width_punctuation_mode_store = Gtk.ListStore(
             str, bool)
         self._table_full_width_punctuation_mode_store.append(
@@ -509,14 +500,18 @@ class SetupUI(Gtk.Window):
             if self._settings_dict['tabdeffullwidthpunct']['user'] == item[1]:
                 self._table_full_width_punctuation_mode_combobox.set_active(
                     index)
-        self._options_grid.attach(
-            self._table_full_width_punctuation_mode_combobox,
-            1, _options_grid_row, 1, 1)
         self._table_full_width_punctuation_mode_combobox.connect(
             "changed",
             self.on_table_full_width_punctuation_mode_combobox_changed)
+        if self.__is_cjk:
+            _options_grid_row += 1
+            self._options_grid.attach(
+                self._table_full_width_punctuation_mode_label,
+                0, _options_grid_row, 1, 1)
+            self._options_grid.attach(
+                self._table_full_width_punctuation_mode_combobox,
+                1, _options_grid_row, 1, 1)
 
-        _options_grid_row += 1
         self._direct_full_width_letter_mode_label = Gtk.Label()
         self._direct_full_width_letter_mode_label.set_text(
             # Translators: A combobox to choose the letter width
@@ -528,13 +523,7 @@ class SetupUI(Gtk.Window):
             _('Whether to use fullwidth or halfwidth\n'
               'letters in direct input mode.'))
         self._direct_full_width_letter_mode_label.set_xalign(0)
-        self._options_grid.attach(
-            self._direct_full_width_letter_mode_label,
-            0, _options_grid_row, 1, 1)
         self._direct_full_width_letter_mode_combobox = Gtk.ComboBox()
-        if not self.__is_cjk:
-            self._direct_full_width_letter_mode_combobox.set_button_sensitivity(
-                Gtk.SensitivityType.OFF)
         self._direct_full_width_letter_mode_store = Gtk.ListStore(str, bool)
         self._direct_full_width_letter_mode_store.append(
             # Translators: This is the mode to use half width letters
@@ -555,14 +544,18 @@ class SetupUI(Gtk.Window):
                 self._direct_full_width_letter_mode_store):
             if self._settings_dict['endeffullwidthletter']['user'] == item[1]:
                 self._direct_full_width_letter_mode_combobox.set_active(index)
-        self._options_grid.attach(
-            self._direct_full_width_letter_mode_combobox,
-            1, _options_grid_row, 1, 1)
         self._direct_full_width_letter_mode_combobox.connect(
             "changed",
             self.on_direct_full_width_letter_mode_combobox_changed)
+        if self.__is_cjk:
+            _options_grid_row += 1
+            self._options_grid.attach(
+                self._direct_full_width_letter_mode_label,
+                0, _options_grid_row, 1, 1)
+            self._options_grid.attach(
+                self._direct_full_width_letter_mode_combobox,
+                1, _options_grid_row, 1, 1)
 
-        _options_grid_row += 1
         self._direct_full_width_punctuation_mode_label = Gtk.Label()
         self._direct_full_width_punctuation_mode_label.set_text(
             # Translators: A combobox to choose the punctuation width
@@ -574,13 +567,7 @@ class SetupUI(Gtk.Window):
             _('Whether to use fullwidth or halfwidth\n'
               'punctuation in direct input mode.'))
         self._direct_full_width_punctuation_mode_label.set_xalign(0)
-        self._options_grid.attach(
-            self._direct_full_width_punctuation_mode_label,
-            0, _options_grid_row, 1, 1)
         self._direct_full_width_punctuation_mode_combobox = Gtk.ComboBox()
-        if not self.__is_cjk:
-            self._direct_full_width_punctuation_mode_combobox.set_button_sensitivity(
-                Gtk.SensitivityType.OFF)
         self._direct_full_width_punctuation_mode_store = Gtk.ListStore(
             str, bool)
         self._direct_full_width_punctuation_mode_store.append(
@@ -603,24 +590,28 @@ class SetupUI(Gtk.Window):
             if self._settings_dict['endeffullwidthpunct']['user'] == item[1]:
                 self._direct_full_width_punctuation_mode_combobox.set_active(
                     index)
-        self._options_grid.attach(
-            self._direct_full_width_punctuation_mode_combobox,
-            1, _options_grid_row, 1, 1)
         self._direct_full_width_punctuation_mode_combobox.connect(
             "changed",
             self.on_direct_full_width_punctuation_mode_combobox_changed)
+        if self.__is_cjk:
+            _options_grid_row += 1
+            self._options_grid.attach(
+                self._direct_full_width_punctuation_mode_label,
+                0, _options_grid_row, 1, 1)
+            self._options_grid.attach(
+                self._direct_full_width_punctuation_mode_combobox,
+                1, _options_grid_row, 1, 1)
 
-        _options_grid_row += 1
         self._candidate_list_section_heading_label = Gtk.Label()
         self._candidate_list_section_heading_label.set_text(
             '<b>' + _('Candidate list') + '</b>')
         self._candidate_list_section_heading_label.set_use_markup(True)
         self._candidate_list_section_heading_label.set_xalign(0)
+        _options_grid_row += 1
         self._options_grid.attach(
             self._candidate_list_section_heading_label,
             0, _options_grid_row, 2, 1)
 
-        _options_grid_row += 1
         self._always_show_lookup_checkbutton = Gtk.CheckButton(
             # Translators: A combobox to choose whether
             # a candidate list should be shown or hidden.
@@ -640,14 +631,14 @@ class SetupUI(Gtk.Window):
               'candidate lists is better.'))
         self._always_show_lookup_checkbutton.set_hexpand(False)
         self._always_show_lookup_checkbutton.set_vexpand(False)
-        self._options_grid.attach(
-            self._always_show_lookup_checkbutton, 0, _options_grid_row, 2, 1)
         self._always_show_lookup_checkbutton.set_active(
             self._settings_dict['alwaysshowlookup']['user'])
         self._always_show_lookup_checkbutton.connect(
             "clicked", self.on_always_show_lookup_checkbutton)
-
         _options_grid_row += 1
+        self._options_grid.attach(
+            self._always_show_lookup_checkbutton, 0, _options_grid_row, 2, 1)
+
         self._lookup_table_orientation_label = Gtk.Label()
         self._lookup_table_orientation_label.set_text(
             # Translators: A combobox to choose whether the candidate
@@ -660,8 +651,6 @@ class SetupUI(Gtk.Window):
             _('Whether the lookup table showing the candidates\n'
               'should be vertical or horizontal.'))
         self._lookup_table_orientation_label.set_xalign(0)
-        self._options_grid.attach(
-            self._lookup_table_orientation_label, 0, _options_grid_row, 1, 1)
         self._lookup_table_orientation_combobox = Gtk.ComboBox()
         self._lookup_table_orientation_store = Gtk.ListStore(str, int)
         self._lookup_table_orientation_store.append(
@@ -681,14 +670,16 @@ class SetupUI(Gtk.Window):
             if (self._settings_dict['lookuptableorientation']['user']
                 == item[1]):
                 self._lookup_table_orientation_combobox.set_active(index)
-        self._options_grid.attach(
-            self._lookup_table_orientation_combobox,
-            1, _options_grid_row, 1, 1)
         self._lookup_table_orientation_combobox.connect(
             "changed",
             self.on_lookup_table_orientation_combobox_changed)
-
         _options_grid_row += 1
+        self._options_grid.attach(
+            self._lookup_table_orientation_label, 0, _options_grid_row, 1, 1)
+        self._options_grid.attach(
+            self._lookup_table_orientation_combobox,
+            1, _options_grid_row, 1, 1)
+
         self._page_size_label = Gtk.Label()
         # Translators: Here one can choose how many suggestion
         # candidates to show in one page of the candidate list.
@@ -702,19 +693,20 @@ class SetupUI(Gtk.Window):
               'pages in the lookup table using the page up/down\n'
               'keys or the arrow up/down keys.'))
         self._page_size_label.set_xalign(0)
-        self._options_grid.attach(
-            self._page_size_label, 0, _options_grid_row, 1, 1)
         self._page_size_adjustment = Gtk.SpinButton()
         self._page_size_adjustment.set_visible(True)
         self._page_size_adjustment.set_can_focus(True)
         self._page_size_adjustment.set_increments(1.0, 1.0)
         self._page_size_adjustment.set_range(1.0, 10.0)
-        self._options_grid.attach(
-            self._page_size_adjustment, 1, _options_grid_row, 1, 1)
         self._page_size_adjustment.set_value(
             self._settings_dict['lookuptablepagesize']['user'])
         self._page_size_adjustment.connect(
             'value-changed', self.on_page_size_adjustment_value_changed)
+        _options_grid_row += 1
+        self._options_grid.attach(
+            self._page_size_label, 0, _options_grid_row, 1, 1)
+        self._options_grid.attach(
+            self._page_size_adjustment, 1, _options_grid_row, 1, 1)
 
         self._keybindings_label = Gtk.Label()
         self._keybindings_label.set_text(
@@ -824,7 +816,8 @@ class SetupUI(Gtk.Window):
         self._keybindings_edit_popover_up_button = None
         self._keybindings_edit_popover_down_button = None
 
-        _options_details_grid_row = 0
+        _options_details_grid_row = -1
+
         self._dynamic_adjust_checkbutton = Gtk.CheckButton(
             # Translators: A checkbox where one can choose whether the
             # order of the candidates is dynamically adjusted according
@@ -836,8 +829,6 @@ class SetupUI(Gtk.Window):
               + 'are used.'))
         self._dynamic_adjust_checkbutton.set_hexpand(False)
         self._dynamic_adjust_checkbutton.set_vexpand(False)
-        self._options_details_grid.attach(
-            self._dynamic_adjust_checkbutton, 0, _options_details_grid_row, 1, 1)
         self._dynamic_adjust_checkbutton.set_active(
             self._settings_dict['dynamicadjust']['user'])
         self._dynamic_adjust_checkbutton.connect(
@@ -857,12 +848,14 @@ class SetupUI(Gtk.Window):
             self._dynamic_adjust_forget_button_label, False, False, 0)
         self._dynamic_adjust_forget_button.add(
             self._dynamic_adjust_forget_button_box)
-        self._options_details_grid.attach(
-            self._dynamic_adjust_forget_button, 1, _options_details_grid_row, 1, 1)
         self._dynamic_adjust_forget_button.connect(
             'clicked', self.on_dynamic_adjust_forget_button)
-
         _options_details_grid_row += 1
+        self._options_details_grid.attach(
+            self._dynamic_adjust_checkbutton, 0, _options_details_grid_row, 1, 1)
+        self._options_details_grid.attach(
+            self._dynamic_adjust_forget_button, 1, _options_details_grid_row, 1, 1)
+
         self._onechar_mode_label = Gtk.Label()
         self._onechar_mode_label.set_text(
             # Translators: A combobox to choose whether only single
@@ -877,12 +870,7 @@ class SetupUI(Gtk.Window):
               'set to “Phrase” candidates consisting of\n'
               'several characters may be shown.'))
         self._onechar_mode_label.set_xalign(0)
-        self._options_details_grid.attach(
-            self._onechar_mode_label, 0, _options_details_grid_row, 1, 1)
         self._onechar_mode_combobox = Gtk.ComboBox()
-        if not self.__is_cjk:
-            self._onechar_mode_combobox.set_button_sensitivity(
-                Gtk.SensitivityType.OFF)
         self._onechar_mode_store = Gtk.ListStore(str, int)
         self._onechar_mode_store.append(
             [_('Phrase'), False])
@@ -898,12 +886,17 @@ class SetupUI(Gtk.Window):
         for index, item in enumerate(self._onechar_mode_store):
             if self._settings_dict['onechar']['user'] == item[1]:
                 self._onechar_mode_combobox.set_active(index)
-        self._options_details_grid.attach(
-            self._onechar_mode_combobox, 1, _options_details_grid_row, 1, 1)
         self._onechar_mode_combobox.connect(
             "changed", self.on_onechar_mode_combobox_changed)
+        if self.__is_cjk:
+            _options_details_grid_row += 1
+            self._options_details_grid.attach(
+                self._onechar_mode_label,
+                0, _options_details_grid_row, 1, 1)
+            self._options_details_grid.attach(
+                self._onechar_mode_combobox,
+                1, _options_details_grid_row, 1, 1)
 
-        _options_details_grid_row += 1
         self._autoselect_mode_checkbutton = Gtk.CheckButton(
             # Translators: A combobox to choose whether the first
             # candidate will be automatically selected during typing.
@@ -924,14 +917,14 @@ class SetupUI(Gtk.Window):
               '   the Russian “translit”)'))
         self._autoselect_mode_checkbutton.set_hexpand(False)
         self._autoselect_mode_checkbutton.set_vexpand(False)
-        self._options_details_grid.attach(
-            self._autoselect_mode_checkbutton, 0, _options_details_grid_row, 2, 1)
         self._autoselect_mode_checkbutton.set_active(
             self._settings_dict['autoselect']['user'])
         self._autoselect_mode_checkbutton.connect(
             'clicked', self.on_autoselect_mode_checkbutton)
-
         _options_details_grid_row += 1
+        self._options_details_grid.attach(
+            self._autoselect_mode_checkbutton, 0, _options_details_grid_row, 2, 1)
+
         self._autocommit_mode_label = Gtk.Label()
         self._autocommit_mode_label.set_text(
             # Translators: A combobox to choose whether automatic
@@ -951,12 +944,7 @@ class SetupUI(Gtk.Window):
               'into the application, “Normal” means they get committed\n'
               'to preedit.'))
         self._autocommit_mode_label.set_xalign(0)
-        self._options_details_grid.attach(
-            self._autocommit_mode_label, 0, _options_details_grid_row, 1, 1)
         self._autocommit_mode_combobox = Gtk.ComboBox()
-        if not self.__user_can_define_phrase or not self.__rules:
-            self._autocommit_mode_combobox.set_button_sensitivity(
-                Gtk.SensitivityType.OFF)
         self._autocommit_mode_store = Gtk.ListStore(str, int)
         self._autocommit_mode_store.append(
             [_('Normal'), False])
@@ -972,12 +960,17 @@ class SetupUI(Gtk.Window):
         for index, item in enumerate(self._autocommit_mode_store):
             if self._settings_dict['autocommit']['user'] == item[1]:
                 self._autocommit_mode_combobox.set_active(index)
-        self._options_details_grid.attach(
-            self._autocommit_mode_combobox, 1, _options_details_grid_row, 1, 1)
         self._autocommit_mode_combobox.connect(
             "changed", self.on_autocommit_mode_combobox_changed)
+        if self.__user_can_define_phrase and self.__rules:
+            _options_details_grid_row += 1
+            self._options_details_grid.attach(
+                self._autocommit_mode_label,
+                0, _options_details_grid_row, 1, 1)
+            self._options_details_grid.attach(
+                self._autocommit_mode_combobox,
+                1, _options_details_grid_row, 1, 1)
 
-        _options_details_grid_row += 1
         self._autowildcard_mode_checkbutton = Gtk.CheckButton(
             # Translators: A combobox to choose whether a wildcard
             # should be automatically appended to the input.
@@ -990,14 +983,14 @@ class SetupUI(Gtk.Window):
               'appended to the end of the input string.'))
         self._autowildcard_mode_checkbutton.set_hexpand(False)
         self._autowildcard_mode_checkbutton.set_vexpand(False)
-        self._options_details_grid.attach(
-            self._autowildcard_mode_checkbutton, 0, _options_details_grid_row, 2, 1)
         self._autowildcard_mode_checkbutton.set_active(
             self._settings_dict['autowildcard']['user'])
         self._autowildcard_mode_checkbutton.connect(
             'clicked', self.on_autowildcard_mode_checkbutton)
-
         _options_details_grid_row += 1
+        self._options_details_grid.attach(
+            self._autowildcard_mode_checkbutton, 0, _options_details_grid_row, 2, 1)
+
         self._single_wildcard_char_label = Gtk.Label()
         self._single_wildcard_char_label.set_text(
             # Translators: This single character is a placeholder
@@ -1010,20 +1003,20 @@ class SetupUI(Gtk.Window):
             _('The wildcard to match any single character.\n'
               'Type RETURN or ENTER to confirm after changing the wildcard.'))
         self._single_wildcard_char_label.set_xalign(0)
-        self._options_details_grid.attach(
-            self._single_wildcard_char_label,
-            0, _options_details_grid_row, 1, 1)
         self._single_wildcard_char_entry = Gtk.Entry()
         self._single_wildcard_char_entry.set_max_length(1)
-        self._options_details_grid.attach(
-            self._single_wildcard_char_entry,
-            1, _options_details_grid_row, 1, 1)
         self._single_wildcard_char_entry.set_text(
             self._settings_dict['singlewildcardchar']['user'])
         self._single_wildcard_char_entry.connect(
             'notify::text', self.on_single_wildcard_char_entry)
-
         _options_details_grid_row += 1
+        self._options_details_grid.attach(
+            self._single_wildcard_char_label,
+            0, _options_details_grid_row, 1, 1)
+        self._options_details_grid.attach(
+            self._single_wildcard_char_entry,
+            1, _options_details_grid_row, 1, 1)
+
         self._multi_wildcard_char_label = Gtk.Label()
         self._multi_wildcard_char_label.set_text(
             # Translators: This single character is a placeholder
@@ -1036,19 +1029,20 @@ class SetupUI(Gtk.Window):
             _('The wildcard used to match any number of characters.\n'
               'Type RETURN or ENTER to confirm after changing the wildcard.'))
         self._multi_wildcard_char_label.set_xalign(0)
-        self._options_details_grid.attach(
-            self._multi_wildcard_char_label,
-            0, _options_details_grid_row, 1, 1)
         self._multi_wildcard_char_entry = Gtk.Entry()
         self._multi_wildcard_char_entry.set_max_length(1)
-        self._options_details_grid.attach(
-            self._multi_wildcard_char_entry, 1, _options_details_grid_row, 1, 1)
         self._multi_wildcard_char_entry.set_text(
             self._settings_dict['multiwildcardchar']['user'])
         self._multi_wildcard_char_entry.connect(
             'notify::text', self.on_multi_wildcard_char_entry)
-
         _options_details_grid_row += 1
+        self._options_details_grid.attach(
+            self._multi_wildcard_char_label,
+            0, _options_details_grid_row, 1, 1)
+        self._options_details_grid.attach(
+            self._multi_wildcard_char_entry,
+            1, _options_details_grid_row, 1, 1)
+
         self._use_dark_theme_checkbutton = Gtk.CheckButton(
             # Translators: A combobox to choose whether
             # the color scheme for a dark theme should be used.
@@ -1060,14 +1054,15 @@ class SetupUI(Gtk.Window):
             _('If yes, the color scheme for a dark theme will be used.'))
         self._use_dark_theme_checkbutton.set_hexpand(False)
         self._use_dark_theme_checkbutton.set_vexpand(False)
-        self._options_details_grid.attach(
-            self._use_dark_theme_checkbutton, 0, _options_details_grid_row, 2, 1)
         self._use_dark_theme_checkbutton.set_active(
             self._settings_dict['darktheme']['user'])
         self._use_dark_theme_checkbutton.connect(
             'clicked', self.on_use_dark_theme_checkbutton)
-
         _options_details_grid_row += 1
+        self._options_details_grid.attach(
+            self._use_dark_theme_checkbutton,
+            0, _options_details_grid_row, 2, 1)
+
         self._error_sound_checkbutton = Gtk.CheckButton(
             # Translators: A checkbox where one can choose whether a
             # sound is played on error
@@ -1079,8 +1074,6 @@ class SetupUI(Gtk.Window):
               + 'this option does nothing.'))
         self._error_sound_checkbutton.set_hexpand(False)
         self._error_sound_checkbutton.set_vexpand(False)
-        self._options_details_grid.attach(
-            self._error_sound_checkbutton, 0, _options_details_grid_row, 1, 1)
         self._error_sound_checkbutton.set_active(
             self._settings_dict['errorsound']['user'])
         self._error_sound_checkbutton.connect(
@@ -1100,12 +1093,14 @@ class SetupUI(Gtk.Window):
             self._error_sound_file_button_label, False, False, 0)
         self._error_sound_file_button.add(
             self._error_sound_file_button_box)
-        self._options_details_grid.attach(
-            self._error_sound_file_button, 1, _options_details_grid_row, 1, 1)
         self._error_sound_file_button.connect(
             'clicked', self.on_error_sound_file_button)
-
         _options_details_grid_row += 1
+        self._options_details_grid.attach(
+            self._error_sound_checkbutton, 0, _options_details_grid_row, 1, 1)
+        self._options_details_grid.attach(
+            self._error_sound_file_button, 1, _options_details_grid_row, 1, 1)
+
         self._debug_level_label = Gtk.Label()
         self._debug_level_label.set_text(
             # Translators: When the debug level is greater than 0,
@@ -1119,20 +1114,21 @@ class SetupUI(Gtk.Window):
               'printed to the log file and debug information '
               'may also be shown graphically.'))
         self._debug_level_label.set_xalign(0)
-        self._options_details_grid.attach(
-            self._debug_level_label, 0, _options_details_grid_row, 1, 1)
         self._debug_level_adjustment = Gtk.SpinButton()
         self._debug_level_adjustment.set_visible(True)
         self._debug_level_adjustment.set_can_focus(True)
         self._debug_level_adjustment.set_increments(1.0, 1.0)
         self._debug_level_adjustment.set_range(0.0, 255.0)
-        self._options_details_grid.attach(
-            self._debug_level_adjustment, 1, _options_details_grid_row, 1, 1)
         self._debug_level_adjustment.set_value(
             self._settings_dict['debuglevel']['user'])
         self._debug_level_adjustment.connect(
             'value-changed',
             self.on_debug_level_adjustment_value_changed)
+        _options_details_grid_row += 1
+        self._options_details_grid.attach(
+            self._debug_level_label, 0, _options_details_grid_row, 1, 1)
+        self._options_details_grid.attach(
+            self._debug_level_adjustment, 1, _options_details_grid_row, 1, 1)
 
         self.show_all()
 

@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2021-07-19 13:32+0200\n"
-"PO-Revision-Date: 2021-07-19 14:09+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2021-07-19 18:18+0000\n"
+"Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/tr/>\n"
 "Language: tr\n"
@@ -685,17 +685,19 @@ msgstr "Tüm komutlar için ön tanımlı tuş atamalarını ayarla"
 #. to how often the candidates are used.
 #: setup/main.py:825
 msgid "Dynamic adjust"
-msgstr ""
+msgstr "Dinamik olarak ayarla"
 
 #: setup/main.py:827
 msgid ""
 "Here you can choose whether the order of the candidates is dynamically "
 "adjusted according to how often the candidates are used."
 msgstr ""
+"Burada adayların sırasının, adayların ne sıklıkla kullanıldığına göre "
+"dinamik olarak ayarlanıp ayarlanmadığını seçebilirsiniz."
 
 #: setup/main.py:840
 msgid "Delete all learned data"
-msgstr "Öğrenilen verileri sil"
+msgstr "Öğrenilen tüm verileri sil"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
@@ -860,13 +862,16 @@ msgstr "Evetse, koyu bir renk şeması kullanılacaktır."
 #. sound is played on error
 #: setup/main.py:1069
 msgid "Play sound file on error"
-msgstr ""
+msgstr "Hata durumunda ses dosyası oynat"
 
 #: setup/main.py:1071
 msgid ""
 "Here you can choose whether a sound file is played if an error occurs.If the "
 "simpleaudio module for Python3 is not installled, this option does nothing."
 msgstr ""
+"Burada bir hata oluştuğunda bir ses dosyasının çalınıp çalınmayacağını "
+"seçebilirsiniz. Python3 için simpleaudio modülü kurulu değilse, bu seçenek "
+"hiçbir şey yapmaz."
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
@@ -919,16 +924,16 @@ msgstr "Tüm öntanımlı ayarları gerçekten geri yüklemek istiyor musunuz?"
 #. input. Deleting this learned data cannot be reversed. So
 #. the user should be really sure he really wants to do that.
 #: setup/main.py:1746
-#, fuzzy
-#| msgid "Do you really want to restore all default settings?"
 msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
-msgstr "Tüm öntanımlı ayarları gerçekten geri yüklemek istiyor musunuz?"
+msgstr ""
+"Adayları yazarken ve seçerken öğrenilen tüm verileri gerçekten silmek "
+"istiyor musunuz?"
 
 #: setup/main.py:1768
 msgid "Select .wav sound file:"
-msgstr ""
+msgstr ".wav ses dosyasını seçin:"
 
 #: setup/main.py:2047
 #, python-format

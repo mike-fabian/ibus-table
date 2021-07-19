@@ -917,12 +917,11 @@ class SetupUI(Gtk.Window):
             "changed", self.on_onechar_mode_combobox_changed)
 
         _options_details_grid_row += 1
-        self._autoselect_mode_label = Gtk.Label()
-        self._autoselect_mode_label.set_text(
+        self._autoselect_mode_checkbutton = Gtk.CheckButton(
             # Translators: A combobox to choose whether the first
             # candidate will be automatically selected during typing.
-            _('Auto select:'))
-        self._autoselect_mode_label.set_tooltip_text(
+            label=_('Auto select:'))
+        self._autoselect_mode_checkbutton.set_tooltip_text(
             # Translators: A tooltip for the label of the combobox to
             # choose whether the first candidate will be automatically
             # select during typing.
@@ -936,29 +935,14 @@ class SetupUI(Gtk.Window):
               '   commit the first candidate of the previous match.\n'
               '   (Mostly needed for non-Chinese input methods like\n'
               '   the Russian “translit”)'))
-        self._autoselect_mode_label.set_xalign(0)
+        self._autoselect_mode_checkbutton.set_hexpand(False)
+        self._autoselect_mode_checkbutton.set_vexpand(False)
         self._options_details_grid.attach(
-            self._autoselect_mode_label, 0, _options_details_grid_row, 1, 1)
-        self._autoselect_mode_combobox = Gtk.ComboBox()
-        self._autoselect_mode_store = Gtk.ListStore(str, int)
-        self._autoselect_mode_store.append(
-            [_('No'), False])
-        self._autoselect_mode_store.append(
-            [_('Yes'), True])
-        self._autoselect_mode_combobox.set_model(
-            self._autoselect_mode_store)
-        renderer_text = Gtk.CellRendererText()
-        self._autoselect_mode_combobox.pack_start(
-            renderer_text, True)
-        self._autoselect_mode_combobox.add_attribute(
-            renderer_text, "text", 0)
-        for index, item in enumerate(self._autoselect_mode_store):
-            if self._settings_dict['autoselect']['user'] == item[1]:
-                self._autoselect_mode_combobox.set_active(index)
-        self._options_details_grid.attach(
-            self._autoselect_mode_combobox, 1, _options_details_grid_row, 1, 1)
-        self._autoselect_mode_combobox.connect(
-            "changed", self.on_autoselect_mode_combobox_changed)
+            self._autoselect_mode_checkbutton, 0, _options_details_grid_row, 2, 1)
+        self._autoselect_mode_checkbutton.set_active(
+            self._settings_dict['autoselect']['user'])
+        self._autoselect_mode_checkbutton.connect(
+            'clicked', self.on_autoselect_mode_checkbutton)
 
         _options_details_grid_row += 1
         self._autocommit_mode_label = Gtk.Label()
@@ -1691,17 +1675,9 @@ class SetupUI(Gtk.Window):
             self.set_onechar_mode(
                 mode, update_gsettings=True)
 
-    def on_autoselect_mode_combobox_changed(self, widget) -> None:
-        '''
-        A change of the autoselect mode has been requested
-        with the combobox
-        '''
-        tree_iter = widget.get_active_iter()
-        if tree_iter is not None:
-            model = widget.get_model()
-            mode = model[tree_iter][1]
-            self.set_autoselect_mode(
-                mode, update_gsettings=True)
+    def on_autoselect_mode_checkbutton(self, widget: Gtk.CheckButton) -> None:
+        '''The checkbutton for autoselect mode has been clicked'''
+        self.set_autoselect_mode(widget.get_active(), update_gsettings=True)
 
     def on_autocommit_mode_combobox_changed(self, widget) -> None:
         '''
@@ -2479,9 +2455,7 @@ class SetupUI(Gtk.Window):
                 'autoselect',
                 GLib.Variant.new_boolean(mode))
         else:
-            for index, item in enumerate(self._autoselect_mode_store):
-                if mode == item[1]:
-                    self._autoselect_mode_combobox.set_active(index)
+            self._autoselect_mode_checkbutton.set_active(mode)
 
     def set_autocommit_mode(self,
                             mode: bool = False,

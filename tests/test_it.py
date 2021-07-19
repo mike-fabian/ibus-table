@@ -2,7 +2,7 @@
 
 # ibus-table - The Tables engine for IBus
 #
-# Copyright (c) 2018 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2018, 2021 Mike FABIAN <mfabian@redhat.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public

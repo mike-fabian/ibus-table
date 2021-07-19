@@ -7,7 +7,7 @@
 # Copyright (c) 2010 BYVoid <byvoid1@gmail.com>
 # Copyright (c) 2012 Ma Xiaojun <damage3025@gmail.com>
 # Copyright (c) 2012 mozbugbox <mozbugbox@yahoo.com.au>
-# Copyright (c) 2014-2020 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2014-2021 Mike FABIAN <mfabian@redhat.com>
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by

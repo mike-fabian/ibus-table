@@ -1062,27 +1062,23 @@ class SetupUI(Gtk.Window):
             'notify::text', self.on_multi_wildcard_char_entry)
 
         _options_details_grid_row += 1
-        self._use_dark_theme_label = Gtk.Label()
-        self._use_dark_theme_label.set_text(
+        self._use_dark_theme_checkbutton = Gtk.CheckButton(
             # Translators: A combobox to choose whether
             # the color scheme for a dark theme should be used.
-            _('Use dark theme:'))
-        self._use_dark_theme_label.set_tooltip_text(
+            label=_('Use dark theme:'))
+        self._use_dark_theme_checkbutton.set_tooltip_text(
             # Translators: A tooltip for the label of the combobox to
             # choose whether the color scheme for a dark theme should
             # be used.
             _('If yes, the color scheme for a dark theme will be used.'))
-        self._use_dark_theme_label.set_xalign(0)
+        self._use_dark_theme_checkbutton.set_hexpand(False)
+        self._use_dark_theme_checkbutton.set_vexpand(False)
         self._options_details_grid.attach(
-            self._use_dark_theme_label, 0, _options_details_grid_row, 1, 1)
-        self._use_dark_theme_combobox = Gtk.ComboBoxText()
-        self._use_dark_theme_combobox.append("no", _('No'))
-        self._use_dark_theme_combobox.append("yes", _('Yes'))
-        self.set_dark_theme(self._settings_dict['darktheme']['user'], False)
-        self._options_details_grid.attach(
-            self._use_dark_theme_combobox, 1, _options_details_grid_row, 1, 1)
-        self._use_dark_theme_combobox.connect(
-            "changed", self.on_use_dark_theme_combobox_changed)
+            self._use_dark_theme_checkbutton, 0, _options_details_grid_row, 2, 1)
+        self._use_dark_theme_checkbutton.set_active(
+            self._settings_dict['darktheme']['user'])
+        self._use_dark_theme_checkbutton.connect(
+            'clicked', self.on_use_dark_theme_checkbutton)
 
         _options_details_grid_row += 1
         self._error_sound_checkbutton = Gtk.CheckButton(
@@ -1742,16 +1738,9 @@ class SetupUI(Gtk.Window):
             self.set_always_show_lookup(
                 mode, update_gsettings=True)
 
-    def on_use_dark_theme_combobox_changed(self, widget) -> None:
-        '''
-        A change of the use color scheme for dark theme.
-        '''
-        active_id = widget.get_active_id()
-        if active_id == "yes":
-            use_dark_theme = True
-        else:
-            use_dark_theme = False
-        self.set_dark_theme(use_dark_theme, update_gsettings=True)
+    def on_use_dark_theme_checkbutton(self, widget: Gtk.CheckButton) -> None:
+        '''The checkbutton for the dark theme has been clicked'''
+        self.set_dark_theme(widget.get_active(), update_gsettings=True)
 
     def on_dynamic_adjust_checkbutton(self, widget: Gtk.CheckButton) -> None:
         '''
@@ -2648,11 +2637,7 @@ class SetupUI(Gtk.Window):
                 'darktheme',
                 GLib.Variant.new_boolean(use_dark_theme))
         else:
-            if use_dark_theme:
-                active_id = "yes"
-            else:
-                active_id = "no"
-            self._use_dark_theme_combobox.set_active_id(active_id)
+            self._use_dark_theme_checkbutton.set_active(use_dark_theme)
 
     def set_dynamic_adjust(
             self,

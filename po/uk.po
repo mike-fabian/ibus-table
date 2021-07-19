@@ -7,7 +7,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2021-07-19 13:32+0200\n"
 "PO-Revision-Date: 2021-07-19 14:09+0000\n"
-"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/uk/>\n"
 "Language: uk\n"
@@ -701,7 +701,7 @@ msgstr ""
 
 #: setup/main.py:840
 msgid "Delete all learned data"
-msgstr ""
+msgstr "Вилучити вивчені дані"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.

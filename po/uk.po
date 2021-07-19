@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2021-07-19 13:32+0200\n"
-"PO-Revision-Date: 2021-07-19 14:09+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2021-07-19 14:10+0000\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/uk/>\n"
 "Language: uk\n"
@@ -876,6 +876,9 @@ msgid ""
 "Here you can choose whether a sound file is played if an error occurs.If the "
 "simpleaudio module for Python3 is not installled, this option does nothing."
 msgstr ""
+"Тут ви можете визначити, чи буде програма відтворювати звуковий файл, якщо "
+"станеться помилка. Якщо не встановлено модуль simpleaudio для Python 3, цей "
+"пункт ні на що не впливатиме."
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
@@ -929,16 +932,16 @@ msgstr "Ви справді хочете відновити усі типові 
 #. input. Deleting this learned data cannot be reversed. So
 #. the user should be really sure he really wants to do that.
 #: setup/main.py:1746
-#, fuzzy
-#| msgid "Do you really want to restore all default settings?"
 msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
-msgstr "Ви справді хочете відновити усі типові параметри?"
+msgstr ""
+"Ви справді хочете вилучити усі дані, які було вивчено на основі введеного та "
+"вибраних варіантів?"
 
 #: setup/main.py:1768
 msgid "Select .wav sound file:"
-msgstr ""
+msgstr "Виберіть звуковий файл .wav:"
 
 #: setup/main.py:2047
 #, python-format

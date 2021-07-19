@@ -65,7 +65,7 @@ require_version('Pango', '1.0')
 from gi.repository import Pango
 require_version('IBus', '1.0')
 from gi.repository import IBus
-from i18n import _, init as i18n_init
+from i18n import N_, _, init as i18n_init
 
 sys.path = [sys.path[0]+'/../engine'] + sys.path
 import tabsqlitedb
@@ -101,6 +101,14 @@ PARSER.add_argument(
           + 'default: %(default)s'))
 
 _ARGS = PARSER.parse_args()
+
+# Keep some translatable strings which are not used anymore here
+# so that the translations which have been done already are not lost.
+# I might want to use these strings again later.
+UNUSED_OLD_TRANSLATIONS = [
+    N_('Yes'),
+    N_('No'),
+]
 
 class SetupUI(Gtk.Window):
     '''

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2021-07-20 10:45+0200\n"
+"POT-Creation-Date: 2021-07-22 16:48+0200\n"
 "PO-Revision-Date: 2021-07-19 14:09+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Catalan <https://translate.fedoraproject.org/projects/ibus-"
@@ -739,7 +739,9 @@ msgstr "Caràcter individual"
 #. Translators: A combobox to choose whether the first
 #. candidate will be automatically selected during typing.
 #: setup/main.py:903
-msgid "Auto select:"
+#, fuzzy
+#| msgid "Auto select:"
+msgid "Auto select"
 msgstr "Autoselecciona:"
 
 #. Translators: A tooltip for the label of the combobox to
@@ -803,7 +805,9 @@ msgstr ""
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
 #: setup/main.py:978
-msgid "Auto wildcard:"
+#, fuzzy
+#| msgid "Auto wildcard:"
+msgid "Auto wildcard"
 msgstr "Comodí automàtic:"
 
 #. Translators: A tooltip for the label of the combobox to
@@ -854,7 +858,7 @@ msgstr ""
 #. Translators: A combobox to choose whether
 #. the color scheme for a dark theme should be used.
 #: setup/main.py:1051
-msgid "Use dark theme:"
+msgid "Use dark theme"
 msgstr ""
 
 #. Translators: A tooltip for the label of the combobox to

@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2021-07-22 16:48+0200\n"
 "PO-Revision-Date: 2021-07-22 14:57+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/de/>\n"
 "Language: de\n"
@@ -742,8 +742,6 @@ msgstr "Einzelzeichenmodus"
 #. Translators: A combobox to choose whether the first
 #. candidate will be automatically selected during typing.
 #: setup/main.py:903
-#, fuzzy
-#| msgid "Auto select:"
 msgid "Auto select"
 msgstr "Automatische Auswahl:"
 
@@ -813,8 +811,6 @@ msgstr ""
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
 #: setup/main.py:978
-#, fuzzy
-#| msgid "Auto wildcard:"
 msgid "Auto wildcard"
 msgstr "Automatischer Platzhalter:"
 

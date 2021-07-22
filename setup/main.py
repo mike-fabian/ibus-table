@@ -900,7 +900,7 @@ class SetupUI(Gtk.Window):
         self._autoselect_mode_checkbutton = Gtk.CheckButton(
             # Translators: A combobox to choose whether the first
             # candidate will be automatically selected during typing.
-            label=_('Auto select:'))
+            label=_('Auto select'))
         self._autoselect_mode_checkbutton.set_tooltip_text(
             # Translators: A tooltip for the label of the combobox to
             # choose whether the first candidate will be automatically
@@ -975,7 +975,7 @@ class SetupUI(Gtk.Window):
         self._autowildcard_mode_checkbutton = Gtk.CheckButton(
             # Translators: A combobox to choose whether a wildcard
             # should be automatically appended to the input.
-            label=_('Auto wildcard:'))
+            label=_('Auto wildcard'))
         self._autowildcard_mode_checkbutton.set_tooltip_text(
             # Translators: A tooltip for the label of the combobox to
             # choose whether a wildcard should be automatically
@@ -1048,7 +1048,7 @@ class SetupUI(Gtk.Window):
         self._use_dark_theme_checkbutton = Gtk.CheckButton(
             # Translators: A combobox to choose whether
             # the color scheme for a dark theme should be used.
-            label=_('Use dark theme:'))
+            label=_('Use dark theme'))
         self._use_dark_theme_checkbutton.set_tooltip_text(
             # Translators: A tooltip for the label of the combobox to
             # choose whether the color scheme for a dark theme should

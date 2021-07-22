@@ -19,6 +19,35 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.14.1" date="2021-08-25" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.13.5</url>
+      <issues>
+        <issue url="https://bugzilla.redhat.com/show_bug.cgi?id=1995955">
+          If an exception happens when trying to play a sound, catch it.
+          
+          I have no idea how to reproduce that bug. But catching the
+          exception should fix it, it should make ibus-table continue
+          working normally if any such serious problem with playing
+          sounds occurs. Without sound of course but it should not
+          stop working.
+        </issue>
+        <issue>
+          When changing the error sound file with the setup tool, play
+          it.  To make the user hear immediately what kind of sound
+          was selected.
+        </issue>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/70#issuecomment-884664898">
+          Remove colons after “Auto select:”, “Auto wildcard:”, and
+          “Use dark theme:”
+        </issue>
+        <issue>
+          Update translations from Weblate
+        </issue>
+      </issues>
+    </release>
     <release version="1.14.0" date="2021-07-21" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

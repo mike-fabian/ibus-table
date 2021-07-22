@@ -1,4 +1,197 @@
-commit 8c6a3f5cf9b159ae10b66682f66bf8fee6a12c94
+commit 47d6e975c67cff7907eb5b2621019eb43922f143
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jul 22 16:44:27 2021 +0200
+
+    Release 1.14.1
+
+commit 523c63097fedd5a79de886e58395d0c11b6bfd29
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 25 12:38:05 2021 +0200
+
+    Update ibus-table.pot (Only line number changes)
+
+commit c43c22e8088f0da92ee8a187f3bfe0438addef34
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 25 12:31:40 2021 +0200
+
+    If an exception happens when trying to play a sound, catch it.
+    
+    This bug has been reported:
+    
+    https://bugzilla.redhat.com/show_bug.cgi?id=1995955
+    Bug 1995955 - [abrt] ibus-table: play_buffer(): shiny.py:60:play_buffer:_simpleaudio.SimpleaudioError: Error opening PCM device. -- CODE: -24 -- MSG: 開啟太多檔案
+    
+    (開啟太多檔案 = Too many files open)
+    
+    I have no idea how to reproduce that but catching the exception should
+    fix it, it should make ibus-table continue working normally if any
+    such serious problem with playing sounds occurs. Without sound of course
+    but it should not stop working.
+
+commit 0dc03fd2cb97013f2e208b42b62237d4b2e07f79
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 25 12:24:01 2021 +0200
+
+    When changing the error sound file with the setup tool, play it
+    
+    To make the user hear immediately what kind of sound was selected.
+
+commit 56d2ef760ce37565b8ae4589004ae5208443a17c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Aug 22 20:21:56 2021 +0200
+
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 95.8% (139 of 145 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translation: ibus-table/app
+
+commit eab7d13075e25b0a05d1251fdb93f1eb8ba3df43
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 26 11:56:57 2021 +0200
+
+    Fix typo when attaching to the options grid
+    
+    Luckily that typo had no effect.
+
+commit 22df558c379edaf9a273c1c6cdb26d1f296f6130
+Author: Yuri Chornoivan <yurchor@ukr.net>
+Date:   Thu Jul 22 17:04:01 2021 +0200
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (145 of 145 strings)
+    
+    Co-authored-by: Yuri Chornoivan <yurchor@ukr.net>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+    Translation: ibus-table/app
+
+commit d65bfda0905e95aeaf87c8404f0860c8bae16881
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jul 22 17:04:01 2021 +0200
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 78.6% (114 of 145 strings)
+    
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (145 of 145 strings)
+    
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 95.8% (139 of 145 strings)
+    
+    Translated using Weblate (French)
+    
+    Currently translated at 95.8% (139 of 145 strings)
+    
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 95.8% (139 of 145 strings)
+    
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (145 of 145 strings)
+    
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 86.8% (126 of 145 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    Translation: ibus-table/app
+
+commit aaa6dc1deb10eb91e4c50e71eefab0df16d86a9c
+Author: Anonymous <noreply@weblate.org>
+Date:   Thu Jul 22 17:04:00 2021 +0200
+
+    Translated using Weblate (Chinese (Simplified) (zh_CN))
+    
+    Currently translated at 95.1% (138 of 145 strings)
+    
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 99.3% (144 of 145 strings)
+    
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 78.6% (114 of 145 strings)
+    
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 95.1% (138 of 145 strings)
+    
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 86.8% (126 of 145 strings)
+    
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 95.1% (138 of 145 strings)
+    
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (145 of 145 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_CN/
+    Translation: ibus-table/app
+
+commit 8319049d7e8a3422a1bf297a806e23e6079c0217
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jul 22 17:04:00 2021 +0200
+
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (145 of 145 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+    Translation: ibus-table/app
+
+commit cebefbe4500a49c9c422e9df3ebc6302625f14a6
+Author: Anonymous <noreply@weblate.org>
+Date:   Thu Jul 22 17:03:59 2021 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit beb9eb87fcf30924a1dc866667845b3c2344827f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jul 22 16:51:38 2021 +0200
+
+    Update ibus-table.pot (Remove some :s at the end of messages which are not checkboxes)
+
+commit dc0c4603ef7ce6e07e97701e3e700e55ee5cf436
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jul 22 16:42:01 2021 +0200
+
+    Remove colons after “Auto select:”, “Auto wildcard:”, and “Use dark theme:”
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/70#issuecomment-884664898
+
+commit cb98270d665c92bf8210f3d177656ac728193d76
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Jul 14 11:16:22 2021 +0200
 

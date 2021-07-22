@@ -1,5 +1,5 @@
 # Máximo Castañeda Riloba <mcrcctm@gmail.com>, 2017. #zanata
-# Mike FABIAN <mfabian@redhat.com>, 2019, 2020.
+# Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2021.
 # Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2020.
 # Anonymous <noreply@weblate.org>, 2020.
 # Emilio Herrera <ehespinosa57@gmail.com>, 2021.
@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2021-07-22 16:48+0200\n"
-"PO-Revision-Date: 2021-07-22 14:59+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2021-07-22 15:03+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Spanish <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/es/>\n"
 "Language: es\n"
@@ -731,7 +731,7 @@ msgstr "Carácter único"
 #. candidate will be automatically selected during typing.
 #: setup/main.py:903
 msgid "Auto select"
-msgstr "Selección automática:"
+msgstr "Selección automática"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
@@ -794,7 +794,7 @@ msgstr ""
 #. should be automatically appended to the input.
 #: setup/main.py:978
 msgid "Auto wildcard"
-msgstr "Comodín automático:"
+msgstr "Comodín automático"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether a wildcard should be automatically
@@ -844,10 +844,8 @@ msgstr ""
 #. Translators: A combobox to choose whether
 #. the color scheme for a dark theme should be used.
 #: setup/main.py:1051
-#, fuzzy
-#| msgid "Use dark theme:"
 msgid "Use dark theme"
-msgstr "Usar tema oscuro:"
+msgstr "Usar tema oscuro"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should

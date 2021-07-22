@@ -1,6 +1,6 @@
 # Alexandre Moine <nobrakal@gmail.com>, 2016. #zanata
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2016. #zanata, 2019, 2020.
-# Mike FABIAN <mfabian@redhat.com>, 2019, 2020.
+# Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2021.
 # Julien Humbert <julroy67@gmail.com>, 2019, 2020, 2021.
 # Anonymous <noreply@weblate.org>, 2020.
 # Côme Borsoi <fedora@borsoi.fr>, 2020.
@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2021-07-22 16:48+0200\n"
-"PO-Revision-Date: 2021-07-19 14:09+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: French <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/fr/>\n"
+"PO-Revision-Date: 2021-07-22 15:03+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"Language-Team: French <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.7.1\n"
+"X-Generator: Weblate 4.7.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -733,10 +733,8 @@ msgstr "Mono caractère"
 #. Translators: A combobox to choose whether the first
 #. candidate will be automatically selected during typing.
 #: setup/main.py:903
-#, fuzzy
-#| msgid "Auto select:"
 msgid "Auto select"
-msgstr "Auto sélection :"
+msgstr "Auto sélection"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
@@ -797,10 +795,8 @@ msgstr ""
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
 #: setup/main.py:978
-#, fuzzy
-#| msgid "Auto wildcard:"
 msgid "Auto wildcard"
-msgstr "Métacaractère auto :"
+msgstr "Métacaractère auto"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether a wildcard should be automatically
@@ -853,10 +849,8 @@ msgstr ""
 #. Translators: A combobox to choose whether
 #. the color scheme for a dark theme should be used.
 #: setup/main.py:1051
-#, fuzzy
-#| msgid "Use dark theme:"
 msgid "Use dark theme"
-msgstr "Utilisez le thème sombre :"
+msgstr "Utilisez le thème sombre"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should

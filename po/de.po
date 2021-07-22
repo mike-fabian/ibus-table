@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2021-07-22 16:48+0200\n"
-"PO-Revision-Date: 2021-07-22 14:57+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2021-07-22 15:03+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/de/>\n"
 "Language: de\n"
@@ -743,7 +743,7 @@ msgstr "Einzelzeichenmodus"
 #. candidate will be automatically selected during typing.
 #: setup/main.py:903
 msgid "Auto select"
-msgstr "Automatische Auswahl:"
+msgstr "Automatische Auswahl"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
@@ -812,7 +812,7 @@ msgstr ""
 #. should be automatically appended to the input.
 #: setup/main.py:978
 msgid "Auto wildcard"
-msgstr "Automatischer Platzhalter:"
+msgstr "Automatischer Platzhalter"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether a wildcard should be automatically

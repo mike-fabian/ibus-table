@@ -307,7 +307,7 @@ class SetupUI(Gtk.Window):
         _options_grid_row += 1
         self._options_grid.attach(
             self._initial_state_section_heading_label,
-            _options_grid_row, 0, 2, 1)
+            0, _options_grid_row, 2, 1)
 
         self._input_mode_label = Gtk.Label()
         self._input_mode_label.set_text(

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2021-07-22 16:48+0200\n"
-"PO-Revision-Date: 2021-07-22 15:03+0000\n"
+"PO-Revision-Date: 2021-08-22 18:21+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Spanish <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/es/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7.2\n"
+"X-Generator: Weblate 4.8\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -322,7 +322,7 @@ msgstr "El diálogo se cerrará cuando la tecla sea liberada"
 
 #: engine/it_util.py:588
 msgid "Table input method for IBus."
-msgstr "Método de entrada basado en tabla para IBus"
+msgstr "Método de entrada basado en tabla para IBus."
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
@@ -333,7 +333,7 @@ msgstr "Daniel Cabrera <logan@fedoraproject.org>"
 
 #: engine/it_util.py:620
 msgid "Online documentation:"
-msgstr "_Documentación en línea"
+msgstr "_Documentación en línea:"
 
 #: ibus-table.appdata.xml:5
 msgid "Ibus Table"

@@ -65,6 +65,13 @@ require_version('IBus', '1.0')
 from gi.repository import IBus
 from i18n import N_, _, init as i18n_init
 
+IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
+try:
+    import simpleaudio # type: ignore
+    IMPORT_SIMPLEAUDIO_SUCCESSFUL = True
+except (ImportError,):
+    IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
+
 sys.path = [sys.path[0]+'/../engine'] + sys.path
 import tabsqlitedb
 import ibus_table_location
@@ -2680,14 +2687,39 @@ class SetupUI(Gtk.Window):
         '''
         LOGGER.info(
             '(%s, update_gsettings = %s)', path, update_gsettings)
+        if not isinstance(path, str):
+            return
         self._settings_dict['errorsoundfile']['user'] = path
         if update_gsettings:
             self._gsettings.set_value(
                 'errorsoundfile',
                 GLib.Variant.new_string(path))
         else:
-            self._error_sound_file_button_label.set_text(
-                path)
+            self._error_sound_file_button_label.set_text(path)
+        if not IMPORT_SIMPLEAUDIO_SUCCESSFUL:
+            LOGGER.info(
+                'No error sound because python3-simpleaudio is not available.')
+        else:
+            if not os.path.isfile(path):
+                LOGGER.info('Error sound file %s does not exist.', path)
+            elif not os.access(path, os.R_OK):
+                LOGGER.info('Error sound file %s not readable.', path)
+            else:
+                try:
+                    LOGGER.info(
+                        'Trying to initialize and play error sound from %s',
+                        path)
+                    dummy = (
+                        simpleaudio.WaveObject.from_wave_file(path).play())
+                    LOGGER.info('Error sound could be initialized.')
+                except (FileNotFoundError, PermissionError):
+                    LOGGER.exception(
+                        'Initializing error sound object failed.'
+                        'File not found or no read permissions.')
+                except:
+                    LOGGER.exception(
+                        'Initializing error sound object failed '
+                        'for unknown reasons.')
 
     def set_debug_level(self,
                         debug_level: int,

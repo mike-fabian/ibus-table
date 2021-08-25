@@ -1997,10 +1997,12 @@ class TabEngine(IBus.EngineSimple):
                     LOGGER.info('Error sound initialized.')
                 except (FileNotFoundError, PermissionError):
                     LOGGER.exception(
-                        'Initializing error sound object failed.')
+                        'Initializing error sound object failed. '
+                        'File not found or no read permissions.')
                 except:
                     LOGGER.exception(
-                        'Initializing error sound object failed.')
+                        'Initializing error sound object failed '
+                        'for unknown reasons.')
 
     def get_error_sound_file(self) -> str:
         '''
@@ -2813,6 +2815,14 @@ class TabEngine(IBus.EngineSimple):
             'ibus-setup-table',
             '--engine-name table:%s' %self._engine_name)
 
+    def _play_error_sound(self) -> None:
+        '''Play an error sound if enabled and possible'''
+        if self._error_sound and self._error_sound_object:
+            try:
+                dummy = self._error_sound_object.play()
+            except:
+                LOGGER.exception('Playing error sound failed.')
+
     def _update_preedit(self) -> None:
         '''Update Preedit String in UI'''
 
@@ -2853,8 +2863,7 @@ class TabEngine(IBus.EngineSimple):
                 len(left_of_current_edit) + len(current_edit),
                 len(preedit_string_complete)))
         if self._chars_invalid:
-            if self._error_sound and self._error_sound_object:
-                dummy = self._error_sound_object.play()
+            self._play_error_sound()
             attrs.append(
                 IBus.attr_foreground_new(
                     color_invalid,

@@ -7,16 +7,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2021-08-25 12:37+0200\n"
-"PO-Revision-Date: 2021-03-05 16:50+0000\n"
+"PO-Revision-Date: 2021-08-26 12:04+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Sinhala <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/si/>\n"
+"Language-Team: Sinhala <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/si/>\n"
 "Language: si\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.4.2\n"
+"X-Generator: Weblate 4.8\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -102,7 +102,7 @@ msgstr ""
 
 #: engine/table.py:707
 msgid "Chinese"
-msgstr ""
+msgstr "චීන"
 
 #: engine/table.py:708
 msgid "Switch to Chinese input"
@@ -118,7 +118,7 @@ msgstr ""
 
 #: engine/table.py:722 engine/table.py:786
 msgid "Table"
-msgstr ""
+msgstr "වගුව"
 
 #: engine/table.py:723
 msgid "Switch to table input"
@@ -358,7 +358,7 @@ msgstr ""
 
 #: setup/main.py:222
 msgid "About"
-msgstr ""
+msgstr "පිළිබඳව"
 
 #: setup/main.py:228
 msgid "Restore all defaults"
@@ -601,7 +601,7 @@ msgstr ""
 #. existing key bindings
 #: setup/main.py:743
 msgid "Command"
-msgstr ""
+msgstr "විධානය"
 
 #: setup/main.py:773
 msgid "Edit"

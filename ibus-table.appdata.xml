@@ -19,11 +19,30 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.15.0" date="2022-01-10" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.15.0</url>
+      <issues>
+        <issue url="https://github.com/kaio/ibus-table/issues/77">
+          github-kaio-issue#77: Fix problems with goucima for erbi-qs
+          table
+        </issue>
+        <issue>
+          Update Unihan_Variants.txt to “2021-08-06 Unicode 14.0.0 final”
+          and regenerate engine/chinese_variants.py
+        </issue>
+        <issue url="https://github.com/mike-fabian/ibus-table/pull/82">
+          Fix typo in translatable message, by Rafael Fontenelle
+        </issue>
+      </issues>
+    </release>
     <release version="1.14.1" date="2021-08-25" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
       </description>
-      <url>https://github.com/kaio/ibus-table/releases/tag/1.13.5</url>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.14.1</url>
       <issues>
         <issue url="https://bugzilla.redhat.com/show_bug.cgi?id=1995955">
           If an exception happens when trying to play a sound, catch it.
@@ -52,7 +71,7 @@
       <description>
         <p>This new stable release includes these changes:</p>
       </description>
-      <url>https://github.com/kaio/ibus-table/releases/tag/1.13.5</url>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.14.0</url>
       <issues>
         <issue url="https://github.com/mike-fabian/ibus-table/issues/70">
           github-mike-fabian-issue#70: Add option to choose whether to

@@ -1,4 +1,213 @@
-commit 47d6e975c67cff7907eb5b2621019eb43922f143
+commit fb1b855bdc503ae738206585e426d43ef7a591e9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 28 13:02:33 2021 +0200
+
+    Release 1.15.0
+
+commit 0fbc83d5af306a512b177defa0c1e0a73fdff53a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 11 09:56:28 2022 +0100
+
+    Update ibus-table.pot (Only line number changes)
+
+commit 4aaca9f9bc6bba15ad0d9a8d32155be59d42b734
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 11 09:17:09 2022 +0100
+
+    Fix type hint warning
+
+commit d1ebf137b7076d00953b05ae9a60fd6cf73ffc77
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 11 08:29:58 2022 +0100
+
+    Fix some pylint warnings
+
+commit 3a3ce9076667cf61ba3fb5c93d8d883b5a7d9e9e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 10 15:35:31 2022 +0100
+
+    Improve comment explaining goucima
+
+commit 4399053de16462574785108909bd53e61a9a7153
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 10 15:34:28 2022 +0100
+
+    Add test cases for goucima for the wubi-jidian86 and erbi-qs tables
+
+commit 8b819bf378615c37e9d649c1a8870983ee2d7526
+Author: lidan <yihuanlingjian@gmail.com>
+Date:   Thu Dec 23 15:56:51 2021 +0800
+
+    skip i/u/v started code for pinyin mode of erbi-qs
+
+commit ee338f3642f7c020021c671de43047c88ed0a70f
+Author: lidan <yihuanlingjian@gmail.com>
+Date:   Wed Dec 22 20:02:05 2021 +0800
+
+    use max same-prefix count code as pinyin candidate
+    
+    for example select "sxr." in ["sx", "sxr.", "isong"] for 松 in erbi-qs
+
+commit 54391f45645f042ccca4120068761e3cc8671320
+Author: lidan <yihuanlingjian@gmail.com>
+Date:   Wed Dec 22 16:24:27 2021 +0800
+
+    add code to table by section
+    
+    in case unmarked auxiliary code in erbi-qs selected as goucima.
+
+commit 00871d6d5cd4b24232aefc00bc8a64c893bb5fef
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 11 07:40:34 2022 +0100
+
+    Adapt test cases for cangjie5 for the improvements in the cangjie5 table
+    
+    The cangjie5 table has been improved according to:
+    
+    https://github.com/mike-fabian/ibus-table/issues/76
+    https://github.com/mike-fabian/ibus-table/issues/87
+    
+    Therefore, the test cases need to be changed as well.
+
+commit 4debaa58c3fda80880a33f87f54568a11649f03c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Oct 5 11:30:31 2021 +0200
+
+    Regenerate engine/chinese_variants.py for Unihan_Variants.txt from “2021-08-06 Unicode 14.0.0 final”
+    
+    - *All* our fixes which are now included upstream.
+    - Because of the new Unihan_Variants.txt, the following 48 characters
+      are added to the VARIANTS_TABLE in chinese_variants.py:
+      u'䓖': 1, u'了': 1, u'伙': 1, u'借': 1, u'傢': 2, u'冬': 1, u'千': 1,
+      u'卜': 1, u'卷': 1, u'吁': 1, u'合': 1, u'回': 1, u'夥': 2, u'姜': 1,
+      u'家': 1, u'峃': 1, u'嶨': 2, u'庼': 1, u'廎': 2, u'懞': 2, u'才': 1,
+      u'折': 1, u'捲': 2, u'摺': 2, u'旋': 1, u'朱': 1, u'濛': 2, u'灶': 1,
+      u'瞭': 3, u'矇': 2, u'硃': 2, u'秋': 1, u'竈': 2, u'籲': 2, u'纔': 2,
+      u'蒙': 1, u'蔑': 1, u'蔔': 2, u'薑': 2, u'藉': 3, u'藭': 2, u'衊': 2,
+      u'迴': 2, u'霉': 1, u'鞦': 2, u'黴': 2, u'鼕': 2,
+    
+      1 = simplified Chinese
+      2 = traditional Chinese
+      3 = used both in simplified *and* traditional Chinese
+
+commit 6ade76f6212fc21fb842bf59fbc6d83dde266f90
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Oct 5 11:19:27 2021 +0200
+
+    Update Unihan_Variants.txt from “2021-05-18 Unicode 14.0.0 draft” to “2021-08-06 Unicode 14.0.0 final”
+
+commit a816c14bcea6642368656b9bb9e9b9f5e58d2c8b
+Author: Anonymous <noreply@weblate.org>
+Date:   Tue Sep 28 14:00:34 2021 +0200
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (145 of 145 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+    Translation: ibus-table/app
+
+commit 63c5839731ce32e1392fc31ca93af9d5c6604a31
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 28 14:00:34 2021 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (145 of 145 strings)
+    
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 100.0% (145 of 145 strings)
+    
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (145 of 145 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    Translation: ibus-table/app
+
+commit cf894c6bbdd971a7cce2d64b2ca9061c58f88ac4
+Author: Weblate <noreply@weblate.org>
+Date:   Tue Sep 28 13:08:15 2021 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 3af201336edd646b07da063100e76c668dd1de41
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 28 13:04:44 2021 +0200
+
+    Update ibus-table.pot, Rafael Fontenelle fixed a typo
+
+commit 3cf8a94f05d6ae7651dc407a8a2a2d2c417bd65f
+Author: Rafael Fontenelle <rffontenelle@users.noreply.github.com>
+Date:   Sat Sep 4 21:23:21 2021 -0300
+
+    Fix typo in main file
+
+commit 55a61b94d0330305592176d58a894b15057204f5
+Author: Rafael Fontenelle <rafaelff@gnome.org>
+Date:   Mon Sep 6 03:05:05 2021 +0200
+
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 100.0% (145 of 145 strings)
+    
+    Co-authored-by: Rafael Fontenelle <rafaelff@gnome.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    Translation: ibus-table/app
+
+commit e83aa51cc0b580829b7f9751c10f5a753138bafe
+Author: Anonymous <noreply@weblate.org>
+Date:   Mon Sep 6 03:05:05 2021 +0200
+
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 97.2% (141 of 145 strings)
+    
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 87.5% (127 of 145 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translation: ibus-table/app
+
+commit 96286e3458150aad08bf00c23bb5b0b204b334bd
+Author: Anonymous <noreply@weblate.org>
+Date:   Thu Aug 26 14:04:54 2021 +0200
+
+    Translated using Weblate (Sinhala)
+    
+    Currently translated at 6.8% (10 of 145 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/si/
+    Translation: ibus-table/app
+
+commit 32307584f7b9329c706adcf61fd4d786a0a5f677
+Author: Weblate <noreply@weblate.org>
+Date:   Wed Aug 25 13:18:50 2021 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit cc121ef1bfa5ba97b679b9496a608357cd1f1940
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Jul 22 16:44:27 2021 +0200
 

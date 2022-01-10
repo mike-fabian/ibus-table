@@ -1331,7 +1331,8 @@ class TabSqliteDb:
         table code of the last character in the phrase.
 
         Let’s assume the phrase is “天下大事”. The goucima (構詞碼
-        = “word formation keys”) for these 4 characters are:
+        = “word formation keys”) for these 4 characters when
+        using the wubi-jidian86 table are:
 
             character goucima
             天        gdi

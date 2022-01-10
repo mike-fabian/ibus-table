@@ -418,13 +418,17 @@ class TabEngine(IBus.EngineSimple):
             self.database.ime_properties.get('max_key_length'))
         self._max_key_length_pinyin = 7
 
+        self._remember_input_mode = it_util.variant_to_value(
+            self._gsettings.get_value('rememberinputmode'))
         # 0 = Direct input, i.e. table input OFF (aka “English input mode”),
         #     most characters are just passed through to the application
         #     (but some fullwidth ↔ halfwidth conversion may be done even
         #     in this mode, depending on the settings)
         # 1 = Table input ON (aka “Table input mode”, “Chinese mode”)
-        self._input_mode = it_util.variant_to_value(
-            self._gsettings.get_value('inputmode'))
+        self._input_mode = 1
+        if self._remember_input_mode:
+            self._input_mode = it_util.variant_to_value(
+                self._gsettings.get_value('inputmode'))
 
         self._error_sound_object: Optional[simpleaudio.WaveObject] = None
         self._error_sound_file = ''
@@ -2172,21 +2176,22 @@ class TabEngine(IBus.EngineSimple):
         # the private member variable directly.
         return self._keybindings.copy()
 
-    def set_input_mode(self, mode: int = 1):
+    def set_input_mode(self,
+                       input_mode: int = 1,
+                       update_gsettings: bool = True) -> None:
         '''Sets whether direct input or the current table is used.
 
-        :param mode: Whether to use direct input.
-                     0: Use direct input.
-                     1: Use the current table.
+        :param input_mode: Whether to use direct input.
+                           0: Use direct input.
+                           1: Use the current table.
         '''
-        if mode == self._input_mode:
+        if input_mode == self._input_mode:
             return
-        self._input_mode = mode
-        # Not saved to Gsettings on purpose. In the setup tool one
-        # can select whether “Table input” or “Direct input” should
-        # be the default when the input method starts. But when
-        # changing this input mode using the property menu,
-        # the change is not remembered.
+        self._input_mode = input_mode
+        if update_gsettings:
+            self._gsettings.set_value(
+                "inputmode",
+                GLib.Variant.new_int32(self._input_mode))
         self._init_or_update_property_menu(
             self.input_mode_menu,
             self._input_mode)
@@ -2200,6 +2205,37 @@ class TabEngine(IBus.EngineSimple):
             self.punctuation_width_menu,
             self._full_width_punct[self._input_mode])
         self.reset()
+
+    def set_remember_input_mode(self,
+                                remember_input_mode: bool = False,
+                                update_gsettings: bool = True) -> None:
+        '''Sets whether the input mode (direct or table) is remembered
+
+        :param remember_input_mode: Whether to remember the input mode.
+                                    False: Do not remember
+                                    True:  Remember.
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the Gsettings key changed
+                                 to avoid endless loops when the Gsettings
+                                 key is changed twice in a short time.
+        '''
+        LOGGER.info(
+            '(%s, update_gsettings = %s)', remember_input_mode, update_gsettings)
+        remember_input_mode = bool(remember_input_mode)
+        if remember_input_mode == self._remember_input_mode:
+            return
+        self._remember_input_mode = remember_input_mode
+        if update_gsettings:
+            self._gsettings.set_value(
+                'rememberinputmode',
+                GLib.Variant.new_boolean(remember_input_mode))
+
+    def get_remember_input_mode(self) -> bool:
+        '''
+        Return whether the input mode is remembered.
+        '''
+        return self._remember_input_mode
 
     def set_dark_theme(
             self, use_dark_theme: bool = False, update_gsettings: bool = True):
@@ -4184,6 +4220,8 @@ class TabEngine(IBus.EngineSimple):
              'kwargs': dict(input_mode=1)},
             'inputmode':
             {'set_function': self.set_input_mode, 'kwargs': {}},
+            'rememberinputmode':
+            {'set_function': self.set_remember_input_mode, 'kwargs': {}},
             'darktheme':
             {'set_function': self.set_dark_theme, 'kwargs': {}},
         }

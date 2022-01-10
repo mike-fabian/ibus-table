@@ -7,7 +7,7 @@
 # Copyright (c) 2010 BYVoid <byvoid1@gmail.com>
 # Copyright (c) 2012 Ma Xiaojun <damage3025@gmail.com>
 # Copyright (c) 2012 mozbugbox <mozbugbox@yahoo.com.au>
-# Copyright (c) 2014-2021 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2014-2022 Mike FABIAN <mfabian@redhat.com>
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -111,8 +111,9 @@ _ARGS = PARSER.parse_args()
 # so that the translations which have been done already are not lost.
 # I might want to use these strings again later.
 UNUSED_OLD_TRANSLATIONS = [
-    N_('Yes'),
-    N_('No'),
+    N_('Initial state'),
+    N_('Direct input'),
+    N_('Table input'),
 ]
 
 class SetupUI(Gtk.Window):
@@ -306,63 +307,53 @@ class SetupUI(Gtk.Window):
 
         _options_grid_row = -1
 
-        self._initial_state_section_heading_label = Gtk.Label()
-        self._initial_state_section_heading_label.set_text(
-            '<b>' + _('Initial state') + '</b>')
-        self._initial_state_section_heading_label.set_use_markup(True)
-        self._initial_state_section_heading_label.set_xalign(0)
-        _options_grid_row += 1
-        self._options_grid.attach(
-            self._initial_state_section_heading_label,
-            0, _options_grid_row, 2, 1)
-
-        self._input_mode_label = Gtk.Label()
-        self._input_mode_label.set_text(
-            # Translators: A combobox to choose the input mode
-            # (“Direct input” or “Table input”)
-            _('Input mode'))
-        self._input_mode_label.set_tooltip_text(
+        self._remember_input_mode_label = Gtk.Label()
+        self._remember_input_mode_label.set_text(
+            # Translators: A combobox to choose whether the input mode
+            # (“Direct input” or “Table input”) should be remembered
+            # or whether ibus-table should always use “Table input” by
+            # default after a restart.
+            _('Remember input mode'))
+        self._remember_input_mode_label.set_tooltip_text(
             # Translators: A tooltip for the label of the combobox to
-            # choose the input mode (“Direct input” or “Table input”).
-            _('“Direct input” is almost the same as if the\n'
-              'input method were off, i.e. not used at all, most\n'
-              'characters just get passed to the application.\n'
-              'But some conversion between fullwidth and\n'
-              'halfwidth may still happen in direct input mode.\n'
-              '“Table input” means the input method is on.'))
-        self._input_mode_label.set_xalign(0)
-        self._input_mode_combobox = Gtk.ComboBox()
-        self._input_mode_store = Gtk.ListStore(str, int)
-        self._input_mode_store.append(
-            # Translators: This is the setting to use 'Direct input'
-            # which means that almost all keys are passed directly
-            # to the application, in other words the input method
-            # is (mostly) switched off.
-            [_('Direct input'), 0])
-        self._input_mode_store.append(
-            # Translators: This is the setting to use a 'Table input'
-            # which means that the keys typed are transformed according
-            # to the table used, in other words the input method is
-            # switched on.
-            [_('Table input'), 1])
-        self._input_mode_combobox.set_model(
-            self._input_mode_store)
+            # choose whether the input mode (“Direct input” or “Table
+            # input”) should be remembered or whether ibus-table
+            # should always use “Table input” by default after a
+            # restart.
+            _('Whether the last used input mode should be remembered '
+              'or whether ibus-table should start in “Table mode” '
+              'by default after a restart. There are two input modes: '
+              '“Table input” means the input method is on. '
+              '“Direct input” is almost the same as if the '
+              'input method were off, i.e. not used at all, most '
+              'characters just get passed to the application. '
+              'But some conversion between fullwidth and '
+              'halfwidth may still happen in direct input mode.'))
+        self._remember_input_mode_label.set_xalign(0)
+        self._remember_input_mode_combobox = Gtk.ComboBox()
+        self._remember_input_mode_store = Gtk.ListStore(str, bool)
+        self._remember_input_mode_store.append(
+            [_('No'), False])
+        self._remember_input_mode_store.append(
+            [_('Yes'), True])
+        self._remember_input_mode_combobox.set_model(
+            self._remember_input_mode_store)
         renderer_text = Gtk.CellRendererText()
-        self._input_mode_combobox.pack_start(
+        self._remember_input_mode_combobox.pack_start(
             renderer_text, True)
-        self._input_mode_combobox.add_attribute(
+        self._remember_input_mode_combobox.add_attribute(
             renderer_text, "text", 0)
-        for index, item in enumerate(self._input_mode_store):
-            if self._settings_dict['inputmode']['user'] == item[1]:
-                self._input_mode_combobox.set_active(index)
-        self._input_mode_combobox.connect(
+        for index, item in enumerate(self._remember_input_mode_store):
+            if self._settings_dict['rememberinputmode']['user'] == item[1]:
+                self._remember_input_mode_combobox.set_active(index)
+        self._remember_input_mode_combobox.connect(
             "changed",
-            self._on_input_mode_combobox_changed)
+            self._on_remember_input_mode_combobox_changed)
         _options_grid_row += 1
         self._options_grid.attach(
-            self._input_mode_label, 0, _options_grid_row, 1, 1)
+            self._remember_input_mode_label, 0, _options_grid_row, 1, 1)
         self._options_grid.attach(
-            self._input_mode_combobox, 1, _options_grid_row, 1, 1)
+            self._remember_input_mode_combobox, 1, _options_grid_row, 1, 1)
 
         self._chinese_mode_label = Gtk.Label()
         self._chinese_mode_label.set_text(
@@ -1280,6 +1271,16 @@ class SetupUI(Gtk.Window):
             'user': user_input_mode,
             'set_function': self.set_input_mode}
 
+        default_remember_input_mode = it_util.variant_to_value(
+            self._gsettings.get_default_value('rememberinputmode'))
+        user_remember_input_mode = it_util.variant_to_value(
+            self._gsettings.get_value('rememberinputmode'))
+
+        self._settings_dict['rememberinputmode'] = {
+            'default': default_remember_input_mode,
+            'user': user_remember_input_mode,
+            'set_function': self.set_remember_input_mode}
+
         default_dark_theme = it_util.variant_to_value(
             self._gsettings.get_default_value('darktheme'))
         user_dark_theme = it_util.variant_to_value(
@@ -1610,17 +1611,17 @@ class SetupUI(Gtk.Window):
             self.set_lookup_table_orientation(
                 orientation, update_gsettings=True)
 
-    def _on_input_mode_combobox_changed(self, widget) -> None:
+    def _on_remember_input_mode_combobox_changed(self, widget) -> None:
         '''
-        A change of the input mode has been requested
+        A change of the remember input mode has been requested
         with the combobox
         '''
         tree_iter = widget.get_active_iter()
         if tree_iter is not None:
             model = widget.get_model()
-            input_mode = model[tree_iter][1]
-            self.set_input_mode(
-                input_mode, update_gsettings=True)
+            remember_input_mode = model[tree_iter][1]
+            self.set_remember_input_mode(
+                remember_input_mode, update_gsettings=True)
 
     def _on_chinese_mode_combobox_changed(self, widget) -> None:
         '''
@@ -2321,10 +2322,33 @@ class SetupUI(Gtk.Window):
                 self._gsettings.set_value(
                     'inputmode',
                     GLib.Variant.new_int32(input_mode))
-            else:
-                for index, item in enumerate(self._input_mode_store):
-                    if input_mode == item[1]:
-                        self._input_mode_combobox.set_active(index)
+
+    def set_remember_input_mode(self,
+                                remember_input_mode: bool = False,
+                                update_gsettings: bool = True) -> None:
+        '''Sets whether the input mode (direct or table) is remembered
+
+        :param remember_input_mode: Whether to remember the input mode.
+                                    False: Do not remember
+                                    True:  Remember.
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the Gsettings key changed
+                                 to avoid endless loops when the Gsettings
+                                 key is changed twice in a short time.
+        '''
+        LOGGER.info(
+            '(%s, update_gsettings = %s)', remember_input_mode, update_gsettings)
+        remember_input_mode = bool(remember_input_mode)
+        self._settings_dict['rememberinputmode']['user'] = remember_input_mode
+        if update_gsettings:
+            self._gsettings.set_value(
+                'rememberinputmode',
+                GLib.Variant.new_boolean(remember_input_mode))
+        else:
+            for index, item in enumerate(self._remember_input_mode_store):
+                if remember_input_mode == item[1]:
+                    self._remember_input_mode_combobox.set_active(index)
 
     def set_chinese_mode(self,
                          chinese_mode: int = 0,

@@ -67,6 +67,9 @@
     <key name="inputmode" type="i">
       <default>1</default>
     </key>
+    <key name="rememberinputmode" type="b">
+      <default>false</default>
+    </key>
     <key name="chinesemode" type="i">
       <default>4</default>
     </key>

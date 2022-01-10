@@ -186,7 +186,7 @@ def restore_original_settings():
 def set_default_settings():
     global ENGINE
     global TABSQLITEDB
-    ENGINE.set_input_mode(mode=1)
+    ENGINE.set_input_mode(input_mode=1)
     chinese_mode = 4
     language_filter = TABSQLITEDB.ime_properties.get('language_filter')
     if language_filter in ('cm0', 'cm1', 'cm2', 'cm3', 'cm4'):

@@ -412,6 +412,40 @@ def tear_down():
     assert IBus.PropList is IBUS_PROP_LIST
     assert IBus.PropList is not MockPropList
 
+class ErbiQsTestCase(unittest.TestCase):
+    def setUp(self):
+        engine_name = 'erbi-qs'
+        if not set_up(engine_name):
+            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
+
+    def tearDown(self):
+        tear_down()
+
+    def test_dummy(self):
+        self.assertEqual(True, True)
+
+    def test_get_goucima(self):
+        self.assertEqual(
+            'sxr.',
+            TABSQLITEDB.get_goucima('松'))
+        self.assertEqual(
+            'thr',
+            TABSQLITEDB.get_goucima('天'))
+        self.assertEqual(
+            'xjv',
+            TABSQLITEDB.get_goucima('下'))
+        self.assertEqual(
+            'dkv',
+            TABSQLITEDB.get_goucima('大'))
+        self.assertEqual(
+            'sjnb',
+            TABSQLITEDB.get_goucima('事'))
+
+    def test_parse_phrase(self):
+        self.assertEqual(
+            'txds',
+            TABSQLITEDB.parse_phrase('天下大事'))
+
 class WubiJidian86TestCase(unittest.TestCase):
     def setUp(self):
         engine_name = 'wubi-jidian86'
@@ -423,6 +457,11 @@ class WubiJidian86TestCase(unittest.TestCase):
 
     def test_dummy(self):
         self.assertEqual(True, True)
+
+    def test_parse_phrase(self):
+        self.assertEqual(
+            'ggdg',
+            TABSQLITEDB.parse_phrase('天下大事'))
 
     def test_single_char_commit_with_space(self):
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)

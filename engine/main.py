@@ -4,7 +4,7 @@
 #
 # Copyright (c) 2008-2009 Yu Yuwei <acevery@gmail.com>
 # Copyright (c) 2009-2014 Caius "kaio" CHANCE <me@kaio.net>
-# Copyright (c) 2012-2015, 2021 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2012-2015, 2021-2022 Mike FABIAN <mfabian@redhat.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ from typing import Union
 import os
 import re
 import sys
-import optparse
+import argparse
 from signal import signal, SIGTERM, SIGINT
 import logging
 import logging.handlers
@@ -51,59 +51,59 @@ ICON_DIR = os.path.join(ibus_table_location.data(), 'icons')
 SETUP_CMD = os.path.join(ibus_table_location.lib(), "ibus-setup-table")
 LOGFILE = os.path.join(ibus_table_location.cache_home(), 'debug.log')
 
-_OPTION_PARSER = optparse.OptionParser()
+def parse_args() -> Any:
+    '''Parse the command line arguments'''
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--table', '-t',
+        action='store',
+        type=str,
+        dest='db',
+        default='',
+        help='Set the IME table file, default: %(default)s')
+    parser.add_argument(
+        '--daemon', '-d',
+        action='store_true',
+        dest='daemon',
+        default=False,
+        help='Run as daemon, default: %(default)s')
+    parser.add_argument(
+        '--ibus', '-i',
+        action='store_true',
+        dest='ibus',
+        default=False,
+        help='Set the IME icon file, default: %(default)s')
+    parser.add_argument(
+        '--xml', '-x',
+        action='store_true',
+        dest='xml',
+        default=False,
+        help='output the engines xml part, default: %(default)s')
+    parser.add_argument(
+        '--no-debug', '-n',
+        action='store_false',
+        dest='debug',
+        default=True,
+        help='Write log file to ' + LOGFILE + ', default: %(default)s')
+    parser.add_argument(
+        '--profile', '-p',
+        action='store_true',
+        dest='profile',
+        default=False,
+        help=('Print profiling information into the debug log. '
+              'Works only when --no-debug is not used. '
+              'default: %(default)s'))
+    return parser.parse_args()
 
-_OPTION_PARSER.set_usage('%prog --table a_table.db')
-_OPTION_PARSER.add_option(
-    '--table', '-t',
-    action='store',
-    type='string',
-    dest='db',
-    default='',
-    help='Set the IME table file, default: %default')
-_OPTION_PARSER.add_option(
-    '--daemon', '-d',
-    action='store_true',
-    dest='daemon',
-    default=False,
-    help='Run as daemon, default: %default')
-_OPTION_PARSER.add_option(
-    '--ibus', '-i',
-    action='store_true',
-    dest='ibus',
-    default=False,
-    help='Set the IME icon file, default: %default')
-_OPTION_PARSER.add_option(
-    '--xml', '-x',
-    action='store_true',
-    dest='xml',
-    default=False,
-    help='output the engines xml part, default: %default')
-_OPTION_PARSER.add_option(
-    '--no-debug', '-n',
-    action='store_false',
-    dest='debug',
-    default=True,
-    help='Write log file to ' + LOGFILE + ', default: %default')
-_OPTION_PARSER.add_option(
-    '--profile', '-p',
-    action='store_true',
-    dest='profile',
-    default=False,
-    help=('print profiling information into the debug log. '
-          + 'Works only when --no-debug is not used.'))
+_ARGS = parse_args()
 
-(_OPTIONS, _ARGS) = _OPTION_PARSER.parse_args()
-#if not _OPTIONS.db:
-#    _OPTION_PARSER.error('no db found!')
-
-if _OPTIONS.profile:
+if _ARGS.profile:
     import cProfile
     import pstats
     import io
     _PROFILE = cProfile.Profile()
 
-if  _OPTIONS.xml:
+if  _ARGS.xml:
     from locale import getdefaultlocale
     from xml.etree.ElementTree import Element, SubElement, tostring
 else:
@@ -191,7 +191,7 @@ class IMApp:
     def run(self) -> None:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('IMApp.run()\n')
-        if _OPTIONS.profile:
+        if _ARGS.profile:
             _PROFILE.enable()
         self.__mainloop.run()
         self.__bus_destroy_cb()
@@ -210,7 +210,7 @@ class IMApp:
         self.__factory.do_destroy()
         self.destroyed = True
         self.__mainloop.quit()
-        if _OPTIONS.profile:
+        if _ARGS.profile:
             _PROFILE.disable()
             stats_stream = io.StringIO()
             stats = pstats.Stats(_PROFILE, stream=stats_stream)
@@ -341,14 +341,14 @@ def write_xml() -> None:
 
 def main() -> None:
     '''Main program'''
-    if _OPTIONS.xml:
+    if _ARGS.xml:
         write_xml()
         return
 
     log_handler: Union[
         logging.NullHandler, logging.handlers.TimedRotatingFileHandler] = (
             logging.NullHandler())
-    if _OPTIONS.debug:
+    if _ARGS.debug:
         log_handler = logging.handlers.TimedRotatingFileHandler(
             LOGFILE,
             when='midnight',
@@ -367,19 +367,19 @@ def main() -> None:
     LOGGER.addHandler(log_handler)
     LOGGER.info('********** STARTING **********')
 
-    if _OPTIONS.daemon:
+    if _ARGS.daemon:
         if os.fork():
             sys.exit()
-    if _OPTIONS.db:
-        if os.access(_OPTIONS.db, os.F_OK):
-            db = _OPTIONS.db
+    if _ARGS.db:
+        if os.access(_ARGS.db, os.F_OK):
+            db = _ARGS.db
         else:
             db = '%s%s%s' % (DB_DIR,
                              os.path.sep,
-                             os.path.basename(_OPTIONS.db))
+                             os.path.basename(_ARGS.db))
     else:
         db = ""
-    ima = IMApp(db, _OPTIONS.ibus)
+    ima = IMApp(db, _ARGS.ibus)
     signal(SIGTERM, lambda signum, stack_frame: cleanup(ima))
     signal(SIGINT, lambda signum, stack_frame: cleanup(ima))
     try:

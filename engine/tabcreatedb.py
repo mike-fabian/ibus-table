@@ -6,7 +6,7 @@
 #
 # Copyright (c) 2008-2009 Yu Yuwei <acevery@gmail.com>
 # Copyright (c) 2009-2014 Caius "kaio" CHANCE <me@kaio.net>
-# Copyright (c) 2012-2015, 2021 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2012-2015, 2021-2022 Mike FABIAN <mfabian@redhat.com>
 # Copyright (c) 2019      Peng Wu <alexepico@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
@@ -29,11 +29,12 @@ from typing import Tuple
 from typing import List
 from typing import Iterable
 from typing import Dict
+from typing import Any
 import os
 import sys
 import bz2
 import re
-from optparse import OptionParser
+import argparse
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import tabsqlitedb
 
@@ -71,106 +72,92 @@ class InvalidTableName(Exception):
                 + 'cannot contain any of %r ' % _INVALID_KEYNAME_CHARS
                 + 'and must be all ascii')
 
-# we use OptionParser to parse the cmd arguments :)
-_OPTION_PARSER = OptionParser(usage="usage: %prog [options]")
+def parse_args() -> Any:
+    '''Parse the command line arguments'''
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-n', '--name',
+        action='store',
+        dest='name',
+        default='',
+        help=('Specifies the file name for the binary database for the IME. '
+              'The default is “%(default)s”. If the file name of the database '
+              'is not specified, the file name of the source file before '
+              'the first “.” will be appended with “.db” and that will be '
+              'used as the file name of the database.'))
+    parser.add_argument(
+        '-s', '--source',
+        action='store',
+        dest='source',
+        default='',
+        help=('Specifies the file which contains the source of the IME. '
+              'The default is “%(default)s”.'))
+    parser.add_argument(
+        '-e', '--extra',
+        action='store',
+        dest='extra',
+        default='',
+        help=('Specifies the file name for the extra words for the IME. '
+              'The default is “%(default)s”.'))
+    parser.add_argument(
+        '-p', '--pinyin',
+        action='store',
+        dest='pinyin',
+        default='/usr/share/ibus-table/data/pinyin_table.txt.bz2',
+        help=('Specifies the source file for the  pinyin. '
+              'The default is “%(default)s”.'))
+    parser.add_argument(
+        '-g', '--suggestion',
+        action='store',
+        dest='suggestion',
+        default='/usr/share/ibus-table/data/phrase.txt.bz2',
+        help=('Specifies the source file for the suggestion candidate. '
+              'The default is “%(default)s”.'))
+    parser.add_argument(
+        '-o', '--no-create-index',
+        action='store_false',
+        dest='index',
+        default=True,
+        help=('Do not create an index for a database '
+              '(Only for distribution purposes, '
+              'a normal user should not use this flag!). '
+              'The default is “%(default)s”.'))
+    parser.add_argument(
+        '-i', '--create-index-only',
+        action='store_true',
+        dest='only_index',
+        default=False,
+        help=('Only create an index for an existing database. '
+              'Specifying the file name of the binary database '
+              'with the -n or --name option is required '
+              'when this option is used.'
+              'The default is “%(default)s”.'))
+    parser.add_argument(
+        '-d', '--debug',
+        action='store_true',
+        dest='debug',
+        default=False,
+        help=('Print extra debug messages. '
+              'The default is “%(default)s”.'))
+    return parser.parse_args()
 
-_OPTION_PARSER.add_option(
-    '-n', '--name',
-    action='store',
-    dest='name',
-    default='',
-    help=(
-        'specifies the file name for the binary database for the IME. '
-        + 'The default is "%default". If the file name of the database '
-        + 'is not specified, the file name of the source file before '
-        + 'the first "." will be appended with ".db" and that will be '
-        + 'used as the file name of the database.'))
+_ARGS = parse_args()
 
-_OPTION_PARSER.add_option(
-    '-s', '--source',
-    action='store',
-    dest='source',
-    default='',
-    help=(
-        'specifies the file which contains the source of the IME. '
-        + 'The default is "%default".'))
-
-_OPTION_PARSER.add_option(
-    '-e', '--extra',
-    action='store',
-    dest='extra',
-    default='',
-    help=(
-        'specifies the file name for the extra words for the IME. '
-        + 'The default is "%default".'))
-
-_OPTION_PARSER.add_option(
-    '-p', '--pinyin',
-    action='store',
-    dest='pinyin',
-    default='/usr/share/ibus-table/data/pinyin_table.txt.bz2',
-    help=(
-        'specifies the source file for the  pinyin. '
-        + 'The default is "%default".'))
-
-_OPTION_PARSER.add_option(
-    '-g', '--suggestion',
-    action='store',
-    dest='suggestion',
-    default='/usr/share/ibus-table/data/phrase.txt.bz2',
-    help=(
-        'specifies the source file for the suggestion candidate. '
-        + 'The default is "%default".'))
-
-_OPTION_PARSER.add_option(
-    '-o', '--no-create-index',
-    action='store_false',
-    dest='index',
-    default=True,
-    help=(
-        'Do not create an index for a database '
-        + '(Only for distrubution purposes, '
-        + 'a normal user should not use this flag!)'))
-
-_OPTION_PARSER.add_option(
-    '-i', '--create-index-only',
-    action='store_true',
-    dest='only_index',
-    default=False,
-    help=(
-        'Only create an index for an existing database. '
-        + 'Specifying the file name of the binary database '
-        + 'with the -n or --name option is required '
-        + 'when this option is used.'))
-
-_OPTION_PARSER.add_option(
-    '-d', '--debug',
-    action='store_true',
-    dest='debug',
-    default=False,
-    help='Print extra debug messages.')
-
-(_OPTIONS, _ARGS) = _OPTION_PARSER.parse_args()
-if _OPTIONS.only_index:
-    if not _OPTIONS.name:
-        _OPTION_PARSER.print_help()
-        print(
-            '\nPlease specify the file name of the database '
-            + 'you want to create an index on!')
+if _ARGS.only_index:
+    if not _ARGS.name:
+        print('\nPlease specify the file name of the database '
+              'you want to create an index on!')
         sys.exit(2)
-    if not os.path.exists(_OPTIONS.name) or not os.path.isfile(_OPTIONS.name):
-        _OPTION_PARSER.print_help()
-        print("\nThe database file '%s' does not exist." % _OPTIONS.name)
+    if not os.path.exists(_ARGS.name) or not os.path.isfile(_ARGS.name):
+        print("\nThe database file '%s' does not exist." % _ARGS.name)
         sys.exit(2)
 
-if not _OPTIONS.name and _OPTIONS.source:
-    _OPTIONS.name = os.path.basename(_OPTIONS.source).split('.')[0] + '.db'
+if not _ARGS.name and _ARGS.source:
+    _ARGS.name = os.path.basename(_ARGS.source).split('.')[0] + '.db'
 
-if not _OPTIONS.name:
-    _OPTION_PARSER.print_help()
-    print(
-        '\nYou need to specify the file which '
-        + 'contains the source of the IME!')
+if not _ARGS.name:
+    print('\nYou need to specify the file which '
+          'contains the source of the IME!')
     sys.exit(2)
 
 
@@ -209,17 +196,17 @@ def main():
     '''Main program'''
 
     def debug_print(message: str) -> None:
-        if _OPTIONS.debug:
+        if _ARGS.debug:
             print(message)
 
-    if not _OPTIONS.only_index:
+    if not _ARGS.only_index:
         try:
-            os.unlink(_OPTIONS.name)
+            os.unlink(_ARGS.name)
         except Exception:
             pass
 
     debug_print('Processing Database')
-    db = tabsqlitedb.TabSqliteDb(filename=_OPTIONS.name,
+    db = tabsqlitedb.TabSqliteDb(filename=_ARGS.name,
                                  user_db=None,
                                  create_database=True)
 
@@ -406,7 +393,7 @@ def main():
                 char_prompts[match.group('char')] = match.group('prompt')
         return ("char_prompts", repr(char_prompts))
 
-    if _OPTIONS.only_index:
+    if _ARGS.only_index:
         debug_print('Only create Indexes')
         debug_print('Optimizing database ')
         db.optimize_database()
@@ -417,14 +404,14 @@ def main():
         return 0
 
     # now we parse the ime source file
-    debug_print('\tLoad sources "%s"' % _OPTIONS.source)
+    debug_print('\tLoad sources "%s"' % _ARGS.source)
     patt_s = re.compile(r'.*\.bz2')
-    _bz2s = patt_s.match(_OPTIONS.source)
+    _bz2s = patt_s.match(_ARGS.source)
     if _bz2s:
         source = bz2.open(
-            _OPTIONS.source, mode='rt', encoding='UTF-8').read()
+            _ARGS.source, mode='rt', encoding='UTF-8').read()
     else:
-        source = open(_OPTIONS.source, mode='r', encoding='UTF-8').read()
+        source = open(_ARGS.source, mode='r', encoding='UTF-8').read()
     source = source.replace('\r\n', '\n')
     source = source.split('\n')
     # first get config line and table line and goucima line respectively
@@ -453,12 +440,12 @@ def main():
         db.add_goucima(goucima)
 
     if db.ime_properties.get('pinyin_mode').lower() == u'true':
-        debug_print('\tLoad pinyin source \"%s\"' % _OPTIONS.pinyin)
-        _bz2p = patt_s.match(_OPTIONS.pinyin)
+        debug_print('\tLoad pinyin source \"%s\"' % _ARGS.pinyin)
+        _bz2p = patt_s.match(_ARGS.pinyin)
         if _bz2p:
-            pinyin_s = bz2.open(_OPTIONS.pinyin, mode='rt', encoding='UTF-8')
+            pinyin_s = bz2.open(_ARGS.pinyin, mode='rt', encoding='UTF-8')
         else:
-            pinyin_s = open(_OPTIONS.pinyin, mode='r', encoding='UTF-8')
+            pinyin_s = open(_ARGS.pinyin, mode='r', encoding='UTF-8')
         debug_print('\tParsing pinyin source file ')
         pyline = parse_pinyin(pinyin_s)
         debug_print('\tPreapring pinyin entries')
@@ -467,14 +454,14 @@ def main():
         db.add_pinyin(pinyin)
 
     if db.ime_properties.get('suggestion_mode').lower() == u'true':
-        debug_print('\tLoad suggestion source \"%s\"' % _OPTIONS.suggestion)
-        _bz2p = patt_s.match(_OPTIONS.suggestion)
+        debug_print('\tLoad suggestion source \"%s\"' % _ARGS.suggestion)
+        _bz2p = patt_s.match(_ARGS.suggestion)
         if _bz2p:
             suggestion_s = bz2.open(
-                _OPTIONS.suggestion, mode="rt", encoding='UTF-8')
+                _ARGS.suggestion, mode="rt", encoding='UTF-8')
         else:
             suggestion_s = open(
-                _OPTIONS.suggestion, mode='r', encoding='UTF-8')
+                _ARGS.suggestion, mode='r', encoding='UTF-8')
         debug_print('\tParsing suggestion source file ')
         sgline = parse_suggestion(suggestion_s)
         debug_print('\tPreapring suggestion entries')
@@ -486,15 +473,15 @@ def main():
     db.optimize_database()
 
     if (db.ime_properties.get('user_can_define_phrase').lower() == u'true'
-            and _OPTIONS.extra):
+            and _ARGS.extra):
         debug_print('\tPreparing for adding extra words')
         db.create_indexes('main')
-        debug_print('\tLoad extra words source "%s"' % _OPTIONS.extra)
-        _bz2p = patt_s.match(_OPTIONS.extra)
+        debug_print('\tLoad extra words source "%s"' % _ARGS.extra)
+        _bz2p = patt_s.match(_ARGS.extra)
         if _bz2p:
-            extra_s = bz2.BZ2File(_OPTIONS.extra, 'r')
+            extra_s = bz2.BZ2File(_ARGS.extra, 'r')
         else:
-            extra_s = open(_OPTIONS.extra, 'r')
+            extra_s = open(_ARGS.extra, 'r')
         debug_print('\tParsing extra words source file ')
         extraline = parse_extra(extra_s)
         debug_print('\tPreparing extra words lines')
@@ -523,14 +510,13 @@ def main():
         debug_print('Optimizing database ')
         db.optimize_database()
 
-    if _OPTIONS.index:
+    if _ARGS.index:
         debug_print('Create Indexes ')
         db.create_indexes('main')
     else:
-        debug_print(
-            "We don't create an index on the database, "
-            + "you should only activate this function "
-            + "for distribution purposes.")
+        debug_print('We do not create an index on the database, '
+                    'you should only activate this function '
+                    'for distribution purposes.')
         db.drop_indexes('main')
     debug_print('Done! :D')
 

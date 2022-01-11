@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2021-09-28 13:03+0200\n"
+"POT-Creation-Date: 2022-01-11 09:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -279,11 +279,11 @@ msgstr ""
 msgid "Switch autocommit mode"
 msgstr ""
 
-#: engine/table.py:2724
+#: engine/table.py:2805
 msgid "Setup"
 msgstr ""
 
-#: engine/table.py:2727
+#: engine/table.py:2808
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr ""

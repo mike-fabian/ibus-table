@@ -1279,7 +1279,7 @@ class Cangjie5TestCase(unittest.TestCase):
     def test_type_one_char_and_check_auxiliary(self):
         ENGINE._do_process_key_event(IBus.KEY_d, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '木')
-        self.assertEqual(ENGINE._lookup_table.mock_candidates[8],
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[6],
                          '林 木 1000 0')
         ENGINE._do_process_key_event(IBus.KEY_v, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
@@ -1296,37 +1296,39 @@ class Cangjie5TestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_r, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_p, 0, 0)
-        self.assertEqual('怠', ENGINE.mock_preedit_text)
+        self.assertEqual('感', ENGINE.mock_preedit_text)
         # Big5 code of 怠 is ABE5 (see
         # https://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=%E6%84%9F)
         # Big5 code of 感 is B750 (see
         # https://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=%E6%80%A0)
+        #
+        # In the improved cangjie5 table, 感 has higher priority now.
         self.assertEqual(
-            ['怠  1000 0',
-             '感  1000 0'],
+            ['感  1000 0',
+             '怠  900 0'],
             ENGINE._lookup_table.mock_candidates)
         ENGINE._do_process_key_event(IBus.KEY_2, 0, 0)
         self.assertEqual(
             [],
             ENGINE._lookup_table.mock_candidates)
         self.assertEqual('', ENGINE.mock_preedit_text)
-        self.assertEqual('感', ENGINE.mock_committed_text)
+        self.assertEqual('怠', ENGINE.mock_committed_text)
         # repeat the same input, result should be the same
         # because dynamic adjust is False:
         ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_r, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_p, 0, 0)
-        self.assertEqual('怠', ENGINE.mock_preedit_text)
+        self.assertEqual('感', ENGINE.mock_preedit_text)
         self.assertEqual(
-            ['怠  1000 0',
-             '感  1000 0'],
+            ['感  1000 0',
+             '怠  900 0'],
             ENGINE._lookup_table.mock_candidates)
         ENGINE._do_process_key_event(IBus.KEY_2, 0, 0)
         self.assertEqual(
             [],
             ENGINE._lookup_table.mock_candidates)
         self.assertEqual('', ENGINE.mock_preedit_text)
-        self.assertEqual('感感', ENGINE.mock_committed_text)
+        self.assertEqual('怠怠', ENGINE.mock_committed_text)
         # Now set dynamic adjust to True:
         ENGINE.set_dynamic_adjust(True)
         # repeat the same input, result should still be the same
@@ -1334,74 +1336,74 @@ class Cangjie5TestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_r, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_p, 0, 0)
-        self.assertEqual('怠', ENGINE.mock_preedit_text)
+        self.assertEqual('感', ENGINE.mock_preedit_text)
         self.assertEqual(
-            ['怠  1000 0',
-             '感  1000 0'],
+            ['感  1000 0',
+             '怠  900 0'],
             ENGINE._lookup_table.mock_candidates)
         ENGINE._do_process_key_event(IBus.KEY_2, 0, 0)
         self.assertEqual(
             [],
             ENGINE._lookup_table.mock_candidates)
         self.assertEqual('', ENGINE.mock_preedit_text)
-        self.assertEqual('感感感', ENGINE.mock_committed_text)
-        # Try once again, now 感 should be preferred because
-        # 感 has been selected once while dynamic adjustment was used
-        # whereas 怠 has not been selected:
+        self.assertEqual('怠怠怠', ENGINE.mock_committed_text)
+        # Try once again, now 怠 should be preferred because
+        # 怠 has been selected once while dynamic adjustment was used
+        # whereas 感 has not been selected:
         ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_r, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_p, 0, 0)
-        self.assertEqual('感', ENGINE.mock_preedit_text)
+        self.assertEqual('怠', ENGINE.mock_preedit_text)
         self.assertEqual(
-            ['感  1000 1',
-             '怠  1000 0'],
+            ['怠  900 1',
+             '感  1000 0'],
             ENGINE._lookup_table.mock_candidates)
         ENGINE._do_process_key_event(IBus.KEY_1, 0, 0)
         self.assertEqual(
             [],
             ENGINE._lookup_table.mock_candidates)
         self.assertEqual('', ENGINE.mock_preedit_text)
-        self.assertEqual('感感感感', ENGINE.mock_committed_text)
-        # Try once again with dynamic adjust, now 感 should have
+        self.assertEqual('怠怠怠怠', ENGINE.mock_committed_text)
+        # Try once again with dynamic adjust, now 怠 should have
         # user count 2:
         ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_r, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_p, 0, 0)
-        self.assertEqual('感', ENGINE.mock_preedit_text)
+        self.assertEqual('怠', ENGINE.mock_preedit_text)
         self.assertEqual(
-            ['感  1000 2',
-             '怠  1000 0'],
+            ['怠  900 2',
+             '感  1000 0'],
             ENGINE._lookup_table.mock_candidates)
         ENGINE._do_process_key_event(IBus.KEY_1, 0, 0)
         self.assertEqual(
             [],
             ENGINE._lookup_table.mock_candidates)
         self.assertEqual('', ENGINE.mock_preedit_text)
-        self.assertEqual('感感感感感', ENGINE.mock_committed_text)
-        # 感 should have user count 3 now. This should be remembered
+        self.assertEqual('怠怠怠怠怠', ENGINE.mock_committed_text)
+        # 怠 should have user count 3 now. This should be remembered
         # in the user data base, i.e. if we switch off dynamic adjust
         # and later switch it back on, the previous user count should
         # still be there.
         #
         # Switch dynamic adjust off again:
         ENGINE.set_dynamic_adjust(False)
-        # And try again, now 怠 should be preferred again
-        # because of its smaller Big5 code and the user counts
+        # And try again, now 感 should be preferred again
+        # because of its higher weight in the cangjie5 table and the user counts
         # displayed should be 0:
         ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_r, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_p, 0, 0)
-        self.assertEqual('怠', ENGINE.mock_preedit_text)
+        self.assertEqual('感', ENGINE.mock_preedit_text)
         self.assertEqual(
-            ['怠  1000 0',
-             '感  1000 0'],
+            ['感  1000 0',
+             '怠  900 0'],
             ENGINE._lookup_table.mock_candidates)
         ENGINE._do_process_key_event(IBus.KEY_2, 0, 0)
         self.assertEqual(
             [],
             ENGINE._lookup_table.mock_candidates)
         self.assertEqual('', ENGINE.mock_preedit_text)
-        self.assertEqual('感感感感感感', ENGINE.mock_committed_text)
+        self.assertEqual('怠怠怠怠怠怠', ENGINE.mock_committed_text)
         # Switch dynamic adjust on again:
         ENGINE.set_dynamic_adjust(True)
         # Try once again with dynamic adjust, now 感 should be preferred
@@ -1409,17 +1411,17 @@ class Cangjie5TestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_r, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_p, 0, 0)
-        self.assertEqual('感', ENGINE.mock_preedit_text)
+        self.assertEqual('怠', ENGINE.mock_preedit_text)
         self.assertEqual(
-            ['感  1000 3',
-             '怠  1000 0'],
+            ['怠  900 3',
+             '感  1000 0'],
             ENGINE._lookup_table.mock_candidates)
         ENGINE._do_process_key_event(IBus.KEY_1, 0, 0)
         self.assertEqual(
             [],
             ENGINE._lookup_table.mock_candidates)
         self.assertEqual('', ENGINE.mock_preedit_text)
-        self.assertEqual('感感感感感感感', ENGINE.mock_committed_text)
+        self.assertEqual('怠怠怠怠怠怠怠', ENGINE.mock_committed_text)
 
 class IpaXSampaTestCase(unittest.TestCase):
     def setUp(self):

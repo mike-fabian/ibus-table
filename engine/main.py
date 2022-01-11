@@ -20,6 +20,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 from typing import Any
+from typing import Union
 import os
 import re
 import sys
@@ -344,9 +345,10 @@ def main() -> None:
         write_xml()
         return
 
-    if not _OPTIONS.debug:
-        log_handler = logging.NullHandler()
-    else:
+    log_handler: Union[
+        logging.NullHandler, logging.handlers.TimedRotatingFileHandler] = (
+            logging.NullHandler())
+    if _OPTIONS.debug:
         log_handler = logging.handlers.TimedRotatingFileHandler(
             LOGFILE,
             when='midnight',

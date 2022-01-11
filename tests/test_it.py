@@ -412,6 +412,10 @@ def tear_down():
     assert IBus.PropList is IBUS_PROP_LIST
     assert IBus.PropList is not MockPropList
 
+def require_serial_number(required_serial_number):
+    serial_number = int(TABSQLITEDB.ime_properties.get('serial_number'))
+    return serial_number >= required_serial_number
+
 class ErbiQsTestCase(unittest.TestCase):
     def setUp(self):
         engine_name = 'erbi-qs'
@@ -425,6 +429,8 @@ class ErbiQsTestCase(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_get_goucima(self):
+        if not require_serial_number(20220111):
+            self.skipTest('serial_number too small')
         self.assertEqual(
             'sxr.',
             TABSQLITEDB.get_goucima('松'))
@@ -442,6 +448,8 @@ class ErbiQsTestCase(unittest.TestCase):
             TABSQLITEDB.get_goucima('事'))
 
     def test_parse_phrase(self):
+        if not require_serial_number(20220111):
+            self.skipTest('serial_number too small')
         self.assertEqual(
             'txds',
             TABSQLITEDB.parse_phrase('天下大事'))
@@ -1316,6 +1324,8 @@ class Cangjie5TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '日')
 
     def test_type_one_char_and_check_auxiliary(self):
+        if not require_serial_number(20220111):
+            self.skipTest('serial_number too small')
         ENGINE._do_process_key_event(IBus.KEY_d, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '木')
         self.assertEqual(ENGINE._lookup_table.mock_candidates[6],
@@ -1331,6 +1341,8 @@ class Cangjie5TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '機')
 
     def test_dynamic_adjust(self):
+        if not require_serial_number(20220111):
+            self.skipTest('serial_number too small')
         ENGINE.set_dynamic_adjust(False)
         ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_r, 0, 0)

@@ -21,7 +21,10 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
-from re import Pattern
+'''
+Program to create sqlite databases from the table sources
+'''
+
 from typing import Tuple
 from typing import List
 from typing import Iterable
@@ -171,19 +174,26 @@ if not _OPTIONS.name:
     sys.exit(2)
 
 
-class Section(object):
-    patt: Pattern
+class Section:
+    '''Helper class for parsing the sections of the tables marked
+    with BEGIN_* and END_*.
+    '''
+    patt: re.Pattern
     start: str
     end: str
     in_section: bool
 
-    def __init__(self, patt: Pattern, start: str, end: str):
+    def __init__(self, patt: re.Pattern, start: str, end: str):
         self.patt = patt
         self.start = start.strip()
         self.end = end.strip()
         self.in_section = False
 
     def match(self, line: str) -> bool:
+        '''
+        Returns True if the line is inside the section and matches
+        the pattern of the section.
+        '''
         if self.in_section:
             if self.end == line.strip():
                 self.in_section = False
@@ -196,6 +206,8 @@ class Section(object):
 
 
 def main():
+    '''Main program'''
+
     def debug_print(message: str) -> None:
         if _OPTIONS.debug:
             print(message)
@@ -203,7 +215,7 @@ def main():
     if not _OPTIONS.only_index:
         try:
             os.unlink(_OPTIONS.name)
-        except:
+        except Exception:
             pass
 
     debug_print('Processing Database')
@@ -223,10 +235,14 @@ def main():
         patt_table = re.compile(r'([^\t]+)\t([^\t]+)\t([0-9]+)(\t.*)?$')
         patt_gouci = re.compile(r' *[^\s]+ *\t *[^\s]+ *$')
 
-        sec_conf = Section(patt_conf, "BEGIN_DEFINITION", "END_DEFINITION")
-        sec_table = Section(patt_table, "BEGIN_TABLE", "END_TABLE")
-        sec_table_extra = Section(patt_table, "BEGIN_TABLE_EXTRA", "END_TABLE_EXTRA")
-        sec_gouci = Section(patt_gouci, "BEGIN_GOUCI", "END_GOUCI")
+        sec_conf = Section(
+            patt_conf, "BEGIN_DEFINITION", "END_DEFINITION")
+        sec_table = Section(
+            patt_table, "BEGIN_TABLE", "END_TABLE")
+        sec_table_extra = Section(
+            patt_table, "BEGIN_TABLE_EXTRA", "END_TABLE_EXTRA")
+        sec_gouci = Section(
+            patt_gouci, "BEGIN_GOUCI", "END_GOUCI")
 
         for line in f:
             if (not patt_com.match(line)) and (not patt_blank.match(line)):
@@ -348,7 +364,7 @@ def main():
         for line in f:
             try:
                 attr, val = line.strip().split('=')
-            except:
+            except Exception:
                 attr, val = line.strip().split('==')
             attr = attr.strip().lower()
             val = val.strip()

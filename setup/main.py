@@ -102,8 +102,8 @@ PARSER.add_argument(
     action='store_true',
     default=False,
     help=('Do not write log file '
-          + '~/.cache/ibus-table/setup-debug.log, '
-          + 'default: %(default)s'))
+          '~/.cache/ibus-table/setup-debug.log, '
+          'default: %(default)s'))
 
 _ARGS = PARSER.parse_args()
 

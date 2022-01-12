@@ -1630,9 +1630,9 @@ class SetupUI(Gtk.Window):
         tree_iter = widget.get_active_iter()
         if tree_iter is not None:
             model = widget.get_model()
-            input_mode = model[tree_iter][1]
+            chinese_mode = model[tree_iter][1]
             self.set_chinese_mode(
-                input_mode, update_gsettings=True)
+                chinese_mode, update_gsettings=True)
 
     def _on_onechar_mode_combobox_changed(self, widget) -> None:
         '''

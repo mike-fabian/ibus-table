@@ -19,6 +19,37 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.16.0" date="2022-01-18" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.16.0</url>
+      <issues>
+        <issue>
+          Make true the default for rememberinputmode.
+        </issue>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/85">
+          github-mike-fabian-issue#85: Save “inputmode” to gsettings
+          and add a “rememberinputmode” gsettings. This makes it
+          possible to change the current input mode from the command
+          line. And with “rememberinputmode” one can choose whether
+          the last used input mode should be remembered and be used
+          again when a new session starts or whether a new session
+          should always start in table mode.
+        </issue>
+        <issue>
+          Skip cangjie5 and erbi-qs test cases if the tables are too
+          old
+        </issue>
+        <issue>
+          Replace deprecated module “optparse” with “argparse”
+        </issue>
+        <issue>
+          Update translations from Weblate (updates for ca, cs, de,
+          uk)
+        </issue>
+      </issues>
+    </release>
     <release version="1.15.0" date="2022-01-10" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

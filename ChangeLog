@@ -1,4 +1,206 @@
-commit fb1b855bdc503ae738206585e426d43ef7a591e9
+commit c1aaab450413c10a98f2473fd14d21c869235e8f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 12 11:56:58 2022 +0100
+
+    Release 1.16.0
+
+commit aefc2c79d72f6926a39e4978cbbc75ebf5c9ec28
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 18 14:42:02 2022 +0100
+
+    Make true the default for rememberinputmode
+    
+    When the input mode is remembered, it works much better when using
+    “[x] Switch input sources individually for each window”.
+    
+    See: https://github.com/mike-fabian/ibus-table/issues/85#issuecomment-1015417630
+    
+    Overall remembering the input mode is the nicer default.
+
+commit 41b35381cdd44a28d19cbfd39029f22442862945
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 10 15:37:15 2022 +0100
+
+    Save “inputmode” to gsettings and add a “rememberinputmode” gsettings
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/85
+    
+    This makes it possible to change the current input mode from the command line.
+    
+    And with “rememberinputmode” one can choose whether the last used
+    input mode should be remembered and be used again when a new session
+    starts or whether a new session should always start in table mode.
+
+commit 22d0772d132fea008195e90b1ccdb654ab490bc6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 12 10:58:16 2022 +0100
+
+    Remove useless + when concatenating strings
+
+commit 6e421a2ec808e05f11dfb5b66d8a45569c755a57
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 12 10:58:45 2022 +0100
+
+    Rename a local variable
+
+commit cf4f52943bb9fbd3ccee898dca03ca61b0adea1b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 11 19:18:30 2022 +0100
+
+    Skip cangjie5 and erbi-qs test cases if the tables are too old
+
+commit 4350424214eb9b47cf232fd2c030134bd521f383
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 11 16:48:01 2022 +0100
+
+    Replace deprecated module “optparse” with “argparse”
+
+commit 0476c2de7a6a8f160f90f6df34748fd4ab8ee17d
+Author: Oğuz Ersen <oguzersen@protonmail.com>
+Date:   Thu Jan 13 08:03:15 2022 +0100
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (146 of 146 strings)
+    
+    Co-authored-by: Oğuz Ersen <oguzersen@protonmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    Translation: ibus-table/app
+
+commit 407430eb28fa1d2371bb32eeb0e3e4adc08287f2
+Author: Yuri Chornoivan <yurchor@ukr.net>
+Date:   Thu Jan 13 08:03:14 2022 +0100
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (146 of 146 strings)
+    
+    Co-authored-by: Yuri Chornoivan <yurchor@ukr.net>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+    Translation: ibus-table/app
+
+commit b5a4722493daa6b7725ee0462cd3af00f675c873
+Author: Anonymous <noreply@weblate.org>
+Date:   Wed Jan 12 18:33:19 2022 +0100
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 99.3% (145 of 146 strings)
+    
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 96.5% (141 of 146 strings)
+    
+    Translated using Weblate (Czech)
+    
+    Currently translated at 36.9% (54 of 146 strings)
+    
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 86.9% (127 of 146 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/cs/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+    Translation: ibus-table/app
+
+commit a205ea795a8cc24f81329f1f80a523cb8652c923
+Author: Anonymous <noreply@weblate.org>
+Date:   Wed Jan 12 18:30:46 2022 +0100
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 99.3% (145 of 146 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    Translation: ibus-table/app
+
+commit 9297231c96090dbcad73c05799aefc345f96d7d8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 12 18:23:21 2022 +0100
+
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (146 of 146 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+    Translation: ibus-table/app
+
+commit 5c59c66820443c0c5a210274f98cd69edbfb2b67
+Author: Weblate <noreply@weblate.org>
+Date:   Wed Jan 12 18:23:21 2022 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 59b26f4766db3c5c09baeada3ad2dfc9cabf9fd5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 12 18:17:06 2022 +0100
+
+    Update ibus-table.po (Fix mistakes in one English message I
+
+commit 925f9d76aaed26a354ba85d41f687d91040ec4d7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 12 18:11:02 2022 +0100
+
+    Update ibus-table.po (Fix mistakes in one English message ID)
+
+commit 25eb384914ea633a7cf3f4ef570be845b811abba
+Author: Anonymous <noreply@weblate.org>
+Date:   Wed Jan 12 18:01:18 2022 +0100
+
+    Translated using Weblate (German)
+    
+    Currently translated at 99.3% (145 of 146 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+    Translation: ibus-table/app
+
+commit 2c97d9ddf32b0f341c6c7061744eb04cf0c1bed1
+Author: Weblate <noreply@weblate.org>
+Date:   Wed Jan 12 17:54:59 2022 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit ae297221f26c80a399dbca4921625b038b084bf7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 12 12:02:51 2022 +0100
+
+    Update ibus-table.po (Two new messages because of rememberinputmode)
+
+commit c90a0e3349d6fe681f79aaf19519a3f528c7d058
+Author: Weblate <noreply@weblate.org>
+Date:   Tue Jan 11 12:15:15 2022 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 84ad6bbc3b754de1c3e0566b138e1ff62d8711fe
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Sep 28 13:02:33 2021 +0200
 

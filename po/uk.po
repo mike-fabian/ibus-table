@@ -1,13 +1,13 @@
-# Yuri Chornoivan <yurchor@ukr.net>, 2015. #zanata, 2020, 2021.
-# Yuri Chornoivan <yurchor@ukr.net>, 2016. #zanata, 2020, 2021.
+# Yuri Chornoivan <yurchor@ukr.net>, 2015. #zanata, 2020, 2021, 2022.
+# Yuri Chornoivan <yurchor@ukr.net>, 2016. #zanata, 2020, 2021, 2022.
 # Mike FABIAN <mfabian@redhat.com>, 2019, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2022-01-12 18:16+0100\n"
-"PO-Revision-Date: 2022-01-12 17:33+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2022-01-13 07:03+0000\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/uk/>\n"
 "Language: uk\n"
@@ -425,14 +425,6 @@ msgstr "Запам'ятовувати спосіб введення"
 #. should always use “Table input” by default after a
 #. restart.
 #: setup/main.py:323
-#, fuzzy
-#| msgid ""
-#| "“Direct input” is almost the same as if the\n"
-#| "input method were off, i.e. not used at all, most\n"
-#| "characters just get passed to the application.\n"
-#| "But some conversion between fullwidth and\n"
-#| "halfwidth may still happen in direct input mode.\n"
-#| "“Table input” means the input method is on."
 msgid ""
 "Whether the last used input mode should be remembered or whether ibus-table "
 "should start in “Table mode” by default after a restart. There are two input "
@@ -441,14 +433,14 @@ msgid ""
 "characters just get passed to the application. But some conversion between "
 "fullwidth and halfwidth may still happen in direct input mode."
 msgstr ""
-"Режим «Безпосереднє введення» працює майже так, як\n"
-"працювала б система, якби способи введення було вимкнено,\n"
-"тобто взагалі не використано. Більшість символів\n"
-"безпосередньо передаються програми. Втім, у цьому\n"
-"режимі все ж здійснюється певне перетворення між\n"
-"символами повної і половинної ширини.\n"
-"У режимі «Введення за таблицею» способи введення буде\n"
-"увімкнено."
+"Визначає, слід запам'ятовувати останній використаний режим введення чи ibus-"
+"table має типово запускатися у режимі «Введення за таблицею» після "
+"перезапуску. Передбачено два режими введення: «Введення за таблицею» "
+"означає, що спосіб введення увімкнено, режим «Безпосереднє введення» працює "
+"майже так, як працювала б система, якби способи введення було вимкнено, "
+"тобто взагалі не використано. Більшість символів безпосередньо передаються "
+"програми. Втім, у цьому режимі все ж здійснюється певне перетворення між "
+"символами повної і половинної ширини."
 
 #: setup/main.py:336
 msgid "No"

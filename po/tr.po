@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
-# Oğuz Ersen <oguzersen@protonmail.com>, 2019, 2020, 2021.
+# Oğuz Ersen <oguzersen@protonmail.com>, 2019, 2020, 2021, 2022.
 # Mike FABIAN <mfabian@redhat.com>, 2019, 2021.
 # Anonymous <noreply@weblate.org>, 2020.
 msgid ""
@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2022-01-12 18:16+0100\n"
-"PO-Revision-Date: 2022-01-12 17:30+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2022-01-13 07:03+0000\n"
+"Last-Translator: Oğuz Ersen <oguzersen@protonmail.com>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/tr/>\n"
 "Language: tr\n"
@@ -425,14 +425,6 @@ msgstr "Giriş modunu hatırla"
 #. should always use “Table input” by default after a
 #. restart.
 #: setup/main.py:323
-#, fuzzy
-#| msgid ""
-#| "“Direct input” is almost the same as if the\n"
-#| "input method were off, i.e. not used at all, most\n"
-#| "characters just get passed to the application.\n"
-#| "But some conversion between fullwidth and\n"
-#| "halfwidth may still happen in direct input mode.\n"
-#| "“Table input” means the input method is on."
 msgid ""
 "Whether the last used input mode should be remembered or whether ibus-table "
 "should start in “Table mode” by default after a restart. There are two input "
@@ -441,12 +433,13 @@ msgid ""
 "characters just get passed to the application. But some conversion between "
 "fullwidth and halfwidth may still happen in direct input mode."
 msgstr ""
-"“Doğrudan giriş”, giriş yönteminin kapalı olduğu\n"
-"durumla neredeyse aynıdır, yani hiç kullanılmazsa\n"
-"çoğu karakter uygulamaya iletilir. Ancak, doğrudan\n"
-"giriş modunda, tam genişlik ve yarım genişlik arasında\n"
-"bir miktar dönüşüm olmaya devam edebilir. “Tablo\n"
-"girişi”, giriş yönteminin açık olduğu anlamına gelir."
+"En son kullanılan giriş modunun hatırlanması mı yoksa ibus-table'ın yeniden "
+"başlatma sonrasında öntanımlı olarak “Tablo modunda” mı başlaması gerektiği. "
+"İki giriş modu vardır: “Tablo girişi”, giriş yönteminin açık olduğu anlamına "
+"gelir. “Doğrudan giriş”, giriş yönteminin kapalı olduğu durumla neredeyse "
+"aynıdır, yani hiç kullanılmaz, çoğu karakter uygulamaya iletilir. Ancak, "
+"doğrudan giriş modunda tam genişlik ve yarım genişlik arasında bir miktar "
+"dönüşüm gerçekleşebilir."
 
 #: setup/main.py:336
 msgid "No"

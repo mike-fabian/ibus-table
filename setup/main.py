@@ -2324,7 +2324,7 @@ class SetupUI(Gtk.Window):
                     GLib.Variant.new_int32(input_mode))
 
     def set_remember_input_mode(self,
-                                remember_input_mode: bool = False,
+                                remember_input_mode: bool = True,
                                 update_gsettings: bool = True) -> None:
         '''Sets whether the input mode (direct or table) is remembered
 

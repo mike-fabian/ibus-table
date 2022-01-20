@@ -1,14 +1,61 @@
-commit c1aaab450413c10a98f2473fd14d21c869235e8f
+commit f2a24d99187651d054449c93265e776c89815d8b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jan 20 12:47:10 2022 +0100
+
+    Release 1.16.3
+
+commit 9ee6edbe23ed1ad39199d916ec740775d69b58f0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jan 21 11:26:12 2022 +0100
+
+    Fix a few errors in Unihan_Variants.txt
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/96
+
+commit c80597d1d35bb7bf3302ed0c7ffa3fea37a3c67d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jan 20 12:34:45 2022 +0100
+
+    栗 U+6817 is used in Traditional Chinese as well.
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/95
+
+commit c1c39a3dd8aca8c334c00118ba54dd74995fbd47
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jan 20 11:22:12 2022 +0100
+
+    Regenerate engine/chinese_variants.py for Unihan_Variants.txt from “2021-12-01 Unicode 15.0.0 draft”
+    
+    - Because of the new Unihan_Variants.txt, the following 37 characters
+      are added to the VARIANTS_TABLE in chinese_variants.py:
+      u'䓨': 1, u'沄': 1, u'潕': 2, u'澐': 2, u'罃': 2, u'鮗': 2, u'龻': 2,
+      u'鿟': 1, u'鿠': 2, u'鿰': 1, u'鿲': 1, u'鿳': 2, u'鿴': 1, u'鿵': 1,
+      u'鿶': 1, u'鿷': 1, u'鿸': 1, u'鿹': 1, u'鿺': 1, u'𣲘': 1, u'𤇾': 2,
+      u'𤪤': 2, u'𦥯': 2, u'𧰎': 2, u'𩷓': 2, u'𩷕': 2, u'𩹎': 2, u'𪄳': 2,
+      u'𪛞': 1, u'𫇦': 1, u'𬉧': 2, u'𬵨': 2, u'𰀡': 1, u'𰀢': 1, u'𰁜': 1,
+      u'𰃮': 1, u'𰯲': 2,
+    
+      1 = simplified Chinese
+      2 = traditional Chinese
+      3 = used both in simplified *and* traditional Chinese
+
+commit df46474f7e8bc57e66910529c319c1512c0f3366
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jan 20 11:12:52 2022 +0100
+
+    Update Unihan_Variants.txt from “2021-08-06 Unicode 14.0.0 final” to “2021-12-01 Unicode 15.0.0 draft”
+
+commit f52c1071d6157619a57e3b14f898a4660b2b7d0e
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Jan 12 11:56:58 2022 +0100
 
     Release 1.16.0
 
-commit aefc2c79d72f6926a39e4978cbbc75ebf5c9ec28
+commit 8ce8323f955fb249c11bfdff337461c6abce12b4
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Jan 18 14:42:02 2022 +0100
 
-    Make true the default for rememberinputmode
+    Make true the default for “rememberinputmode”
     
     When the input mode is remembered, it works much better when using
     “[x] Switch input sources individually for each window”.

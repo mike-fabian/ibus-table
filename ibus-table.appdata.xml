@@ -19,6 +19,26 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.16.3" date="2022-01-21" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.16.3</url>
+      <issues>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/96">
+          github-mike-fabian-issue#96: Fix a few errors in Unihan_Variants.txt
+        </issue>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/95">
+          github-mike-fabian-issue#95: 栗 U+6817 is used in
+          Traditional Chinese as well.
+        </issue>
+        <issue>
+          Update Unihan_Variants.txt from “2021-08-06 Unicode 14.0.0
+          final” to “2021-12-01 Unicode 1 5.0.0 draft” and regenerate
+          engine/chinese_variants.py
+        </issue>
+      </issues>
+    </release>
     <release version="1.16.0" date="2022-01-18" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

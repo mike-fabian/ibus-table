@@ -287,6 +287,7 @@ TEST_DATA = {
     u'尸': 3, # U+5C38, (Untypable in T) idk where it is used, but Cangjie has that as a radical.
     u'揾': 3, # U+63FE, used in HK
     # (TW seems to use only 搵, see http://dict.revised.moe.edu.tw/cgi-bin/cbdic/gsweb.cgi)
+    u'栗': 3, # U+6817 https://github.com/mike-fabian/ibus-table/issues/95
     }
 
 def test_detection(generated_script) -> int:

@@ -3921,7 +3921,7 @@ U+6811	kTraditionalVariant	U+6A39
 U+6812	kSemanticVariant	U+7C28<kMatthews,kMeyerWempe
 U+6816	kSemanticVariant	U+68F2<kMatthews,kMeyerWempe
 U+6816	kTraditionalVariant	U+68F2
-U+6817	kTraditionalVariant	U+6144
+U+6817	kTraditionalVariant	U+6144 U+6817
 U+681B	kSemanticVariant	U+8354<kMatthews
 U+6822	kSemanticVariant	U+67CF<kMatthews,kMeyerWempe
 U+6822	kSpecializedSemanticVariant	U+5B5B<kFenn

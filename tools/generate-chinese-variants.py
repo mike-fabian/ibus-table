@@ -288,6 +288,29 @@ TEST_DATA = {
     u'揾': 3, # U+63FE, used in HK
     # (TW seems to use only 搵, see http://dict.revised.moe.edu.tw/cgi-bin/cbdic/gsweb.cgi)
     u'栗': 3, # U+6817 https://github.com/mike-fabian/ibus-table/issues/95
+    u'了': 3, # U+4E86 https://github.com/mike-fabian/ibus-table/issues/96
+    u'伙': 3, # U+4F19 https://github.com/mike-fabian/ibus-table/issues/96
+    u'借': 3, # U+501F https://github.com/mike-fabian/ibus-table/issues/96
+    u'冬': 3, # U+51AC https://github.com/mike-fabian/ibus-table/issues/96
+    u'千': 3, # U+5343 https://github.com/mike-fabian/ibus-table/issues/96
+    u'卜': 3, # U+535C https://github.com/mike-fabian/ibus-table/issues/96
+    u'卷': 3, # U+5377 https://github.com/mike-fabian/ibus-table/issues/96
+    u'吁': 3, # U+5401 https://github.com/mike-fabian/ibus-table/issues/96
+    u'合': 3, # U+5408 https://github.com/mike-fabian/ibus-table/issues/96
+    u'回': 3, # U+56DE https://github.com/mike-fabian/ibus-table/issues/96
+    u'夥': 3, # U+5925 https://github.com/mike-fabian/ibus-table/issues/96
+    u'姜': 3, # U+59DC https://github.com/mike-fabian/ibus-table/issues/96
+    u'家': 3, # U+5BB6 https://github.com/mike-fabian/ibus-table/issues/96
+    u'才': 3, # U+624D https://github.com/mike-fabian/ibus-table/issues/96
+    u'折': 3, # U+6298 https://github.com/mike-fabian/ibus-table/issues/96
+    u'摺': 3, # U+647A https://github.com/mike-fabian/ibus-table/issues/96
+    u'旋': 3, # U+65CB https://github.com/mike-fabian/ibus-table/issues/96
+    u'朱': 3, # U+6731 https://github.com/mike-fabian/ibus-table/issues/96
+    u'灶': 3, # U+7076 https://github.com/mike-fabian/ibus-table/issues/96
+    u'秋': 3, # U+79CB https://github.com/mike-fabian/ibus-table/issues/96
+    u'蒙': 3, # U+8499 https://github.com/mike-fabian/ibus-table/issues/96
+    u'蔑': 3, # U+8511 https://github.com/mike-fabian/ibus-table/issues/96
+    u'霉': 3, # U+9709 https://github.com/mike-fabian/ibus-table/issues/96
     }
 
 def test_detection(generated_script) -> int:

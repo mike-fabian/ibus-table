@@ -311,6 +311,9 @@ TEST_DATA = {
     u'蒙': 3, # U+8499 https://github.com/mike-fabian/ibus-table/issues/96
     u'蔑': 3, # U+8511 https://github.com/mike-fabian/ibus-table/issues/96
     u'霉': 3, # U+9709 https://github.com/mike-fabian/ibus-table/issues/96
+    u'沄': 3, # U+6C84 https://github.com/mike-fabian/ibus-table/issues/97
+    # https://dict.revised.moe.edu.tw/search.jsp?md=1&word=%E6%B2%84&qMd=0&qCol=1
+    u'干': 3, # U+5E72 https://github.com/mike-fabian/ibus-table/issues/97
     }
 
 def test_detection(generated_script) -> int:

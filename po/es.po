@@ -2,14 +2,14 @@
 # Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2021.
 # Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2020.
 # Anonymous <noreply@weblate.org>, 2020.
-# Emilio Herrera <ehespinosa57@gmail.com>, 2021.
+# Emilio Herrera <ehespinosa57@gmail.com>, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2022-01-12 18:16+0100\n"
-"PO-Revision-Date: 2022-01-12 17:33+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2022-01-23 16:16+0000\n"
+"Last-Translator: Emilio Herrera <ehespinosa57@gmail.com>\n"
 "Language-Team: Spanish <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/es/>\n"
 "Language: es\n"
@@ -424,14 +424,6 @@ msgstr "Recordar modo de entrada"
 #. should always use “Table input” by default after a
 #. restart.
 #: setup/main.py:323
-#, fuzzy
-#| msgid ""
-#| "“Direct input” is almost the same as if the\n"
-#| "input method were off, i.e. not used at all, most\n"
-#| "characters just get passed to the application.\n"
-#| "But some conversion between fullwidth and\n"
-#| "halfwidth may still happen in direct input mode.\n"
-#| "“Table input” means the input method is on."
 msgid ""
 "Whether the last used input mode should be remembered or whether ibus-table "
 "should start in “Table mode” by default after a restart. There are two input "
@@ -440,13 +432,14 @@ msgid ""
 "characters just get passed to the application. But some conversion between "
 "fullwidth and halfwidth may still happen in direct input mode."
 msgstr ""
-"La «entrada directa» viene a ser como si se\n"
-"desactivara el método de entrada, casi todos los\n"
-"caracteres pasan directamente a la aplicación,\n"
-"aunque puede haber alguna conversión entre\n"
-"caracteres de anchura media y completa.\n"
-"«Entrada por tabla» significa que el método de\n"
-"entrada está activo."
+"Si se debe recordar el último modo de entrada usado o si ibus-table debe "
+"comenzar en “Modo de tabla” de forma predeterminada después de un reinicio. "
+"Hay dos métodos de entrada: “Entrada de tabla” significa que el método de "
+"entrada está activado. “Entrada directa” es casi lo mismo que si el método "
+"de entrada estuviera desactivado, es decir, no se usa en absoluto, la "
+"mayoría de los caracteres simplemente pasan a la aplicación. Pero aún puede "
+"ocurrir alguna conversión entre ancho completo y medio ancho en el modo de "
+"entrada directa."
 
 #: setup/main.py:336
 msgid "No"
@@ -695,13 +688,16 @@ msgstr "Establecer los atajos de teclado predeterminados de todas las órdenes"
 #. to how often the candidates are used.
 #: setup/main.py:821
 msgid "Dynamic adjust"
-msgstr ""
+msgstr "Ajuste dinámico"
 
 #: setup/main.py:823
 msgid ""
 "Here you can choose whether the order of the candidates is dynamically "
 "adjusted according to how often the candidates are used."
 msgstr ""
+"Aquí puede usted elegir si el orden de los candidatos se ajusta "
+"dinámicamente de acuerdo a la frecuencia con la que se utilizan los "
+"candidatos."
 
 #: setup/main.py:836
 msgid "Delete all learned data"
@@ -758,17 +754,16 @@ msgid ""
 "   (Mostly needed for non-Chinese input methods like\n"
 "   the Russian “translit”)"
 msgstr ""
-"Con la opción activada se hace lo siguiente:\n"
-"1) Al pulsar “intro” se envían el candidato\n"
-"   y el cambio de línea\n"
-"2) Con el tabulador se envía el candidato\n"
-"3) Con la tecla de asentamiento se envían\n"
-"   el candidato y un espacio\n"
-"4) Si al escribir el siguiente carácter no\n"
-"   se encuentran candidatos, se envía el\n"
-"   primer candidato de la coincidencia anterior.\n"
-"   (Usado sobre todo para métodos como el\n"
-"   “translit” ruso)"
+"S se establece a “Yes”, hace una de las 4 cosas siguientes:\n"
+"1) Al escribir “Return”, confirma el \n"
+"   candidato + alimentación de línea\n"
+"2) Cuando teclea Tab, confirma el candidato\n"
+"3) Al confirma usando una clave de confirmación, confirma\n"
+"   el candidato + \" \"\n"
+"4) Si al teclear el siguiente carácter no hay coincidencia de candidatos,\n"
+"   confirma el primer candidato de la anterior coincidencia.\n"
+"   (Necesario mayormente para métodos de entrada no Chinos como\n"
+"   el Ruso “translit”)"
 
 #. Translators: A combobox to choose whether automatic
 #. commits go into the preëdit or into the application
@@ -791,13 +786,16 @@ msgid ""
 "into the application, “Normal” means they get committed\n"
 "to preedit."
 msgstr ""
-"Al asentar con las teclas de asentamiento o con el ratón\n"
-"siempre se envían los datos a la aplicación. Esta opción\n"
-"es para los asentamientos “automáticos” que pueden\n"
-"producirse al escribir sin asentar manualmente.\n"
-"“Directa” hace que la entrada de a esos asentamientos\n"
-"“automáticos” se envíe a la aplicación. “Normal” hace el\n"
-"asentamiento en la preedición."
+"Al confirmar con las teclas de confirmación con el ratón\n"
+"siempre confirma a la aplicación. Esta opción es para\n"
+"las confirmaciones “automáticas” que pueden producirse cuando\n"
+"uno sigue tecleando en la entrada sin confirmar.\n"
+"manualmente. De vez en cuando, se producirán confirmaciones\n"
+"\"automáticas\" entonces.\n"
+"“Directa” significa que esas confirmaciones \"automáticas\" vayan "
+"directamente\n"
+"a la aplicación, “Normal” significa que se confirman\n"
+"para preeditar."
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
@@ -875,6 +873,9 @@ msgid ""
 "the simpleaudio module for Python3 is not installed, this option does "
 "nothing."
 msgstr ""
+"Aquí puede usted elegir si se reproduce un archivo de sonido cuando sucede "
+"un error. Si no está instalado el módulo simpleaudio para Python3, esta "
+"opción no hace nada."
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
@@ -927,12 +928,12 @@ msgstr "¿Realmente quiere recuperar los ajustes predeterminados?"
 #. input. Deleting this learned data cannot be reversed. So
 #. the user should be really sure he really wants to do that.
 #: setup/main.py:1757
-#, fuzzy
-#| msgid "Do you really want to restore all default settings?"
 msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
-msgstr "¿Realmente quiere recuperar los ajustes predeterminados?"
+msgstr ""
+"¿Realmente quiere borrar los datos aprendidos de lo tecleado y seleccionar "
+"candidatos?"
 
 #: setup/main.py:1779
 msgid "Select .wav sound file:"

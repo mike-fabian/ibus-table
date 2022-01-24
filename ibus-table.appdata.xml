@@ -19,6 +19,25 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.16.4" date="2022-01-24" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/kaio/ibus-table/releases/tag/1.16.4</url>
+      <issues>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/100">
+          github-mike-fabian-issue#100: Fix more errors in
+          Unihan_Variants.txt by checking against a Traditional
+          Chinese dictionary
+        </issue>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/97">
+          github-mike-fabian-issue#97: Fix some errors in Unihan_Variants.txt
+        </issue>
+        <issue>
+          Update translations from Weblate (es updated to 100%)
+        </issue>
+      </issues>
+    </release>
     <release version="1.16.3" date="2022-01-21" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

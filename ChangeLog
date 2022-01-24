@@ -1,4 +1,46 @@
-commit f2a24d99187651d054449c93265e776c89815d8b
+commit aa68e6fca218b4536e02f09188717f69d6d689e8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 24 18:14:57 2022 +0100
+
+    Release 1.16.4
+
+commit b25a994cf34120f00f82a106c06e3d8d1124b716
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 24 21:08:32 2022 +0100
+
+    Adapt test case for “Fix more errors in Unihan_Variants.txt by checking against a Traditional Chinese dictionary”
+    
+    See: https://github.com/mike-fabian/ibus-table/issues/100
+
+commit a0bef3f19dfb034f360533f6d932b329f1a72aec
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 24 20:04:13 2022 +0100
+
+    Fix more errors in Unihan_Variants.txt by checking against a Traditional Chinese dictionary
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/100
+
+commit c01cd0a3e53db5ad52495416797431c7be9c65fa
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Jan 22 16:30:17 2022 +0100
+
+    Fix some errors in Unihan_Variants.txt
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/97
+
+commit 89415b0c6704f7f61607a85095531eb8b5858857
+Author: Emilio Herrera <ehespinosa57@gmail.com>
+Date:   Sun Jan 23 17:16:37 2022 +0100
+
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 100.0% (146 of 146 strings)
+    
+    Co-authored-by: Emilio Herrera <ehespinosa57@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translation: ibus-table/app
+
+commit 72fa3d30831c03f551c94b04c81fc1b4a8cbbcb0
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Jan 20 12:47:10 2022 +0100
 

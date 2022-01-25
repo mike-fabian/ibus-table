@@ -3667,7 +3667,7 @@ class TabEngine(IBus.EngineSimple):
     def _handle_hotkeys(
             self,
             key: it_util.KeyEvent,
-            commands: Iterable[str] = ()) -> bool:
+            commands: Iterable[str] = ()) -> Tuple[bool, bool]:
         '''Handle hotkey commands
 
         :return: True if the key was completely handled, False if not.
@@ -3702,10 +3702,17 @@ class TabEngine(IBus.EngineSimple):
                 except (AttributeError,):
                     LOGGER.exception('There is no function %s',
                                      command_function_name)
-                    return False
+                    return (False, False)
                 if command_function():
-                    return True
-        return False
+                    if key.name in ('Shift_L', 'Shift_R',
+                                    'Control_L', 'Control_R',
+                                    'Alt_L', 'Alt_R',
+                                    'Meta_L', 'Meta_R',
+                                    'Super_L', 'Super_R',
+                                    'ISO_Level3_Shift'):
+                        return(True, False)
+                    return (True, True)
+        return (False, False)
 
     def _return_false(self, keyval: int, keycode: int, state: int) -> bool:
         '''A replacement for “return False” in do_process_key_event()
@@ -3779,15 +3786,17 @@ class TabEngine(IBus.EngineSimple):
         Returns False if the key event has not been handled completely
         and is passed through.
         '''
-        if self._handle_hotkeys(
-                key, commands=['toggle_input_mode_on_off',
-                               'toggle_letter_width',
-                               'toggle_punctuation_width',
-                               'setup']):
-            return True
+        (match, return_value) = self._handle_hotkeys(
+            key, commands=['toggle_input_mode_on_off',
+                           'toggle_letter_width',
+                           'toggle_punctuation_width',
+                           'setup'])
+        if match:
+            return return_value
         if self._input_mode:
-            if self._handle_hotkeys(key):
-                return True
+            (match, return_value) = self._handle_hotkeys(key)
+            if match:
+                return return_value
             return self._table_mode_process_key_event(key)
         return self._english_mode_process_key_event(key)
 

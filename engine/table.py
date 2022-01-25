@@ -67,7 +67,7 @@ LOGGER = logging.getLogger('ibus-table')
 
 DEBUG_LEVEL = int(0)
 
-def ascii_ispunct(character):
+def ascii_ispunct(character: str) -> bool:
     '''
     Use our own function instead of ascii.ispunct()
     from “from curses import ascii” because the behaviour
@@ -1238,7 +1238,11 @@ class TabEngine(IBus.EngineSimple):
         self.update_candidates()
 
     def append_table_candidate(
-            self, tabkeys=u'', phrase=u'', freq=0, user_freq=0) -> None:
+            self,
+            tabkeys: str = '',
+            phrase: str = '',
+            freq: int = 0,
+            user_freq: int = 0) -> None:
         '''append table candidate to lookup table'''
         assert self._input_mode == 1
         if DEBUG_LEVEL > 1:
@@ -1402,7 +1406,11 @@ class TabEngine(IBus.EngineSimple):
         return sorted_idx_list[0]
 
     def append_pinyin_candidate(
-            self, tabkeys=u'', phrase=u'', freq=0, user_freq=0) -> None:
+            self,
+            tabkeys: str = '',
+            phrase:str = '',
+            freq: int =0,
+            user_freq: int = 0) -> None:
         '''append pinyin candidate to lookup table'''
         assert self._input_mode == 1
         assert self._py_mode
@@ -1497,7 +1505,11 @@ class TabEngine(IBus.EngineSimple):
         self._lookup_table.set_cursor_visible(True)
 
     def append_suggestion_candidate(
-            self, prefix=u'', phrase=u'', freq=0, user_freq=0) -> None:
+            self,
+            prefix: str = '',
+            phrase: str = '',
+            freq: int = 0,
+            user_freq: int = 0) -> None:
         '''append suggestion candidate to lookup table'''
         assert self._input_mode == 1
         assert self._sg_mode
@@ -1540,7 +1552,7 @@ class TabEngine(IBus.EngineSimple):
         self._lookup_table.append_candidate(text)
         self._lookup_table.set_cursor_visible(True)
 
-    def update_candidates(self, force=False) -> bool:
+    def update_candidates(self, force: bool = False) -> bool:
         '''
         Searches for candidates and updates the lookuptable.
 
@@ -1679,7 +1691,7 @@ class TabEngine(IBus.EngineSimple):
         self.update_candidates()
         return True
 
-    def commit_to_preedit_current_page(self, index) -> bool:
+    def commit_to_preedit_current_page(self, index: int) -> bool:
         '''
         Commits the candidate at position “index” in the current
         page of the lookup table to the preëdit. Does not yet “really”
@@ -1799,7 +1811,7 @@ class TabEngine(IBus.EngineSimple):
                     self.append_suggestion_candidate(
                         prefix=self._prefix,
                         phrase=candidate[0],
-                        freq=candidate[1])
+                        freq=int(candidate[1]))
                 else:
                     assert False
 
@@ -1808,7 +1820,7 @@ class TabEngine(IBus.EngineSimple):
         Move Lookup Table cursor down'''
         self.fill_lookup_table()
 
-        res = self._lookup_table.cursor_down()
+        res = bool(self._lookup_table.cursor_down())
         if not res and self._candidates:
             return True
         return res
@@ -1816,7 +1828,7 @@ class TabEngine(IBus.EngineSimple):
     def cursor_up(self) -> bool:
         '''Process Arrow Up Key Event
         Move Lookup Table cursor up'''
-        res = self._lookup_table.cursor_up()
+        res = bool(self._lookup_table.cursor_up())
         if not res and self._candidates:
             return True
         return res
@@ -1825,7 +1837,7 @@ class TabEngine(IBus.EngineSimple):
         '''Process Page Down Key Event
         Move Lookup Table page down'''
         self.fill_lookup_table()
-        res = self._lookup_table.page_down()
+        res = bool(self._lookup_table.page_down())
         if not res and self._candidates:
             return True
         return res
@@ -1833,7 +1845,7 @@ class TabEngine(IBus.EngineSimple):
     def page_up(self) -> bool:
         '''Process Page Up Key Event
         move Lookup Table page up'''
-        res = self._lookup_table.page_up()
+        res = bool(self._lookup_table.page_up())
         if not res and self._candidates:
             return True
         return res
@@ -1881,7 +1893,7 @@ class TabEngine(IBus.EngineSimple):
 
     def get_cursor_pos(self) -> int:
         '''get lookup table cursor position'''
-        return self._lookup_table.get_cursor_pos()
+        return int(self._lookup_table.get_cursor_pos())
 
     def get_lookup_table(self) -> IBus.LookupTable:
         '''Get lookup table'''
@@ -2238,7 +2250,9 @@ class TabEngine(IBus.EngineSimple):
         return self._remember_input_mode
 
     def set_dark_theme(
-            self, use_dark_theme: bool = False, update_gsettings: bool = True):
+            self,
+            use_dark_theme: bool = False,
+            update_gsettings: bool = True) -> None:
         '''Set theme to dark theme on request'''
         if use_dark_theme:
             theme = THEME_DARK
@@ -2851,7 +2865,7 @@ class TabEngine(IBus.EngineSimple):
     def do_property_activate(
             self,
             ibus_property: str,
-            prop_state=IBus.PropState.UNCHECKED) -> None:
+            prop_state: IBus.PropState = IBus.PropState.UNCHECKED) -> None:
         '''
         Handle clicks on properties
         '''

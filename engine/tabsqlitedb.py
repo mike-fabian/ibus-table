@@ -23,6 +23,8 @@
 '''
 Module for ibus-table to access the sqlite3 databases
 '''
+from typing import List
+from typing import Tuple
 import os
 import os.path as path
 import shutil
@@ -77,7 +79,7 @@ class ImeProperties:
     '''
     A class to cache the properties of an input method.
     '''
-    def __init__(self, db=None, default_properties=None):
+    def __init__(self, db=None, default_properties=None) -> None:
         '''
         “db” is the handle of the sqlite3 database file obtained by
         sqlite3.connect().
@@ -95,19 +97,17 @@ class ImeProperties:
         for result in results:
             self.ime_property_cache[result[0]] = result[1]
 
-    def get(self, key):
+    def get(self, key: str) -> str:
         '''
         Return the value for a key from the property cache
 
         :param key: The key to lookup in the property cache
-        :type key: String
-        :rtype: String
         '''
         if key in self.ime_property_cache:
             return self.ime_property_cache[key]
-        return None
+        return ''
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'ime_property_cache = %s' %repr(self.ime_property_cache)
 
 class TabSqliteDb:
@@ -546,7 +546,7 @@ class TabSqliteDb:
                         return True
         return False
 
-    def get_chinese_mode(self):
+    def get_chinese_mode(self) -> int:
         '''
         Get the default Chinese mode from the database
 
@@ -558,19 +558,15 @@ class TabSqliteDb:
 
         If no mode is specified in the database, return 4 to avoid all
         filtering of characters.
-
-        :rtype: Integer
         '''
         language_filter = self.ime_properties.get('language_filter')
         if language_filter in ('cm0', 'cm1', 'cm2', 'cm3', 'cm4'):
             return int(language_filter[-1])
         return 4
 
-    def get_select_keys(self):
+    def get_select_keys(self) -> str:
         '''
         Get the keys used to select a candidate from the database
-
-        :rtype: String
         '''
         ret = self.ime_properties.get("select_keys")
         if ret:
@@ -1149,7 +1145,8 @@ class TabSqliteDb:
             candidates=phrase_frequencies,
             chinese_mode=chinese_mode)
 
-    def select_suggestion_candidate(self, prefix=u''):
+    def select_suggestion_candidate(
+            self, prefix: str = '') -> List[Tuple[str, int]]:
         '''
         Get Chinese phrase matching the prefix from the database.
         '''

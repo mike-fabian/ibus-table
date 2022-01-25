@@ -1578,28 +1578,32 @@ class SetupUI(Gtk.Window):
             LOGGER.info('Restore all defaults cancelled.')
         self._restore_all_defaults_button.set_sensitive(True)
 
-    def _on_single_wildcard_char_entry(self, widget, _property_spec) -> None:
+    def _on_single_wildcard_char_entry(
+            self, widget: Gtk.Entry, _property_spec) -> None:
         '''
         The character to be used as a single wildcard has been changed.
         '''
         self.set_single_wildcard_char(
             widget.get_text(), update_gsettings=True)
 
-    def _on_multi_wildcard_char_entry(self, widget, _property_spec) -> None:
+    def _on_multi_wildcard_char_entry(
+            self, widget: Gtk.Entry, _property_spec) -> None:
         '''
         The character to be used as a multi wildcard has been changed.
         '''
         self.set_multi_wildcard_char(
             widget.get_text(), update_gsettings=True)
 
-    def _on_page_size_adjustment_value_changed(self, _widget) -> None:
+    def _on_page_size_adjustment_value_changed(
+            self, _widget: Gtk.SpinButton) -> None:
         '''
         The page size of the lookup table has been changed.
         '''
         self.set_page_size(
             self._page_size_adjustment.get_value(), update_gsettings=True)
 
-    def _on_lookup_table_orientation_combobox_changed(self, widget) -> None:
+    def _on_lookup_table_orientation_combobox_changed(
+            self, widget: Gtk.ComboBox) -> None:
         '''
         A change of the lookup table orientation has been requested
         with the combobox
@@ -1611,7 +1615,8 @@ class SetupUI(Gtk.Window):
             self.set_lookup_table_orientation(
                 orientation, update_gsettings=True)
 
-    def _on_remember_input_mode_combobox_changed(self, widget) -> None:
+    def _on_remember_input_mode_combobox_changed(
+            self, widget: Gtk.ComboBox) -> None:
         '''
         A change of the remember input mode has been requested
         with the combobox
@@ -1623,7 +1628,7 @@ class SetupUI(Gtk.Window):
             self.set_remember_input_mode(
                 remember_input_mode, update_gsettings=True)
 
-    def _on_chinese_mode_combobox_changed(self, widget) -> None:
+    def _on_chinese_mode_combobox_changed(self, widget: Gtk.ComboBox) -> None:
         '''
         A change of the Chinese mode has been requested
         with the combobox
@@ -1635,7 +1640,7 @@ class SetupUI(Gtk.Window):
             self.set_chinese_mode(
                 chinese_mode, update_gsettings=True)
 
-    def _on_onechar_mode_combobox_changed(self, widget) -> None:
+    def _on_onechar_mode_combobox_changed(self, widget: Gtk.ComboBox) -> None:
         '''
         A change of the onechar mode has been requested
         with the combobox
@@ -1651,7 +1656,8 @@ class SetupUI(Gtk.Window):
         '''The checkbutton for autoselect mode has been clicked'''
         self.set_autoselect_mode(widget.get_active(), update_gsettings=True)
 
-    def _on_autocommit_mode_combobox_changed(self, widget) -> None:
+    def _on_autocommit_mode_combobox_changed(
+            self, widget: Gtk.ComboBox) -> None:
         '''
         A change of the autocommit mode has been requested
         with the combobox
@@ -1669,7 +1675,7 @@ class SetupUI(Gtk.Window):
         self.set_autowildcard_mode(widget.get_active(), update_gsettings=True)
 
     def _on_table_full_width_letter_mode_combobox_changed(
-            self, widget) -> None:
+            self, widget: Gtk.ComboBox) -> None:
         '''
         A change of the letter width when in “Table input” mode has been
         requested with the combobox
@@ -1682,7 +1688,7 @@ class SetupUI(Gtk.Window):
                 mode, update_gsettings=True)
 
     def _on_table_full_width_punct_mode_combobox_changed(
-            self, widget) -> None:
+            self, widget: Gtk.ComboBox) -> None:
         '''
         A change of the letter width when in “Table input” mode has been
         requested with the combobox
@@ -1695,7 +1701,7 @@ class SetupUI(Gtk.Window):
                 mode, update_gsettings=True)
 
     def _on_direct_full_width_letter_mode_combobox_changed(
-            self, widget) -> None:
+            self, widget: Gtk.ComboBox) -> None:
         '''
         A change of the letter width when in “Direct input” mode has been
         requested with the combobox
@@ -1708,7 +1714,7 @@ class SetupUI(Gtk.Window):
                 mode, update_gsettings=True)
 
     def _on_direct_full_width_punct_mode_combobox_changed(
-            self, widget) -> None:
+            self, widget: Gtk.ComboBox) -> None:
         '''
         A change of the letter width when in “Direct input” mode has been
         requested with the combobox
@@ -2819,16 +2825,13 @@ class HelpWindow(Gtk.Window):
     A window to show help
 
     :param parent: The parent object
-    :type parent: Gtk.Window object
     :param title: Title of the help window
-    :type title: String
     :param contents: Contents of the help window
-    :type contents: String
     '''
     def __init__(self,
-                 parent=None,
-                 title='',
-                 contents='') -> None:
+                 parent: Gtk.Window = None,
+                 title: str ='',
+                 contents: str ='') -> None:
         Gtk.Window.__init__(self, title=title)
         if parent:
             self.set_parent(parent)

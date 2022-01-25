@@ -305,7 +305,7 @@ def get_default_keybindings(
     return default_keybindings
 
 def dict_update_existing_keys(
-        pdict: Dict[Any, Any], other_pdict: Dict[Any, Any]):
+        pdict: Dict[Any, Any], other_pdict: Dict[Any, Any]) -> None:
     '''Update values of existing keys in a Python dict from another Python dict
 
     Using pdict.update(other_pdict) would add keys and values from other_pdict
@@ -535,8 +535,8 @@ class ItKeyInputDialog(Gtk.MessageDialog):
             # Translators: This is used in the title bar of a dialog window
             # requesting that the user types a key to be used as a new
             # key binding for a command.
-            title=_('Key input'),
-            parent=None) -> None:
+            title: str = _('Key input'),
+            parent: Gtk.Window = None) -> None:
         Gtk.Dialog.__init__(
             self,
             title=title,

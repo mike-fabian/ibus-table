@@ -19,6 +19,22 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.16.7" date="2022-01-28" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.16.7</url>
+      <issues>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/102">
+          github-mike-fabian-issue#102: Ignore MOD3_MASK (Scroll Lock)
+          when matching key bindings
+        </issue>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/98">
+          github-mike-fabian-issue#98: When a Modifier key release
+          matches a hotkey command, return False not True.
+        </issue>
+      </issues>
+    </release>
     <release version="1.16.4" date="2022-01-24" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

@@ -1,4 +1,75 @@
-commit aa68e6fca218b4536e02f09188717f69d6d689e8
+commit 632be268364f26337128aa301e7acf134f38f2c1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 25 16:55:21 2022 +0100
+
+    Release 1.16.7
+
+commit de758ee10970d84c3e5b902efd1e83f3f7364bfe
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jan 28 12:58:33 2022 +0100
+
+    Update ibus-table.pot (Only line number changes)
+
+commit 9150ab7996e75389fe4ce3706d4904820db9e581
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jan 28 08:30:11 2022 +0100
+
+    Update copyright years
+
+commit e72481fd0652cefb71c791eed9803c084d7ab779
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jan 28 10:29:04 2022 +0100
+
+    Add default value for auto_wildcard in self._default_ime_attributes
+
+commit 0078dc05caf62da118d13617b597af783999eb5f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jan 27 12:59:16 2022 +0100
+
+    Ignore MOD3_MASK (“Usually” Scroll Lock) when matching key bindings
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/102
+
+commit cd8746e1eba0d427c7440b93602d7adc333755a2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jan 26 11:09:02 2022 +0100
+
+    Add some more type hints
+
+commit 05cc750a0c84d1cc48d9c54855391d558d17efdb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 25 16:51:04 2022 +0100
+
+    When a Modifier key release matches a hotkey command, return False not True.
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/98
+    Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2038973
+
+commit 082680dd44b89e9dbbd81e5b93e2f385414bd712
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 25 12:55:14 2022 +0100
+
+    Add some more type hints
+
+commit c71482e3cdd4ed824278cb0cd8c58d2d9f6c89f2
+Author: Weblate <noreply@weblate.org>
+Date:   Fri Jan 28 08:39:46 2022 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 9d9bbbd11d728bf0c4031785c2cf0e2f8d6b05dc
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 25 17:00:29 2022 +0100
+
+    Update ibus-table.pot (Only line number changes)
+
+commit 8d0ce1e3d5b8d2cbd5483c7912bcbdaa363c9327
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Jan 24 18:14:57 2022 +0100
 

@@ -38,9 +38,9 @@ LOGGER = logging.getLogger('ibus-table')
 
 DEBUG_LEVEL = int(0)
 
-class EngineFactory(IBus.Factory):
+class EngineFactory(IBus.Factory): # type: ignore
     """Table IM Engine Factory"""
-    def __init__(self, bus, db='') -> None:
+    def __init__(self, bus: IBus.Bus, db: str = '') -> None:
         global DEBUG_LEVEL
         try:
             DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
@@ -65,7 +65,7 @@ class EngineFactory(IBus.Factory):
         self.engine_id = 0
         self.engine_path = ''
 
-    def do_create_engine(self, engine_name) -> table.TabEngine:
+    def do_create_engine(self, engine_name: str) -> table.TabEngine:
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'EngineFactory.do_create_engine(engine_name=%s)\n',

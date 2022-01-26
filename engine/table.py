@@ -36,6 +36,7 @@ from typing import Iterable
 from typing import Dict
 from typing import Union
 from typing import Optional
+from typing import Callable
 import sys
 import os
 import re
@@ -50,8 +51,8 @@ except (ImportError,):
     IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
 
 from gettext import dgettext
-_ = lambda a: dgettext('ibus-table', a)
-N_ = lambda a: a
+_: Callable[[str], str] = lambda a: dgettext('ibus-table', a)
+N_: Callable[[str], str] = lambda a: a
 from gi import require_version # type: ignore
 require_version('IBus', '1.0')
 from gi.repository import IBus # type: ignore
@@ -256,10 +257,15 @@ SAVE_USER_TIMEOUT = 30 # in seconds
 ########################
 ### Engine Class #####
 ####################
-class TabEngine(IBus.EngineSimple):
+class TabEngine(IBus.EngineSimple): # type: ignore
     '''The IM Engine for Tables'''
 
-    def __init__(self, bus, obj_path, database, unit_test=False) -> None:
+    def __init__(
+            self,
+            bus: IBus.Bus,
+            obj_path: str,
+            database: Any, # tabsqlitedb.TabSqliteDb
+            unit_test: bool = False) -> None:
         super().__init__(connection=bus.get_connection(),
                          object_path=obj_path)
         global DEBUG_LEVEL
@@ -287,7 +293,7 @@ class TabEngine(IBus.EngineSimple):
             LOGGER.debug(
                 'self._engine_name = %s', self._engine_name)
 
-        self._gsettings = Gio.Settings(
+        self._gsettings: Gio.Settings = Gio.Settings(
             schema='org.freedesktop.ibus.engine.table',
             path='/org/freedesktop/ibus/engine/table/%s/' %self._engine_name)
         self._gsettings.connect('changed', self.on_gsettings_value_changed)
@@ -358,7 +364,7 @@ class TabEngine(IBus.EngineSimple):
             'valid_input_chars')
         self._pinyin_valid_input_chars = u'abcdefghijklmnopqrstuvwxyz!@#$%'
 
-        self._debug_level = it_util.variant_to_value(
+        self._debug_level: int = it_util.variant_to_value(
             self._gsettings.get_value('debuglevel'))
         if self._debug_level < 0:
             self._debug_level = 0 # minimum
@@ -366,73 +372,79 @@ class TabEngine(IBus.EngineSimple):
             self._debug_level = 255 # maximum
         DEBUG_LEVEL = self._debug_level
 
-        self._dynamic_adjust = it_util.variant_to_value(
+        dynamic_adjust: Optional[bool] = it_util.variant_to_value(
             self._gsettings.get_user_value('dynamicadjust'))
-        if self._dynamic_adjust is None:
-            self._dynamic_adjust = self.database.ime_properties.get(
-                'dynamic_adjust')
-            if self._dynamic_adjust:
-                self._dynamic_adjust = bool(
-                    self._dynamic_adjust.lower() == u'true')
+        if dynamic_adjust is None:
+            if self.database.ime_properties.get('dynamic_adjust'):
+                dynamic_adjust = self.database.ime_properties.get(
+                    'dynamic_adjust').lower() == u'true'
+                LOGGER.info('Got "dynamic_adjust" entry from database.')
             else:
                 LOGGER.info(
                     'Could not find "dynamic_adjust" entry from database, '
-                    + 'is it an outdated database?')
-        if self._dynamic_adjust is None:
-            self._dynamic_adjust = it_util.variant_to_value(
+                    'is it an outdated database?')
+        if dynamic_adjust is None:
+            dynamic_adjust = it_util.variant_to_value(
                 self._gsettings.get_value('dynamicadjust'))
+        self._dynamic_adjust: bool = dynamic_adjust
 
-        self._single_wildcard_char = it_util.variant_to_value(
+        single_wildcard_char: Optional[str] = it_util.variant_to_value(
             self._gsettings.get_user_value('singlewildcardchar'))
-        if self._single_wildcard_char is None:
-            self._single_wildcard_char = self.database.ime_properties.get(
-                'single_wildcard_char')
-        if self._single_wildcard_char is None:
-            self._single_wildcard_char = it_util.variant_to_value(
-                self._gsettings.get_value('singlewildcardchar'))
+        if single_wildcard_char is None:
+            if self.database.ime_properties.get('single_wildcard_char'):
+                single_wildcard_char = self.database.ime_properties.get(
+                    'single_wildcard_char')
+            else:
+                single_wildcard_char = it_util.variant_to_value(
+                    self._gsettings.get_value('singlewildcardchar'))
+        self._single_wildcard_char: str = single_wildcard_char
         if len(self._single_wildcard_char) > 1:
             self._single_wildcard_char = self._single_wildcard_char[0]
 
-        self._multi_wildcard_char = it_util.variant_to_value(
+        multi_wildcard_char: Optional[str] = it_util.variant_to_value(
             self._gsettings.get_user_value('multiwildcardchar'))
-        if self._multi_wildcard_char is None:
-            self._multi_wildcard_char = self.database.ime_properties.get(
-                'multi_wildcard_char')
-        if self._multi_wildcard_char is None:
-            self._multi_wildcard_char = it_util.variant_to_value(
-                self._gsettings.get_value('multiwildcardchar'))
+        if multi_wildcard_char is None:
+            if self.database.ime_properties.get('multi_wildcard_char'):
+                multi_wildcard_char = self.database.ime_properties.get(
+                    'multi_wildcard_char')
+            else:
+                multi_wildcard_char = it_util.variant_to_value(
+                    self._gsettings.get_value('multiwildcardchar'))
+        self._multi_wildcard_char: str = multi_wildcard_char
         if len(self._multi_wildcard_char) > 1:
             self._multi_wildcard_char = self._multi_wildcard_char[0]
 
-        self._auto_wildcard = it_util.variant_to_value(
+        auto_wildcard: Optional[bool] = it_util.variant_to_value(
             self._gsettings.get_user_value('autowildcard'))
-        if self._auto_wildcard is None:
-            if self.database.ime_properties.get('auto_wildcard') is not None:
-                self._auto_wildcard = self.database.ime_properties.get(
+        if auto_wildcard is None:
+            if self.database.ime_properties.get('auto_wildcard'):
+                auto_wildcard = self.database.ime_properties.get(
                     'auto_wildcard').lower() == u'true'
-        if self._auto_wildcard is None:
-            self._auto_wildcard = it_util.variant_to_value(
-                self._gsettings.get_value('autowildcard'))
+                LOGGER.info('Got "auto_wildcard" entry from database.')
+            else:
+                auto_wildcard = it_util.variant_to_value(
+                    self._gsettings.get_value('autowildcard'))
+        self._auto_wildcard: bool = auto_wildcard
 
         self._max_key_length = int(
             self.database.ime_properties.get('max_key_length'))
         self._max_key_length_pinyin = 7
 
-        self._remember_input_mode = it_util.variant_to_value(
+        self._remember_input_mode: bool = it_util.variant_to_value(
             self._gsettings.get_value('rememberinputmode'))
         # 0 = Direct input, i.e. table input OFF (aka “English input mode”),
         #     most characters are just passed through to the application
         #     (but some fullwidth ↔ halfwidth conversion may be done even
         #     in this mode, depending on the settings)
         # 1 = Table input ON (aka “Table input mode”, “Chinese mode”)
-        self._input_mode = 1
+        self._input_mode: int = 1
         if self._remember_input_mode:
             self._input_mode = it_util.variant_to_value(
                 self._gsettings.get_value('inputmode'))
 
         self._error_sound_object: Optional[simpleaudio.WaveObject] = None
-        self._error_sound_file = ''
-        self._error_sound = it_util.variant_to_value(
+        self._error_sound_file: str = ''
+        self._error_sound: bool = it_util.variant_to_value(
             self._gsettings.get_value('errorsound'))
         self.set_error_sound_file(
             it_util.variant_to_value(
@@ -481,39 +493,43 @@ class TabEngine(IBus.EngineSimple):
             self._full_width_punct[1] = it_util.variant_to_value(
                 self._gsettings.get_value('tabdeffullwidthpunct'))
 
-        self._auto_commit = it_util.variant_to_value(
+        auto_commit: Optional[bool] = it_util.variant_to_value(
             self._gsettings.get_user_value('autocommit'))
-        if self._auto_commit is None:
+        if auto_commit is None:
             if self.database.ime_properties.get('auto_commit'):
-                self._auto_commit = self.database.ime_properties.get(
+                auto_commit = self.database.ime_properties.get(
                     'auto_commit').lower() == u'true'
-        if self._auto_commit is None:
-            self._auto_commit = it_util.variant_to_value(
-                self._gsettings.get_value('autocommit'))
+            else:
+                auto_commit = it_util.variant_to_value(
+                    self._gsettings.get_value('autocommit'))
+        self._auto_commit: bool = auto_commit
 
         # If auto select is true, then the first candidate phrase will
         # be selected automatically during typing. Auto select is true
         # by default for the stroke5 table for example.
-        self._auto_select = it_util.variant_to_value(
+        auto_select: Optional[bool] = it_util.variant_to_value(
             self._gsettings.get_user_value('autoselect'))
-        if self._auto_select is None:
-            if self.database.ime_properties.get('auto_select') is not None:
-                self._auto_select = self.database.ime_properties.get(
+        if auto_select is None:
+            if self.database.ime_properties.get('auto_select'):
+                auto_select = self.database.ime_properties.get(
                     'auto_select').lower() == u'true'
-        if self._auto_select is None:
-            self._auto_select = it_util.variant_to_value(
-                self._gsettings.get_value('autoselect'))
+                LOGGER.info('Got "auto_select" entry from database.')
+            else:
+                auto_select = it_util.variant_to_value(
+                    self._gsettings.get_value('autoselect'))
+        self._auto_select: bool = auto_select
 
-        self._always_show_lookup = it_util.variant_to_value(
+        always_show_lookup: Optional[bool] = it_util.variant_to_value(
             self._gsettings.get_user_value('alwaysshowlookup'))
-        if self._always_show_lookup is None:
-            if (self.database.ime_properties.get('always_show_lookup')
-                is not None):
-                self._always_show_lookup = self.database.ime_properties.get(
+        if always_show_lookup is None:
+            if self.database.ime_properties.get('always_show_lookup'):
+                always_show_lookup = self.database.ime_properties.get(
                     'always_show_lookup').lower() == u'true'
-        if self._always_show_lookup is None:
-            self._always_show_lookup = it_util.variant_to_value(
-                self._gsettings.get_value('alwaysshowlookup'))
+                LOGGER.info('Got "always_show_lookup" entry from database.')
+            else:
+                always_show_lookup = it_util.variant_to_value(
+                    self._gsettings.get_value('alwaysshowlookup'))
+        self._always_show_lookup: bool = always_show_lookup
 
         # The values below will be reset in
         # self.clear_input_not_committed_to_preedit()
@@ -565,8 +581,8 @@ class TabEngine(IBus.EngineSimple):
             self.database.ime_properties.get('char_prompts'))
 
         # self._onechar: whether we only select single character
-        self._onechar = it_util.variant_to_value(self._gsettings.get_value(
-            'onechar'))
+        self._onechar: bool = it_util.variant_to_value(
+            self._gsettings.get_value('onechar'))
         # self._chinese_mode: the candidate filter mode,
         #   0 means to show simplified Chinese only
         #   1 means to show traditional Chinese only
@@ -575,15 +591,15 @@ class TabEngine(IBus.EngineSimple):
         #   4 means to show all characters
         # we use LC_CTYPE or LANG to determine which one to use if
         # no default comes from the user GSettings.
-        self._chinese_mode = it_util.variant_to_value(
+        chinese_mode: Optional[int] = it_util.variant_to_value(
             self._gsettings.get_user_value('chinesemode'))
-        if self._chinese_mode is not None and DEBUG_LEVEL > 1:
-            LOGGER.debug(
-                'Chinese mode found in Gsettings, mode=%s',
-                self._chinese_mode)
-        if self._chinese_mode is None:
-            self._chinese_mode = it_util.get_default_chinese_mode(
+        if chinese_mode is None:
+            chinese_mode = it_util.get_default_chinese_mode(
                 self.database)
+        elif DEBUG_LEVEL > 1:
+            LOGGER.debug(
+                'Chinese mode found in Gsettings, mode=%s', chinese_mode)
+        self._chinese_mode: int = chinese_mode
 
         # If auto select is true, then the first candidate phrase will
         # be selected automatically during typing. Auto select is true
@@ -598,25 +614,27 @@ class TabEngine(IBus.EngineSimple):
             self._auto_select = it_util.variant_to_value(
                 self._gsettings.get_value('autoselect'))
 
+        self._default_keybindings: Dict[str, List[str]] = {}
         self._default_keybindings = it_util.get_default_keybindings(
             self._gsettings, self.database)
 
-        self._page_size = it_util.variant_to_value(
+        self._page_size: int = it_util.variant_to_value(
             self._gsettings.get_default_value('lookuptablepagesize'))
         for index in range(1, 10):
             if not self._default_keybindings[
                     'commit_candidate_%s' % (index + 1)]:
                 self._page_size = min(index, self._page_size)
                 break
-        user_page_size = it_util.variant_to_value(
+        user_page_size: Optional[int] = it_util.variant_to_value(
             self._gsettings.get_user_value('lookuptablepagesize'))
         if not user_page_size is None:
             self._page_size = user_page_size
 
-        self._orientation = it_util.variant_to_value(
+        orientation: Optional[int] = it_util.variant_to_value(
             self._gsettings.get_user_value('lookuptableorientation'))
-        if self._orientation is None:
-            self._orientation = self.database.get_orientation()
+        if orientation is None:
+            orientation = self.database.get_orientation()
+        self._orientation: int = orientation
 
         user_keybindings = it_util.variant_to_value(
             self._gsettings.get_user_value('keybindings'))
@@ -3195,7 +3213,10 @@ class TabEngine(IBus.EngineSimple):
 
         return unichar_half_to_full(char)
 
-    def do_candidate_clicked(self, index: int, _button, _state) -> bool:
+    def do_candidate_clicked(
+            self, index: int, _button: int, _state: int) -> bool:
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('index=%s _button=%s state=%s', index, _button, _state)
         if self.commit_to_preedit_current_page(index):
             # commits to preëdit
             self.commit_string(
@@ -3752,10 +3773,10 @@ class TabEngine(IBus.EngineSimple):
         return False
 
     def __do_process_key_event(
-            self, _obj, keyval: int, keycode: int, state: int) -> bool:
-        '''
-        This function is connected to the 'process-key-event' signal.
-        '''
+            self,
+            _obj: IBus.EngineSimple,
+            keyval: int, keycode: int, state: int) -> bool:
+        '''This function is connected to the 'process-key-event' signal.'''
         return self._do_process_key_event(keyval, keycode, state)
 
     def _do_process_key_event(
@@ -4191,7 +4212,8 @@ class TabEngine(IBus.EngineSimple):
         self._update_ui()
         return res
 
-    def on_gsettings_value_changed(self, _settings, key) -> None:
+    def on_gsettings_value_changed(
+            self, _settings: Gio.Settings, key: str) -> None:
         '''
         Called when a value in the settings has been changed.
         '''

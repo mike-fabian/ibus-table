@@ -27,6 +27,7 @@ from typing import Any
 from typing import List
 from typing import Tuple
 from typing import Dict
+from typing import Callable
 import sys
 import os
 import logging
@@ -35,7 +36,7 @@ from gi import require_version # type: ignore
 require_version('Gio', '2.0')
 from gi.repository import Gio # type: ignore
 require_version('GLib', '2.0')
-from gi.repository import GLib # type: ignore
+from gi.repository import GLib
 require_version('Gdk', '3.0')
 from gi.repository import Gdk
 require_version('Gtk', '3.0')
@@ -49,8 +50,8 @@ import tabsqlitedb
 LOGGER = logging.getLogger('ibus-table')
 
 DOMAINNAME = 'ibus-table'
-_ = lambda a: gettext.dgettext(DOMAINNAME, a)
-N_ = lambda a: a
+_: Callable[[str], str] = lambda a: gettext.dgettext(DOMAINNAME, a)
+N_: Callable[[str], str] = lambda a: a
 
 # When matching keybindings, only the bits in the following mask are
 # considered for key.state:
@@ -190,6 +191,7 @@ def get_default_chinese_mode(database: tabsqlitedb.TabSqliteDb) -> int:
 def get_default_keybindings(
         gsettings: Gio.Settings,
         database: tabsqlitedb.TabSqliteDb) -> Dict[str, List[str]]:
+    default_keybindings: Dict[str, List[str]] = {}
     default_keybindings = variant_to_value(
         gsettings.get_default_value('keybindings'))
     # Now update the default keybindings from gsettings with
@@ -529,7 +531,7 @@ class HotKeys:
     def __str__(self) -> str:
         return repr(self._hotkeys)
 
-class ItKeyInputDialog(Gtk.MessageDialog):
+class ItKeyInputDialog(Gtk.MessageDialog): # type: ignore
     def __init__(
             self,
             # Translators: This is used in the title bar of a dialog window
@@ -561,18 +563,18 @@ class ItKeyInputDialog(Gtk.MessageDialog):
         self.show()
 
     def on_key_press_event(# pylint: disable=no-self-use
-            self, widget, event) -> bool:
+            self, widget: Gtk.MessageDialog, event: Gdk.EventKey) -> bool:
         widget.e = (event.keyval,
                     event.get_state() & KEYBINDING_STATE_MASK)
         return True
 
     def on_key_release_event(# pylint: disable=no-self-use
-            self, widget, _event) -> bool:
+            self, widget: Gtk.MessageDialog, _event: Gdk.EventKey) -> bool:
         widget.response(Gtk.ResponseType.OK)
         return True
 
-class ItAboutDialog(Gtk.AboutDialog):
-    def  __init__(self, parent=None) -> None:
+class ItAboutDialog(Gtk.AboutDialog): # type: ignore
+    def  __init__(self, parent: Gtk.Window = None) -> None:
         Gtk.AboutDialog.__init__(self, parent=parent)
         self.set_modal(True)
         # An empty string in aboutdialog.set_logo_icon_name('')
@@ -642,14 +644,12 @@ class ItAboutDialog(Gtk.AboutDialog):
         self.show()
 
     def on_close_aboutdialog( # pylint: disable=no-self-use
-            self, _about_dialog, _response) -> None:
+            self, _about_dialog: Gtk.Dialog, _response: Gtk.ResponseType) -> None:
         '''
         The “About” dialog has been closed by the user
 
         :param _about_dialog: The “About” dialog
-        :type _about_dialog: GtkDialog object
         :param _response: The response when the “About” dialog was closed
-        :type _response: Gtk.ResponseType enum
         '''
         self.destroy()
 

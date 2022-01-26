@@ -200,7 +200,7 @@ VARIANTS_TABLE = {
 ''')
 
     script_file.write('''
-def detect_chinese_category(phrase):
+def detect_chinese_category(phrase: str) -> int:
     \'\'\'
     New function using Unihan data to guess whether a text is
     simplified Chinese, traditional Chinese, both, or something rare

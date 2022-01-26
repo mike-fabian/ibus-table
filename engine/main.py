@@ -130,7 +130,7 @@ class IMApp:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('IMApp.__init__(exec_by_ibus=%s)\n', exec_by_ibus)
         self.__mainloop = GLib.MainLoop()
-        self.__bus = IBus.Bus()
+        self.__bus: IBus.Bus = IBus.Bus()
         self.__bus.connect("disconnected", self.__bus_destroy_cb)
         self.__factory = factory.EngineFactory(self.__bus, dbfile)
         self.destroyed = False
@@ -201,7 +201,7 @@ class IMApp:
             LOGGER.debug('IMApp.quit()\n')
         self.__bus_destroy_cb()
 
-    def __bus_destroy_cb(self, bus=None) -> None:
+    def __bus_destroy_cb(self, bus: Any = None) -> None:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('IMApp.__bus_destroy_cb(bus=%s)\n', bus)
         if self.destroyed:
@@ -265,7 +265,7 @@ def write_xml() -> None:
 
     egs = Element('engines')
     for _db in _all_dbs:
-        _sq_db = tabsqlitedb.TabSqliteDb(_db, user_db=None)
+        _sq_db = tabsqlitedb.TabSqliteDb(_db, user_db='')
         _engine = SubElement(egs, 'engine')
 
         _name = SubElement(_engine, 'name')
@@ -293,9 +293,9 @@ def write_xml() -> None:
             _longname.text = engine_name
 
         _language = SubElement(_engine, 'language')
-        _langs = _sq_db.ime_properties.get('languages')
-        if _langs:
-            _langs = _langs.split(',')
+        _languages = _sq_db.ime_properties.get('languages')
+        if _languages:
+            _langs = _languages.split(',')
             if len(_langs) == 1:
                 _language.text = _langs[0].strip()
             else:

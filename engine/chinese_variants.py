@@ -12578,7 +12578,7 @@ VARIANTS_TABLE = {
     u'𱍉': 1,
     }
 
-def detect_chinese_category(phrase):
+def detect_chinese_category(phrase: str) -> int:
     '''
     New function using Unihan data to guess whether a text is
     simplified Chinese, traditional Chinese, both, or something rare

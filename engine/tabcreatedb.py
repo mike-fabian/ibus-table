@@ -63,7 +63,7 @@ class InvalidTableName(Exception):
     """
     Raised when an invalid table name is given
     """
-    def __init__(self, name) -> None:
+    def __init__(self, name: str) -> None:
         super().__init__()
         self.table_name = name
 
@@ -165,12 +165,12 @@ class Section:
     '''Helper class for parsing the sections of the tables marked
     with BEGIN_* and END_*.
     '''
-    patt: re.Pattern
+    patt: re.Pattern[str]
     start: str
     end: str
     in_section: bool
 
-    def __init__(self, patt: re.Pattern, start: str, end: str):
+    def __init__(self, patt: re.Pattern[str], start: str, end: str):
         self.patt = patt
         self.start = start.strip()
         self.end = end.strip()
@@ -192,7 +192,7 @@ class Section:
         return False
 
 
-def main():
+def main() -> None:
     '''Main program'''
 
     def debug_print(message: str) -> None:
@@ -207,7 +207,7 @@ def main():
 
     debug_print('Processing Database')
     db = tabsqlitedb.TabSqliteDb(filename=_ARGS.name,
-                                 user_db=None,
+                                 user_db='',
                                  create_database=True)
 
     def parse_source(
@@ -323,15 +323,15 @@ def main():
 
         return _extra
 
-    def pinyin_parser(f: Iterable[str]) -> Iterable[Tuple[str, str, str]]:
+    def pinyin_parser(f: Iterable[str]) -> Iterable[Tuple[str, str, int]]:
         for pinyin_line in f:
             _zi, _pinyin, _freq = pinyin_line.strip().split()
-            yield (_pinyin, _zi, _freq)
+            yield (_pinyin, _zi, int(_freq))
 
-    def suggestion_parser(f: Iterable[str]) -> Iterable[Tuple[str, str]]:
+    def suggestion_parser(f: Iterable[str]) -> Iterable[Tuple[str, int]]:
         for suggestion_line in f:
             _phrase, _freq = suggestion_line.strip().split()
-            yield (_phrase, _freq)
+            yield (_phrase, int(_freq))
 
     def phrase_parser(f: Iterable[str]) -> List[Tuple[str, str, int, int]]:
         phrase_list: List[Tuple[str, str, int, int]] = []
@@ -357,13 +357,13 @@ def main():
             val = val.strip()
             yield (attr, val)
 
-    def extra_parser(f: Iterable[str]) -> List[Tuple[str, str, str, int]]:
-        extra_list: List[Tuple[str, str, str, int]] = []
+    def extra_parser(f: Iterable[str]) -> List[Tuple[str, str, int, int]]:
+        extra_list: List[Tuple[str, str, int, int]] = []
         for line in f:
             phrase, freq = line.strip().split()
             _tabkey = db.parse_phrase(phrase)
             if _tabkey:
-                extra_list.append((_tabkey, phrase, freq, 0))
+                extra_list.append((_tabkey, phrase, int(freq), 0))
             else:
                 print('No tabkeys found for “%s”, not adding.\n' %phrase)
         return extra_list
@@ -401,19 +401,19 @@ def main():
         debug_print('Create Indexes ')
         db.create_indexes('main')
         debug_print('Done! :D')
-        return 0
+        return
 
     # now we parse the ime source file
     debug_print('\tLoad sources "%s"' % _ARGS.source)
     patt_s = re.compile(r'.*\.bz2')
     _bz2s = patt_s.match(_ARGS.source)
     if _bz2s:
-        source = bz2.open(
+        source_str = bz2.open(
             _ARGS.source, mode='rt', encoding='UTF-8').read()
     else:
-        source = open(_ARGS.source, mode='r', encoding='UTF-8').read()
-    source = source.replace('\r\n', '\n')
-    source = source.split('\n')
+        source_str = open(_ARGS.source, mode='r', encoding='UTF-8').read()
+    source_str = source_str.replace('\r\n', '\n')
+    source = source_str.split('\n')
     # first get config line and table line and goucima line respectively
     debug_print('\tParsing table source file ')
     attri, table, gouci = parse_source(source)
@@ -479,7 +479,7 @@ def main():
         debug_print('\tLoad extra words source "%s"' % _ARGS.extra)
         _bz2p = patt_s.match(_ARGS.extra)
         if _bz2p:
-            extra_s = bz2.BZ2File(_ARGS.extra, 'r')
+            extra_s = bz2.open(_ARGS.extra, mode='rt', encoding='UTF-8')
         else:
             extra_s = open(_ARGS.extra, 'r')
         debug_print('\tParsing extra words source file ')
@@ -500,9 +500,9 @@ def main():
                 {"%s\t%s" % (extraword[0], extraword[1]): extraword})
         debug_print('\t  the len of extra_phrases is: %d' % len(extra_phrases))
         # pop duplicated keys
-        for phrase in extra_phrases:
-            if phrase in orig_phrases:
-                extra_phrases.pop(phrase)
+        for extra_phrase in extra_phrases:
+            if extra_phrase in orig_phrases:
+                extra_phrases.pop(extra_phrase)
         debug_print('\t  %d extra phrases will be added' % len(extra_phrases))
         new_phrases = list(extra_phrases.values())
         debug_print('\tAdding extra words into DB ')

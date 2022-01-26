@@ -25,6 +25,11 @@ Module for ibus-table to access the sqlite3 databases
 '''
 from typing import List
 from typing import Tuple
+from typing import Iterable
+from typing import Dict
+from typing import Union
+from typing import Optional
+from typing import Callable
 import os
 import os.path as path
 import shutil
@@ -79,7 +84,10 @@ class ImeProperties:
     '''
     A class to cache the properties of an input method.
     '''
-    def __init__(self, db=None, default_properties=None) -> None:
+    def __init__(
+            self,
+            db: Optional[sqlite3.dbapi2.Connection] = None,
+            default_properties: Optional[Dict[str, str]] = None) -> None:
         '''
         “db” is the handle of the sqlite3 database file obtained by
         sqlite3.connect().
@@ -138,20 +146,23 @@ class TabSqliteDb:
            indidated that this is a user defined phrase.
     '''
     def __init__(
-            self, filename=None, user_db=None, create_database=False,
-            unit_test=False):
+            self,
+            filename: str = '',
+            user_db: str = '',
+            create_database: bool = False,
+            unit_test: bool = False) -> None:
         global DEBUG_LEVEL
         try:
-            DEBUG_LEVEL = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL'))
+            DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
         except (TypeError, ValueError):
             DEBUG_LEVEL = int(0)
-        self.old_phrases = []
+        self.old_phrases: List[Tuple[str, str, int, int]] = []
         self.filename = filename
         self._user_db = user_db
         self.reset_phrases_cache()
 
         if create_database or os.path.isfile(self.filename):
-            self.db = sqlite3.connect(self.filename)
+            self.db: sqlite3.dbapi2.Connection = sqlite3.connect(self.filename)
         else:
             print('Cannot open database file %s' %self.filename)
         try:
@@ -200,7 +211,7 @@ class TabSqliteDb:
             'dynamic_adjust':'false',
             'auto_select':'false',
             'auto_commit':'false',
-            # 'no_check_chars':u'',
+            # 'no_check_chars': '',
             'description':'A IME under IBus Table',
             'layout':'us',
             'symbol':'',
@@ -234,16 +245,8 @@ class TabSqliteDb:
         self._snum = self.ime_properties.get("serial_number")
         self._is_chinese = self.is_chinese()
         self._is_cjk = self.is_cjk()
-        self.user_can_define_phrase = self.ime_properties.get(
-            'user_can_define_phrase')
-        if self.user_can_define_phrase:
-            self.user_can_define_phrase = bool(
-                self.user_can_define_phrase.lower() == u'true')
-        else:
-            print(
-                'Could not find "user_can_define_phrase" entry from database, '
-                + 'is it an outdated database?')
-            self.user_can_define_phrase = False
+        self.user_can_define_phrase = (self.ime_properties.get(
+            'user_can_define_phrase').lower() == 'true')
 
         self.rules = self.get_rules()
         self.possible_tabkeys_lengths = self.get_possible_tabkeys_lengths()
@@ -274,8 +277,7 @@ class TabSqliteDb:
             # “HOME=/foobar ibus-table-createdb” should not fail if
             # “/foobar” is not writeable.
             if not path.isdir(tables_path):
-                old_tables_path = os.path.join(
-                    os.getenv('HOME'), '.ibus/tables')
+                old_tables_path = os.path.expanduser('~/.ibus/tables')
                 if path.isdir(old_tables_path):
                     if os.access(os.path.join(
                             old_tables_path, 'debug.log'), os.F_OK):
@@ -335,7 +337,7 @@ class TabSqliteDb:
                                 len(phrase_table_column_names),
                                 self.get_number_of_columns_of_phrase_table(
                                     user_db))
-                            self.old_phrases = None
+                            self.old_phrases = []
                         timestamp = time.strftime('-%Y-%m-%d_%H:%M:%S')
                         LOGGER.debug(
                             'Renaming the incompatible database to "%s".',
@@ -402,9 +404,9 @@ class TabSqliteDb:
             ''' % user_db)
         self.create_tables("user_db")
         if self.old_phrases:
-            sqlargs = []
+            sqlargs_old_phrases: List[Dict[str, Union[str, int]]] = []
             for phrase in self.old_phrases:
-                sqlargs.append(
+                sqlargs_old_phrases.append(
                     {'tabkeys': phrase[0],
                      'phrase': phrase[1],
                      'freq': phrase[2],
@@ -414,7 +416,7 @@ class TabSqliteDb:
             VALUES (:tabkeys, :phrase, :freq, :user_freq)
             '''
             try:
-                self.db.executemany(sqlstr, sqlargs)
+                self.db.executemany(sqlstr, sqlargs_old_phrases)
             except:
                 LOGGER.exception('Error inserting old phrases')
             self.db.commit()
@@ -425,8 +427,12 @@ class TabSqliteDb:
         self.generate_userdb_desc()
 
     def update_phrase(
-            self, tabkeys=u'', phrase=u'',
-            user_freq=0, database='user_db', commit=True):
+            self,
+            tabkeys: str = '',
+            phrase: str = '',
+            user_freq: int = 0,
+            database: str = 'user_db',
+            commit: bool = True) -> None:
         '''update phrase freqs'''
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
@@ -449,7 +455,7 @@ class TabSqliteDb:
         except:
             LOGGER.exception('Unexpected error updating phrase in user_db.')
 
-    def sync_usrdb(self):
+    def sync_usrdb(self) -> None:
         '''
         Trigger a checkpoint operation.
         '''
@@ -459,21 +465,20 @@ class TabSqliteDb:
         self.db.commit()
         self.db.execute('PRAGMA wal_checkpoint;')
 
-    def reset_phrases_cache(self):
+    def reset_phrases_cache(self) -> None:
         '''
         Make the phrases cache empty
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('reset_phrases_cache()')
-        self._phrases_cache = {}
+        self._phrases_cache: Dict[str, Union[str, Iterable[Tuple[str, str, int, int]]]]= {}
 
-    def invalidate_phrases_cache(self, tabkeys=u''):
+    def invalidate_phrases_cache(self, tabkeys: str = '') -> None:
         '''
         Delete all phrases starting with “tabkeys” from
         the phrases cache.
 
         :param tabkeys: The keys typed
-        :type tabkeys: String
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('invalidate_phrases_cache()')
@@ -481,7 +486,7 @@ class TabSqliteDb:
             if self._phrases_cache.get(tabkeys[0:i]):
                 self._phrases_cache.pop(tabkeys[0:i])
 
-    def load_phrases_cache(self):
+    def load_phrases_cache(self) -> None:
         '''
         Load phrases cache from disk
         '''
@@ -503,7 +508,7 @@ class TabSqliteDb:
         except:
             LOGGER.debug('Unknown error reading %s', self.cache_path)
 
-    def save_phrases_cache(self):
+    def save_phrases_cache(self) -> None:
         '''
         Save phrases cache from disk
         '''
@@ -519,7 +524,7 @@ class TabSqliteDb:
         except:
             LOGGER.exception('Unexpected error in save_phrases_cache().')
 
-    def is_chinese(self):
+    def is_chinese(self) -> bool:
         '''
         Check whether this input method is classified as Chinese
         in the the database.
@@ -532,14 +537,14 @@ class TabSqliteDb:
                     return True
         return False
 
-    def is_cjk(self):
+    def is_cjk(self) -> bool:
         '''
         Check whether this input method is classified as Chinese,
         Japanese, or Korean in the database.
         '''
-        languages = self.ime_properties.get('languages')
-        if languages:
-            languages = languages.split(',')
+        languages_str = self.ime_properties.get('languages')
+        if languages_str:
+            languages = languages_str.split(',')
             for language in languages:
                 for lang in ['zh', 'ja', 'ko']:
                     if language.strip().startswith(lang):
@@ -573,18 +578,14 @@ class TabSqliteDb:
             return ret
         return "1,2,3,4,5,6,7,8,9,0"
 
-    def get_orientation(self):
-        '''
-        Get the default orientation of the lookup table from the database
-
-        :rtype: Integer
-        '''
+    def get_orientation(self) -> int:
+        '''Get the default orientation of the lookup table from the database'''
         try:
             return int(self.ime_properties.get('orientation'))
         except (TypeError, ValueError):
             return 1
 
-    def create_tables(self, database):
+    def create_tables(self, database: str) -> None:
         '''Create tables that contain all phrase'''
         if database == 'main':
             sqlstr = '''
@@ -611,7 +612,7 @@ class TabSqliteDb:
         self.db.execute(sqlstr)
         self.db.commit()
 
-    def update_ime(self, attrs):
+    def update_ime(self, attrs: Iterable[Tuple[str, str]]) -> None:
         '''Update or insert attributes in ime table, attrs is a iterable object
         Like [(attr,val), (attr,val), ...]
 
@@ -635,29 +636,36 @@ class TabSqliteDb:
         # The self variables used by tabcreatedb.py need to be updated now:
         self._mlen = int(self.ime_properties.get('max_key_length'))
         self._is_chinese = self.is_chinese()
-        self.user_can_define_phrase = self.ime_properties.get(
-            'user_can_define_phrase')
-        if self.user_can_define_phrase:
-            self.user_can_define_phrase = bool(
-                self.user_can_define_phrase.lower() == u'true')
-        else:
-            print(
-                'Could not find "user_can_define_phrase" entry from database, '
-                + 'is it a outdated database?')
-            self.user_can_define_phrase = False
+        self.user_can_define_phrase = (self.ime_properties.get(
+            'user_can_define_phrase').lower() == 'true')
         self.rules = self.get_rules()
 
-    def get_rules(self):
-        '''Get phrase construct rules'''
-        rules = {}
+    def get_rules(self) -> Dict[Union[str, int], Union[int, List[Tuple[int, int]]]]:
+        '''Get phrase construct rules
+
+        Example:
+
+        The wubi-jidian86.txt table source contains:
+
+        RULES = ce2:p11+p12+p21+p22;ce3:p11+p21+p31+p32;ca4:p11+p21+p31+p-11
+
+        and the return value of this function becomes:
+
+        {2: [(1, 1), (1, 2), (2, 1), (2, 2)],
+         3: [(1, 1), (2, 1), (3, 1), (3, 2)],
+         'above': 4,
+         4: [(1, 1), (2, 1), (3, 1), (-1, 1)]}
+        '''
+        rules: Dict[Union[str, int], Union[int, List[Tuple[int, int]]]] = {}
         patt_r = re.compile(r'c([ea])(\d):(.*)')
         patt_p = re.compile(r'p(-{0,1}\d)(-{0,1}\d)')
         if not self.user_can_define_phrase:
-            return ''
+            return {}
         try:
-            _rules = self.ime_properties.get('rules')
-            if _rules:
-                _rules = _rules.strip().split(';')
+            _rules_str = self.ime_properties.get('rules')
+            _rules: List[str] = []
+            if _rules_str:
+                _rules = _rules_str.strip().split(';')
             for rule in _rules:
                 res = patt_r.match(rule)
                 if res:
@@ -670,8 +678,9 @@ class TabSqliteDb:
                         break
                     for _cm in _cms:
                         cm_res = patt_p.match(_cm)
-                        cms.append((int(cm_res.group(1)),
-                                    int(cm_res.group(2))))
+                        if cm_res:
+                            cms.append((int(cm_res.group(1)),
+                                        int(cm_res.group(2))))
                     rules[int(res.group(2))] = cms
                 else:
                     print('not a legal rule: "%s"' %rule)
@@ -679,7 +688,7 @@ class TabSqliteDb:
             LOGGER.exception('Unexpected error in get_rules().')
         return rules
 
-    def get_possible_tabkeys_lengths(self):
+    def get_possible_tabkeys_lengths(self) -> List[int]:
         '''Return a list of the possible lengths for tabkeys in this table.
 
         Example:
@@ -705,7 +714,7 @@ class TabSqliteDb:
         '''
         if self.rules:
             max_len = self.rules["above"]
-            return [len(self.rules[x]) for x in range(2, max_len+1)][:]
+            return [len(self.rules[x]) for x in range(2, max_len+1)][:] # type: ignore
         try:
             least_commit_len = int(
                 self.ime_properties.get('least_commit_length'))
@@ -715,16 +724,19 @@ class TabSqliteDb:
             return list(range(least_commit_len, self._mlen + 1))
         return []
 
-    def get_start_chars(self):
+    def get_start_chars(self) -> str:
         '''return possible start chars of IME'''
         return self.ime_properties.get('start_chars')
 
-    def get_no_check_chars(self):
+    def get_no_check_chars(self) -> str:
         '''Get the characters which engine should not change freq'''
         _chars = self.ime_properties.get('no_check_chars')
         return _chars
 
-    def add_phrases(self, phrases, database='main'):
+    def add_phrases(
+            self,
+            phrases: Iterable[Tuple[str, str, int, int]],
+            database: str = 'main') -> None:
         '''Add many phrases to database fast. Used by tabcreatedb.py when
         creating the system database from scratch.
 
@@ -742,7 +754,7 @@ class TabSqliteDb:
 
         '''
         if DEBUG_LEVEL > 1:
-            LOGGER.debug('len(phrases)=%s', len(phrases))
+            LOGGER.debug('len(phrases)=%s', len(list(phrases)))
         insert_sqlstr = '''
         INSERT INTO %(database)s.phrases
         (tabkeys, phrase, freq, user_freq)
@@ -761,8 +773,13 @@ class TabSqliteDb:
         self.db.execute('PRAGMA wal_checkpoint;')
 
     def add_phrase(
-            self, tabkeys=u'', phrase=u'', freq=0, user_freq=0,
-            database='main', commit=True):
+            self,
+            tabkeys: str = '',
+            phrase: str = '',
+            freq: int = 0,
+            user_freq: int = 0,
+            database: str = 'main',
+            commit: bool = True) -> None:
         '''Add phrase to database, phrase is a object of
         (tabkeys, phrase, freq ,user_freq)
         '''
@@ -811,7 +828,7 @@ class TabSqliteDb:
         except:
             LOGGER.exception('Unexpected error in add_phrase()')
 
-    def add_goucima(self, goucimas):
+    def add_goucima(self, goucimas: Iterable[Tuple[str, str]]) -> None:
         '''Add goucima into database, goucimas is iterable object
         Like goucimas = [(zi,goucima), (zi,goucima), ...]
         '''
@@ -829,7 +846,10 @@ class TabSqliteDb:
         except:
             LOGGER.exception('Unexpected error in add_goucima().')
 
-    def add_pinyin(self, pinyins, database='main'):
+    def add_pinyin(
+            self,
+            pinyins: Iterable[Tuple[str, str, int]],
+            database: str = 'main') -> None:
         '''Add pinyin to database, pinyins is a iterable object
         Like: [(zi,pinyin, freq), (zi, pinyin, freq), ...]
         '''
@@ -855,7 +875,10 @@ class TabSqliteDb:
                     count, pinyin, zi, freq)
         self.db.commit()
 
-    def add_suggestion(self, suggestions, database='main'):
+    def add_suggestion(
+            self,
+            suggestions: Iterable[Tuple[str, int]],
+            database: str = 'main') -> None:
         '''Add suggestion phrase to database, suggestions is a iterable object
         Like: [(phrase, freq), (phrase, freq), ...]
         '''
@@ -875,7 +898,7 @@ class TabSqliteDb:
                     count, phrase, freq)
         self.db.commit()
 
-    def optimize_database(self):
+    def optimize_database(self) -> None:
         '''
         Optimize the database by copying the contents
         to temporary tables and back.
@@ -903,7 +926,7 @@ class TabSqliteDb:
         self.db.executescript("VACUUM;")
         self.db.commit()
 
-    def drop_indexes(self, _database):
+    def drop_indexes(self, _database: str) -> None:
         '''Drop the indexes in the database to reduce its size
 
         We do not use any indexes at the moment, therefore this
@@ -912,7 +935,7 @@ class TabSqliteDb:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('drop_indexes()')
 
-    def create_indexes(self, _database, _commit=True):
+    def create_indexes(self, _database: str, _commit: bool = True) -> None:
         '''Create indexes for the database.
 
         We do not use any indexes at the moment, therefore
@@ -927,14 +950,12 @@ class TabSqliteDb:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('create_indexes()')
 
-    def big5_code(self, phrase):
+    def big5_code(self, phrase: str) -> bytes:
         '''
         Encode a string in Big5 or, if that is not possible,
         return something higher than any Big5 code.
 
         :param phrase: String to be encoded in Big5 encoding
-        :type phrase: String
-        :rtype: Byte array
         '''
         try:
             big5 = phrase.encode('Big5')
@@ -943,7 +964,10 @@ class TabSqliteDb:
         return big5
 
     def best_candidates(
-            self, typed_tabkeys=u'', candidates=(), chinese_mode=4):
+            self,
+            typed_tabkeys: str = '',
+            candidates: Iterable[Tuple[str, str, int, int]] = (),
+            chinese_mode: int = 4) -> Iterable[Tuple[str, str, int, int]]:
         '''
         “candidates” is an array containing something like:
         [(tabkeys, phrase, freq, user_freq), ...]
@@ -957,11 +981,11 @@ class TabSqliteDb:
         if engine_name in [
                 'cangjie3', 'cangjie5', 'cangjie-big',
                 'quick-classic', 'quick3', 'quick5']:
-            code_point_function = self.big5_code
+            code_point_function: Callable[[str], bytes] = self.big5_code
         else:
-            code_point_function = lambda x: (1)
+            code_point_function: Callable[[str], bytes] = lambda x: (b'\xff\xff')
         if self._is_chinese:
-            pinyin_exact_match_function = lambda x: (
+            pinyin_exact_match_function: Callable[[str], int] = lambda x: (
                 - int(typed_tabkeys == x[:-1] and  x[-1] in '!@#$%')
             )
         else:
@@ -1006,9 +1030,14 @@ class TabSqliteDb:
                       ))[:maximum_number_of_candidates]
 
     def select_words(
-            self, tabkeys=u'', onechar=False, chinese_mode=4,
-            single_wildcard_char=u'', multi_wildcard_char=u'',
-            auto_wildcard=False, dynamic_adjust=False):
+            self,
+            tabkeys: str = '',
+            onechar: bool = False,
+            chinese_mode: int = 4,
+            single_wildcard_char: str = '',
+            multi_wildcard_char: str = '',
+            auto_wildcard: bool = False,
+            dynamic_adjust: bool = False) -> Iterable[Tuple[str, str, int, int]]:
         '''
         Get matching phrases for tabkeys from the database.
         '''
@@ -1017,7 +1046,7 @@ class TabSqliteDb:
         # query phrases cache first
         best = self._phrases_cache.get(tabkeys)
         if best:
-            return best
+            return best # type: ignore
         one_char_condition = ''
         if onechar:
             # for some users really like to select only single characters
@@ -1104,8 +1133,11 @@ class TabSqliteDb:
         return best
 
     def select_chinese_characters_by_pinyin(
-            self, tabkeys=u'', chinese_mode=4, single_wildcard_char=u'',
-            multi_wildcard_char=u''):
+            self,
+            tabkeys: str = '',
+            chinese_mode: int = 4,
+            single_wildcard_char: str = '',
+            multi_wildcard_char: str = '') -> Iterable[Tuple[str, str, int, int]]:
         '''
         Get Chinese characters matching the pinyin given by tabkeys
         from the database.
@@ -1133,13 +1165,13 @@ class TabSqliteDb:
             bitmask = (1 << 0) # simplified only
         elif chinese_mode == 1:
             bitmask = (1 << 1) # traditional only
-        phrase_frequencies = []
+        phrase_frequencies: List[Tuple[str, str, int, int]] = []
         for (pinyin, zi, freq) in results:
             if not bitmask:
-                phrase_frequencies.append(tuple([pinyin, zi, freq, 0]))
+                phrase_frequencies.append((pinyin, zi, freq, 0))
             else:
                 if bitmask & chinese_variants.detect_chinese_category(zi):
-                    phrase_frequencies.append(tuple([pinyin, zi, freq, 0]))
+                    phrase_frequencies.append((pinyin, zi, freq, 0))
         return self.best_candidates(
             typed_tabkeys=tabkeys,
             candidates=phrase_frequencies,
@@ -1177,9 +1209,9 @@ class TabSqliteDb:
         if engine_name in [
                 'cangjie3', 'cangjie5', 'cangjie-big',
                 'quick-classic', 'quick3', 'quick5']:
-            code_point_function = self.big5_code
+            code_point_function: Callable[[str], bytes] = self.big5_code
         else:
-            code_point_function = lambda x: (1)
+            code_point_function: Callable[[str], bytes] = lambda x: (b'\xff\xff')
 
         return sorted(candidates,
                       key=lambda x: (
@@ -1193,7 +1225,7 @@ class TabSqliteDb:
                           ord(x[0][1])
                       ))[:maximum_number_of_candidates]
 
-    def generate_userdb_desc(self):
+    def generate_userdb_desc(self) -> None:
         '''
         Add a description table to the user database
 
@@ -1214,7 +1246,7 @@ class TabSqliteDb:
         except:
             LOGGER.exception('Unexpected error in generate_userdb_desc().')
 
-    def init_user_db(self, db_file):
+    def init_user_db(self, db_file: str) -> None:
         '''
         Initialize the user database unless it is an in-memory database
 
@@ -1238,7 +1270,7 @@ class TabSqliteDb:
             ''')
             db.commit()
 
-    def get_database_desc(self, db_file):
+    def get_database_desc(self, db_file: str) -> Optional[Dict[str, str]]:
         '''
         Get the description table from the database
 
@@ -1258,7 +1290,7 @@ class TabSqliteDb:
         except:
             return None
 
-    def get_number_of_columns_of_phrase_table(self, db_file):
+    def get_number_of_columns_of_phrase_table(self, db_file: str) -> int:
         '''
         Get the number of columns in the 'phrases' table in
         the database in db_file.
@@ -1295,21 +1327,20 @@ class TabSqliteDb:
         except:
             return 0
 
-    def get_goucima(self, zi):
+    def get_goucima(self, zi: str) -> str:
         '''Get goucima of given character'''
         if not zi:
-            return u''
+            return ''
         sqlstr = 'SELECT goucima FROM main.goucima WHERE zi = :zi;'
         results = self.db.execute(sqlstr, {'zi': zi}).fetchall()
+        goucima = ''
         if results:
             goucima = results[0][0]
-        else:
-            goucima = u''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('goucima=%s', goucima)
         return goucima
 
-    def parse_phrase(self, phrase):
+    def parse_phrase(self, phrase: str) -> str:
         '''Parse phrase to get its table code
 
         Example:
@@ -1357,26 +1388,29 @@ class TabSqliteDb:
         # And construct a new entry only when no entry already exists
         # in the system database??
         if not phrase:
-            return u''
+            return ''
         if len(phrase) == 1:
             return self.get_goucima(phrase)
         if not self.rules:
-            return u''
+            return ''
         if len(phrase) in self.rules:
             rule = self.rules[len(phrase)]
-        elif len(phrase) > self.rules['above']:
+        elif (isinstance(self.rules['above'], int)
+              and len(phrase) > self.rules['above']):
             rule = self.rules[self.rules['above']]
         else:
             LOGGER.debug(
                 'No rule for this phrase length. phrase=%s rules=%s',
                 phrase, self.rules)
-            return u''
-        if len(rule) > self._mlen:
+            return ''
+        if not isinstance(rule, int) and len(rule) > self._mlen:
             LOGGER.debug(
                 'Rule exceeds maximum key length. '
                 'rule=%s self._mlen=%s', rule, self._mlen)
-            return u''
-        tabkeys = u''
+            return ''
+        tabkeys = ''
+        if isinstance(rule, int):
+            return '' # should never happen!
         for (zi, ma) in rule:
             if zi > 0:
                 zi -= 1
@@ -1384,13 +1418,14 @@ class TabSqliteDb:
                 ma -= 1
             tabkey = self.get_goucima(phrase[zi])[ma]
             if not tabkey:
-                return u''
+                return ''
             tabkeys += tabkey
         if DEBUG_LEVEL > 1:
             LOGGER.debug('tabkeys=%s', tabkeys)
         return tabkeys
 
-    def is_in_system_database(self, tabkeys=u'', phrase=u''):
+    def is_in_system_database(
+            self, tabkeys: str = '', phrase: str = '') -> bool:
         '''
         Checks whether “phrase” can be matched in the system database
         with a key sequence *starting* with “tabkeys”.
@@ -1411,17 +1446,13 @@ class TabSqliteDb:
                 tabkeys, phrase, results)
         return bool(results)
 
-    def user_frequency(self, tabkeys=u'', phrase=u''):
+    def user_frequency(self, tabkeys: str = '', phrase: str = '') -> int:
         '''
         Return how often a conversion result “phrase” for the typed keys
         “tabkeys” has been happened by checking the user database.
 
         :param tabkeys: The keys typed
-        :type tabkeys: String
         :param phrase: A conversion result for these tabkeys
-        :type phrase: String
-        :rtype: Integer
-
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('tabkeys=%s phrase=%s', tabkeys, phrase)
@@ -1436,10 +1467,14 @@ class TabSqliteDb:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('result=%s', result)
         if result:
-            return result[0][0]
+            return int(result[0][0])
         return 0
 
-    def check_phrase(self, tabkeys=u'', phrase=u'', dynamic_adjust=False):
+    def check_phrase(
+            self,
+            tabkeys: str = '',
+            phrase: str = '',
+            dynamic_adjust: bool = False) -> None:
         '''Adjust user_freq in user database if necessary.
 
         Also, if the phrase is not in the system database, and it is a
@@ -1498,7 +1533,7 @@ class TabSqliteDb:
                         tabkeys=tabkeys, phrase=phrase, freq=-1, user_freq=1,
                         database='user_db')
 
-    def find_zi_code(self, phrase):
+    def find_zi_code(self, phrase: str) -> List[str]:
         '''
         Return the list of possible tabkeys for a phrase.
 
@@ -1520,7 +1555,11 @@ class TabSqliteDb:
         return list_of_possible_tabkeys
 
     def remove_phrase(
-            self, tabkeys=u'', phrase=u'', database='user_db', commit=True):
+            self,
+            tabkeys: str = '',
+            phrase: str = '',
+            database: str = 'user_db',
+            commit: bool = True) -> None:
         '''Remove phrase from database
         '''
         LOGGER.info('Removing tabkeys=%s, phrase=%s, database=%s commit=%s',
@@ -1559,7 +1598,10 @@ class TabSqliteDb:
                 'Unexpected error removing all phrases from database.')
 
     def extract_user_phrases(
-            self, database_file='', old_database_version='0.0'):
+            self,
+            database_file: str = '',
+            old_database_version: str = '0.0'
+    ) -> List[Tuple[str, str, int, int]]:
         '''extract user phrases from database'''
         LOGGER.debug(
             'Trying to recover the phrases from the old, '

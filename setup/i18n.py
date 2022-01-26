@@ -18,22 +18,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
+from typing import Callable
 import locale
 import gettext
 import os
 
 DOMAINNAME = "ibus-table"
 
-_ = lambda a: gettext.dgettext(DOMAINNAME, a)
-N_ = lambda a: a
+_: Callable[[str], str] = lambda a: gettext.dgettext(DOMAINNAME, a)
+N_: Callable[[str], str] = lambda a: a
 
-def init():
+def init() -> None:
     localedir = os.getenv("IBUS_LOCALEDIR")
     # Python's locale module doesn't provide all methods on some
     # operating systems like FreeBSD
     try:
         # for non-standard localedir
-        locale.bindtextdomain(DOMAINNAME, localedir)
+        locale.bindtextdomain(DOMAINNAME, localedir) # type: ignore
     except AttributeError:
         pass
     gettext.bindtextdomain(DOMAINNAME, localedir)

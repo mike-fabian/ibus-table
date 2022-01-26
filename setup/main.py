@@ -116,11 +116,11 @@ UNUSED_OLD_TRANSLATIONS = [
     N_('Table input'),
 ]
 
-class SetupUI(Gtk.Window):
+class SetupUI(Gtk.Window): # type: ignore
     '''
     User interface of the setup tool
     '''
-    def __init__(self, engine_name='') -> None:
+    def __init__(self, engine_name: str = '') -> None:
         self._engine_name = engine_name
         Gtk.Window.__init__(
             self,
@@ -162,9 +162,9 @@ class SetupUI(Gtk.Window):
 
         self.__is_chinese = False
         self.__is_cjk = False
-        languages = self.tabsqlitedb.ime_properties.get('languages')
-        if languages:
-            languages = languages.split(',')
+        languages_str = self.tabsqlitedb.ime_properties.get('languages')
+        if languages_str:
+            languages = languages_str.split(',')
             for language in languages:
                 if language.strip().startswith('zh'):
                     self.__is_chinese = True
@@ -1451,7 +1451,9 @@ class SetupUI(Gtk.Window):
             'set_function': self.set_autowildcard_mode}
 
     def __run_message_dialog(
-            self, message: str, message_type=Gtk.MessageType.INFO) -> None:
+            self,
+            message: str,
+            message_type: Gtk.MessageType = Gtk.MessageType.INFO) -> None:
         '''Run a dialog to show an error or warning message'''
         dialog = Gtk.MessageDialog(
             flags=Gtk.DialogFlags.MODAL,
@@ -1509,25 +1511,24 @@ class SetupUI(Gtk.Window):
         else:
             return False
 
-    def _on_delete_event(self, *_args) -> None:
+    def _on_delete_event(self, *_args: Any) -> None:
         '''
         The window has been deleted, probably by the window manager.
         '''
         Gtk.main_quit()
 
-    def _on_destroy_event(self, *_args) -> None:
+    def _on_destroy_event(self, *_args: Any) -> None:
         '''
         The window has been destroyed.
         '''
         Gtk.main_quit()
 
-    def _on_close_clicked(self, *_args) -> None:
-        '''
-        The button to close the dialog has been clicked.
-        '''
+    def _on_close_clicked(self, _button: Gtk.Button) -> None:
+        '''The button to close the dialog has been clicked.'''
         Gtk.main_quit()
 
-    def _on_gsettings_value_changed(self, _settings, key) -> None:
+    def _on_gsettings_value_changed(
+            self, _settings: Gio.Settings, key: str) -> None:
         '''
         Called when a value in the settings has been changed.
 
@@ -1546,16 +1547,16 @@ class SetupUI(Gtk.Window):
         LOGGER.error('Unknown key\n')
         return
 
-    def _on_about_button_clicked(self, _button) -> None:
+    def _on_about_button_clicked(self, _button: Gtk.Button) -> None:
         '''
         The “About” button has been clicked
 
         :param _button: The “About” button
-        :type _button: Gtk.Button object
         '''
         it_util.ItAboutDialog()
 
-    def _on_restore_all_defaults_button_clicked(self, _widget) -> None:
+    def _on_restore_all_defaults_button_clicked(
+            self, _button: Gtk.Button) -> None:
         '''
         Restore all default settings
         '''
@@ -1579,7 +1580,7 @@ class SetupUI(Gtk.Window):
         self._restore_all_defaults_button.set_sensitive(True)
 
     def _on_single_wildcard_char_entry(
-            self, widget: Gtk.Entry, _property_spec) -> None:
+            self, widget: Gtk.Entry, _property_spec: Any) -> None:
         '''
         The character to be used as a single wildcard has been changed.
         '''
@@ -1587,7 +1588,7 @@ class SetupUI(Gtk.Window):
             widget.get_text(), update_gsettings=True)
 
     def _on_multi_wildcard_char_entry(
-            self, widget: Gtk.Entry, _property_spec) -> None:
+            self, widget: Gtk.Entry, _property_spec: Any) -> None:
         '''
         The character to be used as a multi wildcard has been changed.
         '''
@@ -1802,26 +1803,25 @@ class SetupUI(Gtk.Window):
                 filename, update_gsettings=True)
         self._error_sound_file_button.set_sensitive(True)
 
-    def _on_debug_level_adjustment_value_changed(self, _widget) -> None:
-        '''
-        The value for the debug level has been changed.
-        '''
+    def _on_debug_level_adjustment_value_changed(
+            self, _widget: Gtk.SpinButton) -> None:
+        '''The value for the debug level has been changed.'''
         self.set_debug_level(
             self._debug_level_adjustment.get_value(),
             update_gsettings=True)
 
     def _on_keybindings_treeview_row_activated(
-            self, _treeview, treepath, _treeviewcolumn) -> None:
+            self,
+            _treeview: Gtk.TreeView,
+            treepath: Gtk.TreePath,
+            _treeviewcolumn: Gtk.TreeViewColumn) -> None:
         '''
         A row in the treeview listing the key bindings has been activated.
 
         :param treeview: The treeview listing the key bindings
-        :type treeview: Gtk.TreeView object
         :param treepath: The path to the activated row
-        :type treepath: Gtk.TreePath object
         :param treeviewcolumn: A column in the treeview listing the
                                key bindings
-        :type treeviewcolumn: Gtk.TreeViewColumn object
         '''
         model = self._keybindings_treeview_model
         iterator = model.get_iter(treepath)
@@ -1839,7 +1839,8 @@ class SetupUI(Gtk.Window):
             return
         self._create_and_show_keybindings_edit_popover()
 
-    def _on_keybindings_treeview_row_selected(self, selection) -> None:
+    def _on_keybindings_treeview_row_selected(
+            self, selection: Gtk.TreeSelection) -> None:
         '''
         A row in the treeview listing the key bindings has been selected.
         '''
@@ -1896,7 +1897,7 @@ class SetupUI(Gtk.Window):
             self._keybindings_edit_popover_down_button.set_sensitive(False)
 
     def _on_keybindings_edit_popover_add_button_clicked(
-            self, *_args) -> None:
+            self, _button: Gtk.Button) -> None:
         '''
         Signal handler called when the “Add” button to add
         a key binding has been clicked.
@@ -1916,7 +1917,7 @@ class SetupUI(Gtk.Window):
                 self.set_keybindings(user_keybindings)
 
     def _on_keybindings_edit_popover_remove_button_clicked(
-            self, *_args) -> None:
+            self, _button: Gtk.Button) -> None:
         '''
         Signal handler called when the “Remove” button to remove
         a key binding has been clicked.
@@ -1931,7 +1932,7 @@ class SetupUI(Gtk.Window):
             self.set_keybindings(user_keybindings)
 
     def _on_keybindings_edit_popover_up_button_clicked(
-            self, *_args) -> None:
+            self, _button: Gtk.Button) -> None:
         '''
         Signal handler called when the “up” button to move
         a key binding up has been clicked.
@@ -1959,7 +1960,7 @@ class SetupUI(Gtk.Window):
                     index - 1))
 
     def _on_keybindings_edit_popover_down_button_clicked(
-            self, *_args) -> None:
+            self, _button: Gtk.Button) -> None:
         '''
         Signal handler called when the “down” button to move
         a key binding down has been clicked.
@@ -1987,7 +1988,7 @@ class SetupUI(Gtk.Window):
                     index + 1))
 
     def _on_keybindings_edit_popover_default_button_clicked(
-            self, *_args) -> None:
+            self, _button: Gtk.Button) -> None:
         '''
         Signal handler called when the “Default” button to set
         the keybindings to the default has been clicked.
@@ -2167,14 +2168,16 @@ class SetupUI(Gtk.Window):
             self._keybindings_edit_popover.popup()
         self._keybindings_edit_popover.show_all()
 
-    def _on_keybindings_edit_button_clicked(self, *_args) -> None:
+    def _on_keybindings_edit_button_clicked(
+            self, _button: Gtk.Button) -> None:
         '''
         Signal handler called when the “edit” button to edit the
         key bindings for a command has been clicked.
         '''
         self._create_and_show_keybindings_edit_popover()
 
-    def _on_keybindings_default_button_clicked(self, *_args) -> None:
+    def _on_keybindings_default_button_clicked(
+            self, _button: Gtk.Button) -> None:
         '''
         Signal handler called when the “Set to default” button to reset the
         key bindings for a command to the default has been clicked.
@@ -2186,7 +2189,8 @@ class SetupUI(Gtk.Window):
             user_keybindings[command] = default_keybindings[command].copy()
             self.set_keybindings(user_keybindings)
 
-    def _on_keybindings_all_default_button_clicked(self, *_args) -> None:
+    def _on_keybindings_all_default_button_clicked(
+            self, _button: Gtk.Button) -> None:
         '''
         Signal handler called when the “Set all to default” button to reset the
         all key bindings top their defaults has been clicked.
@@ -2820,7 +2824,7 @@ class SetupUI(Gtk.Window):
                 'keybindings',
                 variant_dict.end())
 
-class HelpWindow(Gtk.Window):
+class HelpWindow(Gtk.Window): # type: ignore
     '''
     A window to show help
 
@@ -2830,8 +2834,8 @@ class HelpWindow(Gtk.Window):
     '''
     def __init__(self,
                  parent: Gtk.Window = None,
-                 title: str ='',
-                 contents: str ='') -> None:
+                 title: str = '',
+                 contents: str = '') -> None:
         Gtk.Window.__init__(self, title=title)
         if parent:
             self.set_parent(parent)
@@ -2866,7 +2870,7 @@ class HelpWindow(Gtk.Window):
         self.vbox.pack_start(self.hbox, False, False, 5)
         self.show_all()
 
-    def _on_close_button_clicked(self, _widget) -> None:
+    def _on_close_button_clicked(self, _button: Gtk.Button) -> None:
         '''
         Close the input method help window when the close button is clicked
         '''

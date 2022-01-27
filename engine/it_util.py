@@ -59,6 +59,7 @@ KEYBINDING_STATE_MASK = (
     IBus.ModifierType.MODIFIER_MASK
     & ~IBus.ModifierType.LOCK_MASK # Caps Lock
     & ~IBus.ModifierType.MOD2_MASK # Num Lock
+    & ~IBus.ModifierType.MOD3_MASK # Scroll Lock
 )
 
 def variant_to_value(variant: GLib.Variant) -> Any:
@@ -354,6 +355,7 @@ class KeyEvent:
         self.mod1 = self.state & IBus.ModifierType.MOD1_MASK != 0
         # mod2: Usually Num_Lock (0x4d)
         self.mod2 = self.state & IBus.ModifierType.MOD2_MASK != 0
+        # mod3: Usually Scroll_Lock
         self.mod3 = self.state & IBus.ModifierType.MOD3_MASK != 0
         # mod4: Usually Super_L (0xce),  Hyper_L (0xcf)
         self.mod4 = self.state & IBus.ModifierType.MOD4_MASK != 0

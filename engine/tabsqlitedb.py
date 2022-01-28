@@ -211,6 +211,7 @@ class TabSqliteDb:
             'dynamic_adjust':'false',
             'auto_select':'false',
             'auto_commit':'false',
+            'auto_wildcard': 'true',
             # 'no_check_chars': '',
             'description':'A IME under IBus Table',
             'layout':'us',

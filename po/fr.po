@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2022-01-12 18:16+0100\n"
+"POT-Creation-Date: 2022-01-27 13:03+0100\n"
 "PO-Revision-Date: 2021-07-22 15:03+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: French <https://translate.fedoraproject.org/projects/ibus-"
@@ -24,11 +24,11 @@ msgstr ""
 #. when one wants to input only Simplified Chinese.
 #. Translators: This is the setting to use only
 #. simplified Chinese
-#: engine/table.py:641 setup/main.py:382
+#: engine/table.py:648 setup/main.py:382
 msgid "Simplified Chinese"
 msgstr "Chinois simplifié"
 
-#: engine/table.py:643
+#: engine/table.py:650
 msgid "Switch to “Simplified Chinese only”."
 msgstr "Basculer vers « Chinois simplifié uniquement »."
 
@@ -36,11 +36,11 @@ msgstr "Basculer vers « Chinois simplifié uniquement »."
 #. when one wants to input only Traditonal Chinese
 #. Translators: This is the setting to use only
 #. traditional Chinese
-#: engine/table.py:650 setup/main.py:386
+#: engine/table.py:657 setup/main.py:386
 msgid "Traditional Chinese"
 msgstr "Chinois traditionnel"
 
-#: engine/table.py:652
+#: engine/table.py:659
 msgid "Switch to “Traditional Chinese only”."
 msgstr "Basculer vers « Chinois traditionnel uniquement »."
 
@@ -49,11 +49,11 @@ msgstr "Basculer vers « Chinois traditionnel uniquement »."
 #. Chinese but wants the Simplified Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:662
+#: engine/table.py:669
 msgid "Simplified Chinese first"
 msgstr "Chinois simplifié d’abord"
 
-#: engine/table.py:664
+#: engine/table.py:671
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr "Basculer vers « Chinois simplifié avant traditionnel »."
 
@@ -62,11 +62,11 @@ msgstr "Basculer vers « Chinois simplifié avant traditionnel »."
 #. Chinese but wants the Traditional Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:674
+#: engine/table.py:681
 msgid "Traditional Chinese first"
 msgstr "Chinois traditionnel d’abord"
 
-#: engine/table.py:676
+#: engine/table.py:683
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr "Basculer vers « Chinois traditionnel avant simplifié »."
 
@@ -78,59 +78,59 @@ msgstr "Basculer vers « Chinois traditionnel avant simplifié »."
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese in no
 #. particular order
-#: engine/table.py:686 setup/main.py:401
+#: engine/table.py:693 setup/main.py:401
 msgid "All Chinese characters"
 msgstr "Tous les caractères chinois"
 
-#: engine/table.py:687
+#: engine/table.py:694
 msgid "Switch to “All Chinese characters”."
 msgstr "Basculer vers « Tous les caractères chinois »."
 
-#: engine/table.py:691
+#: engine/table.py:698
 msgid "Chinese mode"
 msgstr "Mode chinois"
 
-#: engine/table.py:692
+#: engine/table.py:699
 msgid "Switch Chinese mode"
 msgstr "Basculer le mode chinois"
 
-#: engine/table.py:703
+#: engine/table.py:710
 msgid "English"
 msgstr "Anglais"
 
-#: engine/table.py:704
+#: engine/table.py:711
 msgid "Switch to English input"
 msgstr "Basculer vers la saisie anglaise"
 
-#: engine/table.py:711
+#: engine/table.py:718
 msgid "Chinese"
 msgstr "Chinois"
 
-#: engine/table.py:712
+#: engine/table.py:719
 msgid "Switch to Chinese input"
 msgstr "Basculer vers la saisie chinoise"
 
-#: engine/table.py:720 engine/table.py:868 setup/main.py:951
+#: engine/table.py:727 engine/table.py:875 setup/main.py:951
 msgid "Direct"
 msgstr "Direct"
 
-#: engine/table.py:721
+#: engine/table.py:728
 msgid "Switch to direct input"
 msgstr "Basculer vers la saisie directe"
 
-#: engine/table.py:726 engine/table.py:790
+#: engine/table.py:733 engine/table.py:797
 msgid "Table"
 msgstr "Table"
 
-#: engine/table.py:727
+#: engine/table.py:734
 msgid "Switch to table input"
 msgstr "Passer en saisie par table"
 
-#: engine/table.py:735
+#: engine/table.py:742
 msgid "Input mode"
 msgstr "Mode de saisie"
 
-#: engine/table.py:736
+#: engine/table.py:743
 msgid "Switch Input mode"
 msgstr "Changer de mode de saisie"
 
@@ -142,12 +142,12 @@ msgstr "Changer de mode de saisie"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use half width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:746 engine/table.py:768 setup/main.py:438 setup/main.py:482
+#: engine/table.py:753 engine/table.py:775 setup/main.py:438 setup/main.py:482
 #: setup/main.py:527 setup/main.py:572
 msgid "Half"
 msgstr "Demie"
 
-#: engine/table.py:747
+#: engine/table.py:754
 msgid "Switch to halfwidth letters"
 msgstr "Basculer en lettres de demi-chasse"
 
@@ -159,108 +159,108 @@ msgstr "Basculer en lettres de demi-chasse"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use full width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:752 engine/table.py:774 setup/main.py:442 setup/main.py:486
+#: engine/table.py:759 engine/table.py:781 setup/main.py:442 setup/main.py:486
 #: setup/main.py:531 setup/main.py:576
 msgid "Full"
 msgstr "Pleine"
 
-#: engine/table.py:753
+#: engine/table.py:760
 msgid "Switch to fullwidth letters"
 msgstr "Basculer en lettres de pleine chasse"
 
-#: engine/table.py:757
+#: engine/table.py:764
 msgid "Letter width"
 msgstr "Largeur des lettres"
 
-#: engine/table.py:758
+#: engine/table.py:765
 msgid "Switch letter width"
 msgstr "Changer la largeur des lettres"
 
-#: engine/table.py:769
+#: engine/table.py:776
 msgid "Switch to halfwidth punctuation"
 msgstr "Passer en ponctuation de demi-chasse"
 
-#: engine/table.py:775
+#: engine/table.py:782
 msgid "Switch to fullwidth punctuation"
 msgstr "Passer en ponctuation de pleine chasse"
 
-#: engine/table.py:779
+#: engine/table.py:786
 msgid "Punctuation width"
 msgstr "Largeur de ponctuation"
 
-#: engine/table.py:780
+#: engine/table.py:787
 msgid "Switch punctuation width"
 msgstr "Changer la largeur de ponctuation"
 
-#: engine/table.py:791
+#: engine/table.py:798
 msgid "Switch to table mode"
 msgstr "Passer en mode table"
 
-#: engine/table.py:796
+#: engine/table.py:803
 msgid "Pinyin"
 msgstr "Pinyin"
 
-#: engine/table.py:797
+#: engine/table.py:804
 msgid "Switch to pinyin mode"
 msgstr "Basculer vers le mode pinyin"
 
-#: engine/table.py:801
+#: engine/table.py:808
 msgid "Pinyin mode"
 msgstr "Mode pinyin"
 
-#: engine/table.py:802
+#: engine/table.py:809
 msgid "Switch pinyin mode"
 msgstr "Basculer vers le mode pinyin"
 
-#: engine/table.py:812
+#: engine/table.py:819
 msgid "Suggestion disabled"
 msgstr "Suggestion désactivée"
 
-#: engine/table.py:813 engine/table.py:819
+#: engine/table.py:820 engine/table.py:826
 msgid "Switch to suggestion mode"
 msgstr "Basculer vers le mode de suggestion"
 
-#: engine/table.py:818
+#: engine/table.py:825
 msgid "Suggestion enabled"
 msgstr "Suggestion activée"
 
-#: engine/table.py:823
+#: engine/table.py:830
 msgid "Suggestion mode"
 msgstr "Mode de suggestion"
 
-#: engine/table.py:824
+#: engine/table.py:831
 msgid "Switch suggestion mode"
 msgstr "Changer de mode de suggestion"
 
-#: engine/table.py:834
+#: engine/table.py:841
 msgid "Multiple character match"
 msgstr "De multiples caractères correspondent"
 
-#: engine/table.py:836
+#: engine/table.py:843
 msgid "Switch to matching multiple characters at once"
 msgstr "Passez à la correspondance de plusieurs caractères à la fois"
 
-#: engine/table.py:841
+#: engine/table.py:848
 msgid "Single character match"
 msgstr "Correspondance mono caractère"
 
-#: engine/table.py:843
+#: engine/table.py:850
 msgid "Switch to matching only single characters"
 msgstr "Passez à la correspondance mono caractère"
 
-#: engine/table.py:847
+#: engine/table.py:854
 msgid "Onechar mode"
 msgstr "Mode mono caractère"
 
-#: engine/table.py:848
+#: engine/table.py:855
 msgid "Switch onechar mode"
 msgstr "Passer en mode mono caractère"
 
-#: engine/table.py:858 setup/main.py:949
+#: engine/table.py:865 setup/main.py:949
 msgid "Normal"
 msgstr "Normal"
 
-#: engine/table.py:860
+#: engine/table.py:867
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
@@ -269,7 +269,7 @@ msgstr ""
 "la pré-édition plutôt que dans l’application. Ceci permet la définition "
 "automatique de nouveaux raccourcis)"
 
-#: engine/table.py:870
+#: engine/table.py:877
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
@@ -277,19 +277,19 @@ msgstr ""
 "Passer au mode de validation direct (les validations automatiques vont "
 "directement dans l’application)"
 
-#: engine/table.py:875
+#: engine/table.py:882
 msgid "Auto commit mode"
 msgstr "Mode de validation automatique"
 
-#: engine/table.py:876
+#: engine/table.py:883
 msgid "Switch autocommit mode"
 msgstr "Passer en mode validation automatique"
 
-#: engine/table.py:2841
+#: engine/table.py:2862
 msgid "Setup"
 msgstr "Configuration"
 
-#: engine/table.py:2844
+#: engine/table.py:2865
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Configurer ibus-table « %(engine-name)s »"
@@ -297,40 +297,40 @@ msgstr "Configurer ibus-table « %(engine-name)s »"
 #. Translators: This is used in the title bar of a dialog window
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
-#: engine/it_util.py:538
+#: engine/it_util.py:541
 msgid "Key input"
 msgstr "Entrez une touche"
 
-#: engine/it_util.py:544
+#: engine/it_util.py:547
 msgid "Cancel"
 msgstr "Annuler"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:551
+#: engine/it_util.py:554
 msgid "Please press a key (or a key combination)"
 msgstr "Appuyez sur une touche (ou une combinaison de touches)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:556
+#: engine/it_util.py:559
 msgid "The dialog will be closed when the key is released"
 msgstr "La boite de dialogue se fermera quand la touche sera relâchée"
 
-#: engine/it_util.py:588
+#: engine/it_util.py:591
 msgid "Table input method for IBus."
 msgstr "Méthode de saisie en table pour IBus."
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
 #. will be displayed in the “About ibus-table” dialog.
-#: engine/it_util.py:612
+#: engine/it_util.py:615
 msgid "translator-credits"
 msgstr "Julien Humbert <julroy67@gmail.com>, 2020"
 
-#: engine/it_util.py:620
+#: engine/it_util.py:623
 msgid "Online documentation:"
 msgstr "Documentation en ligne :"
 
@@ -377,7 +377,7 @@ msgstr "À propos"
 msgid "Restore all defaults"
 msgstr "Restaurer les valeurs par défaut"
 
-#: setup/main.py:237 setup/main.py:2858
+#: setup/main.py:237 setup/main.py:2865
 msgid "_Close"
 msgstr "_Fermer"
 
@@ -672,7 +672,7 @@ msgstr "Modifier"
 msgid "Edit the key bindings for the selected command"
 msgstr "Modifier les raccourcis clavier pour la commande sélectionnée"
 
-#: setup/main.py:777 setup/main.py:2136
+#: setup/main.py:777 setup/main.py:2143
 msgid "Set to default"
 msgstr "Réinitialiser"
 
@@ -680,7 +680,7 @@ msgstr "Réinitialiser"
 #. the default key bindings for the selected command.
 #. Translators: This is a tooltip for the button to set
 #. the key bindings for the selected command to the default.
-#: setup/main.py:783 setup/main.py:2143
+#: setup/main.py:783 setup/main.py:2150
 msgid "Set default key bindings for the selected command"
 msgstr ""
 "Remettre le raccourcis clavier par défaut pour la commande sélectionnée"
@@ -901,26 +901,26 @@ msgstr ""
 "le fichier journal et les informations de débogage peuvent également être "
 "montrées graphiquement."
 
-#: setup/main.py:1471
+#: setup/main.py:1473
 msgid "Are you sure?"
 msgstr "Confirmez-vous ?"
 
-#: setup/main.py:1473 setup/main.py:1782
+#: setup/main.py:1475 setup/main.py:1789
 msgid "_Cancel"
 msgstr "_Annuler"
 
-#: setup/main.py:1474 setup/main.py:1783
+#: setup/main.py:1476 setup/main.py:1790
 msgid "_OK"
 msgstr "_OK"
 
-#: setup/main.py:1506
+#: setup/main.py:1508
 msgid "Another instance of this app is already running."
 msgstr "Une autre instance de cette application est déjà en cours d’exécution."
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
-#: setup/main.py:1567
+#: setup/main.py:1568
 msgid "Do you really want to restore all default settings?"
 msgstr "Souhaitez-vous vraiment rétablir tous les paramètres par défaut ?"
 
@@ -934,7 +934,7 @@ msgstr "Souhaitez-vous vraiment rétablir tous les paramètres par défaut ?"
 #. beginning because of the learning from user
 #. input. Deleting this learned data cannot be reversed. So
 #. the user should be really sure he really wants to do that.
-#: setup/main.py:1757
+#: setup/main.py:1764
 #, fuzzy
 #| msgid "Do you really want to restore all default settings?"
 msgid ""
@@ -942,36 +942,36 @@ msgid ""
 "candidates?"
 msgstr "Souhaitez-vous vraiment rétablir tous les paramètres par défaut ?"
 
-#: setup/main.py:1779
+#: setup/main.py:1786
 msgid "Select .wav sound file:"
 msgstr ""
 
-#: setup/main.py:2059
+#: setup/main.py:2066
 #, python-format
 msgid "Edit key bindings for command “%s”"
 msgstr "Modifier le raccourcis clavier pour la commande \"%s\""
 
 #. Translators: This is a tooltip for the button to add a
 #. key binding.
-#: setup/main.py:2089
+#: setup/main.py:2096
 msgid "Add a key binding"
 msgstr "Ajouter un raccourcis claviers"
 
 #. Translators: This is a tooltip for the button to remove
 #. the selected key binding.
-#: setup/main.py:2103
+#: setup/main.py:2110
 msgid "Remove selected key binding"
 msgstr "Supprimer le raccourcis clavier sélectionné"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
-#: setup/main.py:2118
+#: setup/main.py:2125
 msgid "Move key binding up"
 msgstr "Monter le raccourci clavier"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
-#: setup/main.py:2131
+#: setup/main.py:2138
 msgid "Move key binding down"
 msgstr "Descendre le raccourci clavier"
 
@@ -980,7 +980,7 @@ msgstr "Descendre le raccourci clavier"
 #. really sure to reset the key bindings for *all* commands
 #. to their defaults. This cannot be reversed so the user
 #. should be really sure he wants to do that.
-#: setup/main.py:2195
+#: setup/main.py:2205
 msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
@@ -988,7 +988,7 @@ msgstr ""
 "Voulez-vous vraiment redéfinir les raccourcis claviers pour toutes les "
 "commandes ?"
 
-#: setup/main.py:2911
+#: setup/main.py:2918
 msgid "ibus is not running."
 msgstr "Ibus n’est pas lancé."
 

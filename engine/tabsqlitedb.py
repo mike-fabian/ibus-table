@@ -5,7 +5,7 @@
 #
 # Copyright (c) 2008-2009 Yu Yuwei <acevery@gmail.com>
 # Copyright (c) 2009-2014 Caius "kaio" CHANCE <me@kaio.net>
-# Copyright (c) 2012-2021 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2012-2022 Mike FABIAN <mfabian@redhat.com>
 # Copyright (c) 2019      Peng Wu <alexepico@gmail.com>
 #
 # This library is free software; you can redistribute it and/or

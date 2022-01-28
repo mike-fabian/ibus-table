@@ -5,7 +5,7 @@
 #
 # Copyright (c) 2008-2009 Yu Yuwei <acevery@gmail.com>
 # Copyright (c) 2009-2014 Caius "kaio" CHANCE <me@kaio.net>
-# Copyright (c) 2012-2021 Mike FABIAN <mfabian@redhat.com>
+# Copyright (c) 2012-2022 Mike FABIAN <mfabian@redhat.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -592,7 +592,7 @@ class ItAboutDialog(Gtk.AboutDialog): # type: ignore
             _('Table input method for IBus.'))
         self.set_copyright(
             'Copyright © 2009-2012 Peng Huang,\n'
-            'Copyright © 2012-2020 Mike FABIAN')
+            'Copyright © 2012-2022 Mike FABIAN')
         self.set_authors([
             'Yuwei YU (“acevery”)',
             'Peng Huang',

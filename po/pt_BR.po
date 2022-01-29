@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2022-01-27 13:03+0100\n"
+"POT-Creation-Date: 2022-01-28 12:57+0100\n"
 "PO-Revision-Date: 2021-09-28 12:00+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
@@ -24,11 +24,11 @@ msgstr ""
 #. when one wants to input only Simplified Chinese.
 #. Translators: This is the setting to use only
 #. simplified Chinese
-#: engine/table.py:648 setup/main.py:382
+#: engine/table.py:659 setup/main.py:382
 msgid "Simplified Chinese"
 msgstr "Chinês Simplificado"
 
-#: engine/table.py:650
+#: engine/table.py:661
 msgid "Switch to “Simplified Chinese only”."
 msgstr "Alterna para “apenas chinês simplificado”."
 
@@ -36,11 +36,11 @@ msgstr "Alterna para “apenas chinês simplificado”."
 #. when one wants to input only Traditonal Chinese
 #. Translators: This is the setting to use only
 #. traditional Chinese
-#: engine/table.py:657 setup/main.py:386
+#: engine/table.py:668 setup/main.py:386
 msgid "Traditional Chinese"
 msgstr "Chinês Tradicional"
 
-#: engine/table.py:659
+#: engine/table.py:670
 msgid "Switch to “Traditional Chinese only”."
 msgstr "Alterna para “somente chinês tradicional”."
 
@@ -49,11 +49,11 @@ msgstr "Alterna para “somente chinês tradicional”."
 #. Chinese but wants the Simplified Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:669
+#: engine/table.py:680
 msgid "Simplified Chinese first"
 msgstr "Chinês Simplificado primeiro"
 
-#: engine/table.py:671
+#: engine/table.py:682
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr "Alterna para “chinês simplificado antes do tradicional”."
 
@@ -62,11 +62,11 @@ msgstr "Alterna para “chinês simplificado antes do tradicional”."
 #. Chinese but wants the Traditional Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:681
+#: engine/table.py:692
 msgid "Traditional Chinese first"
 msgstr "Chinês Tradicional primeiro"
 
-#: engine/table.py:683
+#: engine/table.py:694
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr "Alterna para ”chinês tradicional antes do simplificado”."
 
@@ -78,59 +78,59 @@ msgstr "Alterna para ”chinês tradicional antes do simplificado”."
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese in no
 #. particular order
-#: engine/table.py:693 setup/main.py:401
+#: engine/table.py:704 setup/main.py:401
 msgid "All Chinese characters"
 msgstr "Todos os caracteres chineses"
 
-#: engine/table.py:694
+#: engine/table.py:705
 msgid "Switch to “All Chinese characters”."
 msgstr "Alterna para “Todos os caracteres chineses”."
 
-#: engine/table.py:698
+#: engine/table.py:709
 msgid "Chinese mode"
 msgstr "Modo chinês"
 
-#: engine/table.py:699
+#: engine/table.py:710
 msgid "Switch Chinese mode"
 msgstr "Alterna para o modo chinês"
 
-#: engine/table.py:710
+#: engine/table.py:721
 msgid "English"
 msgstr "Inglês"
 
-#: engine/table.py:711
+#: engine/table.py:722
 msgid "Switch to English input"
 msgstr "Alterna para entrada em inglês"
 
-#: engine/table.py:718
+#: engine/table.py:729
 msgid "Chinese"
 msgstr "Chinês"
 
-#: engine/table.py:719
+#: engine/table.py:730
 msgid "Switch to Chinese input"
 msgstr "Alterna para entrada em chinês"
 
-#: engine/table.py:727 engine/table.py:875 setup/main.py:951
+#: engine/table.py:738 engine/table.py:886 setup/main.py:951
 msgid "Direct"
 msgstr "Direto"
 
-#: engine/table.py:728
+#: engine/table.py:739
 msgid "Switch to direct input"
 msgstr "Alterna para entrada direta"
 
-#: engine/table.py:733 engine/table.py:797
+#: engine/table.py:744 engine/table.py:808
 msgid "Table"
 msgstr "Tabela"
 
-#: engine/table.py:734
+#: engine/table.py:745
 msgid "Switch to table input"
 msgstr "Alterna para entrada da tabela"
 
-#: engine/table.py:742
+#: engine/table.py:753
 msgid "Input mode"
 msgstr "Modo de entrada"
 
-#: engine/table.py:743
+#: engine/table.py:754
 msgid "Switch Input mode"
 msgstr "Alterna o modo de entrada"
 
@@ -142,12 +142,12 @@ msgstr "Alterna o modo de entrada"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use half width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:753 engine/table.py:775 setup/main.py:438 setup/main.py:482
+#: engine/table.py:764 engine/table.py:786 setup/main.py:438 setup/main.py:482
 #: setup/main.py:527 setup/main.py:572
 msgid "Half"
 msgstr "Metade"
 
-#: engine/table.py:754
+#: engine/table.py:765
 msgid "Switch to halfwidth letters"
 msgstr "Alterna para letras em meia largura"
 
@@ -159,108 +159,108 @@ msgstr "Alterna para letras em meia largura"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use full width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:759 engine/table.py:781 setup/main.py:442 setup/main.py:486
+#: engine/table.py:770 engine/table.py:792 setup/main.py:442 setup/main.py:486
 #: setup/main.py:531 setup/main.py:576
 msgid "Full"
 msgstr "Completa"
 
-#: engine/table.py:760
+#: engine/table.py:771
 msgid "Switch to fullwidth letters"
 msgstr "Alterna para letras em largura completa"
 
-#: engine/table.py:764
+#: engine/table.py:775
 msgid "Letter width"
 msgstr "Largura de letras"
 
-#: engine/table.py:765
+#: engine/table.py:776
 msgid "Switch letter width"
 msgstr "Alterna a largura das letras"
 
-#: engine/table.py:776
+#: engine/table.py:787
 msgid "Switch to halfwidth punctuation"
 msgstr "Alterna para pontuação em meia largura"
 
-#: engine/table.py:782
+#: engine/table.py:793
 msgid "Switch to fullwidth punctuation"
 msgstr "Alterna para pontuação em largura completa"
 
-#: engine/table.py:786
+#: engine/table.py:797
 msgid "Punctuation width"
 msgstr "Largura de pontuações"
 
-#: engine/table.py:787
+#: engine/table.py:798
 msgid "Switch punctuation width"
 msgstr "Alterna a largura das pontuações"
 
-#: engine/table.py:798
+#: engine/table.py:809
 msgid "Switch to table mode"
 msgstr "Alterna para modo da tabela"
 
-#: engine/table.py:803
+#: engine/table.py:814
 msgid "Pinyin"
 msgstr "Pinyin"
 
-#: engine/table.py:804
+#: engine/table.py:815
 msgid "Switch to pinyin mode"
 msgstr "Alterna para modo pinyin"
 
-#: engine/table.py:808
+#: engine/table.py:819
 msgid "Pinyin mode"
 msgstr "Modo pinyin"
 
-#: engine/table.py:809
+#: engine/table.py:820
 msgid "Switch pinyin mode"
 msgstr "Alterna o modo pinyin"
 
-#: engine/table.py:819
+#: engine/table.py:830
 msgid "Suggestion disabled"
 msgstr "Sugestões desabilitadas"
 
-#: engine/table.py:820 engine/table.py:826
+#: engine/table.py:831 engine/table.py:837
 msgid "Switch to suggestion mode"
 msgstr "Alterna para modo sugestão"
 
-#: engine/table.py:825
+#: engine/table.py:836
 msgid "Suggestion enabled"
 msgstr "Sugestão habilitada"
 
-#: engine/table.py:830
+#: engine/table.py:841
 msgid "Suggestion mode"
 msgstr "Modo sugestão"
 
-#: engine/table.py:831
+#: engine/table.py:842
 msgid "Switch suggestion mode"
 msgstr "Alterna o modo sugestão"
 
-#: engine/table.py:841
+#: engine/table.py:852
 msgid "Multiple character match"
 msgstr "Correspondência de várias caracteres"
 
-#: engine/table.py:843
+#: engine/table.py:854
 msgid "Switch to matching multiple characters at once"
 msgstr "Alterna para corresponder vários caracteres de uma vez"
 
-#: engine/table.py:848
+#: engine/table.py:859
 msgid "Single character match"
 msgstr "Correspondência de um caractere"
 
-#: engine/table.py:850
+#: engine/table.py:861
 msgid "Switch to matching only single characters"
 msgstr "Alterna para corresponder um só caractere"
 
-#: engine/table.py:854
+#: engine/table.py:865
 msgid "Onechar mode"
 msgstr "Modo um caractere"
 
-#: engine/table.py:855
+#: engine/table.py:866
 msgid "Switch onechar mode"
 msgstr "Alterna o modo de um caractere"
 
-#: engine/table.py:865 setup/main.py:949
+#: engine/table.py:876 setup/main.py:949
 msgid "Normal"
 msgstr "Normal"
 
-#: engine/table.py:867
+#: engine/table.py:878
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
@@ -269,7 +269,7 @@ msgstr ""
 "edição, e não no aplicativo. Isso permite definições automáticas de novos "
 "atalhos)"
 
-#: engine/table.py:877
+#: engine/table.py:888
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
@@ -277,19 +277,19 @@ msgstr ""
 "Alterna para o modo de envio direto (envios automáticos vão diretamente para "
 "o aplicativo)"
 
-#: engine/table.py:882
+#: engine/table.py:893
 msgid "Auto commit mode"
 msgstr "Modo de envio automático"
 
-#: engine/table.py:883
+#: engine/table.py:894
 msgid "Switch autocommit mode"
 msgstr "Alterna o modo de envio automático"
 
-#: engine/table.py:2862
+#: engine/table.py:2873
 msgid "Setup"
 msgstr "Configuração"
 
-#: engine/table.py:2865
+#: engine/table.py:2876
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Configura “%(engine-name)s” do ibus-table"
@@ -297,40 +297,40 @@ msgstr "Configura “%(engine-name)s” do ibus-table"
 #. Translators: This is used in the title bar of a dialog window
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
-#: engine/it_util.py:541
+#: engine/it_util.py:542
 msgid "Key input"
 msgstr "Entrada de teclado"
 
-#: engine/it_util.py:547
+#: engine/it_util.py:548
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:554
+#: engine/it_util.py:555
 msgid "Please press a key (or a key combination)"
 msgstr "Pressione uma tecla (ou uma combinação de teclas)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:559
+#: engine/it_util.py:560
 msgid "The dialog will be closed when the key is released"
 msgstr "O diálogo será fechado quando a chave é liberada"
 
-#: engine/it_util.py:591
+#: engine/it_util.py:592
 msgid "Table input method for IBus."
 msgstr "O método de entrada da tabela para IBus."
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
 #. will be displayed in the “About ibus-table” dialog.
-#: engine/it_util.py:615
+#: engine/it_util.py:616
 msgid "translator-credits"
 msgstr "Glaucia Cintra"
 
-#: engine/it_util.py:623
+#: engine/it_util.py:624
 msgid "Online documentation:"
 msgstr "Documentação online:"
 

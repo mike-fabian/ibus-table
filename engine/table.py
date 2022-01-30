@@ -1346,7 +1346,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
     @staticmethod
     def get_common_prefix_sorted_list(asc_table_codes: List[str]) -> List[int]:
-        prefix_tree: List[List[()]] = []
+        prefix_tree: List[List[Tuple[Any, ...]]] = []
         idx = -1
         count = 1
 
@@ -1405,7 +1405,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         # tree leaf holds the max same-prefix count code
         nodes = [branch[-1] for branch in prefix_tree]
         # sort by max same-prefix count then idx
-        nodes = sorted(nodes, key=lambda n: n[2] * 16 + n[1], reverse=True)
+        nodes = sorted(nodes,
+                       key=lambda n: int(n[2]) * 16 + int(n[1]),
+                       reverse=True)
 
         idx_array = [node[1] for node in nodes]
 
@@ -2790,7 +2792,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         else:
             update = True
         visible = True
-        for mode in sorted(modes, key=lambda x: (modes[x]['number'])):
+        for mode in sorted(modes, key=lambda x: (int(modes[x]['number']))):
             if modes[mode]['number'] == int(current_mode):
                 state = IBus.PropState.CHECKED
             else:

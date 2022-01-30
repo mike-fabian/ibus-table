@@ -979,12 +979,11 @@ class TabSqliteDb:
         '''
         maximum_number_of_candidates = 100
         engine_name = os.path.basename(self.filename).replace('.db', '')
+        code_point_function: Callable[[str], bytes] = lambda x: (b'\xff\xff')
         if engine_name in [
                 'cangjie3', 'cangjie5', 'cangjie-big',
                 'quick-classic', 'quick3', 'quick5']:
-            code_point_function: Callable[[str], bytes] = self.big5_code
-        else:
-            code_point_function: Callable[[str], bytes] = lambda x: (b'\xff\xff')
+            code_point_function = self.big5_code
         if self._is_chinese:
             pinyin_exact_match_function: Callable[[str], int] = lambda x: (
                 - int(typed_tabkeys == x[:-1] and  x[-1] in '!@#$%')
@@ -1207,12 +1206,11 @@ class TabSqliteDb:
         maximum_number_of_candidates = 100
         engine_name = os.path.basename(self.filename).replace('.db', '')
 
+        code_point_function: Callable[[str], bytes] = lambda x: (b'\xff\xff')
         if engine_name in [
                 'cangjie3', 'cangjie5', 'cangjie-big',
                 'quick-classic', 'quick3', 'quick5']:
-            code_point_function: Callable[[str], bytes] = self.big5_code
-        else:
-            code_point_function: Callable[[str], bytes] = lambda x: (b'\xff\xff')
+            code_point_function = self.big5_code
 
         return sorted(candidates,
                       key=lambda x: (

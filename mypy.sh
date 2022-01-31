@@ -24,6 +24,14 @@ if [ ${SETUP_RETVAL} != 0 ] ; then
     RETVAL=$((${RETVAL} + ${SETUP_RETVAL}))
 fi
 
+cd $SCRIPT_DIR/tests
+echo "Checking $SCRIPT_DIR/tests"
+mypy --strict ../engine/{tabsqlitedb,it_util}.py test_*.py
+SETUP_RETVAL=$?
+if [ ${SETUP_RETVAL} != 0 ] ; then
+    RETVAL=$((${RETVAL} + ${SETUP_RETVAL}))
+fi
+
 cd $CURRENT_DIR
 exit $RETVAL
 

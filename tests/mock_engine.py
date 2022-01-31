@@ -171,9 +171,6 @@ class MockLookupTable:
     def get_candidate(self, index):
         return self.mock_candidates[index]
 
-    def get_number_of_candidates(self):
-        return len(self.mock_candidates)
-
     def append_label(self, label):
         self.mock_labels.append(label.get_text())
 

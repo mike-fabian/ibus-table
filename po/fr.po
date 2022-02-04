@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2022-01-28 12:57+0100\n"
-"PO-Revision-Date: 2021-07-22 15:03+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: French <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/fr/>\n"
+"PO-Revision-Date: 2022-02-04 18:16+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: French <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.7.2\n"
+"X-Generator: Weblate 4.10.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -417,10 +417,8 @@ msgstr "Raccourcis clavier"
 #. or whether ibus-table should always use “Table input” by
 #. default after a restart.
 #: setup/main.py:316
-#, fuzzy
-#| msgid "Input mode"
 msgid "Remember input mode"
-msgstr "Mode de saisie"
+msgstr "Se rappeler du mode de saisie"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the input mode (“Direct input” or “Table
@@ -874,7 +872,7 @@ msgstr "Si activé, un schéma de couleurs pour thèmes sombres sera utilisé."
 #. sound is played on error
 #: setup/main.py:1069
 msgid "Play sound file on error"
-msgstr ""
+msgstr "Lecture d’un fichier son en cas d’erreur"
 
 #: setup/main.py:1071
 msgid ""
@@ -882,6 +880,9 @@ msgid ""
 "the simpleaudio module for Python3 is not installed, this option does "
 "nothing."
 msgstr ""
+"Vous pouvez choisir ici si un fichier son est joué en cas d’erreur. Si le "
+"module simpleaudio pour Python3 n’est pas installé, cette option ne fait "
+"rien."
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
@@ -944,7 +945,7 @@ msgstr "Souhaitez-vous vraiment rétablir tous les paramètres par défaut ?"
 
 #: setup/main.py:1786
 msgid "Select .wav sound file:"
-msgstr ""
+msgstr "Sélectionnez le fichier son .wav :"
 
 #: setup/main.py:2066
 #, python-format

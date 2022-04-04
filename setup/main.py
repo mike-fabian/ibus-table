@@ -198,14 +198,14 @@ class SetupUI(Gtk.Window): # type: ignore
         #
         # It only works like this when gnome-shell runs under Xorg
         # though, under Wayland things are different.
-        self.set_wmclass(
+        self.set_wmclass( # pylint: disable=no-member
             'ibus-setup-table', 'IBus Table Preferences')
 
         self.connect('destroy-event', self._on_destroy_event)
         self.connect('delete-event', self._on_delete_event)
 
         self._main_container = Gtk.VBox()
-        self.add(self._main_container)
+        self.add(self._main_container) # pylint: disable=no-member
         self._notebook = Gtk.Notebook()
         self._notebook.set_visible(True)
         self._notebook.set_can_focus(False)
@@ -1130,7 +1130,7 @@ class SetupUI(Gtk.Window): # type: ignore
         self._options_details_grid.attach(
             self._debug_level_adjustment, 1, _options_details_grid_row, 1, 1)
 
-        self.show_all()
+        self.show_all() # pylint: disable=no-member
 
         self._notebook.set_current_page(0) # Has to be after show_all()
 
@@ -1450,8 +1450,8 @@ class SetupUI(Gtk.Window): # type: ignore
             'user': user_autowildcard_mode,
             'set_function': self.set_autowildcard_mode}
 
+    @staticmethod
     def __run_message_dialog(
-            self,
             message: str,
             message_type: Gtk.MessageType = Gtk.MessageType.INFO) -> None:
         '''Run a dialog to show an error or warning message'''
@@ -1511,19 +1511,22 @@ class SetupUI(Gtk.Window): # type: ignore
         else:
             return False
 
-    def _on_delete_event(self, *_args: Any) -> None:
+    @staticmethod
+    def _on_delete_event(*_args: Any) -> None:
         '''
         The window has been deleted, probably by the window manager.
         '''
         Gtk.main_quit()
 
-    def _on_destroy_event(self, *_args: Any) -> None:
+    @staticmethod
+    def _on_destroy_event(*_args: Any) -> None:
         '''
         The window has been destroyed.
         '''
         Gtk.main_quit()
 
-    def _on_close_clicked(self, _button: Gtk.Button) -> None:
+    @staticmethod
+    def _on_close_clicked(_button: Gtk.Button) -> None:
         '''The button to close the dialog has been clicked.'''
         Gtk.main_quit()
 
@@ -1547,7 +1550,8 @@ class SetupUI(Gtk.Window): # type: ignore
         LOGGER.error('Unknown key\n')
         return
 
-    def _on_about_button_clicked(self, _button: Gtk.Button) -> None:
+    @staticmethod
+    def _on_about_button_clicked(_button: Gtk.Button) -> None:
         '''
         The “About” button has been clicked
 

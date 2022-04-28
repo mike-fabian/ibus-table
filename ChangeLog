@@ -1,4 +1,108 @@
-commit 632be268364f26337128aa301e7acf134f38f2c1
+commit 3c685a43d77dbb2a5448f922314cb6cda707344e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 28 10:28:32 2022 +0200
+
+    Release 1.16.8
+
+commit 44e99f2a7482ad75554fae9e54913207dd8cc656
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 28 10:17:15 2022 +0200
+
+    Regenerate engine/chinese_variants.py for Unihan_Variants.txt from “2022-04-26 Unicode 15.0.0 draft”
+    
+        - Because of the new Unihan_Variants.txt, the following 4 characters
+          are added to the VARIANTS_TABLE in chinese_variants.py:
+          u'囃': 2, u'戠': 3, u'臤': 3, u'鰛': 2,
+    
+        - And because of the new Unihan_Variants.txt, the following character
+          is removed from VARIANTS_TABLE in chinese_variants.py:
+          u'𫝜': 2,
+    
+          1 = simplified Chinese
+          2 = traditional Chinese
+          3 = used both in simplified *and* traditional Chinese
+
+commit b20b84e87ae7e3f79b7e70433913aecdc683c5f7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Apr 28 10:02:26 2022 +0200
+
+    Update Unihan_Variants.txt from “2021-12-01 Unicode 15.0.0 draft” to “2022-04-26 Unicode  15.0.0 draft”
+    
+    All our fixes are included upstream.
+
+commit 391432f8a34a3e35615d1e2b70f7a2578fa96f4c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 4 08:05:29 2022 +0200
+
+    Fix some pylint warnings
+
+commit 27ae3129b11efa47095f143ee726a17f1ebd8264
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 31 09:03:42 2022 +0100
+
+    Add type hints also for the test cases
+
+commit e181dd2e584a77975d0f366fb2003a4b3d774f92
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jan 31 09:02:50 2022 +0100
+
+    Remove duplicate function in mock_engine.py
+
+commit 7d94f39009b3c5cd4940a3c83165684ab2b4eacc
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Jan 30 11:19:53 2022 +0100
+
+    Use mypy --strict
+
+commit 93aeed71aaf4404418f3df84265f53fdbaec8e8a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Jan 30 11:19:32 2022 +0100
+
+    Add some more type hints
+
+commit 79847e3581c965a3e0ee0adfe50d27185fd46f43
+Author: Anonymous <noreply@weblate.org>
+Date:   Wed Mar 30 09:56:14 2022 +0200
+
+    Translated using Weblate (Persian)
+    
+    Currently translated at 11.6% (17 of 146 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fa/
+    Translation: ibus-table/app
+
+commit 3433649b1a923257b59aaf6401e99a11cd2f233f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Feb 17 13:59:05 2022 +0100
+
+    Add "Bug report" and "Feature request" issue templates
+
+commit 31465f33ed95a84fc74b5ff30e0f1c8268177307
+Author: Anonymous <noreply@weblate.org>
+Date:   Fri Feb 4 19:16:38 2022 +0100
+
+    Translated using Weblate (French)
+    
+    Currently translated at 97.2% (142 of 146 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+    Translation: ibus-table/app
+
+commit 6ffd9b36aaa2410aad8ae6df8430c62a9f923caf
+Author: Weblate <noreply@weblate.org>
+Date:   Sat Jan 29 11:38:46 2022 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 8fe3e3c9a18dfc45bfdf7b13970a44796181e7bb
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Jan 25 16:55:21 2022 +0100
 

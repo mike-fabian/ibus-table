@@ -19,6 +19,34 @@
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <releases>
+    <release version="1.16.8" date="2022-04-28" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.16.8</url>
+      <issues>
+        <issue>
+          Update Unihan_Variants.txt from “2021-12-01 Unicode 15.0.0
+          draft” to “2022-04-26 Unicode 15.0.0 draft” and regenerate
+          chinese_variants.py. All our fixes to Unihan_Variants.txt
+          are included upstream.
+
+          Because of the new Unihan_Variants.txt, the following 4 characters
+          are added to the VARIANTS_TABLE in chinese_variants.py:
+          u'囃': 2, u'戠': 3, u'臤': 3, u'鰛': 2.
+    
+          And because of the new Unihan_Variants.txt, the following character
+          is removed from VARIANTS_TABLE in chinese_variants.py:
+          u'𫝜': 2
+    
+          1 = simplified Chinese, 2 = traditional Chinese, 3 = used
+          both in simplified *and* traditional Chinese
+        </issue>
+        <issue>
+          Update translations from Weblate (fa, fr updated)
+        </issue>
+      </issues>
+    </release>
     <release version="1.16.7" date="2022-01-28" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

@@ -4,8 +4,8 @@ Release:    1%{?dist}
 Summary:    The Table engine for IBus platform
 License:    LGPLv2+
 Group:      System Environment/Libraries
-URL:        http://code.google.com/p/ibus/
-Source0:    http://ibus.googlecode.com/files/%{name}-%{version}.tar.gz
+URL:        http://mike-fabian.github.io/ibus-table/
+Source0:    https://github.com/mike-fabian/ibus-table/releases/download/%{version}/ibus-table-%{version}.tar.gz
 
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:  noarch

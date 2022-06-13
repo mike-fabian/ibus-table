@@ -143,7 +143,7 @@ class IMApp:
                 version='0.1.0',
                 license='GPL',
                 author='Yuwei Yu <acevery@gmail.com>',
-                homepage='http://code.google.com/p/ibus/',
+                homepage='http://mike-fabian.github.io/ibus-table/',
                 textdomain='ibus-table')
             # now we get IME info from self.__factory.db
             engine_name = ''

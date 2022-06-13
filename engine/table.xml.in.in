@@ -7,7 +7,7 @@
     <version>@VERSION@</version>
     <author>Yuwei Yu &lt;acevery@gmail.com&gt;</author>
     <license>LGPL</license>
-    <homepage>http://code.google.com/p/ibus</homepage>
+    <homepage>https://github.com/mike-fabian/ibus-table</homepage>
     <textdomain>ibus-table</textdomain>
     <observed-paths>
         <path>${pkgdatadir}/tables/</path>

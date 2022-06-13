@@ -1,4 +1,48 @@
-commit 3c685a43d77dbb2a5448f922314cb6cda707344e
+commit 456f2809c0237bf0a5983f383d9c1860b11a92b7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 13 18:30:57 2022 +0200
+
+    Release 1.16.9
+
+commit 026eeca3c8600f90f732764e7c48ee171763a5c1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 13 18:27:44 2022 +0200
+
+    Require Python >= 3.6 to build
+
+commit 7c3573745407414ba7d6cb8c9a9b0b42bceaf2bd
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 13 18:20:24 2022 +0200
+
+    Use a less exact type hint to make building tables from sources work with Python 3.6 as well
+    
+    Resolves: https://github.com/kaio/ibus-table/issues/79
+    Resolves: https://github.com/mike-fabian/ibus-table-chinese/issues/5
+
+commit c4903d86910417ae40c1089fdb885bb89081d8eb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 13 18:16:24 2022 +0200
+
+    Update ibus-table.pot (Only line number changes)
+
+commit e6fd5a336e0618e40b0b69e42c2251262a83acf2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 13 18:04:17 2022 +0200
+
+    Update configure.ac for latest autoconf 2.71
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/112
+    
+    - Use “autoupdate” to modernize configure.ac
+    - Use “autoreconf -fiv” in “./autogen.sh”
+
+commit 0c621fd918c27ddd69ef04e15047995e9b260d57
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 13 18:02:07 2022 +0200
+
+    Update home page URLs (code.google.com is not used anymore)
+
+commit 3b9e25d1728fd154cf66c122c28cbe79c80fff15
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Apr 28 10:28:32 2022 +0200
 

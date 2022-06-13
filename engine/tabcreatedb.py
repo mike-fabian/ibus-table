@@ -165,12 +165,15 @@ class Section:
     '''Helper class for parsing the sections of the tables marked
     with BEGIN_* and END_*.
     '''
-    patt: re.Pattern[str]
+    # Actually the “more exact” type for patt is re.Pattern[str] but
+    # Python 3.8 fails parsing this, therefore use type “Any” for patt
+    # to make it work with Pytyon 3.8 as well:
+    patt: Any
     start: str
     end: str
     in_section: bool
 
-    def __init__(self, patt: re.Pattern[str], start: str, end: str):
+    def __init__(self, patt: Any, start: str, end: str):
         self.patt = patt
         self.start = start.strip()
         self.end = end.strip()

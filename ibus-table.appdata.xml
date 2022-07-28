@@ -12,6 +12,15 @@
       languages are available as well.
     </p>
   </description>
+  <screenshots>
+    <screenshot>
+       <image type="source" width="1024" height="768" xml:lang="en">
+          https://mike-fabian.github.io/ibus-table/ibus-table-cangjie5.png
+       </image>
+       <caption>Screenshot of ibus-table using the cangjie5 table</caption>
+    </screenshot>
+  </screenshots>
+  <icon type="remote" width="64" height="64">https://raw.githubusercontent.com/mike-fabian/ibus-table/main/icons/64x64/ibus-table.png</icon>
   <project_license>LGPL-2.1+</project_license>
   <developer_name>Mike FABIAN</developer_name>
   <update_contact>mfabian@redhat.com</update_contact>

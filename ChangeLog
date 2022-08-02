@@ -1,4 +1,55 @@
-commit 456f2809c0237bf0a5983f383d9c1860b11a92b7
+commit 6378f1a2174ff44a1d1245c6f957302a34f321a5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 2 10:57:43 2022 +0200
+
+    Release 1.16.10
+
+commit ec4f225599fef4fc45878f84dc2be9a4a28d54b6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 2 11:02:59 2022 +0200
+
+    Do not make the caption of the screenshot in the appdata.xml file translatable
+    
+    I think gnome-sofware would not display the translation anyway.
+
+commit b72de3f8a760ec6bd0f248053ee9081c1348856e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jul 28 09:53:32 2022 +0200
+
+    Add (remote) icon and screenshot to ibus-table.appdata.xml
+
+commit e3ca6b174c95c2fad3ffdb230f1baaa65fb803f8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Aug 2 08:20:45 2022 +0200
+
+    Generate png versions of the ibus-table icon from the svg master
+    
+    To be able to display an icon in gnome-software, svg does not work there.
+    
+    I tried to use “convert” from ImageMagick to do the conversion like this:
+    
+    for i in 16 22 32 48 64 128 256
+    do
+        mkdir ${i}x${i}
+        convert -background none -density 1024 -resize ${i}x${i} ibus-table.svg ${i}x${i}/ibus-table.png
+        mogrify -density 96 ${i}x${i}/ibus-table.png
+    done
+    
+    But that just produces completely empty png files. Adding the -verbose option
+    shows that inkscape is used for the conversion. But opening the ibus-table.svg
+    in inkscape just shows a white box.
+    
+    So I used gimp to do the conversion.
+
+commit 040ae4fa1216b099aa774d41c0b44d6d654f6dc7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Jul 30 09:48:59 2022 +0200
+
+    Add <content_rating type="oars-1.1"/> to appdata.xml files
+    
+    See: https://github.com/hughsie/oars/blob/master/specification/oars-1.1.md
+
+commit 3b6afbfced8a56f026bfb2449f15066b4fc4280f
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Jun 13 18:30:57 2022 +0200
 

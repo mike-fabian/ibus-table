@@ -29,6 +29,17 @@
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.16.10" date="2022-08-02" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.16.10</url>
+      <issues>
+        <issue>
+          Add png versions of the ibus-table.svg icon
+        </issue>
+      </issues>
+    </release>
     <release version="1.16.9" date="2022-06-13" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>
@@ -40,7 +51,7 @@
           building tables from sources work with Python 3.8 as well
         </issue>
         <issue>
-          Require Python >= 3.8 in configure.ac
+          Require Python >= 3.6 in configure.ac
         </issue>
       </issues>
     </release>

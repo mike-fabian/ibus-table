@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html -->
 <component type="inputmethod">
   <id>org.freedesktop.ibus.engine.table</id>
   <metadata_license>CC0-1.0</metadata_license>
@@ -12,6 +13,10 @@
       languages are available as well.
     </p>
   </description>
+  <keywords>
+    <keyword>input-method</keyword>
+    <keyword>Chinese</keyword>
+  </keywords>
   <screenshots>
     <screenshot>
        <image type="source" width="1024" height="768" xml:lang="en">
@@ -27,6 +32,7 @@
   <url type="homepage">https://kaio.github.io/ibus-table/</url>
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
+  <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
   <releases>
     <release version="1.16.10" date="2022-08-02" urgency="medium">

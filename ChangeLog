@@ -1,4 +1,27 @@
-commit 6378f1a2174ff44a1d1245c6f957302a34f321a5
+commit f5e46fcaa3bcbb76f04d77ca2436e50a96e33047
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Aug 6 13:58:57 2022 +0200
+
+    Release 1.16.11
+
+commit 2372bc731171863e29e43cc2c47888e789aa0469
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Aug 6 13:54:08 2022 +0200
+
+    Remove hashbang from chinese_variants.py and tabcreatedb.py
+    
+    - chinese_variants.py is only imported an never executed
+    - tabcreatedb.py is usually executed via a the wrapper script “ibus-table-createdb”
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/118
+
+commit dd232594b475ce6b97a81be21fe906c8231d00eb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 3 09:34:46 2022 +0200
+
+    Add “translate” URL and keywords to ibus-table.appdata.xml
+
+commit 013e682491bf35cc84e9b9f37dfdf238fd130212
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Aug 2 10:57:43 2022 +0200
 

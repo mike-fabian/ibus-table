@@ -35,6 +35,18 @@
   <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.16.11" date="2022-08-02" urgency="medium">
+      <description>
+        <p>This new stable release includes these changes:</p>
+      </description>
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.16.11</url>
+      <issues>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/118">
+          github-mike-fabian-issue#118: Remove hashbang from
+          chinese_variants.py and tabcreatedb.py
+        </issue>
+      </issues>
+    </release>
     <release version="1.16.10" date="2022-08-02" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

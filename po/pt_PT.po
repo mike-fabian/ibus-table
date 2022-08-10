@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Manuela Silva <mmsrs@sky.com>, 2020.
 # Anonymous <noreply@weblate.org>, 2020.
-# Mike FABIAN <mfabian@redhat.com>, 2021.
+# Mike FABIAN <mfabian@redhat.com>, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
 "POT-Creation-Date: 2022-01-28 12:57+0100\n"
-"PO-Revision-Date: 2021-07-22 15:03+0000\n"
+"PO-Revision-Date: 2022-08-10 07:19+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Portuguese (Portugal) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/pt_PT/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.7.2\n"
+"X-Generator: Weblate 4.13\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -356,10 +356,8 @@ msgstr ""
 "disponíveis algumas tabelas para outros idiomas."
 
 #: setup/main.py:114
-#, fuzzy
-#| msgid "<b>Inital state</b>"
 msgid "Initial state"
-msgstr "<b>Estado inicial</b>"
+msgstr "Estado inicial"
 
 #: setup/main.py:115
 msgid "Direct input"

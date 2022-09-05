@@ -104,7 +104,7 @@ if _ARGS.profile:
     _PROFILE = cProfile.Profile()
 
 if  _ARGS.xml:
-    from locale import getdefaultlocale
+    import locale
     from xml.etree.ElementTree import Element, SubElement, tostring
 else:
     # Avoid importing factory when the --xml option is used because
@@ -277,10 +277,9 @@ def write_xml() -> None:
         _longname.text = ''
         # getdefaultlocale() returns something like ('ja_JP', 'UTF-8').
         # In case of C/POSIX locale it returns (None, None)
-        _locale = getdefaultlocale()[0]
-        if _locale:
-            _locale = _locale.lower()
-        else:
+        locale.setlocale(locale.LC_ALL, '')
+        _locale = locale.getlocale(locale.LC_MESSAGES)[0].lower()
+        if not _locale:
             _locale = 'en'
         _longname.text = _sq_db.ime_properties.get(
             '.'.join(['name', _locale]))

@@ -1,4 +1,42 @@
-commit f5e46fcaa3bcbb76f04d77ca2436e50a96e33047
+commit 0b5125805e26c2f87ab0f668be6a9ef154d05b5c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Sep 5 19:51:48 2022 +0200
+
+    Release 1.16.12
+
+commit 930bfd8ddfe35948aa5e6164f244a79c29cba787
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Sep 5 19:53:06 2022 +0200
+
+    Update ibus-table.pot (Only line number changes)
+
+commit 1779f8f9f2cf709092db613c0ad0bc1067ba16ce
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Sep 5 14:57:20 2022 +0200
+
+    Add 128x128, 256x256, and svg (remote) icons to ibus-table.appdata.xml
+
+commit bbcfba9d5882735b81276ce80c115b6ac5e5502c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Sep 5 14:52:16 2022 +0200
+
+    Use setlocale() and getlocale() instead of getdefaultlocale()
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/120
+
+commit 1616f65f4a05c6de634b6aa6580b8ebfad9318e6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 10 09:19:10 2022 +0200
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 78.0% (114 of 146 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+    Translation: ibus-table/app
+
+commit f5583ba6dbe3aaca551effa00b8873f9fd5c26ec
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Sat Aug 6 13:58:57 2022 +0200
 

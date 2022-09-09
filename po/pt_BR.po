@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: http://code.google.com/p/ibus/issues/entry\n"
-"POT-Creation-Date: 2022-01-28 12:57+0100\n"
+"Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
+"POT-Creation-Date: 2022-09-05 19:52+0200\n"
 "PO-Revision-Date: 2021-09-28 12:00+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
@@ -285,11 +285,11 @@ msgstr "Modo de envio automático"
 msgid "Switch autocommit mode"
 msgstr "Alterna o modo de envio automático"
 
-#: engine/table.py:2873
+#: engine/table.py:2875
 msgid "Setup"
 msgstr "Configuração"
 
-#: engine/table.py:2876
+#: engine/table.py:2878
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Configura “%(engine-name)s” do ibus-table"
@@ -334,15 +334,15 @@ msgstr "Glaucia Cintra"
 msgid "Online documentation:"
 msgstr "Documentação online:"
 
-#: ibus-table.appdata.xml:5
+#: ibus-table.appdata.xml:6
 msgid "Ibus Table"
 msgstr "Tabela do Ibus"
 
-#: ibus-table.appdata.xml:6
+#: ibus-table.appdata.xml:7
 msgid "Table based input method"
 msgstr "Método de entrada baseado em tabela"
 
-#: ibus-table.appdata.xml:8
+#: ibus-table.appdata.xml:9
 msgid ""
 "Ibus-table is an input method framework for table-based input methods. "
 "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
@@ -377,7 +377,7 @@ msgstr "Sobre"
 msgid "Restore all defaults"
 msgstr "Restaurar o padrão"
 
-#: setup/main.py:237 setup/main.py:2865
+#: setup/main.py:237 setup/main.py:2869
 msgid "_Close"
 msgstr "_Fechar"
 
@@ -678,7 +678,7 @@ msgstr "Editar"
 msgid "Edit the key bindings for the selected command"
 msgstr "Edita as associações de tecla para o comando selecionado"
 
-#: setup/main.py:777 setup/main.py:2143
+#: setup/main.py:777 setup/main.py:2147
 msgid "Set to default"
 msgstr "Definir com o padrão"
 
@@ -686,7 +686,7 @@ msgstr "Definir com o padrão"
 #. the default key bindings for the selected command.
 #. Translators: This is a tooltip for the button to set
 #. the key bindings for the selected command to the default.
-#: setup/main.py:783 setup/main.py:2150
+#: setup/main.py:783 setup/main.py:2154
 msgid "Set default key bindings for the selected command"
 msgstr "Define associações de teclas padrão para o comando selecionado"
 
@@ -914,11 +914,11 @@ msgstr ""
 msgid "Are you sure?"
 msgstr "Você tem certeza?"
 
-#: setup/main.py:1475 setup/main.py:1789
+#: setup/main.py:1475 setup/main.py:1793
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: setup/main.py:1476 setup/main.py:1790
+#: setup/main.py:1476 setup/main.py:1794
 msgid "_OK"
 msgstr "_OK"
 
@@ -929,7 +929,7 @@ msgstr "Outra instância deste aplicativo já está em execução."
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
-#: setup/main.py:1568
+#: setup/main.py:1572
 msgid "Do you really want to restore all default settings?"
 msgstr "Você realmente deseja restaurar todas as configurações padrão?"
 
@@ -943,7 +943,7 @@ msgstr "Você realmente deseja restaurar todas as configurações padrão?"
 #. beginning because of the learning from user
 #. input. Deleting this learned data cannot be reversed. So
 #. the user should be really sure he really wants to do that.
-#: setup/main.py:1764
+#: setup/main.py:1768
 msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
@@ -951,36 +951,36 @@ msgstr ""
 "Você realmente deseja excluir todos os dados aprendidos a partir da "
 "digitação e seleção de candidatos?"
 
-#: setup/main.py:1786
+#: setup/main.py:1790
 msgid "Select .wav sound file:"
 msgstr "Selecionar arquivo de som .wav:"
 
-#: setup/main.py:2066
+#: setup/main.py:2070
 #, python-format
 msgid "Edit key bindings for command “%s”"
 msgstr "Editar associações de tecla para o comando “%s”"
 
 #. Translators: This is a tooltip for the button to add a
 #. key binding.
-#: setup/main.py:2096
+#: setup/main.py:2100
 msgid "Add a key binding"
 msgstr "Adicionar uma associação de tecla"
 
 #. Translators: This is a tooltip for the button to remove
 #. the selected key binding.
-#: setup/main.py:2110
+#: setup/main.py:2114
 msgid "Remove selected key binding"
 msgstr "Remover associação da tecla selecionada"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
-#: setup/main.py:2125
+#: setup/main.py:2129
 msgid "Move key binding up"
 msgstr "Mover associação de tecla para cima"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
-#: setup/main.py:2138
+#: setup/main.py:2142
 msgid "Move key binding down"
 msgstr "Mover associação de tecla para baixo"
 
@@ -989,7 +989,7 @@ msgstr "Mover associação de tecla para baixo"
 #. really sure to reset the key bindings for *all* commands
 #. to their defaults. This cannot be reversed so the user
 #. should be really sure he wants to do that.
-#: setup/main.py:2205
+#: setup/main.py:2209
 msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
@@ -997,7 +997,7 @@ msgstr ""
 "Deseja realmente definir as associações de teclas de todos os comandos para "
 "o padrão?"
 
-#: setup/main.py:2918
+#: setup/main.py:2922
 msgid "ibus is not running."
 msgstr "ibus não está em execução."
 

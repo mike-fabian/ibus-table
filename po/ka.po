@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2022-06-13 18:13+0200\n"
+"POT-Creation-Date: 2022-09-05 19:52+0200\n"
 "PO-Revision-Date: 2022-09-09 16:58+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
-"Language-Team: Georgian <https://translate.fedoraproject.org/projects/"
-"ibus-table/app/ka/>\n"
+"Language-Team: Georgian <https://translate.fedoraproject.org/projects/ibus-"
+"table/app/ka/>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -327,15 +327,15 @@ msgstr "თემური დოღონაძე"
 msgid "Online documentation:"
 msgstr "ონლაინ დოკუმენტაცია:"
 
-#: ibus-table.appdata.xml:5
+#: ibus-table.appdata.xml:6
 msgid "Ibus Table"
 msgstr ""
 
-#: ibus-table.appdata.xml:6
+#: ibus-table.appdata.xml:7
 msgid "Table based input method"
 msgstr ""
 
-#: ibus-table.appdata.xml:8
+#: ibus-table.appdata.xml:9
 msgid ""
 "Ibus-table is an input method framework for table-based input methods. "
 "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "

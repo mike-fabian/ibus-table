@@ -204,7 +204,9 @@ class SetupUI(Gtk.Window): # type: ignore
         self.connect('destroy-event', self._on_destroy_event)
         self.connect('delete-event', self._on_delete_event)
 
-        self._main_container = Gtk.VBox()
+        self._main_container = Gtk.Box()
+        self._main_container.set_orientation(Gtk.Orientation.VERTICAL)
+        self._main_container.set_spacing(0)
         self.add(self._main_container) # pylint: disable=no-member
         self._notebook = Gtk.Notebook()
         self._notebook.set_visible(True)
@@ -281,7 +283,9 @@ class SetupUI(Gtk.Window): # type: ignore
         # diffent types of candidates should be marked with labels.
         self._options_details_label.set_text(_('Details'))
 
-        self._keybindings_vbox = Gtk.VBox()
+        self._keybindings_vbox = Gtk.Box()
+        self._keybindings_vbox.set_orientation(Gtk.Orientation.VERTICAL)
+        self._keybindings_vbox.set_spacing(0)
         margin = 10
         self._keybindings_vbox.set_margin_start(margin)
         self._keybindings_vbox.set_margin_end(margin)
@@ -2058,7 +2062,9 @@ class SetupUI(Gtk.Window): # type: ignore
         self._keybindings_edit_popover.set_position(Gtk.PositionType.RIGHT)
         self._keybindings_edit_popover.set_vexpand(True)
         self._keybindings_edit_popover.set_hexpand(True)
-        keybindings_edit_popover_vbox = Gtk.VBox()
+        keybindings_edit_popover_vbox = Gtk.Box()
+        keybindings_edit_popover_vbox.set_orientation(
+            Gtk.Orientation.VERTICAL)
         margin = 12
         keybindings_edit_popover_vbox.set_margin_start(margin)
         keybindings_edit_popover_vbox.set_margin_end(margin)
@@ -2849,7 +2855,9 @@ class HelpWindow(Gtk.Window): # type: ignore
             self.set_modal(True)
         self.set_destroy_with_parent(False)
         self.set_default_size(600, 500)
-        self.vbox = Gtk.VBox(spacing=0)
+        self.vbox = Gtk.Box()
+        self.vbox.set_orientation(Gtk.Orientation.VERTICAL)
+        self.vbox.set_spacing(0)
         self.add(self.vbox)
         self.text_buffer = Gtk.TextBuffer()
         self.text_buffer.insert_at_cursor(contents)

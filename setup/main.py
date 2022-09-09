@@ -215,17 +215,19 @@ class SetupUI(Gtk.Window): # type: ignore
         self._notebook.set_hexpand(True)
         self._notebook.set_vexpand(True)
         self._main_container.pack_start(self._notebook, True, True, 0)
-        self._dialog_action_area = Gtk.ButtonBox()
+        self._dialog_action_area = Gtk.Box()
+        self._dialog_action_area.set_orientation(Gtk.Orientation.HORIZONTAL)
         self._dialog_action_area.set_visible(True)
         self._dialog_action_area.set_can_focus(False)
         self._dialog_action_area.set_hexpand(True)
         self._dialog_action_area.set_vexpand(False)
-        self._dialog_action_area.set_layout(Gtk.ButtonBoxStyle.EDGE)
         self._main_container.pack_end(self._dialog_action_area, True, True, 0)
         self._about_button = Gtk.Button(label=_('About'))
+        self._about_button.set_hexpand(True)
         self._about_button.connect('clicked', self._on_about_button_clicked)
         self._dialog_action_area.add(self._about_button)
         self._restore_all_defaults_button = Gtk.Button()
+        self._restore_all_defaults_button.set_hexpand(True)
         self._restore_all_defaults_button_label = Gtk.Label()
         self._restore_all_defaults_button_label.set_text(
             _('Restore all defaults'))
@@ -235,6 +237,7 @@ class SetupUI(Gtk.Window): # type: ignore
             'clicked', self._on_restore_all_defaults_button_clicked)
         self._dialog_action_area.add(self._restore_all_defaults_button)
         self._close_button = Gtk.Button()
+        self._close_button.set_hexpand(True)
         self._close_button_label = Gtk.Label()
         self._close_button_label.set_text_with_mnemonic(_('_Close'))
         self._close_button.add(self._close_button_label)
@@ -757,11 +760,12 @@ class SetupUI(Gtk.Window): # type: ignore
             self._keybindings_label, False, False, 0)
         self._keybindings_vbox.pack_start(
             self._keybindings_treeview_scroll, True, True, 0)
-        self._keybindings_action_area = Gtk.ButtonBox()
+        self._keybindings_action_area = Gtk.Box()
+        self._keybindings_action_area.set_orientation(
+            Gtk.Orientation.HORIZONTAL)
         self._keybindings_action_area.set_can_focus(False)
-        self._keybindings_action_area.set_layout(Gtk.ButtonBoxStyle.START)
-        self._keybindings_vbox.pack_start(
-            self._keybindings_action_area, False, False, 0)
+        self._keybindings_vbox.add(
+            self._keybindings_action_area)
         self._keybindings_edit_button = Gtk.Button()
         self._keybindings_edit_button_label = Gtk.Label()
         self._keybindings_edit_button_label.set_text(
@@ -2087,12 +2091,12 @@ class SetupUI(Gtk.Window): # type: ignore
         self._keybindings_edit_popover_scroll.set_overlay_scrolling(True)
         keybindings_edit_popover_vbox.pack_start(
             self._keybindings_edit_popover_scroll, True, True, 0)
-        keybindings_edit_popover_button_box = Gtk.ButtonBox()
+        keybindings_edit_popover_button_box = Gtk.Box()
+        keybindings_edit_popover_button_box.set_orientation(
+            Gtk.Orientation.HORIZONTAL)
         keybindings_edit_popover_button_box.set_can_focus(False)
-        keybindings_edit_popover_button_box.set_layout(
-            Gtk.ButtonBoxStyle.START)
-        keybindings_edit_popover_vbox.pack_start(
-            keybindings_edit_popover_button_box, False, False, 0)
+        keybindings_edit_popover_vbox.add(
+            keybindings_edit_popover_button_box)
         self._keybindings_edit_popover_add_button = Gtk.Button()
         keybindings_edit_popover_add_button_label = Gtk.Label()
         keybindings_edit_popover_add_button_label.set_text(

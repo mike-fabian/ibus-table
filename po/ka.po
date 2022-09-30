@@ -7,16 +7,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2022-09-05 19:52+0200\n"
-"PO-Revision-Date: 2022-09-09 16:58+0000\n"
-"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
-"Language-Team: Georgian <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/ka/>\n"
+"PO-Revision-Date: 2022-09-30 23:20+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Georgian <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/ka/>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -90,7 +90,7 @@ msgstr "ჩინური რეჟიმი"
 
 #: engine/table.py:710
 msgid "Switch Chinese mode"
-msgstr ""
+msgstr "ჩინურ რეჟიმზე გადართვა"
 
 #: engine/table.py:721
 msgid "English"
@@ -130,7 +130,7 @@ msgstr "შეყვანის რეჟიმი"
 
 #: engine/table.py:754
 msgid "Switch Input mode"
-msgstr ""
+msgstr "შეყვანის რეჟიმის გადართვა"
 
 #. Translators: This is the mode to use half width letters
 #. while in “Table input” mode.
@@ -436,7 +436,7 @@ msgstr "კი"
 #. Chinese which should be preferred.
 #: setup/main.py:362
 msgid "Chinese mode:"
-msgstr ""
+msgstr "ჩინური რეჟიმი"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.
@@ -652,7 +652,7 @@ msgstr ""
 
 #: setup/main.py:836
 msgid "Delete all learned data"
-msgstr ""
+msgstr "ნასწავლი მონაცემების წაშლა"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.

@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2022-09-05 19:52+0200\n"
-"PO-Revision-Date: 2021-01-27 13:40+0000\n"
+"PO-Revision-Date: 2022-09-30 23:20+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_TW/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.4.2\n"
+"X-Generator: Weblate 4.14.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -619,10 +619,8 @@ msgid "Vertical"
 msgstr "垂直"
 
 #: setup/main.py:657
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "System default"
-msgstr "全部還原至預設值"
+msgstr "系統預設"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.

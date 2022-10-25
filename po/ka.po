@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2022-09-05 19:52+0200\n"
-"PO-Revision-Date: 2022-09-30 23:20+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2022-10-25 05:28+0000\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/ka/>\n"
 "Language: ka\n"
@@ -90,7 +90,7 @@ msgstr "ჩინური რეჟიმი"
 
 #: engine/table.py:710
 msgid "Switch Chinese mode"
-msgstr "ჩინურ რეჟიმზე გადართვა"
+msgstr "ჩინურის რეჟიმის გადართვა"
 
 #: engine/table.py:721
 msgid "English"
@@ -436,7 +436,7 @@ msgstr "კი"
 #. Chinese which should be preferred.
 #: setup/main.py:362
 msgid "Chinese mode:"
-msgstr "ჩინური რეჟიმი"
+msgstr "ჩინური რეჟიმი:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.

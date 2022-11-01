@@ -254,9 +254,8 @@ def unichar_full_to_half(char: str) -> str:
 SAVE_USER_COUNT_MAX = 16
 SAVE_USER_TIMEOUT = 30 # in seconds
 
-########################
-### Engine Class #####
-####################
+IBUS_VERSION = (IBus.MAJOR_VERSION, IBus.MINOR_VERSION, IBus.MICRO_VERSION)
+
 class TabEngine(IBus.EngineSimple): # type: ignore
     '''The IM Engine for Tables'''
 
@@ -266,13 +265,27 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             obj_path: str,
             database: Any, # tabsqlitedb.TabSqliteDb
             unit_test: bool = False) -> None:
-        super().__init__(connection=bus.get_connection(),
-                         object_path=obj_path)
         global DEBUG_LEVEL
         try:
             DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
         except (TypeError, ValueError):
             DEBUG_LEVEL = int(0)
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug(
+                'TabEngine.__init__(bus=%s, obj_path=%s, database=%s)',
+                bus, obj_path, database)
+        LOGGER.info('ibus version = %s', '.'.join(map(str, IBUS_VERSION)))
+        if hasattr(IBus.Engine.props, 'has_focus_id'):
+            super().__init__(
+                connection=bus.get_connection(),
+                object_path=obj_path,
+                has_focus_id=True)
+            LOGGER.info('This ibus version has focus id.')
+        else:
+            super().__init__(
+                connection=bus.get_connection(),
+                object_path=obj_path)
+            LOGGER.info('This ibus version does *not* have focus id.')
 
         self._unit_test = unit_test
         self._input_purpose = 0
@@ -318,6 +331,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self.autocommit_mode_menu: Dict[str, Any] = {}
         self.autocommit_mode_properties: Dict[str, Any] = {}
         self._setup_property: Optional[IBus.Property] = None
+        self._im_client: str = ''
         self.theme = THEME
 
         self._keybindings: Dict[str, List[str]] = {}
@@ -3057,6 +3071,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 self._lookup_table.get_cursor_pos() +1,
                 self._lookup_table.get_number_of_candidates())
         if aux_string:
+            if DEBUG_LEVEL > 0 and not self._unit_test:
+                client = f'🪟{self._im_client}'
+                aux_string += client
             attrs = IBus.AttrList()
             attrs.append(IBus.attr_foreground_new(
                 self.theme["aux_text"], 0, len(aux_string)))
@@ -4180,13 +4197,71 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         return self._return_false(key.val, key.code, key.state)
 
     def do_focus_in(self) -> None:
+        '''
+        Called for ibus < 1.5.27 when a window gets focus while
+        this input engine is enabled
+        '''
         if DEBUG_LEVEL > 1:
-            LOGGER.debug('do_focus_in()')
+            LOGGER.debug('entering do_focus_in()\n')
+        self.do_focus_in_id('', '')
+
+    def do_focus_in_id(self, object_path: str, client: str) -> None:
+        '''Called for ibus >= 1.5.27 when a window gets focus while
+        this input engine is enabled
+
+        :param object_path: Example:
+                            '/org/freedesktop/IBus/InputContext_23'
+        :param client: Possible values and examples where these values occur:
+                       '': unknown
+                       'fake': focus where input is impossible
+                               (e.g. desktop background)
+                       'xim': XIM
+                             (Gtk3 programs in a Gnome Xorg session
+                              when GTK_IM_MODULE is unset also use xim)
+                       'gtk-im:<program-name>':  Gtk2 input module
+                       'gtk3-im:<program-name>': Gtk3 input module
+                       'gtk4-im:<program-name>': Gtk4 input module
+                       'gnome-shell': Entries handled by gnome-shell
+                                      (like the command line dialog
+                                      opened with Alt+F2 or the search
+                                      field when pressing the Super
+                                      key.) When GTK_IM_MODULE is
+                                      unset in a Gnome Wayland session
+                                      all programs which would show
+                                      'gtk3-im' or 'gtk4-im' with
+                                      GTK_IM_MODULE=ibus then show
+                                      'gnome-shell' instead.
+                       'Qt':      Qt4 input module
+                       'QIBusInputContext': Qt5 input module
+
+                       In case of the Gtk input modules, the name of the
+                       client is also shown after the “:”, for example
+                       like 'gtk3-im:firefox', 'gtk4-im:gnome-text-editor', …
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('object_path=%s client=%s\n', object_path, client)
+        self._im_client = client
         if self._on:
             self.register_properties(self.main_prop_list)
         self._update_ui()
 
     def do_focus_out(self) -> None:
+        '''
+        Called for ibus < 1.5.27 when a window loses focus while
+        this input engine is enabled
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('entering do_focus_out()\n')
+        self.do_focus_out_id('')
+
+    def do_focus_out_id(self, object_path: str) -> None:
+        '''
+        Called for ibus >= 1.5.27 when a window loses focus while
+        this input engine is enabled
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('object_path=%s\n', object_path)
+        self._im_client = ''
         # Do not do self._input_purpose = 0 here, see
         # https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/5966#note_1576732
         # if the input purpose is set correctly on focus in, then it

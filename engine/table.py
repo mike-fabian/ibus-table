@@ -3431,6 +3431,13 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         :return: True if the key was completely handled, False if not.
         :param number: The number of the candidate
         '''
+        if (hasattr(IBus.Capabilite, 'OSK')
+            and
+            self.client_capabilities & IBus.Capabilite.OSK):
+            LOGGER.info(
+                'OSK is visible: '
+                'do not commit candidate to preedit by number %s', number)
+            return False
         if not self._candidates:
             return False
         index = number - 1
@@ -3514,6 +3521,12 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         :return: True if the key was completely handled, False if not.
         :param number: The number of the candidate
         '''
+        if (hasattr(IBus.Capabilite, 'OSK')
+            and
+            self.client_capabilities & IBus.Capabilite.OSK):
+            LOGGER.info(
+                'OSK is visible: do not remove candidate by number %s', number)
+            return False
         if not self._candidates:
             return False
         index = number - 1
@@ -3597,6 +3610,12 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         :return: True if the key was completely handled, False if not.
         :param number: The number of the candidate
         '''
+        if (hasattr(IBus.Capabilite, 'OSK')
+            and
+            self.client_capabilities & IBus.Capabilite.OSK):
+            LOGGER.info(
+                'OSK is visible: do not commit candidate by number %s', number)
+            return False
         if not self._candidates or number > len(self._candidates):
             return False
         index = number - 1

@@ -63,6 +63,7 @@ from gi.repository import GLib
 #import tabsqlitedb
 from gi.repository import GObject
 import it_util
+import it_active_window
 
 LOGGER = logging.getLogger('ibus-table')
 
@@ -4241,6 +4242,13 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if DEBUG_LEVEL > 1:
             LOGGER.debug('object_path=%s client=%s\n', object_path, client)
         self._im_client = client
+        if ':' not in self._im_client:
+            (program_name,
+             _window_title) = it_active_window.get_active_window()
+            if program_name:
+                self._im_client += ':' + program_name
+            if DEBUG_LEVEL > 1:
+                LOGGER.debug('self._im_client=%s\n', self._im_client)
         if self._on:
             self.register_properties(self.main_prop_list)
         self._update_ui()

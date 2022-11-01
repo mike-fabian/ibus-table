@@ -913,7 +913,6 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         }
         self._init_properties()
 
-        self._on = False
         self._save_user_count = 0
         self._save_user_start = time.time()
 
@@ -4249,8 +4248,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 self._im_client += ':' + program_name
             if DEBUG_LEVEL > 1:
                 LOGGER.debug('self._im_client=%s\n', self._im_client)
-        if self._on:
-            self.register_properties(self.main_prop_list)
+        self.register_properties(self.main_prop_list)
         self._update_ui()
 
     def do_focus_out(self) -> None:
@@ -4298,11 +4296,20 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             self._input_purpose = purpose
 
     def do_enable(self) -> None:
-        self._on = True
+        '''Called when this input engine is enabled'''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('do_enable()\n')
+        # Tell the input-context that the engine will utilize
+        # surrounding-text:
+        self.get_surrounding_text()
         self.do_focus_in()
 
     def do_disable(self) -> None:
-        self._on = False
+        '''Called when this input engine is disabled'''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('do_disable()\n')
+        self.clear_all_input_and_preedit()
+        self._update_ui()
 
     def do_page_up(self) -> bool:
         '''Called when the page up button in the lookup table is clicked with

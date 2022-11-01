@@ -1,4 +1,154 @@
-commit 0b5125805e26c2f87ab0f668be6a9ef154d05b5c
+commit fa5d5db47721bd911bb702a971a5a8a7bdb736aa
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 1 08:31:56 2022 +0100
+
+    Release 1.16.13
+
+commit 11ccc00849f4793b9608931ca9760085d01509ab
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 1 08:34:28 2022 +0100
+
+    Update ibus-table.pot (Only line number changes)
+
+commit 2d86913f189853ae7765933d9beafbc5a71e64e7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 1 21:21:04 2022 +0100
+
+    Remove self._on, seems useless
+    
+    and change do_enable() and do_disable() to do the same as in ibus-typing-booster.
+
+commit fbd93c21df7b99939fd9f498940e6ec82e8c87ed
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 1 21:13:13 2022 +0100
+
+    Get program name of focused window also when ibus cannot get it
+    
+    - On Wayland desktops: Tries AT-SPI first and falls back to xprop
+    - On X11 desktops: Uses only xprop
+
+commit bb82fddb6410e43bf40ea239b50355640696a74a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 1 16:37:21 2022 +0100
+
+    Use focus id if available (it is available for ibus >= 1.5.27)
+
+commit 54efc800bde13f01638d855e135f64767093c853
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 1 15:58:52 2022 +0100
+
+    Use IBus.PreeditFocusMode.COMMIT and make sure the input is cleared and the UI updated when the focus changes
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/129
+
+commit 628f5510f09afdfd2951d78060a0bfb7bae68b53
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 1 15:41:12 2022 +0100
+
+    Do not reset input purpose on focus out
+    
+    See: https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/5966#note_1576732
+
+commit e33b2d23b3620a7987007f8eaf072f686b27c5ea
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Nov 1 08:24:44 2022 +0100
+
+    Do not commit by index when OSK is visible
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/128
+    
+    Currently works only on Gnome Wayland.
+    
+    On Gnome Xorg it works only in gnome-shell entry widgets like “Run a
+    Command” (Alt+F2) but not in other programs like gnome-terminal and
+    gedit.
+
+commit 9f047c950d54dbee5c5fd7f0013b32e5f52a260f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Sep 9 21:40:54 2022 +0200
+
+    Use Gtk.Box instead of Gtk.ButtonBox
+    
+    Helps with porting to Gtk4 because Gtk.ButtonBox is not available in Gtk4 anymore.
+
+commit 150a15f5d15b803c6715e2f5549618551abcc676
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Sep 9 21:31:33 2022 +0200
+
+    Use Gtk.Box instead of Gtk.VBox and Gtk.HBox
+    
+    In Gtk4 there no Gtk.VBox and no Gtk.HBox, only Gtk.Box. Replacing the
+    uses of Gtk.VBox and Gtk.HBox with Gtk4 compatible code will make
+    porting to Gtk4 a bit easier.
+
+commit 2b2cd118a03b761f5d76a5c344e3fbedaf07ba93
+Author: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+Date:   Tue Oct 25 07:28:26 2022 +0200
+
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 43.8% (64 of 146 strings)
+    
+    Co-authored-by: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translation: ibus-table/app
+
+commit 2ee27a58ddb94c3eee34d285982a76c47d5c9093
+Author: Anonymous <noreply@weblate.org>
+Date:   Sat Oct 1 01:20:54 2022 +0200
+
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 43.8% (64 of 146 strings)
+    
+    Translated using Weblate (Chinese (Traditional) (zh_TW))
+    
+    Currently translated at 62.3% (91 of 146 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_TW/
+    Translation: ibus-table/app
+
+commit 705ccaa8d81769ba1a5bd5c60ce78d3fc6cd421f
+Author: Oğuz Ersen <oguz@ersen.moe>
+Date:   Sat Sep 24 17:19:36 2022 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (146 of 146 strings)
+    
+    Co-authored-by: Oğuz Ersen <oguz@ersen.moe>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    Translation: ibus-table/app
+
+commit c1f2009655af4dfc1aaf3bfd9d0d5fc42402c5ae
+Author: Weblate <noreply@weblate.org>
+Date:   Fri Sep 9 18:58:34 2022 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 7ffccf83283f5366fa3b81abede735eec7a8ae6a
+Author: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+Date:   Fri Sep 9 18:58:33 2022 +0200
+
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 41.0% (60 of 146 strings)
+    
+    Added translation using Weblate (Georgian)
+    
+    Co-authored-by: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translation: ibus-table/app
+
+commit 88ac6d921e6252e2d1450f017a519fc12e591138
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Sep 5 19:51:48 2022 +0200
 

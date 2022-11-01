@@ -4180,8 +4180,10 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             self._update_ui()
 
     def do_focus_out(self) -> None:
-        if self._has_input_purpose:
-            self._input_purpose = 0
+        # Do not do self._input_purpose = 0 here, see
+        # https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/5966#note_1576732
+        # if the input purpose is set correctly on focus in, then it
+        # should not be necessary to reset it here.
         self.clear_all_input_and_preedit()
 
     def do_set_content_type(self, purpose: int, _hints: int) -> None:

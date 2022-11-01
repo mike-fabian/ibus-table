@@ -38,6 +38,7 @@ class MockEngine:
         self.mock_preedit_text = ''
         self.mock_preedit_text_cursor_pos = 0
         self.mock_preedit_text_visible = True
+        self.mock_preedit_focus_mode = IBus.PreeditFocusMode.COMMIT
         self.mock_committed_text = ''
         self.mock_committed_text_cursor_pos = 0
         self.client_capabilities = (
@@ -93,6 +94,15 @@ class MockEngine:
         self.mock_preedit_text = text.get_text()
         self.mock_preedit_text_cursor_pos = cursor_pos
         self.mock_preedit_text_visible = visible
+
+    def update_preedit_text_with_mode(
+            self,
+            text: IBus.Text,
+            cursor_pos: int,
+            visible: bool,
+            focus_mode: IBus.PreeditFocusMode) -> None:
+        self.mock_preedit_focus_mode = focus_mode
+        self.update_preedit_text(text, cursor_pos, visible)
 
     def register_properties(self, property_list: List[IBus.Property]) -> None:
         pass

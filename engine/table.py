@@ -2996,8 +2996,12 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         preedit_string_complete = (
             left_of_current_edit + current_edit + right_of_current_edit)
         if not preedit_string_complete:
-            super().update_preedit_text(
-                IBus.Text.new_from_string(u''), 0, False)
+            # Not using super().update_preedit_text_with_mode() because
+            # IBus.EngineSimple does not have that method.
+            IBus.Engine.update_preedit_text_with_mode(
+                self,
+                IBus.Text.new_from_string(''), 0, False,
+                IBus.PreeditFocusMode.COMMIT)
             return
         color_left = self.theme["preedit_left"] # bright red
         color_right = self.theme["preedit_right"] # light green
@@ -3036,8 +3040,11 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                   attr.get_start_index(),
                                   attr.get_end_index())
             i += 1
-        super().update_preedit_text(
-            text, self.get_caret(), True)
+        # Not using super().update_preedit_text_with_mode() because
+        # IBus.EngineSimple does not have that method.
+        IBus.Engine.update_preedit_text_with_mode(
+            self,
+            text, self.get_caret(), True, IBus.PreeditFocusMode.COMMIT)
 
     def _update_aux(self) -> None:
         '''Update Aux String in UI'''
@@ -4177,7 +4184,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             LOGGER.debug('do_focus_in()')
         if self._on:
             self.register_properties(self.main_prop_list)
-            self._update_ui()
+        self._update_ui()
 
     def do_focus_out(self) -> None:
         # Do not do self._input_purpose = 0 here, see
@@ -4185,6 +4192,23 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         # if the input purpose is set correctly on focus in, then it
         # should not be necessary to reset it here.
         self.clear_all_input_and_preedit()
+        self._update_ui()
+
+    def do_reset(self) -> None:
+        '''Called when the mouse pointer is used to move to cursor to a
+        different position in the current window.
+
+        Also called when certain keys are pressed:
+
+            Return, KP_Enter, ISO_Enter, Up, Down, (and others?)
+
+        Even some key sequences like space + Left and space + Right
+        seem to call this.
+
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('do_reset()\n')
+        self.reset()
 
     def do_set_content_type(self, purpose: int, _hints: int) -> None:
         if self._has_input_purpose:

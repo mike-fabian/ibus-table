@@ -610,24 +610,30 @@ class KeyEvent:
         return False
 
     def __str__(self) -> str:
-        return (
-            "val=%s code=%s state=0x%08x name='%s' unicode='%s' "
-            % (self.val,
-               self.code,
-               self.state,
-               self.name,
-               self.unicode)
-            + "shift=%s lock=%s control=%s super=%s hyper=%s meta=%s "
-            % (self.shift,
-               self.lock,
-               self.control,
-               self.super,
-               self.hyper,
-               self.meta)
-            + "mod1=%s mod5=%s release=%s\n"
-            % (self.mod1,
-               self.mod5,
-               self.release))
+        return repr(
+            f'val={self.val} '
+            f'code={self.code} '
+            f'state=0x{self.state:08x} '
+            f'name=“{self.name}” '
+            f'unicode=“{self.unicode}” '
+            f'shift={self.shift} '
+            f'lock={self.lock} '
+            f'control={self.control} '
+            f'super={self.super} '
+            f'hyper={self.hyper} '
+            f'meta={self.meta} '
+            f'mod1={self.mod1} '
+            f'mod2={self.mod2} '
+            f'mod3={self.mod3} '
+            f'mod4={self.mod4} '
+            f'mod5={self.mod5} '
+            f'button1={self.button1} '
+            f'button2={self.button2} '
+            f'button3={self.button3} '
+            f'button4={self.button4} '
+            f'button5={self.button5} '
+            f'release={self.release} '
+            f'modifier={self.modifier}')
 
 def keyevent_to_keybinding(keyevent: KeyEvent) -> str:
     keybinding = ''

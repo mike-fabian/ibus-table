@@ -289,10 +289,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             LOGGER.info('This ibus version does *not* have focus id.')
 
         self._unit_test = unit_test
-        self._input_purpose = 0
-        self._has_input_purpose = False
-        if hasattr(IBus, 'InputPurpose'):
-            self._has_input_purpose = True
+        self._input_purpose: int = 0
+        self._input_hints: int = 0
         self._bus = bus
         # this is the backend sql db we need for our IME
         # we receive this db from IMEngineFactory
@@ -3834,9 +3832,12 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if DEBUG_LEVEL > 1:
             LOGGER.debug('KeyEvent object: %s', key)
 
-        if (self._has_input_purpose
-                and self._input_purpose
-                in [IBus.InputPurpose.PASSWORD, IBus.InputPurpose.PIN]):
+        if (self._input_purpose
+            in [it_util.InputPurpose.PASSWORD.value,
+                it_util.InputPurpose.PIN.value]):
+            if DEBUG_LEVEL > 0:
+                LOGGER.debug(
+                    'Disable because of input purpose PASSWORD or PIN')
             return self._return_false(keyval, keycode, state)
 
         result = self._process_key_event(key)
@@ -4291,9 +4292,28 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             LOGGER.debug('do_reset()\n')
         self.reset()
 
-    def do_set_content_type(self, purpose: int, _hints: int) -> None:
-        if self._has_input_purpose:
-            self._input_purpose = purpose
+    def do_set_content_type(self, purpose: int, hints: int) -> None:
+        '''Called when the input purpose or hints change'''
+        LOGGER.debug('purpose=%s hints=%s\n', purpose, format(hints, '016b'))
+        self._input_purpose = purpose
+        self._input_hints = hints
+        if DEBUG_LEVEL > 1:
+            if (self._input_purpose
+                in [int(x) for x in list(it_util.InputPurpose)]):
+                for input_purpose in list(it_util.InputPurpose):
+                    if self._input_purpose == input_purpose:
+                        LOGGER.debug(
+                            'self._input_purpose = %s (%s)',
+                            self._input_purpose, str(input_purpose))
+            else:
+                LOGGER.debug(
+                    'self._input_purpose = %s (Unknown)',
+                    self._input_purpose)
+            for hint in list(it_util.InputHints):
+                if self._input_hints & hint:
+                    LOGGER.debug(
+                        'hint: %s %s',
+                        str(hint), format(int(hint), '016b'))
 
     def do_enable(self) -> None:
         '''Called when this input engine is enabled'''

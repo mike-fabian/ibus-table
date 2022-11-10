@@ -1,4 +1,56 @@
-commit fa5d5db47721bd911bb702a971a5a8a7bdb736aa
+commit a6fea57e33d236d96dfece075b88d8494b343cc5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Nov 10 14:52:05 2022 +0100
+
+    Release 1.16.14
+
+commit 873c133c25990c7fba8fcdc14029534fe337ee2a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Nov 10 14:53:21 2022 +0100
+
+    Update ibus-table.pot (Only line number changes)
+
+commit cf2c5020146ed03369649b8c0ca104a78baae207
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Nov 10 14:40:38 2022 +0100
+
+    Add “class Capabilite(Flag)” for compatibilty
+    
+    To be able to write
+    
+            if self.client_capabilities & it_util.Capabilite.OSK:
+    
+    instead of always checking whether a capability is already available in the current
+    version of ibus:
+    
+            if (hasattr(IBus.Capabilite, 'OSK')
+                and
+                self.client_capabilities & IBus.Capabilite.OSK):
+
+commit ca296cba952e56a9171b4daed471203c365b4464
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Nov 10 09:08:18 2022 +0100
+
+    Use lower() on LC_MESSAGES only if it is a string and not None
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/130
+    Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2131410
+
+commit 38d844bc77b0a0c4b75bddb756fcfbc3d927049e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Nov 3 17:15:57 2022 +0100
+
+    Improve string representation of class KeyEvent for better debugging output
+
+commit 8861905c8a64191faeee7189820d82eaa2c29f17
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Nov 3 16:28:04 2022 +0100
+
+    Use InputPurpose and and InputHints compatibility classes
+    
+    This code is synced from ibus-typing-booster.
+
+commit 399751b84b078b79afcfbf64b2ce374018400e21
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Nov 1 08:31:56 2022 +0100
 

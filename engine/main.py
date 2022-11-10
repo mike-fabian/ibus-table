@@ -278,7 +278,9 @@ def write_xml() -> None:
         # getdefaultlocale() returns something like ('ja_JP', 'UTF-8').
         # In case of C/POSIX locale it returns (None, None)
         locale.setlocale(locale.LC_ALL, '')
-        _locale = locale.getlocale(locale.LC_MESSAGES)[0].lower()
+        _locale = locale.getlocale(locale.LC_MESSAGES)[0]
+        if _locale:
+            _locale = _locale.lower()
         if not _locale:
             _locale = 'en'
         _longname.text = _sq_db.ime_properties.get(

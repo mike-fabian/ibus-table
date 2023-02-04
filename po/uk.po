@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2022-09-05 19:52+0200\n"
+"POT-Creation-Date: 2022-11-10 14:52+0100\n"
 "PO-Revision-Date: 2022-01-13 07:03+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/ibus-"
@@ -22,11 +22,11 @@ msgstr ""
 #. when one wants to input only Simplified Chinese.
 #. Translators: This is the setting to use only
 #. simplified Chinese
-#: engine/table.py:659 setup/main.py:382
+#: engine/table.py:672 setup/main.py:389
 msgid "Simplified Chinese"
 msgstr "Спрощена китайська"
 
-#: engine/table.py:661
+#: engine/table.py:674
 msgid "Switch to “Simplified Chinese only”."
 msgstr "Перемкнутися у режим «Спрощена китайська»."
 
@@ -34,11 +34,11 @@ msgstr "Перемкнутися у режим «Спрощена китайсь
 #. when one wants to input only Traditonal Chinese
 #. Translators: This is the setting to use only
 #. traditional Chinese
-#: engine/table.py:668 setup/main.py:386
+#: engine/table.py:681 setup/main.py:393
 msgid "Traditional Chinese"
 msgstr "Традиційна китайська"
 
-#: engine/table.py:670
+#: engine/table.py:683
 msgid "Switch to “Traditional Chinese only”."
 msgstr "Перемкнутися у режим «Традиційна китайська»."
 
@@ -47,11 +47,11 @@ msgstr "Перемкнутися у режим «Традиційна китай
 #. Chinese but wants the Simplified Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:680
+#: engine/table.py:693
 msgid "Simplified Chinese first"
 msgstr "Спрощена китайська — перша"
 
-#: engine/table.py:682
+#: engine/table.py:695
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr "Перемкнутися у режим «Спрощена китайська до традиційної»."
 
@@ -60,11 +60,11 @@ msgstr "Перемкнутися у режим «Спрощена китайсь
 #. Chinese but wants the Traditional Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:692
+#: engine/table.py:705
 msgid "Traditional Chinese first"
 msgstr "Традиційна китайська — перша"
 
-#: engine/table.py:694
+#: engine/table.py:707
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr "Перемкнутися у режим «Традиційна китайська до спрощеної»."
 
@@ -76,59 +76,59 @@ msgstr "Перемкнутися у режим «Традиційна китай
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese in no
 #. particular order
-#: engine/table.py:704 setup/main.py:401
+#: engine/table.py:717 setup/main.py:408
 msgid "All Chinese characters"
 msgstr "Усі символи китайської"
 
-#: engine/table.py:705
+#: engine/table.py:718
 msgid "Switch to “All Chinese characters”."
 msgstr "Перемкнутися у режим «Усі символи китайської»."
 
-#: engine/table.py:709
+#: engine/table.py:722
 msgid "Chinese mode"
 msgstr "Режим китайської"
 
-#: engine/table.py:710
+#: engine/table.py:723
 msgid "Switch Chinese mode"
 msgstr "Перемкнутися у режим китайської мови"
 
-#: engine/table.py:721
+#: engine/table.py:734
 msgid "English"
 msgstr "Англійська"
 
-#: engine/table.py:722
+#: engine/table.py:735
 msgid "Switch to English input"
 msgstr "Перемкнутися на введення англійської"
 
-#: engine/table.py:729
+#: engine/table.py:742
 msgid "Chinese"
 msgstr "Китайська"
 
-#: engine/table.py:730
+#: engine/table.py:743
 msgid "Switch to Chinese input"
 msgstr "Перемкнутися на введення китайської"
 
-#: engine/table.py:738 engine/table.py:886 setup/main.py:951
+#: engine/table.py:751 engine/table.py:899 setup/main.py:959
 msgid "Direct"
 msgstr "Безпосередньо"
 
-#: engine/table.py:739
+#: engine/table.py:752
 msgid "Switch to direct input"
 msgstr "Перемкнути на безпосереднє введення"
 
-#: engine/table.py:744 engine/table.py:808
+#: engine/table.py:757 engine/table.py:821
 msgid "Table"
 msgstr "Таблиця"
 
-#: engine/table.py:745
+#: engine/table.py:758
 msgid "Switch to table input"
 msgstr "Перемкнути на введення за таблицею"
 
-#: engine/table.py:753
+#: engine/table.py:766
 msgid "Input mode"
 msgstr "Режим введення"
 
-#: engine/table.py:754
+#: engine/table.py:767
 msgid "Switch Input mode"
 msgstr "Перемкнути режим введення"
 
@@ -140,12 +140,12 @@ msgstr "Перемкнути режим введення"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use half width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:764 engine/table.py:786 setup/main.py:438 setup/main.py:482
-#: setup/main.py:527 setup/main.py:572
+#: engine/table.py:777 engine/table.py:799 setup/main.py:445 setup/main.py:489
+#: setup/main.py:534 setup/main.py:579
 msgid "Half"
 msgstr "Половинна"
 
-#: engine/table.py:765
+#: engine/table.py:778
 msgid "Switch to halfwidth letters"
 msgstr "Перемкнутися на півширинні літери"
 
@@ -157,108 +157,108 @@ msgstr "Перемкнутися на півширинні літери"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use full width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:770 engine/table.py:792 setup/main.py:442 setup/main.py:486
-#: setup/main.py:531 setup/main.py:576
+#: engine/table.py:783 engine/table.py:805 setup/main.py:449 setup/main.py:493
+#: setup/main.py:538 setup/main.py:583
 msgid "Full"
 msgstr "Повна"
 
-#: engine/table.py:771
+#: engine/table.py:784
 msgid "Switch to fullwidth letters"
 msgstr "Перемкнутися на повноширинні літери"
 
-#: engine/table.py:775
+#: engine/table.py:788
 msgid "Letter width"
 msgstr "Ширина літер"
 
-#: engine/table.py:776
+#: engine/table.py:789
 msgid "Switch letter width"
 msgstr "Перемкнути ширину літер"
 
-#: engine/table.py:787
+#: engine/table.py:800
 msgid "Switch to halfwidth punctuation"
 msgstr "Перемкнутися на півширинну пунктуацію"
 
-#: engine/table.py:793
+#: engine/table.py:806
 msgid "Switch to fullwidth punctuation"
 msgstr "Перемкнутися на повноширинну пунктуацію"
 
-#: engine/table.py:797
+#: engine/table.py:810
 msgid "Punctuation width"
 msgstr "Ширина пунктуації"
 
-#: engine/table.py:798
+#: engine/table.py:811
 msgid "Switch punctuation width"
 msgstr "Перемкнути ширину пунктуації"
 
-#: engine/table.py:809
+#: engine/table.py:822
 msgid "Switch to table mode"
 msgstr "Перемкнутися на режим таблиці"
 
-#: engine/table.py:814
+#: engine/table.py:827
 msgid "Pinyin"
 msgstr "Піньїнь"
 
-#: engine/table.py:815
+#: engine/table.py:828
 msgid "Switch to pinyin mode"
 msgstr "Перемкнутися на режим піньїну"
 
-#: engine/table.py:819
+#: engine/table.py:832
 msgid "Pinyin mode"
 msgstr "Режим піньїну"
 
-#: engine/table.py:820
+#: engine/table.py:833
 msgid "Switch pinyin mode"
 msgstr "Перемкнути режим піньїну"
 
-#: engine/table.py:830
+#: engine/table.py:843
 msgid "Suggestion disabled"
 msgstr "Пропозиції вимкнено"
 
-#: engine/table.py:831 engine/table.py:837
+#: engine/table.py:844 engine/table.py:850
 msgid "Switch to suggestion mode"
 msgstr "Перемкнутися на режим пропозицій"
 
-#: engine/table.py:836
+#: engine/table.py:849
 msgid "Suggestion enabled"
 msgstr "Пропозиції увімкнено"
 
-#: engine/table.py:841
+#: engine/table.py:854
 msgid "Suggestion mode"
 msgstr "Режим пропозицій"
 
-#: engine/table.py:842
+#: engine/table.py:855
 msgid "Switch suggestion mode"
 msgstr "Перемкнути режим пропозицій"
 
-#: engine/table.py:852
+#: engine/table.py:865
 msgid "Multiple character match"
 msgstr "Відповідність декільком символам"
 
-#: engine/table.py:854
+#: engine/table.py:867
 msgid "Switch to matching multiple characters at once"
 msgstr "Перемкнутися на встановлення відповідності одразу декільком символам"
 
-#: engine/table.py:859
+#: engine/table.py:872
 msgid "Single character match"
 msgstr "Відповідність одному символу"
 
-#: engine/table.py:861
+#: engine/table.py:874
 msgid "Switch to matching only single characters"
 msgstr "Перемкнутися на встановлення відповідності одному символу"
 
-#: engine/table.py:865
+#: engine/table.py:878
 msgid "Onechar mode"
 msgstr "Односимвольний режим"
 
-#: engine/table.py:866
+#: engine/table.py:879
 msgid "Switch onechar mode"
 msgstr "Перемкнути односимвольний режим"
 
-#: engine/table.py:876 setup/main.py:949
+#: engine/table.py:889 setup/main.py:957
 msgid "Normal"
 msgstr "Звичайний"
 
-#: engine/table.py:878
+#: engine/table.py:891
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
@@ -268,7 +268,7 @@ msgstr ""
 "допомогою цього пункту можна увімкнути автоматичне визначення нових "
 "клавіатурних скорочень)"
 
-#: engine/table.py:888
+#: engine/table.py:901
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
@@ -276,19 +276,19 @@ msgstr ""
 "Перемкнутися у режим безпосереднього надсилання (автоматичне надсилання "
 "даних безпосередньо до програми)"
 
-#: engine/table.py:893
+#: engine/table.py:906
 msgid "Auto commit mode"
 msgstr "Режим автонадсилання"
 
-#: engine/table.py:894
+#: engine/table.py:907
 msgid "Switch autocommit mode"
 msgstr "Перемкнути режим автонадсилання"
 
-#: engine/table.py:2875
+#: engine/table.py:2887
 msgid "Setup"
 msgstr "Налаштування"
 
-#: engine/table.py:2878
+#: engine/table.py:2890
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Налаштувати «%(engine-name)s» для ibus-table"
@@ -296,40 +296,40 @@ msgstr "Налаштувати «%(engine-name)s» для ibus-table"
 #. Translators: This is used in the title bar of a dialog window
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
-#: engine/it_util.py:542
+#: engine/it_util.py:860
 msgid "Key input"
 msgstr "Введення за клавішами"
 
-#: engine/it_util.py:548
+#: engine/it_util.py:866
 msgid "Cancel"
 msgstr "Скасувати"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:555
+#: engine/it_util.py:873
 msgid "Please press a key (or a key combination)"
 msgstr "Натисніть клавішу (або комбінацію клавіш)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:560
+#: engine/it_util.py:878
 msgid "The dialog will be closed when the key is released"
 msgstr "Вікно буде закрито, коли клавіші буде відпущено"
 
-#: engine/it_util.py:592
+#: engine/it_util.py:910
 msgid "Table input method for IBus."
 msgstr "Спосіб введення за допомогою таблиці для IBus."
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
 #. will be displayed in the “About ibus-table” dialog.
-#: engine/it_util.py:616
+#: engine/it_util.py:934
 msgid "translator-credits"
 msgstr "Юрій Чорноіван, <yurchor@ukr.net>"
 
-#: engine/it_util.py:624
+#: engine/it_util.py:942
 msgid "Online documentation:"
 msgstr "Документація в інтернеті:"
 
@@ -368,22 +368,22 @@ msgstr "Введення за таблицею"
 msgid "Preferences"
 msgstr "Налаштування"
 
-#: setup/main.py:223
+#: setup/main.py:225
 msgid "About"
 msgstr "Про програму"
 
-#: setup/main.py:229
+#: setup/main.py:233
 msgid "Restore all defaults"
 msgstr "Відновити усі типові значення"
 
-#: setup/main.py:237 setup/main.py:2869
+#: setup/main.py:242 setup/main.py:2881
 msgid "_Close"
 msgstr "З_акрити"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
 #. behaviour of ibus-table.
-#: setup/main.py:260
+#: setup/main.py:265
 msgid "Settings"
 msgstr "Параметри"
 
@@ -396,7 +396,7 @@ msgstr "Параметри"
 #. types of candidates (candidates from the user database, from
 #. dictionaries, or from spellchecking) and/or whether
 #. diffent types of candidates should be marked with labels.
-#: setup/main.py:282
+#: setup/main.py:287
 msgid "Details"
 msgstr "Подробиці"
 
@@ -407,7 +407,7 @@ msgstr "Подробиці"
 #. etc...
 #. Translators: Column heading of the table listing the
 #. existing key bindings
-#: setup/main.py:296 setup/main.py:742
+#: setup/main.py:303 setup/main.py:749
 msgid "Key bindings"
 msgstr "Прив'язки клавіш"
 
@@ -415,7 +415,7 @@ msgstr "Прив'язки клавіш"
 #. (“Direct input” or “Table input”) should be remembered
 #. or whether ibus-table should always use “Table input” by
 #. default after a restart.
-#: setup/main.py:316
+#: setup/main.py:323
 msgid "Remember input mode"
 msgstr "Запам'ятовувати спосіб введення"
 
@@ -424,7 +424,7 @@ msgstr "Запам'ятовувати спосіб введення"
 #. input”) should be remembered or whether ibus-table
 #. should always use “Table input” by default after a
 #. restart.
-#: setup/main.py:323
+#: setup/main.py:330
 msgid ""
 "Whether the last used input mode should be remembered or whether ibus-table "
 "should start in “Table mode” by default after a restart. There are two input "
@@ -442,23 +442,23 @@ msgstr ""
 "програми. Втім, у цьому режимі все ж здійснюється певне перетворення між "
 "символами повної і половинної ширини."
 
-#: setup/main.py:336
+#: setup/main.py:343
 msgid "No"
 msgstr "Ні"
 
-#: setup/main.py:338
+#: setup/main.py:345
 msgid "Yes"
 msgstr "Так"
 
 #. Translators: A combobox to choose the variant of
 #. Chinese which should be preferred.
-#: setup/main.py:362
+#: setup/main.py:369
 msgid "Chinese mode:"
 msgstr "Режим китайської:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.
-#: setup/main.py:366
+#: setup/main.py:373
 msgid ""
 "“Simplified Chinese” shows only characters \n"
 "used in simplified Chinese. “Traditional Chinese”\n"
@@ -485,26 +485,26 @@ msgstr ""
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. simplified Chinese
-#: setup/main.py:391
+#: setup/main.py:398
 msgid "Simplified Chinese before traditional"
 msgstr "Спрощена китайська до традиційної"
 
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. traditional Chinese
-#: setup/main.py:396
+#: setup/main.py:403
 msgid "Traditional Chinese before simplified"
 msgstr "Традиційна китайська до спрощеної"
 
 #. Translators: A combobox to choose the letter width
 #. while in “Table input” mode.
-#: setup/main.py:426
+#: setup/main.py:433
 msgid "Table input letter width:"
 msgstr "Ширина літер панелі введення за таблицею:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Table input” mode.
-#: setup/main.py:430
+#: setup/main.py:437
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
@@ -514,13 +514,13 @@ msgstr ""
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Table input” mode.
-#: setup/main.py:469
+#: setup/main.py:476
 msgid "Table input punctuation width:"
 msgstr "Ширина пунктуації панелі введення за таблицею:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Table input” mode.
-#: setup/main.py:473
+#: setup/main.py:480
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
@@ -530,13 +530,13 @@ msgstr ""
 
 #. Translators: A combobox to choose the letter width
 #. while in “Direct input” mode.
-#: setup/main.py:515
+#: setup/main.py:522
 msgid "Direct input letter width:"
 msgstr "Ширина літер безпосереднього введення:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Direct input” mode.
-#: setup/main.py:519
+#: setup/main.py:526
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
@@ -546,13 +546,13 @@ msgstr ""
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Direct input” mode.
-#: setup/main.py:559
+#: setup/main.py:566
 msgid "Direct input punctuation width:"
 msgstr "Ширина пунктуації безпосереднього введення:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Direct input” mode.
-#: setup/main.py:563
+#: setup/main.py:570
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
@@ -560,7 +560,7 @@ msgstr ""
 "Визначає, яку пунктуацію слід використовувати\n"
 "у режимі безпосереднього введення: повноширинну чи півширинну."
 
-#: setup/main.py:603
+#: setup/main.py:610
 msgid "Candidate list"
 msgstr "Список варіантів"
 
@@ -570,14 +570,14 @@ msgstr "Список варіантів"
 #. candidate list to be shown. But for some non-Chinese
 #. input methods like the Russian “translit”, hiding
 #. the candidate lists is better.
-#: setup/main.py:618
+#: setup/main.py:625
 msgid "Show candidate list"
 msgstr "Показувати список варіантів"
 
 #. Translit: A tooltip for the label of the combobox to
 #. choose whether a candidate list should be shown or
 #. hidden.
-#: setup/main.py:623
+#: setup/main.py:630
 msgid ""
 "Whether candidate lists should be shown or hidden.\n"
 "For Chinese input methods one usually wants the\n"
@@ -594,14 +594,14 @@ msgstr ""
 
 #. Translators: A combobox to choose whether the candidate
 #. window should be drawn horizontally or vertically.
-#: setup/main.py:642
+#: setup/main.py:649
 msgid "Orientation:"
 msgstr "Орієнтація:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn
 #. horizontally or vertically.
-#: setup/main.py:647
+#: setup/main.py:654
 msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
@@ -609,28 +609,28 @@ msgstr ""
 "Визначає, буде таблиця із варіантами\n"
 "вертикальною чи горизонтальною."
 
-#: setup/main.py:653
+#: setup/main.py:660
 msgid "Horizontal"
 msgstr "Горизонтально"
 
-#: setup/main.py:655
+#: setup/main.py:662
 msgid "Vertical"
 msgstr "Вертикально"
 
-#: setup/main.py:657
+#: setup/main.py:664
 msgid "System default"
 msgstr "Типові для системи"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
-#: setup/main.py:682
+#: setup/main.py:689
 msgid "Page size:"
 msgstr "Розмір сторінки:"
 
 #. Translators: A tooltip for the label of the adjustment
 #. for the number of candidates to show in one page of the
 #. candidate list.
-#: setup/main.py:687
+#: setup/main.py:694
 msgid ""
 "The maximum number of candidates in\n"
 "one page of the lookup table. You can switch\n"
@@ -643,27 +643,27 @@ msgstr ""
 "клавіш page up/down та клавіш зі стрілками вгору\n"
 "і вниз."
 
-#: setup/main.py:709
+#: setup/main.py:716
 msgid "Current key bindings:"
 msgstr "Поточні прив'язки клавіш:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
-#: setup/main.py:734
+#: setup/main.py:741
 msgid "Command"
 msgstr "Команда"
 
-#: setup/main.py:764
+#: setup/main.py:772
 msgid "Edit"
 msgstr "Змінити"
 
 #. Translators: A tooltip for the button to edit
 #. the keybindings for the selected command.
-#: setup/main.py:770
+#: setup/main.py:778
 msgid "Edit the key bindings for the selected command"
 msgstr "Змінити прив'язки клавіш для позначеної команди"
 
-#: setup/main.py:777 setup/main.py:2147
+#: setup/main.py:785 setup/main.py:2157
 msgid "Set to default"
 msgstr "Встановити типові"
 
@@ -671,28 +671,28 @@ msgstr "Встановити типові"
 #. the default key bindings for the selected command.
 #. Translators: This is a tooltip for the button to set
 #. the key bindings for the selected command to the default.
-#: setup/main.py:783 setup/main.py:2154
+#: setup/main.py:791 setup/main.py:2164
 msgid "Set default key bindings for the selected command"
 msgstr "Встановити типові прив'язки клавіш для позначеної команди"
 
-#: setup/main.py:790
+#: setup/main.py:798
 msgid "Set all to default"
 msgstr "Встановити типові для усіх"
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
-#: setup/main.py:796
+#: setup/main.py:804
 msgid "Set default key bindings for all commands"
 msgstr "Встановити типові прив'язки клавіш для усіх команд"
 
 #. Translators: A checkbox where one can choose whether the
 #. order of the candidates is dynamically adjusted according
 #. to how often the candidates are used.
-#: setup/main.py:821
+#: setup/main.py:829
 msgid "Dynamic adjust"
 msgstr "Динамічне коригування"
 
-#: setup/main.py:823
+#: setup/main.py:831
 msgid ""
 "Here you can choose whether the order of the candidates is dynamically "
 "adjusted according to how often the candidates are used."
@@ -700,20 +700,20 @@ msgstr ""
 "Тут ви можете вибрати, чи буде програма динамічно коригувати порядок "
 "варіантів, відповідно до частоти використання варіантів."
 
-#: setup/main.py:836
+#: setup/main.py:844
 msgid "Delete all learned data"
 msgstr "Вилучити вивчені дані"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
-#: setup/main.py:861
+#: setup/main.py:869
 msgid "Compose:"
 msgstr "Створення:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
 #. be shown.
-#: setup/main.py:866
+#: setup/main.py:874
 msgid ""
 "If this is set to “single char”, only single\n"
 "character candidates will be shown. If it is\n"
@@ -726,24 +726,24 @@ msgstr ""
 "і варіанти, що складаються із декількох\n"
 "символів."
 
-#: setup/main.py:874
+#: setup/main.py:882
 msgid "Phrase"
 msgstr "Фраза"
 
-#: setup/main.py:876
+#: setup/main.py:884
 msgid "Single Char"
 msgstr "Окремий символ"
 
 #. Translators: A combobox to choose whether the first
 #. candidate will be automatically selected during typing.
-#: setup/main.py:901
+#: setup/main.py:909
 msgid "Auto select"
 msgstr "Автовибір"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
 #. select during typing.
-#: setup/main.py:906
+#: setup/main.py:914
 msgid ""
 "If set to “Yes”, this does the following 4 things:\n"
 "1) When typing “Return”, commit the \n"
@@ -772,14 +772,14 @@ msgstr ""
 
 #. Translators: A combobox to choose whether automatic
 #. commits go into the preëdit or into the application
-#: setup/main.py:931
+#: setup/main.py:939
 msgid "Auto commit mode:"
 msgstr "Режим автонадсилання:"
 
 #. Translators; A tooltip for the label of the combobox to
 #. choose whether automatic commits go into the preëdit or
 #. into the application.
-#: setup/main.py:936
+#: setup/main.py:944
 msgid ""
 "Committing with the commit keys or with the mouse\n"
 "always commits to the application. This option is about\n"
@@ -803,14 +803,14 @@ msgstr ""
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
-#: setup/main.py:976
+#: setup/main.py:984
 msgid "Auto wildcard"
 msgstr "Автошаблон"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether a wildcard should be automatically
 #. appended to the input.
-#: setup/main.py:981
+#: setup/main.py:989
 msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
@@ -821,14 +821,14 @@ msgstr ""
 
 #. Translators: This single character is a placeholder
 #. to match a any single character
-#: setup/main.py:998
+#: setup/main.py:1006
 msgid "Single wildcard character:"
 msgstr "Символ одинарного замінника:"
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match a
 #. single character.
-#: setup/main.py:1003
+#: setup/main.py:1011
 msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
@@ -838,14 +838,14 @@ msgstr ""
 
 #. Translators: This single character is a placeholder
 #. to match a any number of characters
-#: setup/main.py:1024
+#: setup/main.py:1032
 msgid "Multi wildcard character:"
 msgstr "Символ кратного замінника:"
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match any
 #. number of candidates.
-#: setup/main.py:1029
+#: setup/main.py:1037
 msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
@@ -855,24 +855,24 @@ msgstr ""
 
 #. Translators: A combobox to choose whether
 #. the color scheme for a dark theme should be used.
-#: setup/main.py:1049
+#: setup/main.py:1057
 msgid "Use dark theme"
 msgstr "Темна тема"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should
 #. be used.
-#: setup/main.py:1054
+#: setup/main.py:1062
 msgid "If yes, the color scheme for a dark theme will be used."
 msgstr "Якщо вказано «так», буде використано схему кольорів темної теми."
 
 #. Translators: A checkbox where one can choose whether a
 #. sound is played on error
-#: setup/main.py:1069
+#: setup/main.py:1077
 msgid "Play sound file on error"
 msgstr "Відтворювати звуковий файл при помилці"
 
-#: setup/main.py:1071
+#: setup/main.py:1079
 msgid ""
 "Here you can choose whether a sound file is played if an error occurs. If "
 "the simpleaudio module for Python3 is not installed, this option does "
@@ -885,13 +885,13 @@ msgstr ""
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
 #. debug information may also be shown graphically.
-#: setup/main.py:1109
+#: setup/main.py:1117
 msgid "Debug level:"
 msgstr "Рівень діагностики:"
 
 #. Translators: This is a tooltip for the label for the
 #. adjustment of the debug level.
-#: setup/main.py:1113
+#: setup/main.py:1121
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
@@ -900,26 +900,26 @@ msgstr ""
 "діагностичні дані, діагностичні дані також може бути показано у графічному "
 "інтерфейсі."
 
-#: setup/main.py:1473
+#: setup/main.py:1481
 msgid "Are you sure?"
 msgstr "Ви серйозно?"
 
-#: setup/main.py:1475 setup/main.py:1793
+#: setup/main.py:1483 setup/main.py:1801
 msgid "_Cancel"
 msgstr "_Скасувати"
 
-#: setup/main.py:1476 setup/main.py:1794
+#: setup/main.py:1484 setup/main.py:1802
 msgid "_OK"
 msgstr "_Гаразд"
 
-#: setup/main.py:1508
+#: setup/main.py:1516
 msgid "Another instance of this app is already running."
 msgstr "Уже запущено інший екземпляр цієї програми."
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
-#: setup/main.py:1572
+#: setup/main.py:1580
 msgid "Do you really want to restore all default settings?"
 msgstr "Ви справді хочете відновити усі типові параметри?"
 
@@ -933,7 +933,7 @@ msgstr "Ви справді хочете відновити усі типові 
 #. beginning because of the learning from user
 #. input. Deleting this learned data cannot be reversed. So
 #. the user should be really sure he really wants to do that.
-#: setup/main.py:1768
+#: setup/main.py:1776
 msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
@@ -941,36 +941,36 @@ msgstr ""
 "Ви справді хочете вилучити усі дані, які було вивчено на основі введеного та "
 "вибраних варіантів?"
 
-#: setup/main.py:1790
+#: setup/main.py:1798
 msgid "Select .wav sound file:"
 msgstr "Виберіть звуковий файл .wav:"
 
-#: setup/main.py:2070
+#: setup/main.py:2080
 #, python-format
 msgid "Edit key bindings for command “%s”"
 msgstr "Змінити прив'язку клавіш для команди «%s»"
 
 #. Translators: This is a tooltip for the button to add a
 #. key binding.
-#: setup/main.py:2100
+#: setup/main.py:2110
 msgid "Add a key binding"
 msgstr "Додати прив'язку клавіш"
 
 #. Translators: This is a tooltip for the button to remove
 #. the selected key binding.
-#: setup/main.py:2114
+#: setup/main.py:2124
 msgid "Remove selected key binding"
 msgstr "Вилучити позначену прив'язку клавіш"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
-#: setup/main.py:2129
+#: setup/main.py:2139
 msgid "Move key binding up"
 msgstr "Пересунути прив'язку клавіш вище"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
-#: setup/main.py:2142
+#: setup/main.py:2152
 msgid "Move key binding down"
 msgstr "Пересунути прив'язку клавіш нижче"
 
@@ -979,13 +979,13 @@ msgstr "Пересунути прив'язку клавіш нижче"
 #. really sure to reset the key bindings for *all* commands
 #. to their defaults. This cannot be reversed so the user
 #. should be really sure he wants to do that.
-#: setup/main.py:2209
+#: setup/main.py:2219
 msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
 msgstr "Ви справді хочете встановити типові прив'язки клавіш для усіх команд?"
 
-#: setup/main.py:2922
+#: setup/main.py:2934
 msgid "ibus is not running."
 msgstr "ibus не запущено."
 

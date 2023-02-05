@@ -1,16 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
-# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022.
+# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2022-11-10 14:52+0100\n"
-"PO-Revision-Date: 2023-02-04 02:20+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Georgian <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/ka/>\n"
+"PO-Revision-Date: 2023-02-05 18:20+0000\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/ka/>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +40,7 @@ msgstr "ტრადიციული ჩინური"
 
 #: engine/table.py:683
 msgid "Switch to “Traditional Chinese only”."
-msgstr "ტრადიციულ ჩინურზე გადართვა"
+msgstr "\"მხოლოდ ტრადიციულ ჩინურზე\" გადართვა."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional

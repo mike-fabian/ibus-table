@@ -403,7 +403,7 @@ class Capabilite(Flag):
             return int(self) | other
         return NotImplemented
 
-    def __ror__(self, other: Any) -> Any:
+    def __ror__(self, other: Any) -> Any: # type: ignore[override]
         return self.__or__(other)
 
     def __and__(self, other: Any) -> Any:
@@ -415,7 +415,7 @@ class Capabilite(Flag):
             return int(self) & other
         return NotImplemented
 
-    def __rand__(self, other: Any) -> Any:
+    def __rand__(self, other: Any) -> Any: # type: ignore[override]
         return self.__and__(other)
 
     PREEDIT_TEXT = ('PREEDIT_TEXT')
@@ -617,7 +617,7 @@ class InputHints(Flag):
             return int(self) | other
         return NotImplemented
 
-    def __ror__(self, other: Any) -> Any:
+    def __ror__(self, other: Any) -> Any: # type: ignore[override]
         return self.__or__(other)
 
     def __and__(self, other: Any) -> Any:
@@ -630,7 +630,7 @@ class InputHints(Flag):
             return int(self) & other
         return NotImplemented
 
-    def __rand__(self, other: Any) -> Any:
+    def __rand__(self, other: Any) -> Any: # type: ignore[override]
         return self.__and__(other)
 
     NONE = ('NONE')

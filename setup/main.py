@@ -187,19 +187,6 @@ class SetupUI(Gtk.Window): # type: ignore
             '码 IBus Table '
             + self._engine_name + ' '
             + _('Preferences'))
-        # https://tronche.com/gui/x/icccm/sec-4.html#WM_CLASS
-        # gnome-shell seems to use the first argument of set_wmclass()
-        # to find the .desktop file. If the .desktop file can be
-        # found, the name shown by gnome-shell in the top bar comes
-        # from that .desktop file and the icon to show is also read
-        # from that .desktop file. If the .desktop file cannot be
-        # found, the second argument of set_wmclass() is shown by
-        # gnome-shell in the top bar.
-        #
-        # It only works like this when gnome-shell runs under Xorg
-        # though, under Wayland things are different.
-        self.set_wmclass( # pylint: disable=no-member
-            'ibus-setup-table', 'IBus Table Preferences')
 
         self.connect('destroy-event', self._on_destroy_event)
         self.connect('delete-event', self._on_delete_event)

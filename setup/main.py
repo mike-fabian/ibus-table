@@ -965,6 +965,51 @@ class SetupUI(Gtk.Window): # type: ignore
                 self._autocommit_mode_combobox,
                 1, _options_details_grid_row, 1, 1)
 
+        self._commit_invalid_mode_label = Gtk.Label()
+        self._commit_invalid_mode_label.set_text(
+            # Translators: A combobox to choose whether only single
+            # character candidates should be shown.
+            _('Action when typing invalid character:'))
+        self._commit_invalid_mode_label.set_tooltip_text(
+            # Translators: A tooltip for label of the combobox to
+            # choose whether only single character candidates should
+            # be shown.
+            _('Determines what happens when a character which is not '
+              'in the set of valid input characters for this table '
+              'is typed: With “commit current candidate”, the currently '
+              'selected candidate is inserted. With “commit typed keys”, '
+              'the raw characters typed so far during the candidate '
+              'selection process will be inserted instead. In all cases, '
+              'the candidate selection ends when an invalid character is '
+              'typed and the character in question is inserted immediately '
+              'after the text that results from the options listed above.'))
+        self._commit_invalid_mode_label.set_xalign(0)
+        self._commit_invalid_mode_combobox = Gtk.ComboBox()
+        self._commit_invalid_mode_store = Gtk.ListStore(str, int)
+        self._commit_invalid_mode_store.append(
+            [_('Commit current candidate'), 0])
+        self._commit_invalid_mode_store.append(
+            [_('Commit typed keys'), 1])
+        self._commit_invalid_mode_combobox.set_model(
+            self._commit_invalid_mode_store)
+        renderer_text = Gtk.CellRendererText()
+        self._commit_invalid_mode_combobox.pack_start(
+            renderer_text, True)
+        self._commit_invalid_mode_combobox.add_attribute(
+            renderer_text, "text", 0)
+        for index, item in enumerate(self._commit_invalid_mode_store):
+            if self._settings_dict['commitinvalidmode']['user'] == item[1]:
+                self._commit_invalid_mode_combobox.set_active(index)
+        self._commit_invalid_mode_combobox.connect(
+            "changed", self._on_commit_invalid_mode_combobox_changed)
+        _options_details_grid_row += 1
+        self._options_details_grid.attach(
+            self._commit_invalid_mode_label,
+            0, _options_details_grid_row, 1, 1)
+        self._options_details_grid.attach(
+            self._commit_invalid_mode_combobox,
+            1, _options_details_grid_row, 1, 1)
+
         self._autowildcard_mode_checkbutton = Gtk.CheckButton(
             # Translators: A combobox to choose whether a wildcard
             # should be automatically appended to the input.
@@ -1429,6 +1474,16 @@ class SetupUI(Gtk.Window): # type: ignore
             'user': user_autocommit_mode,
             'set_function': self.set_autocommit_mode}
 
+        default_commit_invalid_mode = it_util.variant_to_value(
+            self._gsettings.get_default_value('commitinvalidmode'))
+        user_commit_invalid_mode = it_util.variant_to_value(
+            self._gsettings.get_value('commitinvalidmode'))
+
+        self._settings_dict['commitinvalidmode'] = {
+            'default': default_commit_invalid_mode,
+            'user': user_commit_invalid_mode,
+            'set_function': self.set_commit_invalid_mode}
+
         default_autowildcard_mode = it_util.variant_to_value(
             self._gsettings.get_default_value('autowildcard'))
         if self.tabsqlitedb.ime_properties.get('auto_wildcard'):
@@ -1668,6 +1723,18 @@ class SetupUI(Gtk.Window): # type: ignore
             mode = model[tree_iter][1]
             self.set_autocommit_mode(
                 mode, update_gsettings=True)
+
+    def _on_commit_invalid_mode_combobox_changed(self, widget: Gtk.ComboBox) -> None:
+        '''
+        A change of the commit invalid mode has been requested
+        with the combobox
+        '''
+        tree_iter = widget.get_active_iter()
+        if tree_iter is not None:
+            model = widget.get_model()
+            commit_invalid_mode = model[tree_iter][1]
+            self.set_commit_invalid_mode(
+                commit_invalid_mode, update_gsettings=True)
 
     def _on_autowildcard_mode_checkbutton(
             self, widget: Gtk.CheckButton) -> None:
@@ -2372,7 +2439,7 @@ class SetupUI(Gtk.Window): # type: ignore
         3 means to show all characters but show traditional Chinese first
         4 means to show all characters
 
-        :param mode: The Chinese filter mode (0 <= mode <= 4)
+        :param chinese_mode: The Chinese filter mode (0 <= mode <= 4)
         :param update_gsettings: Whether to write the change to Gsettings.
                                  Set this to False if this method is
                                  called because the dconf key changed
@@ -2473,6 +2540,40 @@ class SetupUI(Gtk.Window): # type: ignore
             for index, item in enumerate(self._autocommit_mode_store):
                 if mode == item[1]:
                     self._autocommit_mode_combobox.set_active(index)
+
+    def set_commit_invalid_mode(self,
+                         mode: int = 0,
+                         update_gsettings: bool = True) -> None:
+        '''Sets the commit invalid mode
+
+        This selects what is committed when a character which is not
+        in the set of valid input characters for the current table is
+        typed.
+
+        0 means to commit the current candidate
+        1 means to commit the raw characters typed so far
+
+        :param mode:             The mode (0 <= mode <= 1)
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the dconf key changed
+                                 to avoid endless loops when the dconf
+                                 key is changed twice in a short time.
+
+        '''
+        LOGGER.info(
+            '(%s, update_gsettings = %s)', mode, update_gsettings)
+        mode = int(mode)
+        if 0 <= mode <= 1:
+            self._settings_dict['commitinvalidmode']['user'] = mode
+            if update_gsettings:
+                self._gsettings.set_value(
+                    'commitinvalidmode',
+                    GLib.Variant.new_int32(mode))
+            else:
+                for index, item in enumerate(self._commit_invalid_mode_store):
+                    if mode == item[1]:
+                        self._commit_invalid_mode_combobox.set_active(index)
 
     def set_autowildcard_mode(self,
                               mode: bool = False,

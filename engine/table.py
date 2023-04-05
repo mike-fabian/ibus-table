@@ -517,6 +517,15 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                     self._gsettings.get_value('autocommit'))
         self._auto_commit: bool = auto_commit
 
+        # self._commit_invalid_mode: This selects what is committed
+        # when a character which is not in the set of valid input
+        # characters for the current table is typed.
+        #
+        # 0 means to commit the current candidate
+        # 1 means to commit the raw characters typed so far
+        self._commit_invalid_mode: int = it_util.variant_to_value(
+            self._gsettings.get_value('commitinvalidmode'))
+
         # If auto select is true, then the first candidate phrase will
         # be selected automatically during typing. Auto select is true
         # by default for the stroke5 table for example.
@@ -2417,6 +2426,38 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''Returns the current auto-commit mode'''
         return self._auto_commit
 
+    def set_commit_invalid_mode(
+            self, mode: int = 0, update_gsettings: bool = True) -> None:
+        '''Sets the commit invalid mode
+
+        This selects what is committed when a character which is not
+        in the set of valid input characters for the current table is
+        typed.
+
+        0 means to commit the current candidate
+        1 means to commit the raw characters typed so far
+
+        :param mode:             The mode (0 <= mode <= 1)
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the dconf key changed
+                                 to avoid endless loops when the dconf
+                                 key is changed twice in a short time.
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('mode=%s', mode)
+        if mode == self._commit_invalid_mode:
+            return
+        self._commit_invalid_mode = mode
+        if update_gsettings:
+            self._gsettings.set_value(
+                "commitinvalidmode",
+                GLib.Variant.new_int32(mode))
+
+    def get_commit_invalid_mode(self) -> int:
+        '''Return the current comimt invalid mode'''
+        return self._commit_invalid_mode
+
     def set_autoselect_mode(
             self, mode: bool = False, update_gsettings: bool = True) -> None:
         '''Sets whether the first candidate will be selected
@@ -4172,7 +4213,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             if DEBUG_LEVEL > 0:
                 LOGGER.debug(
                     'trailing invalid input: keychar=%s', keychar)
-            if not self._candidates:
+            if not self._candidates or self._commit_invalid_mode == 1:
                 self.commit_string(self.get_preedit_tabkeys_complete())
             else:
                 self.commit_to_preedit()
@@ -4386,6 +4427,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             {'set_function': self.set_autoselect_mode, 'kwargs': {}},
             'autocommit':
             {'set_function': self.set_autocommit_mode, 'kwargs': {}},
+            'commitinvalidmode':
+            {'set_function': self.set_commit_invalid_mode, 'kwargs': {}},
             'chinesemode':
             {'set_function': self.set_chinese_mode, 'kwargs': {}},
             'lookuptableorientation':

@@ -80,6 +80,7 @@ ORIG_PAGE_SIZE = None
 ORIG_ONECHAR_MODE = None
 ORIG_AUTOSELECT_MODE = None
 ORIG_AUTOCOMMIT_MODE = None
+ORIG_COMMIT_INVALID_MODE = None
 ORIG_AUTOWILDCARD_MODE = None
 ORIG_SINGLE_WILDCARD_CHAR = None
 ORIG_MULTI_WILDCARD_CHAR = None
@@ -102,6 +103,7 @@ def backup_original_settings() -> None:
     global ORIG_ONECHAR_MODE
     global ORIG_AUTOSELECT_MODE
     global ORIG_AUTOCOMMIT_MODE
+    global ORIG_COMMIT_INVALID_MODE
     global ORIG_AUTOWILDCARD_MODE
     global ORIG_SINGLE_WILDCARD_CHAR
     global ORIG_MULTI_WILDCARD_CHAR
@@ -121,6 +123,7 @@ def backup_original_settings() -> None:
     ORIG_ONECHAR_MODE = ENGINE.get_onechar_mode()
     ORIG_AUTOSELECT_MODE = ENGINE.get_autoselect_mode()
     ORIG_AUTOCOMMIT_MODE = ENGINE.get_autocommit_mode()
+    ORIG_COMMIT_INVALID_MODE = ENGINE.get_commit_invalid_mode()
     ORIG_AUTOWILDCARD_MODE = ENGINE.get_autowildcard_mode()
     ORIG_SINGLE_WILDCARD_CHAR = ENGINE.get_single_wildcard_char()
     ORIG_MULTI_WILDCARD_CHAR = ENGINE.get_multi_wildcard_char()
@@ -142,6 +145,7 @@ def restore_original_settings() -> None:
     global ORIG_ONECHAR_MODE
     global ORIG_AUTOSELECT_MODE
     global ORIG_AUTOCOMMIT_MODE
+    global ORIG_COMMIT_INVALID_MODE
     global ORIG_AUTOWILDCARD_MODE
     global ORIG_SINGLE_WILDCARD_CHAR
     global ORIG_MULTI_WILDCARD_CHAR
@@ -174,6 +178,8 @@ def restore_original_settings() -> None:
         ORIG_AUTOSELECT_MODE, update_gsettings=False)
     ENGINE.set_autocommit_mode(
         ORIG_AUTOCOMMIT_MODE, update_gsettings=False)
+    ENGINE.set_commit_invalid_mode(
+        ORIG_COMMIT_INVALID_MODE, update_gsettings=False)
     ENGINE.set_autowildcard_mode(
         ORIG_AUTOWILDCARD_MODE, update_gsettings=False)
     ENGINE.set_single_wildcard_char(
@@ -264,6 +270,10 @@ def set_default_settings() -> None:
         auto_commit_mode = (auto_commit.lower() == u'true')
     ENGINE.set_autocommit_mode(
         auto_commit_mode, update_gsettings=False)
+
+    commit_invalid_mode = 0
+    ENGINE.set_commit_invalid_mode(
+        commit_invalid_mode, update_gsettings=False)
 
     page_down_keys_csv = TABSQLITEDB.ime_properties.get(
         'page_down_keys')
@@ -1583,6 +1593,34 @@ class LatexTestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_F, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '𝔉')
+
+    def test_commit_invalid_mode(self) -> None:
+        assert(ENGINE is not None)
+        self.assertEqual(ENGINE.get_commit_invalid_mode(), 0)
+        ENGINE._do_process_key_event(IBus.KEY_backslash, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_l, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_p, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_h, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, 'α')
+        self.assertEqual(ENGINE.mock_committed_text, '')
+        ENGINE._do_process_key_event(IBus.KEY_exclam, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'α!')
+        ENGINE.set_commit_invalid_mode(1, update_gsettings=False)
+        self.assertEqual(ENGINE.get_commit_invalid_mode(), 1)
+        ENGINE._do_process_key_event(IBus.KEY_backslash, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_l, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_p, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_h, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, 'α')
+        self.assertEqual(ENGINE.mock_committed_text, 'α!')
+        ENGINE._do_process_key_event(IBus.KEY_exclam, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, 'α!\\alpha!')
 
     def test_toggle_input_mode_on_off(self) -> None:
         assert(ENGINE is not None)

@@ -1,22 +1,22 @@
-# Yuri Chornoivan <yurchor@ukr.net>, 2015. #zanata, 2020, 2021, 2022.
-# Yuri Chornoivan <yurchor@ukr.net>, 2016. #zanata, 2020, 2021, 2022.
+# Yuri Chornoivan <yurchor@ukr.net>, 2015. #zanata, 2020, 2021, 2022, 2023.
+# Yuri Chornoivan <yurchor@ukr.net>, 2016. #zanata, 2020, 2021, 2022, 2023.
 # Mike FABIAN <mfabian@redhat.com>, 2019, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2023-04-05 10:41+0200\n"
-"PO-Revision-Date: 2022-01-13 07:03+0000\n"
+"PO-Revision-Date: 2023-04-05 13:50+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
-"Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/uk/>\n"
+"Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.10.1\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.15.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -805,7 +805,7 @@ msgstr ""
 #. character candidates should be shown.
 #: setup/main.py:972
 msgid "Action when typing invalid character:"
-msgstr ""
+msgstr "Дія у відповідь на введення некоректного символу:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -820,14 +820,22 @@ msgid ""
 "character is typed and the character in question is inserted immediately "
 "after the text that results from the options listed above."
 msgstr ""
+"Визначає, що трапиться, коли буде введено символ, якого немає у наборі "
+"коректних вхідних символів для цієї таблиці: якщо вибрати «надіслати поточну "
+"пропозицію», буде вставлено поточну позначену пропозицію. Якщо вибрати «"
+"надіслати введені символи», буде надіслано без обробки символи, які було "
+"введено у процесі вибору пропозиції. За будь-яких умов, вибір пропозиції "
+"завершується, якщо введено некоректний символ, і відповідний символ буде "
+"негайно вставлено після тексту, який є результатом застосування параметрів з "
+"наведеного вище списку."
 
 #: setup/main.py:990
 msgid "Commit current candidate"
-msgstr ""
+msgstr "Надіслати поточну пропозицію"
 
 #: setup/main.py:992
 msgid "Commit typed keys"
-msgstr ""
+msgstr "Надіслати введені символи"
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.

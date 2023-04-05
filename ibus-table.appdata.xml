@@ -18,8 +18,8 @@
     <keyword>Chinese</keyword>
   </keywords>
   <screenshots>
-    <screenshot>
-       <image type="source" width="1024" height="768" xml:lang="en">
+    <screenshot type="default">
+       <image type="source" width="1024" height="768">
           https://mike-fabian.github.io/ibus-table/ibus-table-cangjie5.png
        </image>
        <caption>Screenshot of ibus-table using the cangjie5 table</caption>
@@ -38,6 +38,27 @@
   <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.17.0" date="2023-04-07" urgency="medium">
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.0</url>
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            New option commit_invalid_mode: Choose what happens when a
+            character not in valid input characters is typed
+            (Resolves: github-mike-fabian-issue#133)
+          </li>
+          <li>
+            Translation update from Weblate (de 100%, uk 100%)
+          </li>
+        </ul>
+      </description>
+      <issues>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/133">
+          github-mike-fabian-issue#130
+        </issue>
+      </issues>
+    </release>
     <release version="1.16.14" date="2022-11-10" urgency="medium">
       <description>
         <p>This new stable release includes these changes:</p>

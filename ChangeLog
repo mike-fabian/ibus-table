@@ -1,4 +1,137 @@
-commit a6fea57e33d236d96dfece075b88d8494b343cc5
+commit 65952e57609da616ef6a7d38d837fd1a65d383d0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 5 11:15:27 2023 +0200
+
+    Release 1.17.0
+
+commit e758bc45b99dda5e1faaf13160da0d2cf0830dbf
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 5 10:33:57 2023 +0200
+
+    New option commit_invalid_mode: Choose what happens when a character not in valid input characters is typed
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/133
+    See also: https://github.com/moebiuscurve/ibus-table-others/issues/26
+
+commit ed1fd30fba4e6c392d29433ef03260659d8b5c76
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 21 17:52:35 2023 +0100
+
+    Ignore some mypy warnings
+
+commit 64d3aec6f2184b7bdbb423086189c088a4a68789
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 21 17:42:22 2023 +0100
+
+    Stop calling self.set_wmclass('ibus-setup-table', 'IBus Table Preferences')
+    
+    https://tronche.com/gui/x/icccm/sec-4.html#WM_CLASS
+    
+    gnome-shell seemed to use the first argument of set_wmclass()
+    to find the .desktop file.
+    
+    If the .desktop file is found, the name shown by gnome-shell in the
+    top bar comes from that .desktop file and the icon to show is also
+    read from that .desktop file. If the .desktop file cannot be found,
+    the second argument of set_wmclass() is shown by gnome-shell in the
+    top bar.
+    
+    It only works like this when gnome-shell runs under Xorg
+    though, under Wayland things are different.
+    
+    But https://docs.gtk.org/gtk3/method.Window.set_wmclass.html
+    says:
+    
+    Don’t use this function. It sets the X Window System “class”
+    and “name” hints for a window. According to the ICCCM, you
+    should always set these to the same value for all windows in
+    an application, and GTK+ sets them to that value by default,
+    so calling this function is sort of pointless.
+    
+    Deprecated since:       3.22
+    Please do not use it in newly written code.
+    
+    Nevertheless calling set_wmclass() still used to be necessary
+    so I kept calling it inspite of the deprecation warning
+    on stdout.
+    
+    But apparently this is not needed anymore since at least
+    Fedora 34/RHEL9, now the icon and the correct text appear in
+    the Gnome panel without calling set_wmclass().
+
+commit 732f6225055e07ff27d6712061c6354798f9f739
+Author: Yuri Chornoivan <yurchor@ukr.net>
+Date:   Wed Apr 5 15:50:33 2023 +0200
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (150 of 150 strings)
+    
+    Co-authored-by: Yuri Chornoivan <yurchor@ukr.net>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+    Translation: ibus-table/app
+
+commit a1cb01fc6f174a1a7ad4aa72bbcc09edc7d783bb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 5 13:48:01 2023 +0200
+
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (150 of 150 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+    Translation: ibus-table/app
+
+commit f05e2c1279101074d0a27ab5f936ab61c7c7960d
+Author: Weblate <noreply@weblate.org>
+Date:   Wed Apr 5 13:40:51 2023 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 52f1d4874d80e0e43c1608af6386e97447b35fa6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Apr 5 11:09:45 2023 +0200
+
+    Update ibus-table.pot (4 new messages)
+
+commit e262fade03160085a95a33245552e11361033f3b
+Author: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+Date:   Sun Feb 5 19:20:26 2023 +0100
+
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 44.5% (65 of 146 strings)
+    
+    Co-authored-by: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translation: ibus-table/app
+
+commit ee8bb2317b9f52ecf7f24c1437b060040070b74c
+Author: Weblate <noreply@weblate.org>
+Date:   Sat Feb 4 03:20:37 2023 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 44.5% (65 of 146 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translation: ibus-table/app
+
+commit aa9e2ad29b6bd313baec86783029b323059b346b
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Nov 10 14:52:05 2022 +0100
 

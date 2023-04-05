@@ -1,24 +1,24 @@
 # IBus-Table Translation file: de.po
 # Copyright (C) 2012 Mike FABIAN <mfabian@redhat.com>
 # This file is distributed under the same license as the ibus-table package.
-# Mike FABIAN <mfabian@redhat.com>, 2012, 2019, 2020, 2021, 2022.
-# Mike FABIAN <mfabian@redhat.com>, 2016. #zanata, 2019, 2020, 2021, 2022.
-# Mike FABIAN <mfabian@redhat.com>, 2017. #zanata, 2019, 2020, 2021, 2022.
+# Mike FABIAN <mfabian@redhat.com>, 2012, 2019, 2020, 2021, 2022, 2023.
+# Mike FABIAN <mfabian@redhat.com>, 2016. #zanata, 2019, 2020, 2021, 2022, 2023.
+# Mike FABIAN <mfabian@redhat.com>, 2017. #zanata, 2019, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2023-04-05 10:41+0200\n"
-"PO-Revision-Date: 2022-01-12 17:23+0000\n"
+"PO-Revision-Date: 2023-04-05 11:48+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: German <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/de/>\n"
+"Language-Team: German <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 4.15.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -813,7 +813,7 @@ msgstr ""
 #. character candidates should be shown.
 #: setup/main.py:972
 msgid "Action when typing invalid character:"
-msgstr ""
+msgstr "Aktion bei der Eingabe ungültiger Zeichen:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -828,14 +828,23 @@ msgid ""
 "character is typed and the character in question is inserted immediately "
 "after the text that results from the options listed above."
 msgstr ""
+"Legt fest, was passiert, wenn ein Zeichen eingegeben wird, das nicht im Satz "
+"der gültigen Eingabezeichen für diese Tabelle enthalten ist: Bei Auswahl von "
+"„Aktuellen Kandidaten übernehmen“ wird der aktuell ausgewählte Kandidat "
+"eingefügt. Bei Auswahl von „Eingegebene Tasten übernehmen“ werden die bisher "
+"während des Kandidatenauswahlprozesses eingegebenen Zeichen anstelle des "
+"ausgewählten Kandidaten eingefügt. In allen Fällen endet die "
+"Kandidatenauswahl, wenn ein ungültiges Zeichen eingegeben wird und das "
+"betreffende Zeichen unmittelbar nach dem Text eingefügt wird, der aus den "
+"oben genannten Optionen resultiert."
 
 #: setup/main.py:990
 msgid "Commit current candidate"
-msgstr ""
+msgstr "Aktuellen Kandidaten übernehmen"
 
 #: setup/main.py:992
 msgid "Commit typed keys"
-msgstr ""
+msgstr "Eingegebene Tasten übernehmen"
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.

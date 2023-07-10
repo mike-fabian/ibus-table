@@ -1,4 +1,38 @@
-commit 65952e57609da616ef6a7d38d837fd1a65d383d0
+commit 2f34c9e9a4e32e66ed6ffa5c7246f56b82ae13d6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 10 11:07:21 2023 +0200
+
+    Release 1.17.1
+
+commit 0802887fb746ef49bcdabac9776bded06a8fd9fb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 10 11:28:14 2023 +0200
+
+    Fix mypy warnings
+
+commit 9188fa74a5445e0a3763ee5273193dc7147a4a4a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 10 11:00:28 2023 +0200
+
+    Return empty program_name and window_title in get_active_window_xprop() when xprop results are unexpected
+    
+    Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2215466
+    
+    See also this ibus-typing-booster bug: https://bugzilla.redhat.com/show_bug.cgi?id=2175009
+
+commit a39794d39f45e0c4faecef68e757175b0e473d07
+Author: Anonymous <noreply@weblate.org>
+Date:   Tue May 30 08:20:43 2023 +0200
+
+    Translated using Weblate (Sinhala)
+    
+    Currently translated at 10.0% (15 of 150 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/si/
+    Translation: ibus-table/app
+
+commit 9c48742c0bf0f443f97d4e46a8447ddf0bfdb1dc
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Apr 5 11:15:27 2023 +0200
 

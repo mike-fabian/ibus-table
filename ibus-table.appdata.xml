@@ -38,6 +38,30 @@
   <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.17.1" date="2023-07-10" urgency="medium">
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.1</url>
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Fix mypy warnings
+          </li>
+          <li>
+            Return empty program_name and window_title in
+            get_active_window_xprop() when xprop results are
+            unexpected (Resolves: rhbz#2215466)
+          </li>
+          <li>
+            Translation update from Weblate (si 10.0%)
+          </li>
+        </ul>
+      </description>
+      <issues>
+        <issue url="https://bugzilla.redhat.com/show_bug.cgi?id=2215466">
+          rhbz#2215466
+        </issue>
+      </issues>
+    </release>
     <release version="1.17.0" date="2023-04-07" urgency="medium">
       <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.0</url>
       <description>

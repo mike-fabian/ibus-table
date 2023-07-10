@@ -104,7 +104,7 @@ class AtspiMonitor:
                 self._on_window_deactivate, 'window:deactivate')
             self._events_registered = True
             LOGGER.info('AtspiMonitor events registered.')
-        except Exception as error:
+        except Exception as error: # pylint: disable=broad-except
             LOGGER.exception('%s: %s ', error.__class__.__name__, error)
 
 
@@ -129,7 +129,7 @@ class AtspiMonitor:
         try:
             self._active_program_name = event.host_application.name
             self._active_window_title = event.source_name
-        except Exception as error:
+        except Exception as error: # pylint: disable=broad-except
             LOGGER.exception('%s: %s', error.__class__.__name__, error)
         LOGGER.info('window activated: %s currently active: %s title: %s',
                     self._active_program_name,
@@ -142,7 +142,7 @@ class AtspiMonitor:
         program_name = ''
         try:
             program_name = event.host_application.name
-        except Exception as error:
+        except Exception as error: # pylint: disable=broad-except
             LOGGER.exception('%s: %s', error.__class__.__name__, error)
         # There are some windows where the 'window:activate',
         # 'window:deactivate' signals do not work, for example windows
@@ -195,7 +195,7 @@ def _get_active_window_atspi() -> None:
     :return: A tuple (program_name, window_title) giving
              information about the currently focused window.
     '''
-    global _ACTIVE_WINDOW
+    global _ACTIVE_WINDOW # pylint: disable=global-statement
     try:
         desktop = pyatspi.Registry.getDesktop(0) # pylint: disable=no-value-for-parameter
         for application in desktop:
@@ -205,7 +205,7 @@ def _get_active_window_atspi() -> None:
                 if window.get_state_set().contains(pyatspi.STATE_ACTIVE):
                     _ACTIVE_WINDOW = (application.name, window.name)
                     return
-    except Exception as error:
+    except Exception as error: # pylint: disable=broad-except
         LOGGER.exception('%s: %s', error.__class__.__name__, error)
     _ACTIVE_WINDOW = ('', '')
 
@@ -216,7 +216,7 @@ def get_active_window_atspi() -> Tuple[str, str]:
     :return: A tuple (program_name, window_title) giving
              information about the currently focused window.
     '''
-    global _ACTIVE_WINDOW
+    global _ACTIVE_WINDOW # pylint: disable=global-statement
     _ACTIVE_WINDOW = ('', '')
     if not IMPORT_PYATSPI_SUCCESSFUL:
         return ('', '')
@@ -258,7 +258,10 @@ def get_active_window_xprop() -> Tuple[str, str]:
         return (program_name, window_title)
     # result now looks like in this example:
     #
-    # b'_NET_ACTIVE_WINDOW(WINDOW) 0x1e02d79'
+    # '_NET_ACTIVE_WINDOW(WINDOW) 0x1e02d79'
+    if len(result.stdout.split()) < 2:
+        LOGGER.error('Unexpected xprop output for id of active window')
+        return (program_name, window_title)
     window_id = result.stdout.split()[-1:][0]
     if window_id == '0x0':
         return (program_name, window_title)
@@ -274,7 +277,11 @@ def get_active_window_xprop() -> Tuple[str, str]:
         return (program_name, window_title)
     # result now looks like in this example
     #
-    # b'WM_CLASS(STRING) = "xfce4-terminal", "Xfce4-terminal"\n'
+    # 'WM_CLASS(STRING) = "xfce4-terminal", "Xfce4-terminal"\n'
+    if '=' not in result.stdout or ',' not in result.stdout:
+        LOGGER.error(
+            'Unexpected xprop output for program name of active window')
+        return (program_name, window_title)
     program_name = result.stdout.split(
         '=', maxsplit=1)[1].split(',')[1].strip()[1:-1].lower()
     try:
@@ -289,7 +296,10 @@ def get_active_window_xprop() -> Tuple[str, str]:
         return (program_name, window_title)
     # result now looks like in this example
     #
-    # b'_NET_WM_NAME(UTF8_STRING) = "☺foo = "bar"\n'
+    # '_NET_WM_NAME(UTF8_STRING) = "☺foo = "bar"\n'
+    if '=' not in result.stdout:
+        LOGGER.error('Unexpected xprop output for title of active window')
+        return (program_name, window_title)
     window_title = result.stdout.split('=', maxsplit=1)[1].strip()[1:-1]
     return (program_name, window_title)
 

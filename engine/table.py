@@ -4344,7 +4344,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 LOGGER.debug(
                     'self._input_purpose = %s (Unknown)',
                     self._input_purpose)
-            for hint in list(it_util.InputHints):
+            for hint in it_util.InputHints:
                 if self._input_hints & hint:
                     LOGGER.debug(
                         'hint: %s %s',

@@ -1488,7 +1488,7 @@ class TabSqliteDb:
         if self._is_chinese and phrase in CHINESE_NOCHECK_CHARS:
             return
         if not dynamic_adjust:
-            if not self.user_can_define_phrase or not self.is_chinese:
+            if not self.user_can_define_phrase or not self._is_chinese:
                 return
             tabkeys = self.parse_phrase(phrase)
             if not tabkeys:
@@ -1516,7 +1516,7 @@ class TabSqliteDb:
                         tabkeys=tabkeys, phrase=phrase, freq=0, user_freq=1,
                         database='user_db')
             else:
-                if not self.user_can_define_phrase or not self.is_chinese:
+                if not self.user_can_define_phrase or not self._is_chinese:
                     return
                 tabkeys = self.parse_phrase(phrase)
                 if not tabkeys:

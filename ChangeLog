@@ -1,4 +1,34 @@
-commit 2f34c9e9a4e32e66ed6ffa5c7246f56b82ae13d6
+commit c3d04b77895e92999982224c5ea035cf87817b4e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Aug 21 12:10:45 2023 +0200
+
+    Release 1.17.2
+
+commit 39619ba99d9978a4e311250d52e156e5687dc3e9
+Author: Oğuz Ersen <oguz@ersen.moe>
+Date:   Fri Aug 4 19:21:05 2023 +0200
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (150 of 150 strings)
+    
+    Co-authored-by: Oğuz Ersen <oguz@ersen.moe>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    Translation: ibus-table/app
+
+commit a8e2f3d87879cc2dc84417d85f2de1230dcfc65e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Jul 28 18:20:59 2023 +0200
+
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (150 of 150 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+    Translation: ibus-table/app
+
+commit 70f734278acf890aab53c61a9ffed6a77e0227b8
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Jul 10 11:07:21 2023 +0200
 

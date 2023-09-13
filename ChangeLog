@@ -1,4 +1,62 @@
-commit c3d04b77895e92999982224c5ea035cf87817b4e
+commit 0a7d96a9ee96f926b41e8d0100dffbc969915eb1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 13 15:42:41 2023 +0200
+
+    Release 1.17.3
+
+commit 4cfd348e8ff18c467a5c1a994af0275cc53b3890
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 13 16:34:07 2023 +0200
+
+    Update ibus-table.pot (Only line number changes)
+
+commit 88072e7efee35675eae4a5e547a7ca86c8650dff
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 13 18:25:22 2023 +0200
+
+    remove /ibus-typing-booster.pc from .gitignore
+
+commit 8c1cb448f98393a884e9b7513b7df22dcd2b87ed
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 13 18:19:52 2023 +0200
+
+    Fix some comments which mentioned ibus-typing-booster and not ibus-table
+
+commit a008897a9b58893975e21f842360a435014df98d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 13 15:35:31 2023 +0200
+
+    Support several backends for playing sounds
+    
+    Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2237674
+    
+    The available backends are:
+    
+    • automatic
+      - choose one of the available backends automatically, depending on
+        what is installed and what should work depending on the version of
+        Python and other stuff
+    • pygame
+      - Seems best, can also play mp3. But requires the SDL libs
+    • pyaudio
+      - Broken for Python >= 3.10 if not updated to pyaudio >= 0.2.12
+        See: https://stackoverflow.com/questions/70344884)
+      - Sometimes it seems to hang. Not often, but when this happens this is really bad
+    • simpleaudio
+      Broken in Fedora 39, see: https://bugzilla.redhat.com/show_bug.cgi?id=2237680
+    • aplay
+      - Use the “aplay” binary. Quite reliable, apparently
+
+commit ba730cccad81f265bae441f4279bf09ec367b5e3
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 12 22:28:40 2023 +0200
+
+    Update Unihan_Variants.txt and regenerate engine/chinese_variants.py
+    
+    - Update Unihan_Variants.txt from “2022-04-26 Unicode  15.0.0 draft” to “2023-07-15 Unicode version: 15.1.0”
+    - Regenerate engine/chinese_variants.py for Unihan_Variants.txt
+
+commit 3aea49962801ee30d70cc9e005daeee51b15dfd7
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon Aug 21 12:10:45 2023 +0200
 

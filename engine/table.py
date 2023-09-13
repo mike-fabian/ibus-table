@@ -64,6 +64,7 @@ from gi.repository import GLib
 from gi.repository import GObject
 import it_util
 import it_active_window
+import it_sound
 
 LOGGER = logging.getLogger('ibus-table')
 
@@ -455,7 +456,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             self._input_mode = it_util.variant_to_value(
                 self._gsettings.get_value('inputmode'))
 
-        self._error_sound_object: Optional[simpleaudio.WaveObject] = None
+        self._sound_backend: str = it_util.variant_to_value(
+            self._gsettings.get_value('soundbackend'))
+        self._error_sound_object: Optional[it_sound.SoundObject] = None
         self._error_sound_file: str = ''
         self._error_sound: bool = it_util.variant_to_value(
             self._gsettings.get_value('errorsound'))
@@ -2115,38 +2118,52 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self._error_sound_file = path
         if update_gsettings:
             self._gsettings.set_value(
-                "errorsoundfile",
+                'errorsoundfile',
                 GLib.Variant.new_string(path))
-        path = os.path.expanduser(path)
-        if not IMPORT_SIMPLEAUDIO_SUCCESSFUL:
-            LOGGER.info(
-                'No sound because python3-simpleaudio is not available.')
-        else:
-            if not os.path.isfile(path):
-                LOGGER.info('Sound file %s does not exist.', path)
-            elif not os.access(path, os.R_OK):
-                LOGGER.info('Sound file %s not readable.', path)
-            else:
-                try:
-                    LOGGER.info(
-                        'Trying to initialize error sound from %s', path)
-                    self._error_sound_object = (
-                        simpleaudio.WaveObject.from_wave_file(path))
-                    LOGGER.info('Error sound initialized.')
-                except (FileNotFoundError, PermissionError):
-                    LOGGER.exception(
-                        'Initializing error sound object failed. '
-                        'File not found or no read permissions.')
-                except:
-                    LOGGER.exception(
-                        'Initializing error sound object failed '
-                        'for unknown reasons.')
+        self._error_sound_object = it_sound.SoundObject(
+            os.path.expanduser(path),
+            audio_backend=self._sound_backend)
 
     def get_error_sound_file(self) -> str:
         '''
         Return the path of the .wav file containing the error sound.
         '''
         return self._error_sound_file
+
+    def set_sound_backend(
+            self,
+            sound_backend: Union[str, Any],
+            update_gsettings: bool = True) -> None:
+        '''Sets the sound backend to use
+
+        :param sound_backend: The name of sound backend to use
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the dconf key changed
+                                 to avoid endless loops when the dconf
+                                 key is changed twice in a short time.
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug(
+                '(%s, update_gsettings = %s)', sound_backend, update_gsettings)
+        if not isinstance(sound_backend, str):
+            return
+        if sound_backend == self._sound_backend:
+            return
+        self._sound_backend = sound_backend
+        if update_gsettings:
+            self._gsettings.set_value(
+                'soundbackend',
+                GLib.Variant.new_string(sound_backend))
+        self._error_sound_object = it_sound.SoundObject(
+            os.path.expanduser(self._error_sound_file),
+            audio_backend=self._sound_backend)
+
+    def get_sound_backend(self) -> str:
+        '''
+        Return the name of the currently used sound backend
+        '''
+        return self._sound_backend
 
     def set_keybindings(self,
                         keybindings: Union[Dict[str, List[str]], Any],
@@ -3023,7 +3040,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''Play an error sound if enabled and possible'''
         if self._error_sound and self._error_sound_object:
             try:
-                dummy = self._error_sound_object.play()
+                self._error_sound_object.play()
             except:
                 LOGGER.exception('Playing error sound failed.')
 
@@ -4421,6 +4438,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             {'set_function': self.set_error_sound, 'kwargs': {}},
             'errorsoundfile':
             {'set_function': self.set_error_sound_file, 'kwargs': {}},
+            'soundbackend':
+            {'set_function': self.set_sound_backend, 'kwargs': {}},
             'keybindings':
             {'set_function': self.set_keybindings, 'kwargs': {}},
             'autoselect':

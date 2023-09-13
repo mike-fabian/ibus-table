@@ -34,6 +34,7 @@ engine_table_PYTHON = \
 	tabsqlitedb.py \
 	it_util.py \
 	it_active_window.py \
+	it_sound.py \
 	version.py \
 	$(NULL)
 engine_table_DATA = \

@@ -263,14 +263,7 @@ class SetupUI(Gtk.Window): # type: ignore
         self._options_details_grid.set_vexpand(False)
         self._options_details_label = Gtk.Label()
         # Translators: This is the label of a tab in the setup tool.
-        # Here the user can set up some options which influence how
-        # ibus-typing-booster looks like, i.e. something like whether
-        # extra info should be shown on top of the candidate list and
-        # how many entries one page of the candidate list should have.
-        # Also one can choose here which colours to use for different
-        # types of candidates (candidates from the user database, from
-        # dictionaries, or from spellchecking) and/or whether
-        # diffent types of candidates should be marked with labels.
+        # Here the user can set up some more advanced options.
         self._options_details_label.set_text(_('Details'))
 
         self._keybindings_vbox = Gtk.Box()
@@ -1820,12 +1813,8 @@ class SetupUI(Gtk.Window): # type: ignore
             # Translators: This is the text in the centre of a small
             # dialog window, trying to confirm whether the user is
             # really sure to to delete all the data
-            # ibus-typing-booster has learned from what the user has
-            # typed or from text files the user has given as input to
-            # learn from. If the user has used ibus-typing-booster for
-            # a long time, predictions are much better than in the
-            # beginning because of the learning from user
-            # input. Deleting this learned data cannot be reversed. So
+            # ibus-table has learned from typing and selecting candidates.
+            # Deleting this learned data cannot be reversed. So
             # the user should be really sure he really wants to do that.
             _('Do you really want to delete all '
               + 'data learned from typing and selecting candidates?'))

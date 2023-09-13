@@ -3853,7 +3853,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         applications because the ibus module in Qt5 does not implement
         “forward_key_event()”. Therefore, always using
         “forward_key_event()” instead of “return False” in
-        “do_process_key_event()” would break ibus-typing-booster
+        “do_process_key_event()” would break ibus-typing-table
         completely for all Qt5 applictions.
 
         To work around this problem and make unit testing possible

@@ -165,11 +165,11 @@ msgstr "Полная"
 
 #: engine/table.py:796
 msgid "Switch to fullwidth letters"
-msgstr "Переключиться на буквы полной ширины"
+msgstr "Переключиться на буквы половинной ширины"
 
 #: engine/table.py:800
 msgid "Letter width"
-msgstr "Ширина букв"
+msgstr "Ширина буквы"
 
 #: engine/table.py:801
 msgid "Switch letter width"
@@ -257,7 +257,7 @@ msgstr "Переключить односимвольный режим"
 
 #: engine/table.py:901 setup/main.py:937
 msgid "Normal"
-msgstr ""
+msgstr "Нормально"
 
 #: engine/table.py:903
 msgid ""
@@ -297,14 +297,14 @@ msgstr ""
 
 #: engine/it_util.py:866
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:873
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "Нажмите клавишу (или сочетание клавиш)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
@@ -323,10 +323,17 @@ msgstr ""
 #: engine/it_util.py:934
 msgid "translator-credits"
 msgstr ""
+"Nikolay Sivov <bunglehead@gmail.com>\n"
+"Anatoliy Guskov <anatoliy.guskov@gmail.com>\n"
+"Dmitry Drozdov <dmi3652@gmail.com>\n"
+"Ilyas B Arinov <arinov.ilyas@gmail.com>\n"
+"Yulia Poyarkova <ypoyarko@fedoraproject.org>\n"
+"Olesya Gerasimenko <translation-team@basealt.ru>\n"
+"ViktorOn https://github.com/viktoron"
 
 #: engine/it_util.py:942
 msgid "Online documentation:"
-msgstr ""
+msgstr "_Онлайн-документация"
 
 #: ibus-table.appdata.xml:6
 msgid "Ibus Table"
@@ -357,11 +364,11 @@ msgstr ""
 
 #: setup/main.py:129 setup/main.py:189
 msgid "Preferences"
-msgstr ""
+msgstr "Настройки"
 
 #: setup/main.py:212
 msgid "About"
-msgstr ""
+msgstr "О программе"
 
 #: setup/main.py:220
 msgid "Restore all defaults"
@@ -369,20 +376,20 @@ msgstr ""
 
 #: setup/main.py:229 setup/main.py:2958
 msgid "_Close"
-msgstr ""
+msgstr "_Закрыть"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
 #. behaviour of ibus-table.
 #: setup/main.py:252
 msgid "Settings"
-msgstr ""
+msgstr "Параметры"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some more advanced options.
 #: setup/main.py:267
 msgid "Details"
-msgstr ""
+msgstr "Подробности"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can customize the key bindings to execute
@@ -424,13 +431,13 @@ msgstr ""
 
 #: setup/main.py:325
 msgid "Yes"
-msgstr ""
+msgstr "Да"
 
 #. Translators: A combobox to choose the variant of
 #. Chinese which should be preferred.
 #: setup/main.py:349
 msgid "Chinese mode:"
-msgstr ""
+msgstr "Китайский режим"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.
@@ -548,7 +555,7 @@ msgstr ""
 #. window should be drawn horizontally or vertically.
 #: setup/main.py:629
 msgid "Orientation:"
-msgstr ""
+msgstr "Ориентация:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn
@@ -561,21 +568,21 @@ msgstr ""
 
 #: setup/main.py:640
 msgid "Horizontal"
-msgstr ""
+msgstr "Горизонтально"
 
 #: setup/main.py:642
 msgid "Vertical"
-msgstr ""
+msgstr "Вертикально"
 
 #: setup/main.py:644
 msgid "System default"
-msgstr ""
+msgstr "Системные по умолчанию"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
 #: setup/main.py:669
 msgid "Page size:"
-msgstr ""
+msgstr "Размер страницы:"
 
 #. Translators: A tooltip for the label of the adjustment
 #. for the number of candidates to show in one page of the
@@ -596,11 +603,11 @@ msgstr ""
 #. existing key bindings
 #: setup/main.py:721
 msgid "Command"
-msgstr ""
+msgstr "Команда"
 
 #: setup/main.py:752
 msgid "Edit"
-msgstr ""
+msgstr "Редактировать"
 
 #. Translators: A tooltip for the button to edit
 #. the keybindings for the selected command.
@@ -610,7 +617,7 @@ msgstr ""
 
 #: setup/main.py:765 setup/main.py:2200
 msgid "Set to default"
-msgstr ""
+msgstr "Установить по умолчанию"
 
 #. Translators: A tooltip for the button to set
 #. the default key bindings for the selected command.
@@ -821,7 +828,7 @@ msgstr ""
 #. debug information may also be shown graphically.
 #: setup/main.py:1142
 msgid "Debug level:"
-msgstr ""
+msgstr "Уровень отладки"
 
 #. Translators: This is a tooltip for the label for the
 #. adjustment of the debug level.
@@ -837,11 +844,11 @@ msgstr ""
 
 #: setup/main.py:1518 setup/main.py:1844
 msgid "_Cancel"
-msgstr ""
+msgstr "_Отменить"
 
 #: setup/main.py:1519 setup/main.py:1845
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: setup/main.py:1551
 msgid "Another instance of this app is already running."
@@ -912,4 +919,4 @@ msgstr ""
 
 #: setup/main.py:3011
 msgid "ibus is not running."
-msgstr ""
+msgstr "Гостевая система не запущена."

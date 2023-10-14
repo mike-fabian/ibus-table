@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2023-09-13 18:20+0200\n"
-"PO-Revision-Date: 2023-09-19 21:23+0000\n"
+"PO-Revision-Date: 2023-10-14 14:35+0000\n"
 "Last-Translator: \"Sergey A.\" <sw@atrus.ru>\n"
 "Language-Team: Russian <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/ru/>\n"
@@ -315,11 +315,11 @@ msgstr "Нажмите клавишу (или комбинацию клавиш)
 #. command.
 #: engine/it_util.py:878
 msgid "The dialog will be closed when the key is released"
-msgstr ""
+msgstr "Диалоговое окно будет закрыто, когда клавиша будет отпущена"
 
 #: engine/it_util.py:910
 msgid "Table input method for IBus."
-msgstr ""
+msgstr "Табличный метод ввода для IBus."
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
@@ -334,11 +334,11 @@ msgstr "Онлайн-документация:"
 
 #: ibus-table.appdata.xml:6
 msgid "Ibus Table"
-msgstr "Ibus Table"
+msgstr "Таблица Ibus"
 
 #: ibus-table.appdata.xml:7
 msgid "Table based input method"
-msgstr ""
+msgstr "Метод ввода основанный на таблице"
 
 #: ibus-table.appdata.xml:9
 msgid ""
@@ -346,6 +346,10 @@ msgid ""
 "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
 "CangJie, …. But some tables for other languages are available as well."
 msgstr ""
+"Ibus-table - это фреймворк способов ввода символов основанных на таблицах. В "
+"основном используется для методов ввода китайских символов, таких как "
+"ZhengMa, WuBi, ErBi, CangJie, …. Но также доступны некоторые таблицы для "
+"других языков."
 
 #: setup/main.py:114
 msgid "Initial state"
@@ -451,20 +455,30 @@ msgid ""
 "matches without any particular filtering on traditional\n"
 "versus simplified Chinese."
 msgstr ""
+"В режиме «Упрощённый китайский» будут показаны символы,\n"
+"используемые в упрощённой китайской записи. В режиме\n"
+"«Традиционный китайский» будут показаны традиционные\n"
+"китайские иероглифы. В режиме «Упрощённый китайский\n"
+"перед традиционным» будут показаны все символы,\n"
+"но упрощённые окажутся в верхней части списка кандидатов.\n"
+"В режиме «Традиционный китайский перед упрощённым»\n"
+"будут показаны все символы, но традиционные окажутся в\n"
+"верхней части списка кандидатов. В режиме «Все символы»\n"
+"будут показаны все совпадения без какой-либо фильтрации."
 
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. simplified Chinese
 #: setup/main.py:378
 msgid "Simplified Chinese before traditional"
-msgstr ""
+msgstr "Упрощенный китайский перед традиционным"
 
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. traditional Chinese
 #: setup/main.py:383
 msgid "Traditional Chinese before simplified"
-msgstr ""
+msgstr "Традиционный китайский перед упрощённым"
 
 #. Translators: A combobox to choose the letter width
 #. while in “Table input” mode.
@@ -562,6 +576,8 @@ msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
 msgstr ""
+"Определяет, таблица кандидатов должна\n"
+"быть вертикальной или горизонтальной."
 
 #: setup/main.py:640
 msgid "Horizontal"
@@ -594,7 +610,7 @@ msgstr ""
 
 #: setup/main.py:696
 msgid "Current key bindings:"
-msgstr ""
+msgstr "Текущие привязки клавиш:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
@@ -610,7 +626,7 @@ msgstr "Редактировать"
 #. the keybindings for the selected command.
 #: setup/main.py:758
 msgid "Edit the key bindings for the selected command"
-msgstr ""
+msgstr "Редактировать привязки клавиш для выбранной команды"
 
 #: setup/main.py:765 setup/main.py:2200
 msgid "Set to default"
@@ -622,30 +638,32 @@ msgstr "Установить по умолчанию"
 #. the key bindings for the selected command to the default.
 #: setup/main.py:771 setup/main.py:2207
 msgid "Set default key bindings for the selected command"
-msgstr ""
+msgstr "Установить привязки клавиш по умолчанию для выбранной команды"
 
 #: setup/main.py:778
 msgid "Set all to default"
-msgstr ""
+msgstr "Установить по умолчанию для всех"
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
 #: setup/main.py:784
 msgid "Set default key bindings for all commands"
-msgstr ""
+msgstr "Установить привязки клавиш по умолчанию для всех команд"
 
 #. Translators: A checkbox where one can choose whether the
 #. order of the candidates is dynamically adjusted according
 #. to how often the candidates are used.
 #: setup/main.py:809
 msgid "Dynamic adjust"
-msgstr ""
+msgstr "Динамическая корректировка"
 
 #: setup/main.py:811
 msgid ""
 "Here you can choose whether the order of the candidates is dynamically "
 "adjusted according to how often the candidates are used."
 msgstr ""
+"Здесь вы можете выбрать, будет ли порядок кандидатов динамически "
+"корректироваться в зависимости от того, как часто они используются."
 
 #: setup/main.py:824
 msgid "Delete all learned data"
@@ -670,17 +688,17 @@ msgstr ""
 
 #: setup/main.py:862
 msgid "Phrase"
-msgstr ""
+msgstr "Фраза"
 
 #: setup/main.py:864
 msgid "Single Char"
-msgstr ""
+msgstr "Одиночный символ"
 
 #. Translators: A combobox to choose whether the first
 #. candidate will be automatically selected during typing.
 #: setup/main.py:889
 msgid "Auto select"
-msgstr ""
+msgstr "Автовыбор"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
@@ -725,7 +743,7 @@ msgstr ""
 #. character candidates should be shown.
 #: setup/main.py:965
 msgid "Action when typing invalid character:"
-msgstr ""
+msgstr "Действия при вводе недопустимого символа:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -838,8 +856,8 @@ msgid ""
 "debug information may also be shown graphically."
 msgstr ""
 "Если значение больше 0, к файлу журнала могут быть добавлены диагностические "
-"данные, отладочная информация также может быть показана в графическом "
-"интерфейсе."
+"данные, отладочная информация, которые также могут быть показаны в "
+"графическом интерфейсе."
 
 #: setup/main.py:1516
 msgid "Are you sure?"
@@ -877,6 +895,8 @@ msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
 msgstr ""
+"Вы действительно хотите удалить все данные, которые были получены на основе "
+"введённых и выбранных кандидатов?"
 
 #: setup/main.py:1841
 msgid "Select .wav sound file:"

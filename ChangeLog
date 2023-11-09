@@ -1,4 +1,99 @@
-commit 0a7d96a9ee96f926b41e8d0100dffbc969915eb1
+commit 1a7270f471cf7c7ac6f20c8040b3a36f028c6172
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Nov 9 16:58:10 2023 +0100
+
+    Release 1.17.4
+
+commit e8ec8cbd8cdc956cf8d049779f6a97a383da2400
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Nov 10 16:04:17 2023 +0100
+
+    Update ibus-table.pot (Only line number changes)
+
+commit ecb280a942298c1a2e4e244f3db740a4cf07805e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Nov 9 15:52:50 2023 +0100
+
+    Fix compose support for ibus >= 1.5.28
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/145
+    
+    - IBus.init() has been required to load the compose resource
+      since 1.5.28 after the EN compose table was moved to GResource.
+      Thanks to Takao Fujiwara <takao.fujiwara1@gmail.com> for the hint!
+    - Load $HOME/.XCompose file by calling self.add_table_by_locale(None)
+    - Add add_table_by_locale() to mock_engine.py to fix the unit tests
+
+commit cc295b0dd05c36694409e440b7e755bfa3c1e04d
+Author: Sergey A <sw@atrus.ru>
+Date:   Sat Oct 14 16:35:55 2023 +0200
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 80.0% (120 of 150 strings)
+    
+    Co-authored-by: Sergey A <sw@atrus.ru>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translation: ibus-table/app
+
+commit 4ef37f63e8b362b2c336cbf14368c0070df8fbc7
+Author: Sergey A <sw@atrus.ru>
+Date:   Tue Sep 19 14:19:38 2023 +0000
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 66.6% (100 of 150 strings)
+    
+    Translation: ibus-table/app
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+
+commit c3512f028ba1de18da6f23901550d89409f6cec9
+Author: Anonymous <noreply@weblate.org>
+Date:   Tue Sep 19 15:59:06 2023 +0200
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 48.0% (72 of 150 strings)
+    
+    Translated using Weblate (Russian)
+    
+    Currently translated at 18.0% (27 of 150 strings)
+    
+    Co-authored-by: Anonymous <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translation: ibus-table/app
+
+commit 1ba3fb818f1528b899af36932c9e89782efe772b
+Author: Sergey A <sw@atrus.ru>
+Date:   Tue Sep 19 15:59:05 2023 +0200
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 48.0% (72 of 150 strings)
+    
+    Translated using Weblate (Russian)
+    
+    Currently translated at 18.0% (27 of 150 strings)
+    
+    Added translation using Weblate (Russian)
+    
+    Co-authored-by: Sergey A <sw@atrus.ru>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translation: ibus-table/app
+
+commit ea685aa695a27968a35c4cb83d36dd9bd42d70fb
+Author: Weblate <noreply@weblate.org>
+Date:   Thu Sep 14 12:08:36 2023 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit d1149261616a2590185c2aae19437dd50162ce05
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Sep 13 15:42:41 2023 +0200
 

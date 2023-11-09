@@ -288,6 +288,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 connection=bus.get_connection(),
                 object_path=obj_path)
             LOGGER.info('This ibus version does *not* have focus id.')
+        # Load $HOME/.XCompose file:
+        self.add_table_by_locale(None)
 
         self._unit_test = unit_test
         self._input_purpose: int = 0

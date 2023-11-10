@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2023-09-13 18:20+0200\n"
+"POT-Creation-Date: 2023-11-10 15:59+0100\n"
 "PO-Revision-Date: 2023-07-28 16:20+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/ibus-"
@@ -24,11 +24,11 @@ msgstr ""
 #. when one wants to input only Simplified Chinese.
 #. Translators: This is the setting to use only
 #. simplified Chinese
-#: engine/table.py:684 setup/main.py:369
+#: engine/table.py:686 setup/main.py:369
 msgid "Simplified Chinese"
 msgstr "Vereinfachtes Chinesisch"
 
-#: engine/table.py:686
+#: engine/table.py:688
 msgid "Switch to “Simplified Chinese only”."
 msgstr "Wechseln zu “Vereinfachtes Chinesisch”."
 
@@ -36,11 +36,11 @@ msgstr "Wechseln zu “Vereinfachtes Chinesisch”."
 #. when one wants to input only Traditonal Chinese
 #. Translators: This is the setting to use only
 #. traditional Chinese
-#: engine/table.py:693 setup/main.py:373
+#: engine/table.py:695 setup/main.py:373
 msgid "Traditional Chinese"
 msgstr "Traditionelles Chinesisch"
 
-#: engine/table.py:695
+#: engine/table.py:697
 msgid "Switch to “Traditional Chinese only”."
 msgstr "Wechseln zu “Traditionelles Chinesisch”."
 
@@ -49,11 +49,11 @@ msgstr "Wechseln zu “Traditionelles Chinesisch”."
 #. Chinese but wants the Simplified Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:705
+#: engine/table.py:707
 msgid "Simplified Chinese first"
 msgstr "Vereinfachtes Chinesisch zuerst"
 
-#: engine/table.py:707
+#: engine/table.py:709
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr "Wechseln zu “Vereinfachtes Chinesisch vor traditionellem”."
 
@@ -62,11 +62,11 @@ msgstr "Wechseln zu “Vereinfachtes Chinesisch vor traditionellem”."
 #. Chinese but wants the Traditional Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:717
+#: engine/table.py:719
 msgid "Traditional Chinese first"
 msgstr "Traditionelles Chinesisch zuerst"
 
-#: engine/table.py:719
+#: engine/table.py:721
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr "Wechseln zu “Traditionelles Chinesisch vor vereinfachtem”."
 
@@ -78,59 +78,59 @@ msgstr "Wechseln zu “Traditionelles Chinesisch vor vereinfachtem”."
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese in no
 #. particular order
-#: engine/table.py:729 setup/main.py:388
+#: engine/table.py:731 setup/main.py:388
 msgid "All Chinese characters"
 msgstr "Alle chinesischen Zeichen"
 
-#: engine/table.py:730
+#: engine/table.py:732
 msgid "Switch to “All Chinese characters”."
 msgstr "Wechseln zu “Alle chinesischen Zeichen”."
 
-#: engine/table.py:734
+#: engine/table.py:736
 msgid "Chinese mode"
 msgstr "Chinesischer Modus"
 
-#: engine/table.py:735
+#: engine/table.py:737
 msgid "Switch Chinese mode"
 msgstr "Chinesischen Modus ändern"
 
-#: engine/table.py:746
+#: engine/table.py:748
 msgid "English"
 msgstr "Englisch"
 
-#: engine/table.py:747
+#: engine/table.py:749
 msgid "Switch to English input"
 msgstr "Wechseln zur Eingabe von Englisch"
 
-#: engine/table.py:754
+#: engine/table.py:756
 msgid "Chinese"
 msgstr "Chinesisch"
 
-#: engine/table.py:755
+#: engine/table.py:757
 msgid "Switch to Chinese input"
 msgstr "Wechseln zur Eingabe von Chinesisch"
 
-#: engine/table.py:763 engine/table.py:911 setup/main.py:939
+#: engine/table.py:765 engine/table.py:913 setup/main.py:939
 msgid "Direct"
 msgstr "Direkt"
 
-#: engine/table.py:764
+#: engine/table.py:766
 msgid "Switch to direct input"
 msgstr "Wechseln zum “Direkteingabe Modus”"
 
-#: engine/table.py:769 engine/table.py:833
+#: engine/table.py:771 engine/table.py:835
 msgid "Table"
 msgstr "Tabelleneingabe"
 
-#: engine/table.py:770
+#: engine/table.py:772
 msgid "Switch to table input"
 msgstr "Wechseln zum Tabelleneingabemodus"
 
-#: engine/table.py:778
+#: engine/table.py:780
 msgid "Input mode"
 msgstr "Eingabemodus"
 
-#: engine/table.py:779
+#: engine/table.py:781
 msgid "Switch Input mode"
 msgstr "Eingabemodus ändern"
 
@@ -142,12 +142,12 @@ msgstr "Eingabemodus ändern"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use half width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:789 engine/table.py:811 setup/main.py:425 setup/main.py:469
+#: engine/table.py:791 engine/table.py:813 setup/main.py:425 setup/main.py:469
 #: setup/main.py:514 setup/main.py:559
 msgid "Half"
 msgstr "Halbe Breite"
 
-#: engine/table.py:790
+#: engine/table.py:792
 msgid "Switch to halfwidth letters"
 msgstr "Wechseln zu “Buchstaben in halber Breite”"
 
@@ -159,108 +159,108 @@ msgstr "Wechseln zu “Buchstaben in halber Breite”"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use full width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:795 engine/table.py:817 setup/main.py:429 setup/main.py:473
+#: engine/table.py:797 engine/table.py:819 setup/main.py:429 setup/main.py:473
 #: setup/main.py:518 setup/main.py:563
 msgid "Full"
 msgstr "Volle Breite"
 
-#: engine/table.py:796
+#: engine/table.py:798
 msgid "Switch to fullwidth letters"
 msgstr "Wechseln zu “Buchstaben in voller Breite”"
 
-#: engine/table.py:800
+#: engine/table.py:802
 msgid "Letter width"
 msgstr "Buchstabenbreite"
 
-#: engine/table.py:801
+#: engine/table.py:803
 msgid "Switch letter width"
 msgstr "Buchstabenbreite ändern"
 
-#: engine/table.py:812
+#: engine/table.py:814
 msgid "Switch to halfwidth punctuation"
 msgstr "Wechseln zu “Zeichensetzung in halber Breite”"
 
-#: engine/table.py:818
+#: engine/table.py:820
 msgid "Switch to fullwidth punctuation"
 msgstr "Wechseln zu “Zeichensetzung in voller Breite”"
 
-#: engine/table.py:822
+#: engine/table.py:824
 msgid "Punctuation width"
 msgstr "Zeichensetzungsbreite"
 
-#: engine/table.py:823
+#: engine/table.py:825
 msgid "Switch punctuation width"
 msgstr "Zeichensetzungsbreite ändern"
 
-#: engine/table.py:834
+#: engine/table.py:836
 msgid "Switch to table mode"
 msgstr "Zum “Tabellen Modus” wechseln"
 
-#: engine/table.py:839
+#: engine/table.py:841
 msgid "Pinyin"
 msgstr "Pinyin"
 
-#: engine/table.py:840
+#: engine/table.py:842
 msgid "Switch to pinyin mode"
 msgstr "Zum “Pinyin Modus” Modus wechseln"
 
-#: engine/table.py:844
+#: engine/table.py:846
 msgid "Pinyin mode"
 msgstr "Pinyin Modus"
 
-#: engine/table.py:845
+#: engine/table.py:847
 msgid "Switch pinyin mode"
 msgstr "Pinyinmodus ändern"
 
-#: engine/table.py:855
+#: engine/table.py:857
 msgid "Suggestion disabled"
 msgstr "Vorschläge deaktiviert"
 
-#: engine/table.py:856 engine/table.py:862
+#: engine/table.py:858 engine/table.py:864
 msgid "Switch to suggestion mode"
 msgstr "Zum „Vorschlagsmodus“ wechseln"
 
-#: engine/table.py:861
+#: engine/table.py:863
 msgid "Suggestion enabled"
 msgstr "Vorschläge aktiviert"
 
-#: engine/table.py:866
+#: engine/table.py:868
 msgid "Suggestion mode"
 msgstr "Vorschlagsmodus"
 
-#: engine/table.py:867
+#: engine/table.py:869
 msgid "Switch suggestion mode"
 msgstr "Vorschlagsmodus ändern"
 
-#: engine/table.py:877
+#: engine/table.py:879
 msgid "Multiple character match"
 msgstr "Mehrere Zeichen auf einmal"
 
-#: engine/table.py:879
+#: engine/table.py:881
 msgid "Switch to matching multiple characters at once"
 msgstr "Zur Eingabe mehrerer Zeichen auf einmal wechseln"
 
-#: engine/table.py:884
+#: engine/table.py:886
 msgid "Single character match"
 msgstr "Nur einzelne Zeichen"
 
-#: engine/table.py:886
+#: engine/table.py:888
 msgid "Switch to matching only single characters"
 msgstr "Zur Eingabe einzelner Zeichen wechseln"
 
-#: engine/table.py:890
+#: engine/table.py:892
 msgid "Onechar mode"
 msgstr "Einzelzeichenmodus"
 
-#: engine/table.py:891
+#: engine/table.py:893
 msgid "Switch onechar mode"
 msgstr "Einzelzeichenmodus ändern"
 
-#: engine/table.py:901 setup/main.py:937
+#: engine/table.py:903 setup/main.py:937
 msgid "Normal"
 msgstr "Normal"
 
-#: engine/table.py:903
+#: engine/table.py:905
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
@@ -269,7 +269,7 @@ msgstr ""
 "anstatt in die Applikation. Das ermöglicht automatische Definitionen neuer "
 "Kürzel)"
 
-#: engine/table.py:913
+#: engine/table.py:915
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
@@ -277,19 +277,19 @@ msgstr ""
 "Wechseln zum direkten Commitmodus (automatische Commits gehen direkt in die "
 "Applikation)"
 
-#: engine/table.py:918
+#: engine/table.py:920
 msgid "Auto commit mode"
 msgstr "Autocommitmodus"
 
-#: engine/table.py:919
+#: engine/table.py:921
 msgid "Switch autocommit mode"
 msgstr "Autocommitmodus ändern"
 
-#: engine/table.py:2945
+#: engine/table.py:2947
 msgid "Setup"
 msgstr "Einstellungen"
 
-#: engine/table.py:2948
+#: engine/table.py:2950
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Konfiguration von ibus-table “%(engine-name)s”"

@@ -30,7 +30,9 @@
   <icon type="remote" width="256" height="256">https://raw.githubusercontent.com/mike-fabian/ibus-table/main/icons/256x256/ibus-table.png</icon>
   <icon type="remote">https://raw.githubusercontent.com/mike-fabian/ibus-table/main/icons/ibus-table.svg</icon>
   <project_license>LGPL-2.1+</project_license>
-  <developer_name>Mike FABIAN</developer_name>
+  <developer>
+    <name>Mike FABIAN</name>
+  </developer>
   <update_contact>mfabian@redhat.com</update_contact>
   <url type="homepage">https://kaio.github.io/ibus-table/</url>
   <url type="bugtracker">https://github.com/kaio/ibus-table/issues</url>

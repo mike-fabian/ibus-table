@@ -4,13 +4,14 @@
 # Boyuan Yang <073plan@gmail.com>, 2020.
 # Dingzhong Chen <wsxy162@gmail.com>, 2021.
 # Mike FABIAN <mfabian@redhat.com>, 2021.
+# Liu Tao <lyuutau@outlook.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2023-11-10 15:59+0100\n"
-"PO-Revision-Date: 2021-07-22 15:03+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2023-12-26 14:36+0000\n"
+"Last-Translator: Liu Tao <lyuutau@outlook.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.7.2\n"
+"X-Generator: Weblate 5.3\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -799,7 +800,7 @@ msgstr ""
 #. should be automatically appended to the input.
 #: setup/main.py:1009
 msgid "Auto wildcard"
-msgstr "自动通配符："
+msgstr "自动通配符"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether a wildcard should be automatically
@@ -847,10 +848,8 @@ msgstr ""
 #. Translators: A combobox to choose whether
 #. the color scheme for a dark theme should be used.
 #: setup/main.py:1082
-#, fuzzy
-#| msgid "Use dark theme:"
 msgid "Use dark theme"
-msgstr "使用深色主题:"
+msgstr "使用深色主题"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should

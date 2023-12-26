@@ -1,21 +1,21 @@
 # Ooyama Yosiyuki <qqke6wd9k@apricot.ocn.ne.jp>, 2015. #zanata
 # Anonymous <noreply@weblate.org>, 2019, 2020.
-# Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2021.
+# Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2021, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2023-11-10 15:59+0100\n"
-"PO-Revision-Date: 2021-05-04 18:33+0000\n"
+"PO-Revision-Date: 2023-12-17 17:36+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: Japanese <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/ja/>\n"
+"Language-Team: Japanese <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.6.1\n"
+"X-Generator: Weblate 5.3\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -97,7 +97,7 @@ msgstr "英語"
 
 #: engine/table.py:749
 msgid "Switch to English input"
-msgstr ""
+msgstr "英数入力に切り替える"
 
 #: engine/table.py:756
 msgid "Chinese"
@@ -187,7 +187,7 @@ msgstr ""
 
 #: engine/table.py:825
 msgid "Switch punctuation width"
-msgstr ""
+msgstr "句読点の半角/全角を切り替える"
 
 #: engine/table.py:836
 msgid "Switch to table mode"
@@ -199,7 +199,7 @@ msgstr "ピンイン"
 
 #: engine/table.py:842
 msgid "Switch to pinyin mode"
-msgstr ""
+msgstr "ピンイン入力モードに切り替える"
 
 #: engine/table.py:846
 msgid "Pinyin mode"
@@ -306,14 +306,14 @@ msgstr "取り消し"
 #. command.
 #: engine/it_util.py:873
 msgid "Please press a key (or a key combination)"
-msgstr "キー (もしくはキーの組み合わせ) を入力してください"
+msgstr "キー (もしくはキーの組み合わせ) を押してください"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:878
 msgid "The dialog will be closed when the key is released"
-msgstr "このダイアログはキーリリース時に閉じられます"
+msgstr "このダイアログはキーを離すと閉じられます"
 
 #: engine/it_util.py:910
 msgid "Table input method for IBus."
@@ -347,15 +347,15 @@ msgstr ""
 
 #: setup/main.py:114
 msgid "Initial state"
-msgstr ""
+msgstr "初期状態"
 
 #: setup/main.py:115
 msgid "Direct input"
-msgstr ""
+msgstr "直接入力"
 
 #: setup/main.py:116
 msgid "Table input"
-msgstr ""
+msgstr "テーブル入力"
 
 #: setup/main.py:129 setup/main.py:189
 msgid "Preferences"
@@ -367,7 +367,7 @@ msgstr "このアプリケーションについて"
 
 #: setup/main.py:220
 msgid "Restore all defaults"
-msgstr ""
+msgstr "全て初期設定に戻す"
 
 #: setup/main.py:229 setup/main.py:2958
 msgid "_Close"
@@ -552,7 +552,7 @@ msgstr ""
 #. window should be drawn horizontally or vertically.
 #: setup/main.py:629
 msgid "Orientation:"
-msgstr "印刷方向:"
+msgstr "表示方向:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn
@@ -562,6 +562,8 @@ msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
 msgstr ""
+"変換候補を表示する際に縦と横の\n"
+"どちらに続けて並べるか選択します。"
 
 #: setup/main.py:640
 msgid "Horizontal"
@@ -579,7 +581,7 @@ msgstr "システムのデフォルト"
 #. candidates to show in one page of the candidate list.
 #: setup/main.py:669
 msgid "Page size:"
-msgstr "用紙サイズ:"
+msgstr "表示数:"
 
 #. Translators: A tooltip for the label of the adjustment
 #. for the number of candidates to show in one page of the
@@ -610,7 +612,7 @@ msgstr "編集"
 #. the keybindings for the selected command.
 #: setup/main.py:758
 msgid "Edit the key bindings for the selected command"
-msgstr ""
+msgstr "選択したコマンドのキーバインディングを編集します"
 
 #: setup/main.py:765 setup/main.py:2200
 msgid "Set to default"
@@ -622,7 +624,7 @@ msgstr "デフォルトに設定する"
 #. the key bindings for the selected command to the default.
 #: setup/main.py:771 setup/main.py:2207
 msgid "Set default key bindings for the selected command"
-msgstr ""
+msgstr "選択したコマンドのキーバインディングを初期設定に戻します"
 
 #: setup/main.py:778
 msgid "Set all to default"
@@ -632,7 +634,7 @@ msgstr "すべてをデフォルトに設定する"
 #. key bindings to default for all commands.
 #: setup/main.py:784
 msgid "Set default key bindings for all commands"
-msgstr ""
+msgstr "すべてのコマンドのキーバインディングをデフォルトに戻す"
 
 #. Translators: A checkbox where one can choose whether the
 #. order of the candidates is dynamically adjusted according
@@ -649,7 +651,7 @@ msgstr ""
 
 #: setup/main.py:824
 msgid "Delete all learned data"
-msgstr ""
+msgstr "すべての学習データを削除"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
@@ -670,7 +672,7 @@ msgstr ""
 
 #: setup/main.py:862
 msgid "Phrase"
-msgstr ""
+msgstr "フレーズ"
 
 #: setup/main.py:864
 msgid "Single Char"
@@ -680,7 +682,7 @@ msgstr ""
 #. candidate will be automatically selected during typing.
 #: setup/main.py:889
 msgid "Auto select"
-msgstr ""
+msgstr "候補の自動選択"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
@@ -798,20 +800,20 @@ msgstr ""
 #. the color scheme for a dark theme should be used.
 #: setup/main.py:1082
 msgid "Use dark theme"
-msgstr ""
+msgstr "ダークテーマを適用"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should
 #. be used.
 #: setup/main.py:1087
 msgid "If yes, the color scheme for a dark theme will be used."
-msgstr ""
+msgstr "有効にすると、ダークテーマに合わせた配色が適用されます。"
 
 #. Translators: A checkbox where one can choose whether a
 #. sound is played on error
 #: setup/main.py:1102
 msgid "Play sound file on error"
-msgstr ""
+msgstr "エラー音を有効にする"
 
 #: setup/main.py:1104
 msgid ""
@@ -819,6 +821,8 @@ msgid ""
 "the simpleaudio module for Python3 is not installed, this option does "
 "nothing."
 msgstr ""
+"エラー音を再生するかどうか選択できます。Python3のsimpleaudioモジュールがイン"
+"ストールされていない場合、エラー音は再生されません。"
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
@@ -849,14 +853,14 @@ msgstr "OK(_O)"
 
 #: setup/main.py:1551
 msgid "Another instance of this app is already running."
-msgstr ""
+msgstr "このアプリケーションの別のインスタンスがすでに実行されています。"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
 #: setup/main.py:1615
 msgid "Do you really want to restore all default settings?"
-msgstr ""
+msgstr "すべて初期設定に戻してもよろしいですか？"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -868,11 +872,11 @@ msgstr ""
 msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
-msgstr ""
+msgstr "入力と変換の学習データをすべて削除してもよろしいですか？"
 
 #: setup/main.py:1841
 msgid "Select .wav sound file:"
-msgstr ""
+msgstr ".wavファイルを選択:"
 
 #: setup/main.py:2123
 #, python-format
@@ -916,7 +920,7 @@ msgstr "キー割り当てを追加する"
 msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
-msgstr "すべてのコマンドのキーバインディングをデフォルトに設定したいのですか？"
+msgstr "すべてのコマンドのキー割り当てをデフォルトに戻してもよろしいですか？"
 
 #: setup/main.py:3011
 msgid "ibus is not running."

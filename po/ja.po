@@ -1,13 +1,15 @@
 # Ooyama Yosiyuki <qqke6wd9k@apricot.ocn.ne.jp>, 2015. #zanata
 # Anonymous <noreply@weblate.org>, 2019, 2020.
 # Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2021, 2023.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2023-11-10 15:59+0100\n"
-"PO-Revision-Date: 2023-12-17 17:36+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"PO-Revision-Date: 2024-03-01 06:35+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Japanese <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/ja/>\n"
 "Language: ja\n"
@@ -15,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.4\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -402,10 +404,8 @@ msgstr "キー割り当て"
 #. or whether ibus-table should always use “Table input” by
 #. default after a restart.
 #: setup/main.py:303
-#, fuzzy
-#| msgid "Input mode"
 msgid "Remember input mode"
-msgstr "入力モード"
+msgstr "入力モードを記憶する"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the input mode (“Direct input” or “Table
@@ -596,7 +596,7 @@ msgstr ""
 
 #: setup/main.py:696
 msgid "Current key bindings:"
-msgstr ""
+msgstr "現在のキーバインディング:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
@@ -837,7 +837,8 @@ msgstr "デバッグレベル:"
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
-msgstr ""
+msgstr "0より大きい場合、デバッグ情報はログファイルに出力され、またグラフィカルに表示"
+"されることがあります。"
 
 #: setup/main.py:1516
 msgid "Are you sure?"

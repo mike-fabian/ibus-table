@@ -20,7 +20,6 @@
 from typing import Any
 import re
 import logging
-import sys
 
 # Unihan_Variants.txt contains the following 2 lines:
 #
@@ -171,10 +170,6 @@ def write_variants_script(script_file) -> None:
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-''')
-
-    script_file.write('''
-import sys
 ''')
 
     script_file.write('''

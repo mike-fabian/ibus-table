@@ -92,10 +92,9 @@ def read_unihan_variants(unihan_variants_file) -> None:
                     logging.debug(
                         'char=%s category=%d line=%s',
                         char, category, line)
-                    if not char in VARIANTS_TABLE_ORIG:
+                    if char not in VARIANTS_TABLE_ORIG:
                         VARIANTS_TABLE_ORIG[char] = category
-                    if (not char
-                            in VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED):
+                    if (char not in VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED):
                         VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED[
                             char] = line
 

@@ -84,7 +84,7 @@ class SoundObject:
         if not os.access(self._path_to_sound_file, os.R_OK):
             LOGGER.info('Sound file %s not readable.', path_to_sound_file)
             return
-        if not self._requested_audio_backend in self._supported_audio_backends:
+        if self._requested_audio_backend not in self._supported_audio_backends:
             LOGGER.error('Audio backend %s not supported, use one of %s',
                          audio_backend, self._supported_audio_backends)
             return

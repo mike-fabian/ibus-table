@@ -77,7 +77,7 @@ class EngineFactory(IBus.Factory): # type: ignore
         try:
             if not self.db:
                 # first check self.dbdict
-                if not engine_name in self.dbdict:
+                if engine_name not in self.dbdict:
                     db_dir = '/usr/share/ibus-table/tables'
                     if os.getenv('IBUS_TABLE_LOCATION'):
                         db_dir = os.path.join(

@@ -654,7 +654,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 break
         user_page_size: Optional[int] = it_util.variant_to_value(
             self._gsettings.get_user_value('lookuptablepagesize'))
-        if not user_page_size is None:
+        if user_page_size is not None:
             self._page_size = user_page_size
 
         orientation: Optional[int] = it_util.variant_to_value(
@@ -2824,7 +2824,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         visible = True
         self._init_or_update_sub_properties(
             menu_key, sub_properties_dict, current_mode=current_mode)
-        if not menu_key in self._prop_dict: # initialize property
+        if menu_key not in self._prop_dict: # initialize property
             self._prop_dict[menu_key] = IBus.Property(
                 key=menu_key,
                 prop_type=IBus.PropType.MENU,
@@ -2858,7 +2858,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''
         Initialize or update the sub-properties of a property menu entry.
         '''
-        if not menu_key in self._sub_props_dict:
+        if menu_key not in self._sub_props_dict:
             update = False
             self._sub_props_dict[menu_key] = IBus.PropList()
         else:

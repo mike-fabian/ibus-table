@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 # 'init' has one array which is [keysym, keycode, modifier] and to be run
 # before the main tests. E.g.

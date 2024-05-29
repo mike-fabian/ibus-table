@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 #
 # ibus-table - The Tables engine for IBus
 #
@@ -79,13 +78,13 @@ from gtkcases import TestCases
 def printflush(sentence: str) -> None:
     try:
         print(sentence, flush=True)
-    except IOError:
+    except OSError:
         pass
 
 def printerr(sentence: str) -> None:
     try:
         print(sentence, flush=True, file=sys.stderr)
-    except IOError:
+    except OSError:
         pass
 
 @unittest.skipUnless(

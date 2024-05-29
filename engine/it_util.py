@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # vim:et sts=4 sw=4
 #
 # ibus-table - The Tables engine for IBus
@@ -120,7 +119,7 @@ def color_string_to_argb(color_string: str) -> int:
     return (((int(gdk_rgba.alpha * 0xff) & 0xff) << 24)
             + ((int(gdk_rgba.red * 0xff) & 0xff) << 16)
             + ((int(gdk_rgba.green * 0xff) & 0xff) << 8)
-            + ((int(gdk_rgba.blue * 0xff) & 0xff)))
+            + (int(gdk_rgba.blue * 0xff) & 0xff))
 
 def get_default_chinese_mode(database: tabsqlitedb.TabSqliteDb) -> int:
     '''

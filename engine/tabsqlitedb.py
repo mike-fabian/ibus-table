@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # vim:et sts=4 sw=4
 #
 # ibus-table - The Tables engine for IBus
@@ -48,37 +47,37 @@ DEBUG_LEVEL = int(0)
 
 DATABASE_VERSION = '1.00'
 
-CHINESE_NOCHECK_CHARS = u"“”‘’《》〈〉〔〕「」『』【】〖〗（）［］｛｝"\
-    u"．。，、；：？！…—·ˉˇ¨々～‖∶＂＇｀｜"\
-    u"⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛"\
-    u"АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЁ"\
-    u"ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ"\
-    u"⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛"\
-    u"㎎㎏㎜㎝㎞㎡㏄㏎㏑㏒㏕"\
-    u"ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ"\
-    u"⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇"\
-    u"€＄￠￡￥"\
-    u"¤→↑←↓↖↗↘↙"\
-    u"ァアィイゥウェエォオカガキギクグケゲコゴサザシジ"\
-    u"スズセゼソゾタダチヂッツヅテデトドナニヌネノハバパ"\
-    u"ヒビピフブプヘベペホボポマミムメモャヤュユョヨラ"\
-    u"リルレロヮワヰヱヲンヴヵヶーヽヾ"\
-    u"ぁあぃいぅうぇえぉおかがきぎぱくぐけげこごさざしじ"\
-    u"すずせぜそぞただちぢっつづてでとどなにぬねのはば"\
-    u"ひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらり"\
-    u"るれろゎわゐゑをん゛゜ゝゞ"\
-    u"勹灬冫艹屮辶刂匚阝廾丨虍彐卩钅冂冖宀疒肀丿攵凵犭"\
-    u"亻彡饣礻扌氵纟亠囗忄讠衤廴尢夂丶"\
-    u"āáǎàōóǒòêēéěèīíǐìǖǘǚǜüūúǔù"\
-    u"＋－＜＝＞±×÷∈∏∑∕√∝∞∟∠∣∥∧∨∩∪∫∮"\
-    u"∴∵∶∷∽≈≌≒≠≡≤≥≦≧≮≯⊕⊙⊥⊿℃°‰"\
-    u"♂♀§№☆★○●◎◇◆□■△▲※〓＃＆＠＼＾＿￣"\
-    u"абвгдежзийклмнопрстуфхцчшщъыьэюяё"\
-    u"ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹβγδεζηαικλμνξοπρστυφθψω"\
-    u"①②③④⑤⑥⑦⑧⑨⑩①②③④⑤⑥⑦⑧⑨⑩"\
-    u"㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩"\
-    u"ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩ"\
-    u"ㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ"
+CHINESE_NOCHECK_CHARS = "“”‘’《》〈〉〔〕「」『』【】〖〗（）［］｛｝"\
+    "．。，、；：？！…—·ˉˇ¨々～‖∶＂＇｀｜"\
+    "⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛"\
+    "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЁ"\
+    "ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ"\
+    "⒈⒉⒊⒋⒌⒍⒎⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛"\
+    "㎎㎏㎜㎝㎞㎡㏄㏎㏑㏒㏕"\
+    "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ"\
+    "⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄⒅⒆⒇"\
+    "€＄￠￡￥"\
+    "¤→↑←↓↖↗↘↙"\
+    "ァアィイゥウェエォオカガキギクグケゲコゴサザシジ"\
+    "スズセゼソゾタダチヂッツヅテデトドナニヌネノハバパ"\
+    "ヒビピフブプヘベペホボポマミムメモャヤュユョヨラ"\
+    "リルレロヮワヰヱヲンヴヵヶーヽヾ"\
+    "ぁあぃいぅうぇえぉおかがきぎぱくぐけげこごさざしじ"\
+    "すずせぜそぞただちぢっつづてでとどなにぬねのはば"\
+    "ひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらり"\
+    "るれろゎわゐゑをん゛゜ゝゞ"\
+    "勹灬冫艹屮辶刂匚阝廾丨虍彐卩钅冂冖宀疒肀丿攵凵犭"\
+    "亻彡饣礻扌氵纟亠囗忄讠衤廴尢夂丶"\
+    "āáǎàōóǒòêēéěèīíǐìǖǘǚǜüūúǔù"\
+    "＋－＜＝＞±×÷∈∏∑∕√∝∞∟∠∣∥∧∨∩∪∫∮"\
+    "∴∵∶∷∽≈≌≒≠≡≤≥≦≧≮≯⊕⊙⊥⊿℃°‰"\
+    "♂♀§№☆★○●◎◇◆□■△▲※〓＃＆＠＼＾＿￣"\
+    "абвгдежзийклмнопрстуфхцчшщъыьэюяё"\
+    "ⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹβγδεζηαικλμνξοπρστυφθψω"\
+    "①②③④⑤⑥⑦⑧⑨⑩①②③④⑤⑥⑦⑧⑨⑩"\
+    "㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩"\
+    "ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩ"\
+    "ㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ"
 
 class ImeProperties:
     '''
@@ -494,7 +493,7 @@ class TabSqliteDb:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('load_phrases_cache()')
         try:
-            self._phrases_cache = json.load(open(self.cache_path, 'r'))
+            self._phrases_cache = json.load(open(self.cache_path))
             snum = self._phrases_cache.get('serial_number')
             if not snum or (snum != self._snum):
                 self._phrases_cache = {}
@@ -757,10 +756,10 @@ class TabSqliteDb:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('len(phrases)=%s', len(list(phrases)))
         insert_sqlstr = '''
-        INSERT INTO %(database)s.phrases
+        INSERT INTO {database}.phrases
         (tabkeys, phrase, freq, user_freq)
         VALUES (:tabkeys, :phrase, :freq, :user_freq);
-        ''' % {'database': database}
+        '''.format(database=database)
         insert_sqlargs = []
         for (tabkeys, phrase, freq, user_freq) in phrases:
             insert_sqlargs.append({
@@ -792,9 +791,9 @@ class TabSqliteDb:
         if not tabkeys or not phrase:
             return
         select_sqlstr = '''
-        SELECT * FROM %(database)s.phrases
+        SELECT * FROM {database}.phrases
         WHERE tabkeys = :tabkeys AND phrase = :phrase;
-        ''' % {'database': database}
+        '''.format(database=database)
         select_sqlargs = {'tabkeys': tabkeys, 'phrase': phrase}
         results = self.db.execute(select_sqlstr, select_sqlargs).fetchall()
         if results:
@@ -808,10 +807,10 @@ class TabSqliteDb:
             return
 
         insert_sqlstr = '''
-        INSERT INTO %(database)s.phrases
+        INSERT INTO {database}.phrases
         (tabkeys, phrase, freq, user_freq)
         VALUES (:tabkeys, :phrase, :freq, :user_freq);
-        ''' % {'database': database}
+        '''.format(database=database)
         insert_sqlargs = {
             'tabkeys': tabkeys,
             'phrase': phrase,
@@ -1057,17 +1056,17 @@ class TabSqliteDb:
             SELECT tabkeys, phrase, freq, user_freq FROM
             (
                 SELECT tabkeys, phrase, freq, user_freq FROM main.phrases
-                WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar %(one_char_condition)s
+                WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar {one_char_condition}
                 UNION ALL
                 SELECT tabkeys, phrase, freq, user_freq FROM user_db.phrases
-                WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar %(one_char_condition)s
+                WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar {one_char_condition}
             )
-            ''' % {'one_char_condition': one_char_condition}
+            '''.format(one_char_condition=one_char_condition)
         else:
             sqlstr = '''
             SELECT tabkeys, phrase, freq, user_freq FROM main.phrases
-            WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar %(one_char_condition)s
-            ''' % {'one_char_condition': one_char_condition}
+            WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar {one_char_condition}
+            '''.format(one_char_condition=one_char_condition)
         escapechar = '☺'
         for char in '!@#':
             if char not in [single_wildcard_char, multi_wildcard_char]:
@@ -1567,14 +1566,14 @@ class TabSqliteDb:
             return
         if tabkeys:
             delete_sqlstr = '''
-            DELETE FROM %(database)s.phrases
+            DELETE FROM {database}.phrases
             WHERE tabkeys = :tabkeys AND phrase = :phrase;
-            ''' % {'database': database}
+            '''.format(database=database)
         else:
             delete_sqlstr = '''
-            DELETE FROM %(database)s.phrases
+            DELETE FROM {database}.phrases
             WHERE phrase = :phrase;
-            ''' % {'database': database}
+            '''.format(database=database)
         delete_sqlargs = {'tabkeys': tabkeys, 'phrase': phrase}
         self.db.execute(delete_sqlstr, delete_sqlargs)
         if commit:

@@ -208,7 +208,7 @@ def set_default_settings() -> None:
     def_full_width_letter = TABSQLITEDB.ime_properties.get(
         'def_full_width_letter')
     if def_full_width_letter:
-        letter_width_mode = (def_full_width_letter.lower() == u'true')
+        letter_width_mode = (def_full_width_letter.lower() == 'true')
     ENGINE.set_letter_width(
         mode=False, input_mode=0, update_gsettings=False)
     ENGINE.set_letter_width(
@@ -218,7 +218,7 @@ def set_default_settings() -> None:
     def_full_width_punct = TABSQLITEDB.ime_properties.get(
         'def_full_width_punct')
     if def_full_width_punct:
-        punctuation_width_mode = (def_full_width_punct.lower() == u'true')
+        punctuation_width_mode = (def_full_width_punct.lower() == 'true')
     ENGINE.set_punctuation_width(
         mode=False, input_mode=0, update_gsettings=False)
     ENGINE.set_punctuation_width(
@@ -228,7 +228,7 @@ def set_default_settings() -> None:
     always_show_lookup = TABSQLITEDB.ime_properties.get(
         'always_show_lookup')
     if always_show_lookup:
-        always_show_lookup_mode = (always_show_lookup.lower() == u'true')
+        always_show_lookup_mode = (always_show_lookup.lower() == 'true')
     ENGINE.set_always_show_lookup(
         always_show_lookup_mode, update_gsettings=False)
 
@@ -251,7 +251,7 @@ def set_default_settings() -> None:
     dynamic_adjust = False
     dynamic_adjust = TABSQLITEDB.ime_properties.get('dynamic_adjust')
     if dynamic_adjust:
-        dynamic_adjust = (dynamic_adjust.lower() == u'true')
+        dynamic_adjust = (dynamic_adjust.lower() == 'true')
     else:
         dynamic_adjust = True
     ENGINE.set_dynamic_adjust(
@@ -260,14 +260,14 @@ def set_default_settings() -> None:
     auto_select_mode = False
     auto_select = TABSQLITEDB.ime_properties.get('auto_select')
     if auto_select:
-        auto_select_mode = (auto_select.lower() == u'true')
+        auto_select_mode = (auto_select.lower() == 'true')
     ENGINE.set_autoselect_mode(
         auto_select_mode, update_gsettings=False)
 
     auto_commit_mode = False
     auto_commit = TABSQLITEDB.ime_properties.get('auto_commit')
     if auto_commit:
-        auto_commit_mode = (auto_commit.lower() == u'true')
+        auto_commit_mode = (auto_commit.lower() == 'true')
     ENGINE.set_autocommit_mode(
         auto_commit_mode, update_gsettings=False)
 
@@ -290,14 +290,14 @@ def set_default_settings() -> None:
     auto_wildcard_mode = True
     auto_wildcard = TABSQLITEDB.ime_properties.get('auto_wildcard')
     if auto_wildcard:
-        auto_wildcard_mode = (auto_wildcard.lower() == u'true')
+        auto_wildcard_mode = (auto_wildcard.lower() == 'true')
     ENGINE.set_autowildcard_mode(
         auto_wildcard_mode, update_gsettings=False)
 
     single_wildcard_char = TABSQLITEDB.ime_properties.get(
         'single_wildcard_char')
     if not single_wildcard_char:
-        single_wildcard_char = u''
+        single_wildcard_char = ''
     if len(single_wildcard_char) > 1:
         single_wildcard_char = single_wildcard_char[0]
     ENGINE.set_single_wildcard_char(
@@ -306,7 +306,7 @@ def set_default_settings() -> None:
     multi_wildcard_char = TABSQLITEDB.ime_properties.get(
         'multi_wildcard_char')
     if not multi_wildcard_char:
-        multi_wildcard_char = u''
+        multi_wildcard_char = ''
     if len(multi_wildcard_char) > 1:
         multi_wildcard_char = multi_wildcard_char[0]
     ENGINE.set_multi_wildcard_char(

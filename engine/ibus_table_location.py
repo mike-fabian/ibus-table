@@ -1,4 +1,3 @@
-# vim:et sts=4 sw=4 -*- coding: utf-8 -*-
 #
 # ibus-table - The Tables engine for IBus
 #

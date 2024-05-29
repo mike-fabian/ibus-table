@@ -376,7 +376,7 @@ def main() -> None:
         if os.access(_ARGS.db, os.F_OK):
             db = _ARGS.db
         else:
-            db = '%s%s%s' % (DB_DIR,
+            db = '{}{}{}'.format(DB_DIR,
                              os.path.sep,
                              os.path.basename(_ARGS.db))
     else:

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # vim:et sts=4 sw=4
 #
 # ibus-table - The Tables engine for IBus
@@ -309,7 +308,7 @@ def main() -> None:
                 if res:
                     phrase = res.group(1)
                     freq = res.group(2)
-                    _suggestions.append("%s %s" % (phrase, freq))
+                    _suggestions.append("{} {}".format(phrase, freq))
         return _suggestions[:]
 
     def parse_extra(f: Iterable[str]) -> List[str]:
@@ -340,7 +339,7 @@ def main() -> None:
         for line in f:
             xingma, phrase, freq = line.split('\t')[:3]
             if phrase == 'NOSYMBOL':
-                phrase = u''
+                phrase = ''
             phrase_list.append((xingma, phrase, int(freq), 0))
         return phrase_list
 
@@ -413,7 +412,7 @@ def main() -> None:
         source_str = bz2.open(
             _ARGS.source, mode='rt', encoding='UTF-8').read()
     else:
-        source_str = open(_ARGS.source, mode='r', encoding='UTF-8').read()
+        source_str = open(_ARGS.source, encoding='UTF-8').read()
     source_str = source_str.replace('\r\n', '\n')
     source = source_str.split('\n')
     # first get config line and table line and goucima line respectively
@@ -435,19 +434,19 @@ def main() -> None:
     debug_print('\t  add phrases into DB ')
     db.add_phrases(phrases)
 
-    if db.ime_properties.get('user_can_define_phrase').lower() == u'true':
+    if db.ime_properties.get('user_can_define_phrase').lower() == 'true':
         debug_print('\t  get goucima of IME :)')
         goucima = goucima_parser(gouci)
         debug_print('\t  add goucima into DB ')
         db.add_goucima(goucima)
 
-    if db.ime_properties.get('pinyin_mode').lower() == u'true':
+    if db.ime_properties.get('pinyin_mode').lower() == 'true':
         debug_print('\tLoad pinyin source \"%s\"' % _ARGS.pinyin)
         _bz2p = patt_s.match(_ARGS.pinyin)
         if _bz2p:
             pinyin_s = bz2.open(_ARGS.pinyin, mode='rt', encoding='UTF-8')
         else:
-            pinyin_s = open(_ARGS.pinyin, mode='r', encoding='UTF-8')
+            pinyin_s = open(_ARGS.pinyin, encoding='UTF-8')
         debug_print('\tParsing pinyin source file ')
         pyline = parse_pinyin(pinyin_s)
         debug_print('\tPreapring pinyin entries')
@@ -455,7 +454,7 @@ def main() -> None:
         debug_print('\t  add pinyin into DB ')
         db.add_pinyin(pinyin)
 
-    if db.ime_properties.get('suggestion_mode').lower() == u'true':
+    if db.ime_properties.get('suggestion_mode').lower() == 'true':
         debug_print('\tLoad suggestion source \"%s\"' % _ARGS.suggestion)
         _bz2p = patt_s.match(_ARGS.suggestion)
         if _bz2p:
@@ -463,7 +462,7 @@ def main() -> None:
                 _ARGS.suggestion, mode="rt", encoding='UTF-8')
         else:
             suggestion_s = open(
-                _ARGS.suggestion, mode='r', encoding='UTF-8')
+                _ARGS.suggestion, encoding='UTF-8')
         debug_print('\tParsing suggestion source file ')
         sgline = parse_suggestion(suggestion_s)
         debug_print('\tPreapring suggestion entries')
@@ -474,7 +473,7 @@ def main() -> None:
     debug_print('Optimizing database ')
     db.optimize_database()
 
-    if (db.ime_properties.get('user_can_define_phrase').lower() == u'true'
+    if (db.ime_properties.get('user_can_define_phrase').lower() == 'true'
             and _ARGS.extra):
         debug_print('\tPreparing for adding extra words')
         db.create_indexes('main')
@@ -483,7 +482,7 @@ def main() -> None:
         if _bz2p:
             extra_s = bz2.open(_ARGS.extra, mode='rt', encoding='UTF-8')
         else:
-            extra_s = open(_ARGS.extra, 'r')
+            extra_s = open(_ARGS.extra)
         debug_print('\tParsing extra words source file ')
         extraline = parse_extra(extra_s)
         debug_print('\tPreparing extra words lines')
@@ -494,12 +493,12 @@ def main() -> None:
         # phrases-[(xingma, phrase, int(freq), 0)]
         orig_phrases = {}
         for phrase in phrases:
-            orig_phrases.update({"%s\t%s" % (phrase[0], phrase[1]): phrase})
+            orig_phrases.update({"{}\t{}".format(phrase[0], phrase[1]): phrase})
         debug_print('\t  the len of orig_phrases is: %d' % len(orig_phrases))
         extra_phrases = {}
         for extraword in extrawords:
             extra_phrases.update(
-                {"%s\t%s" % (extraword[0], extraword[1]): extraword})
+                {"{}\t{}".format(extraword[0], extraword[1]): extraword})
         debug_print('\t  the len of extra_phrases is: %d' % len(extra_phrases))
         # pop duplicated keys
         for extra_phrase in extra_phrases:

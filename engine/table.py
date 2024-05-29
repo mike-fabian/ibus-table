@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # vim:et sts=4 sw=4
 #
 # ibus-table - The Tables engine for IBus
@@ -300,7 +299,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         #self.db = tabsqlitedb.TabSqliteDb( name = dbname )
         self.database = database
         self._setup_pid = 0
-        self._icon_dir = '%s%s%s%s' % (os.getenv('IBUS_TABLE_LOCATION'),
+        self._icon_dir = '{}{}{}{}'.format(os.getenv('IBUS_TABLE_LOCATION'),
                                        os.path.sep, 'icons', os.path.sep)
         self._engine_name = os.path.basename(
             self.database.filename).replace('.db', '').replace(' ', '_')
@@ -342,7 +341,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         # self._ime_py: Indicates whether this table supports pinyin mode
         self._ime_py = self.database.ime_properties.get('pinyin_mode')
         if self._ime_py:
-            self._ime_py = bool(self._ime_py.lower() == u'true')
+            self._ime_py = bool(self._ime_py.lower() == 'true')
         else:
             LOGGER.info('We could not find "pinyin_mode" entry in database, '
                         'is it an outdated database?')
@@ -351,7 +350,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         # self._ime_sg: Indicates whether this table supports suggestion mode
         self._ime_sg = self.database.ime_properties.get('suggestion_mode')
         if self._ime_sg:
-            self._ime_sg = bool(self._ime_sg.lower() == u'true')
+            self._ime_sg = bool(self._ime_sg.lower() == 'true')
         else:
             LOGGER.info(
                 'We could not find "suggestion_mode" entry in database, '
@@ -359,26 +358,26 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             self._ime_sg = False
 
         self._symbol = self.database.ime_properties.get('symbol')
-        if self._symbol is None or self._symbol == u'':
+        if self._symbol is None or self._symbol == '':
             self._symbol = self.database.ime_properties.get('status_prompt')
         if self._symbol is None:
-            self._symbol = u''
+            self._symbol = ''
         # some Chinese tables have “STATUS_PROMPT = CN” replace it
         # with the shorter and nicer “中”:
-        if self._symbol == u'CN':
-            self._symbol = u'中'
+        if self._symbol == 'CN':
+            self._symbol = '中'
         # workaround for the translit and translit-ua tables which
         # have 2 character symbols. '☑' + self._symbol then is
         # 3 characters and currently gnome-shell ignores symbols longer
         # than 3 characters:
-        if self._symbol == u'Ya':
-            self._symbol = u'Я'
-        if self._symbol == u'Yi':
-            self._symbol = u'Ї'
+        if self._symbol == 'Ya':
+            self._symbol = 'Я'
+        if self._symbol == 'Yi':
+            self._symbol = 'Ї'
         # now we check and update the valid input characters
         self._valid_input_chars = self.database.ime_properties.get(
             'valid_input_chars')
-        self._pinyin_valid_input_chars = u'abcdefghijklmnopqrstuvwxyz!@#$%'
+        self._pinyin_valid_input_chars = 'abcdefghijklmnopqrstuvwxyz!@#$%'
 
         self._debug_level: int = it_util.variant_to_value(
             self._gsettings.get_value('debuglevel'))
@@ -393,7 +392,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if dynamic_adjust is None:
             if self.database.ime_properties.get('dynamic_adjust'):
                 dynamic_adjust = self.database.ime_properties.get(
-                    'dynamic_adjust').lower() == u'true'
+                    'dynamic_adjust').lower() == 'true'
                 LOGGER.info('Got "dynamic_adjust" entry from database.')
             else:
                 LOGGER.info(
@@ -435,7 +434,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if auto_wildcard is None:
             if self.database.ime_properties.get('auto_wildcard'):
                 auto_wildcard = self.database.ime_properties.get(
-                    'auto_wildcard').lower() == u'true'
+                    'auto_wildcard').lower() == 'true'
                 LOGGER.info('Got "auto_wildcard" entry from database.')
             else:
                 auto_wildcard = it_util.variant_to_value(
@@ -475,7 +474,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self._double_quotation_state = False
         self._single_quotation_state = False
         # self._prefix: the previous commit character or phrase
-        self._prefix = u''
+        self._prefix = ''
         self._py_mode = False
         # suggestion mode
         self._sg_mode = False
@@ -491,7 +490,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if self._full_width_letter[1] is None:
             if self.database.ime_properties.get('def_full_width_letter'):
                 self._full_width_letter[1] = self.database.ime_properties.get(
-                    'def_full_width_letter').lower() == u'true'
+                    'def_full_width_letter').lower() == 'true'
         if self._full_width_letter[1] is None:
             self._full_width_letter[1] = it_util.variant_to_value(
                 self._gsettings.get_value('tabdeffullwidthletter'))
@@ -506,7 +505,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if self._full_width_punct[1] is None:
             if self.database.ime_properties.get('def_full_width_punct'):
                 self._full_width_punct[1] = self.database.ime_properties.get(
-                    'def_full_width_punct').lower() == u'true'
+                    'def_full_width_punct').lower() == 'true'
         if self._full_width_punct[1] is None:
             self._full_width_punct[1] = it_util.variant_to_value(
                 self._gsettings.get_value('tabdeffullwidthpunct'))
@@ -516,7 +515,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if auto_commit is None:
             if self.database.ime_properties.get('auto_commit'):
                 auto_commit = self.database.ime_properties.get(
-                    'auto_commit').lower() == u'true'
+                    'auto_commit').lower() == 'true'
             else:
                 auto_commit = it_util.variant_to_value(
                     self._gsettings.get_value('autocommit'))
@@ -539,7 +538,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if auto_select is None:
             if self.database.ime_properties.get('auto_select'):
                 auto_select = self.database.ime_properties.get(
-                    'auto_select').lower() == u'true'
+                    'auto_select').lower() == 'true'
                 LOGGER.info('Got "auto_select" entry from database.')
             else:
                 auto_select = it_util.variant_to_value(
@@ -551,7 +550,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if always_show_lookup is None:
             if self.database.ime_properties.get('always_show_lookup'):
                 always_show_lookup = self.database.ime_properties.get(
-                    'always_show_lookup').lower() == u'true'
+                    'always_show_lookup').lower() == 'true'
                 LOGGER.info('Got "always_show_lookup" entry from database.')
             else:
                 always_show_lookup = it_util.variant_to_value(
@@ -560,10 +559,10 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         # The values below will be reset in
         # self.clear_input_not_committed_to_preedit()
-        self._chars_valid = u''    # valid user input in table mode
-        self._chars_invalid = u''  # invalid user input in table mode
-        self._chars_valid_update_candidates_last = u''
-        self._chars_invalid_update_candidates_last = u''
+        self._chars_valid = ''    # valid user input in table mode
+        self._chars_invalid = ''  # invalid user input in table mode
+        self._chars_valid_update_candidates_last = ''
+        self._chars_invalid_update_candidates_last = ''
         # self._candidates holds the “best” candidates matching the user input
         # [(tabkeys, phrase, freq, user_freq), ...]
         self._candidates: List[Tuple[str, str, int, int]] = []
@@ -636,7 +635,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if self._auto_select is None:
             if self.database.ime_properties.get('auto_select') is not None:
                 self._auto_select = self.database.ime_properties.get(
-                    'auto_select').lower() == u'true'
+                    'auto_select').lower() == 'true'
         if self._auto_select is None:
             self._auto_select = it_util.variant_to_value(
                 self._gsettings.get_value('autoselect'))
@@ -972,7 +971,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self._u_chars = []
         self._strings = []
         self._cursor_precommit = 0
-        self._prefix = u''
+        self._prefix = ''
         self._sg_mode_active = False
         self.update_candidates()
 
@@ -981,7 +980,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         Returns True if the preëdit is empty, False if not.
         '''
-        return self._chars_valid + self._chars_invalid == u''
+        return self._chars_valid + self._chars_invalid == ''
 
     def clear_input_not_committed_to_preedit(self) -> None:
         '''
@@ -989,10 +988,10 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('clear_input_not_committed_to_preedit()')
-        self._chars_valid = u''
-        self._chars_invalid = u''
-        self._chars_valid_update_candidates_last = u''
-        self._chars_invalid_update_candidates_last = u''
+        self._chars_valid = ''
+        self._chars_invalid = ''
+        self._chars_valid_update_candidates_last = ''
+        self._chars_invalid_update_candidates_last = ''
         self._lookup_table.clear()
         self._lookup_table.set_cursor_visible(True)
         self._candidates = []
@@ -1135,7 +1134,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         when the wubi-jidian86 table is used.
         '''
         left_of_current_edit: Tuple[str, ...] = ()
-        current_edit = u''
+        current_edit = ''
         right_of_current_edit: Tuple[str, ...] = ()
         if self.get_input_chars():
             current_edit = self.get_input_chars()
@@ -1153,9 +1152,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         (left_tabkeys,
          current_tabkeys,
          right_tabkeys) = self.get_preedit_tabkeys_parts()
-        return  (u''.join(left_tabkeys)
+        return  (''.join(left_tabkeys)
                  + current_tabkeys
-                 + u''.join(right_tabkeys))
+                 + ''.join(right_tabkeys))
 
     def get_preedit_string_parts(
             self) -> Tuple[Tuple[str, ...], str, Tuple[str, ...]]:
@@ -1180,7 +1179,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         when the wubi-jidian86 table is used.
         '''
         left_of_current_edit: Tuple[str, ...] = ()
-        current_edit = u''
+        current_edit = ''
         right_of_current_edit: Tuple[str, ...] = ()
         if self._candidates:
             current_edit = self._candidates[
@@ -1203,15 +1202,15 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             if self._candidates:
                 return self._candidates[
                     int(self._lookup_table.get_cursor_pos())][0]
-            return u''
+            return ''
 
         (left_strings,
          current_string,
          right_strings) = self.get_preedit_string_parts()
 
-        return (u''.join(left_strings)
+        return (''.join(left_strings)
                 + current_string
-                + u''.join(right_strings))
+                + ''.join(right_strings))
 
     def get_caret(self) -> int:
         '''Get caret position in preëdit string'''
@@ -1320,20 +1319,20 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 'remaining_tabkeys=%s '
                 'self._chars_valid=%s phrase=%s',
                 remaining_tabkeys, self._chars_valid, phrase)
-        table_code = u''
+        table_code = ''
 
         if not self._py_mode:
-            remaining_tabkeys_new = u''
+            remaining_tabkeys_new = ''
             for char in remaining_tabkeys:
                 if char in self._prompt_characters:
                     remaining_tabkeys_new += self._prompt_characters[char]
                 else:
                     remaining_tabkeys_new += char
             remaining_tabkeys = remaining_tabkeys_new
-        candidate_text = phrase + u' ' + remaining_tabkeys
+        candidate_text = phrase + ' ' + remaining_tabkeys
 
         if table_code:
-            candidate_text = candidate_text + u'   ' + table_code
+            candidate_text = candidate_text + '   ' + table_code
         attrs = IBus.AttrList()
         attrs.append(IBus.attr_foreground_new(
             self.theme["candidate_text"], 0, len(candidate_text)))
@@ -1352,7 +1351,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 self.theme["system_phrase_unused"], 0, len(phrase)))
 
         if DEBUG_LEVEL > 0:
-            debug_text = u' ' + str(freq) + u' ' + str(user_freq)
+            debug_text = ' ' + str(freq) + ' ' + str(user_freq)
             candidate_text += debug_text
             attrs.append(IBus.attr_foreground_new(
                 self.theme["debug_text"],
@@ -1485,7 +1484,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 'self._chars_valid=%s phrase=%s',
                 remaining_tabkeys, self._chars_valid, phrase)
 
-        table_code = u''
+        table_code = ''
 
         if self.database._is_chinese and self._py_mode:
             # restore tune symbol
@@ -1512,7 +1511,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 idx_array = self.get_common_prefix_sorted_list(possible_table_codes)
                 idx = self.select_best_idx_from_prefix_list(possible_table_codes, idx_array)
                 table_code = possible_table_codes[idx]
-            table_code_new = u''
+            table_code_new = ''
             for char in table_code:
                 if char in self._prompt_characters:
                     table_code_new += self._prompt_characters[char]
@@ -1520,9 +1519,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                     table_code_new += char
             table_code = table_code_new
 
-        candidate_text = phrase + u' ' + remaining_tabkeys
+        candidate_text = phrase + ' ' + remaining_tabkeys
         if table_code:
-            candidate_text = candidate_text + u'   ' + table_code
+            candidate_text = candidate_text + '   ' + table_code
         attrs = IBus.AttrList()
         attrs.append(IBus.attr_foreground_new(
             self.theme["candidate_text"], 0, len(candidate_text)))
@@ -1532,7 +1531,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             self.theme["system_phrase"], 0, len(phrase)))
 
         if DEBUG_LEVEL > 0:
-            debug_text = u' ' + str(freq) + u' ' + str(user_freq)
+            debug_text = ' ' + str(freq) + ' ' + str(user_freq)
             candidate_text += debug_text
             attrs.append(IBus.attr_foreground_new(
                 self.theme["debug_text"],
@@ -1580,7 +1579,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             self.theme["system_phrase"], 0, len(phrase)))
 
         if DEBUG_LEVEL > 0:
-            debug_text = u' ' + str(freq) + u' ' + str(user_freq)
+            debug_text = ' ' + str(freq) + ' ' + str(user_freq)
             candidate_text += debug_text
             attrs.append(IBus.attr_foreground_new(
                 self.theme["debug_text"],
@@ -1725,10 +1724,10 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 phrase = self._candidates[self.get_cursor_pos()][0]
                 phrase = phrase[len(self._prefix):]
                 self._u_chars.insert(self._cursor_precommit,
-                                     u'')
+                                     '')
                 self._strings.insert(self._cursor_precommit,
                                      phrase)
-                self._prefix = u''
+                self._prefix = ''
                 self._sg_mode_active = False
             else:
                 assert False
@@ -1765,18 +1764,18 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 (strings_left,
                  dummy_string_current,
                  strings_right) = self.get_preedit_string_parts()
-                aux_string = u''
+                aux_string = ''
                 for i in range(0, len(strings_left)):
                     aux_string += (
-                        u'('
-                        + tabkeys_left[i] + u' '+ strings_left[i]
-                        + u') ')
+                        '('
+                        + tabkeys_left[i] + ' '+ strings_left[i]
+                        + ') ')
                 aux_string += input_chars
                 for i in range(0, len(strings_right)):
                     aux_string += (
-                        u' ('
-                        + tabkeys_right[i]+u' '+strings_right[i]
-                        + u')')
+                        ' ('
+                        + tabkeys_right[i]+' '+strings_right[i]
+                        + ')')
             if self._py_mode:
                 aux_string = aux_string.replace(
                     '!', '1').replace(
@@ -1785,7 +1784,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                 '$', '4').replace(
                                     '%', '5')
             else:
-                aux_string_new = u''
+                aux_string_new = ''
                 for char in aux_string:
                     if char in self._prompt_characters:
                         aux_string_new += self._prompt_characters[char]
@@ -1807,18 +1806,18 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         # If the preëdit is longer than one character, show the input
         # key sequence which will be defined for the complete current
         # contents of the preëdit, if the preëdit is committed.
-        aux_string = u''
+        aux_string = ''
         if self._strings:
             if self._cursor_precommit >= len(self._strings):
                 char = self._strings[-1][0]
             else:
                 char = self._strings[self._cursor_precommit][0]
-            aux_string = u' '.join(self.database.find_zi_code(char))
-        cstr = u''.join(self._strings)
+            aux_string = ' '.join(self.database.find_zi_code(char))
+        cstr = ''.join(self._strings)
         if self.database.user_can_define_phrase:
             if len(cstr) > 1:
-                aux_string += (u'\t#: ' + self.database.parse_phrase(cstr))
-        aux_string_new = u''
+                aux_string += ('\t#: ' + self.database.parse_phrase(cstr))
+        aux_string_new = ''
         for char in aux_string:
             if char in self._prompt_characters:
                 aux_string_new += self._prompt_characters[char]
@@ -1931,8 +1930,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             # the remembered list of characters to
             # force update_candidates() to really do something and not
             # return immediately:
-            self._chars_valid_update_candidates_last = u''
-            self._chars_invalid_update_candidates_last = u''
+            self._chars_valid_update_candidates_last = ''
+            self._chars_invalid_update_candidates_last = ''
             self.update_candidates()
             return True
         return False
@@ -2101,7 +2100,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         return self._error_sound
 
     def set_error_sound_file(
-            self, path: str = u'', update_gsettings: bool = True) -> None:
+            self, path: str = '', update_gsettings: bool = True) -> None:
         '''Sets the path of the .wav file containing the sound
         to play on error.
 
@@ -2529,7 +2528,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         return self._auto_wildcard
 
     def set_single_wildcard_char(
-            self, char: str = u'', update_gsettings: bool = True) -> None:
+            self, char: str = '', update_gsettings: bool = True) -> None:
         '''Sets the single wildchard character.
 
         :param char: The character to use as a single wildcard
@@ -2558,7 +2557,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         return self._single_wildcard_char
 
     def set_multi_wildcard_char(
-            self, char: str = u'', update_gsettings: bool = True) -> None:
+            self, char: str = '', update_gsettings: bool = True) -> None:
         '''Sets the multi wildchard character.
 
         :param char: The character to use as a multi wildcard.
@@ -2814,13 +2813,13 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             if sub_properties_dict[prop]['number'] == int(current_mode):
                 symbol = sub_properties_dict[prop]['symbol']
                 icon = sub_properties_dict[prop]['icon']
-                label = '%(label)s (%(symbol)s) %(shortcut_hint)s' % {
-                    'label': menu['label'],
-                    'symbol': symbol,
-                    'shortcut_hint': menu['shortcut_hint']}
-                tooltip = '%(tooltip)s\n%(shortcut_hint)s' % {
-                    'tooltip': menu['tooltip'],
-                    'shortcut_hint': menu['shortcut_hint']}
+                label = '{label} ({symbol}) {shortcut_hint}'.format(
+                    label=menu['label'],
+                    symbol=symbol,
+                    shortcut_hint=menu['shortcut_hint'])
+                tooltip = '{tooltip}\n{shortcut_hint}'.format(
+                    tooltip=menu['tooltip'],
+                    shortcut_hint=menu['shortcut_hint'])
         visible = True
         self._init_or_update_sub_properties(
             menu_key, sub_properties_dict, current_mode=current_mode)
@@ -2943,7 +2942,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 self._auto_commit)
 
         self._setup_property = IBus.Property(
-            key=u'setup',
+            key='setup',
             label=IBus.Text.new_from_string(_('Setup')),
             icon='gtk-preferences',
             tooltip=IBus.Text.new_from_string(
@@ -3054,11 +3053,11 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             return
 
         preedit_string_parts = self.get_preedit_string_parts()
-        left_of_current_edit = u''.join(preedit_string_parts[0])
+        left_of_current_edit = ''.join(preedit_string_parts[0])
         current_edit = preedit_string_parts[1]
-        right_of_current_edit = u''.join(preedit_string_parts[2])
+        right_of_current_edit = ''.join(preedit_string_parts[2])
         if self._input_mode and not self._sg_mode_active:
-            current_edit_new = u''
+            current_edit_new = ''
             for char in current_edit:
                 if char in self._prompt_characters:
                     current_edit_new += self._prompt_characters[char]
@@ -3125,7 +3124,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         aux_string = self.get_aux_strings()
         if self._candidates:
-            aux_string += u' (%d / %d)' % (
+            aux_string += ' (%d / %d)' % (
                 self._lookup_table.get_cursor_pos() +1,
                 self._lookup_table.get_number_of_candidates())
         if aux_string:
@@ -3179,7 +3178,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self._update_preedit()
         self._update_aux()
 
-    def _check_phrase(self, tabkeys: str = u'', phrase: str = u'') -> None:
+    def _check_phrase(self, tabkeys: str = '', phrase: str = '') -> None:
         """Check the given phrase and update save user db info"""
         if not tabkeys or not phrase:
             return
@@ -3204,7 +3203,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 self._save_user_start = now
         return True
 
-    def commit_string(self, phrase: str, tabkeys: str = u'') -> None:
+    def commit_string(self, phrase: str, tabkeys: str = '') -> None:
         '''
         Commit the string “phrase”, update the user database,
         and clear the preëdit.
@@ -3257,43 +3256,43 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         # For ".", "\"", "'"; there are even variations under specific
         # cases. This function should be more abstracted by extracting
         # that to another handling function later on.
-        special_punct_dict = {u"<": u"《", # 《 U+300A LEFT DOUBLE ANGLE BRACKET
-                              u">": u"》", # 》 U+300B RIGHT DOUBLE ANGLE BRACKET
-                              u"[": u"「", # 「 U+300C LEFT CORNER BRACKET
-                              u"]": u"」", # 」U+300D RIGHT CORNER BRACKET
-                              u"{": u"『", # 『 U+300E LEFT WHITE CORNER BRACKET
-                              u"}": u"』", # 』U+300F RIGHT WHITE CORNER BRACKET
-                              u"\\": u"、", # 、 U+3001 IDEOGRAPHIC COMMA
-                              u"^": u"……", # … U+2026 HORIZONTAL ELLIPSIS
-                              u"_": u"——", # — U+2014 EM DASH
-                              u"$": u"￥" # ￥ U+FFE5 FULLWIDTH YEN SIGN
+        special_punct_dict = {"<": "《", # 《 U+300A LEFT DOUBLE ANGLE BRACKET
+                              ">": "》", # 》 U+300B RIGHT DOUBLE ANGLE BRACKET
+                              "[": "「", # 「 U+300C LEFT CORNER BRACKET
+                              "]": "」", # 」U+300D RIGHT CORNER BRACKET
+                              "{": "『", # 『 U+300E LEFT WHITE CORNER BRACKET
+                              "}": "』", # 』U+300F RIGHT WHITE CORNER BRACKET
+                              "\\": "、", # 、 U+3001 IDEOGRAPHIC COMMA
+                              "^": "……", # … U+2026 HORIZONTAL ELLIPSIS
+                              "_": "——", # — U+2014 EM DASH
+                              "$": "￥" # ￥ U+FFE5 FULLWIDTH YEN SIGN
                              }
 
         # special puncts w/o further conditions
         if char in special_punct_dict.keys():
-            if char in [u"\\", u"^", u"_", u"$"]:
+            if char in ["\\", "^", "_", "$"]:
                 return special_punct_dict[char]
             if self._input_mode:
                 return special_punct_dict[char]
 
         # special puncts w/ further conditions
-        if char == u".":
+        if char == ".":
             if (self._prev_char
                     and self._prev_char.isdigit()
                     and self._prev_key
                     and chr(self._prev_key.val) == self._prev_char):
-                return u"."
-            return u"。" # 。U+3002 IDEOGRAPHIC FULL STOP
-        if char == u"\"":
+                return "."
+            return "。" # 。U+3002 IDEOGRAPHIC FULL STOP
+        if char == "\"":
             self._double_quotation_state = not self._double_quotation_state
             if self._double_quotation_state:
-                return u"“" # “ U+201C LEFT DOUBLE QUOTATION MARK
-            return u"”" # ” U+201D RIGHT DOUBLE QUOTATION MARK
-        if char == u"'":
+                return "“" # “ U+201C LEFT DOUBLE QUOTATION MARK
+            return "”" # ” U+201D RIGHT DOUBLE QUOTATION MARK
+        if char == "'":
             self._single_quotation_state = not self._single_quotation_state
             if self._single_quotation_state:
-                return u"‘" # ‘ U+2018 LEFT SINGLE QUOTATION MARK
-            return u"’" # ’ U+2019 RIGHT SINGLE QUOTATION MARK
+                return "‘" # ‘ U+2018 LEFT SINGLE QUOTATION MARK
+            return "’" # ’ U+2019 RIGHT SINGLE QUOTATION MARK
 
         return unichar_half_to_full(char)
 
@@ -3473,7 +3472,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             or self._sg_mode_active):
             if self.commit_everything_unless_invalid():
                 if self._auto_select:
-                    self.commit_string(u' ')
+                    self.commit_string(' ')
 
             if (self._sg_mode
                 and self._input_mode

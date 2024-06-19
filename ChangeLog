@@ -1,14 +1,178 @@
-commit 1a7270f471cf7c7ac6f20c8040b3a36f028c6172
+commit 99c688d11053c49ea8fe332a0aebc7870458f6b2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jun 19 12:03:50 2024 +0200
+
+    Release 1.17.5
+
+commit 3eba07a6622c475f3828af92ebed2b2c4da158c8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jun 19 10:24:52 2024 +0200
+
+    Update ibus-table.pot (Only line number changes)
+
+commit 14b06afa2b7fbe2af30b1d0b0f426647a3ffd861
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jun 19 11:53:31 2024 +0200
+
+    Fix for ibus-1.5.30: Make it possible again to use keys with Unicode keysyms in keybindings
+    
+    See: https://github.com/mike-fabian/ibus-typing-booster/issues/497
+    
+    Behaviour change between ibus-1.5.29 and 1.5.30.
+
+commit 3dfd67d7275b71a62f44678ab78e32a824235dc2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Jun 19 10:29:41 2024 +0200
+
+    Fix DeprecationWarning
+    
+    engine/main.py:232: DeprecationWarning: Testing an element's truth value will raise an exception in future versions.  Use specific 'len(elem)' or 'elem is not None' test instead.
+
+commit cc53fde689092d4083dda158c75eb31044c112ce
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 29 17:30:49 2024 +0200
+
+    Remove unused import
+
+commit fa2f0864d94f00fa2684f5edc221f9c9fd47dc30
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 29 16:37:14 2024 +0200
+
+    Drop Python2 support (using pyupgrade --py3-plus *.py)
+
+commit 2e477732c307501fa8f1d1263f69672d9591d99e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 29 16:45:04 2024 +0200
+
+    Consistently use `if a not in b:` instead of `if not a in b:`
+
+commit 2e5a1f46a18a42495683fab1b47a13c8ccd65804
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed May 29 12:26:58 2024 +0200
+
+    Consistently use `if a not in b:` instead of `if not a in b:`
+
+commit 7433010763e83df4f580e9e4ce828018c10d801b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 15 15:15:04 2024 +0200
+
+    Fix appstreamcli validate warnings
+    
+    mfabian@fedora:~$ cat /etc/fedora-release
+    Fedora release 40 (Forty)
+    mfabian@fedora:~$ appstreamcli validate --pedantic --no-net /usr/share/metainfo/ibus-table.appdata.xml
+    W: org.freedesktop.ibus.engine.table:33: developer-id-missing
+    
+    ✘ Validation failed: 警告: 1
+
+commit 7296d33b523a1426c28908bc0b8a049fcbead185
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Feb 14 10:51:36 2024 +0100
+
+    Display key values in hexadecimal when printing debug messages
+
+commit 7cd57e8ce9819ec1f1b47d52ed2f55384bbc1721
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Feb 14 10:25:51 2024 +0100
+
+    Make it possible to use keys with Unicode keysyms in keybindings
+    
+    See: https://github.com/mike-fabian/ibus-typing-booster/issues/497
+
+commit ad3cd2d8a4845f1ccc2d9591d7903ca6a38a6141
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Dec 14 13:29:13 2023 +0100
+
+    Use `frames_per_buffer=chunk_size` option in `self._paudio.open()`
+    
+    See: https://bugzilla.redhat.com/show_bug.cgi?id=2238746#c3
+
+commit a9691e8ec5a10e077e73e890aaa7ad23c7ef05b0
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Fri Mar 1 07:36:00 2024 +0100
+
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 47.3% (71 of 150 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translation: ibus-table/app
+
+commit 5fb65b72e2cb48fbda276eb9b6f7d9fde6b770d3
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Mon Jan 15 03:37:09 2024 +0100
+
+    Translated using Weblate (Czech)
+    
+    Currently translated at 36.6% (55 of 150 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/cs/
+    Translation: ibus-table/app
+
+commit f53190350b35b4fa0157967436aad65aa416bbca
+Author: Liu Tao <lyuutau@outlook.com>
+Date:   Tue Dec 26 15:36:50 2023 +0100
+
+    Translated using Weblate (Chinese (Simplified) (zh_CN))
+    
+    Currently translated at 92.0% (138 of 150 strings)
+    
+    Co-authored-by: Liu Tao <lyuutau@outlook.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_CN/
+    Translation: ibus-table/app
+
+commit 97f8f76b69aec37c6181b62962e60b9f05ce5425
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Dec 26 15:36:50 2023 +0100
+
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 45.3% (68 of 150 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translation: ibus-table/app
+
+commit 2cebe7236085409b093835dc62ad2459f2266de9
+Author: Weblate <noreply@weblate.org>
+Date:   Fri Nov 10 17:42:45 2023 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit d016b6fa8e357c7ae531aa99afa25f617f1e0d89
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Nov 9 16:58:10 2023 +0100
 
     Release 1.17.4
 
-commit e8ec8cbd8cdc956cf8d049779f6a97a383da2400
+commit 081ee0b91988c4b85d6f5269eab0dfe4ec56e42c
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Fri Nov 10 16:04:17 2023 +0100
 
     Update ibus-table.pot (Only line number changes)
+
+commit 400047662e624c00d2e89ebf30f9f5078f05999e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Nov 10 17:01:56 2023 +0100
+
+    Use “<developer><name>…</name></developer>” in ibus-table.appdata.xml instead of “<developer_name>…</developer_name>”
+    
+    Because </developer_name> is deprecated and it makes the build fail on Fedora rawhide:
+    
+        + appstreamcli validate --pedantic --explain --no-net /builddir/build/BUILDROOT/ibus-table-1.17.4-1.fc40.x86_64//usr/share/metainfo/ibus-table.appdata.xml
+        W: org.freedesktop.ibus.engine.table:33: developer-name-tag-deprecated
+           The toplevel `developer_name` element is deprecated. Please use the `name` element in a
+           `developer` block instead.
+    
+        ✘ Validation failed: warnings: 1
 
 commit ecb280a942298c1a2e4e244f3db740a4cf07805e
 Author: Mike FABIAN <mfabian@redhat.com>

@@ -40,6 +40,38 @@
   <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.17.5" date="2024-06-19" urgency="medium">
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.5</url>
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Drop Python2 support (using pyupgrade --py3-plus *.py)
+          </li>
+          <li>
+            Make it possible to use keys with Unicode keysyms in
+            keybindings (requires ibus &gt; 1.5.30) (Resolves
+            github-mike-fabian-typing-booster-issue#497, same problem
+            for ibus-table)
+          </li>
+          <li>
+            Use `frames_per_buffer=chunk_size` option in
+            `self._paudio.open()` (Resolves: rhbz#2238746)
+          </li>
+          <li>
+             Translation update from Weblate (cs 36.6%, ja 45.3%, zh_CN 92.0%)
+          </li>
+        </ul>
+      </description>
+      <issues>
+        <issue url="https://github.com/mike-fabian/ibus-typing-booster/issues/497">
+          github-mike-fabian-typing-booster-issue#497
+        </issue>
+        <issue url="https://bugzilla.redhat.com/show_bug.cgi?id=2238746#c3">
+          rhbz#2238746
+        </issue>
+      </issues>
+    </release>
     <release version="1.17.4" date="2023-11-09" urgency="medium">
       <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.4</url>
       <description>

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2024-06-19 12:04+0200\n"
+"POT-Creation-Date: 2024-06-27 09:49+0200\n"
 "PO-Revision-Date: 2023-05-30 06:20+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Sinhala <https://translate.fedoraproject.org/projects/ibus-"
@@ -290,40 +290,40 @@ msgstr ""
 #. Translators: This is used in the title bar of a dialog window
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
-#: engine/it_util.py:915
+#: engine/it_util.py:928
 msgid "Key input"
 msgstr ""
 
-#: engine/it_util.py:921
+#: engine/it_util.py:934
 msgid "Cancel"
 msgstr "අවලංගු කරන්න"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:928
+#: engine/it_util.py:941
 msgid "Please press a key (or a key combination)"
 msgstr ""
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:933
+#: engine/it_util.py:946
 msgid "The dialog will be closed when the key is released"
 msgstr ""
 
-#: engine/it_util.py:965
+#: engine/it_util.py:978
 msgid "Table input method for IBus."
 msgstr ""
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
 #. will be displayed in the “About ibus-table” dialog.
-#: engine/it_util.py:989
+#: engine/it_util.py:1002
 msgid "translator-credits"
 msgstr "පරිවර්තන ස්තුතිය"
 
-#: engine/it_util.py:997
+#: engine/it_util.py:1010
 msgid "Online documentation:"
 msgstr ""
 

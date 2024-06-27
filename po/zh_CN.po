@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2024-06-19 12:04+0200\n"
+"POT-Creation-Date: 2024-06-27 09:49+0200\n"
 "PO-Revision-Date: 2023-12-26 14:36+0000\n"
 "Last-Translator: Liu Tao <lyuutau@outlook.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
@@ -295,36 +295,36 @@ msgstr "配置 ibus-table“%(engine-name)s”"
 #. Translators: This is used in the title bar of a dialog window
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
-#: engine/it_util.py:915
+#: engine/it_util.py:928
 msgid "Key input"
 msgstr "输入的键盘码"
 
-#: engine/it_util.py:921
+#: engine/it_util.py:934
 msgid "Cancel"
 msgstr "取消"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:928
+#: engine/it_util.py:941
 msgid "Please press a key (or a key combination)"
 msgstr "请按下一个键盘按键（或者按键组合）"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:933
+#: engine/it_util.py:946
 msgid "The dialog will be closed when the key is released"
 msgstr "当按键被按下，这个对话框将会自动关闭"
 
-#: engine/it_util.py:965
+#: engine/it_util.py:978
 msgid "Table input method for IBus."
 msgstr "IBus 的码表输入法。"
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
 #. will be displayed in the “About ibus-table” dialog.
-#: engine/it_util.py:989
+#: engine/it_util.py:1002
 msgid "translator-credits"
 msgstr ""
 "黄鹏 <shawn.p.huang@gmail.com>\n"
@@ -334,7 +334,7 @@ msgstr ""
 "Dingzhong Chen <wsxy162@gmail.com>\n"
 "mozbugbox <mozbugbox@yahoo.com.au>"
 
-#: engine/it_util.py:997
+#: engine/it_util.py:1010
 msgid "Online documentation:"
 msgstr "在线文档："
 

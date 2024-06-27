@@ -1,4 +1,63 @@
-commit 99c688d11053c49ea8fe332a0aebc7870458f6b2
+commit fd5d630f982f9ffa11bb6743352be88962a9b62f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jun 27 09:47:45 2024 +0200
+
+    Release 1.17.6
+
+commit b2cbc7af2adf8820fac36c7630211cd86ae0a1ab
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jun 27 09:49:36 2024 +0200
+
+    Update ibus-table.pot (Only line number changes)
+
+commit 72e6d9d64905c58337bd9d60a62f9174e610cfd7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jun 27 09:41:40 2024 +0200
+
+    Yet another fix to make it possible again to use keys with Unicode keysyms in keybindings and make it work with all known versions of ibus
+    
+    Resolves: https://github.com/kaio/ibus-table/issues/85
+    See also: https://github.com/mike-fabian/ibus-typing-booster/issues/497
+    
+    This makes the code work both with older ibus (<= 1.5.29) which does
+    
+    >>> IBus.keyval_name(0x0100263a)
+    'U+263A'
+    >>>
+    
+    and newer ibus (>= 1.5.31 or 1.5.30 with some patches) which does:
+    
+    >>> IBus.keyval_name(0x0100263a)
+    '0x100263a'
+    >>>
+    
+    So this should work with all currently known versions of ibus.
+
+commit ebc56a23362f953a21804245a1ea2382341efa8e
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Wed Jun 26 17:36:08 2024 +0200
+
+    Translated using Weblate (Czech)
+    
+    Currently translated at 40.0% (60 of 150 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/cs/
+    Translation: ibus-table/app
+
+commit 0d64bd3149ae95e673ba1f46774571129c699302
+Author: Weblate <noreply@weblate.org>
+Date:   Tue Jun 25 17:30:32 2024 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit a18bca96e4f04db6e96a670bc8b021d41c38aeab
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Jun 19 12:03:50 2024 +0200
 

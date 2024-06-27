@@ -39,6 +39,27 @@
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
+    <release version="1.17.6" date="2024-06-27" urgency="medium">
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.6</url>
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Yet another fix to make it possible again to use keys with
+            Unicode keysyms in keybindings and make it work with all
+            known versions of ibus (Resolves: github-kaio-issue#85)
+          </li>
+          <li>
+             Translation update from Weblate (cs 40%)
+          </li>
+        </ul>
+      </description>
+      <issues>
+        <issue url="https://github.com/kaio/ibus-table/issues/85">
+          github-kaio-issue#85
+        </issue>
+      </issues>
+    </release>
   <releases>
     <release version="1.17.5" date="2024-06-19" urgency="medium">
       <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.5</url>

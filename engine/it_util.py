@@ -662,7 +662,7 @@ class KeyEvent:
             # >>> IBus.keyval_name(0x0100263a)
             # 'U+263A'
             #
-            # Convert this into the same name used by newere
+            # Convert this into the same name used by newer
             # versions of ibus which is:
             #
             # >>> IBus.keyval_name(0x0100263a)

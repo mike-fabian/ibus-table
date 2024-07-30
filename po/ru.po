@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2024-06-27 09:49+0200\n"
-"PO-Revision-Date: 2024-07-28 10:38+0000\n"
+"PO-Revision-Date: 2024-07-30 07:02+0000\n"
 "Last-Translator: \"Sergey A.\" <sw@atrus.ru>\n"
 "Language-Team: Russian <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/ru/>\n"
@@ -111,11 +111,11 @@ msgstr "Переключиться на китайский ввод"
 
 #: engine/table.py:764 engine/table.py:912 setup/main.py:938
 msgid "Direct"
-msgstr "Непосредственно"
+msgstr "Прямой"
 
 #: engine/table.py:765
 msgid "Switch to direct input"
-msgstr "Переключиться на непосредственный ввод"
+msgstr "Переключиться на прямой ввод"
 
 #: engine/table.py:770 engine/table.py:834
 msgid "Table"
@@ -357,7 +357,7 @@ msgstr "Начальное состояние"
 
 #: setup/main.py:114
 msgid "Direct input"
-msgstr "Непосредственный ввод"
+msgstr "Прямой ввод"
 
 #: setup/main.py:115
 msgid "Table input"
@@ -484,7 +484,7 @@ msgstr "Традиционный китайский перед упрощённ�
 #. while in “Table input” mode.
 #: setup/main.py:412
 msgid "Table input letter width:"
-msgstr ""
+msgstr "Ширина букв в режиме ввода по таблице:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Table input” mode.
@@ -493,12 +493,14 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
+"Определяет, использовать ли полноширинные или\n"
+"полуширинные буквы в режиме ввода по таблице."
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Table input” mode.
 #: setup/main.py:455
 msgid "Table input punctuation width:"
-msgstr ""
+msgstr "Ширина знаков препинания в режиме ввода по таблице:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Table input” mode.
@@ -507,12 +509,14 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
+"Определяет, использовать ли полноширинные или\n"
+"полуширинные знаки препинания в режиме ввода по таблице."
 
 #. Translators: A combobox to choose the letter width
 #. while in “Direct input” mode.
 #: setup/main.py:501
 msgid "Direct input letter width:"
-msgstr ""
+msgstr "Ширина букв в режиме прямого ввода:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Direct input” mode.
@@ -521,12 +525,14 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
+"Определяет, использовать ли полноширинные или\n"
+"полуширинные буквы в режиме прямого ввода."
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Direct input” mode.
 #: setup/main.py:545
 msgid "Direct input punctuation width:"
-msgstr ""
+msgstr "Ширина знаков препинания в режиме прямого ввода:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Direct input” mode.
@@ -535,6 +541,8 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
 msgstr ""
+"Определяет, использовать ли полноширинные или\n"
+"полуширинные знаки препинания в режиме прямого ввода."
 
 #: setup/main.py:589
 msgid "Candidate list"

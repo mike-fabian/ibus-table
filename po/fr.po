@@ -4,21 +4,22 @@
 # Julien Humbert <julroy67@gmail.com>, 2019, 2020, 2021.
 # Anonymous <noreply@weblate.org>, 2020.
 # Côme Borsoi <fedora@borsoi.fr>, 2020.
+# Léane GRASSER <leane.grasser@proton.me>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2024-06-27 09:49+0200\n"
-"PO-Revision-Date: 2022-02-04 18:16+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: French <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/fr/>\n"
+"PO-Revision-Date: 2024-08-23 13:36+0000\n"
+"Last-Translator: Léane GRASSER <leane.grasser@proton.me>\n"
+"Language-Team: French <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 5.7\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -419,14 +420,6 @@ msgstr "Se rappeler du mode de saisie"
 #. should always use “Table input” by default after a
 #. restart.
 #: setup/main.py:309
-#, fuzzy
-#| msgid ""
-#| "“Direct input” is almost the same as if the\n"
-#| "input method were off, i.e. not used at all, most\n"
-#| "characters just get passed to the application.\n"
-#| "But some conversion between fullwidth and\n"
-#| "halfwidth may still happen in direct input mode.\n"
-#| "“Table input” means the input method is on."
 msgid ""
 "Whether the last used input mode should be remembered or whether ibus-table "
 "should start in “Table mode” by default after a restart. There are two input "
@@ -435,12 +428,13 @@ msgid ""
 "characters just get passed to the application. But some conversion between "
 "fullwidth and halfwidth may still happen in direct input mode."
 msgstr ""
-"« Saisie directe » est presque la même que si la méthode\n"
-"de saisie était désactivée, c’est-à-dire pas du tout utilisée,\n"
-"la plupart des caractères sont simplement passés à\n"
-"l’application. Mais certaines conversions pleine-chasse et\n"
-"demi-chasse peuvent encore se produire.\n"
-"« Table input » signifie que la méthode d’entrée est activée."
+"Choisissez si l'on doit se souvenir du dernier mode de saisie, ou si ibus-"
+"table doit démarrer par défaut en mode Table. Il existe deux modes de saisie "
+": « Saisie par table » signifie que la méthode de saisie est activée, tandis "
+"que « Saisie directe » est presque comme si la méthode de saisie était "
+"désactivée, c’est-à-dire pas du tout utilisée. Dans ce mode, la plupart des "
+"caractères sont simplement passés à l’application, mais certaines "
+"conversions pleine-chasse et demi-chasse peuvent encore se produire."
 
 #: setup/main.py:322
 msgid "No"
@@ -691,13 +685,15 @@ msgstr "Remettre le raccourcis clavier par défaut pour toutes les commandes"
 #. to how often the candidates are used.
 #: setup/main.py:808
 msgid "Dynamic adjust"
-msgstr ""
+msgstr "Ajustement dynamique"
 
 #: setup/main.py:810
 msgid ""
 "Here you can choose whether the order of the candidates is dynamically "
 "adjusted according to how often the candidates are used."
 msgstr ""
+"Ici, vous pouvez décider d'ajuster dynamiquement ou non l'ordre des "
+"candidats en fonction de leur fréquence d'utilisation."
 
 #: setup/main.py:823
 msgid "Delete all learned data"
@@ -798,7 +794,7 @@ msgstr ""
 #. character candidates should be shown.
 #: setup/main.py:964
 msgid "Action when typing invalid character:"
-msgstr ""
+msgstr "Action lors de la saisie d'un caractère invalide :"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -813,14 +809,23 @@ msgid ""
 "character is typed and the character in question is inserted immediately "
 "after the text that results from the options listed above."
 msgstr ""
+"Détermine ce qu'il se produit lorsqu'un caractère est tapé et qu'il ne fait "
+"pas partie des caractères valides de la table actuelle. Avec « valider le "
+"candidat actuel », le candidat déjà sélectionné est inséré. Avec « valider "
+"les touches appuyées », les caractères bruts saisis pendant le processus de "
+"sélection d'un candidat seront insérés à la place. Quelle que soit l'option "
+"choisie, la sélection d'un candidat se termine dès lors qu'un caractère "
+"invalide est tapé et le caractère en question est inséré immédiatement à la "
+"suite du texte résultant de l'option choisie parmi celles énumérées "
+"précédemment."
 
 #: setup/main.py:982
 msgid "Commit current candidate"
-msgstr ""
+msgstr "Valider le candidat actuel"
 
 #: setup/main.py:984
 msgid "Commit typed keys"
-msgstr ""
+msgstr "Valider les touches appuyées"
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
@@ -953,12 +958,12 @@ msgstr "Souhaitez-vous vraiment rétablir tous les paramètres par défaut ?"
 #. Deleting this learned data cannot be reversed. So
 #. the user should be really sure he really wants to do that.
 #: setup/main.py:1818
-#, fuzzy
-#| msgid "Do you really want to restore all default settings?"
 msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
-msgstr "Souhaitez-vous vraiment rétablir tous les paramètres par défaut ?"
+msgstr ""
+"Voulez-vous vraiment supprimer toutes les données récoltées en tapant et en "
+"sélectionnant des candidats ?"
 
 #: setup/main.py:1840
 msgid "Select .wav sound file:"

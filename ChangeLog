@@ -1,4 +1,88 @@
-commit fd5d630f982f9ffa11bb6743352be88962a9b62f
+commit fa7c81148ceea819a61dcded2c8a10a6701fd66a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Aug 25 19:52:28 2024 +0200
+
+    Release 1.17.7
+
+commit 19d632adad8326510296e39c776f7074688f1684
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sun Aug 25 18:48:08 2024 +0200
+
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (150 of 150 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+    Translation: ibus-table/app
+
+commit c5050577926ca625ecc57441f295f8a47ab851cc
+Author: Léane GRASSER <leane.grasser@proton.me>
+Date:   Fri Aug 23 15:36:06 2024 +0200
+
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (150 of 150 strings)
+    
+    Co-authored-by: Léane GRASSER <leane.grasser@proton.me>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+    Translation: ibus-table/app
+
+commit bcaa9d820fb0be3281063ca181f8c72f47605687
+Author: Sergey A <sw@atrus.ru>
+Date:   Fri Aug 23 15:36:06 2024 +0200
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 93.3% (140 of 150 strings)
+    
+    Co-authored-by: Sergey A <sw@atrus.ru>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translation: ibus-table/app
+
+commit 374b32d49126feaa1b3d5c36d2927f4cab08d5f2
+Author: Sergey A <sw@atrus.ru>
+Date:   Tue Jul 30 09:02:36 2024 +0200
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 92.6% (139 of 150 strings)
+    
+    Co-authored-by: Sergey A <sw@atrus.ru>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translation: ibus-table/app
+
+commit 8386ac2ce1ab543515605d4e7f96b69fc995d589
+Author: Sergey A <sw@atrus.ru>
+Date:   Sun Jul 28 12:38:40 2024 +0200
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 87.3% (131 of 150 strings)
+    
+    Co-authored-by: Sergey A <sw@atrus.ru>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translation: ibus-table/app
+
+commit f1aaf7998d72d127bd91ebbe1a8d656f8cb36460
+Author: Weblate <noreply@weblate.org>
+Date:   Thu Jun 27 14:38:22 2024 +0200
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit f4a9e2746ba420fc798e2d9258075d8a309964fe
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jun 27 14:40:56 2024 +0200
+
+    Fix typo in comment
+
+commit 46ccd315f4f0cfaa3c6cc675f228c2df247a0a06
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Jun 27 09:47:45 2024 +0200
 

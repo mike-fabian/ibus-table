@@ -1,4 +1,45 @@
-commit fa7c81148ceea819a61dcded2c8a10a6701fd66a
+commit 26f594a2b8cd7e85ca0471d9a98c12543b8d35ad
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 11 16:43:28 2024 +0200
+
+    Release 1.17.8
+
+commit 36054877febf633daa90dd0faa22e5cf54b87084
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 11 17:00:22 2024 +0200
+
+    Update Unihan_Variants.txt and regenerate engine/chinese_variants.py for Unicode 16.0.0 release
+    
+    - Update Unihan_Variants.txt from “2023-07-15 Unicode  15.1.0” to “2024-07-31 Unicode version: 16.0.0”
+    - Regenerate engine/chinese_variants.py for Unihan_Variants.txt
+
+commit cd6a4ed0d09f3f3e5d9b291ea5ae9b273a8f98c8
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Sun Sep 8 12:38:29 2024 +0200
+
+    Translated using Weblate (Greek)
+    
+    Currently translated at 17.3% (26 of 150 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translation: ibus-table/app
+
+commit 36db5ffa3ea2da492e801f0a383116f417f250fb
+Author: Giannis Antypas <gianni.antypas@gmail.com>
+Date:   Sun Sep 8 12:38:29 2024 +0200
+
+    Translated using Weblate (Greek)
+    
+    Currently translated at 17.3% (26 of 150 strings)
+    
+    Added translation using Weblate (Greek)
+    
+    Co-authored-by: Giannis Antypas <gianni.antypas@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translation: ibus-table/app
+
+commit ddd30b8c6b2485b866a077d1bb1d6ac9ddd08727
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Sun Aug 25 19:52:28 2024 +0200
 

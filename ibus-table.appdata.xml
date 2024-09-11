@@ -39,6 +39,22 @@
   <url type="help">https://kaio.github.io/ibus-table/documentation.html</url>
   <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
+  <releases>
+    <release version="1.17.8" date="2024-09-11" urgency="medium">
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.8</url>
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Update Unihan_Variants.txt and regenerate
+            engine/chinese_variants.py for Unicode 16.0.0 release
+          </li>
+          <li>
+             Translation update from Weblate (el 17.3%)
+          </li>
+        </ul>
+      </description>
+    </release>
     <release version="1.17.7" date="2024-08-25" urgency="medium">
       <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.7</url>
       <description>
@@ -49,11 +65,6 @@
           </li>
         </ul>
       </description>
-      <issues>
-        <issue url="https://github.com/kaio/ibus-table/issues/85">
-          github-kaio-issue#85
-        </issue>
-      </issues>
     </release>
     <release version="1.17.6" date="2024-06-27" urgency="medium">
       <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.6</url>
@@ -76,7 +87,6 @@
         </issue>
       </issues>
     </release>
-  <releases>
     <release version="1.17.5" date="2024-06-19" urgency="medium">
       <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.5</url>
       <description>

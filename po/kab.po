@@ -2,14 +2,15 @@
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
 # ButterflyOfFire <butterflyoffire@users.noreply.translate.fedoraproject.org>, 2024.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2024-06-27 09:49+0200\n"
 "PO-Revision-Date: 2024-10-24 09:38+0000\n"
-"Last-Translator: ButterflyOfFire <butterflyoffire@users.noreply.translate."
-"fedoraproject.org>\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Kabyle <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/kab/>\n"
 "Language: kab\n"
@@ -127,7 +128,7 @@ msgstr ""
 
 #: engine/table.py:779
 msgid "Input mode"
-msgstr ""
+msgstr "Askar n unekcum"
 
 #: engine/table.py:780
 msgid "Switch Input mode"
@@ -281,7 +282,7 @@ msgstr ""
 
 #: engine/table.py:2946
 msgid "Setup"
-msgstr ""
+msgstr "Iɣewwaṛen"
 
 #: engine/table.py:2949
 #, python-format
@@ -304,14 +305,14 @@ msgstr "Sefsex"
 #. command.
 #: engine/it_util.py:941
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "Ttxil-k sit ɣef tqeffalt (neɣ taggayt n tqeffalin)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:946
 msgid "The dialog will be closed when the key is released"
-msgstr ""
+msgstr "Adiwenni ad yemdel mi ara d-teffeɣ tqeffalt"
 
 #: engine/it_util.py:978
 msgid "Table input method for IBus."
@@ -326,7 +327,7 @@ msgstr "Athmane Mokraoui <butterflyoffire@protonmail.com>, 2024"
 
 #: engine/it_util.py:1010
 msgid "Online documentation:"
-msgstr ""
+msgstr "Tasemlit srid:"
 
 #: ibus-table.appdata.xml:6
 msgid "Ibus Table"
@@ -365,7 +366,7 @@ msgstr "Ɣef"
 
 #: setup/main.py:219
 msgid "Restore all defaults"
-msgstr ""
+msgstr "Err-d akk imezwer"
 
 #: setup/main.py:228 setup/main.py:2957
 msgid "_Close"
@@ -401,7 +402,7 @@ msgstr "Inegzumen n unasiw"
 #. default after a restart.
 #: setup/main.py:302
 msgid "Remember input mode"
-msgstr ""
+msgstr "Cfu ɣef uskar n unekcum"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the input mode (“Direct input” or “Table
@@ -569,13 +570,13 @@ msgstr "Ubdid"
 
 #: setup/main.py:643
 msgid "System default"
-msgstr ""
+msgstr "Anagraw amezwer"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
 #: setup/main.py:668
 msgid "Page size:"
-msgstr ""
+msgstr "Teɣzi n usebter:"
 
 #. Translators: A tooltip for the label of the adjustment
 #. for the number of candidates to show in one page of the
@@ -590,13 +591,13 @@ msgstr ""
 
 #: setup/main.py:695
 msgid "Current key bindings:"
-msgstr ""
+msgstr "Tuqqniwin n tsura-a:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
 #: setup/main.py:720
 msgid "Command"
-msgstr ""
+msgstr "Taladna"
 
 #: setup/main.py:751
 msgid "Edit"
@@ -610,7 +611,7 @@ msgstr ""
 
 #: setup/main.py:764 setup/main.py:2199
 msgid "Set to default"
-msgstr ""
+msgstr "Sbadu ɣer umezwer"
 
 #. Translators: A tooltip for the button to set
 #. the default key bindings for the selected command.
@@ -622,7 +623,7 @@ msgstr ""
 
 #: setup/main.py:777
 msgid "Set all to default"
-msgstr ""
+msgstr "Sbadu kullec ɣer umezwer"
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
@@ -807,7 +808,7 @@ msgstr ""
 #. sound is played on error
 #: setup/main.py:1101
 msgid "Play sound file on error"
-msgstr ""
+msgstr "Taɣuri n ufaylu n yimesli mi ara tili tuccḍa"
 
 #: setup/main.py:1103
 msgid ""
@@ -821,7 +822,7 @@ msgstr ""
 #. debug information may also be shown graphically.
 #: setup/main.py:1141
 msgid "Debug level:"
-msgstr ""
+msgstr "Aswir n temseɣtayt:"
 
 #. Translators: This is a tooltip for the label for the
 #. adjustment of the debug level.
@@ -833,7 +834,7 @@ msgstr ""
 
 #: setup/main.py:1515
 msgid "Are you sure?"
-msgstr ""
+msgstr "D tidet?"
 
 #: setup/main.py:1517 setup/main.py:1843
 msgid "_Cancel"
@@ -845,14 +846,14 @@ msgstr "IH (_O)"
 
 #: setup/main.py:1550
 msgid "Another instance of this app is already running."
-msgstr ""
+msgstr "Tummant niḍen n usnas-a la tettwaselkam yakan."
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
 #: setup/main.py:1614
 msgid "Do you really want to restore all default settings?"
-msgstr ""
+msgstr "D tidet tebɣiḍ ad d-terreḍ akk iɣewwaren imezwer?"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -868,24 +869,24 @@ msgstr ""
 
 #: setup/main.py:1840
 msgid "Select .wav sound file:"
-msgstr ""
+msgstr "Fren afaylu n yimesli .wav:"
 
 #: setup/main.py:2122
 #, python-format
 msgid "Edit key bindings for command “%s”"
-msgstr ""
+msgstr "Ẓreg tuqqna n tsura i tladna “%s”"
 
 #. Translators: This is a tooltip for the button to add a
 #. key binding.
 #: setup/main.py:2152
 msgid "Add a key binding"
-msgstr ""
+msgstr "Rnu tuqqna n tsura"
 
 #. Translators: This is a tooltip for the button to remove
 #. the selected key binding.
 #: setup/main.py:2166
 msgid "Remove selected key binding"
-msgstr ""
+msgstr "Kkes tuqqna n tsura i yettwafernen"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
@@ -909,7 +910,9 @@ msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
 msgstr ""
+"D tidet tebɣiḍ ad tesbaduḍ tuqqniwin n tsura i meṛṛa tiludna ɣer yimezwer-"
+"nsent?"
 
 #: setup/main.py:3010
 msgid "ibus is not running."
-msgstr ""
+msgstr "ibus ur iteddu ara."

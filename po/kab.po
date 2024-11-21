@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2024-06-27 09:49+0200\n"
-"PO-Revision-Date: 2024-10-24 09:38+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2024-11-21 16:38+0000\n"
+"Last-Translator: ButterflyOfFire <butterflyoffire@users.noreply.translate."
+"fedoraproject.org>\n"
 "Language-Team: Kabyle <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/kab/>\n"
 "Language: kab\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.8.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -282,7 +282,7 @@ msgstr ""
 
 #: engine/table.py:2946
 msgid "Setup"
-msgstr "Iɣewwaṛen"
+msgstr "Asbeddi"
 
 #: engine/table.py:2949
 #, python-format

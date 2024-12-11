@@ -1,4 +1,80 @@
-commit 26f594a2b8cd7e85ca0471d9a98c12543b8d35ad
+commit 73cb60a4e7ce89b134d3ebd5bedb029085616c90
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Dec 11 14:30:45 2024 +0100
+
+    Release 1.17.9
+
+commit 0a1e272f577640740b4d1842a2cbc6267cf28cce
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Dec 11 14:32:40 2024 +0100
+
+    Update ibus-table.pot (Only line number changes)
+
+commit b805f48d8563975cb4313c714cb94ce009b23c7e
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Dec 11 14:22:02 2024 +0100
+
+    Make the setup tool use the wrapper itb_sound.py instead of using simpleaudio unconditionally
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/162
+
+commit fa864522898b4dc3b3fdcead91175ac05c6cad13
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Dec 11 14:20:51 2024 +0100
+
+    Add more debug output
+
+commit 0b752dfdf49d8cda859a8cdfc82ff7825dce75f6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Dec 11 14:17:40 2024 +0100
+
+    Fix some mypy warnings which appeared after the upgrade to Fedora 41 (python3-mypy-1.13.0-1.fc41.noarch)
+
+commit 01e2632164c98b610bc157faa68f2d761c4e416a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Dec 11 14:14:18 2024 +0100
+
+    Improve it_util.variant_to_value()
+
+commit 8c6896387959f9cd855434d96aef710abcf6915a
+Author: ButterflyOfFire <butterflyoffire@users.noreply.translate.fedoraproject.org>
+Date:   Thu Nov 21 17:38:41 2024 +0100
+
+    Translated using Weblate (Kabyle)
+    
+    Currently translated at 29.3% (44 of 150 strings)
+    
+    Co-authored-by: ButterflyOfFire <butterflyoffire@users.noreply.translate.fedoraproject.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/kab/
+    Translation: ibus-table/app
+
+commit 16176b40840ff0a381ed035235581f6a2a19dc40
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Thu Oct 24 11:38:33 2024 +0200
+
+    Translated using Weblate (Kabyle)
+    
+    Currently translated at 29.3% (44 of 150 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/kab/
+    Translation: ibus-table/app
+
+commit 67d1e8e63a7e7b420dafe805522c118404a5ef10
+Author: ButterflyOfFire <butterflyoffire@users.noreply.translate.fedoraproject.org>
+Date:   Thu Oct 24 11:38:33 2024 +0200
+
+    Translated using Weblate (Kabyle)
+    
+    Currently translated at 29.3% (44 of 150 strings)
+    
+    Added translation using Weblate (Kabyle)
+    
+    Co-authored-by: ButterflyOfFire <butterflyoffire@users.noreply.translate.fedoraproject.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/kab/
+    Translation: ibus-table/app
+
+commit 31707f63f73edd08ea0107fb581934207e5aea0c
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Sep 11 16:43:28 2024 +0200
 

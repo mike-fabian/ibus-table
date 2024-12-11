@@ -40,6 +40,27 @@
   <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.17.9" date="2024-12-11" urgency="medium">
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.9</url>
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Make the setup tool use the wrapper itb_sound.py instead
+            of using simpleaudio unconditionally (Resolves:
+            github-mike-fabian-issue#162)
+          </li>
+          <li>
+             Translation update from Weblate (new language Kabyle: kab 29.3%)
+          </li>
+        </ul>
+      </description>
+      <issues>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/162">
+          github-mike-fabian-issue#162
+        </issue>
+      </issues>
+    </release>
     <release version="1.17.8" date="2024-09-11" urgency="medium">
       <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.8</url>
       <description>

@@ -67,8 +67,9 @@ def variant_to_value(variant: GLib.Variant) -> Any:
     '''
     Convert a GLib variant to a value
     '''
-    # pylint: disable=unidiomatic-typecheck
-    if type(variant) != GLib.Variant:
+    if variant is None:
+        return None
+    if not isinstance(variant, GLib.Variant):
         LOGGER.info('not a GLib.Variant')
         return variant
     type_string = variant.get_type_string()
@@ -76,6 +77,14 @@ def variant_to_value(variant: GLib.Variant) -> Any:
         return variant.get_string()
     if type_string == 'i':
         return variant.get_int32()
+    if type_string == 'u':
+        return variant.get_uint32()
+    if type_string == 'x':
+        return variant.get_int64()
+    if type_string == 't':
+        return variant.get_uint64()
+    if type_string == 'd':
+        return variant.get_double()
     if type_string == 'b':
         return variant.get_boolean()
     if type_string == 'v':

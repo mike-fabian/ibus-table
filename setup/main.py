@@ -75,6 +75,7 @@ sys.path = [sys.path[0]+'/../engine'] + sys.path
 import tabsqlitedb
 import ibus_table_location
 import it_util
+import it_sound
 
 LOGGER = logging.getLogger('ibus-table')
 
@@ -1132,6 +1133,9 @@ class SetupUI(Gtk.Window): # type: ignore
             self._error_sound_checkbutton, 0, _options_details_grid_row, 1, 1)
         self._options_details_grid.attach(
             self._error_sound_file_button, 1, _options_details_grid_row, 1, 1)
+        self._error_sound_object = it_sound.SoundObject(
+            os.path.expanduser(self._settings_dict['errorsoundfile']['user']),
+            audio_backend=self._settings_dict['soundbackend']['user'])
 
         self._debug_level_label = Gtk.Label()
         self._debug_level_label.set_text(
@@ -1358,6 +1362,16 @@ class SetupUI(Gtk.Window): # type: ignore
             'default': default_error_sound_file,
             'user': user_error_sound_file,
             'set_function': self.set_error_sound_file}
+
+        default_sound_backend = it_util.variant_to_value(
+            self._gsettings.get_default_value('soundbackend'))
+        user_sound_backend = it_util.variant_to_value(
+            self._gsettings.get_value('soundbackend'))
+
+        self._settings_dict['soundbackend'] = {
+            'default': default_sound_backend,
+            'user': user_sound_backend,
+            'set_function': self.set_sound_backend}
 
         default_debug_level = it_util.variant_to_value(
             self._gsettings.get_default_value('debuglevel'))
@@ -2820,30 +2834,43 @@ class SetupUI(Gtk.Window): # type: ignore
                 GLib.Variant.new_string(path))
         else:
             self._error_sound_file_button_label.set_text(path)
-        if not IMPORT_SIMPLEAUDIO_SUCCESSFUL:
-            LOGGER.info(
-                'No error sound because python3-simpleaudio is not available.')
-        else:
-            if not os.path.isfile(path):
-                LOGGER.info('Error sound file %s does not exist.', path)
-            elif not os.access(path, os.R_OK):
-                LOGGER.info('Error sound file %s not readable.', path)
-            else:
-                try:
-                    LOGGER.info(
-                        'Trying to initialize and play error sound from %s',
-                        path)
-                    dummy = (
-                        simpleaudio.WaveObject.from_wave_file(path).play())
-                    LOGGER.info('Error sound could be initialized.')
-                except (FileNotFoundError, PermissionError):
-                    LOGGER.exception(
-                        'Initializing error sound object failed.'
-                        'File not found or no read permissions.')
-                except:
-                    LOGGER.exception(
-                        'Initializing error sound object failed '
-                        'for unknown reasons.')
+        self._error_sound_object = it_sound.SoundObject(
+            os.path.expanduser(self._settings_dict['errorsoundfile']['user']),
+            audio_backend=self._settings_dict['soundbackend']['user'])
+        if self._error_sound_object:
+            try:
+                self._error_sound_object.play()
+            except Exception as error: # pylint: disable=broad-except
+                LOGGER.exception('Playing error sound failed: %s: %s',
+                                 error.__class__.__name__, error)
+
+    def set_sound_backend(
+            self,
+            sound_backend: Union[str, Any],
+            update_gsettings: bool = True) -> None:
+        '''Sets the sound backend to use
+
+        :param sound_backend: The name of sound backend to use
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the dconf key changed
+                                 to avoid endless loops when the dconf
+                                 key is changed twice in a short time.
+        '''
+        LOGGER.info(
+            '(%s, update_gsettings = %s)', sound_backend, update_gsettings)
+        if not isinstance(sound_backend, str):
+            return
+        if sound_backend == self._settings_dict['soundbackend']['user']:
+            return
+        self._settings_dict['soundbackend']['user'] = sound_backend
+        if update_gsettings:
+            self._gsettings.set_value(
+                'soundbackend',
+                GLib.Variant.new_string(sound_backend))
+        self._error_sound_object = it_sound.SoundObject(
+            os.path.expanduser(self._settings_dict['errorsoundfile']['user']),
+            audio_backend=self._settings_dict['soundbackend']['user'])
 
     def set_debug_level(self,
                         debug_level: int,

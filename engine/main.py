@@ -128,7 +128,8 @@ else:
 class IMApp:
     def __init__(self, dbfile: str, exec_by_ibus: bool) -> None:
         if DEBUG_LEVEL > 1:
-            LOGGER.debug('IMApp.__init__(exec_by_ibus=%s)\n', exec_by_ibus)
+            LOGGER.debug('IMApp.__init__(dbfile=%s, exec_by_ibus=%s)\n',
+                         dbfile, exec_by_ibus)
         self.__mainloop = GLib.MainLoop()
         self.__bus: IBus.Bus = IBus.Bus()
         self.__bus.connect("disconnected", self.__bus_destroy_cb)

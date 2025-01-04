@@ -2,22 +2,23 @@
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
 # "Sergey A." <sw@atrus.ru>, 2023, 2024.
+# "Sergey A." <Ser82-png@yandex.ru>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2024-12-11 14:31+0100\n"
-"PO-Revision-Date: 2024-07-31 10:41+0000\n"
-"Last-Translator: \"Sergey A.\" <sw@atrus.ru>\n"
-"Language-Team: Russian <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/ru/>\n"
+"PO-Revision-Date: 2025-01-04 21:20+0000\n"
+"Last-Translator: \"Sergey A.\" <Ser82-png@yandex.ru>\n"
+"Language-Team: Russian <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.9.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -274,14 +275,16 @@ msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
 msgstr ""
+"Переключиться в режим прямой передачи (автоматическая передача данных "
+"выполняется непосредственно в приложении)"
 
 #: engine/table.py:919
 msgid "Auto commit mode"
-msgstr ""
+msgstr "Режим автопередачи"
 
 #: engine/table.py:920
 msgid "Switch autocommit mode"
-msgstr ""
+msgstr "Переключить режим автопередачи"
 
 #: engine/table.py:2946
 msgid "Setup"
@@ -460,10 +463,10 @@ msgstr ""
 "«Традиционный китайский» будут показаны традиционные\n"
 "китайские иероглифы. В режиме «Упрощённый китайский\n"
 "перед традиционным» будут показаны все символы,\n"
-"но упрощённые окажутся в верхней части списка кандидатов.\n"
+"но упрощённые окажутся в верхней части списка вариантов.\n"
 "В режиме «Традиционный китайский перед упрощённым»\n"
 "будут показаны все символы, но традиционные окажутся в\n"
-"верхней части списка кандидатов. В режиме «Все символы»\n"
+"верхней части списка вариантов. В режиме «Все символы»\n"
 "будут показаны все совпадения без какой-либо фильтрации."
 
 #. Translators: This is the setting to use both
@@ -546,7 +549,7 @@ msgstr ""
 
 #: setup/main.py:590
 msgid "Candidate list"
-msgstr "Список кандидатов"
+msgstr "Список вариантов"
 
 #. Translators: A combobox to choose whether
 #. a candidate list should be shown or hidden.
@@ -556,7 +559,7 @@ msgstr "Список кандидатов"
 #. the candidate lists is better.
 #: setup/main.py:605
 msgid "Show candidate list"
-msgstr "Показать список кандидатов"
+msgstr "Показать список вариантов"
 
 #. Translit: A tooltip for the label of the combobox to
 #. choose whether a candidate list should be shown or
@@ -569,11 +572,11 @@ msgid ""
 "input methods like the Russian “translit”, hiding the\n"
 "candidate lists is better."
 msgstr ""
-"Определяет, следует ли показывать список кандидатов.\n"
+"Определяет, следует ли показывать список вариантов.\n"
 "Для методов китайского ввода следует видеть список\n"
-"кандидатов. Но для некоторых способов введения\n"
+"вариантов. Но для некоторых способов введения\n"
 "языков отличных от китайского, в частности кириллического\n"
-"«translit», потребности в показе списка кандидатов нет."
+"«translit», потребности в показе списка вариантов нет."
 
 #. Translators: A combobox to choose whether the candidate
 #. window should be drawn horizontally or vertically.
@@ -589,7 +592,7 @@ msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
 msgstr ""
-"Определяет, таблица кандидатов должна\n"
+"Определяет, таблица вариантов должна\n"
 "быть вертикальной или горизонтальной."
 
 #: setup/main.py:640
@@ -620,7 +623,7 @@ msgid ""
 "pages in the lookup table using the page up/down\n"
 "keys or the arrow up/down keys."
 msgstr ""
-"Максимальное количество кандидатов на одной\n"
+"Максимальное количество вариантов на одной\n"
 "странице таблицы поиска. Переход между страницами\n"
 "в таблице поиска осуществляется с помощью\n"
 "клавиш «Page Up/Down» или стрелками «Вверх/Вниз»."
@@ -679,8 +682,8 @@ msgid ""
 "Here you can choose whether the order of the candidates is dynamically "
 "adjusted according to how often the candidates are used."
 msgstr ""
-"Здесь вы можете выбрать, будет ли порядок кандидатов динамически "
-"корректироваться в зависимости от того, как часто они используются."
+"Здесь вы можете выбрать, будет ли динамически корректироваться порядок "
+"вариантов в зависимости от частоты их использования."
 
 #: setup/main.py:824
 msgid "Delete all learned data"
@@ -742,7 +745,7 @@ msgstr ""
 #. commits go into the preëdit or into the application
 #: setup/main.py:919
 msgid "Auto commit mode:"
-msgstr ""
+msgstr "Режим автопередачи:"
 
 #. Translators; A tooltip for the label of the combobox to
 #. choose whether automatic commits go into the preëdit or
@@ -779,14 +782,22 @@ msgid ""
 "character is typed and the character in question is inserted immediately "
 "after the text that results from the options listed above."
 msgstr ""
+"Определяет, что произойдет, когда будет введён символ, отсутствующий в "
+"наборе допустимых входных символов для этой таблицы: если выбрать «Передать "
+"текущее предложение», будет вставлен текущий выделенный вариант. Если "
+"выбрать «Передать введённые символы», будут вставлены символы без обработки, "
+"которые были введены в процессе выбора варианта. В любом случае, выбор "
+"варианта завершается при вводе некорректного символа, и соответствующий "
+"символ будет немедленно вставлен после текста, который является результатом "
+"применения параметров из приведенного выше списка."
 
 #: setup/main.py:983
 msgid "Commit current candidate"
-msgstr ""
+msgstr "Передать текущее предложение"
 
 #: setup/main.py:985
 msgid "Commit typed keys"
-msgstr ""
+msgstr "Передать введённые символы"
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
@@ -923,7 +934,7 @@ msgid ""
 "candidates?"
 msgstr ""
 "Вы действительно хотите удалить все данные, которые были получены на основе "
-"введённых и выбранных кандидатов?"
+"введённых и выбранных вариантов?"
 
 #: setup/main.py:1854
 msgid "Select .wav sound file:"

@@ -28,10 +28,9 @@ setup_tabledir = $(datadir)/ibus-table/setup
 libexec_SCRIPTS = ibus-setup-table
 
 desktop_in_in_files = ibus-setup-table.desktop.in.in
-
 desktop_in_files = $(desktop_in_in_files:.in.in=.in)
 
-ibus-setup-table.desktop: ibus-setup-table.desktop.in.in
+$(desktop_in_files): %.desktop.in: %.desktop.in.in Makefile
 	( \
 		PKGDATADIR=$(pkgdatadir); \
 		LIBEXECDIR=$(libexecdir); \
@@ -41,6 +40,8 @@ ibus-setup-table.desktop: ibus-setup-table.desktop.in.in
 
 desktopdir=$(datadir)/applications
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+$(desktop_DATA): $(desktop_in_files) Makefile
+	$(AM_V_GEN)$(MSGFMT) --desktop --template $< -d $(top_srcdir)/po -o $@
 
 CLEANFILES = \
 	$(desktop_DATA) \

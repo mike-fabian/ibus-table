@@ -5,4 +5,5 @@ engine/tabcreatedb.py
 engine/factory.py
 engine/it_util.py
 ibus-table.appdata.xml
+setup/ibus-setup-table.desktop.in.in
 setup/main.py

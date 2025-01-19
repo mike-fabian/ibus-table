@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=IBus Table Setup
-Comment=Set ibus-table preferences
+Name=IBus Table Preferences
+Comment=Set IBus Table Options
 Exec=${LIBEXECDIR}/ibus-setup-table
 Icon=${PKGDATADIR}/icons/chinese.svg
 NoDisplay=true

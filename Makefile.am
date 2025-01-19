@@ -43,11 +43,11 @@ pkgconfigdir = $(libdir)/pkgconfig
 
 # To register as an AppStream component to be visible in the software center
 # (See http://www.freedesktop.org/software/appstream/docs/ for more details):
-appdata_DATA = \
-	ibus-table.appdata.xml \
+metainfo_DATA = \
+	org.freedesktop.ibus.engine.table.metainfo.xml \
 	$(NULL)
 
-appdatadir = $(datadir)/metainfo
+metainfodir = $(datadir)/metainfo
 
 schemas_DATA = \
 	org.freedesktop.ibus.engine.table.gschema.xml
@@ -86,7 +86,7 @@ MAINTAINERCLEANFILES = \
 EXTRA_DIST = \
 	config.rpath \
 	autogen.sh \
-	ibus-table.appdata.xml \
+	org.freedesktop.ibus.engine.table.metainfo.xml \
 	$(schemas_DATA) \
 	@PACKAGE_NAME@.spec \
 	$(NULL)

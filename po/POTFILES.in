@@ -4,6 +4,6 @@ engine/tabsqlitedb.py
 engine/tabcreatedb.py
 engine/factory.py
 engine/it_util.py
-ibus-table.appdata.xml
+org.freedesktop.ibus.engine.table.metainfo.xml
 setup/ibus-setup-table.desktop.in.in
 setup/main.py

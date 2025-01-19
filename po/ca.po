@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2024-12-11 14:31+0100\n"
+"POT-Creation-Date: 2025-01-19 02:40+0100\n"
 "PO-Revision-Date: 2022-01-12 17:33+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Catalan <https://translate.fedoraproject.org/projects/ibus-"
@@ -355,6 +355,16 @@ msgstr ""
 "d'entrada basats en taules. Sobretot s'utilitza per als mètodes d'entrada "
 "xinesos com ara ZhengMa, WuBi, ErBi, CangJie, …. No obstant això, també hi "
 "ha disponible algunes taules per a altres idiomes."
+
+#: setup/ibus-setup-table.desktop.in.in:3
+#, fuzzy
+#| msgid "Preferences"
+msgid "IBus Table Preferences"
+msgstr "Preferències"
+
+#: setup/ibus-setup-table.desktop.in.in:4
+msgid "Set IBus Table Options"
+msgstr ""
 
 #: setup/main.py:114
 #, fuzzy

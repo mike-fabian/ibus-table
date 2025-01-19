@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2024-12-11 14:31+0100\n"
+"POT-Creation-Date: 2025-01-19 02:40+0100\n"
 "PO-Revision-Date: 2024-08-25 16:48+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: French <https://translate.fedoraproject.org/projects/ibus-"
@@ -353,6 +353,16 @@ msgstr ""
 "tables. Il est principalement utilisé pour les méthodes de saisie Chinoises "
 "telles que ZhengMa, Wubizixing, ErBi, CangJie… Mais des tables pour d’autres "
 "langues sont également disponibles."
+
+#: setup/ibus-setup-table.desktop.in.in:3
+#, fuzzy
+#| msgid "Preferences"
+msgid "IBus Table Preferences"
+msgstr "Préférences"
+
+#: setup/ibus-setup-table.desktop.in.in:4
+msgid "Set IBus Table Options"
+msgstr ""
 
 #: setup/main.py:114
 msgid "Initial state"

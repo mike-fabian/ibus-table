@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2024-12-11 14:31+0100\n"
+"POT-Creation-Date: 2025-01-19 02:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -339,6 +339,14 @@ msgid ""
 "Ibus-table is an input method framework for table-based input methods. "
 "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
 "CangJie, …. But some tables for other languages are available as well."
+msgstr ""
+
+#: setup/ibus-setup-table.desktop.in.in:3
+msgid "IBus Table Preferences"
+msgstr ""
+
+#: setup/ibus-setup-table.desktop.in.in:4
+msgid "Set IBus Table Options"
 msgstr ""
 
 #: setup/main.py:114

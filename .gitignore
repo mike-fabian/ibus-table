@@ -17,5 +17,6 @@ ibus-table.spec
 /missing
 /py-compile
 ibus-table-*.tar.gz
+*.metainfo.xml
 test-driver
 *~

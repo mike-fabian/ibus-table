@@ -43,11 +43,13 @@ pkgconfigdir = $(libdir)/pkgconfig
 
 # To register as an AppStream component to be visible in the software center
 # (See http://www.freedesktop.org/software/appstream/docs/ for more details):
-metainfo_DATA = \
-	org.freedesktop.ibus.engine.table.metainfo.xml \
-	$(NULL)
-
 metainfodir = $(datadir)/metainfo
+metainfo_in_files = \
+	org.freedesktop.ibus.engine.table.metainfo.xml.in \
+	$(NULL)
+metainfo_DATA = $(metainfo_in_files:.in=)
+%.metainfo.xml: %.metainfo.xml.in $(wildcard po/*.mo) Makefile
+	$(AM_V_GEN)$(MSGFMT) --xml --template $< -d $(top_srcdir)/po --output-file $@
 
 schemas_DATA = \
 	org.freedesktop.ibus.engine.table.gschema.xml
@@ -86,7 +88,8 @@ MAINTAINERCLEANFILES = \
 EXTRA_DIST = \
 	config.rpath \
 	autogen.sh \
-	org.freedesktop.ibus.engine.table.metainfo.xml \
+	$(metainfo_in_files) \
+	$(metainfo_DATA) \
 	$(schemas_DATA) \
 	@PACKAGE_NAME@.spec \
 	$(NULL)

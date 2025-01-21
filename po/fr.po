@@ -1,6 +1,6 @@
 # Alexandre Moine <nobrakal@gmail.com>, 2016. #zanata
 # Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>, 2016. #zanata, 2019, 2020.
-# Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2021, 2024.
+# Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2021, 2024, 2025.
 # Julien Humbert <julroy67@gmail.com>, 2019, 2020, 2021.
 # Anonymous <noreply@weblate.org>, 2020.
 # Côme Borsoi <fedora@borsoi.fr>, 2020.
@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-01-19 03:00+0100\n"
-"PO-Revision-Date: 2024-08-25 16:48+0000\n"
+"PO-Revision-Date: 2025-01-21 09:15+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: French <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/fr/>\n"
+"Language-Team: French <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.7\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -355,14 +355,12 @@ msgstr ""
 "langues sont également disponibles."
 
 #: setup/ibus-setup-table.desktop.in.in:3
-#, fuzzy
-#| msgid "Preferences"
 msgid "IBus Table Preferences"
-msgstr "Préférences"
+msgstr "Préférences d'IBus Table"
 
 #: setup/ibus-setup-table.desktop.in.in:4
 msgid "Set IBus Table Options"
-msgstr ""
+msgstr "Définir les options d'IBus Table"
 
 #: setup/main.py:114
 msgid "Initial state"

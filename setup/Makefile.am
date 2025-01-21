@@ -53,6 +53,8 @@ EXTRA_DIST = \
 	version.py.in \
 	ibus-setup-table.in \
 	$(desktop_in_in_files) \
+	$(desktop_in_files) \
+	$(desktop_DATA) \
 	$(NULL)
 
 test-table:

@@ -3,21 +3,22 @@
 # Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2020.
 # Anonymous <noreply@weblate.org>, 2020.
 # Emilio Herrera <ehespinosa57@gmail.com>, 2021, 2022.
+# N M <nm@users.noreply.translate.fedoraproject.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-01-21 01:39+0100\n"
-"PO-Revision-Date: 2022-01-23 16:16+0000\n"
-"Last-Translator: Emilio Herrera <ehespinosa57@gmail.com>\n"
-"Language-Team: Spanish <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/es/>\n"
+"PO-Revision-Date: 2025-02-04 17:38+0000\n"
+"Last-Translator: N M <nm@users.noreply.translate.fedoraproject.org>\n"
+"Language-Team: Spanish <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -804,7 +805,7 @@ msgstr ""
 #. character candidates should be shown.
 #: setup/main.py:965
 msgid "Action when typing invalid character:"
-msgstr ""
+msgstr "Acción para cuándo escribe un caracter invalido:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should

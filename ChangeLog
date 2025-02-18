@@ -1,4 +1,77 @@
-commit 47ab64dfe0e3034c4100f5ebadf0e502924b2330
+commit 521770ec32e5d0eb0449c27230dbca5d1e894c00
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 18 17:35:29 2025 +0100
+
+    Release 1.17.11
+
+commit 7b336c5a9d8a77f13ada1e53a6698358bae15486
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 18 17:26:20 2025 +0100
+
+    Calling static methods as `self._my_method()` works, but is not recommended, use `self.__class__._my_method()`
+
+commit 9e35493874cf1e6cb651f419928df2c09fe1e3e5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Feb 18 16:19:27 2025 +0100
+
+    Fix to load EN compose file
+    
+    Now EN compose file is loaded in the class init of IBus.EngineSimple
+    and IBus.init() needs to be called before the init.
+    
+    This fix is needed for ibus >= 1.5.32~beta2.
+    
+    See also: https://github.com/ibus/ibus-anthy/commit/14b2759772fb1adc67453108e958bf0bf181ce1d
+
+commit 40764b0a634375f53bd637ff22066d0354770226
+Author: Sergey A <Ser82-png@yandex.ru>
+Date:   Sat Feb 15 16:51:20 2025 +0100
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 98.6% (150 of 152 strings)
+    
+    Co-authored-by: Sergey A <Ser82-png@yandex.ru>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translation: ibus-table/app
+
+commit 878f802810b9689318d988810ac754e817833a23
+Author: N M <nm@users.noreply.translate.fedoraproject.org>
+Date:   Tue Feb 4 18:38:36 2025 +0100
+
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 96.7% (147 of 152 strings)
+    
+    Co-authored-by: N M <nm@users.noreply.translate.fedoraproject.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translation: ibus-table/app
+
+commit 3a16e44367d39279e6fb98d7c31c5bc43567f9c7
+Author: Weblate <noreply@weblate.org>
+Date:   Tue Jan 21 10:15:42 2025 +0100
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 8b0f3567dae83e2e876a6dc0ffbfa5f1faa10fdf
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jan 21 10:15:42 2025 +0100
+
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (152 of 152 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+    Translation: ibus-table/app
+
+commit 287dd34734018daa89de456d25d62d6b59a9e12c
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Jan 21 01:18:54 2025 +0100
 

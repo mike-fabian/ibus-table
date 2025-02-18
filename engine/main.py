@@ -123,6 +123,10 @@ else:
     # the above error message appears.
     #
     # See: https://bugzilla.redhat.com/show_bug.cgi?id=1955283
+    #
+    # Need to call IBus.init() before IBus.EngineSimple() is loaded
+    # factory -> engine -> IBus.EngineSimple
+    IBus.init()
     import factory
 
 class IMApp:
@@ -371,7 +375,6 @@ def main() -> None:
     LOGGER.addHandler(log_handler)
     LOGGER.info('********** STARTING **********')
 
-    IBus.init()
     if _ARGS.daemon:
         if os.fork():
             sys.exit()

@@ -188,8 +188,8 @@ class SetupUI(Gtk.Window): # type: ignore
             + self._engine_name + ' '
             + _('Preferences'))
 
-        self.connect('destroy-event', self._on_destroy_event)
-        self.connect('delete-event', self._on_delete_event)
+        self.connect('destroy-event', self.__class__._on_destroy_event)
+        self.connect('delete-event', self.__class__._on_delete_event)
 
         self._main_container = Gtk.Box()
         self._main_container.set_orientation(Gtk.Orientation.VERTICAL)
@@ -211,7 +211,7 @@ class SetupUI(Gtk.Window): # type: ignore
         self._main_container.pack_end(self._dialog_action_area, True, True, 0)
         self._about_button = Gtk.Button(label=_('About'))
         self._about_button.set_hexpand(True)
-        self._about_button.connect('clicked', self._on_about_button_clicked)
+        self._about_button.connect('clicked', self.__class__._on_about_button_clicked)
         self._dialog_action_area.add(self._about_button)
         self._restore_all_defaults_button = Gtk.Button()
         self._restore_all_defaults_button.set_hexpand(True)
@@ -228,7 +228,7 @@ class SetupUI(Gtk.Window): # type: ignore
         self._close_button_label = Gtk.Label()
         self._close_button_label.set_text_with_mnemonic(_('_Close'))
         self._close_button.add(self._close_button_label)
-        self._close_button.connect('clicked', self._on_close_clicked)
+        self._close_button.connect('clicked', self.__class__._on_close_clicked)
         self._dialog_action_area.add(self._close_button)
 
         grid_border_width = 10
@@ -1560,7 +1560,7 @@ class SetupUI(Gtk.Window): # type: ignore
         '''
         if (dbus.SessionBus().request_name("org.ibus.table")
                 != dbus.bus.REQUEST_NAME_REPLY_PRIMARY_OWNER):
-            self.__run_message_dialog(
+            self.__class__.__run_message_dialog(
                 _("Another instance of this app is already running."),
                 Gtk.MessageType.ERROR)
             sys.exit(1)

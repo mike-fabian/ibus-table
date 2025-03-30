@@ -2,15 +2,15 @@
 # Rodrigo de Araujo Sousa Fonseca <rodrigodearaujo@fedoraproject.org>, 2017. #zanata
 # Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2021.
 # Anonymous <noreply@weblate.org>, 2019, 2020.
-# Rafael Fontenelle <rafaelff@gnome.org>, 2020, 2021.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2020, 2021, 2025.
 # Adolfo Ketzer <reztek@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-01-21 01:39+0100\n"
-"PO-Revision-Date: 2021-09-28 12:00+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"PO-Revision-Date: 2025-03-01 03:25+0000\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.8\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -354,14 +354,12 @@ msgstr ""
 "idiomas também estão disponíveis."
 
 #: setup/ibus-setup-table.desktop.in.in:3
-#, fuzzy
-#| msgid "Preferences"
 msgid "IBus Table Preferences"
-msgstr "Preferências"
+msgstr "Preferências do IBus Table"
 
 #: setup/ibus-setup-table.desktop.in.in:4
 msgid "Set IBus Table Options"
-msgstr ""
+msgstr "Defina as opções do IBus Table"
 
 #: setup/main.py:114
 msgid "Initial state"
@@ -420,10 +418,8 @@ msgstr "Associações de tecla"
 #. or whether ibus-table should always use “Table input” by
 #. default after a restart.
 #: setup/main.py:303
-#, fuzzy
-#| msgid "Input mode"
 msgid "Remember input mode"
-msgstr "Modo de entrada"
+msgstr "Lembrar do modo de entrada"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the input mode (“Direct input” or “Table
@@ -431,14 +427,6 @@ msgstr "Modo de entrada"
 #. should always use “Table input” by default after a
 #. restart.
 #: setup/main.py:310
-#, fuzzy
-#| msgid ""
-#| "“Direct input” is almost the same as if the\n"
-#| "input method were off, i.e. not used at all, most\n"
-#| "characters just get passed to the application.\n"
-#| "But some conversion between fullwidth and\n"
-#| "halfwidth may still happen in direct input mode.\n"
-#| "“Table input” means the input method is on."
 msgid ""
 "Whether the last used input mode should be remembered or whether ibus-table "
 "should start in “Table mode” by default after a restart. There are two input "
@@ -447,14 +435,13 @@ msgid ""
 "characters just get passed to the application. But some conversion between "
 "fullwidth and halfwidth may still happen in direct input mode."
 msgstr ""
-"“Entrada direta” é quase o mesmo que se o método\n"
-"de entrada estivesse desativado, ou seja, não\n"
-"fosse usado, a maioria dos caracteres é passada\n"
-"para o aplicativo. Mas algumas conversões entre\n"
-"meia largura e largura completa ainda podem\n"
-"ocorrer no modo de entrada direta.\n"
-"“Entrada da tabela” significa que o método de\n"
-"entrada está ativado."
+"Se o último modo de entrada usado deve ser lembrado ou se ibus-table deve "
+"iniciar um “Modo tabela” por padrão ao reiniciar. Há dois modos de entrada: “"
+"Entrada da tabela” significa que o método de entrada está ativado. “Entrada "
+"direta” é quase o mesmo que se o método de entrada estivesse desativado, ou "
+"seja, não fosse usado, a maioria dos caracteres é passada para o aplicativo. "
+"Mas algumas conversões entre meia largura e largura completa ainda podem "
+"ocorrer no modo de entrada direta."
 
 #: setup/main.py:323
 msgid "No"
@@ -820,7 +807,7 @@ msgstr ""
 #. character candidates should be shown.
 #: setup/main.py:965
 msgid "Action when typing invalid character:"
-msgstr ""
+msgstr "Ação ao digitar um caractere inválido:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -835,14 +822,22 @@ msgid ""
 "character is typed and the character in question is inserted immediately "
 "after the text that results from the options listed above."
 msgstr ""
+"Determina o que acontece quando um caractere que não está no conjunto de "
+"caracteres de entrada válidos para esta tabela é digitado: Com “enviar "
+"candidato atual”, o candidato selecionado atualmente é inserido. Com “enviar "
+"telas digitadas”, os caracteres brutos digitados até o momento durante o "
+"processo de seleção de candidatos serão inseridos. Em todos os casos, a "
+"seleção de candidatos termina quando um caractere inválido é digitado e o "
+"caractere em questão é inserido imediatamente após o texto que resulta das "
+"opções listadas acima."
 
 #: setup/main.py:983
 msgid "Commit current candidate"
-msgstr ""
+msgstr "Enviar candidato atual"
 
 #: setup/main.py:985
 msgid "Commit typed keys"
-msgstr ""
+msgstr "Enviar teclas digitadas"
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.

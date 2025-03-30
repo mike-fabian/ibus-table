@@ -1,13 +1,14 @@
 # Cheng-Chia Tseng <pswo10680@gmail.com>, 2014. #zanata
 # Mike FABIAN <mfabian@redhat.com>, 2019.
 # Anonymous <noreply@weblate.org>, 2019, 2020.
+# hsu zangmen <chzang55@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-01-21 01:39+0100\n"
-"PO-Revision-Date: 2022-09-30 23:20+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2025-03-20 17:08+0000\n"
+"Last-Translator: hsu zangmen <chzang55@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_TW/>\n"
 "Language: zh_TW\n"
@@ -15,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -211,21 +212,19 @@ msgstr "切換拼音模式"
 
 #: engine/table.py:856
 msgid "Suggestion disabled"
-msgstr ""
+msgstr "建議停用"
 
 #: engine/table.py:857 engine/table.py:863
-#, fuzzy
-#| msgid "Switch to pinyin mode"
 msgid "Switch to suggestion mode"
-msgstr "切換至拼音模式"
+msgstr "切換至建議模式"
 
 #: engine/table.py:862
 msgid "Suggestion enabled"
-msgstr ""
+msgstr "建議啟用"
 
 #: engine/table.py:867
 msgid "Suggestion mode"
-msgstr ""
+msgstr "建議模式"
 
 #: engine/table.py:868
 #, fuzzy

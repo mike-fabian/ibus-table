@@ -4,13 +4,14 @@
 # Anonymous <noreply@weblate.org>, 2020.
 # Emilio Herrera <ehespinosa57@gmail.com>, 2021, 2022.
 # N M <nm@users.noreply.translate.fedoraproject.org>, 2025.
+# Javier Francisco <fserrador@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-01-21 01:39+0100\n"
-"PO-Revision-Date: 2025-02-04 17:38+0000\n"
-"Last-Translator: N M <nm@users.noreply.translate.fedoraproject.org>\n"
+"PO-Revision-Date: 2025-03-30 18:53+0000\n"
+"Last-Translator: Javier Francisco <fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/es/>\n"
 "Language: es\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -287,7 +288,7 @@ msgstr "Cambia el modo de asentamiento automático"
 
 #: engine/table.py:2946
 msgid "Setup"
-msgstr "Ajustes"
+msgstr "Configurar"
 
 #: engine/table.py:2949
 #, python-format
@@ -332,7 +333,7 @@ msgstr "Daniel Cabrera <logan@fedoraproject.org>"
 
 #: engine/it_util.py:1019
 msgid "Online documentation:"
-msgstr "_Documentación en línea:"
+msgstr "Documentación en línea:"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:6
 msgid "Ibus Table"
@@ -353,14 +354,12 @@ msgstr ""
 "CangJie, aunque también hay tablas para otros idiomas."
 
 #: setup/ibus-setup-table.desktop.in.in:3
-#, fuzzy
-#| msgid "Preferences"
 msgid "IBus Table Preferences"
-msgstr "Preferencias"
+msgstr "Preferencias de tabla IBus"
 
 #: setup/ibus-setup-table.desktop.in.in:4
 msgid "Set IBus Table Options"
-msgstr ""
+msgstr "Establecer Opciones de Tabla IBus"
 
 #: setup/main.py:114
 msgid "Initial state"
@@ -640,13 +639,13 @@ msgid ""
 "keys or the arrow up/down keys."
 msgstr ""
 "El número máximo de candidatos por página.\n"
-"Puede moverse entre página con las teclas\n"
-"de página siguiente/anterior o con las de\n"
-"flecha abajo/arriba."
+"Puede moverse entre página con las teclas de\n"
+"página siguiente/anterior o con las de flecha\n"
+"abajo/arriba."
 
 #: setup/main.py:696
 msgid "Current key bindings:"
-msgstr "Atajos de teclado actuales:"
+msgstr "Atajos de tecla actuales:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
@@ -662,7 +661,7 @@ msgstr "Editar"
 #. the keybindings for the selected command.
 #: setup/main.py:758
 msgid "Edit the key bindings for the selected command"
-msgstr "Editar los atajos de teclado de la orden seleccionada"
+msgstr "Editar los atajos de tecla de la orden seleccionada"
 
 #: setup/main.py:765 setup/main.py:2213
 msgid "Set to default"
@@ -723,9 +722,9 @@ msgid ""
 "set to “Phrase” candidates consisting of\n"
 "several characters may be shown."
 msgstr ""
-"Con “carácter” sólo se muestran candidatos\n"
-"de caracteres individuales.\n"
-"Con “frase” pueden aparecer candidatos de\n"
+"Si esto está fijado a «único carácter», sólo se\n"
+"muestran candidatos de carácter individual.\n"
+"Con «frase» pueden aparecer candidatos de\n"
 "varios caracteres."
 
 #: setup/main.py:862
@@ -758,16 +757,16 @@ msgid ""
 "   (Mostly needed for non-Chinese input methods like\n"
 "   the Russian “translit”)"
 msgstr ""
-"S se establece a “Yes”, hace una de las 4 cosas siguientes:\n"
-"1) Al escribir “Return”, confirma el \n"
+"Si se establece a «Yes», hace una de las 4 cosas siguientes:\n"
+"1) Al teclear «Return», confirma el\n"
 "   candidato + alimentación de línea\n"
 "2) Cuando teclea Tab, confirma el candidato\n"
 "3) Al confirma usando una clave de confirmación, confirma\n"
-"   el candidato + \" \"\n"
+"   el candidato + « »\n"
 "4) Si al teclear el siguiente carácter no hay coincidencia de candidatos,\n"
 "   confirma el primer candidato de la anterior coincidencia.\n"
-"   (Necesario mayormente para métodos de entrada no Chinos como\n"
-"   el Ruso “translit”)"
+"   (Necesario mayormente para métodos de entrada no chinos como\n"
+"   el ruso «translit»)"
 
 #. Translators: A combobox to choose whether automatic
 #. commits go into the preëdit or into the application
@@ -791,21 +790,20 @@ msgid ""
 "to preedit."
 msgstr ""
 "Al confirmar con las teclas de confirmación con el ratón\n"
-"siempre confirma a la aplicación. Esta opción es para\n"
-"las confirmaciones “automáticas” que pueden producirse cuando\n"
+"siempre confirma a la aplicación. Esta opción es para las\n"
+"confirmaciones «automáticas» que pueden producirse cuando\n"
 "uno sigue tecleando en la entrada sin confirmar.\n"
 "manualmente. De vez en cuando, se producirán confirmaciones\n"
-"\"automáticas\" entonces.\n"
-"“Directa” significa que esas confirmaciones \"automáticas\" vayan "
-"directamente\n"
-"a la aplicación, “Normal” significa que se confirman\n"
-"para preeditar."
+"«automáticas» entonces.\n"
+"«Directa» significa que esas confirmaciones «automáticas» vayan\n"
+"directamente a la aplicación, «Normal» significa que se confirman\n"
+"para pre-editar."
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
 #: setup/main.py:965
 msgid "Action when typing invalid character:"
-msgstr "Acción para cuándo escribe un caracter invalido:"
+msgstr "Acción para cuándo escribe un carácter invalido:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -820,14 +818,22 @@ msgid ""
 "character is typed and the character in question is inserted immediately "
 "after the text that results from the options listed above."
 msgstr ""
+"Determina que sucede cuando un carácter el cual no está dentro del conjunto "
+"de caracteres de entrada válidos para esta tabla está tecleada: con «commit "
+"current candidate», el candidato actualmente seleccionado es introducido. "
+"Con «commmit typed keys», los caracteres en bruto tecleados tal lejos "
+"durante la selección del candidato del proceso será insertado en su lugar. "
+"En todos los casos la selección del candidato finaliza cuando se teclee un "
+"carácter no válido dentro de la pregunta que es insertada inmediatamente "
+"tras el texto ese resultado desde la opción listada encima."
 
 #: setup/main.py:983
 msgid "Commit current candidate"
-msgstr ""
+msgstr "Efectuar candidato actual"
 
 #: setup/main.py:985
 msgid "Commit typed keys"
-msgstr ""
+msgstr "Efectuar teclas con tipo"
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
@@ -861,7 +867,7 @@ msgid ""
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
 "El comodín para coincidencias de un solo carácter.\n"
-"Pulse INTRO para confirmar el cambio de comodín."
+"Pulse RETORNO para confirmar el cambio de comodín."
 
 #. Translators: This single character is a placeholder
 #. to match a any number of characters
@@ -878,7 +884,7 @@ msgid ""
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
 "El comodín para coincidencias de cualquier número de caracteres.\n"
-"Pulse INTRO para confirmar el cambio de comodín."
+"Pulse RETORNO para confirmar el cambio de comodín."
 
 #. Translators: A combobox to choose whether
 #. the color scheme for a dark theme should be used.
@@ -891,7 +897,7 @@ msgstr "Usar tema oscuro"
 #. be used.
 #: setup/main.py:1087
 msgid "If yes, the color scheme for a dark theme will be used."
-msgstr "Sí si, el esquema de color para un tema oscuro será usado."
+msgstr "Si sí, será usado el esquema de color para un tema oscuro."
 
 #. Translators: A checkbox where one can choose whether a
 #. sound is played on error
@@ -988,13 +994,13 @@ msgstr "Quitar el atajo de teclado seleccionado"
 #. the selected key binding up (higher in priority).
 #: setup/main.py:2195
 msgid "Move key binding up"
-msgstr "Mover la vinculación de teclas hacia arriba"
+msgstr "Subir la vinculación de teclas"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
 #: setup/main.py:2208
 msgid "Move key binding down"
-msgstr "Mover la vinculación de teclas hacia abajo"
+msgstr "Bajar la vinculación de teclas"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is

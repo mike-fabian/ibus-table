@@ -3,21 +3,22 @@
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2016. #zanata
 # Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2020.
 # Anonymous <noreply@weblate.org>, 2020.
+# naly zzwd <xeanhort007@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-01-21 01:39+0100\n"
-"PO-Revision-Date: 2022-01-12 17:33+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Catalan <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/ca/>\n"
+"PO-Revision-Date: 2025-04-07 07:40+0000\n"
+"Last-Translator: naly zzwd <xeanhort007@gmail.com>\n"
+"Language-Team: Catalan <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.10.1\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -320,7 +321,7 @@ msgstr "El diàleg es tancarà quan es deixi anar la tecla"
 
 #: engine/it_util.py:987
 msgid "Table input method for IBus."
-msgstr "Mètode d'entrada de taula per a l'IBus"
+msgstr "Mètode d'entrada de taula per a l'IBus."
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
@@ -367,10 +368,8 @@ msgid "Set IBus Table Options"
 msgstr ""
 
 #: setup/main.py:114
-#, fuzzy
-#| msgid "<b>Inital state</b>"
 msgid "Initial state"
-msgstr "<b>Estat inicial</b>"
+msgstr "Estat inicial"
 
 #: setup/main.py:115
 msgid "Direct input"
@@ -434,14 +433,6 @@ msgstr "Recorda el mode d’entrada"
 #. should always use “Table input” by default after a
 #. restart.
 #: setup/main.py:310
-#, fuzzy
-#| msgid ""
-#| "“Direct input” is almost the same as if the\n"
-#| "input method were off, i.e. not used at all, most\n"
-#| "characters just get passed to the application.\n"
-#| "But some conversion between fullwidth and\n"
-#| "halfwidth may still happen in direct input mode.\n"
-#| "“Table input” means the input method is on."
 msgid ""
 "Whether the last used input mode should be remembered or whether ibus-table "
 "should start in “Table mode” by default after a restart. There are two input "
@@ -450,14 +441,14 @@ msgid ""
 "characters just get passed to the application. But some conversion between "
 "fullwidth and halfwidth may still happen in direct input mode."
 msgstr ""
-"“Entrada directa” és gairebé el mateix que si el\n"
-"mètode d'entrada estigués apagat, és a dir, no\n"
-"s'utilitza en absolut, la majoria dels caràcters\n"
-"simplement es passen a l'aplicació. Però en el\n"
-"mode directe d'entrada encara es poden\n"
-"produir algunes conversions entre l'amplada\n"
-"completa i la mitjana. “Entrada de taula” significa\n"
-"que el mètode d'entrada està engegat."
+"Si s'ha de recordar l'últim mode d'entrada utilitzat o si ibus-table hauria d"
+"'iniciar-se en \"Mode taula\" per defecte després d'un reinici. Hi ha dos "
+"modes d'entrada: \"Entrada de taula\" significa que el mètode d'entrada està "
+"activat. “Entrada directa” és gairebé el mateix que si el mètode d'entrada "
+"estigués apagat, és a dir, no s'utilitza en absolut, la majoria dels "
+"caràcters simplement es passen a l'aplicació. Però en el mode d'entrada "
+"directa encara es poden produir algunes conversions entre l'amplada completa "
+"i la mitjana."
 
 #: setup/main.py:323
 msgid "No"
@@ -491,12 +482,12 @@ msgstr ""
 "“Xinès simplificat” mostra tan sols els caràcters\n"
 "utilitzats en el xinès simplificat. “Xinès tradicional”\n"
 "mostra tan sols els caràcters en el xinès tradicional.\n"
-"“Xinès tradicional abans del simplifica” mostra trots\n"
-"tots els caràcters però fica els caràcters simplificats\n"
+"“Xinès tradicional abans del simplificat” mostra tots \n"
+"els caràcters però posa els caràcters simplificats\n"
 "més amunt en la llista de candidats. “Xinès tradicional\n"
-"abans del simplificat”  fica els caràcters simplificats\n"
+"abans del simplificat” posa els caràcters simplificats\n"
 "més amunt en la llista de candidats. “Tots els caràcters”\n"
-"només mostra totes les coincidències sense cap filtre\n"
+"simplement mostra totes les coincidències sense cap filtre\n"
 "en particular sobre el xinès tradicional o el simplificat."
 
 #. Translators: This is the setting to use both
@@ -578,10 +569,8 @@ msgstr ""
 "puntuació en el mode directe d'entrada."
 
 #: setup/main.py:590
-#, fuzzy
-#| msgid "<b>Candidate list</b>"
 msgid "Candidate list"
-msgstr "<b>Llista de candidats</b>"
+msgstr "Llista de candidats"
 
 #. Translators: A combobox to choose whether
 #. a candidate list should be shown or hidden.

@@ -34,15 +34,27 @@ IBUS_TABLE_LOCATION: Dict[str, str] = {
 }
 
 def data() -> str:
+    '''
+    Return the data directory (usually /usr/share/ibus-table/)
+    '''
     return IBUS_TABLE_LOCATION['data']
 
 def lib() -> str:
+    '''
+    Return the lib directory (usually /usr/libexec/ or /usr/lib/ibus/)
+    '''
     return IBUS_TABLE_LOCATION['lib']
 
 def data_home() -> str:
+    '''
+    Return the home data directory (usually ~/.local/share)
+    '''
     return IBUS_TABLE_LOCATION['data_home']
 
 def cache_home() -> str:
+    '''
+    Return the home cache directory (usually ~/.cache)
+    '''
     return IBUS_TABLE_LOCATION['cache_home']
 
 def _init() -> None:
@@ -97,7 +109,7 @@ def _init() -> None:
     if not os.access(IBUS_TABLE_LOCATION['cache_home'], os.F_OK):
         os.makedirs(IBUS_TABLE_LOCATION['cache_home'], exist_ok=True)
 
-class __ModuleInitializer:
+class __ModuleInitializer: # pylint: disable=too-few-public-methods,invalid-name
     def __init__(self) -> None:
         _init()
 

@@ -14,6 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+'''
+Module to check whether characters are used in simplified Chinese, traditional Chinese
+or used in both.
+'''
+
+# pylint: disable=too-many-lines
 
 VARIANTS_TABLE = {
     # Meaning of the bits in the values:

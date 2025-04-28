@@ -28,6 +28,7 @@ from typing import Tuple
 from typing import Dict
 from typing import Callable
 from enum import Enum, Flag
+# pylint: disable=wrong-import-position
 import sys
 import os
 import re
@@ -44,6 +45,7 @@ require_version('Gtk', '3.0')
 from gi.repository import Gtk
 require_version('IBus', '1.0')
 from gi.repository import IBus
+# pylint: enable=wrong-import-position
 
 import version
 import tabsqlitedb
@@ -180,7 +182,7 @@ def get_default_chinese_mode(database: tabsqlitedb.TabSqliteDb) -> int:
         if '_hk' in __lc or '_tw' in __lc or '_mo' in __lc:
             # HK, TW, and MO should prefer traditional Chinese by default
             return 3 # show traditional Chinese first
-        if database._is_chinese:
+        if database.is_db_chinese:
             # This table is used for Chinese, but we don’t
             # know for which variant. Therefore, better show
             # all Chinese characters and don’t prefer any
@@ -194,14 +196,20 @@ def get_default_chinese_mode(database: tabsqlitedb.TabSqliteDb) -> int:
                 'get_default_chinese_mode(): last fallback, '
                 'database is not Chinese, returning 4.')
         return 4 # show all Chinese characters
-    except:
-        LOGGER.exception('Exception in get_default_chinese_mode(), '
-                         'returning 4.')
+    except Exception as error: # pylint: disable=broad-except
+        LOGGER.exception(
+            'Exception in get_default_chinese_mode(), returning 4: %s: %s',
+            error.__class__.__name__, error)
         return 4
 
 def get_default_keybindings(
         gsettings: Gio.Settings,
         database: tabsqlitedb.TabSqliteDb) -> Dict[str, List[str]]:
+    '''Get the default keybindings, first from gsettings, then
+    override the gsettings values with the default from the database
+    if the database has a default for that setting.
+
+    '''
     default_keybindings: Dict[str, List[str]] = {}
     default_keybindings = variant_to_value(
         gsettings.get_default_value('keybindings'))
@@ -292,25 +300,19 @@ def get_default_keybindings(
                 name = 'F' + name
             elif name == '0':
                 name = 'F10'
+        default_keybindings[f'commit_candidate_{index + 1}'] = [name]
         default_keybindings[
-            'commit_candidate_%s' % (index + 1)
-        ] = [name]
+            f'commit_candidate_to_preedit_{index + 1}'] = ['Control+' + name]
         default_keybindings[
-            'commit_candidate_to_preedit_%s' % (index + 1)
-        ] = ['Control+' + name]
-        default_keybindings[
-            'remove_candidate_%s' % (index + 1)
-        ] = ['Mod1+' + name]
+            f'remove_candidate_{index + 1}'] = ['Mod1+' + name]
         if name in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0'):
+            default_keybindings[f'commit_candidate_{index + 1}'].append(
+                'KP_' + name)
             default_keybindings[
-                'commit_candidate_%s' % (index + 1)
-            ].append('KP_' + name)
+                f'commit_candidate_to_preedit_{index + 1}'].append(
+                    'Control+KP_' + name)
             default_keybindings[
-                'commit_candidate_to_preedit_%s' % (index + 1)
-            ].append('Control+KP_' + name)
-            default_keybindings[
-                'remove_candidate_%s' % (index + 1)
-            ].append('Mod1+KP_' + name)
+                f'remove_candidate_{index + 1}'].append('Mod1+KP_' + name)
     for command in default_keybindings:
         for keybinding in default_keybindings[command]:
             if 'VoidSymbol' in keybinding:
@@ -406,7 +408,7 @@ class Capabilite(Flag):
     def __or__(self, other: Any) -> Any:
         if self.__class__ is other.__class__:
             return self.value | other.value
-        if (other.__class__ is IBus.Capabilite):
+        if other.__class__ is IBus.Capabilite:
             return int(self) | int(other)
         if other.__class__ is int:
             return int(self) | other
@@ -418,7 +420,7 @@ class Capabilite(Flag):
     def __and__(self, other: Any) -> Any:
         if self.__class__ is other.__class__:
             return self.value & other.value
-        if (other.__class__ is IBus.Capabilite):
+        if other.__class__ is IBus.Capabilite:
             return int(self) & int(other)
         if other.__class__ is int:
             return int(self) & other
@@ -427,14 +429,14 @@ class Capabilite(Flag):
     def __rand__(self, other: Any) -> Any: # type: ignore[override]
         return self.__and__(other)
 
-    PREEDIT_TEXT = ('PREEDIT_TEXT')
-    AUXILIARY_TEXT = ('AUXILIARY_TEXT')
-    LOOKUP_TABLE = ('LOOKUP_TABLE')
-    FOCUS = ('FOCUS')
-    PROPERTY = ('PROPERTY')
-    SURROUNDING_TEXT = ('SURROUNDING_TEXT')
-    OSK = ('OSK')
-    SYNC_PROCESS_KEY = ('SYNC_PROCESS_KEY')
+    PREEDIT_TEXT = 'PREEDIT_TEXT'
+    AUXILIARY_TEXT = 'AUXILIARY_TEXT'
+    LOOKUP_TABLE = 'LOOKUP_TABLE'
+    FOCUS = 'FOCUS'
+    PROPERTY = 'PROPERTY'
+    SURROUNDING_TEXT = 'SURROUNDING_TEXT'
+    OSK = 'OSK'
+    SYNC_PROCESS_KEY = 'SYNC_PROCESS_KEY'
 
 class InputPurpose(Enum):
     '''Compatibility class to handle InputPurpose the same way no matter
@@ -532,17 +534,17 @@ class InputPurpose(Enum):
             return bool(int(self) <= other)
         return NotImplemented
 
-    FREE_FORM = ('FREE_FORM')
-    ALPHA = ('ALPHA')
-    DIGITS = ('DIGITS')
-    NUMBER = ('NUMBER')
-    PHONE = ('PHONE')
-    URL = ('URL')
-    EMAIL = ('EMAIL')
-    NAME = ('NAME')
-    PASSWORD = ('PASSWORD')
-    PIN = ('PIN')
-    TERMINAL = ('TERMINAL')
+    FREE_FORM = 'FREE_FORM'
+    ALPHA = 'ALPHA'
+    DIGITS = 'DIGITS'
+    NUMBER = 'NUMBER'
+    PHONE = 'PHONE'
+    URL = 'URL'
+    EMAIL = 'EMAIL'
+    NAME = 'NAME'
+    PASSWORD = 'PASSWORD'
+    PIN = 'PIN'
+    TERMINAL = 'TERMINAL'
 
 class InputHints(Flag):
     '''Compatibility class to handle InputHints the same way no matter
@@ -642,19 +644,19 @@ class InputHints(Flag):
     def __rand__(self, other: Any) -> Any: # type: ignore[override]
         return self.__and__(other)
 
-    NONE = ('NONE')
-    SPELLCHECK = ('SPELLCHECK')
-    NO_SPELLCHECK = ('NO_SPELLCHECK')
-    WORD_COMPLETION = ('WORD_COMPLETION')
-    LOWERCASE = ('LOWERCASE')
-    UPPERCASE_CHARS = ('UPPERCASE_CHARS')
-    UPPERCASE_WORDS = ('UPPERCASE_WORDS')
-    UPPERCASE_SENTENCES = ('UPPERCASE_SENTENCES')
-    INHIBIT_OSK = ('INHIBIT_OSK')
-    VERTICAL_WRITING = ('VERTICAL_WRITING')
-    EMOJI = ('EMOJI')
-    NO_EMOJI = ('NO_EMOJI')
-    PRIVATE = ('PRIVATE')
+    NONE = 'NONE'
+    SPELLCHECK = 'SPELLCHECK'
+    NO_SPELLCHECK = 'NO_SPELLCHECK'
+    WORD_COMPLETION = 'WORD_COMPLETION'
+    LOWERCASE = 'LOWERCASE'
+    UPPERCASE_CHARS = 'UPPERCASE_CHARS'
+    UPPERCASE_WORDS = 'UPPERCASE_WORDS'
+    UPPERCASE_SENTENCES = 'UPPERCASE_SENTENCES'
+    INHIBIT_OSK = 'INHIBIT_OSK'
+    VERTICAL_WRITING = 'VERTICAL_WRITING'
+    EMOJI = 'EMOJI'
+    NO_EMOJI = 'NO_EMOJI'
+    PRIVATE = 'PRIVATE'
 
 class KeyEvent:
     '''Key event class used to make the checking of details of the key
@@ -929,6 +931,10 @@ class HotKeys:
         return repr(self._hotkeys)
 
 class ItKeyInputDialog(Gtk.MessageDialog): # type: ignore
+    '''
+    A dialog to enter a key or a key combination to be used as a
+    key binding for a command.
+    '''
     def __init__(
             self,
             # Translators: This is used in the title bar of a dialog window
@@ -936,14 +942,14 @@ class ItKeyInputDialog(Gtk.MessageDialog): # type: ignore
             # key binding for a command.
             title: str = _('Key input'),
             parent: Gtk.Window = None) -> None:
-        Gtk.Dialog.__init__(
+        Gtk.MessageDialog.__init__(
             self,
             title=title,
             parent=parent)
         self.add_button(_('Cancel'), Gtk.ResponseType.CANCEL)
         self.set_modal(True)
         self.set_markup(
-            '<big><b>%s</b></big>'
+            '<big><b>%s</b></big>' # pylint: disable=consider-using-f-string
             # Translators: This is from the dialog to enter a key or a
             # key combination to be used as a key binding for a
             # command.
@@ -961,16 +967,21 @@ class ItKeyInputDialog(Gtk.MessageDialog): # type: ignore
 
     def on_key_press_event(# pylint: disable=no-self-use
             self, widget: Gtk.MessageDialog, event: Gdk.EventKey) -> bool:
+        '''Called when a key is pressed'''
         widget.e = (event.keyval,
                     event.get_state() & KEYBINDING_STATE_MASK)
         return True
 
     def on_key_release_event(# pylint: disable=no-self-use
             self, widget: Gtk.MessageDialog, _event: Gdk.EventKey) -> bool:
+        '''Called when a key is released'''
         widget.response(Gtk.ResponseType.OK)
         return True
 
 class ItAboutDialog(Gtk.AboutDialog): # type: ignore
+    '''
+    The “About” dialog for ibus-table
+    '''
     def  __init__(self, parent: Gtk.Window = None) -> None:
         Gtk.AboutDialog.__init__(self, parent=parent)
         self.set_modal(True)
@@ -980,7 +991,7 @@ class ItAboutDialog(Gtk.AboutDialog): # type: ignore
         # But it looks nicer if we do not use this and use
         #  Gtk.Window.set_default_icon_from_file(icon_file_name)
         # in the main window of the setup tool
-        self.set_title('码 IBus Table %s' %version.get_version())
+        self.set_title(f'码 IBus Table {version.get_version()}')
         self.set_program_name('码 IBus Table')
         self.set_version(version.get_version())
         self.set_comments(

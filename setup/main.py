@@ -44,6 +44,7 @@ import logging.handlers
 import dbus # type: ignore
 import dbus.service # type: ignore
 
+# pylint: disable=wrong-import-position
 from gi import require_version # type: ignore
 require_version('Gio', '2.0')
 from gi.repository import Gio # type: ignore
@@ -64,20 +65,17 @@ require_version('Pango', '1.0')
 from gi.repository import Pango
 require_version('IBus', '1.0')
 from gi.repository import IBus
-from i18n import N_, _, init as i18n_init
+# pylint: enable=wrong-import-position
 
-IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
-try:
-    import simpleaudio # type: ignore
-    IMPORT_SIMPLEAUDIO_SUCCESSFUL = True
-except (ImportError,):
-    IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
-
+# pylint: disable=import-error
 sys.path = [sys.path[0]+'/../engine'] + sys.path
 import tabsqlitedb
 import ibus_table_location
 import it_util
 import it_sound
+# pylint: enable=import-error
+
+from i18n import N_, _, init as i18n_init
 
 LOGGER = logging.getLogger('ibus-table')
 
@@ -124,7 +122,8 @@ class SetupUI(Gtk.Window): # type: ignore
     '''
     User interface of the setup tool
     '''
-    def __init__(self, engine_name: str = '') -> None:
+    def __init__( # pylint: disable=too-many-statements
+            self, engine_name: str = '') -> None:
         self._engine_name = engine_name
         Gtk.Window.__init__(
             self,
@@ -164,14 +163,14 @@ class SetupUI(Gtk.Window): # type: ignore
             user_db=user_database_filename,
             create_database=False)
 
-        self.__is_chinese = False
+        self.__is_db_chinese = False
         self.__is_cjk = False
         languages_str = self.tabsqlitedb.ime_properties.get('languages')
         if languages_str:
             languages = languages_str.split(',')
             for language in languages:
                 if language.strip().startswith('zh'):
-                    self.__is_chinese = True
+                    self.__is_db_chinese = True
                 for lang in ['zh', 'ja', 'ko']:
                     if language.strip().startswith(lang):
                         self.__is_cjk = True
@@ -185,7 +184,7 @@ class SetupUI(Gtk.Window): # type: ignore
 
         self._gsettings = Gio.Settings(
             schema='org.freedesktop.ibus.engine.table',
-            path='/org/freedesktop/ibus/engine/table/%s/' % self._engine_name)
+            path=f'/org/freedesktop/ibus/engine/table/{self._engine_name}/')
         self._fill_settings_dict()
         self.set_title(
             '码 IBus Table '
@@ -403,7 +402,7 @@ class SetupUI(Gtk.Window): # type: ignore
         self._chinese_mode_combobox.connect(
             "changed",
             self._on_chinese_mode_combobox_changed)
-        if self.__is_chinese:
+        if self.__is_db_chinese:
             _options_grid_row += 1
             self._options_grid.attach(
                 self._chinese_mode_label, 0, _options_grid_row, 1, 1)
@@ -1261,7 +1260,7 @@ class SetupUI(Gtk.Window): # type: ignore
         default_page_size = it_util.variant_to_value(
             self._gsettings.get_default_value('lookuptablepagesize'))
         for index in range(1, 10):
-            if not default_keybindings['commit_candidate_%s' % (index + 1)]:
+            if not default_keybindings[f'commit_candidate_{index + 1}']:
                 default_page_size = min(index, default_page_size)
                 break
         user_page_size = it_util.variant_to_value(
@@ -1511,7 +1510,7 @@ class SetupUI(Gtk.Window): # type: ignore
             'set_function': self.set_autowildcard_mode}
 
     @staticmethod
-    def __run_message_dialog(
+    def run_message_dialog(
             message: str,
             message_type: Gtk.MessageType = Gtk.MessageType.INFO) -> None:
         '''Run a dialog to show an error or warning message'''
@@ -1564,7 +1563,7 @@ class SetupUI(Gtk.Window): # type: ignore
         '''
         if (dbus.SessionBus().request_name("org.ibus.table")
                 != dbus.bus.REQUEST_NAME_REPLY_PRIMARY_OWNER):
-            self.__class__.__run_message_dialog(
+            self.__class__.run_message_dialog(
                 _("Another instance of this app is already running."),
                 Gtk.MessageType.ERROR)
             sys.exit(1)
@@ -1640,13 +1639,12 @@ class SetupUI(Gtk.Window): # type: ignore
             _('Do you really want to restore all default settings?'))
         if response == Gtk.ResponseType.OK:
             LOGGER.info('Restoring all defaults.')
-            for key in self._settings_dict:
-                self._settings_dict[key]['set_function'](
-                    self._settings_dict[key]['default'],
-                    update_gsettings=True)
-                self._settings_dict[key]['set_function'](
-                    self._settings_dict[key]['default'],
-                    update_gsettings=False)
+            for _key, value in self._settings_dict.items():
+                value['set_function'](value['default'], update_gsettings=True)
+                # Call it again with update_gsettings=False to make
+                # sure the active state of checkbuttons etc.  is
+                # updated immediately:
+                value['set_function'](value['default'], update_gsettings=False)
         else:
             LOGGER.info('Restore all defaults cancelled.')
         self._restore_all_defaults_button.set_sensitive(True)
@@ -1913,9 +1911,10 @@ class SetupUI(Gtk.Window): # type: ignore
             # been called already and this should have set
             # self._keybindings_selected_command
             LOGGER.error(
-                'Unexpected error, command = "%s" ' % command
-                + 'self._keybindings_selected_command = "%s"\n'
-                % self._keybindings_selected_command)
+                'Unexpected error, command = "%s" '
+                'self._keybindings_selected_command = "%s"\n',
+                command,
+                self._keybindings_selected_command)
             return
         self._create_and_show_keybindings_edit_popover()
 

@@ -68,6 +68,7 @@ class SoundObject:
         self._wav_file: Optional[wave.Wave_read] = None
         self._paudio: Optional[pyaudio.PyAudio] = None
         self._play_pyaudio_thread: Optional[threading.Thread] = None
+        self._stop_event_paudio: Optional[threading.Event] = None
         self._simpleaudio_wave_o: Optional[simpleaudio.WaveObject] = None
         self._simpleaudio_play_o: Optional[simpleaudio.shiny.PlayObject] = None
         self._aplay_binary: Optional[str] = None
@@ -149,7 +150,7 @@ class SoundObject:
     def _init_pyaudio(self) -> str:
         if not IMPORT_PYAUDIO_SUCCESSFUL:
             return ''
-        (mime_type, encoding) = mimetypes.guess_type(self._path_to_sound_file)
+        (mime_type, _encoding) = mimetypes.guess_type(self._path_to_sound_file)
         if mime_type not in ('audio/x-wav',):
             LOGGER.error(
                 'File %s has mime type %s and is not supported by simpleaudio',
@@ -158,7 +159,7 @@ class SoundObject:
         try:
             self._wav_file = wave.open(self._path_to_sound_file, 'rb')
             self._paudio = pyaudio.PyAudio()
-            self._stop_event_paudio: threading.Event = threading.Event()
+            self._stop_event_paudio = threading.Event()
             LOGGER.info('portaudio version = %s',
                         pyaudio.get_portaudio_version_text())
             return 'pyaudio'
@@ -171,7 +172,7 @@ class SoundObject:
     def _init_simpleaudio(self) -> str:
         if not IMPORT_SIMPLEAUDIO_SUCCESSFUL:
             return ''
-        (mime_type, encoding) = mimetypes.guess_type(self._path_to_sound_file)
+        (mime_type, _encoding) = mimetypes.guess_type(self._path_to_sound_file)
         if mime_type not in ('audio/x-wav',):
             LOGGER.error(
                 'File %s has mime type %s and is not supported by simpleaudio',
@@ -188,7 +189,7 @@ class SoundObject:
         return ''
 
     def _init_aplay(self) -> str:
-        (mime_type, encoding) = mimetypes.guess_type(self._path_to_sound_file)
+        (mime_type, _encoding) = mimetypes.guess_type(self._path_to_sound_file)
         if mime_type not in ('audio/x-wav',):
             LOGGER.error(
                 'File %s has mime type %s and is not supported by aplay',
@@ -251,7 +252,8 @@ class SoundObject:
         LOGGER.info('Done playing sound with pyaudio.')
 
     def _play_pyaudio(self) -> None:
-        self._stop_event_paudio.clear()
+        if self._stop_event_paudio:
+            self._stop_event_paudio.clear()
         self._play_pyaudio_thread = threading.Thread(
             daemon=True,
             target=self._play_pyaudio_thread_function,
@@ -265,6 +267,8 @@ class SoundObject:
 
     def _stop_pyaudio(self) -> None:
         if not self._play_pyaudio_thread:
+            return
+        if not self._stop_event_paudio:
             return
         if (self._play_pyaudio_thread.is_alive()
             and not self._stop_event_paudio.is_set()):
@@ -328,13 +332,14 @@ class SoundObject:
         if not self._aplay_binary:
             return
         try:
-            self._aplay_process = subprocess.Popen('aplay', shell=False,
-                                                   stdin=subprocess.PIPE,
-                                                   stderr=subprocess.PIPE,
-                                                   stdout=subprocess.PIPE,
-                                                   encoding=None,
-                                                   errors=None,
-                                                   text=None)
+            self._aplay_process = subprocess.Popen( # pylint: disable=consider-using-with
+                'aplay', shell=False,
+                stdin=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                encoding=None,
+                errors=None,
+                text=None)
         except (OSError, ValueError) as error:
             LOGGER.exception(
                 'cannot start aplay process %s: %s',
@@ -351,7 +356,7 @@ class SoundObject:
             return
         try:
             self._aplay_process.terminate()
-        except Exception as error:
+        except Exception as error: # pylint: disable=broad-except
             LOGGER.exception(
                 'cannot terminate aplay process %s: %s',
                 error.__class__.__name__, error)
@@ -359,10 +364,10 @@ class SoundObject:
                 LOGGER.info('Trying to kill aplay process')
                 self._aplay_process.kill()
                 LOGGER.info('aplay process killed')
-            except Exception as error:
+            except Exception as error2: # pylint: disable=broad-except
                 LOGGER.exception(
                     'cannot kill aplay process%s: %s',
-                    error.__class__.__name__, error)
+                    error.__class__.__name__, error2)
 
     def _play_aplay(self) -> None:
         self._play_aplay_thread = threading.Thread(
@@ -383,17 +388,17 @@ class SoundObject:
             and self._aplay_process.poll() is None):
             try:
                 self._aplay_process.terminate()
-            except Exception as error:
+            except Exception as error: # pylint: disable=broad-except
                 LOGGER.exception(
                 'cannot terminate aplay process %s: %s',
                 error.__class__.__name__, error)
                 try:
                     LOGGER.info('Trying to kill aplay process')
                     self._aplay_process.kill()
-                except Exception as error:
+                except Exception as error2: # pylint: disable=broad-except
                     LOGGER.exception(
                         'cannot kill aplay process%s: %s',
-                    error.__class__.__name__, error)
+                        error.__class__.__name__, error2)
         if self._play_aplay_thread.is_alive():
             self._play_aplay_thread.join(timeout=0.1)
             if self._play_aplay_thread.is_alive():

@@ -18,21 +18,24 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
-
+'''
+Main program of ibus-table
+'''
 from typing import Any
 from typing import Union
 import os
 import re
 import sys
 import argparse
-from signal import signal, SIGTERM, SIGINT
 import logging
 import logging.handlers
-
+from signal import signal, SIGTERM, SIGINT
+# pylint: disable=wrong-import-position
 from gi import require_version # type: ignore
 require_version('IBus', '1.0')
 from gi.repository import IBus # type: ignore
 from gi.repository import GLib
+# pylint: enable=wrong-import-position
 
 import tabsqlitedb
 import ibus_table_location
@@ -130,6 +133,7 @@ else:
     import factory
 
 class IMApp:
+    '''Input method application class'''
     def __init__(self, dbfile: str, exec_by_ibus: bool) -> None:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('IMApp.__init__(dbfile=%s, exec_by_ibus=%s)\n',
@@ -137,7 +141,9 @@ class IMApp:
         self.__mainloop = GLib.MainLoop()
         self.__bus: IBus.Bus = IBus.Bus()
         self.__bus.connect("disconnected", self.__bus_destroy_cb)
+        # pylint: disable=possibly-used-before-assignment
         self.__factory = factory.EngineFactory(self.__bus, dbfile)
+        # pylint: enable=possibly-used-before-assignment
         self.destroyed = False
         if exec_by_ibus:
             self.__bus.request_name("org.freedesktop.IBus.Table", 0)
@@ -178,7 +184,7 @@ class IMApp:
                 icon = os.path.join(ICON_DIR, icon)
                 if not os.access(icon, os.F_OK):
                     icon = ''
-            setup_arg = "{} --engine-name {}".format(SETUP_CMD, name)
+            setup_arg = f'{SETUP_CMD} --engine-name {name}'
             engine = IBus.EngineDesc(name=name,
                                      longname=longname,
                                      description=description,
@@ -194,6 +200,7 @@ class IMApp:
 
 
     def run(self) -> None:
+        '''Run the input method application'''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('IMApp.run()\n')
         if _ARGS.profile:
@@ -202,6 +209,7 @@ class IMApp:
         self.__bus_destroy_cb()
 
     def quit(self) -> None:
+        '''Quit the input method application'''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('IMApp.quit()\n')
         self.__bus_destroy_cb()
@@ -228,6 +236,9 @@ class IMApp:
             LOGGER.info('Profiling info:\n%s', stats_stream.getvalue())
 
 def cleanup(ima_ins: IMApp) -> None:
+    '''
+    Clean up when the input method application was killed by a signal
+    '''
     ima_ins.quit()
     sys.exit()
 
@@ -239,12 +250,15 @@ def indent(element: Any, level: int = 0) -> None:
     if len(element):
         if not element.text or not element.text.strip():
             element.text = i + "    "
+        last_subelement = None
         for subelement in element:
+            last_subelement = subelement
             indent(subelement, level+1)
             if not subelement.tail or not subelement.tail.strip():
                 subelement.tail = i + "    "
-        if not subelement.tail or not subelement.tail.strip():
-            subelement.tail = i
+        if (last_subelement is not None
+            and (not last_subelement.tail or not last_subelement.tail.strip())):
+            last_subelement.tail = i
     else:
         if level and (not element.tail or not element.tail.strip()):
             element.tail = i
@@ -270,21 +284,23 @@ def write_xml() -> None:
         # BYO_DB_DIR does not exist or is not accessible
         pass
 
-    egs = Element('engines')
+    egs = Element('engines') # pylint: disable=possibly-used-before-assignment
     for _db in _all_dbs:
         _sq_db = tabsqlitedb.TabSqliteDb(_db, user_db='')
-        _engine = SubElement(egs, 'engine')
+        _engine = SubElement( # pylint: disable=possibly-used-before-assignment
+            egs, 'engine')
 
         _name = SubElement(_engine, 'name')
         engine_name = os.path.basename(_db).replace('.db', '')
         _name.text = 'table:'+engine_name
-        setup_arg = "{} --engine-name {}".format(SETUP_CMD, _name.text)
+        setup_arg = f'{SETUP_CMD} --engine-name {_name.text}'
 
         _longname = SubElement(_engine, 'longname')
         _longname.text = ''
         # getdefaultlocale() returns something like ('ja_JP', 'UTF-8').
         # In case of C/POSIX locale it returns (None, None)
-        locale.setlocale(locale.LC_ALL, '')
+        locale.setlocale( # pylint: disable=possibly-used-before-assignment
+            locale.LC_ALL, '')
         _locale = locale.getlocale(locale.LC_MESSAGES)[0]
         if _locale:
             _locale = _locale.lower()
@@ -338,7 +354,8 @@ def write_xml() -> None:
 
     # now format the xmlout pretty
     indent(egs)
-    egsout = tostring(egs, encoding='utf8').decode('utf-8')
+    egsout = tostring( # pylint: disable=possibly-used-before-assignment
+        egs, encoding='utf8').decode('utf-8')
     patt = re.compile(r'<\?.*\?>\n')
     egsout = patt.sub('', egsout)
     # Always write xml output in UTF-8 encoding, not in the
@@ -382,9 +399,7 @@ def main() -> None:
         if os.access(_ARGS.db, os.F_OK):
             db = _ARGS.db
         else:
-            db = '{}{}{}'.format(DB_DIR,
-                             os.path.sep,
-                             os.path.basename(_ARGS.db))
+            db = os.path.join(DB_DIR, os.path.basename(_ARGS.db))
     else:
         db = ""
     ima = IMApp(db, _ARGS.ibus)

@@ -18,18 +18,23 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
-
+'''
+TabEngine Factory
+'''
 from typing import Dict
 from typing import Optional
+from typing import Callable
 import os
 import re
 import logging
 from gettext import dgettext
-_ = lambda a: dgettext("ibus-table", a)
-N_ = lambda a: a
+_: Callable[[str], str] = lambda a: dgettext("ibus-table", a)
+N_: Callable[[str], str] = lambda a: a
 from gi import require_version # type: ignore
+# pylint: disable=wrong-import-position
 require_version('IBus', '1.0')
 from gi.repository import IBus # type: ignore
+# pylint: enable=wrong-import-position
 import table
 import tabsqlitedb
 
@@ -40,7 +45,7 @@ DEBUG_LEVEL = int(0)
 class EngineFactory(IBus.Factory): # type: ignore
     """Table IM Engine Factory"""
     def __init__(self, bus: IBus.Bus, db: str = '') -> None:
-        global DEBUG_LEVEL
+        global DEBUG_LEVEL # pylint: disable=global-statement
         try:
             DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
         except (TypeError, ValueError):
@@ -64,7 +69,8 @@ class EngineFactory(IBus.Factory): # type: ignore
         self.engine_id = 0
         self.engine_path = ''
 
-    def do_create_engine(self, engine_name: str) -> table.TabEngine:
+    def do_create_engine( # pylint: disable=arguments-differ
+            self, engine_name: str) -> table.TabEngine:
         if DEBUG_LEVEL > 1:
             LOGGER.debug(
                 'EngineFactory.do_create_engine(engine_name=%s)\n',
@@ -96,17 +102,20 @@ class EngineFactory(IBus.Factory): # type: ignore
             self.engine_id += 1
             #return engine.get_dbus_object()
             return engine
-        except:
-            LOGGER.exception('failed to create engine %s', engine_name)
-            raise Exception('Cannot create engine %s' %engine_name)
+        except Exception as error: # pylint: disable=broad-except
+            LOGGER.exception(
+                'Failed to create engine %s: %s: %s',
+                engine_name, error.__class__.__name__, error)
+            raise Exception from error # pylint: disable=broad-exception-raised
 
-    def do_destroy(self) -> None:
+    def do_destroy(self) -> None: # pylint: disable=arguments-differ
         '''Destructor, which finish some task for IME'''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('EngineFactory.do_destroy()\n')
         #
         ## we need to sync the temp userdb in memory to the user_db on disk
-        for _db in self.dbdict:
-            self.dbdict[_db].sync_usrdb()
+        for key, database in self.dbdict.items():
+            LOGGER.info('Syncing %s %s', key, database)
+            database.sync_usrdb()
         ##print "Have synced user db\n"
         super().destroy()

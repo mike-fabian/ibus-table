@@ -30,7 +30,6 @@ from typing import Union
 from typing import Optional
 from typing import Callable
 import os
-import os.path as path
 import shutil
 import sqlite3
 import uuid
@@ -99,8 +98,10 @@ class ImeProperties:
         sqlstr = 'SELECT attr, val FROM main.ime;'
         try:
             results = db.execute(sqlstr).fetchall()
-        except:
-            LOGGER.exception('Cannot get ime properties from database')
+        except Exception as error: # pylint: disable=broad-except
+            LOGGER.exception(
+                'Cannot get ime properties from database: %s: %s',
+                error.__class__.__name__, error)
         for result in results:
             self.ime_property_cache[result[0]] = result[1]
 
@@ -115,7 +116,7 @@ class ImeProperties:
         return ''
 
     def __str__(self) -> str:
-        return 'ime_property_cache = %s' %repr(self.ime_property_cache)
+        return f'ime_property_cache = {repr(self.ime_property_cache)}'
 
 class TabSqliteDb:
     '''Phrase database for tables
@@ -150,7 +151,7 @@ class TabSqliteDb:
             user_db: str = '',
             create_database: bool = False,
             unit_test: bool = False) -> None:
-        global DEBUG_LEVEL
+        global DEBUG_LEVEL # pylint: disable=global-statement
         try:
             DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
         except (TypeError, ValueError):
@@ -163,7 +164,7 @@ class TabSqliteDb:
         if create_database or os.path.isfile(self.filename):
             self.db: sqlite3.dbapi2.Connection = sqlite3.connect(self.filename)
         else:
-            print('Cannot open database file %s' %self.filename)
+            print(f'Cannot open database file {self.filename}')
         try:
             self.db.execute('PRAGMA encoding = "UTF-8";')
             self.db.execute('PRAGMA case_sensitive_like = true;')
@@ -173,8 +174,10 @@ class TabSqliteDb:
             self.db.execute('PRAGMA temp_store = MEMORY;')
             self.db.execute('PRAGMA journal_size_limit = 1000000;')
             self.db.execute('PRAGMA synchronous = NORMAL;')
-        except:
-            LOGGER.exception('Error while initializing database')
+        except Exception as error: # pylint: disable=broad-except:
+            LOGGER.exception(
+                'Error while initializing database: %s: %s',
+                error.__class__.__name__, error)
         # create IME property table
         self.db.executescript(
             'CREATE TABLE IF NOT EXISTS main.ime (attr TEXT, val TEXT);')
@@ -188,8 +191,8 @@ class TabSqliteDb:
             'name.zh_hk':'',
             'name.zh_tw':'',
             'author':'somebody',
-            'uuid':'%s' % uuid.uuid4(),
-            'serial_number':'%s' % time.strftime('%Y%m%d'),
+            'uuid': f'{uuid.uuid4()}',
+            'serial_number': f'{time.strftime("%Y%m%d")}',
             'icon':'ibus-table.svg',
             'license':'LGPL',
             'languages':'',
@@ -243,8 +246,8 @@ class TabSqliteDb:
         # shared variables in this class:
         self._mlen = int(self.ime_properties.get("max_key_length"))
         self._snum = self.ime_properties.get("serial_number")
-        self._is_chinese = self.is_chinese()
-        self._is_cjk = self.is_cjk()
+        self.is_db_chinese = self.is_chinese()
+        self.is_db_cjk = self.is_cjk()
         self.user_can_define_phrase = (self.ime_properties.get(
             'user_can_define_phrase').lower() == 'true')
 
@@ -252,9 +255,9 @@ class TabSqliteDb:
         self.possible_tabkeys_lengths = self.get_possible_tabkeys_lengths()
         self.startchars = self.get_start_chars()
 
-        tables_path = path.join(ibus_table_location.data_home(), 'tables')
+        tables_path = os.path.join(ibus_table_location.data_home(), 'tables')
         cache_name = os.path.basename(self.filename).replace('.db', '.cache')
-        self.cache_path = path.join(tables_path, cache_name)
+        self.cache_path = os.path.join(tables_path, cache_name)
         if not unit_test:
             self.load_phrases_cache()
 
@@ -276,9 +279,9 @@ class TabSqliteDb:
             #
             # “HOME=/foobar ibus-table-createdb” should not fail if
             # “/foobar” is not writeable.
-            if not path.isdir(tables_path):
+            if not os.path.isdir(tables_path):
                 old_tables_path = os.path.expanduser('~/.ibus/tables')
-                if path.isdir(old_tables_path):
+                if os.path.isdir(old_tables_path):
                     if os.access(os.path.join(
                             old_tables_path, 'debug.log'), os.F_OK):
                         os.unlink(os.path.join(old_tables_path, 'debug.log'))
@@ -291,8 +294,8 @@ class TabSqliteDb:
                     os.symlink(tables_path, old_tables_path)
                 else:
                     os.makedirs(tables_path, exist_ok=True)
-            user_db = path.join(tables_path, user_db)
-            if not path.exists(user_db):
+            user_db = os.path.join(tables_path, user_db)
+            if not os.path.exists(user_db):
                 LOGGER.debug(
                     'The user database %s does not exist yet.', user_db)
             else:
@@ -635,7 +638,7 @@ class TabSqliteDb:
             default_properties=self._default_ime_attributes)
         # The self variables used by tabcreatedb.py need to be updated now:
         self._mlen = int(self.ime_properties.get('max_key_length'))
-        self._is_chinese = self.is_chinese()
+        self.is_db_chinese = self.is_chinese()
         self.user_can_define_phrase = (self.ime_properties.get(
             'user_can_define_phrase').lower() == 'true')
         self.rules = self.get_rules()
@@ -983,17 +986,17 @@ class TabSqliteDb:
                 'cangjie3', 'cangjie5', 'cangjie-big',
                 'quick-classic', 'quick3', 'quick5']:
             code_point_function = self.big5_code
-        if self._is_chinese:
+        if self.is_db_chinese:
             pinyin_exact_match_function: Callable[[str], int] = lambda x: (
                 - int(typed_tabkeys == x[:-1] and  x[-1] in '!@#$%')
             )
         else:
             pinyin_exact_match_function = lambda x: (1)
-        if chinese_mode in (2, 3) and self._is_chinese:
+        if chinese_mode in (2, 3) and self.is_db_chinese:
             if chinese_mode == 2:
-                bitmask = (1 << 0) # used in simplified Chinese
+                bitmask = 1 << 0 # used in simplified Chinese
             else:
-                bitmask = (1 << 1) # used in traditional Chinese
+                bitmask = 1 << 1 # used in traditional Chinese
             return sorted(candidates,
                           key=lambda x: (
                               - int(
@@ -1092,9 +1095,9 @@ class TabSqliteDb:
         unfiltered_results = self.db.execute(sqlstr, sqlargs).fetchall()
         bitmask = None
         if chinese_mode == 0:
-            bitmask = (1 << 0) # simplified only
+            bitmask = 1 << 0 # simplified only
         elif chinese_mode == 1:
-            bitmask = (1 << 1) # traditional only
+            bitmask = 1 << 1 # traditional only
         if not bitmask:
             results = unfiltered_results
         else:
@@ -1161,9 +1164,9 @@ class TabSqliteDb:
         # which was returned before I simplified the pinyin database table.
         bitmask = None
         if chinese_mode == 0:
-            bitmask = (1 << 0) # simplified only
+            bitmask = 1 << 0 # simplified only
         elif chinese_mode == 1:
-            bitmask = (1 << 1) # traditional only
+            bitmask = 1 << 1 # traditional only
         phrase_frequencies: List[Tuple[str, str, int, int]] = []
         for (pinyin, zi, freq) in results:
             if not bitmask:
@@ -1253,7 +1256,7 @@ class TabSqliteDb:
         '''
         if db_file == ':memory:':
             return
-        if not path.exists(db_file):
+        if not os.path.exists(db_file):
             db = sqlite3.connect(db_file)
             # 20000 pages should be enough to cache the whole database
             db.executescript('''
@@ -1268,7 +1271,8 @@ class TabSqliteDb:
             ''')
             db.commit()
 
-    def get_database_desc(self, db_file: str) -> Optional[Dict[str, str]]:
+    @classmethod
+    def get_database_desc(cls, db_file: str) -> Optional[Dict[str, str]]:
         '''
         Get the description table from the database
 
@@ -1276,7 +1280,7 @@ class TabSqliteDb:
         :type db_file: String
         :rtype: Dictionary
         '''
-        if not path.exists(db_file):
+        if not os.path.exists(db_file):
             return None
         try:
             db = sqlite3.connect(db_file)
@@ -1285,10 +1289,15 @@ class TabSqliteDb:
                 desc[row[0]] = row[1]
             db.close()
             return desc
-        except:
+        except Exception as error: # pylint: disable=broad-except
+            LOGGER.exception(
+                'Unexpected error getting database description: %s: %s',
+                 error.__class__.__name__, error)
             return None
 
-    def get_number_of_columns_of_phrase_table(self, db_file: str) -> int:
+    @classmethod
+    def get_number_of_columns_of_phrase_table(
+            cls, db_file: str) -> Optional[int]:
         '''
         Get the number of columns in the 'phrases' table in
         the database in db_file.
@@ -1307,8 +1316,8 @@ class TabSqliteDb:
         :param db_file: Full path of the database file.
         :rtype: Integer
         '''
-        if not path.exists(db_file):
-            return 0
+        if not os.path.exists(db_file):
+            return None
         try:
             db = sqlite3.connect(db_file)
             tp_res = db.execute(
@@ -1322,7 +1331,11 @@ class TabSqliteDb:
                 tp = res.group(1).split(',')
                 return len(tp)
             return 0
-        except:
+        except Exception as error: # pylint: disable=broad-except
+            LOGGER.exception(
+                'Unexpected error getting number of columns '
+                'of database: %s: %s',
+                 error.__class__.__name__, error)
             return 0
 
     def get_goucima(self, zi: str) -> str:
@@ -1484,10 +1497,10 @@ class TabSqliteDb:
             LOGGER.debug('tabkey=%s phrase=%s', tabkeys, phrase)
         if not tabkeys or not phrase:
             return
-        if self._is_chinese and phrase in CHINESE_NOCHECK_CHARS:
+        if self.is_db_chinese and phrase in CHINESE_NOCHECK_CHARS:
             return
         if not dynamic_adjust:
-            if not self.user_can_define_phrase or not self._is_chinese:
+            if not self.user_can_define_phrase or not self.is_db_chinese:
                 return
             tabkeys = self.parse_phrase(phrase)
             if not tabkeys:
@@ -1515,7 +1528,7 @@ class TabSqliteDb:
                         tabkeys=tabkeys, phrase=phrase, freq=0, user_freq=1,
                         database='user_db')
             else:
-                if not self.user_can_define_phrase or not self._is_chinese:
+                if not self.user_can_define_phrase or not self.is_db_chinese:
                     return
                 tabkeys = self.parse_phrase(phrase)
                 if not tabkeys:
@@ -1591,9 +1604,10 @@ class TabSqliteDb:
             self.db.commit()
             self.db.execute('PRAGMA wal_checkpoint;')
             self.reset_phrases_cache()
-        except Exception:
+        except Exception as error: # pylint: disable=broad-except
             LOGGER.exception(
-                'Unexpected error removing all phrases from database.')
+                'Unexpected error removing all phrases from database: %s: %s',
+                 error.__class__.__name__, error)
 
     def extract_user_phrases(
             self,
@@ -1659,6 +1673,8 @@ class TabSqliteDb:
                 'Recovered phrases from the very old database: '
                 'phrases=%s', repr(phrases))
             return phrases[:]
-        except:
-            LOGGER.exception('Unexpected error in extract_user_phrases()')
+        except Exception as error: # pylint: disable=broad-except:
+            LOGGER.exception(
+                'Unexpected error extracting user phrases: %s: %s',
+                 error.__class__.__name__, error)
             return []

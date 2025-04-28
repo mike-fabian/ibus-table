@@ -31,26 +31,37 @@ import unittest
 import importlib
 from unittest import mock
 
+# pylint: disable=wrong-import-position
 from gi import require_version # type: ignore
 require_version('IBus', '1.0')
 from gi.repository import IBus # type: ignore
+# pylint: enable=wrong-import-position
 
 LOGGER = logging.getLogger('ibus-table')
 
 # Get more verbose output in the test log:
 os.environ['IBUS_TABLE_DEBUG_LEVEL'] = '255'
 
-# Monkey patch the environment with the mock classes:
+# pylint: disable=import-error
 from mock_engine import MockEngine
 from mock_engine import MockLookupTable
 from mock_engine import MockProperty
 from mock_engine import MockPropList
+# pylint: enable=import-error
 
+# pylint: disable=wrong-import-order
 sys.path.insert(0, "../engine")
+# pylint: disable=import-error
 import table
 import tabsqlitedb
-import ibus_table_location
+# pylint: enable=import-error
 sys.path.pop(0)
+# pylint: enable=wrong-import-order
+
+# pylint: disable=protected-access
+# pylint: disable=missing-function-docstring
+# pylint: disable=invalid-name
+# pylint: disable=global-statement
 
 ENGINE_PATCHER = mock.patch.object(
     IBus, 'Engine', new=MockEngine)
@@ -91,7 +102,6 @@ ORIG_DYNAMIC_ADJUST = None
 ORIG_DEBUG_LEVEL = None
 
 def backup_original_settings() -> None:
-    global ENGINE
     global ORIG_KEYBINDINGS
     global ORIG_INPUT_MODE
     global ORIG_CHINESE_MODE
@@ -111,7 +121,7 @@ def backup_original_settings() -> None:
     global ORIG_SUGGESTION_MODE
     global ORIG_DYNAMIC_ADJUST
     global ORIG_DEBUG_LEVEL
-    assert(ENGINE is not None)
+    assert ENGINE is not None
     ORIG_KEYBINDINGS = ENGINE.get_keybindings()
     ORIG_INPUT_MODE = ENGINE.get_input_mode()
     ORIG_CHINESE_MODE = ENGINE.get_chinese_mode()
@@ -133,27 +143,7 @@ def backup_original_settings() -> None:
     ORIG_DEBUG_LEVEL = ENGINE.get_debug_level()
 
 def restore_original_settings() -> None:
-    global ENGINE
-    global ORIG_KEYBINDINGS
-    global ORIG_INPUT_MODE
-    global ORIG_CHINESE_MODE
-    global ORIG_LETTER_WIDTH
-    global ORIG_PUNCTUATION_WIDTH
-    global ORIG_ALWAYS_SHOW_LOOKUP
-    global ORIG_LOOKUP_TABLE_ORIENTATION
-    global ORIG_PAGE_SIZE
-    global ORIG_ONECHAR_MODE
-    global ORIG_AUTOSELECT_MODE
-    global ORIG_AUTOCOMMIT_MODE
-    global ORIG_COMMIT_INVALID_MODE
-    global ORIG_AUTOWILDCARD_MODE
-    global ORIG_SINGLE_WILDCARD_CHAR
-    global ORIG_MULTI_WILDCARD_CHAR
-    global ORIG_PINYIN_MODE
-    global ORIG_SUGGESTION_MODE
-    global ORIG_DYNAMIC_ADJUST
-    global ORIG_DEBUG_LEVEL
-    assert(ENGINE is not None)
+    assert ENGINE is not None
     ENGINE.set_keybindings(
         ORIG_KEYBINDINGS, update_gsettings=False)
     ENGINE.set_input_mode(ORIG_INPUT_MODE)
@@ -191,11 +181,10 @@ def restore_original_settings() -> None:
     ENGINE.set_dynamic_adjust(ORIG_DYNAMIC_ADJUST)
     ENGINE.set_debug_level(ORIG_DEBUG_LEVEL, update_gsettings=False)
 
+# pylint: disable=too-many-branches
 def set_default_settings() -> None:
-    global ENGINE
-    global TABSQLITEDB
-    assert(ENGINE is not None)
-    assert(TABSQLITEDB is not None)
+    assert ENGINE is not None
+    assert TABSQLITEDB is not None
     ENGINE.set_input_mode(input_mode=1)
     chinese_mode = 4
     language_filter = TABSQLITEDB.ime_properties.get('language_filter')
@@ -208,7 +197,7 @@ def set_default_settings() -> None:
     def_full_width_letter = TABSQLITEDB.ime_properties.get(
         'def_full_width_letter')
     if def_full_width_letter:
-        letter_width_mode = (def_full_width_letter.lower() == 'true')
+        letter_width_mode = def_full_width_letter.lower() == 'true'
     ENGINE.set_letter_width(
         mode=False, input_mode=0, update_gsettings=False)
     ENGINE.set_letter_width(
@@ -218,7 +207,7 @@ def set_default_settings() -> None:
     def_full_width_punct = TABSQLITEDB.ime_properties.get(
         'def_full_width_punct')
     if def_full_width_punct:
-        punctuation_width_mode = (def_full_width_punct.lower() == 'true')
+        punctuation_width_mode = def_full_width_punct.lower() == 'true'
     ENGINE.set_punctuation_width(
         mode=False, input_mode=0, update_gsettings=False)
     ENGINE.set_punctuation_width(
@@ -228,7 +217,7 @@ def set_default_settings() -> None:
     always_show_lookup = TABSQLITEDB.ime_properties.get(
         'always_show_lookup')
     if always_show_lookup:
-        always_show_lookup_mode = (always_show_lookup.lower() == 'true')
+        always_show_lookup_mode = always_show_lookup.lower() == 'true'
     ENGINE.set_always_show_lookup(
         always_show_lookup_mode, update_gsettings=False)
 
@@ -251,7 +240,7 @@ def set_default_settings() -> None:
     dynamic_adjust = False
     dynamic_adjust = TABSQLITEDB.ime_properties.get('dynamic_adjust')
     if dynamic_adjust:
-        dynamic_adjust = (dynamic_adjust.lower() == 'true')
+        dynamic_adjust = dynamic_adjust.lower() == 'true'
     else:
         dynamic_adjust = True
     ENGINE.set_dynamic_adjust(
@@ -260,14 +249,14 @@ def set_default_settings() -> None:
     auto_select_mode = False
     auto_select = TABSQLITEDB.ime_properties.get('auto_select')
     if auto_select:
-        auto_select_mode = (auto_select.lower() == 'true')
+        auto_select_mode = auto_select.lower() == 'true'
     ENGINE.set_autoselect_mode(
         auto_select_mode, update_gsettings=False)
 
     auto_commit_mode = False
     auto_commit = TABSQLITEDB.ime_properties.get('auto_commit')
     if auto_commit:
-        auto_commit_mode = (auto_commit.lower() == 'true')
+        auto_commit_mode = auto_commit.lower() == 'true'
     ENGINE.set_autocommit_mode(
         auto_commit_mode, update_gsettings=False)
 
@@ -290,7 +279,7 @@ def set_default_settings() -> None:
     auto_wildcard_mode = True
     auto_wildcard = TABSQLITEDB.ime_properties.get('auto_wildcard')
     if auto_wildcard:
-        auto_wildcard_mode = (auto_wildcard.lower() == 'true')
+        auto_wildcard_mode = auto_wildcard.lower() == 'true'
     ENGINE.set_autowildcard_mode(
         auto_wildcard_mode, update_gsettings=False)
 
@@ -332,6 +321,7 @@ def set_default_settings() -> None:
 
     # Get more verbose output in the test log:
     ENGINE.set_debug_level(255)
+# pylint: enable=too-many-branches
 
 def set_up(engine_name: str) -> bool:
     '''
@@ -340,16 +330,6 @@ def set_up(engine_name: str) -> bool:
     :param engine_name: The name of the engine to setup
     :return: True if the engine could be setup successfully, False if not.
     '''
-    global ENGINE_PATCHER
-    global ENGINE_SIMPLE_PATCHER
-    global LOOKUP_TABLE_PATCHER
-    global PROPERTY_PATCHER
-    global PROP_LIST_PATCHER
-    global IBUS_ENGINE
-    global IBUS_ENGINE_SIMPLE
-    global IBUS_LOOKUP_TABLE
-    global IBUS_PROPERTY
-    global IBUS_PROP_LIST
     global TABSQLITEDB
     global ENGINE
     ENGINE_PATCHER.start()
@@ -384,7 +364,7 @@ def set_up(engine_name: str) -> bool:
         filename=db_file, user_db=':memory:', unit_test=True)
     ENGINE = table.TabEngine(
         bus,
-        '/com/redhat/IBus/engines/table/%s/engine/0' %engine_name,
+        f'/com/redhat/IBus/engines/table/{engine_name}/engine/0',
         TABSQLITEDB,
         unit_test=True)
     backup_original_settings()
@@ -392,15 +372,6 @@ def set_up(engine_name: str) -> bool:
     return True
 
 def tear_down() -> None:
-    global ENGINE_PATCHER
-    global ENGINE_SIMPLE_PATCHER
-    global LOOKUP_TABLE_PATCHER
-    global PROPERTY_PATCHER
-    global PROP_LIST_PATCHER
-    global IBUS_ENGINE
-    global IBUS_LOOKUP_TABLE
-    global IBUS_PROPERTY
-    global IBUS_PROP_LIST
     global TABSQLITEDB
     global ENGINE
     if ENGINE:
@@ -431,10 +402,11 @@ def require_serial_number(required_serial_number: int) -> bool:
     return serial_number >= required_serial_number
 
 class ErbiQsTestCase(unittest.TestCase):
+    '''Test cases for the erbi-qs table'''
     def setUp(self) -> None:
         engine_name = 'erbi-qs'
         if not set_up(engine_name):
-            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
+            self.skipTest(f'Could not setup “{engine_name}”, skipping test.')
 
     def tearDown(self) -> None:
         tear_down()
@@ -445,7 +417,7 @@ class ErbiQsTestCase(unittest.TestCase):
     def test_get_goucima(self) -> None:
         if not require_serial_number(20220111):
             self.skipTest('serial_number too small')
-        assert(TABSQLITEDB is not None)
+        assert TABSQLITEDB is not None
         self.assertEqual(
             'sxr.',
             TABSQLITEDB.get_goucima('松'))
@@ -465,16 +437,17 @@ class ErbiQsTestCase(unittest.TestCase):
     def test_parse_phrase(self) -> None:
         if not require_serial_number(20220111):
             self.skipTest('serial_number too small')
-        assert(TABSQLITEDB is not None)
+        assert TABSQLITEDB is not None
         self.assertEqual(
             'txds',
             TABSQLITEDB.parse_phrase('天下大事'))
 
 class WubiJidian86TestCase(unittest.TestCase):
+    '''Test cases for the wubi-jidian86 table'''
     def setUp(self) -> None:
         engine_name = 'wubi-jidian86'
         if not set_up(engine_name):
-            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
+            self.skipTest(f'Could not setup “{engine_name}”, skipping test.')
 
     def tearDown(self) -> None:
         tear_down()
@@ -483,19 +456,19 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_parse_phrase(self) -> None:
-        assert(TABSQLITEDB is not None)
+        assert TABSQLITEDB is not None
         self.assertEqual(
             'ggdg',
             TABSQLITEDB.parse_phrase('天下大事'))
 
     def test_single_char_commit_with_space(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '工')
 
     def test_toggle_suggestion_mode_with_keybinding(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         if not ENGINE._ime_sg:
             self.skipTest("This engine does not have a suggestion mode.")
         self.assertEqual(ENGINE.get_suggestion_mode(), False)
@@ -509,7 +482,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.get_suggestion_mode(), False)
 
     def test_toggle_input_mode_with_keybinding(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         self.assertEqual(ENGINE.get_input_mode(), 1)
         ENGINE._do_process_key_event(
             IBus.KEY_Shift_L, 0,
@@ -544,14 +517,14 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.get_input_mode(), 1)
 
     def test_switch_to_next_chinese_mode_with_keybinding(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         self.assertEqual(ENGINE.get_chinese_mode(), 2)
         # Now change with the keybinding:
         ENGINE._do_process_key_event(IBus.KEY_semicolon, 0, IBus.ModifierType.CONTROL_MASK)
         self.assertEqual(ENGINE.get_chinese_mode(), 3)
 
     def test_toggle_onechar_mode_with_keybinding(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         self.assertEqual(ENGINE.get_onechar_mode(), False)
         ENGINE.set_onechar_mode(True, update_gsettings=False)
         self.assertEqual(ENGINE.get_onechar_mode(), True)
@@ -574,7 +547,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.get_onechar_mode(), False)
 
     def test_toggle_autocommit_mode_with_keybinding(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         self.assertEqual(ENGINE.get_autocommit_mode(), False)
         ENGINE.set_autocommit_mode(True, update_gsettings=False)
         self.assertEqual(ENGINE.get_autocommit_mode(), True)
@@ -597,7 +570,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.get_autocommit_mode(), False)
 
     def test_change_letter_width(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         # The defaults come from the wubi-jidian86.txt source:
         # DEF_FULL_WIDTH_LETTER = FALSE
         self.assertEqual(ENGINE.get_letter_width(), [False, False])
@@ -626,7 +599,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.get_letter_width(), [False, False])
 
     def test_change_punctuation_width(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         # The defaults come from the wubi-jidian86.txt source:
         # DEF_FULL_WIDTH_PUNCT = TRUE
         self.assertEqual(ENGINE.get_punctuation_width(), [False, True])
@@ -655,7 +628,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.get_punctuation_width(), [False, False])
 
     def test_next_and_previous_candidates_in_page(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
         print(ENGINE._lookup_table.mock_candidates)
         self.assertEqual(ENGINE._lookup_table.mock_candidates,
@@ -732,7 +705,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '世界')
 
     def test_cancel_key_binding_changed(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '工')
         self.assertEqual(ENGINE.mock_committed_text, '')
@@ -760,7 +733,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '工 ')
 
     def test_pinyin_mode(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         # Pinyin mode is False by default:
         self.assertEqual(ENGINE.get_pinyin_mode(), False)
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
@@ -793,7 +766,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '工啊工')
 
     def test_pinyin_mode_chinese_mode(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         # Pinyin mode is False by default:
         self.assertEqual(ENGINE.get_pinyin_mode(), False)
         ENGINE.set_pinyin_mode(True)
@@ -894,7 +867,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '吗嗎吗嗎吗')
 
     def test_suggestion_mode(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         if not ENGINE._ime_sg:
             self.skipTest("This engine does not have a suggestion mode.")
         # Suggestion mode is False by default:
@@ -962,7 +935,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '工工作人员啊呀爱因斯坦')
 
     def test_commit_to_preedit_switching_to_pinyin_defining_a_phrase(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
         # commit to preëdit needs a press and release of either
         # the left or the right shift key:
@@ -1096,7 +1069,7 @@ class WubiJidian86TestCase(unittest.TestCase):
 
         See: https://github.com/kaio/ibus-table/issues/68
         '''
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '工')
         self.assertEqual(ENGINE.mock_committed_text, '')
@@ -1116,7 +1089,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         The switch between table and pinyin mode should happen immediately
         even if the preedit is not empty
         '''
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '东')
@@ -1146,7 +1119,7 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '东')
 
     def test_chinese_mode(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE.set_chinese_mode(
             mode=0, update_gsettings=False) # show simplified Chinese only
         ENGINE._do_process_key_event(IBus.KEY_c, 0, 0)
@@ -1239,10 +1212,11 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
 
 class Stroke5TestCase(unittest.TestCase):
+    '''Test cases for the stroke5 table'''
     def setUp(self) -> None:
         engine_name = 'stroke5'
         if not set_up(engine_name):
-            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
+            self.skipTest(f'Could not setup “{engine_name}”, skipping test.')
 
     def tearDown(self) -> None:
         tear_down()
@@ -1251,7 +1225,7 @@ class Stroke5TestCase(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_single_char_commit_with_space(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_comma, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_slash, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_n, 0, 0)
@@ -1261,10 +1235,11 @@ class Stroke5TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '的')
 
 class TelexTestCase(unittest.TestCase):
+    '''Test cases for the telex table'''
     def setUp(self) -> None:
         engine_name = 'telex'
         if not set_up(engine_name):
-            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
+            self.skipTest(f'Could not setup “{engine_name}”, skipping test.')
 
     def tearDown(self) -> None:
         tear_down()
@@ -1273,7 +1248,7 @@ class TelexTestCase(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_telex(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_o, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, 'o')
         self.assertEqual(ENGINE.mock_committed_text, '')
@@ -1307,10 +1282,11 @@ class TelexTestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, 'oòôôộ')
 
 class TranslitTestCase(unittest.TestCase):
+    '''Test cases for the translit table'''
     def setUp(self) -> None:
         engine_name ='translit'
         if not set_up(engine_name):
-            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
+            self.skipTest(f'Could not setup “{engine_name}”, skipping test.')
 
     def tearDown(self) -> None:
         tear_down()
@@ -1319,7 +1295,7 @@ class TranslitTestCase(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_sh_multiple_match(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_s, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, 'с')
         ENGINE._do_process_key_event(IBus.KEY_h, 0, 0)
@@ -1340,7 +1316,7 @@ class TranslitTestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, 'шщс ')
 
     def test_sh_multiple_match_slavic(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_scaron, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, 'ш')
         self.assertEqual(ENGINE.mock_committed_text, '')
@@ -1355,10 +1331,11 @@ class TranslitTestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, 'щщ')
 
 class Cangjie5TestCase(unittest.TestCase):
+    '''Test cases for the cangjie5 table'''
     def setUp(self) -> None:
         engine_name = 'cangjie5'
         if not set_up(engine_name):
-            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
+            self.skipTest(f'Could not setup “{engine_name}”, skipping test.')
 
     def tearDown(self) -> None:
         tear_down()
@@ -1367,7 +1344,7 @@ class Cangjie5TestCase(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_single_char_commit_with_space(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, '日')
@@ -1375,7 +1352,7 @@ class Cangjie5TestCase(unittest.TestCase):
     def test_type_one_char_and_check_auxiliary(self) -> None:
         if not require_serial_number(20220111):
             self.skipTest('serial_number too small')
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_d, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '木')
         self.assertEqual(ENGINE._lookup_table.mock_candidates[6],
@@ -1393,7 +1370,7 @@ class Cangjie5TestCase(unittest.TestCase):
     def test_dynamic_adjust(self) -> None:
         if not require_serial_number(20220111):
             self.skipTest('serial_number too small')
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE.set_dynamic_adjust(False)
         ENGINE._do_process_key_event(IBus.KEY_i, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_r, 0, 0)
@@ -1526,10 +1503,11 @@ class Cangjie5TestCase(unittest.TestCase):
         self.assertEqual('怠怠怠怠怠怠怠', ENGINE.mock_committed_text)
 
 class IpaXSampaTestCase(unittest.TestCase):
+    '''Test cases for the ipa-x-sampa table'''
     def setUp(self) -> None:
         engine_name = 'ipa-x-sampa'
         if not set_up(engine_name):
-            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
+            self.skipTest(f'Could not setup “{engine_name}”, skipping test.')
 
     def tearDown(self) -> None:
         tear_down()
@@ -1538,13 +1516,13 @@ class IpaXSampaTestCase(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_single_char_commit_with_space(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_at, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, 'ə ')
 
     def test_single_char_commit_with_f3(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_at, 0, 0)
         self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['ə  0 0', 'ɘ \\ 0 0', 'ɚ ` 0 0'])
@@ -1552,10 +1530,11 @@ class IpaXSampaTestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, 'ɚ')
 
 class LatexTestCase(unittest.TestCase):
+    '''Test cases for the latex table'''
     def setUp(self) -> None:
         engine_name = 'latex'
         if not set_up(engine_name):
-            self.skipTest('Could not setup “%s”, skipping test.' % engine_name)
+            self.skipTest(f'Could not setup “{engine_name}”, skipping test.')
 
     def tearDown(self) -> None:
         tear_down()
@@ -1564,7 +1543,7 @@ class LatexTestCase(unittest.TestCase):
         self.assertEqual(True, True)
 
     def test_single_char_commit_with_space(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_backslash, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_l, 0, 0)
@@ -1580,7 +1559,7 @@ class LatexTestCase(unittest.TestCase):
     def test_single_char_commit_with_space_fraktur(self) -> None:
         # needs ibus-table-others-1.3.10 which adds
         # most of Unicode 9.0 block Mathematical Alphanumeric Symbols
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_backslash, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_m, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
@@ -1595,7 +1574,7 @@ class LatexTestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, '𝔉')
 
     def test_commit_invalid_mode(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         self.assertEqual(ENGINE.get_commit_invalid_mode(), 0)
         ENGINE._do_process_key_event(IBus.KEY_backslash, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
@@ -1623,7 +1602,7 @@ class LatexTestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, 'α!\\alpha!')
 
     def test_toggle_input_mode_on_off(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_backslash, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_l, 0, 0)
@@ -1650,7 +1629,7 @@ class LatexTestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_committed_text, 'α\\alpha ')
 
     def test_single_char_commit_with_f3(self) -> None:
-        assert(ENGINE is not None)
+        assert ENGINE is not None
         # The latex.txt table in ibus-table-others-1.3.12 has
         # SELECT_KEYS = F1,F2,F3,F4,F5,F6,F7,F8,F9,F10
         # the older version in ibus-table-others-1.3.11

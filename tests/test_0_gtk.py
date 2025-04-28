@@ -20,7 +20,6 @@
 '''
 This file implements the test cases using GTK GUI
 '''
-# “Wrong continued indentation”: pylint: disable=bad-continuation
 # pylint: disable=attribute-defined-outside-init
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-class-docstring
@@ -66,13 +65,12 @@ try:
     IMPORT_TABSQLITEDB_SUCCESSFUL = True
 except (ImportError,):
     pass
-# FIXME:
-#sys.path.pop(0)
+sys.path.pop(0)
 
 DONE_EXIT = True
 ENGINE_NAME = 'wubi-jidian86'
 
-from gtkcases import TestCases
+from gtkcases import TestCases # pylint: disable=import-error
 
 # Need to flush the output against Gtk.main()
 def printflush(sentence: str) -> None:
@@ -90,15 +88,13 @@ def printerr(sentence: str) -> None:
 @unittest.skipUnless(
     os.path.isfile(
         os.path.join('/usr/share/ibus-table/tables', ENGINE_NAME + '.db')),
-    '%s.db is not installed.' % ENGINE_NAME + '.db')
+    f'{ENGINE_NAME}.db is not installed.')
 @unittest.skipUnless(
     'XDG_SESSION_TYPE' in os.environ
     and os.environ['XDG_SESSION_TYPE'] in ('x11', 'wayland'),
     'XDG_SESSION_TYPE is neither "x11" nor "wayland".')
 @unittest.skipIf(Gdk.Display.open('') is None, 'Display cannot be opened.')
 class SimpleGtkTestCase(unittest.TestCase):
-    global DONE_EXIT
-    global ENGINE_NAME
     ENGINE_PATH = '/com/redhat/IBus/engines/table/Test/Engine'
     _flag: bool = False
     _gsettings: Optional[Gio.Settings] = None
@@ -110,7 +106,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         IBus.init()
         cls._gsettings = Gio.Settings(
             schema='org.freedesktop.ibus.engine.table',
-            path='/org/freedesktop/ibus/engine/table/%s/' % ENGINE_NAME)
+            path=f'/org/freedesktop/ibus/engine/table/{ENGINE_NAME}/')
         cls._orig_chinesemode = cls._gsettings.get_int('chinesemode')
         signums: List[Optional[signal.Signals]] = [
             getattr(signal, s, None) for s in 'SIGINT SIGTERM SIGHUP'.split()]
@@ -141,7 +137,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         self.__preedit_index = 0
         self.__lookup_index = 0
         self.__inserted_text = ''
-        self.__commit_done = False
+        self.__commit_done = False # pylint: disable=unused-private-member
         self.__reset_coming = False
         if self._gsettings is not None:
             self._gsettings.set_int('chinesemode', 4)
@@ -176,7 +172,7 @@ class SimpleGtkTestCase(unittest.TestCase):
             textdomain='ibus-table')
         desc = IBus.EngineDesc(
             name=ENGINE_NAME,
-            longname='Test Table %s' % ENGINE_NAME,
+            longname=f'Test Table {ENGINE_NAME}',
             description='Test Table Component',
             language='t',
             license='GPL',
@@ -201,8 +197,8 @@ class SimpleGtkTestCase(unittest.TestCase):
         if signal_name == 'NameOwnerChanged':
             pass
         if signal_name == 'UpdateLookupTable':
-            table = self.__engine.get_lookup_table()
-            if table.get_number_of_candidates() == 0:
+            lookup_table = self.__engine.get_lookup_table()
+            if lookup_table.get_number_of_candidates() == 0:
                 return
             self.__lookup_test()
 
@@ -217,7 +213,7 @@ class SimpleGtkTestCase(unittest.TestCase):
             Gtk.main_quit()
             return None
         self.__id += 1
-        object_path = '%s/%d' % (self.ENGINE_PATH, self.__id)
+        object_path = f'{self.ENGINE_PATH}/{self.__id:d}'
         db_dir = '/usr/share/ibus-table/tables'
         db_file = os.path.join(db_dir, engine_name + '.db')
         database = tabsqlitedb.TabSqliteDb(
@@ -228,8 +224,6 @@ class SimpleGtkTestCase(unittest.TestCase):
             database)
         self.__engine.connect('focus-in', self.__engine_focus_in)
         self.__engine.connect('focus-out', self.__engine_focus_out)
-        # FIXME: Need to connect 'reset' after TabEngine.clear_all_input_and_preedit()
-        # is called.
         self.__engine.connect_after('reset', self.__engine_reset)
         self.__bus.get_connection().signal_subscribe(
             None,
@@ -309,7 +303,7 @@ class SimpleGtkTestCase(unittest.TestCase):
     def __main_test(self) -> None:
         self.__preedit_index = 0
         self.__lookup_index = 0
-        self.__commit_done = False
+        self.__commit_done = False # pylint: disable=unused-private-member
         self.__run_cases('preedit')
 
     def __lookup_test(self) -> None:
@@ -338,8 +332,8 @@ class SimpleGtkTestCase(unittest.TestCase):
         case_type = list(cases.keys())[0]
         i = 0
         if case_type == 'string':
-            printflush('test step: %s sequences: "%s"'
-                       % (tag, str(cases['string'])))
+            printflush(
+                f'test step: {tag} sequences: "{str(cases["string"])}"')
             for character in cases['string']:
                 if start >= 0 and i < start:
                     i += 1
@@ -350,8 +344,7 @@ class SimpleGtkTestCase(unittest.TestCase):
                 i += 1
         if case_type == 'keys':
             if start == -1 and end == -1:
-                printflush('test step: %s sequences: %s'
-                           % (tag, str(cases['keys'])))
+                printflush(f'test step: {tag} sequences: {str(cases["keys"])}')
             for key in cases['keys']:
                 if start >= 0 and i < start:
                     i += 1
@@ -359,8 +352,9 @@ class SimpleGtkTestCase(unittest.TestCase):
                 if 0 <= end <= i:
                     break
                 if start != -1 or end != -1:
-                    printflush('test step: %s sequences: [0x%X, 0x%X, 0x%X]'
-                               % (tag, key[0], key[1], key[2]))
+                    printflush(
+                        f'test step: {tag}s sequences: '
+                        f'[0x{key[0]:X}, 0x{key[1]:X}, 0x{key[2]:X}]')
                 self.__typing(key[0], key[1], key[2])
                 i += 1
 
@@ -378,8 +372,6 @@ class SimpleGtkTestCase(unittest.TestCase):
             # space key is sent separatedly later
             if cases['keys'][0] == [IBus.KEY_space, 0, 0]:
                 self.__inserted_text += chars
-            # FIXME: Return key emits 'reset' signal in GTK and it calls
-            # TableEngine.clear_all_input_and_preedit().
             elif cases['keys'][0] == [IBus.KEY_Return, 0, 0] or \
                  cases['keys'][0] == [IBus.KEY_KP_Enter, 0, 0] or \
                  cases['keys'][0] == [IBus.KEY_ISO_Enter, 0, 0] or \
@@ -390,22 +382,20 @@ class SimpleGtkTestCase(unittest.TestCase):
             self.__inserted_text = chars
         cases = tests['result']
         if cases['string'] == self.__inserted_text:
-            printflush('OK: %d "%s"'
-                       % (self.__test_index, self.__inserted_text))
+            printflush(f'OK: {self.__test_index} "{self.__inserted_text}"')
         else:
             if DONE_EXIT:
                 Gtk.main_quit()
             with self.subTest(i=self.__test_index):
-                self.fail('NG: %d "%s" "%s"'
-                          % (self.__test_index, str(cases['string']),
-                             self.__inserted_text))
+                self.fail(f'NG: {self.__test_index:d} '
+                           f'"{str(cases["string"])}" "{self.__inserted_text}"')
         self.__inserted_text = ''
         self.__test_index += 1
         if self.__test_index == len(TestCases['tests']):
             if DONE_EXIT:
                 Gtk.main_quit()
             return
-        self.__commit_done = True
+        self.__commit_done = True # pylint: disable=unused-private-member
         self.__entry.set_text('')
         if not self.__reset_coming:
             self.__main_test()

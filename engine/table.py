@@ -43,16 +43,11 @@ import copy
 import time
 import logging
 import subprocess
-IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
-try:
-    import simpleaudio # type: ignore
-    IMPORT_SIMPLEAUDIO_SUCCESSFUL = True
-except (ImportError,):
-    IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
 
 from gettext import dgettext
 _: Callable[[str], str] = lambda a: dgettext('ibus-table', a)
 N_: Callable[[str], str] = lambda a: a
+# pylint: disable=wrong-import-position
 from gi import require_version # type: ignore
 require_version('IBus', '1.0')
 from gi.repository import IBus # type: ignore
@@ -60,11 +55,13 @@ require_version('Gio', '2.0')
 from gi.repository import Gio
 require_version('GLib', '2.0')
 from gi.repository import GLib
+# pylint: enable=wrong-import-position
 #import tabsqlitedb
 from gi.repository import GObject
 import it_util
 import it_active_window
 import it_sound
+import ibus_table_location
 
 LOGGER = logging.getLogger('ibus-table')
 
@@ -300,8 +297,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         #self.db = tabsqlitedb.TabSqliteDb( name = dbname )
         self.database = database
         self._setup_process: Optional[subprocess.Popen[Any]] = None
-        self._icon_dir = '{}{}{}{}'.format(os.getenv('IBUS_TABLE_LOCATION'),
-                                       os.path.sep, 'icons', os.path.sep)
+        self._icon_dir = os.path.join(ibus_table_location.data(), 'icons')
         self._engine_name = os.path.basename(
             self.database.filename).replace('.db', '').replace(' ', '_')
         if DEBUG_LEVEL > 1:
@@ -310,7 +306,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         self._gsettings: Gio.Settings = Gio.Settings(
             schema='org.freedesktop.ibus.engine.table',
-            path='/org/freedesktop/ibus/engine/table/%s/' %self._engine_name)
+            path=f'/org/freedesktop/ibus/engine/table/{self._engine_name}/')
         self._gsettings.connect('changed', self.on_gsettings_value_changed)
 
         self._prop_dict: Dict[str, IBus.Property] = {}
@@ -382,10 +378,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         self._debug_level: int = it_util.variant_to_value(
             self._gsettings.get_value('debuglevel'))
-        if self._debug_level < 0:
-            self._debug_level = 0 # minimum
-        if self._debug_level > 255:
-            self._debug_level = 255 # maximum
+        self._debug_level = max(self._debug_level, 0) # minimum
+        self._debug_level = min(self._debug_level, 255) # maximum
         DEBUG_LEVEL = self._debug_level
 
         dynamic_adjust: Optional[bool] = it_util.variant_to_value(
@@ -648,8 +642,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self._page_size: int = it_util.variant_to_value(
             self._gsettings.get_default_value('lookuptablepagesize'))
         for index in range(1, 10):
-            if not self._default_keybindings[
-                    'commit_candidate_%s' % (index + 1)]:
+            if not self._default_keybindings[f'commit_candidate_{index + 1}']:
                 self._page_size = min(index, self._page_size)
                 break
         user_page_size: Optional[int] = it_util.variant_to_value(
@@ -739,7 +732,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 self._keybindings['switch_to_next_chinese_mode']),
             'sub_properties': self.chinese_mode_properties
         }
-        if self.database._is_chinese:
+        if self.database.is_db_chinese:
             self.input_mode_properties = {
                 'InputMode.Direct': {
                     'number': 0,
@@ -952,9 +945,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         lookup_table.set_round(True)
         for index in range(0, 10):
             label = ''
-            if self._keybindings['commit_candidate_%s' % (index + 1)]:
+            if self._keybindings[f'commit_candidate_{index + 1}']:
                 keybinding = self._keybindings[
-                    'commit_candidate_%s' % (index + 1)][0]
+                    f'commit_candidate_{index + 1}'][0]
                 key = it_util.keybinding_to_keyevent(keybinding)
                 label = keybinding
                 if key.unicode and not key.name.startswith('KP_'):
@@ -1372,10 +1365,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
     @staticmethod
     def get_common_prefix_sorted_list(asc_table_codes: List[str]) -> List[int]:
-        prefix_tree: List[List[Tuple[Any, ...]]] = []
-        idx = -1
-        count = 1
-
+        # pylint: disable=line-too-long
         '''
         (branch from, node index of branch from), (code, asc table codes index, same prefix count), ...
         for input
@@ -1388,6 +1378,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         (-1, 0),('ilonga', 7, 1),
 
         '''
+        # pylint: enable=line-too-long
+        prefix_tree: List[List[Tuple[Any, ...]]] = []
         for code_idx in range(len(asc_table_codes)):
             branch_count = len(prefix_tree)
             code = asc_table_codes[code_idx]
@@ -1413,15 +1405,13 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                             prefix_tree.append(new_branch)
 
                         break
-                    else:
-                        # next node
-                        node_idx -= 1
+                    # next node
+                    node_idx -= 1
 
                 if node_idx > 0:
                     break
-                else:
-                    # next branch
-                    branch_idx -= 1
+                # next branch
+                branch_idx -= 1
 
             if node_idx == 0:
                 # new root branch
@@ -1439,15 +1429,17 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         return idx_array
 
-    def select_best_idx_from_prefix_list(self, asc_table_codes: List[str], sorted_idx_list: List[int]) -> int:
+    def select_best_idx_from_prefix_list(
+            self,
+            asc_table_codes: List[str],
+            sorted_idx_list: List[int]) -> int:
         if self._engine_name == 'erbi-qs':
             # for erbi-qs, code start with i/u/v is auxiliary
             for i in sorted_idx_list:
                 first_char = asc_table_codes[i][0]
                 if first_char in ('i', 'u', 'v'):
                     continue
-                else:
-                    return i
+                return i
 
         return sorted_idx_list[0]
 
@@ -1487,7 +1479,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         table_code = ''
 
-        if self.database._is_chinese and self._py_mode:
+        if self.database.is_db_chinese and self._py_mode:
             # restore tune symbol
             remaining_tabkeys = remaining_tabkeys.replace(
                 '!', '↑1').replace(
@@ -1641,7 +1633,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 return False
         if (not self._sg_mode_active
             and self._py_mode
-            and self.database._is_chinese):
+            and self.database.is_db_chinese):
             self._candidates = (
                 self.database.select_chinese_characters_by_pinyin(
                     tabkeys=self._chars_valid,
@@ -1766,17 +1758,11 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                  dummy_string_current,
                  strings_right) = self.get_preedit_string_parts()
                 aux_string = ''
-                for i in range(0, len(strings_left)):
-                    aux_string += (
-                        '('
-                        + tabkeys_left[i] + ' '+ strings_left[i]
-                        + ') ')
+                for i, string in enumerate(strings_left):
+                    aux_string += f'({tabkeys_left[i]} {string}) '
                 aux_string += input_chars
-                for i in range(0, len(strings_right)):
-                    aux_string += (
-                        ' ('
-                        + tabkeys_right[i]+' '+strings_right[i]
-                        + ')')
+                for i, string in enumerate(strings_right):
+                    aux_string += f' ({tabkeys_right[i]} {string})'
             if self._py_mode:
                 aux_string = aux_string.replace(
                     '!', '1').replace(
@@ -2003,7 +1989,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self._prev_key = None
         self._update_ui()
 
-    def do_destroy(self) -> None:
+    def do_destroy(self) -> None: # pylint: disable=arguments-differ
         '''Called when this input engine is destroyed
         '''
         if self.sync_timeout_id > 0:
@@ -2660,12 +2646,10 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if page_size == self._page_size:
             return
         for index in range(1, 10):
-            if not self._default_keybindings[
-                    'commit_candidate_%s' % (index + 1)]:
+            if not self._default_keybindings[f'commit_candidate_{index + 1}']:
                 page_size = min(index, page_size)
                 break
-        if page_size < 1:
-            page_size = 1
+        page_size = max(page_size, 1)
         self._page_size = page_size
         # get a new lookup table to adapt to the new page size:
         self._lookup_table = self.get_new_lookup_table()
@@ -2810,17 +2794,16 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             current_mode = 0
         menu_key = menu['key']
         sub_properties_dict = menu['sub_properties']
+        symbol = ''
+        icon = ''
+        label = ''
+        tooltip = ''
         for prop in sub_properties_dict:
             if sub_properties_dict[prop]['number'] == int(current_mode):
                 symbol = sub_properties_dict[prop]['symbol']
                 icon = sub_properties_dict[prop]['icon']
-                label = '{label} ({symbol}) {shortcut_hint}'.format(
-                    label=menu['label'],
-                    symbol=symbol,
-                    shortcut_hint=menu['shortcut_hint'])
-                tooltip = '{tooltip}\n{shortcut_hint}'.format(
-                    tooltip=menu['tooltip'],
-                    shortcut_hint=menu['shortcut_hint'])
+                label = f'{menu["label"]} ({symbol}) {menu["shortcut_hint"]}'
+                tooltip = f'{menu["tooltip"]}\n{menu["shortcut_hint"]}'
         visible = True
         self._init_or_update_sub_properties(
             menu_key, sub_properties_dict, current_mode=current_mode)
@@ -2909,12 +2892,12 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             self.input_mode_menu,
             self._input_mode)
 
-        if self.database._is_chinese and self._chinese_mode != -1:
+        if self.database.is_db_chinese and self._chinese_mode != -1:
             self._init_or_update_property_menu(
                 self.chinese_mode_menu,
                 self._chinese_mode)
 
-        if self.database._is_cjk:
+        if self.database.is_db_cjk:
             self._init_or_update_property_menu(
                 self.letter_width_menu,
                 self._full_width_letter[self._input_mode])
@@ -2932,7 +2915,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 self.suggestion_mode_menu,
                 self._sg_mode)
 
-        if self.database._is_cjk:
+        if self.database.is_db_cjk:
             self._init_or_update_property_menu(
                 self.onechar_mode_menu,
                 self._onechar)
@@ -2954,7 +2937,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self.main_prop_list.append(self._setup_property)
         self.register_properties(self.main_prop_list)
 
-    def do_property_activate(
+    def do_property_activate( # pylint: disable=arguments-differ
             self,
             ibus_property: str,
             prop_state: IBus.PropState = IBus.PropState.UNCHECKED) -> None:
@@ -2986,7 +2969,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 bool(self.suggestion_mode_properties[ibus_property]['number']))
             return
         if (ibus_property.startswith(self.onechar_mode_menu['key']+'.')
-                and self.database._is_cjk):
+                and self.database.is_db_cjk):
             self.set_onechar_mode(
                 bool(self.onechar_mode_properties[ibus_property]['number']))
             return
@@ -2997,20 +2980,20 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 bool(self.autocommit_mode_properties[ibus_property]['number']))
             return
         if (ibus_property.startswith(self.letter_width_menu['key']+'.')
-                and self.database._is_cjk):
+                and self.database.is_db_cjk):
             self.set_letter_width(
                 bool(self.letter_width_properties[ibus_property]['number']),
                 input_mode=self._input_mode)
             return
         if (ibus_property.startswith(self.punctuation_width_menu['key']+'.')
-                and self.database._is_cjk):
+                and self.database.is_db_cjk):
             self.set_punctuation_width(
                 bool(self.punctuation_width_properties[
                     ibus_property]['number']),
                 input_mode=self._input_mode)
             return
         if (ibus_property.startswith(self.chinese_mode_menu['key']+'.')
-                and self.database._is_chinese
+                and self.database.is_db_chinese
                 and self._chinese_mode != -1):
             self.set_chinese_mode(
                 self.chinese_mode_properties[ibus_property]['number'])
@@ -3061,8 +3044,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if self._error_sound and self._error_sound_object:
             try:
                 self._error_sound_object.play()
-            except:
-                LOGGER.exception('Playing error sound failed.')
+            except Exception as error: # pylint: disable=broad-except
+                LOGGER.exception('Playing error sound failed: %s: %s',
+                                 error.__class__.__name__, error)
 
     def _update_preedit(self) -> None:
         '''Update Preedit String in UI'''
@@ -3143,9 +3127,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         aux_string = self.get_aux_strings()
         if self._candidates:
-            aux_string += ' (%d / %d)' % (
-                self._lookup_table.get_cursor_pos() +1,
-                self._lookup_table.get_number_of_candidates())
+            aux_string += (
+                f' ({self._lookup_table.get_cursor_pos() +1} / '
+                f'{self._lookup_table.get_number_of_candidates()})')
         if aux_string:
             if DEBUG_LEVEL > 0 and not self._unit_test:
                 client = f'🪟{self._im_client}'
@@ -3288,7 +3272,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                              }
 
         # special puncts w/o further conditions
-        if char in special_punct_dict.keys():
+        if char in special_punct_dict:
             if char in ["\\", "^", "_", "$"]:
                 return special_punct_dict[char]
             if self._input_mode:
@@ -3315,7 +3299,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         return unichar_half_to_full(char)
 
-    def do_candidate_clicked(
+    def do_candidate_clicked( # pylint: disable=arguments-differ
             self, index: int, _button: int, _state: int) -> bool:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('index=%s _button=%s state=%s', index, _button, _state)
@@ -3351,7 +3335,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         :return: True if the key was completely handled, False if not.
         '''
-        if not self.database._is_cjk:
+        if not self.database.is_db_cjk:
             return False
         self.set_letter_width(
             not self._full_width_letter[self._input_mode],
@@ -3363,7 +3347,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         :return: True if the key was completely handled, False if not.
         '''
-        if not self.database._is_cjk:
+        if not self.database.is_db_cjk:
             return False
         self.set_punctuation_width(
             not self._full_width_punct[self._input_mode],
@@ -3448,7 +3432,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         :return: True if the key was completely handled, False if not.
         '''
-        if not self.database._is_cjk:
+        if not self.database.is_db_cjk:
             return False
         self.set_onechar_mode(not self._onechar)
 
@@ -3472,7 +3456,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         :return: True if the key was completely handled, False if not.
         '''
-        if not self.database._is_chinese:
+        if not self.database.is_db_chinese:
             return False
         self.set_chinese_mode((self._chinese_mode+1) % 5)
 
@@ -3832,7 +3816,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             if (self._prev_key, key, command) in self._hotkeys: # type: ignore
                 if DEBUG_LEVEL > 1:
                     LOGGER.debug('matched command=%s', command)
-                command_function_name = '_command_%s' % command
+                command_function_name = f'_command_{command}'
                 try:
                     command_function = getattr(self, command_function_name)
                 except (AttributeError,):
@@ -3946,7 +3930,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         :param char: The character to maybe convert to full width
         '''
-        if self._full_width_letter[self._input_mode] and self.database._is_cjk:
+        if self._full_width_letter[self._input_mode] and self.database.is_db_cjk:
             return self._convert_to_full_width(char)
         return char
 
@@ -3957,7 +3941,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         :param char: The character to maybe convert to full width
         '''
-        if self._full_width_punct[self._input_mode] and self.database._is_cjk:
+        if self._full_width_punct[self._input_mode] and self.database.is_db_cjk:
             return self._convert_to_full_width(char)
         return char
 
@@ -4269,7 +4253,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         # just pass it through to the application by returning “False”.
         return self._return_false(key.val, key.code, key.state)
 
-    def do_focus_in(self) -> None:
+    def do_focus_in(self) -> None: # pylint: disable=arguments-differ
         '''
         Called for ibus < 1.5.27 when a window gets focus while
         this input engine is enabled
@@ -4278,7 +4262,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             LOGGER.debug('entering do_focus_in()\n')
         self.do_focus_in_id('', '')
 
-    def do_focus_in_id(self, object_path: str, client: str) -> None:
+    def do_focus_in_id( # pylint: disable=arguments-differ
+            self, object_path: str, client: str) -> None:
         '''Called for ibus >= 1.5.27 when a window gets focus while
         this input engine is enabled
 
@@ -4324,7 +4309,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self.register_properties(self.main_prop_list)
         self._update_ui()
 
-    def do_focus_out(self) -> None:
+    def do_focus_out(self) -> None: # pylint: disable=arguments-differ
         '''
         Called for ibus < 1.5.27 when a window loses focus while
         this input engine is enabled
@@ -4333,7 +4318,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             LOGGER.debug('entering do_focus_out()\n')
         self.do_focus_out_id('')
 
-    def do_focus_out_id(self, object_path: str) -> None:
+    def do_focus_out_id( # pylint: disable=arguments-differ
+            self, object_path: str) -> None:
         '''
         Called for ibus >= 1.5.27 when a window loses focus while
         this input engine is enabled
@@ -4348,7 +4334,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self.clear_all_input_and_preedit()
         self._update_ui()
 
-    def do_reset(self) -> None:
+    def do_reset(self, *_args: Any, **_kwargs: Any) -> None:
         '''Called when the mouse pointer is used to move to cursor to a
         different position in the current window.
 
@@ -4364,7 +4350,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             LOGGER.debug('do_reset()\n')
         self.reset()
 
-    def do_set_content_type(self, purpose: int, hints: int) -> None:
+    def do_set_content_type( # pylint: disable=arguments-differ
+            self, purpose: int, hints: int) -> None:
         '''Called when the input purpose or hints change'''
         LOGGER.debug('purpose=%s hints=%s\n', purpose, format(hints, '016b'))
         self._input_purpose = purpose
@@ -4387,7 +4374,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                         'hint: %s %s',
                         str(hint), format(int(hint), '016b'))
 
-    def do_enable(self) -> None:
+    def do_enable(self, *_args: Any, **_kwargs: Any) -> None:
         '''Called when this input engine is enabled'''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('do_enable()\n')
@@ -4396,14 +4383,14 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self.get_surrounding_text()
         self.do_focus_in()
 
-    def do_disable(self) -> None:
+    def do_disable(self, *_args: Any, **_kwargs: Any) -> None:
         '''Called when this input engine is disabled'''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('do_disable()\n')
         self.clear_all_input_and_preedit()
         self._update_ui()
 
-    def do_page_up(self) -> bool:
+    def do_page_up(self, *_args: Any, **_kwargs: Any) -> bool:
         '''Called when the page up button in the lookup table is clicked with
         the mouse
 
@@ -4413,7 +4400,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             return True
         return False
 
-    def do_page_down(self) -> bool:
+    def do_page_down(self, *_args: Any, **_kwargs: Any) -> bool:
         '''Called when the page down button in the lookup table is clicked with
         the mouse
 
@@ -4423,7 +4410,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             return True
         return False
 
-    def do_cursor_up(self) -> bool:
+    def do_cursor_up(self, *_args: Any, **_kwargs: Any) -> bool:
         '''Called when the mouse wheel is rolled up in the candidate area of
         the lookup table
 
@@ -4432,7 +4419,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self._update_ui()
         return res
 
-    def do_cursor_down(self) -> bool:
+    def do_cursor_down(self, *_args: Any, **_kwargs: Any) -> bool:
         '''Called when the mouse wheel is rolled down in the candidate area of
         the lookup table
 
@@ -4486,16 +4473,16 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             {'set_function': self.set_autowildcard_mode, 'kwargs': {}},
             'endeffullwidthletter':
             {'set_function': self.set_letter_width,
-             'kwargs': dict(input_mode=0)},
+             'kwargs': {'input_mode': 0}},
             'endeffullwidthpunct':
             {'set_function': self.set_punctuation_width,
-             'kwargs': dict(input_mode=0)},
+             'kwargs': {'input_mode': 0}},
             'tabdeffullwidthletter':
             {'set_function': self.set_letter_width,
-             'kwargs': dict(input_mode=1)},
+             'kwargs': {'input_mode': 1}},
             'tabdeffullwidthpunct':
             {'set_function': self.set_punctuation_width,
-             'kwargs': dict(input_mode=1)},
+             'kwargs': {'input_mode': 1}},
             'inputmode':
             {'set_function': self.set_input_mode, 'kwargs': {}},
             'rememberinputmode':
@@ -4507,7 +4494,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             set_function = set_functions[key]['set_function']
             kwargs = set_functions[key]['kwargs']
             if key != 'inputmode':
-                kwargs.update(dict(update_gsettings=False)) # type: ignore
+                kwargs.update({'update_gsettings': False}) # type: ignore
             set_function(value, **kwargs) # type: ignore
             return
         LOGGER.debug('Unknown key')

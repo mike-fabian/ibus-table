@@ -34,7 +34,9 @@ import bz2
 import re
 import argparse
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# pylint: disable=wrong-import-position
 import tabsqlitedb
+# pylint: enable=wrong-import-position
 
 _INVALID_KEYNAME_CHARS = " \t\r\n\"$&<>,+=#!()'|{}[]?~`;%\\"
 
@@ -66,9 +68,9 @@ class InvalidTableName(Exception):
         self.table_name = name
 
     def __str__(self) -> str:
-        return ('Value of NAME attribute (%s) ' % self.table_name
-                + 'cannot contain any of %r ' % _INVALID_KEYNAME_CHARS
-                + 'and must be all ascii')
+        return (f'Value of NAME attribute ({self.table_name}) '
+                f'cannot contain any of {repr(_INVALID_KEYNAME_CHARS)} '
+                'and must be all ascii')
 
 def parse_args() -> Any:
     '''Parse the command line arguments'''
@@ -147,7 +149,7 @@ if _ARGS.only_index:
               'you want to create an index on!')
         sys.exit(2)
     if not os.path.exists(_ARGS.name) or not os.path.isfile(_ARGS.name):
-        print("\nThe database file '%s' does not exist." % _ARGS.name)
+        print(f'\nThe database file “{_ARGS.name}” does not exist.')
         sys.exit(2)
 
 if not _ARGS.name and _ARGS.source:
@@ -272,9 +274,7 @@ def main() -> None:
                             gouci_dict[res.group(2)] = res.group(1)
                     else:
                         gouci_dict[res.group(2)] = res.group(1)
-            for key in gouci_dict:
-                _gouci.append('%s\t%s' %(key, gouci_dict[key]))
-            _gouci.sort()
+            _gouci = [f'{key}\t{value}' for key, value in sorted(gouci_dict.items())]
 
         _table += _table_extra
         return (_attri, _table, _gouci)
@@ -292,8 +292,7 @@ def main() -> None:
                 if res:
                     yins = patt_yin.findall(res.group(2))
                     for yin in yins:
-                        _pinyins.append("%s\t%s\t%s" \
-                                % (res.group(1), yin, res.group(3)))
+                        _pinyins.append(f'{res.group(1)}\t{yin}\t{res.group(3)}')
         return _pinyins[:]
 
     def parse_suggestion(f: Iterable[str]) -> List[str]:
@@ -308,7 +307,7 @@ def main() -> None:
                 if res:
                     phrase = res.group(1)
                     freq = res.group(2)
-                    _suggestions.append("{} {}".format(phrase, freq))
+                    _suggestions.append(f'{phrase} {freq}')
         return _suggestions[:]
 
     def parse_extra(f: Iterable[str]) -> List[str]:
@@ -366,7 +365,7 @@ def main() -> None:
             if _tabkey:
                 extra_list.append((_tabkey, phrase, int(freq), 0))
             else:
-                print('No tabkeys found for “%s”, not adding.\n' %phrase)
+                print(f'No tabkeys found for “{phrase}”, not adding.\n')
         return extra_list
 
     def get_char_prompts(f: Iterable[str]) -> Tuple[str, str]:
@@ -405,7 +404,7 @@ def main() -> None:
         return
 
     # now we parse the ime source file
-    debug_print('\tLoad sources "%s"' % _ARGS.source)
+    debug_print(f'\tLoad sources "{_ARGS.source}"')
     patt_s = re.compile(r'.*\.bz2')
     _bz2s = patt_s.match(_ARGS.source)
     if _bz2s:
@@ -441,7 +440,7 @@ def main() -> None:
         db.add_goucima(goucima)
 
     if db.ime_properties.get('pinyin_mode').lower() == 'true':
-        debug_print('\tLoad pinyin source \"%s\"' % _ARGS.pinyin)
+        debug_print(f'\tLoad pinyin source "{_ARGS.pinyin}"')
         _bz2p = patt_s.match(_ARGS.pinyin)
         if _bz2p:
             pinyin_s = bz2.open(_ARGS.pinyin, mode='rt', encoding='UTF-8')
@@ -455,7 +454,7 @@ def main() -> None:
         db.add_pinyin(pinyin)
 
     if db.ime_properties.get('suggestion_mode').lower() == 'true':
-        debug_print('\tLoad suggestion source \"%s\"' % _ARGS.suggestion)
+        debug_print(f'\tLoad suggestion source {repr(_ARGS.suggestion)}')
         _bz2p = patt_s.match(_ARGS.suggestion)
         if _bz2p:
             suggestion_s = bz2.open(
@@ -477,34 +476,33 @@ def main() -> None:
             and _ARGS.extra):
         debug_print('\tPreparing for adding extra words')
         db.create_indexes('main')
-        debug_print('\tLoad extra words source "%s"' % _ARGS.extra)
+        debug_print(f'\tLoad extra words source {repr(_ARGS.extra)}')
         _bz2p = patt_s.match(_ARGS.extra)
         if _bz2p:
             extra_s = bz2.open(_ARGS.extra, mode='rt', encoding='UTF-8')
         else:
-            extra_s = open(_ARGS.extra)
+            extra_s = open(_ARGS.extra, mode='rt', encoding='UTF-8')
         debug_print('\tParsing extra words source file ')
         extraline = parse_extra(extra_s)
         debug_print('\tPreparing extra words lines')
         extrawords = extra_parser(extraline)
-        debug_print('\t  we have %d extra phrases from source'
-                    % len(extrawords))
+        debug_print(f'\t  we have {len(extrawords)} extra phrases from source')
         # first get the entry of original phrases from
         # phrases-[(xingma, phrase, int(freq), 0)]
         orig_phrases = {}
         for phrase in phrases:
-            orig_phrases.update({"{}\t{}".format(phrase[0], phrase[1]): phrase})
-        debug_print('\t  the len of orig_phrases is: %d' % len(orig_phrases))
+            orig_phrases.update({f'{phrase[0]}\t{phrase[1]}': phrase})
+        debug_print(f'\t  the len of orig_phrases is: {len(orig_phrases)}')
         extra_phrases = {}
         for extraword in extrawords:
             extra_phrases.update(
-                {"{}\t{}".format(extraword[0], extraword[1]): extraword})
-        debug_print('\t  the len of extra_phrases is: %d' % len(extra_phrases))
+                {f'{extraword[0]}\t{extraword[1]}': extraword})
+        debug_print(f'\t  the len of extra_phrases is: {len(extra_phrases)}')
         # pop duplicated keys
         for extra_phrase in extra_phrases:
             if extra_phrase in orig_phrases:
                 extra_phrases.pop(extra_phrase)
-        debug_print('\t  %d extra phrases will be added' % len(extra_phrases))
+        debug_print(f'\t  {len(extra_phrases)} extra phrases will be added')
         new_phrases = list(extra_phrases.values())
         debug_print('\tAdding extra words into DB ')
         db.add_phrases(new_phrases)

@@ -42,6 +42,7 @@ import re
 import copy
 import time
 import logging
+import subprocess
 IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
 try:
     import simpleaudio # type: ignore
@@ -298,7 +299,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         # we receive this db from IMEngineFactory
         #self.db = tabsqlitedb.TabSqliteDb( name = dbname )
         self.database = database
-        self._setup_pid = 0
+        self._setup_process: Optional[subprocess.Popen[Any]] = None
         self._icon_dir = '{}{}{}{}'.format(os.getenv('IBUS_TABLE_LOCATION'),
                                        os.path.sep, 'icons', os.path.sep)
         self._engine_name = os.path.basename(
@@ -3016,26 +3017,44 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             return
 
     def _start_setup(self) -> None:
-        '''
-        Start the setup tool if it is not running yet.
-        '''
-        if self._setup_pid != 0:
-            pid, dummy_state = os.waitpid(self._setup_pid, os.P_NOWAIT)
-            if pid != self._setup_pid:
-                # If the last setup tool started from here is still
-                # running the pid returned by the above os.waitpid()
-                # is 0. In that case just return, don’t start a
-                # second setup tool.
-                return
-            self._setup_pid = 0
-        setup_cmd = os.path.join(
-            str(os.getenv('IBUS_TABLE_LIB_LOCATION')),
-            'ibus-setup-table')
-        self._setup_pid = os.spawnl(
-            os.P_NOWAIT,
-            setup_cmd,
-            'ibus-setup-table',
-            '--engine-name table:%s' %self._engine_name)
+        '''Start the setup tool if it is not running yet'''
+        if self._is_setup_running():
+            LOGGER.info('Another setup tool is still running, terminating it ...')
+            self._stop_setup()
+
+        if os.getenv('IBUS_TABLE_LIB_LOCATION'):
+            setup_cmd = os.path.join(
+                os.getenv('IBUS_TABLE_LIB_LOCATION', ''),
+                'ibus-setup-table')
+            cmd = [setup_cmd, '--engine-name', f'table:{self._engine_name}']
+        else:
+            setup_python_script = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                '../setup/main.py')
+            cmd = [sys.executable, setup_python_script,
+                   '--engine-name',  f'table:{self._engine_name}']
+        LOGGER.info('Starting setup tool: "%s"', ' '.join(cmd))
+        try:
+            self._setup_process = subprocess.Popen( # pylint: disable=consider-using-with
+                cmd)
+        except Exception as error: # pylint: disable=broad-except
+            LOGGER.exception(
+                'Exception when starting setup tools: %s: %s',
+                error.__class__.__name__, error)
+            self._setup_process = None
+
+    def _is_setup_running(self) -> bool:
+        '''Check if the setup process is still running.'''
+        if self._setup_process is None:
+            return False
+        return self._setup_process.poll() is None # None means still running
+
+    def _stop_setup(self) -> None:
+        '''Terminate the setup process if running.'''
+        if self._is_setup_running() and self._setup_process:
+            self._setup_process.terminate()
+            # self._setup_process.kill()
+            LOGGER.info('Stopped setup tool.')
 
     def _play_error_sound(self) -> None:
         '''Play an error sound if enabled and possible'''

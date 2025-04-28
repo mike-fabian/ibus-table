@@ -29,6 +29,8 @@ from typing import Union
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Optional
+from types import FrameType
 import sys
 import os
 import re
@@ -78,6 +80,8 @@ import it_util
 import it_sound
 
 LOGGER = logging.getLogger('ibus-table')
+
+GLIB_MAIN_LOOP: Optional[GLib.MainLoop] = None
 
 GTK_VERSION = (Gtk.get_major_version(),
                Gtk.get_minor_version(),
@@ -1569,22 +1573,30 @@ class SetupUI(Gtk.Window): # type: ignore
 
     @staticmethod
     def _on_delete_event(*_args: Any) -> None:
-        '''
-        The window has been deleted, probably by the window manager.
-        '''
-        Gtk.main_quit()
+        '''The window has been deleted, probably by the window manager.'''
+        LOGGER.info('Window deleted by the window manager.')
+        if GLIB_MAIN_LOOP is not None:
+            GLIB_MAIN_LOOP.quit()
+        else:
+            raise RuntimeError("GLIB_MAIN_LOOP not initialized!")
 
     @staticmethod
     def _on_destroy_event(*_args: Any) -> None:
-        '''
-        The window has been destroyed.
-        '''
-        Gtk.main_quit()
+        '''The window has been destroyed.'''
+        LOGGER.info('Window destroyed.')
+        if GLIB_MAIN_LOOP is not None:
+            GLIB_MAIN_LOOP.quit()
+        else:
+            raise RuntimeError("GLIB_MAIN_LOOP not initialized!")
 
     @staticmethod
     def _on_close_clicked(_button: Gtk.Button) -> None:
         '''The button to close the dialog has been clicked.'''
-        Gtk.main_quit()
+        LOGGER.info('Close button clicked.')
+        if GLIB_MAIN_LOOP is not None:
+            GLIB_MAIN_LOOP.quit()
+        else:
+            raise RuntimeError("GLIB_MAIN_LOOP not initialized!")
 
     def _on_gsettings_value_changed(
             self, _settings: Gio.Settings, key: str) -> None:
@@ -2995,6 +3007,24 @@ class HelpWindow(Gtk.Window): # type: ignore
         '''
         self.destroy()
 
+def quit_glib_main_loop(
+        signum: int, _frame: Optional[FrameType] = None) -> None:
+    '''Signal handler for signals from Python’s signal module
+
+    :param signum: The signal number
+    :param _frame:  Almost never used (it’s for debugging).
+    '''
+    if signum is not None:
+        try:
+            signal_name = signal.Signals(signum).name
+        except ValueError: # In case signum isn't in Signals enum
+            signal_name = str(signum)
+        LOGGER.info('Received signal %s (%s), exiting...', signum, signal_name)
+    if GLIB_MAIN_LOOP is not None:
+        GLIB_MAIN_LOOP.quit()
+    else:
+        raise RuntimeError("GLIB_MAIN_LOOP not initialized!")
+
 if __name__ == '__main__':
     if _ARGS.no_debug:
         LOG_HANDLER_NULL = logging.NullHandler()
@@ -3019,10 +3049,6 @@ if __name__ == '__main__':
         LOGGER.addHandler(LOG_HANDLER_TIME_ROTATE)
         LOGGER.info('********** STARTING **********')
 
-    # Workaround for
-    # https://bugzilla.gnome.org/show_bug.cgi?id=622084
-    # Bug 622084 - Ctrl+C does not exit gtk app
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
     try:
         locale.setlocale(locale.LC_ALL, '')
     except locale.Error:
@@ -3045,4 +3071,13 @@ if __name__ == '__main__':
     if not ENGINE_NAME:
         PARSER.print_help()
     SETUP_UI = SetupUI(engine_name=ENGINE_NAME)
-    Gtk.main()
+    GLIB_MAIN_LOOP = GLib.MainLoop()
+    signal.signal(signal.SIGTERM, quit_glib_main_loop) # kill <pid>
+    # Ctrl+C (optional, can also use try/except KeyboardInterrupt)
+    # signal.signal(signal.SIGINT, quit_glib_main_loop)
+    try:
+        GLIB_MAIN_LOOP.run()
+    except KeyboardInterrupt:
+        # SIGNINT (Control+C) received
+        LOGGER.info('Control+C pressed, exiting ...')
+        GLIB_MAIN_LOOP.quit()

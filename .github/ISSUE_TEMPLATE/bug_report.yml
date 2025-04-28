@@ -20,7 +20,7 @@ body:
   attributes:
     label: ibus-table version
     description: Open the ibus-table setup tool and click on the `About` button (Or check the version of the installed package, for example using `rpm -q ibus-table` on rpm based distribtions).
-    placeholder: 2.27.15
+    placeholder: 1.17.12
   validations:
     required: false
 - type: input
@@ -28,7 +28,7 @@ body:
   attributes:
     label: Distribution and Version
     description: Which distribusion and version? Check for example /etc/fedora-release
-    placeholder: Fedora 41
+    placeholder: Fedora 42
   validations:
     required: false
 - type: input
@@ -38,7 +38,7 @@ body:
     description: |
       Which desktop environment and version?
       Check $XDG_CURRENT_DESKTOP for example
-    placeholder: GNOME 3.24
+    placeholder: GNOME 48
   validations:
     required: false
 - type: checkboxes
@@ -88,8 +88,8 @@ body:
     required: true
 - type: textarea
   attributes:
-    label: Which Typing Booster options/settings do you use?
-    description: Here you may attach the output of `dconf dump /org/freedesktop/ibus/engine/typing-booster/` and/or the output of `dconf dump /org/freedesktop/ibus/engine/tb/`
+    label: Which ibus-table options/settings do you use?
+    description: Here you may attach the output of `dconf dump /org/freedesktop/ibus/engine/table/cangjie3/` for a one engine for a specific table (“cangjie3”) in this example and/or the output of `dconf dump /org/freedesktop/ibus/engine/table/` for all engines for all tables
   validations:
     required: false
 - type: textarea

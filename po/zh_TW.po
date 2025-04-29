@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-01-21 01:39+0100\n"
-"PO-Revision-Date: 2025-04-28 08:56+0000\n"
+"PO-Revision-Date: 2025-04-29 07:44+0000\n"
 "Last-Translator: hsu zangmen <chzang55@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_TW/>\n"
@@ -227,10 +227,8 @@ msgid "Suggestion mode"
 msgstr "建議模式"
 
 #: engine/table.py:868
-#, fuzzy
-#| msgid "Switch Input mode"
 msgid "Switch suggestion mode"
-msgstr "切換輸入模式"
+msgstr "切換至建議模式"
 
 #: engine/table.py:878
 msgid "Multiple character match"
@@ -295,10 +293,8 @@ msgstr "設定 ibus-table「%(engine-name)s」"
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
 #: engine/it_util.py:937
-#, fuzzy
-#| msgid "Table input"
 msgid "Key input"
-msgstr "表格輸入"
+msgstr "按鍵輸入"
 
 #: engine/it_util.py:943
 msgid "Cancel"
@@ -356,20 +352,16 @@ msgstr ""
 "筆、倉頡、....。但也有一些其他語言的表格。"
 
 #: setup/ibus-setup-table.desktop.in.in:3
-#, fuzzy
-#| msgid "Preferences"
 msgid "IBus Table Preferences"
-msgstr "偏好設定"
+msgstr "IBus 表格偏好設定"
 
 #: setup/ibus-setup-table.desktop.in.in:4
 msgid "Set IBus Table Options"
 msgstr "設定 IBus 表格選項"
 
 #: setup/main.py:114
-#, fuzzy
-#| msgid "<b>Inital state</b>"
 msgid "Initial state"
-msgstr "<b>初始狀態</b>"
+msgstr "初始狀態"
 
 #: setup/main.py:115
 msgid "Direct input"
@@ -424,10 +416,8 @@ msgstr "按鍵綁定"
 #. or whether ibus-table should always use “Table input” by
 #. default after a restart.
 #: setup/main.py:303
-#, fuzzy
-#| msgid "Input mode"
 msgid "Remember input mode"
-msgstr "輸入模式"
+msgstr "記住輸入模式"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the input mode (“Direct input” or “Table
@@ -665,10 +655,8 @@ msgid "Edit the key bindings for the selected command"
 msgstr "編輯選取指令的按鍵綁定"
 
 #: setup/main.py:765 setup/main.py:2213
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set to default"
-msgstr "全部還原至預設值"
+msgstr "設定為預設值"
 
 #. Translators: A tooltip for the button to set
 #. the default key bindings for the selected command.
@@ -679,10 +667,8 @@ msgid "Set default key bindings for the selected command"
 msgstr "為選取的指令設定預設按鍵綁定"
 
 #: setup/main.py:778
-#, fuzzy
-#| msgid "Restore all defaults"
 msgid "Set all to default"
-msgstr "全部還原至預設值"
+msgstr "全部設定為預設值"
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
@@ -779,7 +765,6 @@ msgstr "自動提交模式:"
 #. choose whether automatic commits go into the preëdit or
 #. into the application.
 #: setup/main.py:924
-#, fuzzy
 msgid ""
 "Committing with the commit keys or with the mouse\n"
 "always commits to the application. This option is about\n"
@@ -791,13 +776,14 @@ msgid ""
 "into the application, “Normal” means they get committed\n"
 "to preedit."
 msgstr ""
-"使用提交鍵或滑鼠\n"
-"提交總會提交到應用程式。\n"
-"這個選項是關於「自動」提交，可能會發生在\n"
-"繼續輸入而沒有手動提交的情況。\n"
-"在這種情況下，「自動 」提交會不時發生。\n"
-"\"Direct\" 表示這種「自動」提交會直接到應用程式，\n"
-"「Normal」表示它們會提交到到 preedit。"
+"使用提交(commit)鍵或滑鼠時，\n"
+"該提交總會提交到應用程式。\n"
+"這個選項是關於「自動」提交，\n"
+"可能會發生在繼續輸入而沒有手動提交的情況。\n"
+"在這種情況下，\n"
+"「自動 」提交會不時發生。\n"
+"「直接(Direct)」 表示，這種「自動」提交會直接到應用程式，\n"
+"「正常(Normal)」表示，它們會提交到到 preedit。"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
@@ -847,6 +833,8 @@ msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
 msgstr ""
+"如果是，萬用字元將自動\n"
+"附加到輸入字串的末端。"
 
 #. Translators: This single character is a placeholder
 #. to match a any single character
@@ -862,12 +850,14 @@ msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
+"匹配任何單一字元的萬用字元。\n"
+"變更萬用字元後，輸入 RETURN 或 ENTER 確認。"
 
 #. Translators: This single character is a placeholder
 #. to match a any number of characters
 #: setup/main.py:1057
 msgid "Multi wildcard character:"
-msgstr ""
+msgstr "多個萬用字元："
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match any
@@ -877,32 +867,35 @@ msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
+"用來匹配任意數量字元的萬用字元。\n"
+"變更萬用字元後，輸入 RETURN 或 ENTER 確認。"
 
 #. Translators: A combobox to choose whether
 #. the color scheme for a dark theme should be used.
 #: setup/main.py:1082
 msgid "Use dark theme"
-msgstr ""
+msgstr "使用深色主題"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should
 #. be used.
 #: setup/main.py:1087
 msgid "If yes, the color scheme for a dark theme will be used."
-msgstr ""
+msgstr "如果是，則會使用深色主題的配色方案。"
 
 #. Translators: A checkbox where one can choose whether a
 #. sound is played on error
 #: setup/main.py:1102
 msgid "Play sound file on error"
-msgstr ""
+msgstr "發生錯誤時，則會直接播放聲音檔"
 
 #: setup/main.py:1104
 msgid ""
 "Here you can choose whether a sound file is played if an error occurs. If "
 "the simpleaudio module for Python3 is not installed, this option does "
 "nothing."
-msgstr ""
+msgstr "在此您可以選擇是否在發生錯誤時，直接播放聲音檔。如果未安裝 Python3 的 "
+"simpleaudio 模組時，則此選項無效。"
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
@@ -917,7 +910,7 @@ msgstr "除錯層級："
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
-msgstr ""
+msgstr "當大於 0 時，除錯資訊可能會列印到記錄檔，或者可能以圖形介面方式顯示。"
 
 #: setup/main.py:1529
 msgid "Are you sure?"
@@ -933,14 +926,14 @@ msgstr "確定(_O)"
 
 #: setup/main.py:1564
 msgid "Another instance of this app is already running."
-msgstr ""
+msgstr "此應用程式的另一個實例已經正在執行中。"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
 #: setup/main.py:1628
 msgid "Do you really want to restore all default settings?"
-msgstr ""
+msgstr "您真的想要還原所有預設設定嗎？"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -952,40 +945,40 @@ msgstr ""
 msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
-msgstr ""
+msgstr "您真的想要刪除所有從輸入字元和選擇候選字中，所學習到的資料嗎？"
 
 #: setup/main.py:1854
 msgid "Select .wav sound file:"
-msgstr ""
+msgstr "請選擇副檔名為 .wav 的音效檔案："
 
 #: setup/main.py:2136
 #, python-format
 msgid "Edit key bindings for command “%s”"
-msgstr ""
+msgstr "編輯指令 \"%s\" 的按鍵綁定"
 
 #. Translators: This is a tooltip for the button to add a
 #. key binding.
 #: setup/main.py:2166
 msgid "Add a key binding"
-msgstr ""
+msgstr "新增按鍵綁定"
 
 #. Translators: This is a tooltip for the button to remove
 #. the selected key binding.
 #: setup/main.py:2180
 msgid "Remove selected key binding"
-msgstr ""
+msgstr "移除選取的按鍵綁定"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
 #: setup/main.py:2195
 msgid "Move key binding up"
-msgstr ""
+msgstr "朝上移動按鍵綁定"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
 #: setup/main.py:2208
 msgid "Move key binding down"
-msgstr ""
+msgstr "朝下移動按鍵綁定"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -996,7 +989,7 @@ msgstr ""
 msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
-msgstr ""
+msgstr "您真的要將所有指令的按鍵綁定設定為預設值？"
 
 #: setup/main.py:3037
 msgid "ibus is not running."

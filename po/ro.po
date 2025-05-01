@@ -2,18 +2,24 @@
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
 # Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2025.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-01-21 01:39+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-05-01 22:10+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
+"Language-Team: Romanian <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/ro/>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Weblate 5.11.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -107,7 +113,7 @@ msgstr ""
 
 #: engine/table.py:764 engine/table.py:912 setup/main.py:939
 msgid "Direct"
-msgstr ""
+msgstr "Direct"
 
 #: engine/table.py:765
 msgid "Switch to direct input"
@@ -115,7 +121,7 @@ msgstr ""
 
 #: engine/table.py:770 engine/table.py:834
 msgid "Table"
-msgstr ""
+msgstr "Tabel"
 
 #: engine/table.py:771
 msgid "Switch to table input"
@@ -253,7 +259,7 @@ msgstr ""
 
 #: engine/table.py:902 setup/main.py:937
 msgid "Normal"
-msgstr ""
+msgstr "Normală"
 
 #: engine/table.py:904
 msgid ""
@@ -293,7 +299,7 @@ msgstr ""
 
 #: engine/it_util.py:943
 msgid "Cancel"
-msgstr ""
+msgstr "Anulare"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
@@ -319,6 +325,8 @@ msgstr ""
 #: engine/it_util.py:1011
 msgid "translator-credits"
 msgstr ""
+"Mircea Daniel <visez.trance@gmail.com>,\n"
+"Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>"
 
 #: engine/it_util.py:1019
 msgid "Online documentation:"
@@ -361,11 +369,11 @@ msgstr ""
 
 #: setup/main.py:129 setup/main.py:189
 msgid "Preferences"
-msgstr ""
+msgstr "Preferințe"
 
 #: setup/main.py:212
 msgid "About"
-msgstr ""
+msgstr "Despre"
 
 #: setup/main.py:220
 msgid "Restore all defaults"
@@ -373,20 +381,20 @@ msgstr ""
 
 #: setup/main.py:229 setup/main.py:2984
 msgid "_Close"
-msgstr ""
+msgstr "În_chide"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
 #. behaviour of ibus-table.
 #: setup/main.py:252
 msgid "Settings"
-msgstr ""
+msgstr "Configurări"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some more advanced options.
 #: setup/main.py:267
 msgid "Details"
-msgstr ""
+msgstr "Detalii"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can customize the key bindings to execute
@@ -424,11 +432,11 @@ msgstr ""
 
 #: setup/main.py:323
 msgid "No"
-msgstr ""
+msgstr "Nu"
 
 #: setup/main.py:325
 msgid "Yes"
-msgstr ""
+msgstr "Da"
 
 #. Translators: A combobox to choose the variant of
 #. Chinese which should be preferred.
@@ -552,7 +560,7 @@ msgstr ""
 #. window should be drawn horizontally or vertically.
 #: setup/main.py:629
 msgid "Orientation:"
-msgstr ""
+msgstr "Orientare:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn
@@ -573,13 +581,13 @@ msgstr ""
 
 #: setup/main.py:644
 msgid "System default"
-msgstr ""
+msgstr "Valoarea implicită a sistemului"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
 #: setup/main.py:669
 msgid "Page size:"
-msgstr ""
+msgstr "Dimensiunea paginii:"
 
 #. Translators: A tooltip for the label of the adjustment
 #. for the number of candidates to show in one page of the
@@ -604,7 +612,7 @@ msgstr ""
 
 #: setup/main.py:752
 msgid "Edit"
-msgstr ""
+msgstr "_Editează"
 
 #. Translators: A tooltip for the button to edit
 #. the keybindings for the selected command.
@@ -680,7 +688,7 @@ msgstr ""
 #. candidate will be automatically selected during typing.
 #: setup/main.py:889
 msgid "Auto select"
-msgstr ""
+msgstr "Selectare automată"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
@@ -841,11 +849,11 @@ msgstr ""
 
 #: setup/main.py:1531 setup/main.py:1857
 msgid "_Cancel"
-msgstr ""
+msgstr "_Anulează"
 
 #: setup/main.py:1532 setup/main.py:1858
 msgid "_OK"
-msgstr ""
+msgstr "_Ok"
 
 #: setup/main.py:1564
 msgid "Another instance of this app is already running."

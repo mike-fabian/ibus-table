@@ -40,6 +40,50 @@
   <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.17.12" date="2025-05-02" urgency="medium">
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.12</url>
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Improve starting of the setup tool, make it work correctly
+            when starting from a git clone (Resolves:
+            github-mike-fabian-issue#179)
+          </li>
+          <li>
+            Migrate from Gtk.main() to GLib.MainLoop() (Resolves:
+            github-mike-fabian-issue#180)
+          </li>
+          <li>
+            Stop using deprecated keyword arguments “flags” and
+            “message_format” when creating Gtk.MessageDialog()
+            (See also: github-mike-fabian-typing-booster-issue#377)
+          </li>
+          <li>
+            Increase pygame.mixer's buffer size (See also:
+            github-mike-fabian-typing-booster-issue#681)
+          </li>
+          <li>
+             Translation update from Weblate (ca 85.5%, es 100%, fa
+             11.8%, pt_BR 100%, zh_TW 100%)
+          </li>
+        </ul>
+      </description>
+      <issues>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/179">
+          github-mike-fabian-issue#179
+        </issue>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/180">
+          github-mike-fabian-issue#180
+        </issue>
+        <issue url="https://github.com/mike-fabian/ibus-typing-booster/issues/377">
+          github-mike-fabian-typing-booster-issue#377
+        </issue>
+        <issue url="https://github.com/mike-fabian/ibus-typing-booster/issues/681">
+          github-mike-fabian-typing-booster-issue#681
+        </issue>
+      </issues>
+    </release>
     <release version="1.17.11" date="2025-02-18" urgency="medium">
       <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.11</url>
       <description>

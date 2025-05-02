@@ -1,4 +1,214 @@
-commit 521770ec32e5d0eb0449c27230dbca5d1e894c00
+commit a878c605d2021daaac65efeef30f43dddbf69bec
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 2 22:43:27 2025 +0200
+
+    Release 1.17.12
+
+commit 1ea254e20502b6f26a46eea9e25c3d04d1081c3b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 2 22:44:55 2025 +0200
+
+    Update ibus-table.pot (Only line number changes)
+
+commit 362dcc716ef864aebb131061f484f1c73432934f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 28 20:09:42 2025 +0200
+
+    Fix some pylint warnings
+
+commit d7067c52228b32a0d3841b9f62fe470d61e349f6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 28 16:11:40 2025 +0200
+
+    Improve starting of the setup tool, make it work correctly when starting from a git clone
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/179
+    See also: https://github.com/mike-fabian/ibus-typing-booster/issues/692
+
+commit f94a990b2e572bcfc06acad2c3729ec60dfc6a49
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 28 19:31:31 2025 +0200
+
+    Migrate from Gtk.main() to GLib.MainLoop()
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/180
+    
+    GTK4 removes Gtk.main() entirely, so GLib.MainLoop() is the future-proof choice.
+    
+    Also, GLib.MainLoop() respects Python’s signal handlers, while Gtk.main() does not.
+    
+    This fixes the problem that ibus-table’s setup tool could not be stopped by
+    typing Control+C and not by `kill <pid>`. ibus-typing-booster’s setup tool
+    did not have this problem, it reacted just fine to Control+C and `kill <pid>`.
+    I don’t understand why the relevant code looked identical to me.
+    
+    But as using GLib.MainLoop() is the future-proof choice anyway and works
+    fine for both ibus-table’s and ibus-typing-booster’s setup tool, I don’t need
+    to investigate why it didn’t work with Gtk.main() for ibus-table’s setup tool.
+
+commit d5c3d3ce0f069cc21c4128ec48091db8ac80302b
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 28 16:42:08 2025 +0200
+
+    Stop using deprecated keyword arguments “flags” and “message_format” when creating Gtk.MessageDialog()
+    
+    Use modal=True and text='...' instead.
+    
+    See also: https://github.com/mike-fabian/ibus-typing-booster/issues/377
+
+commit 5c7cf84c2f4e8926481d8abf40a6f509a87e2b44
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Thu May 1 22:10:09 2025 +0000
+
+    Translated using Weblate (Romanian)
+    
+    Currently translated at 12.5% (19 of 152 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ro/
+    Translation: ibus-table/app
+
+commit e88676c37457160c4aebac362801ed2e1da3be8a
+Author: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>
+Date:   Thu May 1 12:51:20 2025 +0000
+
+    Added translation using Weblate (Romanian)
+    
+    Co-authored-by: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>
+
+commit 2605c7aa81dd570197ad6658e7ac8fdca6a1ba79
+Author: hsu zangmen <chzang55@gmail.com>
+Date:   Tue Apr 29 07:44:11 2025 +0000
+
+    Translated using Weblate (Chinese (Traditional) (zh_TW))
+    
+    Currently translated at 100.0% (152 of 152 strings)
+    
+    Co-authored-by: hsu zangmen <chzang55@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_TW/
+    Translation: ibus-table/app
+
+commit 3d8e90e36824b0f92eda09ef7d16b9edbc708a19
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Tue Apr 29 07:44:11 2025 +0000
+
+    Translated using Weblate (Persian)
+    
+    Currently translated at 11.8% (18 of 152 strings)
+    
+    Translated using Weblate (Chinese (Hong Kong) (zh_HK))
+    
+    Currently translated at 14.4% (22 of 152 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fa/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_HK/
+    Translation: ibus-table/app
+
+commit 7e9c2822f1662275782b3acebadeefa553862fb9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 28 15:53:28 2025 +0200
+
+    Fixes and improvements for bug report template
+
+commit d486ccfedf2707ad1650729c4f557e826d98fa95
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 28 15:40:01 2025 +0200
+
+    Use nicer YAML bug report templates instead of the old markdown bug report templates
+
+commit 25d750b17d08884234955d596a463a9e5dbb3141
+Author: hsu zangmen <chzang55@gmail.com>
+Date:   Mon Apr 28 08:56:38 2025 +0000
+
+    Translated using Weblate (Chinese (Traditional) (zh_TW))
+    
+    Currently translated at 82.2% (125 of 152 strings)
+    
+    Co-authored-by: hsu zangmen <chzang55@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_TW/
+    Translation: ibus-table/app
+
+commit b7737f41c07c7eeea8b715cd955428d6e248da04
+Author: David Mandelberg <david@mandelberg.org>
+Date:   Sun Apr 20 17:24:37 2025 -0400
+
+    Increase pygame.mixer's buffer size
+    
+    I wasn't able to reproduce the audible popping sounds from #681 for some
+    reason. Maybe I had different apps running that interacted with pipewire
+    different? However, if I ran this to load the CPU:
+    
+    ```
+    for i in {1..12}; do cat < /dev/urandom > /dev/null & done
+    ```
+    
+    I was able to reproduce these wireplumber log lines with the default
+    `pygame.mixer.init()` but not with `pygame.mixer.init(buffer=4096)`:
+    
+    ```
+    spa.audioconvert: 0x55e3890b13b0: (0 suppressed) out of buffers on port 0 2
+    ```
+    
+    Before, the node.latency in pipewire was 128/44100, or 3ms. With this
+    change, it's 1166/44100 or 26ms. I doubt 26ms will be noticible to
+    users?
+    
+    Resolves: https://github.com/mike-fabian/ibus-typing-booster/issues/681
+
+commit ad05d4deff289a509a77c23aa3559a3c186e57b2
+Author: naly zzwd <xeanhort007@gmail.com>
+Date:   Mon Apr 7 07:40:10 2025 +0000
+
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 85.5% (130 of 152 strings)
+    
+    Co-authored-by: naly zzwd <xeanhort007@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+    Translation: ibus-table/app
+
+commit c099b6a8e335433cc7fc1167080a302c641c5e07
+Author: Javier Francisco <fserrador@gmail.com>
+Date:   Sun Mar 30 18:53:34 2025 +0000
+
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 100.0% (152 of 152 strings)
+    
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 100.0% (152 of 152 strings)
+    
+    Co-authored-by: Javier Francisco <fserrador@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translation: ibus-table/app
+
+commit cdb915c42443b98db0c2ff39afde60220c6a8523
+Author: hsu zangmen <chzang55@gmail.com>
+Date:   Sun Mar 30 18:53:34 2025 +0000
+
+    Translated using Weblate (Chinese (Traditional) (zh_TW))
+    
+    Currently translated at 62.5% (95 of 152 strings)
+    
+    Co-authored-by: hsu zangmen <chzang55@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_TW/
+    Translation: ibus-table/app
+
+commit 38b7528981f53a886f7cb8e78eff02fa52449b5e
+Author: Rafael Fontenelle <rafaelff@gnome.org>
+Date:   Sun Mar 30 18:53:34 2025 +0000
+
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 100.0% (152 of 152 strings)
+    
+    Co-authored-by: Rafael Fontenelle <rafaelff@gnome.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    Translation: ibus-table/app
+
+commit 7c11a0ecbc99f57ba883d415eae9ed19c725d672
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Feb 18 17:35:29 2025 +0100
 

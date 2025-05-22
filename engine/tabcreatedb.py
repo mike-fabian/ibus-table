@@ -349,10 +349,7 @@ def main() -> None:
 
     def attribute_parser(f: Iterable[str]) -> Iterable[Tuple[str, str]]:
         for line in f:
-            try:
-                attr, val = line.strip().split('=')
-            except Exception:
-                attr, val = line.strip().split('==')
+            attr, val = re.fullmatch(r'(.*?)==?(.*)', line).groups()
             attr = attr.strip().lower()
             val = val.strip()
             yield (attr, val)

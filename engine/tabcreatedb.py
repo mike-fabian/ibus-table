@@ -349,7 +349,10 @@ def main() -> None:
 
     def attribute_parser(f: Iterable[str]) -> Iterable[Tuple[str, str]]:
         for line in f:
-            attr, val = re.fullmatch(r'(.*?)==?(.*)', line).groups()
+            match = re.fullmatch(r'(.*?)==?(.*)', line)
+            if match is None:
+                raise ValueError(f'Invalid attribute format: {line!r}')
+            attr, val = match.groups()
             attr = attr.strip().lower()
             val = val.strip()
             yield (attr, val)

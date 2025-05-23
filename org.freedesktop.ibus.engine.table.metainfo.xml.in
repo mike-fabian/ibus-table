@@ -40,6 +40,27 @@
   <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.17.13" date="2025-05-23" urgency="medium">
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.13</url>
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Improve parsing of attributtes (allow = character in
+            attribute values) by Alba Mendez (Resolves:
+            github-kaio-pull#86)
+          </li>
+          <li>
+             Translation update from Weblate (ca 100%, ru 99.3%)
+          </li>
+        </ul>
+      </description>
+      <issues>
+        <issue url="https://github.com/kaio/ibus-table/pull/86">
+          github-kaio-pull#86
+        </issue>
+      </issues>
+    </release>
     <release version="1.17.12" date="2025-05-02" urgency="medium">
       <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.12</url>
       <description>

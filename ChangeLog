@@ -1,4 +1,58 @@
-commit a878c605d2021daaac65efeef30f43dddbf69bec
+commit 3de57f96827eea938068e365c2d652fb77f6e296
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 23 11:08:28 2025 +0200
+
+    Release 1.17.13
+
+commit ab6288b28f7a4864df49596aba67151d0a6180bc
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri May 23 11:24:33 2025 +0200
+
+    Fix mypy warning
+
+commit b4c87561373305ad61683f35e736e2838392ea5d
+Author: Alba Mendez <me@alba.sh>
+Date:   Thu May 22 20:19:01 2025 +0200
+
+    allow = character in attribute values
+
+commit e4ead41ab5dba43d76898e376e8b6b66fb2bba4a
+Author: naly zzwd <xeanhort007@gmail.com>
+Date:   Sun May 18 12:08:24 2025 +0000
+
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 100.0% (152 of 152 strings)
+    
+    Co-authored-by: naly zzwd <xeanhort007@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+    Translation: ibus-table/app
+
+commit 7221f821adcd6cb270f9b3934d343c075a36b5c3
+Author: Sergey A <Ser82-png@yandex.ru>
+Date:   Thu May 8 14:22:55 2025 +0000
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 99.3% (151 of 152 strings)
+    
+    Co-authored-by: Sergey A <Ser82-png@yandex.ru>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translation: ibus-table/app
+
+commit 8626c64accb07a376261e90ee705fc9ede5a0dce
+Author: Weblate <noreply@weblate.org>
+Date:   Fri May 2 21:44:34 2025 +0000
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 35d18a05c0692dacbeae419a7af44f6be5b28d70
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Fri May 2 22:43:27 2025 +0200
 

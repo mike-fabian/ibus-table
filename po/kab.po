@@ -1,24 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
-# ButterflyOfFire <butterflyoffire@users.noreply.translate.fedoraproject.org>, 2024.
+# ButterflyOfFire <butterflyoffire@users.noreply.translate.fedoraproject.org>, 2024, 2025.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-05-02 22:44+0200\n"
-"PO-Revision-Date: 2024-11-21 16:38+0000\n"
-"Last-Translator: ButterflyOfFire <butterflyoffire@users.noreply.translate."
-"fedoraproject.org>\n"
-"Language-Team: Kabyle <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/kab/>\n"
+"PO-Revision-Date: 2025-05-25 20:05+0000\n"
+"Last-Translator: ButterflyOfFire "
+"<butterflyoffire@users.noreply.translate.fedoraproject.org>\n"
+"Language-Team: Kabyle <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/kab/>\n"
 "Language: kab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.8.2\n"
+"X-Generator: Weblate 5.11.3\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -88,7 +88,7 @@ msgstr ""
 
 #: engine/table.py:729
 msgid "Chinese mode"
-msgstr ""
+msgstr "Askar n Tcinwat"
 
 #: engine/table.py:730
 msgid "Switch Chinese mode"
@@ -206,7 +206,7 @@ msgstr ""
 
 #: engine/table.py:839
 msgid "Pinyin mode"
-msgstr ""
+msgstr "Askar n Pinyin"
 
 #: engine/table.py:840
 msgid "Switch pinyin mode"
@@ -258,7 +258,7 @@ msgstr ""
 
 #: engine/table.py:896 setup/main.py:940
 msgid "Normal"
-msgstr ""
+msgstr "Amagnu"
 
 #: engine/table.py:898
 msgid ""
@@ -287,14 +287,14 @@ msgstr "Asbeddi"
 #: engine/table.py:2933
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
-msgstr ""
+msgstr "Swel ibus-table “%(engine-name)s”"
 
 #. Translators: This is used in the title bar of a dialog window
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
 #: engine/it_util.py:943
 msgid "Key input"
-msgstr "Sekcem yiwet n tqeffalt"
+msgstr "Sekcem-d taqeffalt"
 
 #: engine/it_util.py:949
 msgid "Cancel"
@@ -332,7 +332,7 @@ msgstr "Tasemlit srid:"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:6
 msgid "Ibus Table"
-msgstr ""
+msgstr "Ibus Table"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:7
 msgid "Table based input method"
@@ -346,10 +346,8 @@ msgid ""
 msgstr ""
 
 #: setup/ibus-setup-table.desktop.in.in:2
-#, fuzzy
-#| msgid "Preferences"
 msgid "IBus Table Preferences"
-msgstr "Imenyafen"
+msgstr "Imenyafen n IBus Table"
 
 #: setup/ibus-setup-table.desktop.in.in:3
 msgid "Set IBus Table Options"
@@ -361,7 +359,7 @@ msgstr ""
 
 #: setup/main.py:117
 msgid "Direct input"
-msgstr ""
+msgstr "Asekcem usrid"
 
 #: setup/main.py:118
 msgid "Table input"
@@ -442,7 +440,7 @@ msgstr "Ih"
 #. Chinese which should be preferred.
 #: setup/main.py:352
 msgid "Chinese mode:"
-msgstr ""
+msgstr "Askar n Tcinwat:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.
@@ -560,7 +558,7 @@ msgstr ""
 #. window should be drawn horizontally or vertically.
 #: setup/main.py:632
 msgid "Orientation:"
-msgstr ""
+msgstr "Taɣda:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn
@@ -688,7 +686,7 @@ msgstr ""
 #. candidate will be automatically selected during typing.
 #: setup/main.py:892
 msgid "Auto select"
-msgstr ""
+msgstr "Afran awurman"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically

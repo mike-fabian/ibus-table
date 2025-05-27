@@ -1235,17 +1235,20 @@ class TabSqliteDb:
         try:
             sqlstring = (
                 'CREATE TABLE IF NOT EXISTS user_db.desc '
-                + '(name PRIMARY KEY, value);')
+                '(name PRIMARY KEY, value);')
             self.db.executescript(sqlstring)
             sqlstring = 'INSERT OR IGNORE INTO user_db.desc  VALUES (?, ?);'
-            self.db.execute(sqlstring, ('version', DATABASE_VERSION))
+            self.db.execute(
+                sqlstring, ('version', DATABASE_VERSION))
             sqlstring = (
-                'INSERT OR IGNORE INTO user_db.desc  '
-                + 'VALUES (?, DATETIME("now", "localtime"));')
-            self.db.execute(sqlstring, ("create-time", ))
+                "INSERT OR IGNORE INTO user_db.desc  "
+                "VALUES ('create-time', DATETIME('now', 'localtime'));")
+            self.db.execute(sqlstring)
             self.db.commit()
-        except:
-            LOGGER.exception('Unexpected error in generate_userdb_desc().')
+        except Exception as error: # pylint: disable=broad-except
+            LOGGER.exception(
+                'Unexpected error adding description to user_db: %s: %s',
+                 error.__class__.__name__, error)
 
     def init_user_db(self, db_file: str) -> None:
         '''

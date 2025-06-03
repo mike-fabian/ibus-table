@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
-# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022, 2023.
+# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022, 2023, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-05-02 22:44+0200\n"
-"PO-Revision-Date: 2023-02-05 18:20+0000\n"
+"PO-Revision-Date: 2025-06-03 12:32+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
-"Language-Team: Georgian <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/ka/>\n"
+"Language-Team: Georgian <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/ka/>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -49,7 +49,7 @@ msgstr "\"მხოლოდ ტრადიციულ ჩინურზე\"
 #. lists.
 #: engine/table.py:700
 msgid "Simplified Chinese first"
-msgstr ""
+msgstr "ჯერ გამარტივებული ჩინური"
 
 #: engine/table.py:702
 msgid "Switch to “Simplified Chinese before traditional”."
@@ -62,7 +62,7 @@ msgstr ""
 #. lists.
 #: engine/table.py:712
 msgid "Traditional Chinese first"
-msgstr ""
+msgstr "ჯერ ტრადიციული ჩინური"
 
 #: engine/table.py:714
 msgid "Switch to “Traditional Chinese before simplified”."
@@ -78,7 +78,7 @@ msgstr ""
 #. particular order
 #: engine/table.py:724 setup/main.py:391
 msgid "All Chinese characters"
-msgstr ""
+msgstr "ყველა ჩინური სიმბოლო"
 
 #: engine/table.py:725
 msgid "Switch to “All Chinese characters”."
@@ -168,11 +168,11 @@ msgstr ""
 
 #: engine/table.py:795
 msgid "Letter width"
-msgstr ""
+msgstr "ასოს სიგანე"
 
 #: engine/table.py:796
 msgid "Switch letter width"
-msgstr ""
+msgstr "ასოების სიგანის გადართვა"
 
 #: engine/table.py:807
 msgid "Switch to halfwidth punctuation"
@@ -184,11 +184,11 @@ msgstr ""
 
 #: engine/table.py:817
 msgid "Punctuation width"
-msgstr ""
+msgstr "პუნქტუაციის სიგანე"
 
 #: engine/table.py:818
 msgid "Switch punctuation width"
-msgstr ""
+msgstr "პუნქტუაციის სიგანის გადართვა"
 
 #: engine/table.py:829
 msgid "Switch to table mode"
@@ -208,11 +208,11 @@ msgstr ""
 
 #: engine/table.py:840
 msgid "Switch pinyin mode"
-msgstr ""
+msgstr "პინინის რეჟიმის გადართვა"
 
 #: engine/table.py:850
 msgid "Suggestion disabled"
-msgstr ""
+msgstr "შეთავაზება გათიშულია"
 
 #: engine/table.py:851 engine/table.py:857
 msgid "Switch to suggestion mode"
@@ -220,19 +220,19 @@ msgstr ""
 
 #: engine/table.py:856
 msgid "Suggestion enabled"
-msgstr ""
+msgstr "შეთავაზება ჩართულია"
 
 #: engine/table.py:861
 msgid "Suggestion mode"
-msgstr ""
+msgstr "შეთავაზებია რეჟიმი"
 
 #: engine/table.py:862
 msgid "Switch suggestion mode"
-msgstr ""
+msgstr "შეთავაზების რეჟიმის გადართვა"
 
 #: engine/table.py:872
 msgid "Multiple character match"
-msgstr ""
+msgstr "დამთხვევა რამდენიმე სიმბოლოთი"
 
 #: engine/table.py:874
 msgid "Switch to matching multiple characters at once"
@@ -240,7 +240,7 @@ msgstr ""
 
 #: engine/table.py:879
 msgid "Single character match"
-msgstr ""
+msgstr "დამთხვევა ერთი სიმბოლოთი"
 
 #: engine/table.py:881
 msgid "Switch to matching only single characters"
@@ -248,11 +248,11 @@ msgstr ""
 
 #: engine/table.py:885
 msgid "Onechar mode"
-msgstr ""
+msgstr "ერთსიმბოლოიანი რეჟიმი"
 
 #: engine/table.py:886
 msgid "Switch onechar mode"
-msgstr ""
+msgstr "ერთსიმბოლოიანი რეჟიმის გადართვა"
 
 #: engine/table.py:896 setup/main.py:940
 msgid "Normal"
@@ -272,11 +272,11 @@ msgstr ""
 
 #: engine/table.py:913
 msgid "Auto commit mode"
-msgstr ""
+msgstr "ავტოკომიტის რეჟიმი"
 
 #: engine/table.py:914
 msgid "Switch autocommit mode"
-msgstr ""
+msgstr "ავტოკომიტის რეჟიმის გადართვა"
 
 #: engine/table.py:2930
 msgid "Setup"
@@ -330,7 +330,7 @@ msgstr "ონლაინ დოკუმენტაცია:"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:6
 msgid "Ibus Table"
-msgstr ""
+msgstr "Ibus-ის ცხრილი"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:7
 msgid "Table based input method"
@@ -359,11 +359,11 @@ msgstr "საწყისი მდგომარეობა"
 
 #: setup/main.py:117
 msgid "Direct input"
-msgstr ""
+msgstr "პირდაპირი შეყვანა"
 
 #: setup/main.py:118
 msgid "Table input"
-msgstr ""
+msgstr "ცხრილით შეყვანა"
 
 #: setup/main.py:132 setup/main.py:192
 msgid "Preferences"
@@ -530,7 +530,7 @@ msgstr ""
 
 #: setup/main.py:593
 msgid "Candidate list"
-msgstr ""
+msgstr "კანდიდატების სია"
 
 #. Translators: A combobox to choose whether
 #. a candidate list should be shown or hidden.
@@ -646,7 +646,7 @@ msgstr ""
 #. to how often the candidates are used.
 #: setup/main.py:812
 msgid "Dynamic adjust"
-msgstr ""
+msgstr "დინამიკური გასწორება"
 
 #: setup/main.py:814
 msgid ""
@@ -662,7 +662,7 @@ msgstr "ნასწავლი მონაცემების წაშლ�
 #. character candidates should be shown.
 #: setup/main.py:852
 msgid "Compose:"
-msgstr ""
+msgstr "შედგება:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -681,7 +681,7 @@ msgstr "ფრაზა"
 
 #: setup/main.py:867
 msgid "Single Char"
-msgstr ""
+msgstr "1 სიმბოლო"
 
 #. Translators: A combobox to choose whether the first
 #. candidate will be automatically selected during typing.
@@ -760,7 +760,7 @@ msgstr ""
 #. should be automatically appended to the input.
 #: setup/main.py:1012
 msgid "Auto wildcard"
-msgstr ""
+msgstr "ავტომატური ვალდკარდი"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether a wildcard should be automatically

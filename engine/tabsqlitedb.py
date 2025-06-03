@@ -1086,9 +1086,9 @@ class TabSqliteDb:
                 single_wildcard_char, '_')
         if multi_wildcard_char:
             tabkeys_for_like = tabkeys_for_like.replace(
-                multi_wildcard_char, '%%')
+                multi_wildcard_char, '%')
         if auto_wildcard:
-            tabkeys_for_like += '%%'
+            tabkeys_for_like += '%'
         sqlargs = {'tabkeys': tabkeys_for_like, 'escapechar': escapechar}
         if DEBUG_LEVEL > 1:
             LOGGER.debug('sqlstr=%s sqlargs=%s', sqlstr, repr(sqlargs))

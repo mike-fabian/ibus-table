@@ -639,7 +639,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self._default_keybindings = it_util.get_default_keybindings(
             self._gsettings, self.database)
 
-        self._input_method_menu: [str] = []
+        self._input_method_menu: List[str] = []
         self._input_method_menu = self._gsettings.get_strv('inputmethodmenu')
 
         self._page_size: int = it_util.variant_to_value(
@@ -2784,7 +2784,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         return self._chinese_mode
 
     def set_input_method_menu(
-            self, input_method_menu: [str] = [], update_gsettings: bool = True) -> None:
+            self, input_method_menu: List[str] = [], update_gsettings: bool = True) -> None:
         '''Sets the visible input method menu items.
 
         :param input_method_menu: The visible input method menu items
@@ -2806,7 +2806,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 "inputmethodmenu",
                 GLib.Variant.new_strv(input_method_menu))
 
-    def get_input_method_menu(self) -> [str]:
+    def get_input_method_menu(self) -> List[str]:
         '''
         Return the visible input method menu items.
         '''

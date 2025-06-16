@@ -1187,32 +1187,33 @@ class SetupUI(Gtk.Window): # type: ignore
             self._debug_level_adjustment, 1, _options_details_grid_row, 1, 1)
 
         # name, label, check button
-        self._input_method_menu_tuple: Tuple[str, str, Gtk.CheckButton] = \
+        self._input_method_menu_tuple: Tuple[
+            List[Union[str, Optional[Gtk.CheckButton]]], ...] = (
             (["chinese_mode", _("Chinese mode"), None],
              ["letter_width", _("Letter width"), None],
              ["punctuation_width", _("Punctuation width"), None],
              ["pinyin_mode", _("Pinyin mode"), None],
              ["suggestion_mode", _("Suggestion mode"), None],
              ["onechar_mode", _("Onechar mode"), None],
-             ["autocommit_mode", _("Autocommit mode"), None])
+             ["autocommit_mode", _("Autocommit mode"), None]))
 
         _input_method_menu_grid_row = -1
 
         for item in self._input_method_menu_tuple:
-            (_name, _label, _button) = item
+            name, label, button = item
             _input_method_menu_grid_row += 1
-            _button = Gtk.CheckButton(label=_label)
-            _button.set_hexpand(False)
-            _button.set_vexpand(False)
-            if _name in self._settings_dict['inputmethodmenu']['user']:
-                _button.set_active(True)
+            button = Gtk.CheckButton(label=label)
+            button.set_hexpand(False)
+            button.set_vexpand(False)
+            if name in self._settings_dict['inputmethodmenu']['user']:
+                button.set_active(True)
             else:
-                _button.set_active(False)
-            _button.connect(
+                button.set_active(False)
+            button.connect(
                 'clicked', self._on_input_method_menu_checkbutton)
             self._input_method_menu_grid.attach(
-                _button, 0, _input_method_menu_grid_row, 1, 1)
-            item[2] = _button
+                button, 0, _input_method_menu_grid_row, 1, 1)
+            item[2] = button
 
         self.show_all() # pylint: disable=no-member
 
@@ -2346,7 +2347,7 @@ class SetupUI(Gtk.Window): # type: ignore
             self.set_keybindings(self._settings_dict['keybindings']['default'])
         self._keybindings_all_default_button.set_sensitive(True)
 
-    def _on_input_method_menu_checkbutton(self, widget: Gtk.CheckButton) -> None:
+    def _on_input_method_menu_checkbutton(self, _widget: Gtk.CheckButton) -> None:
         '''
         The checkbutton to whether to display the input method menu item
 
@@ -2354,9 +2355,9 @@ class SetupUI(Gtk.Window): # type: ignore
         '''
         items = []
         for item in self._input_method_menu_tuple:
-            (_name, _label, _button) = item
-            if _button.get_active():
-                items.append(_name)
+            name, _label, button = item
+            if isinstance(button, Gtk.CheckButton) and button.get_active():
+                items.append(str(name))
         self.set_input_method_menu(items, update_gsettings=True)
 
     def set_single_wildcard_char(self,
@@ -3024,7 +3025,7 @@ class SetupUI(Gtk.Window): # type: ignore
 
     def set_input_method_menu(
             self,
-            input_method_menu: [str],
+            input_method_menu: List[str],
             update_gsettings: bool = True) -> None:
         '''Sets the visible input method menu items
 
@@ -3044,11 +3045,12 @@ class SetupUI(Gtk.Window): # type: ignore
                 GLib.Variant.new_strv(input_method_menu))
         else:
             for item in self._input_method_menu_tuple:
-                (_name, _label, _button) = item
-                if _name in input_method_menu:
-                    _button.set_active(True)
-                else:
-                    _button.set_active(False)
+                name, _label, button = item
+                if isinstance(button, Gtk.CheckButton):
+                    if name in input_method_menu:
+                        button.set_active(True)
+                    else:
+                        button.set_active(False)
 
 class HelpWindow(Gtk.Window): # type: ignore
     '''

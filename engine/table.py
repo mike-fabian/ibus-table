@@ -65,8 +65,6 @@ import ibus_table_location
 
 LOGGER = logging.getLogger('ibus-table')
 
-DEBUG_LEVEL = int(0)
-
 def ascii_ispunct(character: str) -> bool:
     '''
     Use our own function instead of ascii.ispunct()
@@ -264,15 +262,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             obj_path: str,
             database: Any, # tabsqlitedb.TabSqliteDb
             unit_test: bool = False) -> None:
-        global DEBUG_LEVEL
-        try:
-            DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
-        except (TypeError, ValueError):
-            DEBUG_LEVEL = int(0)
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug(
-                'TabEngine.__init__(bus=%s, obj_path=%s, database=%s)',
-                bus, obj_path, database)
+        LOGGER.info(
+            'TabEngine.__init__(bus=%s, obj_path=%s, database=%s)',
+            bus, obj_path, database)
         LOGGER.info('ibus version = %s', '.'.join(map(str, IBUS_VERSION)))
         if hasattr(IBus.Engine.props, 'has_focus_id'):
             super().__init__(
@@ -300,9 +292,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self._icon_dir = os.path.join(ibus_table_location.data(), 'icons')
         self._engine_name = os.path.basename(
             self.database.filename).replace('.db', '').replace(' ', '_')
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug(
-                'self._engine_name = %s', self._engine_name)
+        LOGGER.info('self._engine_name = %s', self._engine_name)
 
         self._gsettings: Gio.Settings = Gio.Settings(
             schema='org.freedesktop.ibus.engine.table',
@@ -380,7 +370,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             self._gsettings.get_value('debuglevel'))
         self._debug_level = max(self._debug_level, 0) # minimum
         self._debug_level = min(self._debug_level, 255) # maximum
-        DEBUG_LEVEL = self._debug_level
+        LOGGER.info('self._debug_level=%s', self._debug_level)
 
         dynamic_adjust: Optional[bool] = it_util.variant_to_value(
             self._gsettings.get_user_value('dynamicadjust'))
@@ -617,7 +607,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if chinese_mode is None:
             chinese_mode = it_util.get_default_chinese_mode(
                 self.database)
-        elif DEBUG_LEVEL > 1:
+        elif self._debug_level > 1:
             LOGGER.debug(
                 'Chinese mode found in Gsettings, mode=%s', chinese_mode)
         self._chinese_mode: int = chinese_mode
@@ -962,7 +952,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''
         Clear all input, whether committed to preëdit or not.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('clear_all_input_and_preedit()')
         self.clear_input_not_committed_to_preedit()
         self._u_chars = []
@@ -983,7 +973,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''
         Clear the input which has not yet been committed to preëdit.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('clear_input_not_committed_to_preedit()')
         self._chars_valid = ''
         self._chars_invalid = ''
@@ -1285,7 +1275,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             user_freq: int = 0) -> None:
         '''append table candidate to lookup table'''
         assert self._input_mode == 1
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 'tabkeys=%s phrase=%s freq=%s user_freq=%s',
                 tabkeys, phrase, freq, user_freq)
@@ -1311,7 +1301,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 # In that case, the above regular expression should
                 # match as well.
                 remaining_tabkeys = tabkeys
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 'remaining_tabkeys=%s '
                 'self._chars_valid=%s phrase=%s',
@@ -1347,7 +1337,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             attrs.append(IBus.attr_foreground_new(
                 self.theme["system_phrase_unused"], 0, len(phrase)))
 
-        if DEBUG_LEVEL > 0:
+        if self._debug_level > 0:
             debug_text = ' ' + str(freq) + ' ' + str(user_freq)
             candidate_text += debug_text
             attrs.append(IBus.attr_foreground_new(
@@ -1455,7 +1445,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''append pinyin candidate to lookup table'''
         assert self._input_mode == 1
         assert self._py_mode
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 'tabkeys=%s phrase=%s freq=%s user_freq=%s',
                 tabkeys, phrase, freq, user_freq)
@@ -1474,7 +1464,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
              # In that case, the above regular expression should
              # match as well.
             remaining_tabkeys = tabkeys
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 'remaining_tabkeys=%s '
                 'self._chars_valid=%s phrase=%s',
@@ -1526,7 +1516,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         attrs.append(IBus.attr_foreground_new(
             self.theme["system_phrase"], 0, len(phrase)))
 
-        if DEBUG_LEVEL > 0:
+        if self._debug_level > 0:
             debug_text = ' ' + str(freq) + ' ' + str(user_freq)
             candidate_text += debug_text
             attrs.append(IBus.attr_foreground_new(
@@ -1554,7 +1544,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''append suggestion candidate to lookup table'''
         assert self._input_mode == 1
         assert self._sg_mode
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 'tabkeys=%s phrase=%s freq=%s user_freq=%s',
                 prefix, phrase, freq, user_freq)
@@ -1574,7 +1564,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         attrs.append(IBus.attr_foreground_new(
             self.theme["system_phrase"], 0, len(phrase)))
 
-        if DEBUG_LEVEL > 0:
+        if self._debug_level > 0:
             debug_text = ' ' + str(freq) + ' ' + str(user_freq)
             candidate_text += debug_text
             attrs.append(IBus.attr_foreground_new(
@@ -1601,7 +1591,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         Returns “True” if candidates were found and “False” if not.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 'self._chars_valid=%s '
                 'self._chars_invalid=%s '
@@ -1753,7 +1743,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         input_chars = self.get_input_chars()
         if input_chars:
             aux_string = input_chars
-            if DEBUG_LEVEL > 0 and self._u_chars:
+            if self._debug_level > 0 and self._u_chars:
                 (tabkeys_left,
                  dummy_tabkeys_current,
                  tabkeys_right) = self.get_preedit_tabkeys_parts()
@@ -1905,7 +1895,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                       label “1”)
         :return: True if successful, False if not
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('index=%s', index)
         cursor_pos = self._lookup_table.get_cursor_pos()
         cursor_in_page = self._lookup_table.get_cursor_in_page()
@@ -1936,7 +1926,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
     def remove_char(self) -> None:
         '''Process remove_char Key Event'''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('remove_char()')
         if self.get_input_chars():
             self.pop_input()
@@ -2016,15 +2006,13 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  to avoid endless loops when the Gsettings
                                  key is changed twice in a short time.
         '''
-        global DEBUG_LEVEL
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 '(%s, update_gsettings = %s)', debug_level, update_gsettings)
         if debug_level == self._debug_level:
             return
         if 0 <= debug_level <= 255:
             self._debug_level = debug_level
-            DEBUG_LEVEL = debug_level
             self.reset()
             if update_gsettings:
                 self._gsettings.set_value(
@@ -2046,7 +2034,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  to avoid endless loops when the Gsettings
                                  key is changed twice in a short time.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 '(%s, update_gsettings = %s)',
                 dynamic_adjust, update_gsettings)
@@ -2074,7 +2062,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  to avoid endless loops when the Gsettings
                                  key is changed twice in a short time.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 '(%s, update_gsettings = %s)', error_sound, update_gsettings)
         if error_sound == self._error_sound:
@@ -2101,7 +2089,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 '(%s, update_gsettings = %s)', path, update_gsettings)
         if path == self._error_sound_file:
@@ -2134,7 +2122,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 '(%s, update_gsettings = %s)', sound_backend, update_gsettings)
         if not isinstance(sound_backend, str):
@@ -2168,7 +2156,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  to avoid endless loops when the Gsettings
                                  key is changed twice in a short time.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 '(%s, update_gsettings = %s)', keybindings, update_gsettings)
         if not isinstance(keybindings, dict):
@@ -2452,7 +2440,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('mode=%s', mode)
         if mode == self._commit_invalid_mode:
             return
@@ -2616,7 +2604,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('orientation(%s)', orientation)
         if orientation == self._orientation:
             return
@@ -2644,7 +2632,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('page_size=%s', page_size)
         if page_size == self._page_size:
             return
@@ -2758,7 +2746,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  to avoid endless loops when the dconf
                                  key is changed twice in a short time.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('mode=%s', mode)
         if mode == self._chinese_mode:
             return
@@ -2795,7 +2783,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  key is changed twice in a short time.
 
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('input_method_menu=%s', input_method_menu)
         if input_method_menu == self._input_method_menu:
             return
@@ -2819,7 +2807,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''
         Initialize or update a ibus property menu
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 'menu=%s current_mode=%s', repr(menu), current_mode)
         if not current_mode:
@@ -2982,7 +2970,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''
         Handle clicks on properties
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug(
                 'ibus_property=%s prop_state=%s', ibus_property, prop_state)
         if ibus_property == "setup":
@@ -3169,7 +3157,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 f' ({self._lookup_table.get_cursor_pos() +1} / '
                 f'{self._lookup_table.get_number_of_candidates()})')
         if aux_string:
-            if DEBUG_LEVEL > 0 and not self._unit_test:
+            if self._debug_level > 0 and not self._unit_test:
                 client = f'🪟{self._im_client}'
                 aux_string += client
             attrs = IBus.AttrList()
@@ -3252,7 +3240,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         :param phrase: The text to commit
         :param tabkeys: The keys typed to produce this text
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('phrase=%s', phrase)
         self.clear_all_input_and_preedit()
         self._update_ui()
@@ -3273,7 +3261,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         Returns “True” if something was committed, “False” if not.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('self._chars_invalid=%s',
                          self._chars_invalid)
         if self._chars_invalid:
@@ -3339,7 +3327,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
     def do_candidate_clicked( # pylint: disable=arguments-differ
             self, index: int, _button: int, _state: int) -> bool:
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('index=%s _button=%s state=%s', index, _button, _state)
         if self.commit_to_preedit_current_page(index):
             # commits to preëdit
@@ -3838,9 +3826,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                          *all* commands in the self._keybindings
                          dictionary.
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('KeyEvent object: %s\n', key)
-        if DEBUG_LEVEL > 5:
+        if self._debug_level > 5:
             LOGGER.debug('self._hotkeys=%s\n', str(self._hotkeys))
 
         if not commands:
@@ -3852,7 +3840,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             commands = sorted(self._keybindings.keys())
         for command in commands:
             if (self._prev_key, key, command) in self._hotkeys: # type: ignore
-                if DEBUG_LEVEL > 1:
+                if self._debug_level > 1:
                     LOGGER.debug('matched command=%s', command)
                 command_function_name = f'_command_{command}'
                 try:
@@ -3923,13 +3911,13 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         modifier means Key Pressed
         '''
         key = it_util.KeyEvent(keyval, keycode, state)
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('KeyEvent object: %s', key)
 
         if (self._input_purpose
             in [it_util.InputPurpose.PASSWORD.value,
                 it_util.InputPurpose.PIN.value]):
-            if DEBUG_LEVEL > 0:
+            if self._debug_level > 0:
                 LOGGER.debug(
                     'Disable because of input purpose PASSWORD or PIN')
             return self._return_false(keyval, keycode, state)
@@ -4013,7 +4001,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         table is actually used and not switched off by using
         direct input.
         '''
-        if DEBUG_LEVEL > 0:
+        if self._debug_level > 0:
             LOGGER.debug('repr(key)=%s', repr(key))
 
         # Ignore key release events (Should be below all hotkey matches
@@ -4038,7 +4026,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                     and (not key.state &
                          (IBus.ModifierType.MOD1_MASK |
                           IBus.ModifierType.CONTROL_MASK))):
-                if DEBUG_LEVEL > 0:
+                if self._debug_level > 0:
                     LOGGER.debug(
                         'leading invalid input: '
                         'keychar=%s',
@@ -4189,7 +4177,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  + self._multi_wildcard_char)
                      or (self._input_mode and self._py_mode
                          and keychar in self._pinyin_valid_input_chars))):
-            if DEBUG_LEVEL > 0:
+            if self._debug_level > 0:
                 LOGGER.debug(
                     'valid input: keychar=%s', keychar)
 
@@ -4269,7 +4257,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         # this invalid input character as well, possibly converted to
         # fullwidth or halfwidth.
         if keychar:
-            if DEBUG_LEVEL > 0:
+            if self._debug_level > 0:
                 LOGGER.debug(
                     'trailing invalid input: keychar=%s', keychar)
             if not self._candidates or self._commit_invalid_mode == 1:
@@ -4296,7 +4284,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         Called for ibus < 1.5.27 when a window gets focus while
         this input engine is enabled
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('entering do_focus_in()\n')
         self.do_focus_in_id('', '')
 
@@ -4334,7 +4322,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                        client is also shown after the “:”, for example
                        like 'gtk3-im:firefox', 'gtk4-im:gnome-text-editor', …
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('object_path=%s client=%s\n', object_path, client)
         self._im_client = client
         if ':' not in self._im_client:
@@ -4342,7 +4330,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
              _window_title) = it_active_window.get_active_window()
             if program_name:
                 self._im_client += ':' + program_name
-            if DEBUG_LEVEL > 1:
+            if self._debug_level > 1:
                 LOGGER.debug('self._im_client=%s\n', self._im_client)
         self.register_properties(self.main_prop_list)
         self._update_ui()
@@ -4352,7 +4340,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         Called for ibus < 1.5.27 when a window loses focus while
         this input engine is enabled
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('entering do_focus_out()\n')
         self.do_focus_out_id('')
 
@@ -4362,7 +4350,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         Called for ibus >= 1.5.27 when a window loses focus while
         this input engine is enabled
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('object_path=%s\n', object_path)
         self._im_client = ''
         # Do not do self._input_purpose = 0 here, see
@@ -4384,7 +4372,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         seem to call this.
 
         '''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('do_reset()\n')
         self.reset()
 
@@ -4394,7 +4382,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         LOGGER.debug('purpose=%s hints=%s\n', purpose, format(hints, '016b'))
         self._input_purpose = purpose
         self._input_hints = hints
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             if (self._input_purpose
                 in [int(x) for x in list(it_util.InputPurpose)]):
                 for input_purpose in list(it_util.InputPurpose):
@@ -4414,7 +4402,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
     def do_enable(self, *_args: Any, **_kwargs: Any) -> None:
         '''Called when this input engine is enabled'''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('do_enable()\n')
         # Tell the input-context that the engine will utilize
         # surrounding-text:
@@ -4423,7 +4411,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
     def do_disable(self, *_args: Any, **_kwargs: Any) -> None:
         '''Called when this input engine is disabled'''
-        if DEBUG_LEVEL > 1:
+        if self._debug_level > 1:
             LOGGER.debug('do_disable()\n')
         self.clear_all_input_and_preedit()
         self._update_ui()

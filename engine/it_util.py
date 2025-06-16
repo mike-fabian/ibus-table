@@ -414,7 +414,7 @@ class Capabilite(Flag):
             return int(self) | other
         return NotImplemented
 
-    def __ror__(self, other: Any) -> Any: # type: ignore[override]
+    def __ror__(self, other: Any) -> Any:
         return self.__or__(other)
 
     def __and__(self, other: Any) -> Any:
@@ -426,7 +426,7 @@ class Capabilite(Flag):
             return int(self) & other
         return NotImplemented
 
-    def __rand__(self, other: Any) -> Any: # type: ignore[override]
+    def __rand__(self, other: Any) -> Any:
         return self.__and__(other)
 
     PREEDIT_TEXT = 'PREEDIT_TEXT'
@@ -628,7 +628,7 @@ class InputHints(Flag):
             return int(self) | other
         return NotImplemented
 
-    def __ror__(self, other: Any) -> Any: # type: ignore[override]
+    def __ror__(self, other: Any) -> Any:
         return self.__or__(other)
 
     def __and__(self, other: Any) -> Any:
@@ -641,7 +641,7 @@ class InputHints(Flag):
             return int(self) & other
         return NotImplemented
 
-    def __rand__(self, other: Any) -> Any: # type: ignore[override]
+    def __rand__(self, other: Any) -> Any:
         return self.__and__(other)
 
     NONE = 'NONE'
@@ -666,7 +666,7 @@ class KeyEvent:
         self.val = keyval
         self.code = keycode
         self.state = state
-        self.name = IBus.keyval_name(self.val)
+        self.name = str(IBus.keyval_name(self.val))
         if re.match(r'U\+[0-9a-fA-F]{4,5}', self.name):
             # Older versions of ibus produce
             #

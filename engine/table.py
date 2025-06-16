@@ -1374,9 +1374,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''
         # pylint: enable=line-too-long
         prefix_tree: List[List[Tuple[Any, ...]]] = []
-        for code_idx in range(len(asc_table_codes)):
+        for code_idx, code in enumerate(asc_table_codes):
             branch_count = len(prefix_tree)
-            code = asc_table_codes[code_idx]
 
             branch_idx = branch_count - 1
             node_idx = 0

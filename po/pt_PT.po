@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Manuela Silva <mmsrs@sky.com>, 2020.
 # Anonymous <noreply@weblate.org>, 2020.
-# Mike FABIAN <mfabian@redhat.com>, 2021, 2022.
+# Mike FABIAN <mfabian@redhat.com>, 2021, 2022, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-06-16 18:48+0200\n"
-"PO-Revision-Date: 2022-08-10 07:19+0000\n"
+"PO-Revision-Date: 2025-06-16 17:05+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Portuguese (Portugal) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/pt_PT/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.13\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -278,8 +278,6 @@ msgstr ""
 "diretamente na aplicação)"
 
 #: engine/table.py:916 setup/main.py:1198
-#, fuzzy
-#| msgid "Auto commit mode"
 msgid "Autocommit mode"
 msgstr "Modo de confirmação automática"
 
@@ -788,8 +786,6 @@ msgstr ""
 #. Translators: A combobox to choose whether automatic
 #. commits go into the preëdit or into the application
 #: setup/main.py:939
-#, fuzzy
-#| msgid "Auto commit mode:"
 msgid "Autocommit mode:"
 msgstr "Modo de confirmação automática:"
 

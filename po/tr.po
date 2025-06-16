@@ -2,7 +2,7 @@
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
 # Oğuz Ersen <oguzersen@protonmail.com>, 2019, 2020, 2021, 2022.
-# Mike FABIAN <mfabian@redhat.com>, 2019, 2021.
+# Mike FABIAN <mfabian@redhat.com>, 2019, 2021, 2025.
 # Anonymous <noreply@weblate.org>, 2020.
 # Oğuz Ersen <oguz@ersen.moe>, 2022, 2023, 2025.
 msgid ""
@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-06-16 18:48+0200\n"
-"PO-Revision-Date: 2025-01-19 19:57+0000\n"
-"Last-Translator: Oğuz Ersen <oguz@ersen.moe>\n"
-"Language-Team: Turkish <https://translate.fedoraproject.org/projects/ibus-"
-"table/app/tr/>\n"
+"PO-Revision-Date: 2025-06-16 17:05+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"Language-Team: Turkish <https://translate.fedoraproject.org/projects/"
+"ibus-table/app/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -278,8 +278,6 @@ msgstr ""
 "Doğrudan seçim moduna geç (otomatik seçimler doğrudan uygulamaya gider)"
 
 #: engine/table.py:916 setup/main.py:1198
-#, fuzzy
-#| msgid "Auto commit mode"
 msgid "Autocommit mode"
 msgstr "Otomatik seçim modu"
 
@@ -775,8 +773,6 @@ msgstr ""
 #. Translators: A combobox to choose whether automatic
 #. commits go into the preëdit or into the application
 #: setup/main.py:939
-#, fuzzy
-#| msgid "Auto commit mode:"
 msgid "Autocommit mode:"
 msgstr "Otomatik seçim modu:"
 

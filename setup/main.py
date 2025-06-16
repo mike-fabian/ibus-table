@@ -29,6 +29,7 @@ from typing import Union
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Tuple
 from typing import Optional
 from types import FrameType
 import sys
@@ -285,6 +286,19 @@ class SetupUI(Gtk.Window): # type: ignore
         # etc...
         self._keybindings_label.set_text(_('Key bindings'))
 
+        self._input_method_menu_grid = Gtk.Grid()
+        self._input_method_menu_grid.set_visible(True)
+        self._input_method_menu_grid.set_can_focus(False)
+        self._input_method_menu_grid.set_border_width(grid_border_width)
+        self._input_method_menu_grid.set_row_spacing(grid_row_spacing)
+        self._input_method_menu_grid.set_column_spacing(grid_column_spacing)
+        self._input_method_menu_grid.set_row_homogeneous(False)
+        self._input_method_menu_grid.set_column_homogeneous(True)
+        self._input_method_menu_grid.set_hexpand(True)
+        self._input_method_menu_grid.set_vexpand(False)
+        self._input_method_menu_label = Gtk.Label()
+        self._input_method_menu_label.set_text(_('Menu Items'))
+
         self._notebook.append_page(
             self._options_grid,
             self._options_label)
@@ -294,6 +308,9 @@ class SetupUI(Gtk.Window): # type: ignore
         self._notebook.append_page(
             self._keybindings_vbox,
             self._keybindings_label)
+        self._notebook.append_page(
+            self._input_method_menu_grid,
+            self._input_method_menu_label)
 
         _options_grid_row = -1
 
@@ -1169,6 +1186,34 @@ class SetupUI(Gtk.Window): # type: ignore
         self._options_details_grid.attach(
             self._debug_level_adjustment, 1, _options_details_grid_row, 1, 1)
 
+        # name, label, check button
+        self._input_method_menu_tuple: Tuple[str, str, Gtk.CheckButton] = \
+            (["chinese_mode", _("Chinese mode"), None],
+             ["letter_width", _("Letter width"), None],
+             ["punctuation_width", _("Punctuation width"), None],
+             ["pinyin_mode", _("Pinyin mode"), None],
+             ["suggestion_mode", _("Suggestion mode"), None],
+             ["onechar_mode", _("Onechar mode"), None],
+             ["autocommit_mode", _("Autocommit mode"), None])
+
+        _input_method_menu_grid_row = -1
+
+        for item in self._input_method_menu_tuple:
+            (_name, _label, _button) = item
+            _input_method_menu_grid_row += 1
+            _button = Gtk.CheckButton(label=_label)
+            _button.set_hexpand(False)
+            _button.set_vexpand(False)
+            if _name in self._settings_dict['inputmethodmenu']['user']:
+                _button.set_active(True)
+            else:
+                _button.set_active(False)
+            _button.connect(
+                'clicked', self._on_input_method_menu_checkbutton)
+            self._input_method_menu_grid.attach(
+                _button, 0, _input_method_menu_grid_row, 1, 1)
+            item[2] = _button
+
         self.show_all() # pylint: disable=no-member
 
         self._notebook.set_current_page(0) # Has to be after show_all()
@@ -1508,6 +1553,18 @@ class SetupUI(Gtk.Window): # type: ignore
             'default': default_autowildcard_mode,
             'user': user_autowildcard_mode,
             'set_function': self.set_autowildcard_mode}
+
+        default_input_method_menu = it_util.variant_to_value(
+            self._gsettings.get_default_value('inputmethodmenu'))
+        user_input_method_menu = it_util.variant_to_value(
+            self._gsettings.get_value('inputmethodmenu'))
+        if user_input_method_menu is None:
+            user_input_method_menu = default_input_method_menu
+
+        self._settings_dict['inputmethodmenu'] = {
+            'default': default_input_method_menu,
+            'user': user_input_method_menu,
+            'set_function': self.set_input_method_menu}
 
     @staticmethod
     def run_message_dialog(
@@ -2289,6 +2346,19 @@ class SetupUI(Gtk.Window): # type: ignore
             self.set_keybindings(self._settings_dict['keybindings']['default'])
         self._keybindings_all_default_button.set_sensitive(True)
 
+    def _on_input_method_menu_checkbutton(self, widget: Gtk.CheckButton) -> None:
+        '''
+        The checkbutton to whether to display the input method menu item
+
+        :param widget: The check button clicked
+        '''
+        items = []
+        for item in self._input_method_menu_tuple:
+            (_name, _label, _button) = item
+            if _button.get_active():
+                items.append(_name)
+        self.set_input_method_menu(items, update_gsettings=True)
+
     def set_single_wildcard_char(self,
                                  single_wildcard_char: str,
                                  update_gsettings: bool = True) -> None:
@@ -2951,6 +3021,34 @@ class SetupUI(Gtk.Window): # type: ignore
             self._gsettings.set_value(
                 'keybindings',
                 variant_dict.end())
+
+    def set_input_method_menu(
+            self,
+            input_method_menu: [str],
+            update_gsettings: bool = True) -> None:
+        '''Sets the visible input method menu items
+
+        :param input_method_menu: The visible input method menu items
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the Gsettings key changed
+                                 to avoid endless loops when the Gsettings
+                                 key is changed twice in a short time.
+        '''
+        LOGGER.info(
+            '(%s, update_gsettings = %s)', input_method_menu, update_gsettings)
+        self._settings_dict['inputmethodmenu']['user'] = input_method_menu
+        if update_gsettings:
+            self._gsettings.set_value(
+                'inputmethodmenu',
+                GLib.Variant.new_strv(input_method_menu))
+        else:
+            for item in self._input_method_menu_tuple:
+                (_name, _label, _button) = item
+                if _name in input_method_menu:
+                    _button.set_active(True)
+                else:
+                    _button.set_active(False)
 
 class HelpWindow(Gtk.Window): # type: ignore
     '''

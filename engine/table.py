@@ -639,6 +639,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self._default_keybindings = it_util.get_default_keybindings(
             self._gsettings, self.database)
 
+        self._input_method_menu: [str] = []
+        self._input_method_menu = self._gsettings.get_strv('inputmethodmenu')
+
         self._page_size: int = it_util.variant_to_value(
             self._gsettings.get_default_value('lookuptablepagesize'))
         for index in range(1, 10):
@@ -2780,6 +2783,35 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         '''
         return self._chinese_mode
 
+    def set_input_method_menu(
+            self, input_method_menu: [str] = [], update_gsettings: bool = True) -> None:
+        '''Sets the visible input method menu items.
+
+        :param input_method_menu: The visible input method menu items
+        :param update_gsettings: Whether to write the change to Gsettings.
+                                 Set this to False if this method is
+                                 called because the dconf key changed
+                                 to avoid endless loops when the dconf
+                                 key is changed twice in a short time.
+
+        '''
+        if DEBUG_LEVEL > 1:
+            LOGGER.debug('input_method_menu=%s', input_method_menu)
+        if input_method_menu == self._input_method_menu:
+            return
+        self._input_method_menu = input_method_menu
+        self._init_properties()
+        if update_gsettings:
+            self._gsettings.set_value(
+                "inputmethodmenu",
+                GLib.Variant.new_strv(input_method_menu))
+
+    def get_input_method_menu(self) -> [str]:
+        '''
+        Return the visible input method menu items.
+        '''
+        return self._input_method_menu
+
     def _init_or_update_property_menu(
             self,
             menu: Dict[str, Any],
@@ -2888,39 +2920,45 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         self._sub_props_dict = {}
         self.main_prop_list = IBus.PropList()
 
+        _input_method_menu = self.get_input_method_menu()
+
         self._init_or_update_property_menu(
             self.input_mode_menu,
             self._input_mode)
 
-        if self.database.is_db_chinese and self._chinese_mode != -1:
+        if "chinese_mode" in _input_method_menu and \
+           self.database.is_db_chinese and self._chinese_mode != -1:
             self._init_or_update_property_menu(
                 self.chinese_mode_menu,
                 self._chinese_mode)
 
         if self.database.is_db_cjk:
-            self._init_or_update_property_menu(
-                self.letter_width_menu,
-                self._full_width_letter[self._input_mode])
-            self._init_or_update_property_menu(
-                self.punctuation_width_menu,
-                self._full_width_punct[self._input_mode])
+            if "letter_width" in _input_method_menu:
+                self._init_or_update_property_menu(
+                    self.letter_width_menu,
+                    self._full_width_letter[self._input_mode])
+            if "punctuation_width" in _input_method_menu:
+                self._init_or_update_property_menu(
+                    self.punctuation_width_menu,
+                    self._full_width_punct[self._input_mode])
 
-        if self._ime_py:
+        if "pinyin_mode" in _input_method_menu and self._ime_py:
             self._init_or_update_property_menu(
                 self.pinyin_mode_menu,
                 self._py_mode)
 
-        if self._ime_sg:
+        if "suggestion_mode" in _input_method_menu and self._ime_sg:
             self._init_or_update_property_menu(
                 self.suggestion_mode_menu,
                 self._sg_mode)
 
-        if self.database.is_db_cjk:
+        if "onechar_mode" in _input_method_menu and self.database.is_db_cjk:
             self._init_or_update_property_menu(
                 self.onechar_mode_menu,
                 self._onechar)
 
-        if self.database.user_can_define_phrase and self.database.rules:
+        if "autocommit_mode" in _input_method_menu and \
+           self.database.user_can_define_phrase and self.database.rules:
             self._init_or_update_property_menu(
                 self.autocommit_mode_menu,
                 self._auto_commit)
@@ -4489,6 +4527,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             {'set_function': self.set_remember_input_mode, 'kwargs': {}},
             'darktheme':
             {'set_function': self.set_dark_theme, 'kwargs': {}},
+            'inputmethodmenu':
+            {'set_function': self.set_input_method_menu, 'kwargs': {}}
         }
         if key in set_functions:
             set_function = set_functions[key]['set_function']

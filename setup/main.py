@@ -936,7 +936,7 @@ class SetupUI(Gtk.Window): # type: ignore
         self._autocommit_mode_label.set_text(
             # Translators: A combobox to choose whether automatic
             # commits go into the preëdit or into the application
-            _('Auto commit mode:'))
+            _('Autocommit mode:'))
         self._autocommit_mode_label.set_tooltip_text(
             # Translators; A tooltip for the label of the combobox to
             # choose whether automatic commits go into the preëdit or

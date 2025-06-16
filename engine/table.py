@@ -913,7 +913,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         }
         self.autocommit_mode_menu = {
             'key': 'AutoCommitMode',
-            'label': _('Auto commit mode'),
+            'label': _('Autocommit mode'),
             'tooltip': _('Switch autocommit mode'),
             'shortcut_hint': repr(
                 self._keybindings['toggle_autocommit_mode']),

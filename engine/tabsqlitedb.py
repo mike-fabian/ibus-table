@@ -370,8 +370,8 @@ class TabSqliteDb:
         try:
             LOGGER.debug(
                 'Connect to the database %s.', user_db)
-            self.db.executescript('''
-                ATTACH DATABASE "%s" AS user_db;
+            self.db.executescript(f'''
+                ATTACH DATABASE "{user_db}" AS user_db;
                 PRAGMA user_db.encoding = "UTF-8";
                 PRAGMA user_db.case_sensitive_like = true;
                 PRAGMA user_db.page_size = 4096;
@@ -380,7 +380,7 @@ class TabSqliteDb:
                 PRAGMA user_db.journal_mode = WAL;
                 PRAGMA user_db.journal_size_limit = 1000000;
                 PRAGMA user_db.synchronous = NORMAL;
-            ''' % user_db)
+            ''')
         except:
             LOGGER.debug('Could not open the database %s.', user_db)
             timestamp = time.strftime('-%Y-%m-%d_%H:%M:%S')
@@ -394,8 +394,8 @@ class TabSqliteDb:
                 os.rename(user_db+'-wal', user_db+'-wal'+timestamp)
             LOGGER.debug('Creating a new, empty database "%s".', user_db)
             self.init_user_db(user_db)
-            self.db.executescript('''
-                ATTACH DATABASE "%s" AS user_db;
+            self.db.executescript(f'''
+                ATTACH DATABASE "{user_db}" AS user_db;
                 PRAGMA user_db.encoding = "UTF-8";
                 PRAGMA user_db.case_sensitive_like = true;
                 PRAGMA user_db.page_size = 4096;
@@ -404,7 +404,7 @@ class TabSqliteDb:
                 PRAGMA user_db.journal_mode = WAL;
                 PRAGMA user_db.journal_size_limit = 1000000;
                 PRAGMA user_db.synchronous = NORMAL;
-            ''' % user_db)
+            ''')
         self.create_tables("user_db")
         if self.old_phrases:
             sqlargs_old_phrases: List[Dict[str, Union[str, int]]] = []
@@ -443,10 +443,10 @@ class TabSqliteDb:
                 tabkeys, phrase, user_freq, database)
         if not tabkeys or not phrase:
             return
-        sqlstr = '''
-        UPDATE %s.phrases SET user_freq = :user_freq
+        sqlstr = f'''
+        UPDATE {database}.phrases SET user_freq = :user_freq
         WHERE tabkeys = :tabkeys AND phrase = :phrase
-        ;''' % database
+        ;'''
         sqlargs = {'user_freq': user_freq,
                    'tabkeys': tabkeys,
                    'phrase': phrase}
@@ -591,27 +591,27 @@ class TabSqliteDb:
     def create_tables(self, database: str) -> None:
         '''Create tables that contain all phrase'''
         if database == 'main':
-            sqlstr = '''
-            CREATE TABLE IF NOT EXISTS %s.goucima
+            sqlstr = f'''
+            CREATE TABLE IF NOT EXISTS {database}.goucima
             (zi TEXT PRIMARY KEY, goucima TEXT);
-            ''' % database
+            '''
             self.db.execute(sqlstr)
-            sqlstr = '''
-            CREATE TABLE IF NOT EXISTS %s.pinyin
+            sqlstr = f'''
+            CREATE TABLE IF NOT EXISTS {database}.pinyin
             (pinyin TEXT, zi TEXT, freq INTEGER);
-            ''' % database
+            '''
             self.db.execute(sqlstr)
-            sqlstr = '''
-            CREATE TABLE IF NOT EXISTS %s.suggestion
+            sqlstr = f'''
+            CREATE TABLE IF NOT EXISTS {database}.suggestion
             (phrase TEXT, freq INTEGER);
-            ''' %database
+            '''
             self.db.execute(sqlstr)
 
-        sqlstr = '''
-        CREATE TABLE IF NOT EXISTS %s.phrases
+        sqlstr = f'''
+        CREATE TABLE IF NOT EXISTS {database}.phrases
         (id INTEGER PRIMARY KEY, tabkeys TEXT, phrase TEXT,
         freq INTEGER, user_freq INTEGER);
-        ''' % database
+        '''
         self.db.execute(sqlstr)
         self.db.commit()
 
@@ -677,7 +677,7 @@ class TabSqliteDb:
                         rules['above'] = int(res.group(2))
                     _cms = res.group(3).split('+')
                     if len(_cms) > self._mlen:
-                        print('rule: "%s" over max key length' %rule)
+                        print(f'rule: "{rule}" over max key length')
                         break
                     for _cm in _cms:
                         cm_res = patt_p.match(_cm)
@@ -686,7 +686,7 @@ class TabSqliteDb:
                                         int(cm_res.group(2))))
                     rules[int(res.group(2))] = cms
                 else:
-                    print('not a legal rule: "%s"' %rule)
+                    print(f'not a legal rule: "{rule}"')
         except Exception:
             LOGGER.exception('Unexpected error in get_rules().')
         return rules
@@ -758,11 +758,11 @@ class TabSqliteDb:
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('len(phrases)=%s', len(list(phrases)))
-        insert_sqlstr = '''
+        insert_sqlstr = f'''
         INSERT INTO {database}.phrases
         (tabkeys, phrase, freq, user_freq)
         VALUES (:tabkeys, :phrase, :freq, :user_freq);
-        '''.format(database=database)
+        '''
         insert_sqlargs = []
         for (tabkeys, phrase, freq, user_freq) in phrases:
             insert_sqlargs.append({
@@ -793,10 +793,10 @@ class TabSqliteDb:
                 tabkeys, phrase, freq, user_freq)
         if not tabkeys or not phrase:
             return
-        select_sqlstr = '''
+        select_sqlstr = f'''
         SELECT * FROM {database}.phrases
         WHERE tabkeys = :tabkeys AND phrase = :phrase;
-        '''.format(database=database)
+        '''
         select_sqlargs = {'tabkeys': tabkeys, 'phrase': phrase}
         results = self.db.execute(select_sqlstr, select_sqlargs).fetchall()
         if results:
@@ -809,11 +809,11 @@ class TabSqliteDb:
                     select_sqlstr, select_sqlargs, results)
             return
 
-        insert_sqlstr = '''
+        insert_sqlstr = f'''
         INSERT INTO {database}.phrases
         (tabkeys, phrase, freq, user_freq)
         VALUES (:tabkeys, :phrase, :freq, :user_freq);
-        '''.format(database=database)
+        '''
         insert_sqlargs = {
             'tabkeys': tabkeys,
             'phrase': phrase,
@@ -856,9 +856,10 @@ class TabSqliteDb:
         '''Add pinyin to database, pinyins is a iterable object
         Like: [(zi,pinyin, freq), (zi, pinyin, freq), ...]
         '''
-        sqlstr = '''
-        INSERT INTO %s.pinyin (pinyin, zi, freq) VALUES (:pinyin, :zi, :freq);
-        ''' % database
+        sqlstr = f'''
+        INSERT INTO {database}.pinyin (pinyin, zi, freq)
+        VALUES (:pinyin, :zi, :freq);
+        '''
         count = 0
         for pinyin, zi, freq in pinyins:
             count += 1
@@ -885,9 +886,9 @@ class TabSqliteDb:
         '''Add suggestion phrase to database, suggestions is a iterable object
         Like: [(phrase, freq), (phrase, freq), ...]
         '''
-        sqlstr = '''
-        INSERT INTO %s.suggestion (phrase, freq) VALUES (:phrase, :freq);
-        ''' % database
+        sqlstr = f'''
+        INSERT INTO {database}.suggestion (phrase, freq) VALUES (:phrase, :freq);
+        '''
         count = 0
         for phrase, freq in suggestions:
             count += 1
@@ -1055,7 +1056,7 @@ class TabSqliteDb:
             one_char_condition = ' AND length(phrase)=1 '
 
         if self.user_can_define_phrase or dynamic_adjust:
-            sqlstr = '''
+            sqlstr = f'''
             SELECT tabkeys, phrase, freq, user_freq FROM
             (
                 SELECT tabkeys, phrase, freq, user_freq FROM main.phrases
@@ -1064,12 +1065,12 @@ class TabSqliteDb:
                 SELECT tabkeys, phrase, freq, user_freq FROM user_db.phrases
                 WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar {one_char_condition}
             )
-            '''.format(one_char_condition=one_char_condition)
+            '''
         else:
-            sqlstr = '''
+            sqlstr = f'''
             SELECT tabkeys, phrase, freq, user_freq FROM main.phrases
             WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar {one_char_condition}
-            '''.format(one_char_condition=one_char_condition)
+            '''
         escapechar = '☺'
         for char in '!@#':
             if char not in [single_wildcard_char, multi_wildcard_char]:
@@ -1581,15 +1582,15 @@ class TabSqliteDb:
         if not phrase:
             return
         if tabkeys:
-            delete_sqlstr = '''
+            delete_sqlstr = f'''
             DELETE FROM {database}.phrases
             WHERE tabkeys = :tabkeys AND phrase = :phrase;
-            '''.format(database=database)
+            '''
         else:
-            delete_sqlstr = '''
+            delete_sqlstr = f'''
             DELETE FROM {database}.phrases
             WHERE phrase = :phrase;
-            '''.format(database=database)
+            '''
         delete_sqlargs = {'tabkeys': tabkeys, 'phrase': phrase}
         self.db.execute(delete_sqlstr, delete_sqlargs)
         if commit:

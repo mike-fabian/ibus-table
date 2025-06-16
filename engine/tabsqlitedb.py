@@ -353,7 +353,7 @@ class TabSqliteDb:
                             os.rename(user_db+'-wal', user_db+'-wal'+timestamp)
                         LOGGER.debug(
                             'Creating a new, empty database "%s".', user_db)
-                        self.init_user_db(user_db)
+                        TabSqliteDb._init_user_db(user_db)
                         LOGGER.debug(
                             'If user phrases were successfully recovered from '
                             'the old, '
@@ -362,9 +362,10 @@ class TabSqliteDb:
                     else:
                         LOGGER.debug(
                             'Compatible database %s found.', user_db)
-                except:
+                except Exception as error: # pylint: disable=broad-except
                     LOGGER.exception(
-                        'Unexpected error trying to find user database')
+                        'Unexpected error trying to find user database: %s: %s',
+                        error.__class__.__name__, error)
 
         # open user phrase database
         try:
@@ -381,8 +382,10 @@ class TabSqliteDb:
                 PRAGMA user_db.journal_size_limit = 1000000;
                 PRAGMA user_db.synchronous = NORMAL;
             ''')
-        except:
-            LOGGER.debug('Could not open the database %s.', user_db)
+        except Exception as error:  # pylint: disable=broad-except
+            LOGGER.exception(
+                'Could not open the database %s: %s: %s',
+                user_db, error.__class__.__name__, error)
             timestamp = time.strftime('-%Y-%m-%d_%H:%M:%S')
             LOGGER.debug('Renaming the incompatible database to "%s".',
                          user_db+timestamp)
@@ -393,7 +396,7 @@ class TabSqliteDb:
             if os.path.exists(user_db+'-wal'):
                 os.rename(user_db+'-wal', user_db+'-wal'+timestamp)
             LOGGER.debug('Creating a new, empty database "%s".', user_db)
-            self.init_user_db(user_db)
+            TabSqliteDb._init_user_db(user_db)
             self.db.executescript(f'''
                 ATTACH DATABASE "{user_db}" AS user_db;
                 PRAGMA user_db.encoding = "UTF-8";
@@ -420,8 +423,9 @@ class TabSqliteDb:
             '''
             try:
                 self.db.executemany(sqlstr, sqlargs_old_phrases)
-            except:
-                LOGGER.exception('Error inserting old phrases')
+            except sqlite3.Error as error:
+                LOGGER.exception('Error inserting old phrases: %s: %s',
+                                  error.__class__.__name__, error)
             self.db.commit()
             self.db.execute('PRAGMA wal_checkpoint;')
 
@@ -455,8 +459,10 @@ class TabSqliteDb:
             if commit:
                 self.db.commit()
             self.invalidate_phrases_cache(tabkeys)
-        except:
-            LOGGER.exception('Unexpected error updating phrase in user_db.')
+        except sqlite3.Error as error:
+            LOGGER.exception(
+                'Unexpected error updating phrase in user_db: %s: %s',
+                error.__class__.__name__, error)
 
     def sync_usrdb(self) -> None:
         '''
@@ -496,7 +502,8 @@ class TabSqliteDb:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('load_phrases_cache()')
         try:
-            self._phrases_cache = json.load(open(self.cache_path))
+            with open(self.cache_path, encoding='utf-8') as f:
+                self._phrases_cache = json.load(f)
             snum = self._phrases_cache.get('serial_number')
             if not snum or (snum != self._snum):
                 self._phrases_cache = {}
@@ -508,8 +515,10 @@ class TabSqliteDb:
             if DEBUG_LEVEL > 1:
                 LOGGER.debug(
                     'Permission error reading %s', self.cache_path)
-        except:
-            LOGGER.debug('Unknown error reading %s', self.cache_path)
+        except Exception as error: # pylint: disable=broad-except
+            LOGGER.exception(
+                'Unknown error reading %s: %s: %s',
+                self.cache_path, error.__class__.__name__, error)
 
     def save_phrases_cache(self) -> None:
         '''
@@ -520,12 +529,15 @@ class TabSqliteDb:
         try:
             self._phrases_cache['serial_number'] = self._snum
             _cache_path = self.cache_path + '.tmp'
-            # The system may be break stores on rebooting, so
+            # The system may be break during rebooting, so
             # dump to temporary file and then replace it.
-            json.dump(self._phrases_cache, open(_cache_path, 'w'))
+            with open(_cache_path, 'w', encoding='utf-8') as f:
+                json.dump(self._phrases_cache, f)
             os.replace(_cache_path, self.cache_path)
-        except:
-            LOGGER.exception('Unexpected error in save_phrases_cache().')
+        except Exception as error: # pylint: disable=broad-except
+            LOGGER.exception(
+                'Unexpected error in save_phrases_cache(): %s: %s',
+                error.__class__.__name__, error)
 
     def is_chinese(self) -> bool:
         '''
@@ -687,8 +699,10 @@ class TabSqliteDb:
                     rules[int(res.group(2))] = cms
                 else:
                     print(f'not a legal rule: "{rule}"')
-        except Exception:
-            LOGGER.exception('Unexpected error in get_rules().')
+        except Exception as error: # pylint: disable=broad-except
+            LOGGER.exception(
+                'Unexpected error in get_rules(): %s: %s',
+                error.__class__.__name__, error)
         return rules
 
     def get_possible_tabkeys_lengths(self) -> List[int]:
@@ -828,8 +842,10 @@ class TabSqliteDb:
             if commit:
                 self.db.commit()
             self.invalidate_phrases_cache(tabkeys)
-        except:
-            LOGGER.exception('Unexpected error in add_phrase()')
+        except Exception as error: # pylint: disable=broad-except
+            LOGGER.exception(
+                'Unexpected error in add_phrase(): %s: %s',
+                error.__class__.__name__, error)
 
     def add_goucima(self, goucimas: Iterable[Tuple[str, str]]) -> None:
         '''Add goucima into database, goucimas is iterable object
@@ -846,8 +862,10 @@ class TabSqliteDb:
             self.db.executemany(sqlstr, sqlargs)
             self.db.commit()
             self.db.execute('PRAGMA wal_checkpoint;')
-        except:
-            LOGGER.exception('Unexpected error in add_goucima().')
+        except sqlite3.Error as error:
+            LOGGER.exception(
+                'Unexpected error in add_goucima(): %s: %s',
+                error.__class__.__name__, error)
 
     def add_pinyin(
             self,
@@ -872,11 +890,13 @@ class TabSqliteDb:
             try:
                 self.db.execute(
                     sqlstr, {'pinyin': pinyin, 'zi': zi, 'freq': freq})
-            except Exception:
+            except sqlite3.Error as error:
                 LOGGER.exception(
                     'Error when inserting into pinyin table. '
-                    'count=%s pinyin=%s zi=%s freq=%s',
-                    count, pinyin, zi, freq)
+                    'count=%s pinyin=%s zi=%s freq=%s: '
+                    '%s: %s',
+                    count, pinyin, zi, freq,
+                    error.__class__.__name__, error)
         self.db.commit()
 
     def add_suggestion(
@@ -895,11 +915,12 @@ class TabSqliteDb:
             try:
                 self.db.execute(
                     sqlstr, {'phrase': phrase, 'freq': freq})
-            except Exception:
+            except sqlite3.Error as error:
                 LOGGER.exception(
                     'Error when inserting into suggestion table. '
-                    'count=%s phrase=%s freq=%s',
-                    count, phrase, freq)
+                    'count=%s phrase=%s freq=%s: %s: %s',
+                    count, phrase, freq,
+                    error.__class__.__name__, error)
         self.db.commit()
 
     def optimize_database(self) -> None:
@@ -930,7 +951,8 @@ class TabSqliteDb:
         self.db.executescript("VACUUM;")
         self.db.commit()
 
-    def drop_indexes(self, _database: str) -> None:
+    def drop_indexes( # pylint: disable=no-self-use
+            self, _database: str) -> None:
         '''Drop the indexes in the database to reduce its size
 
         We do not use any indexes at the moment, therefore this
@@ -939,7 +961,8 @@ class TabSqliteDb:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('drop_indexes()')
 
-    def create_indexes(self, _database: str, _commit: bool = True) -> None:
+    def create_indexes( # pylint: disable=no-self-use
+            self, _database: str, _commit: bool = True) -> None:
         '''Create indexes for the database.
 
         We do not use any indexes at the moment, therefore
@@ -954,12 +977,14 @@ class TabSqliteDb:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('create_indexes()')
 
-    def big5_code(self, phrase: str) -> bytes:
+    @staticmethod
+    def _big5_code(phrase: str) -> bytes:
         '''
         Encode a string in Big5 or, if that is not possible,
         return something higher than any Big5 code.
 
         :param phrase: String to be encoded in Big5 encoding
+        :returns: Big5-encoded bytes or b'\xff\xff' if unencodable
         '''
         try:
             big5 = phrase.encode('Big5')
@@ -986,13 +1011,14 @@ class TabSqliteDb:
         if engine_name in [
                 'cangjie3', 'cangjie5', 'cangjie-big',
                 'quick-classic', 'quick3', 'quick5']:
-            code_point_function = self.big5_code
+            code_point_function = TabSqliteDb._big5_code
         if self.is_db_chinese:
-            pinyin_exact_match_function: Callable[[str], int] = lambda x: (
-                - int(typed_tabkeys == x[:-1] and  x[-1] in '!@#$%')
-            )
+            def pinyin_exact_match_function(x: str) -> int:
+                return -int(typed_tabkeys == x[:-1] and x[-1] in '!@#$%')
         else:
-            pinyin_exact_match_function = lambda x: (1)
+            def pinyin_exact_match_function( # pylint: disable=unused-argument
+                    x: str) -> int:
+                return 1
         if chinese_mode in (2, 3) and self.is_db_chinese:
             if chinese_mode == 2:
                 bitmask = 1 << 0 # used in simplified Chinese
@@ -1213,7 +1239,7 @@ class TabSqliteDb:
         if engine_name in [
                 'cangjie3', 'cangjie5', 'cangjie-big',
                 'quick-classic', 'quick3', 'quick5']:
-            code_point_function = self.big5_code
+            code_point_function = TabSqliteDb._big5_code
 
         return sorted(candidates,
                       key=lambda x: (
@@ -1251,7 +1277,8 @@ class TabSqliteDb:
                 'Unexpected error adding description to user_db: %s: %s',
                  error.__class__.__name__, error)
 
-    def init_user_db(self, db_file: str) -> None:
+    @staticmethod
+    def _init_user_db(db_file: str) -> None:
         '''
         Initialize the user database unless it is an in-memory database
 

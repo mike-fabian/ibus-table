@@ -1031,6 +1031,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
     def split_strings_committed_to_preedit(
             self, index: int, index_in_phrase: int) -> None:
+        '''Splits strings committed to preedit'''
         head = self._strings[index][:index_in_phrase]
         tail = self._strings[index][index_in_phrase:]
         self._u_chars.pop(index)
@@ -1426,6 +1427,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             self,
             asc_table_codes: List[str],
             sorted_idx_list: List[int]) -> int:
+        '''Select the best index from a prefix list'''
         if self._engine_name == 'erbi-qs':
             # for erbi-qs, code start with i/u/v is auxiliary
             for i in sorted_idx_list:

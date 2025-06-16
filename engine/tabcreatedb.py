@@ -161,7 +161,7 @@ if not _ARGS.name:
     sys.exit(2)
 
 
-class Section:
+class Section: # pylint: disable=too-few-public-methods
     '''Helper class for parsing the sections of the tables marked
     with BEGIN_* and END_*.
     '''
@@ -205,7 +205,7 @@ def main() -> None:
     if not _ARGS.only_index:
         try:
             os.unlink(_ARGS.name)
-        except Exception:
+        except (FileNotFoundError, PermissionError, OSError):
             pass
 
     debug_print('Processing Database')
@@ -407,11 +407,9 @@ def main() -> None:
     debug_print(f'\tLoad sources "{_ARGS.source}"')
     patt_s = re.compile(r'.*\.bz2')
     _bz2s = patt_s.match(_ARGS.source)
-    if _bz2s:
-        source_str = bz2.open(
-            _ARGS.source, mode='rt', encoding='UTF-8').read()
-    else:
-        source_str = open(_ARGS.source, encoding='UTF-8').read()
+    open_func = bz2.open if _bz2s else open
+    with open_func(_ARGS.source, mode='rt', encoding='UTF-8') as file:
+        source_str = file.read()
     source_str = source_str.replace('\r\n', '\n')
     source = source_str.split('\n')
     # first get config line and table line and goucima line respectively
@@ -442,32 +440,26 @@ def main() -> None:
     if db.ime_properties.get('pinyin_mode').lower() == 'true':
         debug_print(f'\tLoad pinyin source "{_ARGS.pinyin}"')
         _bz2p = patt_s.match(_ARGS.pinyin)
-        if _bz2p:
-            pinyin_s = bz2.open(_ARGS.pinyin, mode='rt', encoding='UTF-8')
-        else:
-            pinyin_s = open(_ARGS.pinyin, encoding='UTF-8')
-        debug_print('\tParsing pinyin source file ')
-        pyline = parse_pinyin(pinyin_s)
-        debug_print('\tPreapring pinyin entries')
-        pinyin = pinyin_parser(pyline)
-        debug_print('\t  add pinyin into DB ')
-        db.add_pinyin(pinyin)
+        open_func = bz2.open if _bz2p else open
+        with open_func(_ARGS.pinyin, mode='rt', encoding='UTF-8') as pinyin_s:
+            debug_print('\tParsing pinyin source file ')
+            pyline = parse_pinyin(pinyin_s)
+            debug_print('\tPreparing pinyin entries')
+            pinyin = pinyin_parser(pyline)
+            debug_print('\t  add pinyin into DB ')
+            db.add_pinyin(pinyin)
 
     if db.ime_properties.get('suggestion_mode').lower() == 'true':
         debug_print(f'\tLoad suggestion source {repr(_ARGS.suggestion)}')
-        _bz2p = patt_s.match(_ARGS.suggestion)
-        if _bz2p:
-            suggestion_s = bz2.open(
-                _ARGS.suggestion, mode="rt", encoding='UTF-8')
-        else:
-            suggestion_s = open(
-                _ARGS.suggestion, encoding='UTF-8')
-        debug_print('\tParsing suggestion source file ')
-        sgline = parse_suggestion(suggestion_s)
-        debug_print('\tPreapring suggestion entries')
-        suggestions = suggestion_parser(sgline)
-        debug_print('\t  add suggestion candidates into DB ')
-        db.add_suggestion(suggestions)
+        _bz2s = patt_s.match(_ARGS.suggestion)
+        open_func = bz2.open if _bz2s else open
+        with open_func(_ARGS.suggestion, mode="rt", encoding='UTF-8') as suggestion_s:
+            debug_print('\tParsing suggestion source file ')
+            sgline = parse_suggestion(suggestion_s)
+            debug_print('\tPreparing suggestion entries')
+            suggestions = suggestion_parser(sgline)
+            debug_print('\t  add suggestion candidates into DB ')
+            db.add_suggestion(suggestions)
 
     debug_print('Optimizing database ')
     db.optimize_database()
@@ -477,37 +469,35 @@ def main() -> None:
         debug_print('\tPreparing for adding extra words')
         db.create_indexes('main')
         debug_print(f'\tLoad extra words source {repr(_ARGS.extra)}')
-        _bz2p = patt_s.match(_ARGS.extra)
-        if _bz2p:
-            extra_s = bz2.open(_ARGS.extra, mode='rt', encoding='UTF-8')
-        else:
-            extra_s = open(_ARGS.extra, mode='rt', encoding='UTF-8')
-        debug_print('\tParsing extra words source file ')
-        extraline = parse_extra(extra_s)
-        debug_print('\tPreparing extra words lines')
-        extrawords = extra_parser(extraline)
-        debug_print(f'\t  we have {len(extrawords)} extra phrases from source')
-        # first get the entry of original phrases from
-        # phrases-[(xingma, phrase, int(freq), 0)]
-        orig_phrases = {}
-        for phrase in phrases:
-            orig_phrases.update({f'{phrase[0]}\t{phrase[1]}': phrase})
-        debug_print(f'\t  the len of orig_phrases is: {len(orig_phrases)}')
-        extra_phrases = {}
-        for extraword in extrawords:
-            extra_phrases.update(
-                {f'{extraword[0]}\t{extraword[1]}': extraword})
-        debug_print(f'\t  the len of extra_phrases is: {len(extra_phrases)}')
-        # pop duplicated keys
-        for extra_phrase in extra_phrases:
-            if extra_phrase in orig_phrases:
-                extra_phrases.pop(extra_phrase)
-        debug_print(f'\t  {len(extra_phrases)} extra phrases will be added')
-        new_phrases = list(extra_phrases.values())
-        debug_print('\tAdding extra words into DB ')
-        db.add_phrases(new_phrases)
-        debug_print('Optimizing database ')
-        db.optimize_database()
+        _bz2e = patt_s.match(_ARGS.extra)
+        open_func = bz2.open if _bz2e else open
+        with open_func(_ARGS.extra, mode='rt', encoding='UTF-8') as extra_s:
+            debug_print('\tParsing extra words source file ')
+            extraline = parse_extra(extra_s)
+            debug_print('\tPreparing extra words lines')
+            extrawords = extra_parser(extraline)
+            debug_print(f'\t  we have {len(extrawords)} extra phrases from source')
+            # first get the entry of original phrases from
+            # phrases-[(xingma, phrase, int(freq), 0)]
+            orig_phrases = {}
+            for phrase in phrases:
+                orig_phrases.update({f'{phrase[0]}\t{phrase[1]}': phrase})
+            debug_print(f'\t  the len of orig_phrases is: {len(orig_phrases)}')
+            extra_phrases = {}
+            for extraword in extrawords:
+                extra_phrases.update(
+                    {f'{extraword[0]}\t{extraword[1]}': extraword})
+            debug_print(f'\t  the len of extra_phrases is: {len(extra_phrases)}')
+            # pop duplicated keys
+            for extra_phrase in extra_phrases:
+                if extra_phrase in orig_phrases:
+                    extra_phrases.pop(extra_phrase)
+            debug_print(f'\t  {len(extra_phrases)} extra phrases will be added')
+            new_phrases = list(extra_phrases.values())
+            debug_print('\tAdding extra words into DB ')
+            db.add_phrases(new_phrases)
+            debug_print('Optimizing database ')
+            db.optimize_database()
 
     if _ARGS.index:
         debug_print('Create Indexes ')

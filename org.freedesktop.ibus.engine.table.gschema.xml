@@ -55,6 +55,12 @@
       <summary>List of keybindings</summary>
       <description>The list of configurable keybindings</description>
     </key>
+    <key name="inputmethodmenu" type="as">
+      <default>['chinese_mode', 'letter_width', 'punctuation_width',
+      'pinyin_mode', 'suggestion_mode']</default>
+      <summary>List of visible menu items</summary>
+      <description>The list of visible input method menu items</description>
+    </key>
     <key name="darktheme" type="b">
       <default>false</default>
     </key>

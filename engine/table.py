@@ -39,6 +39,7 @@ from typing import Callable
 import sys
 import os
 import re
+import ast
 import copy
 import time
 import logging
@@ -588,7 +589,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         # committed to preëdit but not yet “really” committed.
         self._cursor_precommit = 0
 
-        self._prompt_characters = eval(
+        self._prompt_characters = ast.literal_eval(
             self.database.ime_properties.get('char_prompts'))
 
         # self._onechar: whether we only select single character

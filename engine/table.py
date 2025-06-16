@@ -2772,7 +2772,9 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         return self._chinese_mode
 
     def set_input_method_menu(
-            self, input_method_menu: List[str] = [], update_gsettings: bool = True) -> None:
+            self,
+            input_method_menu: Optional[List[str]] = None,
+            update_gsettings: bool = True) -> None:
         '''Sets the visible input method menu items.
 
         :param input_method_menu: The visible input method menu items
@@ -2783,6 +2785,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                                  key is changed twice in a short time.
 
         '''
+        if input_method_menu is None:
+            input_method_menu = []
         if self._debug_level > 1:
             LOGGER.debug('input_method_menu=%s', input_method_menu)
         if input_method_menu == self._input_method_menu:

@@ -9,11 +9,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2025-06-16 18:48+0200\n"
+"POT-Creation-Date: 2025-06-17 10:00+0200\n"
 "PO-Revision-Date: 2025-06-16 17:05+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
-"Language-Team: Turkish <https://translate.fedoraproject.org/projects/"
-"ibus-table/app/tr/>\n"
+"Language-Team: Turkish <https://translate.fedoraproject.org/projects/ibus-"
+"table/app/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,11 +25,11 @@ msgstr ""
 #. when one wants to input only Simplified Chinese.
 #. Translators: This is the setting to use only
 #. simplified Chinese
-#: engine/table.py:682 setup/main.py:389
+#: engine/table.py:673 setup/main.py:389
 msgid "Simplified Chinese"
 msgstr "Basitleştirilmiş Çince"
 
-#: engine/table.py:684
+#: engine/table.py:675
 msgid "Switch to “Simplified Chinese only”."
 msgstr "“Sadece Basitleştirilmiş Çince”ye geç."
 
@@ -37,11 +37,11 @@ msgstr "“Sadece Basitleştirilmiş Çince”ye geç."
 #. when one wants to input only Traditonal Chinese
 #. Translators: This is the setting to use only
 #. traditional Chinese
-#: engine/table.py:691 setup/main.py:393
+#: engine/table.py:682 setup/main.py:393
 msgid "Traditional Chinese"
 msgstr "Geleneksel Çince"
 
-#: engine/table.py:693
+#: engine/table.py:684
 msgid "Switch to “Traditional Chinese only”."
 msgstr "“Sadece Geleneksel Çince”ye geç."
 
@@ -50,11 +50,11 @@ msgstr "“Sadece Geleneksel Çince”ye geç."
 #. Chinese but wants the Simplified Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:703
+#: engine/table.py:694
 msgid "Simplified Chinese first"
 msgstr "Önce Basitleştirilmiş Çince"
 
-#: engine/table.py:705
+#: engine/table.py:696
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr "“Gelenekselden önce Basitleştirilmiş Çince”ye geç."
 
@@ -63,11 +63,11 @@ msgstr "“Gelenekselden önce Basitleştirilmiş Çince”ye geç."
 #. Chinese but wants the Traditional Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:715
+#: engine/table.py:706
 msgid "Traditional Chinese first"
 msgstr "Önce Geleneksel Çince"
 
-#: engine/table.py:717
+#: engine/table.py:708
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr "“Basitleştirilmişten önce Geleneksel Çince”ye geç."
 
@@ -79,59 +79,59 @@ msgstr "“Basitleştirilmişten önce Geleneksel Çince”ye geç."
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese in no
 #. particular order
-#: engine/table.py:727 setup/main.py:408
+#: engine/table.py:718 setup/main.py:408
 msgid "All Chinese characters"
 msgstr "Tüm Çince karakterler"
 
-#: engine/table.py:728
+#: engine/table.py:719
 msgid "Switch to “All Chinese characters”."
 msgstr "“Tüm Çince karakterler”e geç."
 
-#: engine/table.py:732 setup/main.py:1192
+#: engine/table.py:723 setup/main.py:1192
 msgid "Chinese mode"
 msgstr "Çince modu"
 
-#: engine/table.py:733
+#: engine/table.py:724
 msgid "Switch Chinese mode"
 msgstr "Çince modunu değiştir"
 
-#: engine/table.py:744
+#: engine/table.py:735
 msgid "English"
 msgstr "İngilizce"
 
-#: engine/table.py:745
+#: engine/table.py:736
 msgid "Switch to English input"
 msgstr "İngilizce girişe geç"
 
-#: engine/table.py:752
+#: engine/table.py:743
 msgid "Chinese"
 msgstr "Çince"
 
-#: engine/table.py:753
+#: engine/table.py:744
 msgid "Switch to Chinese input"
 msgstr "Çince girişe geç"
 
-#: engine/table.py:761 engine/table.py:909 setup/main.py:959
+#: engine/table.py:752 engine/table.py:900 setup/main.py:959
 msgid "Direct"
 msgstr "Doğrudan"
 
-#: engine/table.py:762
+#: engine/table.py:753
 msgid "Switch to direct input"
 msgstr "Doğrudan girişe geç"
 
-#: engine/table.py:767 engine/table.py:831
+#: engine/table.py:758 engine/table.py:822
 msgid "Table"
 msgstr "Tablo"
 
-#: engine/table.py:768
+#: engine/table.py:759
 msgid "Switch to table input"
 msgstr "Tablo girişe geç"
 
-#: engine/table.py:776
+#: engine/table.py:767
 msgid "Input mode"
 msgstr "Giriş modu"
 
-#: engine/table.py:777
+#: engine/table.py:768
 msgid "Switch Input mode"
 msgstr "Giriş modunu değiştir"
 
@@ -143,12 +143,12 @@ msgstr "Giriş modunu değiştir"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use half width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:787 engine/table.py:809 setup/main.py:445 setup/main.py:489
+#: engine/table.py:778 engine/table.py:800 setup/main.py:445 setup/main.py:489
 #: setup/main.py:534 setup/main.py:579
 msgid "Half"
 msgstr "Yarım"
 
-#: engine/table.py:788
+#: engine/table.py:779
 msgid "Switch to halfwidth letters"
 msgstr "Yarım genişlikteki harflere geç"
 
@@ -160,108 +160,108 @@ msgstr "Yarım genişlikteki harflere geç"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use full width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:793 engine/table.py:815 setup/main.py:449 setup/main.py:493
+#: engine/table.py:784 engine/table.py:806 setup/main.py:449 setup/main.py:493
 #: setup/main.py:538 setup/main.py:583
 msgid "Full"
 msgstr "Tam"
 
-#: engine/table.py:794
+#: engine/table.py:785
 msgid "Switch to fullwidth letters"
 msgstr "Tam genişlikteki harflere geç"
 
-#: engine/table.py:798 setup/main.py:1193
+#: engine/table.py:789 setup/main.py:1193
 msgid "Letter width"
 msgstr "Harf genişliği"
 
-#: engine/table.py:799
+#: engine/table.py:790
 msgid "Switch letter width"
 msgstr "Harf genişliğini değiştir"
 
-#: engine/table.py:810
+#: engine/table.py:801
 msgid "Switch to halfwidth punctuation"
 msgstr "Yarım genişlikteki noktalama işaretlerine geç"
 
-#: engine/table.py:816
+#: engine/table.py:807
 msgid "Switch to fullwidth punctuation"
 msgstr "Tam genişlikteki noktalama işaretlerine geç"
 
-#: engine/table.py:820 setup/main.py:1194
+#: engine/table.py:811 setup/main.py:1194
 msgid "Punctuation width"
 msgstr "Noktalama işareti genişliği"
 
-#: engine/table.py:821
+#: engine/table.py:812
 msgid "Switch punctuation width"
 msgstr "Noktalama işareti genişliğini değiştir"
 
-#: engine/table.py:832
+#: engine/table.py:823
 msgid "Switch to table mode"
 msgstr "Tablo moduna geç"
 
-#: engine/table.py:837
+#: engine/table.py:828
 msgid "Pinyin"
 msgstr "Pinyin"
 
-#: engine/table.py:838
+#: engine/table.py:829
 msgid "Switch to pinyin mode"
 msgstr "Pinyin moduna geç"
 
-#: engine/table.py:842 setup/main.py:1195
+#: engine/table.py:833 setup/main.py:1195
 msgid "Pinyin mode"
 msgstr "Pinyin modu"
 
-#: engine/table.py:843
+#: engine/table.py:834
 msgid "Switch pinyin mode"
 msgstr "Pinyin modunu değiştir"
 
-#: engine/table.py:853
+#: engine/table.py:844
 msgid "Suggestion disabled"
 msgstr "Öneri devre dışı bırakıldı"
 
-#: engine/table.py:854 engine/table.py:860
+#: engine/table.py:845 engine/table.py:851
 msgid "Switch to suggestion mode"
 msgstr "Öneri moduna geç"
 
-#: engine/table.py:859
+#: engine/table.py:850
 msgid "Suggestion enabled"
 msgstr "Öneri etkinleştirildi"
 
-#: engine/table.py:864 setup/main.py:1196
+#: engine/table.py:855 setup/main.py:1196
 msgid "Suggestion mode"
 msgstr "Öneri modu"
 
-#: engine/table.py:865
+#: engine/table.py:856
 msgid "Switch suggestion mode"
 msgstr "Öneri moduna geçiş yap"
 
-#: engine/table.py:875
+#: engine/table.py:866
 msgid "Multiple character match"
 msgstr "Çoklu karakter eşleşmesi"
 
-#: engine/table.py:877
+#: engine/table.py:868
 msgid "Switch to matching multiple characters at once"
 msgstr "Aynı anda birden fazla karakter eşleşmesine geç"
 
-#: engine/table.py:882
+#: engine/table.py:873
 msgid "Single character match"
 msgstr "Tekli karakter eşleşmesi"
 
-#: engine/table.py:884
+#: engine/table.py:875
 msgid "Switch to matching only single characters"
 msgstr "Aynı anda sadece bir karakter eşleşmesine geç"
 
-#: engine/table.py:888 setup/main.py:1197
+#: engine/table.py:879 setup/main.py:1197
 msgid "Onechar mode"
 msgstr "Tek karakter modu"
 
-#: engine/table.py:889
+#: engine/table.py:880
 msgid "Switch onechar mode"
 msgstr "Tek karakter modunu değiştir"
 
-#: engine/table.py:899 setup/main.py:957
+#: engine/table.py:890 setup/main.py:957
 msgid "Normal"
 msgstr "Normal"
 
-#: engine/table.py:901
+#: engine/table.py:892
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
@@ -270,26 +270,26 @@ msgstr ""
 "düzenlemeye gider. Bu, yeni kısayolların otomatik olarak tanımlanmasını "
 "sağlar)"
 
-#: engine/table.py:911
+#: engine/table.py:902
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
 msgstr ""
 "Doğrudan seçim moduna geç (otomatik seçimler doğrudan uygulamaya gider)"
 
-#: engine/table.py:916 setup/main.py:1198
+#: engine/table.py:907 setup/main.py:1198
 msgid "Autocommit mode"
 msgstr "Otomatik seçim modu"
 
-#: engine/table.py:917
+#: engine/table.py:908
 msgid "Switch autocommit mode"
 msgstr "Otomatik seçim modunu değiştir"
 
-#: engine/table.py:2968
+#: engine/table.py:2962
 msgid "Setup"
 msgstr "Kurulum"
 
-#: engine/table.py:2971
+#: engine/table.py:2965
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Ibus-table \"%(engine-name)s\" yapılandır"

@@ -174,6 +174,7 @@ class TabSqliteDb:
             self.db.execute('PRAGMA temp_store = MEMORY;')
             self.db.execute('PRAGMA journal_size_limit = 1000000;')
             self.db.execute('PRAGMA synchronous = NORMAL;')
+            self.db.execute('PRAGMA busy_timeout = 5000;')
         except Exception as error: # pylint: disable=broad-except:
             LOGGER.exception(
                 'Error while initializing database: %s: %s',
@@ -381,6 +382,7 @@ class TabSqliteDb:
                 PRAGMA user_db.journal_mode = WAL;
                 PRAGMA user_db.journal_size_limit = 1000000;
                 PRAGMA user_db.synchronous = NORMAL;
+                PRAGMA busy_timeout = 5000;
             ''')
         except Exception as error:  # pylint: disable=broad-except
             LOGGER.exception(
@@ -407,6 +409,7 @@ class TabSqliteDb:
                 PRAGMA user_db.journal_mode = WAL;
                 PRAGMA user_db.journal_size_limit = 1000000;
                 PRAGMA user_db.synchronous = NORMAL;
+                PRAGMA busy_timeout = 5000;
             ''')
         self.create_tables("user_db")
         if self.old_phrases:
@@ -1299,6 +1302,7 @@ class TabSqliteDb:
                 PRAGMA journal_mode = WAL;
                 PRAGMA journal_size_limit = 1000000;
                 PRAGMA synchronous = NORMAL;
+                PRAGMA busy_timeout = 5000;
             ''')
             db.commit()
 

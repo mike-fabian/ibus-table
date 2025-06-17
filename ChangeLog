@@ -1,10 +1,289 @@
-commit 3de57f96827eea938068e365c2d652fb77f6e296
+commit e7a99b267f68cfd71395959da6bf596992714be2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 17 09:14:19 2025 +0200
+
+    Release 1.17.14
+
+commit 8d52795e0bb8763bd63b306fd4e04253b800a9c8
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 17 10:01:14 2025 +0200
+
+    Update ibus-table.pot (Only line number changes
+
+commit 18cd78dc5e859f6c6c4dfc0edf617789b28b960c
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 17 09:56:09 2025 +0200
+
+    Migrate test_0_gtk.py from Gtk.main() to GLib.MainLoop()
+
+commit 71b25961edca78c9aba1b672ea2031931c6e4034
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 17 09:03:24 2025 +0200
+
+    Add "PRAGMA busy_timeout = 5000;"
+    
+    That seemed to be helpful to prevent database errors on FreeBSD for Typing Booster,
+    it is probably a good idea to do this for ibus-table as well.
+
+commit 4f4bec9d037d41920c3e1b82f38d34c8d75617af
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 16 21:17:55 2025 +0200
+
+    Fix pylint warnings
+
+commit 77cdd5a1acbcb45a836be023cf7f18b4bc7d8586
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 16 21:00:30 2025 +0200
+
+    Fix pylint `consider-using-f-string` warnings
+
+commit 45bf3f75c24d35fc939f342857ae159a7a16aaa5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 16 20:34:07 2025 +0200
+
+    Fix pylint warning: table.py:2774:4: W0102: Dangerous default value [] as argument (dangerous-default-value
+    
+    Avoid the "mutable default argument pitfall" where default arguments
+    that are mutable (like list, dict, or set) can retain changes between
+    function calls, leading to unexpected behaviour.
+    
+    In Python, default arguments are evaluated only once—when the function
+    is defined, not each time it's called.  If you modify a mutable
+    default argument (e.g., append to a list), the changes persist across
+    future calls.
+
+commit 515f2b7b35a37648dfc1f5d9c9c9ab473d65d885
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 16 20:22:15 2025 +0200
+
+    Fix one pylint warning
+
+commit fe739d40013fa13c979293d9f68ba1511bf35fa0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 16 20:09:46 2025 +0200
+
+    Use ast.literal_eval() instead of just eval()
+
+commit 8c5a236c030862b0bc627c08977912bd58bbd734
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 16 19:47:30 2025 +0200
+
+    Do not use “global DEBUG_LEVEL” in “class TabEngine()”
+    
+    Because ibus-table offers multiple engines these may overwrite each
+    others debug level settings if DEBUG_LEVEL is a global variable.
+
+commit 0af84e029494984e66a6bee86630104d941fd5ec
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 3 16:35:50 2025 +0200
+
+    A single % is enough for a LIKE in sqlite3 to match any number of characters
+    
+    The %% pattern would actually behave identically to a single % in terms of matching, but it's unnecessary.
+
+commit a645a061e96d5aa8732c94e0ccb53d85cef26d48
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 27 23:15:57 2025 +0200
+
+    Fix quoting for sqlite3
+    
+    This accidentally worked on Fedora for years, although it was wrong.
+    I found this because it failed on FreeBSD.
+
+commit aea38e3f5d89d13a2a88214d24bc1f8aa4e595d3
+Author: Yuri Chornoivan <yurchor@ukr.net>
+Date:   Tue Jun 17 06:34:44 2025 +0000
+
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: Yuri Chornoivan <yurchor@ukr.net>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+    Translation: ibus-table/app
+
+commit 38a76e924d495856c9c71f76a218364425fcf908
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Mon Jun 16 17:05:03 2025 +0000
+
+    Translated using Weblate (Romanian)
+    
+    Currently translated at 13.7% (21 of 153 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ro/
+    Translation: ibus-table/app
+
+commit e6ad0b4a0a7f286521c8280310c4c897def715e1
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 16 17:05:03 2025 +0000
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 98.6% (151 of 153 strings)
+    
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 60.7% (93 of 153 strings)
+    
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 74.5% (114 of 153 strings)
+    
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 99.3% (152 of 153 strings)
+    
+    Translated using Weblate (Chinese (Traditional) (zh_TW))
+    
+    Currently translated at 99.3% (152 of 153 strings)
+    
+    Translated using Weblate (Chinese (Simplified) (zh_CN))
+    
+    Currently translated at 90.1% (138 of 153 strings)
+    
+    Translated using Weblate (Ukrainian)
+    
+    Currently translated at 99.3% (152 of 153 strings)
+    
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 99.3% (152 of 153 strings)
+    
+    Translated using Weblate (French)
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 99.3% (152 of 153 strings)
+    
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Translated using Weblate (Catalan)
+    
+    Currently translated at 99.3% (152 of 153 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ca/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fr/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/uk/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_CN/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_TW/
+    Translation: ibus-table/app
+
+commit 58c9cbe2b10c6f55d158797a8d445834336b8556
+Author: Weblate <noreply@weblate.org>
+Date:   Mon Jun 16 16:53:03 2025 +0000
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 312bddb5bdaaa7cf465f4216f270383fb9913812
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 16 18:49:49 2025 +0200
+
+    Update ibus-table.pot (2 new messages)
+
+commit b1e03cdad159c07d04680cc6b1e5d6e65d76d78a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 16 18:43:14 2025 +0200
+
+    Fix type hints, mypy and pylint-3 warnings
+
+commit cc983debccaa2384d42113afb6930b46ee793e5d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 16 16:43:57 2025 +0200
+
+    Change "Auto commit mode" to "Autocommit mode" in two message ids for consistency
+
+commit d7a27d7d46b6e928a8de59477cd68bbcdaa67059
+Author: Peng Wu <pwu@redhat.com>
+Date:   Mon Jun 16 14:07:42 2025 +0800
+
+    Support the input method menu option in the table engine
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/pull/189
+
+commit b475dba4d82d0318ae6d4304a8d40ee0e56758ee
+Author: Peng Wu <pwu@redhat.com>
+Date:   Mon Jun 16 14:04:11 2025 +0800
+
+    Support the input method menu option in the setup dialog
+    
+    Related: https://github.com/mike-fabian/ibus-table/pull/189
+
+commit bbac7f46eaf00a0246914d8707bddca59f3a0fb3
+Author: Peng Wu <pwu@redhat.com>
+Date:   Mon Jun 16 13:57:35 2025 +0800
+
+    Add the input method menu option to gsettings
+    
+    Related: https://github.com/mike-fabian/ibus-table/pull/189
+
+commit c24a53d14901792579a871bb4617a3bed3e4d0ca
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jun 16 16:52:14 2025 +0200
+
+    Fix mypy warnings
+
+commit 59eb2804a5efb1fcfbd301601f60a961524ba720
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Tue Jun 3 12:32:23 2025 +0000
+
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 60.5% (92 of 152 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translation: ibus-table/app
+
+commit 804288fcb7acffa285bd407501ae7d774aad13ff
+Author: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+Date:   Tue Jun 3 12:32:23 2025 +0000
+
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 60.5% (92 of 152 strings)
+    
+    Co-authored-by: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translation: ibus-table/app
+
+commit 3ec018c9c2dc9b5705fe53b25e171112092f11c4
+Author: ButterflyOfFire <butterflyoffire@users.noreply.translate.fedoraproject.org>
+Date:   Sun May 25 20:05:02 2025 +0000
+
+    Translated using Weblate (Kabyle)
+    
+    Currently translated at 35.5% (54 of 152 strings)
+    
+    Co-authored-by: ButterflyOfFire <butterflyoffire@users.noreply.translate.fedoraproject.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/kab/
+    Translation: ibus-table/app
+
+commit 498a9cbb7c346f157f10698558ff40df7c29253c
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Fri May 23 11:08:28 2025 +0200
 
     Release 1.17.13
 
-commit ab6288b28f7a4864df49596aba67151d0a6180bc
+commit 86780d0478369da8e883cf2c13c40235839ef644
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Fri May 23 11:24:33 2025 +0200
 

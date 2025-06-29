@@ -2,15 +2,16 @@
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
 # Giannis Antypas <gianni.antypas@gmail.com>, 2024.
-# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2024.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2024, 2025.
 # Jim Spentzos <jimspentzos2000@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-06-17 10:00+0200\n"
-"PO-Revision-Date: 2025-06-22 09:41+0000\n"
-"Last-Translator: Jim Spentzos <jimspentzos2000@gmail.com>\n"
+"PO-Revision-Date: 2025-06-29 04:38+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Greek <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/el/>\n"
 "Language: el\n"
@@ -120,7 +121,7 @@ msgstr ""
 
 #: engine/table.py:758 engine/table.py:822
 msgid "Table"
-msgstr ""
+msgstr "Πίνακας:"
 
 #: engine/table.py:759
 msgid "Switch to table input"
@@ -390,7 +391,7 @@ msgstr "Σχετικά"
 
 #: setup/main.py:224
 msgid "Restore all defaults"
-msgstr ""
+msgstr "Επαναφορά όλων των προεπιλογών"
 
 #: setup/main.py:233 setup/main.py:3095
 msgid "_Close"

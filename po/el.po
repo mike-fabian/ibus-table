@@ -9,9 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-06-17 10:00+0200\n"
-"PO-Revision-Date: 2025-06-29 04:38+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2025-06-30 12:53+0000\n"
+"Last-Translator: Jim Spentzos <jimspentzos2000@gmail.com>\n"
 "Language-Team: Greek <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/el/>\n"
 "Language: el\n"
@@ -121,7 +120,7 @@ msgstr ""
 
 #: engine/table.py:758 engine/table.py:822
 msgid "Table"
-msgstr "Πίνακας:"
+msgstr "Πίνακας"
 
 #: engine/table.py:759
 msgid "Switch to table input"
@@ -338,7 +337,7 @@ msgstr ""
 "Nikos Roussos <nikos@roussos.cc>, 2012\n"
 "ioza1964 <ioza1964@yahoo.gr>, 2013\n"
 "mitzie <soldizach@gmail.com>, 2013\n"
-"Vangelis Skarmoutsos <skarmoutsosv@gmail.com>, 2015."
+"Vangelis Skarmoutsos <skarmoutsosv@gmail.com>, 2015"
 
 #: engine/it_util.py:1030
 msgid "Online documentation:"
@@ -605,7 +604,7 @@ msgstr "Προεπιλογή συστήματος"
 #. candidates to show in one page of the candidate list.
 #: setup/main.py:689
 msgid "Page size:"
-msgstr "Μέγεθος σελίδας"
+msgstr "Μέγεθος σελίδας:"
 
 #. Translators: A tooltip for the label of the adjustment
 #. for the number of candidates to show in one page of the

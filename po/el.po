@@ -9,8 +9,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-06-17 10:00+0200\n"
-"PO-Revision-Date: 2025-06-30 12:53+0000\n"
-"Last-Translator: Jim Spentzos <jimspentzos2000@gmail.com>\n"
+"PO-Revision-Date: 2025-07-30 02:53+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Greek <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/el/>\n"
 "Language: el\n"
@@ -341,7 +342,7 @@ msgstr ""
 
 #: engine/it_util.py:1030
 msgid "Online documentation:"
-msgstr ""
+msgstr "Διαδικτυακή τεκμηρίωση:"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:6
 msgid "Ibus Table"
@@ -836,7 +837,7 @@ msgstr ""
 #. sound is played on error
 #: setup/main.py:1122
 msgid "Play sound file on error"
-msgstr ""
+msgstr "Αναπαραγωγή αρχείου ήχου για σφάλματα"
 
 #: setup/main.py:1124
 msgid ""
@@ -881,7 +882,7 @@ msgstr ""
 #. really sure to restore all default settings.
 #: setup/main.py:1697
 msgid "Do you really want to restore all default settings?"
-msgstr ""
+msgstr "Θέλετε σίγουρα να επαναφέρετε όλες τις προεπιλεγμένες ρυθμίσεις;"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -897,7 +898,7 @@ msgstr ""
 
 #: setup/main.py:1922
 msgid "Select .wav sound file:"
-msgstr ""
+msgstr "Επιλογή αρχείου ήχου .wav:"
 
 #: setup/main.py:2205
 #, python-format

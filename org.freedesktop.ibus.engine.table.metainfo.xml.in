@@ -40,6 +40,40 @@
   <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.17.15" date="2025-08-09" urgency="medium">
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.15</url>
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Log all unhandled exceptions, makes debugging a lot easier
+    
+            When Python code runs in an environment like IBus,
+            unhandled exceptions inside callbacks are usually caught
+            and swallowed by the framework, often with no
+            logging. That’s why one sees “silent” failures: the event
+            handler stops executing at the exception, but IBus
+            continues running, and you get no clue unless you manually
+            log something.
+           </li>
+          <li>
+            Stop calling IBus.init(), Python code no longer needs to call that
+          </li>
+          <li>
+            Don't take index of the string returned by get_goucima() if it is too short
+            (Resolves: github-mike-fabian-issue#201)
+          </li>
+          <li>
+             Translation update from Weblate (el 22.2%, es 100%, ka 61.4%, pt_BR 100%)
+          </li>
+        </ul>
+      </description>
+      <issues>
+        <issue url="https://github.com/mike-fabian/ibus-table/pull/201">
+          github-mike-fabian-issue#201
+        </issue>
+      </issues>
+    </release>
     <release version="1.17.14" date="2025-06-17" urgency="medium">
       <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.17.14</url>
       <description>

@@ -1,4 +1,150 @@
-commit e7a99b267f68cfd71395959da6bf596992714be2
+commit 5c7cdc3ad96bab84a39c93507f9c9c12b5d33290
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Aug 9 00:51:02 2025 +0200
+
+    Release 1.17.15
+
+commit 1d88290122e5de71eb6505a122315e3fbdbdf967
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Aug 9 18:55:24 2025 +0200
+
+    Log all unhandled exceptions, makes debugging a lot easier
+    
+    When Python code runs in an environment like IBus, unhandled
+    exceptions inside callbacks are usually caught and swallowed by the
+    framework, often with no logging. That’s why one sees “silent”
+    failures: the event handler stops executing at the exception, but IBus
+    continues running, and you get no clue unless you manually log
+    something.
+    
+    Helped a lot when debugging:
+    
+    https://github.com/mike-fabian/ibus-table/issues/201
+
+commit 6f1e2170e2b8faffc9ff272339cfb889be50404f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Aug 9 02:45:10 2025 +0200
+
+    Stop calling IBus.init(), Python code no longer needs to call that
+    
+    Because of:
+    https://github.com/ibus/ibus/pull/2730/commits/816ec3c18015b571fb8813a0b315d8769a6bc420
+    
+    With IBus.init() it does not work on Ubuntu 24.04.3 LTS with IBus
+    1.5.29-rc2, i.e. calling IBus.init() from Python is not only not
+    needed anymore but can cause problems.
+
+commit bbad7439c54a6b72055b6664b8f7223927fd38d7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Sat Aug 9 00:27:43 2025 +0200
+
+    Don't take index of the string returned by get_goucima() if it is too short
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/201
+
+commit e230672fec18843b2e0f601c3888df93f5c99759
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Aug 8 16:56:14 2025 +0200
+
+    Fix debug message
+
+commit 16a2ab6e56c570262b1435587a0453e5f968d367
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Wed Jul 30 02:53:39 2025 +0000
+
+    Translated using Weblate (Greek)
+    
+    Currently translated at 22.2% (34 of 153 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translation: ibus-table/app
+
+commit 5c728b0751bc19e844c45c3544942df8b93476a5
+Author: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+Date:   Tue Jul 22 19:38:56 2025 +0000
+
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 61.4% (94 of 153 strings)
+    
+    Co-authored-by: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translation: ibus-table/app
+
+commit 17de61dc07ba350d54d87e75addb07e74a558071
+Author: Jim Spentzos <jimspentzos2000@gmail.com>
+Date:   Mon Jun 30 12:53:10 2025 +0000
+
+    Translated using Weblate (Greek)
+    
+    Currently translated at 19.6% (30 of 153 strings)
+    
+    Co-authored-by: Jim Spentzos <jimspentzos2000@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translation: ibus-table/app
+
+commit dcf3715de55888fd3d532cb02789d9aa829f30fc
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Sun Jun 29 04:38:08 2025 +0000
+
+    Translated using Weblate (Greek)
+    
+    Currently translated at 19.6% (30 of 153 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translation: ibus-table/app
+
+commit 314f83cbe05131d2c28d75f33ba43bf4a3a0e07d
+Author: Fco. Javier F. Serrador <fserrador@gmail.com>
+Date:   Sat Jun 28 12:41:46 2025 +0000
+
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: Fco. Javier F. Serrador <fserrador@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translation: ibus-table/app
+
+commit c5136b1a22ea359e61bb65790fbd6c9c43614f58
+Author: Rafael Fontenelle <rafaelff@gnome.org>
+Date:   Thu Jun 26 02:02:53 2025 +0000
+
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: Rafael Fontenelle <rafaelff@gnome.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    Translation: ibus-table/app
+
+commit 64084548a30a668c48daae907d58d7a15b81fe68
+Author: Jim Spentzos <jimspentzos2000@gmail.com>
+Date:   Sun Jun 22 09:41:20 2025 +0000
+
+    Translated using Weblate (Greek)
+    
+    Currently translated at 18.3% (28 of 153 strings)
+    
+    Co-authored-by: Jim Spentzos <jimspentzos2000@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translation: ibus-table/app
+
+commit 4f4978e68660dfc03d7ed1a17615c19c7301c608
+Author: Weblate <noreply@weblate.org>
+Date:   Tue Jun 17 09:11:29 2025 +0000
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Weblate <noreply@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit 3b0c6347d38ddddbf819bdaabd50aef9bc2d17b7
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Tue Jun 17 09:14:19 2025 +0200
 

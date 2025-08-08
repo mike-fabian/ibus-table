@@ -1462,10 +1462,11 @@ class TabSqliteDb:
                 zi -= 1
             if ma > 0:
                 ma -= 1
-            tabkey = self.get_goucima(phrase[zi])[ma]
-            if not tabkey:
+            goucima = self.get_goucima(phrase[zi])
+            if len(goucima) < ma + 1:
+                LOGGER.error('goucima=%r too short no index ma=%s', goucima, ma)
                 return ''
-            tabkeys += tabkey
+            tabkeys += goucima[ma]
         if DEBUG_LEVEL > 1:
             LOGGER.debug('tabkeys=%s', tabkeys)
         return tabkeys

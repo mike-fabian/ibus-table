@@ -4008,7 +4008,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         direct input.
         '''
         if self._debug_level > 0:
-            LOGGER.debug('repr(key)=%s', repr(key))
+            LOGGER.debug('KeyEvent object: %s', key)
 
         # Ignore key release events (Should be below all hotkey matches
         # because some of them might match on a release event)

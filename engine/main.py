@@ -23,9 +23,13 @@ Main program of ibus-table
 '''
 from typing import Any
 from typing import Union
+from typing import Type
+from typing import Optional
+import types
 import os
 import re
 import sys
+import traceback
 import argparse
 import logging
 import logging.handlers
@@ -41,6 +45,22 @@ import tabsqlitedb
 import ibus_table_location
 
 LOGGER = logging.getLogger('ibus-table')
+
+def log_unhandled_exception(
+    exc_type: Type[BaseException],
+    exc_value: BaseException,
+    exc_traceback: Optional[types.TracebackType]
+) -> None:
+    '''Log any unhandled exception.'''
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    LOGGER.error(
+        'Unhandled exception',
+        exc_info=(exc_type, exc_value, exc_traceback)
+    )
+
+sys.excepthook = log_unhandled_exception
 
 DEBUG_LEVEL = int(0)
 try:

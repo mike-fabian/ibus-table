@@ -1347,14 +1347,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 len(candidate_text) - len(debug_text),
                 len(candidate_text)))
         text = IBus.Text.new_from_string(candidate_text)
-        i = 0
-        while attrs.get(i) is not None:
-            attr = attrs.get(i)
-            text.append_attribute(attr.get_attr_type(),
-                                  attr.get_value(),
-                                  attr.get_start_index(),
-                                  attr.get_end_index())
-            i += 1
+        text.set_attributes(attrs)
         self._lookup_table.append_candidate(text)
         self._lookup_table.set_cursor_visible(True)
 
@@ -1526,14 +1519,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 len(candidate_text) - len(debug_text),
                 len(candidate_text)))
         text = IBus.Text.new_from_string(candidate_text)
-        i = 0
-        while attrs.get(i) is not None:
-            attr = attrs.get(i)
-            text.append_attribute(attr.get_attr_type(),
-                                  attr.get_value(),
-                                  attr.get_start_index(),
-                                  attr.get_end_index())
-            i += 1
+        text.set_attributes(attrs)
         self._lookup_table.append_candidate(text)
         self._lookup_table.set_cursor_visible(True)
 
@@ -1574,14 +1560,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 len(candidate_text) - len(debug_text),
                 len(candidate_text)))
         text = IBus.Text.new_from_string(candidate_text)
-        i = 0
-        while attrs.get(i) is not None:
-            attr = attrs.get(i)
-            text.append_attribute(attr.get_attr_type(),
-                                  attr.get_value(),
-                                  attr.get_start_index(),
-                                  attr.get_end_index())
-            i += 1
+        text.set_attributes(attrs)
         self._lookup_table.append_candidate(text)
         self._lookup_table.set_cursor_visible(True)
 
@@ -3138,14 +3117,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
                 0,
                 len(preedit_string_complete)))
         text = IBus.Text.new_from_string(preedit_string_complete)
-        i = 0
-        while attrs.get(i) is not None:
-            attr = attrs.get(i)
-            text.append_attribute(attr.get_attr_type(),
-                                  attr.get_value(),
-                                  attr.get_start_index(),
-                                  attr.get_end_index())
-            i += 1
+        text.set_attributes(attrs)
         # Not using super().update_preedit_text_with_mode() because
         # IBus.EngineSimple does not have that method.
         IBus.Engine.update_preedit_text_with_mode(
@@ -3170,14 +3142,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             attrs.append(IBus.attr_foreground_new(
                 self.theme["aux_text"], 0, len(aux_string)))
             text = IBus.Text.new_from_string(aux_string)
-            i = 0
-            while attrs.get(i) is not None:
-                attr = attrs.get(i)
-                text.append_attribute(attr.get_attr_type(),
-                                      attr.get_value(),
-                                      attr.get_start_index(),
-                                      attr.get_end_index())
-                i += 1
+            text.set_attributes(attrs)
             visible = True
             if not aux_string or not self._always_show_lookup:
                 visible = False

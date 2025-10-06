@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2025-06-17 10:00+0200\n"
+"POT-Creation-Date: 2025-10-06 10:30+0200\n"
 "PO-Revision-Date: 2025-10-05 13:54+0000\n"
 "Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
@@ -283,11 +283,11 @@ msgstr "自动上屏模式"
 msgid "Switch autocommit mode"
 msgstr "切换自动上屏模式"
 
-#: engine/table.py:2962
+#: engine/table.py:2941
 msgid "Setup"
 msgstr "设置"
 
-#: engine/table.py:2965
+#: engine/table.py:2944
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "配置 ibus-table“%(engine-name)s”"
@@ -752,7 +752,7 @@ msgstr ""
 msgid "Autocommit mode:"
 msgstr "自动上屏模式："
 
-#. Translators; A tooltip for the label of the combobox to
+#. Translators: A tooltip for the label of the combobox to
 #. choose whether automatic commits go into the preëdit or
 #. into the application.
 #: setup/main.py:944
@@ -878,8 +878,9 @@ msgid ""
 "Here you can choose whether a sound file is played if an error occurs. If "
 "the simpleaudio module for Python3 is not installed, this option does "
 "nothing."
-msgstr "这里可以选择是否在出错时播放音频文件。如果没有安装 Python3 的 simpleaudio "
-"模块，这个选项不会生效。"
+msgstr ""
+"这里可以选择是否在出错时播放音频文件。如果没有安装 Python3 的 simpleaudio 模"
+"块，这个选项不会生效。"
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and

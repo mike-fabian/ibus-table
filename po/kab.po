@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2025-06-17 10:00+0200\n"
+"POT-Creation-Date: 2025-10-06 10:30+0200\n"
 "PO-Revision-Date: 2025-05-25 20:05+0000\n"
 "Last-Translator: ButterflyOfFire <butterflyoffire@users.noreply.translate."
 "fedoraproject.org>\n"
@@ -280,11 +280,11 @@ msgstr ""
 msgid "Switch autocommit mode"
 msgstr ""
 
-#: engine/table.py:2962
+#: engine/table.py:2941
 msgid "Setup"
 msgstr "Asbeddi"
 
-#: engine/table.py:2965
+#: engine/table.py:2944
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Swel ibus-table “%(engine-name)s”"
@@ -715,7 +715,7 @@ msgstr ""
 msgid "Autocommit mode:"
 msgstr ""
 
-#. Translators; A tooltip for the label of the combobox to
+#. Translators: A tooltip for the label of the combobox to
 #. choose whether automatic commits go into the preëdit or
 #. into the application.
 #: setup/main.py:944

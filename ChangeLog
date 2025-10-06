@@ -1,4 +1,58 @@
-commit 5c7cdc3ad96bab84a39c93507f9c9c12b5d33290
+commit 05feabc847b389260e7c36c63adcbef7f3d625df
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Oct 6 10:28:34 2025 +0200
+
+    Release 1.17.16
+
+commit e0d4a9148133b306d4fe84968745d52efb3fb2b9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Oct 6 10:24:51 2025 +0200
+
+    Fix typo in comment
+
+commit 4c070da0ba740c4e9baaffe261b8ab8159289ea6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Aug 13 17:04:15 2025 +0200
+
+    Use text.set_attributes(attrs) instead of looping over attrs
+
+commit 5116d68773b70a60e576a6bc997d2070c3d792e6
+Author: Oğuz Ersen <oguz@ersen.moe>
+Date:   Sun Oct 5 13:54:00 2025 +0000
+
+    Translated using Weblate (Turkish)
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: Oğuz Ersen <oguz@ersen.moe>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/tr/
+    Translation: ibus-table/app
+
+commit 3923b20781636e8e537c51ece733a64bedd74f00
+Author: Dingzhong Chen <wsxy162@gmail.com>
+Date:   Sun Oct 5 13:54:00 2025 +0000
+
+    Translated using Weblate (Chinese (Simplified) (zh_CN))
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: Dingzhong Chen <wsxy162@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_CN/
+    Translation: ibus-table/app
+
+commit 29a3472632c319b8e7d8e0b2077cded9b385fe77
+Author: Sergey A <Ser82-png@yandex.ru>
+Date:   Sun Aug 31 15:53:40 2025 +0000
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 99.3% (152 of 153 strings)
+    
+    Co-authored-by: Sergey A <Ser82-png@yandex.ru>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translation: ibus-table/app
+
+commit f57be3a663dfa92b5f2af4a63e680f2da0dbcc20
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Sat Aug 9 00:51:02 2025 +0200
 

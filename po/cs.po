@@ -3,13 +3,14 @@
 # Mike FABIAN <mfabian@redhat.com>, 2019.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2024.
 # Tomas Longin Hoffmann <ask@tomek.wtf>, 2025.
+# Pavel Borecki <pavel.borecki@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-10-06 10:30+0200\n"
-"PO-Revision-Date: 2025-10-07 19:54+0000\n"
-"Last-Translator: Tomas Longin Hoffmann <ask@tomek.wtf>\n"
+"PO-Revision-Date: 2025-12-11 11:16+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://translate.fedoraproject.org/projects/"
 "ibus-table/app/cs/>\n"
 "Language: cs\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.14.3\n"
 
 # auto translated by TM merge from project: System Administrator's Guide, version: master, DocId: Colophon
 #. Translators: This is the menu entry to select
@@ -84,7 +85,7 @@ msgstr "Přepnout na „tradiční čínštinu před zjednodušenou“."
 #. particular order
 #: engine/table.py:718 setup/main.py:408
 msgid "All Chinese characters"
-msgstr ""
+msgstr "Všechny čínské znaky"
 
 #: engine/table.py:719
 msgid "Switch to “All Chinese characters”."

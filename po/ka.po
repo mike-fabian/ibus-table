@@ -9,8 +9,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-10-06 10:30+0200\n"
-"PO-Revision-Date: 2025-07-22 19:38+0000\n"
-"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"PO-Revision-Date: 2025-12-30 02:58+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ka/>\n"
 "Language: ka\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -30,7 +31,7 @@ msgstr "გამარტივებული ჩინური"
 
 #: engine/table.py:675
 msgid "Switch to “Simplified Chinese only”."
-msgstr ""
+msgstr "მარტივ ჩინურზე გადართვა"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
@@ -68,7 +69,7 @@ msgstr "ჯერ ტრადიციული ჩინური"
 
 #: engine/table.py:708
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr ""
+msgstr "\"მხოლოდ ტრადიციულ ჩინურზე\" გადართვა."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -100,7 +101,7 @@ msgstr "ინგლისური"
 
 #: engine/table.py:736
 msgid "Switch to English input"
-msgstr ""
+msgstr "ინგლისურზე გადართვა"
 
 #: engine/table.py:743
 msgid "Chinese"
@@ -108,7 +109,7 @@ msgstr "ჩინური"
 
 #: engine/table.py:744
 msgid "Switch to Chinese input"
-msgstr ""
+msgstr "ჩინურზე გადართვა"
 
 #: engine/table.py:752 engine/table.py:900 setup/main.py:959
 msgid "Direct"
@@ -178,11 +179,11 @@ msgstr "ასოების სიგანის გადართვა"
 
 #: engine/table.py:801
 msgid "Switch to halfwidth punctuation"
-msgstr ""
+msgstr "ნახევარსიგანიანი პუნქტუაციის რეჟიმზე გადართვა"
 
 #: engine/table.py:807
 msgid "Switch to fullwidth punctuation"
-msgstr ""
+msgstr "სრულსიგანიანი პუნქტუაციის რეჟიმზე გადართვა"
 
 #: engine/table.py:811 setup/main.py:1194
 msgid "Punctuation width"
@@ -202,7 +203,7 @@ msgstr "პინინი"
 
 #: engine/table.py:829
 msgid "Switch to pinyin mode"
-msgstr ""
+msgstr "პინინის რეჟიმის გადართვა"
 
 #: engine/table.py:833 setup/main.py:1195
 msgid "Pinyin mode"
@@ -218,7 +219,7 @@ msgstr "შეთავაზება გათიშულია"
 
 #: engine/table.py:845 engine/table.py:851
 msgid "Switch to suggestion mode"
-msgstr ""
+msgstr "შეთავაზების რეჟიმის გადართვა"
 
 #: engine/table.py:850
 msgid "Suggestion enabled"
@@ -754,7 +755,7 @@ msgstr ""
 
 #: setup/main.py:1003
 msgid "Commit current candidate"
-msgstr ""
+msgstr "პირველი კანდიდატის გადაცემა"
 
 #: setup/main.py:1005
 msgid "Commit typed keys"
@@ -885,6 +886,8 @@ msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
 msgstr ""
+"მართლა გნებავთ ყველა ენის მონაცემების, რომელიც ფაილების კითხვით ვისწავლე, "
+"წაშლა?"
 
 #: setup/main.py:1922
 msgid "Select .wav sound file:"

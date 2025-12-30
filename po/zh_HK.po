@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 0.1.20080819\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-10-06 10:30+0200\n"
-"PO-Revision-Date: 2025-04-29 07:44+0000\n"
+"PO-Revision-Date: 2025-12-30 02:58+0000\n"
 "Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
 "memory@weblate.org>\n"
 "Language-Team: Chinese (Hong Kong) <https://translate.fedoraproject.org/"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -30,9 +30,8 @@ msgid "Simplified Chinese"
 msgstr "簡體中文"
 
 #: engine/table.py:675
-#, fuzzy
 msgid "Switch to “Simplified Chinese only”."
-msgstr "切換成簡體模式"
+msgstr "切換到簡體中文模式"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
@@ -52,9 +51,8 @@ msgstr "切換至繁體中文模式"
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
 #: engine/table.py:694
-#, fuzzy
 msgid "Simplified Chinese first"
-msgstr "切換成簡體模式"
+msgstr "簡體中文"
 
 #: engine/table.py:696
 #, fuzzy
@@ -67,9 +65,8 @@ msgstr "切換成簡體模式"
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
 #: engine/table.py:706
-#, fuzzy
 msgid "Traditional Chinese first"
-msgstr "切換成繁體模式"
+msgstr "繁體中文"
 
 #: engine/table.py:708
 #, fuzzy
@@ -108,16 +105,15 @@ msgstr "英文"
 
 #: engine/table.py:736
 msgid "Switch to English input"
-msgstr ""
+msgstr "切換到英文模式"
 
 #: engine/table.py:743
 msgid "Chinese"
 msgstr "中文"
 
 #: engine/table.py:744
-#, fuzzy
 msgid "Switch to Chinese input"
-msgstr "切換到大字集模式（預設結果順序）"
+msgstr "切換到中文模式"
 
 #: engine/table.py:752 engine/table.py:900 setup/main.py:959
 msgid "Direct"
@@ -194,14 +190,12 @@ msgid "Switch letter width"
 msgstr "切換成全形標點"
 
 #: engine/table.py:801
-#, fuzzy
 msgid "Switch to halfwidth punctuation"
-msgstr "切換成半形標點"
+msgstr "切換至半形符號模式"
 
 #: engine/table.py:807
-#, fuzzy
 msgid "Switch to fullwidth punctuation"
-msgstr "切換成全形標點"
+msgstr "切換至全形符號模式"
 
 #: engine/table.py:811 setup/main.py:1194
 msgid "Punctuation width"
@@ -381,10 +375,8 @@ msgid ""
 msgstr ""
 
 #: setup/ibus-setup-table.desktop.in.in:2
-#, fuzzy
-#| msgid "Preferences"
 msgid "IBus Table Preferences"
-msgstr "偏好設定"
+msgstr "IBus 偏好設定"
 
 #: setup/ibus-setup-table.desktop.in.in:3
 msgid "Set IBus Table Options"
@@ -652,7 +644,7 @@ msgstr ""
 #. existing key bindings
 #: setup/main.py:741
 msgid "Command"
-msgstr ""
+msgstr "指令："
 
 #: setup/main.py:772
 msgid "Edit"
@@ -797,7 +789,7 @@ msgstr ""
 
 #: setup/main.py:1003
 msgid "Commit current candidate"
-msgstr ""
+msgstr "輸出第一個候選詞"
 
 #: setup/main.py:1005
 msgid "Commit typed keys"

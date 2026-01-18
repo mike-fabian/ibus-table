@@ -7,14 +7,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-10-06 10:30+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-01-11 17:58+0000\n"
+"Last-Translator: Dragomer Tihamer <tihamerdragomer0@gmail.com>\n"
+"Language-Team: Hungarian <https://translate.fedoraproject.org/projects/ibus-"
+"table/app/hu/>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -22,11 +24,11 @@ msgstr ""
 #. simplified Chinese
 #: engine/table.py:673 setup/main.py:389
 msgid "Simplified Chinese"
-msgstr ""
+msgstr "Egyszerűsített kínai"
 
 #: engine/table.py:675
 msgid "Switch to “Simplified Chinese only”."
-msgstr ""
+msgstr "Váltás kizárólag egyszerűsített kínaira."
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
@@ -34,11 +36,11 @@ msgstr ""
 #. traditional Chinese
 #: engine/table.py:682 setup/main.py:393
 msgid "Traditional Chinese"
-msgstr ""
+msgstr "Hagyományos kínai"
 
 #: engine/table.py:684
 msgid "Switch to “Traditional Chinese only”."
-msgstr ""
+msgstr "Váltás kizárólag hagyományos Kínaira."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -47,11 +49,11 @@ msgstr ""
 #. lists.
 #: engine/table.py:694
 msgid "Simplified Chinese first"
-msgstr ""
+msgstr "Egyszerűsített kínai előnyben"
 
 #: engine/table.py:696
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr ""
+msgstr "Egyszerűsített kínai előnyben a hagyományossal szemben."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -60,11 +62,11 @@ msgstr ""
 #. lists.
 #: engine/table.py:706
 msgid "Traditional Chinese first"
-msgstr ""
+msgstr "Elsődleges: hagyományos kínai"
 
 #: engine/table.py:708
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr ""
+msgstr "Hagyományos kínai előnyben az egyszerűsítettel szemben."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -76,35 +78,35 @@ msgstr ""
 #. particular order
 #: engine/table.py:718 setup/main.py:408
 msgid "All Chinese characters"
-msgstr ""
+msgstr "Minden kínai karakter"
 
 #: engine/table.py:719
 msgid "Switch to “All Chinese characters”."
-msgstr ""
+msgstr "Váltás az összes kínai karakterre."
 
 #: engine/table.py:723 setup/main.py:1192
 msgid "Chinese mode"
-msgstr ""
+msgstr "Kínai mód"
 
 #: engine/table.py:724
 msgid "Switch Chinese mode"
-msgstr ""
+msgstr "Váltás Kínai módra"
 
 #: engine/table.py:735
 msgid "English"
-msgstr ""
+msgstr "Angol"
 
 #: engine/table.py:736
 msgid "Switch to English input"
-msgstr ""
+msgstr "Váltás Angol bevitelre"
 
 #: engine/table.py:743
 msgid "Chinese"
-msgstr ""
+msgstr "Kínai"
 
 #: engine/table.py:744
 msgid "Switch to Chinese input"
-msgstr ""
+msgstr "Váltás Kínai bevitelre"
 
 #: engine/table.py:752 engine/table.py:900 setup/main.py:959
 msgid "Direct"
@@ -112,23 +114,23 @@ msgstr ""
 
 #: engine/table.py:753
 msgid "Switch to direct input"
-msgstr ""
+msgstr "Váltás közvetlen bevitelre"
 
 #: engine/table.py:758 engine/table.py:822
 msgid "Table"
-msgstr ""
+msgstr "Táblázat"
 
 #: engine/table.py:759
 msgid "Switch to table input"
-msgstr ""
+msgstr "Váltás táblázatbeviteli módra"
 
 #: engine/table.py:767
 msgid "Input mode"
-msgstr ""
+msgstr "Beviteli mód"
 
 #: engine/table.py:768
 msgid "Switch Input mode"
-msgstr ""
+msgstr "Váltás beviteli módra"
 
 #. Translators: This is the mode to use half width letters
 #. while in “Table input” mode.
@@ -145,7 +147,7 @@ msgstr ""
 
 #: engine/table.py:779
 msgid "Switch to halfwidth letters"
-msgstr ""
+msgstr "Váltás fél szélességű betűkre"
 
 #. Translators: This is the mode to use full width letters
 #. while in “Table input” mode.
@@ -158,55 +160,55 @@ msgstr ""
 #: engine/table.py:784 engine/table.py:806 setup/main.py:449 setup/main.py:493
 #: setup/main.py:538 setup/main.py:583
 msgid "Full"
-msgstr ""
+msgstr "Teljes"
 
 #: engine/table.py:785
 msgid "Switch to fullwidth letters"
-msgstr ""
+msgstr "Váltás teljes szélességű betűkre"
 
 #: engine/table.py:789 setup/main.py:1193
 msgid "Letter width"
-msgstr ""
+msgstr "Betűszélesség"
 
 #: engine/table.py:790
 msgid "Switch letter width"
-msgstr ""
+msgstr "Betűszélesség váltása"
 
 #: engine/table.py:801
 msgid "Switch to halfwidth punctuation"
-msgstr ""
+msgstr "Váltás fél szélességű írásjelekre"
 
 #: engine/table.py:807
 msgid "Switch to fullwidth punctuation"
-msgstr ""
+msgstr "Váltás teljes szélességű írásjelekre"
 
 #: engine/table.py:811 setup/main.py:1194
 msgid "Punctuation width"
-msgstr ""
+msgstr "Írásjel szélesség"
 
 #: engine/table.py:812
 msgid "Switch punctuation width"
-msgstr ""
+msgstr "Írásjel szélesség váltása"
 
 #: engine/table.py:823
 msgid "Switch to table mode"
-msgstr ""
+msgstr "Váltás táblázat módra"
 
 #: engine/table.py:828
 msgid "Pinyin"
-msgstr ""
+msgstr "Pinyin"
 
 #: engine/table.py:829
 msgid "Switch to pinyin mode"
-msgstr ""
+msgstr "Váltás pinyin módra"
 
 #: engine/table.py:833 setup/main.py:1195
 msgid "Pinyin mode"
-msgstr ""
+msgstr "Pinyin mód"
 
 #: engine/table.py:834
 msgid "Switch pinyin mode"
-msgstr ""
+msgstr "Váltás pinyin módra"
 
 #: engine/table.py:844
 msgid "Suggestion disabled"

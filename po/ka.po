@@ -9,9 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-10-06 10:30+0200\n"
-"PO-Revision-Date: 2026-01-16 16:58+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-01-18 09:58+0000\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ka/>\n"
 "Language: ka\n"
@@ -475,7 +474,7 @@ msgstr ""
 #. traditional Chinese
 #: setup/main.py:403
 msgid "Traditional Chinese before simplified"
-msgstr "გადართვა \"ტრადიციულ ჩინურზე გამარტივებულამდე\"."
+msgstr "ტრადიციულ ჩინური გამარტივებულამდე"
 
 #. Translators: A combobox to choose the letter width
 #. while in “Table input” mode.

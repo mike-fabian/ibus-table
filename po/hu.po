@@ -2,13 +2,15 @@
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
 # Dragomer Tihamer <tihamerdragomer0@gmail.com>, 2026.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2025-10-06 10:30+0200\n"
-"PO-Revision-Date: 2026-01-11 17:58+0000\n"
-"Last-Translator: Dragomer Tihamer <tihamerdragomer0@gmail.com>\n"
+"PO-Revision-Date: 2026-01-16 16:58+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Hungarian <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/hu/>\n"
 "Language: hu\n"
@@ -16,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -110,7 +112,7 @@ msgstr "Váltás Kínai bevitelre"
 
 #: engine/table.py:752 engine/table.py:900 setup/main.py:959
 msgid "Direct"
-msgstr ""
+msgstr "Közvetlen"
 
 #: engine/table.py:753
 msgid "Switch to direct input"
@@ -256,7 +258,7 @@ msgstr ""
 
 #: engine/table.py:890 setup/main.py:957
 msgid "Normal"
-msgstr ""
+msgstr "Szokásos"
 
 #: engine/table.py:892
 msgid ""
@@ -280,7 +282,7 @@ msgstr ""
 
 #: engine/table.py:2941
 msgid "Setup"
-msgstr ""
+msgstr "Beállítás"
 
 #: engine/table.py:2944
 #, python-format
@@ -292,11 +294,11 @@ msgstr ""
 #. key binding for a command.
 #: engine/it_util.py:943
 msgid "Key input"
-msgstr ""
+msgstr "Gomb lenyomása"
 
 #: engine/it_util.py:949
 msgid "Cancel"
-msgstr ""
+msgstr "Mégse"
 
 #. pylint: disable=consider-using-f-string
 #. Translators: This is from the dialog to enter a key or a
@@ -304,14 +306,14 @@ msgstr ""
 #. command.
 #: engine/it_util.py:956
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "Nyomjon meg egy billentyűt (vagy billentyűkombinációt)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:961
 msgid "The dialog will be closed when the key is released"
-msgstr ""
+msgstr "A párbeszédablak bezárul, ha felengedi a gombot"
 
 #: engine/it_util.py:998
 msgid "Table input method for IBus."
@@ -323,10 +325,12 @@ msgstr ""
 #: engine/it_util.py:1022
 msgid "translator-credits"
 msgstr ""
+"Hoppár Zoltán <zoltanh721@fedoraproject.org>, 2016.\n"
+"Meskó Balázs <mesko.balazs@fsf.hu>, 2018-2019."
 
 #: engine/it_util.py:1030
 msgid "Online documentation:"
-msgstr ""
+msgstr "Online dokumentáció:"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:6
 msgid "Ibus Table"
@@ -345,7 +349,7 @@ msgstr ""
 
 #: setup/ibus-setup-table.desktop.in.in:2
 msgid "IBus Table Preferences"
-msgstr ""
+msgstr "IBus beállítások"
 
 #: setup/ibus-setup-table.desktop.in.in:3
 msgid "Set IBus Table Options"
@@ -365,11 +369,11 @@ msgstr ""
 
 #: setup/main.py:133 setup/main.py:193
 msgid "Preferences"
-msgstr ""
+msgstr "Beállítások"
 
 #: setup/main.py:216
 msgid "About"
-msgstr ""
+msgstr "Névjegy"
 
 #: setup/main.py:224
 msgid "Restore all defaults"
@@ -377,20 +381,20 @@ msgstr ""
 
 #: setup/main.py:233 setup/main.py:3095
 msgid "_Close"
-msgstr ""
+msgstr "_Bezárás"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
 #. behaviour of ibus-table.
 #: setup/main.py:256
 msgid "Settings"
-msgstr ""
+msgstr "Beállítások"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some more advanced options.
 #: setup/main.py:271
 msgid "Details"
-msgstr ""
+msgstr "Részletek"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can customize the key bindings to execute
@@ -401,7 +405,7 @@ msgstr ""
 #. existing key bindings
 #: setup/main.py:287 setup/main.py:749
 msgid "Key bindings"
-msgstr ""
+msgstr "Gyorsbillentyűk"
 
 #: setup/main.py:300
 msgid "Menu Items"
@@ -436,13 +440,13 @@ msgstr ""
 
 #: setup/main.py:345
 msgid "Yes"
-msgstr ""
+msgstr "Igen"
 
 #. Translators: A combobox to choose the variant of
 #. Chinese which should be preferred.
 #: setup/main.py:369
 msgid "Chinese mode:"
-msgstr ""
+msgstr "Kínai mód"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.
@@ -465,14 +469,14 @@ msgstr ""
 #. simplified Chinese
 #: setup/main.py:398
 msgid "Simplified Chinese before traditional"
-msgstr ""
+msgstr "Egyszerűsített kínai előnyben a hagyományossal szemben."
 
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. traditional Chinese
 #: setup/main.py:403
 msgid "Traditional Chinese before simplified"
-msgstr ""
+msgstr "Hagyományos kínai előnyben az egyszerűsítettel szemben."
 
 #. Translators: A combobox to choose the letter width
 #. while in “Table input” mode.
@@ -560,7 +564,7 @@ msgstr ""
 #. window should be drawn horizontally or vertically.
 #: setup/main.py:649
 msgid "Orientation:"
-msgstr ""
+msgstr "Tájolás:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn
@@ -573,21 +577,21 @@ msgstr ""
 
 #: setup/main.py:660
 msgid "Horizontal"
-msgstr ""
+msgstr "Vízszintes"
 
 #: setup/main.py:662
 msgid "Vertical"
-msgstr ""
+msgstr "Függőleges"
 
 #: setup/main.py:664
 msgid "System default"
-msgstr ""
+msgstr "Rendszer alapértelmezése"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
 #: setup/main.py:689
 msgid "Page size:"
-msgstr ""
+msgstr "Oldalméret"
 
 #. Translators: A tooltip for the label of the adjustment
 #. for the number of candidates to show in one page of the
@@ -602,27 +606,27 @@ msgstr ""
 
 #: setup/main.py:716
 msgid "Current key bindings:"
-msgstr ""
+msgstr "Jelenlegi gyorsbillentyűk:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
 #: setup/main.py:741
 msgid "Command"
-msgstr ""
+msgstr "Parancs"
 
 #: setup/main.py:772
 msgid "Edit"
-msgstr ""
+msgstr "Szerkesztés"
 
 #. Translators: A tooltip for the button to edit
 #. the keybindings for the selected command.
 #: setup/main.py:778
 msgid "Edit the key bindings for the selected command"
-msgstr ""
+msgstr "A kiválasztott parancs gyorsbillentyűjének szerkesztése"
 
 #: setup/main.py:785 setup/main.py:2282
 msgid "Set to default"
-msgstr ""
+msgstr "Beállítás alapértelmezettként"
 
 #. Translators: A tooltip for the button to set
 #. the default key bindings for the selected command.
@@ -630,17 +634,17 @@ msgstr ""
 #. the key bindings for the selected command to the default.
 #: setup/main.py:791 setup/main.py:2289
 msgid "Set default key bindings for the selected command"
-msgstr ""
+msgstr "A kiválasztott parancs gyorsbillentyűjének megadása"
 
 #: setup/main.py:798
 msgid "Set all to default"
-msgstr ""
+msgstr "Összes beállítása az alapértelmezettre"
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
 #: setup/main.py:804
 msgid "Set default key bindings for all commands"
-msgstr ""
+msgstr "Az összes parancs gyorsbillentyűjének beállítása az alapértelmezettre"
 
 #. Translators: A checkbox where one can choose whether the
 #. order of the candidates is dynamically adjusted according
@@ -657,7 +661,7 @@ msgstr ""
 
 #: setup/main.py:844
 msgid "Delete all learned data"
-msgstr ""
+msgstr "Tanult adatok törlése"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
@@ -688,7 +692,7 @@ msgstr ""
 #. candidate will be automatically selected during typing.
 #: setup/main.py:909
 msgid "Auto select"
-msgstr ""
+msgstr "Automatikus választás"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
@@ -833,7 +837,7 @@ msgstr ""
 #. debug information may also be shown graphically.
 #: setup/main.py:1165
 msgid "Debug level:"
-msgstr ""
+msgstr "Hibakeresési szint:"
 
 #. Translators: This is a tooltip for the label for the
 #. adjustment of the debug level.
@@ -842,6 +846,8 @@ msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
 msgstr ""
+"Ha nagyobb mint 0, akkor a hibakeresési információk ki lesznek írva a "
+"naplófájlba, és a hibakeresési információk grafikusan is megjeleníthetők."
 
 #: setup/main.py:1590
 msgid "Are you sure?"
@@ -849,11 +855,11 @@ msgstr ""
 
 #: setup/main.py:1592 setup/main.py:1925
 msgid "_Cancel"
-msgstr ""
+msgstr "_Mégse"
 
 #: setup/main.py:1593 setup/main.py:1926
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: setup/main.py:1625
 msgid "Another instance of this app is already running."
@@ -924,4 +930,4 @@ msgstr ""
 
 #: setup/main.py:3162
 msgid "ibus is not running."
-msgstr ""
+msgstr "A tuned nem fut"

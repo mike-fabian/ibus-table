@@ -68,6 +68,7 @@ require_version('IBus', '1.0')
 from gi.repository import IBus
 # pylint: enable=wrong-import-position
 
+# pylint: disable=wrong-import-order
 # pylint: disable=import-error
 sys.path = [sys.path[0]+'/../engine'] + sys.path
 import tabsqlitedb
@@ -77,6 +78,7 @@ import it_sound
 # pylint: enable=import-error
 
 from i18n import N_, _, init as i18n_init
+# pylint: enable=wrong-import-order
 
 LOGGER = logging.getLogger('ibus-table')
 

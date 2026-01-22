@@ -23,13 +23,10 @@ TabEngine Factory
 '''
 from typing import Dict
 from typing import Optional
-from typing import Callable
 import os
 import re
 import logging
-from gettext import dgettext
-_: Callable[[str], str] = lambda a: dgettext("ibus-table", a)
-N_: Callable[[str], str] = lambda a: a
+import gettext
 from gi import require_version # type: ignore
 # pylint: disable=wrong-import-position
 require_version('IBus', '1.0')
@@ -41,6 +38,19 @@ import tabsqlitedb
 LOGGER = logging.getLogger('ibus-table')
 
 DEBUG_LEVEL = int(0)
+
+DOMAINNAME = 'ibus-table'
+
+def _(text: str) -> str:
+    '''Gettext translation function.'''
+    return gettext.dgettext(DOMAINNAME, text)
+
+def N_(text: str) -> str: # pylint: disable=invalid-name
+    '''Mark string for translation without actually translating.
+
+    Used by gettext tools to extract strings that need translation.
+    '''
+    return text
 
 class EngineFactory(IBus.Factory): # type: ignore
     """Table IM Engine Factory"""

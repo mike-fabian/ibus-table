@@ -995,6 +995,13 @@ class TabSqliteDb:
             big5 = b'\xff\xff' # higher than any Big5 code
         return big5
 
+    @staticmethod
+    def _fallback_code(_: str) -> bytes:
+        '''
+        Return always b'\xff\xff' no matter what the argument is
+        '''
+        return b'\xff\xff'
+
     def best_candidates(
             self,
             typed_tabkeys: str = '',
@@ -1010,7 +1017,7 @@ class TabSqliteDb:
         '''
         maximum_number_of_candidates = 100
         engine_name = os.path.basename(self.filename).replace('.db', '')
-        code_point_function: Callable[[str], bytes] = lambda x: (b'\xff\xff')
+        code_point_function: Callable[[str], bytes] = TabSqliteDb._fallback_code
         if engine_name in [
                 'cangjie3', 'cangjie5', 'cangjie-big',
                 'quick-classic', 'quick3', 'quick5']:
@@ -1238,7 +1245,7 @@ class TabSqliteDb:
         maximum_number_of_candidates = 100
         engine_name = os.path.basename(self.filename).replace('.db', '')
 
-        code_point_function: Callable[[str], bytes] = lambda x: (b'\xff\xff')
+        code_point_function: Callable[[str], bytes] = TabSqliteDb._fallback_code
         if engine_name in [
                 'cangjie3', 'cangjie5', 'cangjie-big',
                 'quick-classic', 'quick3', 'quick5']:

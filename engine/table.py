@@ -35,7 +35,6 @@ from typing import Iterable
 from typing import Dict
 from typing import Union
 from typing import Optional
-from typing import Callable
 import sys
 import os
 import re
@@ -44,10 +43,8 @@ import copy
 import time
 import logging
 import subprocess
+import gettext
 
-from gettext import dgettext
-_: Callable[[str], str] = lambda a: dgettext('ibus-table', a)
-N_: Callable[[str], str] = lambda a: a
 # pylint: disable=wrong-import-position
 from gi import require_version # type: ignore
 require_version('IBus', '1.0')
@@ -65,6 +62,19 @@ import it_sound
 import ibus_table_location
 
 LOGGER = logging.getLogger('ibus-table')
+
+DOMAINNAME = 'ibus-table'
+
+def _(text: str) -> str:
+    '''Gettext translation function.'''
+    return gettext.dgettext(DOMAINNAME, text)
+
+def N_(text: str) -> str: # pylint: disable=invalid-name
+    '''Mark string for translation without actually translating.
+
+    Used by gettext tools to extract strings that need translation.
+    '''
+    return text
 
 def ascii_ispunct(character: str) -> bool:
     '''

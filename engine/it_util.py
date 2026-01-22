@@ -26,7 +26,6 @@ from typing import Any
 from typing import List
 from typing import Tuple
 from typing import Dict
-from typing import Callable
 from enum import Enum, Flag
 # pylint: disable=wrong-import-position
 import sys
@@ -53,8 +52,17 @@ import tabsqlitedb
 LOGGER = logging.getLogger('ibus-table')
 
 DOMAINNAME = 'ibus-table'
-_: Callable[[str], str] = lambda a: gettext.dgettext(DOMAINNAME, a)
-N_: Callable[[str], str] = lambda a: a
+
+def _(text: str) -> str:
+    '''Gettext translation function.'''
+    return gettext.dgettext(DOMAINNAME, text)
+
+def N_(text: str) -> str: # pylint: disable=invalid-name
+    '''Mark string for translation without actually translating.
+
+    Used by gettext tools to extract strings that need translation.
+    '''
+    return text
 
 # When matching keybindings, only the bits in the following mask are
 # considered for key.state:

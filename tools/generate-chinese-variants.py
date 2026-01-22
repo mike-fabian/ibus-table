@@ -124,7 +124,7 @@ def detect_chinese_category_old(phrase: str) -> int:
     try:
         tmp_phrase.encode('gb2312')
         category |= 1
-    except:
+    except Exception:
         if '〇' in tmp_phrase:
             # we add '〇' into SC as well
             category |= 1
@@ -132,7 +132,7 @@ def detect_chinese_category_old(phrase: str) -> int:
     try:
         tmp_phrase.encode('big5hkscs')
         category |= 1 << 1
-    except:
+    except Exception:
         # then check whether in gbk,
         if category & 1:
             # already know in SC
@@ -142,7 +142,7 @@ def detect_chinese_category_old(phrase: str) -> int:
             try:
                 tmp_phrase.encode('gbk')
                 category |= 1
-            except:
+            except Exception:
                 # not in gbk
                 pass
     # then set for 3rd bit, if not in SC and TC

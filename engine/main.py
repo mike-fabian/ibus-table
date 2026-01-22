@@ -29,7 +29,6 @@ import types
 import os
 import re
 import sys
-import traceback
 import argparse
 import logging
 import logging.handlers

@@ -59,7 +59,7 @@ N_: Callable[[str], str] = lambda a: a
 # When matching keybindings, only the bits in the following mask are
 # considered for key.state:
 KEYBINDING_STATE_MASK = (
-    IBus.ModifierType.MODIFIER_MASK
+    IBus.ModifierType.MODIFIER_MASK  # pylint: disable=no-member
     & ~IBus.ModifierType.LOCK_MASK # Caps Lock
     & ~IBus.ModifierType.MOD2_MASK # Num Lock
     & ~IBus.ModifierType.MOD3_MASK # Scroll Lock
@@ -706,7 +706,7 @@ class KeyEvent:
         self.button5 = self.state & IBus.ModifierType.BUTTON5_MASK != 0
         self.release = self.state & IBus.ModifierType.RELEASE_MASK != 0
         # MODIFIER_MASK: Modifier mask for the all the masks above
-        self.modifier = self.state & IBus.ModifierType.MODIFIER_MASK != 0
+        self.modifier = self.state & IBus.ModifierType.MODIFIER_MASK != 0  # pylint: disable=no-member
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, KeyEvent):

@@ -82,9 +82,11 @@ LOGGER = logging.getLogger('ibus-table')
 
 GLIB_MAIN_LOOP: Optional[GLib.MainLoop] = None
 
+# pylint: disable=no-value-for-parameter
 GTK_VERSION = (Gtk.get_major_version(),
                Gtk.get_minor_version(),
                Gtk.get_micro_version())
+# pylint: enable=no-value-for-parameter
 
 PARSER = argparse.ArgumentParser(
     description='ibus-table setup tool')
@@ -147,7 +149,7 @@ class SetupUI(Gtk.Window): # type: ignore
             }
             ''')
         Gtk.StyleContext.add_provider_for_screen(
-            Gdk.Screen.get_default(),
+            Gdk.Screen.get_default(),  # pylint: disable=c-extension-no-member
             style_provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
@@ -838,7 +840,7 @@ class SetupUI(Gtk.Window): # type: ignore
         self._dynamic_adjust_checkbutton.connect(
             'clicked', self._on_dynamic_adjust_checkbutton)
         self._dynamic_adjust_forget_button = Gtk.Button()
-        self._dynamic_adjust_forget_button_box = Gtk.HBox()
+        self._dynamic_adjust_forget_button_box = Gtk.HBox()  # pylint: disable=c-extension-no-member
         self._dynamic_adjust_forget_button_label = Gtk.Label()
         self._dynamic_adjust_forget_button_label.set_text(
             _('Delete all learned data'))
@@ -1132,7 +1134,7 @@ class SetupUI(Gtk.Window): # type: ignore
         self._error_sound_checkbutton.connect(
             'clicked', self._on_error_sound_checkbutton)
         self._error_sound_file_button = Gtk.Button()
-        self._error_sound_file_button_box = Gtk.HBox()
+        self._error_sound_file_button_box = Gtk.HBox()  # pylint: disable=c-extension-no-member
         self._error_sound_file_button_label = Gtk.Label()
         self._error_sound_file_button_label.set_text(
             self._settings_dict['errorsoundfile']['user'])
@@ -1611,8 +1613,8 @@ class SetupUI(Gtk.Window): # type: ignore
         confirm_question.show_all()
         response = confirm_question.run()
         confirm_question.destroy()
-        while Gtk.events_pending():
-            Gtk.main_iteration()
+        while Gtk.events_pending():  # pylint: disable=c-extension-no-member
+            Gtk.main_iteration()  # pylint: disable=c-extension-no-member
         return response
 
     def check_instance(self) -> bool:
@@ -1930,8 +1932,8 @@ class SetupUI(Gtk.Window): # type: ignore
         if response == Gtk.ResponseType.OK:
             filename = chooser.get_filename()
         chooser.destroy()
-        while Gtk.events_pending():
-            Gtk.main_iteration()
+        while Gtk.events_pending():  # pylint: disable=c-extension-no-member
+            Gtk.main_iteration()  # pylint: disable=c-extension-no-member
         if filename:
             self._error_sound_file_button_label.set_text(
                 filename)
@@ -3095,7 +3097,7 @@ class HelpWindow(Gtk.Window): # type: ignore
         self.close_button_label.set_text_with_mnemonic(_('_Close'))
         self.close_button.add(self.close_button_label)
         self.close_button.connect("clicked", self._on_close_button_clicked)
-        self.hbox = Gtk.HBox(spacing=0)
+        self.hbox = Gtk.HBox(spacing=0)  # pylint: disable=c-extension-no-member
         self.hbox.pack_end(self.close_button, False, False, 0)
         self.vbox.pack_start(self.hbox, False, False, 5)
         self.show_all()
@@ -3154,7 +3156,7 @@ if __name__ == '__main__':
         LOGGER.exception("IBUS-WARNING **: Using the fallback 'C' locale")
         locale.setlocale(locale.LC_ALL, 'C')
     i18n_init()
-    if IBus.get_address() is None:
+    if IBus.get_address() is None:  # pylint: disable=no-value-for-parameter
         DIALOG = Gtk.MessageDialog(
             modal=True,
             message_type=Gtk.MessageType.ERROR,

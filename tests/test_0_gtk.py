@@ -143,7 +143,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         if self._gsettings is not None:
             self._gsettings.set_int('chinesemode', 4)
         self.__class__.glib_main_loop = GLib.MainLoop()
-        Gtk.init()
+        Gtk.init() # pylint: disable=no-value-for-parameter
 
     def tearDown(self) -> None:
         if self.__class__.glib_main_loop is not None:
@@ -266,7 +266,10 @@ class SimpleGtkTestCase(unittest.TestCase):
             self.__main_test()
 
     def __entry_focus_in_event_cb(
-            self, entry: Gtk.Entry, event: Gdk.EventFocus) -> bool:
+            self,
+            entry: Gtk.Entry,
+            event: 'Gdk.EventFocus',  # pylint: disable=c-extension-no-member
+    ) -> bool:
         if self.__test_index == len(TestCases['tests']):
             if DONE_EXIT and self.__class__.glib_main_loop is not None:
                 self.__class__.glib_main_loop.quit()
@@ -408,7 +411,7 @@ class SimpleGtkTestCase(unittest.TestCase):
             self.__main_test()
 
     def create_window(self) -> None:
-        window = Gtk.Window(type=Gtk.WindowType.TOPLEVEL)
+        window = Gtk.Window(type=Gtk.WindowType.TOPLEVEL)  # pylint: disable=c-extension-no-member
         self.__entry = entry = Gtk.Entry()
         if self.__class__.glib_main_loop is not None:
             window.connect('destroy', self.__class__.glib_main_loop.quit)

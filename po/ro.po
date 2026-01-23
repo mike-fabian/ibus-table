@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2025-10-06 10:30+0200\n"
+"POT-Creation-Date: 2026-01-22 19:03+0100\n"
 "PO-Revision-Date: 2026-01-22 00:58+0000\n"
 "Last-Translator: Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>\n"
 "Language-Team: Romanian <https://translate.fedoraproject.org/projects/ibus-"
@@ -24,11 +24,11 @@ msgstr ""
 #. when one wants to input only Simplified Chinese.
 #. Translators: This is the setting to use only
 #. simplified Chinese
-#: engine/table.py:673 setup/main.py:389
+#: engine/table.py:683 setup/main.py:393
 msgid "Simplified Chinese"
 msgstr "Chineză simplificată"
 
-#: engine/table.py:675
+#: engine/table.py:685
 msgid "Switch to “Simplified Chinese only”."
 msgstr "Comută la „Numai chineză simplificată”."
 
@@ -36,11 +36,11 @@ msgstr "Comută la „Numai chineză simplificată”."
 #. when one wants to input only Traditonal Chinese
 #. Translators: This is the setting to use only
 #. traditional Chinese
-#: engine/table.py:682 setup/main.py:393
+#: engine/table.py:692 setup/main.py:397
 msgid "Traditional Chinese"
 msgstr "Chineză tradițională"
 
-#: engine/table.py:684
+#: engine/table.py:694
 msgid "Switch to “Traditional Chinese only”."
 msgstr "Comută la „Numai chineză tradițională”."
 
@@ -49,11 +49,11 @@ msgstr "Comută la „Numai chineză tradițională”."
 #. Chinese but wants the Simplified Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:694
+#: engine/table.py:704
 msgid "Simplified Chinese first"
 msgstr "Chineză simplificată mai întâi"
 
-#: engine/table.py:696
+#: engine/table.py:706
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr "Comută la „Chineză simplificată înainte de tradițională”."
 
@@ -62,11 +62,11 @@ msgstr "Comută la „Chineză simplificată înainte de tradițională”."
 #. Chinese but wants the Traditional Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:706
+#: engine/table.py:716
 msgid "Traditional Chinese first"
 msgstr "Chineză tradițională mai întâi"
 
-#: engine/table.py:708
+#: engine/table.py:718
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr "Comută la „Chineză tradițională înainte de cea simplificată”."
 
@@ -78,59 +78,59 @@ msgstr "Comută la „Chineză tradițională înainte de cea simplificată”."
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese in no
 #. particular order
-#: engine/table.py:718 setup/main.py:408
+#: engine/table.py:728 setup/main.py:412
 msgid "All Chinese characters"
 msgstr "Toate caracterele chinezești"
 
-#: engine/table.py:719
+#: engine/table.py:729
 msgid "Switch to “All Chinese characters”."
 msgstr "Comută la „Toate caracterele chinezești”."
 
-#: engine/table.py:723 setup/main.py:1192
+#: engine/table.py:733 setup/main.py:1196
 msgid "Chinese mode"
 msgstr "Modul chinezesc"
 
-#: engine/table.py:724
+#: engine/table.py:734
 msgid "Switch Chinese mode"
 msgstr "Comută la modul chinezesc"
 
-#: engine/table.py:735
+#: engine/table.py:745
 msgid "English"
 msgstr "Engleză"
 
-#: engine/table.py:736
+#: engine/table.py:746
 msgid "Switch to English input"
 msgstr "Comută la introducerea în limba engleză"
 
-#: engine/table.py:743
+#: engine/table.py:753
 msgid "Chinese"
 msgstr "Chineză"
 
-#: engine/table.py:744
+#: engine/table.py:754
 msgid "Switch to Chinese input"
 msgstr "Comută la introducerea în limba chineză"
 
-#: engine/table.py:752 engine/table.py:900 setup/main.py:959
+#: engine/table.py:762 engine/table.py:910 setup/main.py:963
 msgid "Direct"
 msgstr "Direct"
 
-#: engine/table.py:753
+#: engine/table.py:763
 msgid "Switch to direct input"
 msgstr "Comută la introducerea directă"
 
-#: engine/table.py:758 engine/table.py:822
+#: engine/table.py:768 engine/table.py:832
 msgid "Table"
 msgstr "Tabel"
 
-#: engine/table.py:759
+#: engine/table.py:769
 msgid "Switch to table input"
 msgstr "Comută la introducerea din tabel"
 
-#: engine/table.py:767
+#: engine/table.py:777
 msgid "Input mode"
 msgstr "Modul de introducere"
 
-#: engine/table.py:768
+#: engine/table.py:778
 msgid "Switch Input mode"
 msgstr "Comută modul de introducere"
 
@@ -142,12 +142,12 @@ msgstr "Comută modul de introducere"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use half width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:778 engine/table.py:800 setup/main.py:445 setup/main.py:489
-#: setup/main.py:534 setup/main.py:579
+#: engine/table.py:788 engine/table.py:810 setup/main.py:449 setup/main.py:493
+#: setup/main.py:538 setup/main.py:583
 msgid "Half"
 msgstr "Redusă"
 
-#: engine/table.py:779
+#: engine/table.py:789
 msgid "Switch to halfwidth letters"
 msgstr "Comută la litere cu lățime redusă"
 
@@ -159,108 +159,108 @@ msgstr "Comută la litere cu lățime redusă"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use full width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:784 engine/table.py:806 setup/main.py:449 setup/main.py:493
-#: setup/main.py:538 setup/main.py:583
+#: engine/table.py:794 engine/table.py:816 setup/main.py:453 setup/main.py:497
+#: setup/main.py:542 setup/main.py:587
 msgid "Full"
 msgstr "Completă"
 
-#: engine/table.py:785
+#: engine/table.py:795
 msgid "Switch to fullwidth letters"
 msgstr "Comutați la litere cu lățime completă"
 
-#: engine/table.py:789 setup/main.py:1193
+#: engine/table.py:799 setup/main.py:1197
 msgid "Letter width"
 msgstr "Lățimea literelor"
 
-#: engine/table.py:790
+#: engine/table.py:800
 msgid "Switch letter width"
 msgstr "Comută lățimea literelor"
 
-#: engine/table.py:801
+#: engine/table.py:811
 msgid "Switch to halfwidth punctuation"
 msgstr "Comută la semne de punctuație cu lățime redusă"
 
-#: engine/table.py:807
+#: engine/table.py:817
 msgid "Switch to fullwidth punctuation"
 msgstr "Comută la semne de punctuație cu lățime completă"
 
-#: engine/table.py:811 setup/main.py:1194
+#: engine/table.py:821 setup/main.py:1198
 msgid "Punctuation width"
 msgstr "Lățimea semnelor de punctuație"
 
-#: engine/table.py:812
+#: engine/table.py:822
 msgid "Switch punctuation width"
 msgstr "Comută lățimea semnelor de punctuație"
 
-#: engine/table.py:823
+#: engine/table.py:833
 msgid "Switch to table mode"
 msgstr "Comută la modul tabel"
 
-#: engine/table.py:828
+#: engine/table.py:838
 msgid "Pinyin"
 msgstr "Pinyin"
 
-#: engine/table.py:829
+#: engine/table.py:839
 msgid "Switch to pinyin mode"
 msgstr "Comută la modul pinyin"
 
-#: engine/table.py:833 setup/main.py:1195
+#: engine/table.py:843 setup/main.py:1199
 msgid "Pinyin mode"
 msgstr "Modul pinyin"
 
-#: engine/table.py:834
+#: engine/table.py:844
 msgid "Switch pinyin mode"
 msgstr "Comută modul pinyin"
 
-#: engine/table.py:844
+#: engine/table.py:854
 msgid "Suggestion disabled"
 msgstr "Sugerare dezactivată"
 
-#: engine/table.py:845 engine/table.py:851
+#: engine/table.py:855 engine/table.py:861
 msgid "Switch to suggestion mode"
 msgstr "Comută la modul de sugerare"
 
-#: engine/table.py:850
+#: engine/table.py:860
 msgid "Suggestion enabled"
 msgstr "Sugerare activată"
 
-#: engine/table.py:855 setup/main.py:1196
+#: engine/table.py:865 setup/main.py:1200
 msgid "Suggestion mode"
 msgstr "Modul de sugerare"
 
-#: engine/table.py:856
+#: engine/table.py:866
 msgid "Switch suggestion mode"
 msgstr "Comută modul de sugerare"
 
-#: engine/table.py:866
+#: engine/table.py:876
 msgid "Multiple character match"
 msgstr "Potrivire de mai multe caractere"
 
-#: engine/table.py:868
+#: engine/table.py:878
 msgid "Switch to matching multiple characters at once"
 msgstr "Comută la potrivirea mai multor caractere simultan"
 
-#: engine/table.py:873
+#: engine/table.py:883
 msgid "Single character match"
 msgstr "Potrivire cu un singur caracter"
 
-#: engine/table.py:875
+#: engine/table.py:885
 msgid "Switch to matching only single characters"
 msgstr "Comută la potrivirea numai a caracterelor individuale"
 
-#: engine/table.py:879 setup/main.py:1197
+#: engine/table.py:889 setup/main.py:1201
 msgid "Onechar mode"
 msgstr "Modul de un singur caracter"
 
-#: engine/table.py:880
+#: engine/table.py:890
 msgid "Switch onechar mode"
 msgstr "Comută la modul de un singur caracter"
 
-#: engine/table.py:890 setup/main.py:957
+#: engine/table.py:900 setup/main.py:961
 msgid "Normal"
 msgstr "Normal"
 
-#: engine/table.py:892
+#: engine/table.py:902
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
@@ -269,7 +269,7 @@ msgstr ""
 "pre-editare în loc de aplicație. Acest lucru permite definirea automată a "
 "noilor comenzi rapide)"
 
-#: engine/table.py:902
+#: engine/table.py:912
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
@@ -277,19 +277,19 @@ msgstr ""
 "Trece la modul de confirmare directă (confirmările automate sunt transmise "
 "direct în aplicație)"
 
-#: engine/table.py:907 setup/main.py:1198
+#: engine/table.py:917 setup/main.py:1202
 msgid "Autocommit mode"
 msgstr "Modul de confirmare automată"
 
-#: engine/table.py:908
+#: engine/table.py:918
 msgid "Switch autocommit mode"
 msgstr "Comută modul de confirmare automată"
 
-#: engine/table.py:2941
+#: engine/table.py:2951
 msgid "Setup"
 msgstr "Configurare"
 
-#: engine/table.py:2944
+#: engine/table.py:2954
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "Configurează tabelul ibus „%(engine-name)s”"
@@ -297,11 +297,11 @@ msgstr "Configurează tabelul ibus „%(engine-name)s”"
 #. Translators: This is used in the title bar of a dialog window
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
-#: engine/it_util.py:943
+#: engine/it_util.py:951
 msgid "Key input"
 msgstr "Combinația de taste"
 
-#: engine/it_util.py:949
+#: engine/it_util.py:957
 msgid "Cancel"
 msgstr "Anulare"
 
@@ -309,33 +309,33 @@ msgstr "Anulare"
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:956
+#: engine/it_util.py:964
 msgid "Please press a key (or a key combination)"
 msgstr "Apăsați o tastă (sau o combinație de taste)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:961
+#: engine/it_util.py:969
 msgid "The dialog will be closed when the key is released"
 msgstr ""
 "Dialogul se va închide când tasta este eliberată (ultima tastă în cazul "
 "combinației de taste)"
 
-#: engine/it_util.py:998
+#: engine/it_util.py:1006
 msgid "Table input method for IBus."
 msgstr "Metoda de introducere a tabelului pentru IBus."
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
 #. will be displayed in the “About ibus-table” dialog.
-#: engine/it_util.py:1022
+#: engine/it_util.py:1030
 msgid "translator-credits"
 msgstr ""
 "Mircea Daniel <visez.trance@gmail.com>,\n"
 "Remus-Gabriel Chelu <remusgabriel.chelu@disroot.org>, 2025, 2026"
 
-#: engine/it_util.py:1030
+#: engine/it_util.py:1038
 msgid "Online documentation:"
 msgstr "Documentație disponibilă în Internet:"
 
@@ -366,44 +366,44 @@ msgstr "Preferințe tabel IBus"
 msgid "Set IBus Table Options"
 msgstr "Configurați opțiunile tabelului IBus"
 
-#: setup/main.py:117
+#: setup/main.py:121
 msgid "Initial state"
 msgstr "Starea inițială"
 
-#: setup/main.py:118
+#: setup/main.py:122
 msgid "Direct input"
 msgstr "Introducerea directă"
 
-#: setup/main.py:119
+#: setup/main.py:123
 msgid "Table input"
 msgstr "Introducerea din tabel"
 
-#: setup/main.py:133 setup/main.py:193
+#: setup/main.py:137 setup/main.py:197
 msgid "Preferences"
 msgstr "Preferințe"
 
-#: setup/main.py:216
+#: setup/main.py:220
 msgid "About"
 msgstr "Despre"
 
-#: setup/main.py:224
+#: setup/main.py:228
 msgid "Restore all defaults"
 msgstr "Restaurează valorile implicite"
 
-#: setup/main.py:233 setup/main.py:3095
+#: setup/main.py:237 setup/main.py:3099
 msgid "_Close"
 msgstr "În_chide"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
 #. behaviour of ibus-table.
-#: setup/main.py:256
+#: setup/main.py:260
 msgid "Settings"
 msgstr "Configurări"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some more advanced options.
-#: setup/main.py:271
+#: setup/main.py:275
 msgid "Details"
 msgstr "Detalii"
 
@@ -414,11 +414,11 @@ msgstr "Detalii"
 #. etc...
 #. Translators: Column heading of the table listing the
 #. existing key bindings
-#: setup/main.py:287 setup/main.py:749
+#: setup/main.py:291 setup/main.py:753
 msgid "Key bindings"
 msgstr "Combinații de taste"
 
-#: setup/main.py:300
+#: setup/main.py:304
 msgid "Menu Items"
 msgstr "Elemente din meniu"
 
@@ -426,7 +426,7 @@ msgstr "Elemente din meniu"
 #. (“Direct input” or “Table input”) should be remembered
 #. or whether ibus-table should always use “Table input” by
 #. default after a restart.
-#: setup/main.py:323
+#: setup/main.py:327
 msgid "Remember input mode"
 msgstr "Reține modul de introducere"
 
@@ -435,7 +435,7 @@ msgstr "Reține modul de introducere"
 #. input”) should be remembered or whether ibus-table
 #. should always use “Table input” by default after a
 #. restart.
-#: setup/main.py:330
+#: setup/main.py:334
 msgid ""
 "Whether the last used input mode should be remembered or whether ibus-table "
 "should start in “Table mode” by default after a restart. There are two input "
@@ -453,23 +453,23 @@ msgstr ""
 "Cu toate acestea, în modul de introducere directă pot avea loc unele "
 "conversii între lățimea completă și lățimea redusă."
 
-#: setup/main.py:343
+#: setup/main.py:347
 msgid "No"
 msgstr "Nu"
 
-#: setup/main.py:345
+#: setup/main.py:349
 msgid "Yes"
 msgstr "Da"
 
 #. Translators: A combobox to choose the variant of
 #. Chinese which should be preferred.
-#: setup/main.py:369
+#: setup/main.py:373
 msgid "Chinese mode:"
 msgstr "Modul chinezesc:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.
-#: setup/main.py:373
+#: setup/main.py:377
 msgid ""
 "“Simplified Chinese” shows only characters \n"
 "used in simplified Chinese. “Traditional Chinese”\n"
@@ -496,26 +496,26 @@ msgstr ""
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. simplified Chinese
-#: setup/main.py:398
+#: setup/main.py:402
 msgid "Simplified Chinese before traditional"
 msgstr "Chineză simplificată înainte de tradițională"
 
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. traditional Chinese
-#: setup/main.py:403
+#: setup/main.py:407
 msgid "Traditional Chinese before simplified"
 msgstr "Chineză tradițională înainte de cea simplificată"
 
 #. Translators: A combobox to choose the letter width
 #. while in “Table input” mode.
-#: setup/main.py:433
+#: setup/main.py:437
 msgid "Table input letter width:"
 msgstr "Lățimea literelor introduse din tabel:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Table input” mode.
-#: setup/main.py:437
+#: setup/main.py:441
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
@@ -525,13 +525,13 @@ msgstr ""
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Table input” mode.
-#: setup/main.py:476
+#: setup/main.py:480
 msgid "Table input punctuation width:"
 msgstr "Lățimea semnelor de punctuație din tabel:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Table input” mode.
-#: setup/main.py:480
+#: setup/main.py:484
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
@@ -541,13 +541,13 @@ msgstr ""
 
 #. Translators: A combobox to choose the letter width
 #. while in “Direct input” mode.
-#: setup/main.py:522
+#: setup/main.py:526
 msgid "Direct input letter width:"
 msgstr "Lățimea literelor introduse direct:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Direct input” mode.
-#: setup/main.py:526
+#: setup/main.py:530
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
@@ -557,13 +557,13 @@ msgstr ""
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Direct input” mode.
-#: setup/main.py:566
+#: setup/main.py:570
 msgid "Direct input punctuation width:"
 msgstr "Lățimea semnelor de punctuație introduse direct:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Direct input” mode.
-#: setup/main.py:570
+#: setup/main.py:574
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
@@ -571,7 +571,7 @@ msgstr ""
 "Dacă se utilizează semne de punctuație cu lățime completă\n"
 "sau jumătate de lățime în modul de introducere directă."
 
-#: setup/main.py:610
+#: setup/main.py:614
 msgid "Candidate list"
 msgstr "Listă variante"
 
@@ -581,14 +581,14 @@ msgstr "Listă variante"
 #. candidate list to be shown. But for some non-Chinese
 #. input methods like the Russian “translit”, hiding
 #. the candidate lists is better.
-#: setup/main.py:625
+#: setup/main.py:629
 msgid "Show candidate list"
 msgstr "Afișează lista de variante"
 
 #. Translit: A tooltip for the label of the combobox to
 #. choose whether a candidate list should be shown or
 #. hidden.
-#: setup/main.py:630
+#: setup/main.py:634
 msgid ""
 "Whether candidate lists should be shown or hidden.\n"
 "For Chinese input methods one usually wants the\n"
@@ -605,14 +605,14 @@ msgstr ""
 
 #. Translators: A combobox to choose whether the candidate
 #. window should be drawn horizontally or vertically.
-#: setup/main.py:649
+#: setup/main.py:653
 msgid "Orientation:"
 msgstr "Orientare:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn
 #. horizontally or vertically.
-#: setup/main.py:654
+#: setup/main.py:658
 msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
@@ -620,28 +620,28 @@ msgstr ""
 "Dacă tabelul de căutare care afișează variantele\n"
 "trebuie să fie vertical sau orizontal."
 
-#: setup/main.py:660
+#: setup/main.py:664
 msgid "Horizontal"
 msgstr "Orizontală"
 
-#: setup/main.py:662
+#: setup/main.py:666
 msgid "Vertical"
 msgstr "Verticală"
 
-#: setup/main.py:664
+#: setup/main.py:668
 msgid "System default"
 msgstr "Valoarea implicită a sistemului"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
-#: setup/main.py:689
+#: setup/main.py:693
 msgid "Page size:"
 msgstr "Dimensiunea paginii:"
 
 #. Translators: A tooltip for the label of the adjustment
 #. for the number of candidates to show in one page of the
 #. candidate list.
-#: setup/main.py:694
+#: setup/main.py:698
 msgid ""
 "The maximum number of candidates in\n"
 "one page of the lookup table. You can switch\n"
@@ -652,27 +652,27 @@ msgstr ""
 "Puteți comuta între paginile din tabelul de căutare folosind\n"
 "tastele pagină sus/jos sau tastele săgeată sus/jos."
 
-#: setup/main.py:716
+#: setup/main.py:720
 msgid "Current key bindings:"
 msgstr "Combinațiile de taste curente:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
-#: setup/main.py:741
+#: setup/main.py:745
 msgid "Command"
 msgstr "Comandă"
 
-#: setup/main.py:772
+#: setup/main.py:776
 msgid "Edit"
 msgstr "_Editează"
 
 #. Translators: A tooltip for the button to edit
 #. the keybindings for the selected command.
-#: setup/main.py:778
+#: setup/main.py:782
 msgid "Edit the key bindings for the selected command"
 msgstr "Editați combinația de taste pentru comanda selectată"
 
-#: setup/main.py:785 setup/main.py:2282
+#: setup/main.py:789 setup/main.py:2286
 msgid "Set to default"
 msgstr "Stabilește combinația de taste ca implicită"
 
@@ -680,28 +680,28 @@ msgstr "Stabilește combinația de taste ca implicită"
 #. the default key bindings for the selected command.
 #. Translators: This is a tooltip for the button to set
 #. the key bindings for the selected command to the default.
-#: setup/main.py:791 setup/main.py:2289
+#: setup/main.py:795 setup/main.py:2293
 msgid "Set default key bindings for the selected command"
 msgstr "Stabilește combinația de taste implicită pentru comanda selectată"
 
-#: setup/main.py:798
+#: setup/main.py:802
 msgid "Set all to default"
 msgstr "Stabilește toate combinațiile de taste ca implicite"
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
-#: setup/main.py:804
+#: setup/main.py:808
 msgid "Set default key bindings for all commands"
 msgstr "Stabilește combinațiile de taste implicite pentru toate comenzile"
 
 #. Translators: A checkbox where one can choose whether the
 #. order of the candidates is dynamically adjusted according
 #. to how often the candidates are used.
-#: setup/main.py:829
+#: setup/main.py:833
 msgid "Dynamic adjust"
 msgstr "Ajustare dinamică"
 
-#: setup/main.py:831
+#: setup/main.py:835
 msgid ""
 "Here you can choose whether the order of the candidates is dynamically "
 "adjusted according to how often the candidates are used."
@@ -709,20 +709,20 @@ msgstr ""
 "Aici puteți alege dacă ordinea variantelor este ajustată dinamic în funcție "
 "de frecvența utilizării acestora."
 
-#: setup/main.py:844
+#: setup/main.py:848
 msgid "Delete all learned data"
 msgstr "Șterge toate datele memorate"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
-#: setup/main.py:869
+#: setup/main.py:873
 msgid "Compose:"
 msgstr "Compunere:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
 #. be shown.
-#: setup/main.py:874
+#: setup/main.py:878
 msgid ""
 "If this is set to “single char”, only single\n"
 "character candidates will be shown. If it is\n"
@@ -733,24 +733,24 @@ msgstr ""
 "vor fi afișate numai caracterele unice. Dacă este configurată\n"
 "la „Frază” pot fi afișate variante compuse din mai multe caractere."
 
-#: setup/main.py:882
+#: setup/main.py:886
 msgid "Phrase"
 msgstr "Frază"
 
-#: setup/main.py:884
+#: setup/main.py:888
 msgid "Single Char"
 msgstr "Caracter unic"
 
 #. Translators: A combobox to choose whether the first
 #. candidate will be automatically selected during typing.
-#: setup/main.py:909
+#: setup/main.py:913
 msgid "Auto select"
 msgstr "Selectare automată"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
 #. select during typing.
-#: setup/main.py:914
+#: setup/main.py:918
 msgid ""
 "If set to “Yes”, this does the following 4 things:\n"
 "1) When typing “Return”, commit the \n"
@@ -775,14 +775,14 @@ msgstr ""
 
 #. Translators: A combobox to choose whether automatic
 #. commits go into the preëdit or into the application
-#: setup/main.py:939
+#: setup/main.py:943
 msgid "Autocommit mode:"
 msgstr "Modul de confirmare automată:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether automatic commits go into the preëdit or
 #. into the application.
-#: setup/main.py:944
+#: setup/main.py:948
 msgid ""
 "Committing with the commit keys or with the mouse\n"
 "always commits to the application. This option is about\n"
@@ -804,14 +804,14 @@ msgstr ""
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
-#: setup/main.py:985
+#: setup/main.py:989
 msgid "Action when typing invalid character:"
 msgstr "Acțiune la introducerea unui caracter nevalid:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
 #. be shown.
-#: setup/main.py:990
+#: setup/main.py:994
 msgid ""
 "Determines what happens when a character which is not in the set of valid "
 "input characters for this table is typed: With “commit current candidate”, "
@@ -830,24 +830,24 @@ msgstr ""
 "caracterul în cauză este inserat imediat după textul care rezultă din "
 "opțiunile enumerate mai sus."
 
-#: setup/main.py:1003
+#: setup/main.py:1007
 msgid "Commit current candidate"
 msgstr "Confirmă varianta curentă"
 
-#: setup/main.py:1005
+#: setup/main.py:1009
 msgid "Commit typed keys"
 msgstr "Confirmă tastele tastate"
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
-#: setup/main.py:1029
+#: setup/main.py:1033
 msgid "Auto wildcard"
 msgstr "Caracter joker automat"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether a wildcard should be automatically
 #. appended to the input.
-#: setup/main.py:1034
+#: setup/main.py:1038
 msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
@@ -857,14 +857,14 @@ msgstr ""
 
 #. Translators: This single character is a placeholder
 #. to match a any single character
-#: setup/main.py:1051
+#: setup/main.py:1055
 msgid "Single wildcard character:"
 msgstr "Caracter joker unic:"
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match a
 #. single character.
-#: setup/main.py:1056
+#: setup/main.py:1060
 msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
@@ -875,14 +875,14 @@ msgstr ""
 
 #. Translators: This single character is a placeholder
 #. to match a any number of characters
-#: setup/main.py:1077
+#: setup/main.py:1081
 msgid "Multi wildcard character:"
 msgstr "Caracter joker multiplu:"
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match any
 #. number of candidates.
-#: setup/main.py:1082
+#: setup/main.py:1086
 msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
@@ -893,24 +893,24 @@ msgstr ""
 
 #. Translators: A combobox to choose whether
 #. the color scheme for a dark theme should be used.
-#: setup/main.py:1102
+#: setup/main.py:1106
 msgid "Use dark theme"
 msgstr "Utilizează tema întunecată"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should
 #. be used.
-#: setup/main.py:1107
+#: setup/main.py:1111
 msgid "If yes, the color scheme for a dark theme will be used."
 msgstr "Dacă da, se va utiliza schema de culori pentru o temă întunecată."
 
 #. Translators: A checkbox where one can choose whether a
 #. sound is played on error
-#: setup/main.py:1122
+#: setup/main.py:1126
 msgid "Play sound file on error"
 msgstr "Redă fișierul audio în caz de eroare"
 
-#: setup/main.py:1124
+#: setup/main.py:1128
 msgid ""
 "Here you can choose whether a sound file is played if an error occurs. If "
 "the simpleaudio module for Python3 is not installed, this option does "
@@ -923,13 +923,13 @@ msgstr ""
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
 #. debug information may also be shown graphically.
-#: setup/main.py:1165
+#: setup/main.py:1169
 msgid "Debug level:"
 msgstr "Nivel de depanare:"
 
 #. Translators: This is a tooltip for the label for the
 #. adjustment of the debug level.
-#: setup/main.py:1169
+#: setup/main.py:1173
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
@@ -937,26 +937,26 @@ msgstr ""
 "Când valoarea este mai mare decât 0, informațiile de depanare pot fi "
 "imprimate în fișierul jurnal și pot fi, de asemenea, afișate grafic."
 
-#: setup/main.py:1590
+#: setup/main.py:1594
 msgid "Are you sure?"
 msgstr "Sunteți sigur?"
 
-#: setup/main.py:1592 setup/main.py:1925
+#: setup/main.py:1596 setup/main.py:1929
 msgid "_Cancel"
 msgstr "_Anulează"
 
-#: setup/main.py:1593 setup/main.py:1926
+#: setup/main.py:1597 setup/main.py:1930
 msgid "_OK"
 msgstr "_Ok"
 
-#: setup/main.py:1625
+#: setup/main.py:1629
 msgid "Another instance of this app is already running."
 msgstr "O altă instanță a acestei aplicații rulează deja."
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
-#: setup/main.py:1697
+#: setup/main.py:1701
 msgid "Do you really want to restore all default settings?"
 msgstr "Doriți cu adevărat să restaurați toate valorile implicite?"
 
@@ -966,7 +966,7 @@ msgstr "Doriți cu adevărat să restaurați toate valorile implicite?"
 #. ibus-table has learned from typing and selecting candidates.
 #. Deleting this learned data cannot be reversed. So
 #. the user should be really sure he really wants to do that.
-#: setup/main.py:1900
+#: setup/main.py:1904
 msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
@@ -974,36 +974,36 @@ msgstr ""
 "Doriți cu adevărat să ștergeți toate datele memorate la tastare și "
 "selectarea variantelor?"
 
-#: setup/main.py:1922
+#: setup/main.py:1926
 msgid "Select .wav sound file:"
 msgstr "Selectați fișierul audio .wav:"
 
-#: setup/main.py:2205
+#: setup/main.py:2209
 #, python-format
 msgid "Edit key bindings for command “%s”"
 msgstr "Editați combinația de taste pentru comanda „%s”"
 
 #. Translators: This is a tooltip for the button to add a
 #. key binding.
-#: setup/main.py:2235
+#: setup/main.py:2239
 msgid "Add a key binding"
 msgstr "Adaugă o combinație de taste"
 
 #. Translators: This is a tooltip for the button to remove
 #. the selected key binding.
-#: setup/main.py:2249
+#: setup/main.py:2253
 msgid "Remove selected key binding"
 msgstr "Elimină combinația de taste selectată"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
-#: setup/main.py:2264
+#: setup/main.py:2268
 msgid "Move key binding up"
 msgstr "Mută combinația de taste în sus"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
-#: setup/main.py:2277
+#: setup/main.py:2281
 msgid "Move key binding down"
 msgstr "Mută combinația de taste în josus"
 
@@ -1012,7 +1012,7 @@ msgstr "Mută combinația de taste în josus"
 #. really sure to reset the key bindings for *all* commands
 #. to their defaults. This cannot be reversed so the user
 #. should be really sure he wants to do that.
-#: setup/main.py:2344
+#: setup/main.py:2348
 msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
@@ -1020,6 +1020,6 @@ msgstr ""
 "Doriți cu adevărat să restaurați combinațiile de taste implicite pentru "
 "toate comenzile la valorile implicite?"
 
-#: setup/main.py:3162
+#: setup/main.py:3166
 msgid "ibus is not running."
 msgstr "ibus nu rulează."

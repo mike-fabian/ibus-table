@@ -3,15 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Giannis Antypas <gianni.antypas@gmail.com>, 2024.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2024, 2025.
-# Jim Spentzos <jimspentzos2000@gmail.com>, 2025.
+# Jim Spentzos <jimspentzos2000@gmail.com>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
-"PO-Revision-Date: 2025-12-30 02:58+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-02-01 14:58+0000\n"
+"Last-Translator: Jim Spentzos <jimspentzos2000@gmail.com>\n"
 "Language-Team: Greek <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/el/>\n"
 "Language: el\n"
@@ -19,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -39,7 +38,7 @@ msgstr ""
 #. traditional Chinese
 #: engine/table.py:692 setup/main.py:397
 msgid "Traditional Chinese"
-msgstr "Υποστήριξη Traditional Chinese"
+msgstr "Κινεζικά (Παραδοσιακά)"
 
 #: engine/table.py:694
 msgid "Switch to “Traditional Chinese only”."
@@ -52,7 +51,7 @@ msgstr ""
 #. lists.
 #: engine/table.py:704
 msgid "Simplified Chinese first"
-msgstr "Κινεζικά (Απλοποιημένα)"
+msgstr "Πρώτα Κινεζικά (Απλοποιημένα)"
 
 #: engine/table.py:706
 msgid "Switch to “Simplified Chinese before traditional”."
@@ -65,7 +64,7 @@ msgstr ""
 #. lists.
 #: engine/table.py:716
 msgid "Traditional Chinese first"
-msgstr "Υποστήριξη Traditional Chinese"
+msgstr "Πρώτα Κινεζικά (Παραδοσιακά)"
 
 #: engine/table.py:718
 msgid "Switch to “Traditional Chinese before simplified”."
@@ -113,7 +112,7 @@ msgstr ""
 
 #: engine/table.py:762 engine/table.py:910 setup/main.py:963
 msgid "Direct"
-msgstr "JetDirect"
+msgstr ""
 
 #: engine/table.py:763
 msgid "Switch to direct input"
@@ -650,7 +649,7 @@ msgstr ""
 
 #: setup/main.py:802
 msgid "Set all to default"
-msgstr "Ορισμός ως προεπιλογή"
+msgstr "Ορισμός όλων ως προεπιλογών"
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
@@ -679,7 +678,7 @@ msgstr ""
 #. character candidates should be shown.
 #: setup/main.py:873
 msgid "Compose:"
-msgstr "Composefs"
+msgstr "Σύνθεση:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should

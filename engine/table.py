@@ -3366,8 +3366,13 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         :return: True if the key was completely handled, False if not.
         '''
-        if self.is_empty():
+        # if preedit is empty and suggestion mode is NOT active,
+        # nothing to cancel, so return False to allow OS to
+        # handle the key (e.g. to trigger a global shortcut):
+        if (self.is_empty() and not self._sg_mode_active):
             return False
+        # otherwise if preedit is non-empty OR suggestion mode is active,
+        # cancel the current input and return True to indicate that the key was handled:
         self.reset()
         self._update_ui()
         return True
@@ -4121,6 +4126,11 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             return True
 
         if key.val == IBus.KEY_BackSpace:
+            # When the preëdit is empty and suggestion mode is active, 
+            # we should exit suggestion mode and not pass the Backspace to the application.
+            if (self.is_empty() and self._sg_mode_active):
+                self.reset()
+                return True
             if not self.get_preedit_string_complete():
                 return self._return_false(key.val, key.code, key.state)
             self.remove_char()

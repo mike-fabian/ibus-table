@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
-"PO-Revision-Date: 2026-02-01 14:58+0000\n"
+"PO-Revision-Date: 2026-03-03 14:58+0000\n"
 "Last-Translator: Jim Spentzos <jimspentzos2000@gmail.com>\n"
 "Language-Team: Greek <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/el/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -80,7 +80,7 @@ msgstr ""
 #. particular order
 #: engine/table.py:728 setup/main.py:412
 msgid "All Chinese characters"
-msgstr ""
+msgstr "Όλοι οι κινεζικοί χαρακτήρες"
 
 #: engine/table.py:729
 msgid "Switch to “All Chinese characters”."
@@ -88,11 +88,11 @@ msgstr ""
 
 #: engine/table.py:733 setup/main.py:1196
 msgid "Chinese mode"
-msgstr ""
+msgstr "Λειτουργία Κινεζικών"
 
 #: engine/table.py:734
 msgid "Switch Chinese mode"
-msgstr ""
+msgstr "Εναλλαγή λειτουργίας Κινεζικών"
 
 #: engine/table.py:745
 msgid "English"
@@ -170,11 +170,11 @@ msgstr ""
 
 #: engine/table.py:799 setup/main.py:1197
 msgid "Letter width"
-msgstr ""
+msgstr "Πλάτος γραμμάτων"
 
 #: engine/table.py:800
 msgid "Switch letter width"
-msgstr ""
+msgstr "Εναλλαγή πλάτους γραμμάτων"
 
 #: engine/table.py:811
 msgid "Switch to halfwidth punctuation"
@@ -186,11 +186,11 @@ msgstr ""
 
 #: engine/table.py:821 setup/main.py:1198
 msgid "Punctuation width"
-msgstr ""
+msgstr "Πλάτος σημείων στίξης"
 
 #: engine/table.py:822
 msgid "Switch punctuation width"
-msgstr ""
+msgstr "Εναλλαγή πλάτους σημείων στίξης"
 
 #: engine/table.py:833
 msgid "Switch to table mode"
@@ -226,7 +226,7 @@ msgstr ""
 
 #: engine/table.py:865 setup/main.py:1200
 msgid "Suggestion mode"
-msgstr ""
+msgstr "Λειτουργία προτάσεων"
 
 #: engine/table.py:866
 msgid "Switch suggestion mode"
@@ -294,7 +294,7 @@ msgstr ""
 #. key binding for a command.
 #: engine/it_util.py:951
 msgid "Key input"
-msgstr ""
+msgstr "Εισαγωγή πλήκτρων"
 
 #: engine/it_util.py:957
 msgid "Cancel"
@@ -345,7 +345,7 @@ msgstr "Διαδικτυακή τεκμηρίωση:"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:6
 msgid "Ibus Table"
-msgstr ""
+msgstr "Πίνακας Ibus"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:7
 msgid "Table based input method"
@@ -368,15 +368,15 @@ msgstr ""
 
 #: setup/main.py:121
 msgid "Initial state"
-msgstr ""
+msgstr "Αρχική κατάσταση"
 
 #: setup/main.py:122
 msgid "Direct input"
-msgstr ""
+msgstr "Άμεση εισαγωγή"
 
 #: setup/main.py:123
 msgid "Table input"
-msgstr ""
+msgstr "Εισαγωγή πίνακα"
 
 #: setup/main.py:137 setup/main.py:197
 msgid "Preferences"
@@ -420,7 +420,7 @@ msgstr "Σύνδεση πλήκτρου"
 
 #: setup/main.py:304
 msgid "Menu Items"
-msgstr ""
+msgstr "Στοιχεία μενού"
 
 #. Translators: A combobox to choose whether the input mode
 #. (“Direct input” or “Table input”) should be remembered
@@ -457,7 +457,7 @@ msgstr "Ναι"
 #. Chinese which should be preferred.
 #: setup/main.py:373
 msgid "Chinese mode:"
-msgstr ""
+msgstr "Λειτουργία Κινεζικών:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.
@@ -662,7 +662,7 @@ msgstr ""
 #. to how often the candidates are used.
 #: setup/main.py:833
 msgid "Dynamic adjust"
-msgstr ""
+msgstr "Δυναμική προσαρμογή"
 
 #: setup/main.py:835
 msgid ""
@@ -693,7 +693,7 @@ msgstr ""
 
 #: setup/main.py:886
 msgid "Phrase"
-msgstr ""
+msgstr "Φράση"
 
 #: setup/main.py:888
 msgid "Single Char"
@@ -703,7 +703,7 @@ msgstr ""
 #. candidate will be automatically selected during typing.
 #: setup/main.py:913
 msgid "Auto select"
-msgstr ""
+msgstr "Αυτόματη επιλογή"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
-"PO-Revision-Date: 2026-01-18 09:58+0000\n"
+"PO-Revision-Date: 2026-03-31 04:58+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ka/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -202,7 +202,7 @@ msgstr "პინინი"
 
 #: engine/table.py:839
 msgid "Switch to pinyin mode"
-msgstr "პინინის რეჟიმის გადართვა"
+msgstr "პინინის რეჟიმზე გადართვა"
 
 #: engine/table.py:843 setup/main.py:1199
 msgid "Pinyin mode"
@@ -218,7 +218,7 @@ msgstr "შეთავაზება გათიშულია"
 
 #: engine/table.py:855 engine/table.py:861
 msgid "Switch to suggestion mode"
-msgstr "შეთავაზების რეჟიმის გადართვა"
+msgstr "შეთავაზების რეჟიმზე გადართვა"
 
 #: engine/table.py:860
 msgid "Suggestion enabled"

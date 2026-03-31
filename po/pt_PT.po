@@ -5,14 +5,14 @@
 # Anonymous <noreply@weblate.org>, 2020.
 # Mike FABIAN <mfabian@redhat.com>, 2021, 2022, 2025.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2025.
+# Bernardo Bernardino <bernardoluisbernardino@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
-"PO-Revision-Date: 2025-12-30 02:58+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-03-05 19:58+0000\n"
+"Last-Translator: Bernardo Bernardino <bernardoluisbernardino@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/pt_PT/>\n"
 "Language: pt_PT\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.16.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -300,10 +300,8 @@ msgstr "Configurar tabela ibus “%(engine-name)s”"
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
 #: engine/it_util.py:951
-#, fuzzy
-#| msgid "Table input"
 msgid "Key input"
-msgstr "Entrada de tabela"
+msgstr "Entrada de tecla"
 
 #: engine/it_util.py:957
 msgid "Cancel"
@@ -315,18 +313,18 @@ msgstr "Cancelar"
 #. command.
 #: engine/it_util.py:964
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "Por favor pressione uma tecla (ou uma combinação de teclas)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:969
 msgid "The dialog will be closed when the key is released"
-msgstr ""
+msgstr "A janela de diálogo será fechada quando a tecla for libertada"
 
 #: engine/it_util.py:1006
 msgid "Table input method for IBus."
-msgstr "Método de entrada de tabela para IBus"
+msgstr "Método de entrada de tabela para IBus."
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
@@ -364,7 +362,7 @@ msgstr "IBus Table %s - Preferências"
 
 #: setup/ibus-setup-table.desktop.in.in:3
 msgid "Set IBus Table Options"
-msgstr ""
+msgstr "Definir opções da Tabela IBus"
 
 #: setup/main.py:121
 msgid "Initial state"
@@ -416,21 +414,19 @@ msgstr "Detalhes"
 #. existing key bindings
 #: setup/main.py:291 setup/main.py:753
 msgid "Key bindings"
-msgstr ""
+msgstr "Teclas de atalho"
 
 #: setup/main.py:304
 msgid "Menu Items"
-msgstr ""
+msgstr "Itens do menu"
 
 #. Translators: A combobox to choose whether the input mode
 #. (“Direct input” or “Table input”) should be remembered
 #. or whether ibus-table should always use “Table input” by
 #. default after a restart.
 #: setup/main.py:327
-#, fuzzy
-#| msgid "Input mode"
 msgid "Remember input mode"
-msgstr "Modo de entrada"
+msgstr "Memorize o modo de entrada"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the input mode (“Direct input” or “Table
@@ -438,14 +434,6 @@ msgstr "Modo de entrada"
 #. should always use “Table input” by default after a
 #. restart.
 #: setup/main.py:334
-#, fuzzy
-#| msgid ""
-#| "“Direct input” is almost the same as if the\n"
-#| "input method were off, i.e. not used at all, most\n"
-#| "characters just get passed to the application.\n"
-#| "But some conversion between fullwidth and\n"
-#| "halfwidth may still happen in direct input mode.\n"
-#| "“Table input” means the input method is on."
 msgid ""
 "Whether the last used input mode should be remembered or whether ibus-table "
 "should start in “Table mode” by default after a restart. There are two input "
@@ -454,12 +442,14 @@ msgid ""
 "characters just get passed to the application. But some conversion between "
 "fullwidth and halfwidth may still happen in direct input mode."
 msgstr ""
-"“Entrada direta” é quase o mesmo que o método de\n"
-"entrada, onde, por exemplo, não utilizado, a maioria dos\n"
-"carateres passam apenas para a aplicação. Mas ainda\n"
-"poderá ocorrer alguma conversão entre a largura total e\n"
-"a metade no modo de entrada direta. “Entrada de Tabela”\n"
-"significa que o método de entrada está ativado."
+"Indica se o último modo de entrada utilizado deve ser lembrado ou se o ibus-"
+"table deve iniciar sempre no “Modo Tabela” por defeito após reiniciar. "
+"Existem dois modos de entrada: “Entrada por Tabela” significa que o método "
+"de entrada está ativo. “Entrada Direta” é quase o mesmo que se o método de "
+"entrada estivesse desligado, ou seja, não é utilizado, e a maioria dos "
+"caracteres é enviada diretamente para a aplicação. No entanto, algumas "
+"conversões entre caracteres de largura total e meia largura podem ainda "
+"ocorrer no modo de entrada direta."
 
 #: setup/main.py:347
 msgid "No"
@@ -662,7 +652,7 @@ msgstr ""
 
 #: setup/main.py:720
 msgid "Current key bindings:"
-msgstr ""
+msgstr "Teclas de atalho atuais:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
@@ -678,7 +668,7 @@ msgstr "Editar"
 #. the keybindings for the selected command.
 #: setup/main.py:782
 msgid "Edit the key bindings for the selected command"
-msgstr ""
+msgstr "Editar as teclas de atalho do comando selecionado"
 
 #: setup/main.py:789 setup/main.py:2286
 msgid "Set to default"
@@ -690,7 +680,7 @@ msgstr "Definir para predefinição"
 #. the key bindings for the selected command to the default.
 #: setup/main.py:795 setup/main.py:2293
 msgid "Set default key bindings for the selected command"
-msgstr ""
+msgstr "Definir as teclas de atalho por defeito para o comando selecionado"
 
 #: setup/main.py:802
 msgid "Set all to default"
@@ -700,24 +690,26 @@ msgstr "Definir tudo para predefinição"
 #. key bindings to default for all commands.
 #: setup/main.py:808
 msgid "Set default key bindings for all commands"
-msgstr ""
+msgstr "Definir as teclas de atalho por defeito para todos os comandos"
 
 #. Translators: A checkbox where one can choose whether the
 #. order of the candidates is dynamically adjusted according
 #. to how often the candidates are used.
 #: setup/main.py:833
 msgid "Dynamic adjust"
-msgstr ""
+msgstr "Ajuste dinâmico"
 
 #: setup/main.py:835
 msgid ""
 "Here you can choose whether the order of the candidates is dynamically "
 "adjusted according to how often the candidates are used."
 msgstr ""
+"Aqui pode escolher se a ordem dos candidatos deve ser ajustada dinamicamente "
+"consoante a frequência de utilização de cada candidato."
 
 #: setup/main.py:848
 msgid "Delete all learned data"
-msgstr ""
+msgstr "Apagar todos os dados aprendidos"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
@@ -816,7 +808,7 @@ msgstr ""
 #. character candidates should be shown.
 #: setup/main.py:989
 msgid "Action when typing invalid character:"
-msgstr ""
+msgstr "Ação ao escrever um carácter inválido:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -831,14 +823,22 @@ msgid ""
 "character is typed and the character in question is inserted immediately "
 "after the text that results from the options listed above."
 msgstr ""
+"Determina o que acontece quando é escrito um carácter que não pertence ao "
+"conjunto de caracteres válidos para esta tabela: Com a opção “inserir o "
+"candidato atual”, o candidato atualmente selecionado é inserido. Com a opção "
+"“inserir as teclas escritas”, os caracteres tal como foram escritos até ao "
+"momento durante o processo de seleção do candidato serão inseridos. Em todos "
+"os casos, a seleção do candidato termina quando é escrito um carácter "
+"inválido, sendo este carácter inserido imediatamente a seguir ao texto "
+"resultante das opções acima indicadas."
 
 #: setup/main.py:1007
 msgid "Commit current candidate"
-msgstr ""
+msgstr "Inserir o candidato atual"
 
 #: setup/main.py:1009
 msgid "Commit typed keys"
-msgstr ""
+msgstr "Inserir a tecla escrita"
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
@@ -897,20 +897,20 @@ msgstr ""
 #. the color scheme for a dark theme should be used.
 #: setup/main.py:1106
 msgid "Use dark theme"
-msgstr ""
+msgstr "Usar o tema escuro"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should
 #. be used.
 #: setup/main.py:1111
 msgid "If yes, the color scheme for a dark theme will be used."
-msgstr ""
+msgstr "Se sim, será utilizado o esquema de cores do tema escuro."
 
 #. Translators: A checkbox where one can choose whether a
 #. sound is played on error
 #: setup/main.py:1126
 msgid "Play sound file on error"
-msgstr ""
+msgstr "Reproduzir ficheiro de som em caso de erro"
 
 #: setup/main.py:1128
 msgid ""
@@ -918,6 +918,9 @@ msgid ""
 "the simpleaudio module for Python3 is not installed, this option does "
 "nothing."
 msgstr ""
+"Aqui pode escolher se deve ser reproduzido um ficheiro de som quando ocorrer "
+"um erro. Se o módulo simpleaudio para Python3 não estiver instalado, esta "
+"opção não irá ter efeito."
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
@@ -933,22 +936,24 @@ msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
 msgstr ""
+"Quando for maior do que 0, as informações de depuração podem ser registadas "
+"no ficheiro de log e também podem ser apresentadas graficamente."
 
 #: setup/main.py:1594
 msgid "Are you sure?"
-msgstr ""
+msgstr "Tem a certeza?"
 
 #: setup/main.py:1596 setup/main.py:1929
 msgid "_Cancel"
-msgstr "Cancelar"
+msgstr "_Cancelar"
 
 #: setup/main.py:1597 setup/main.py:1930
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: setup/main.py:1629
 msgid "Another instance of this app is already running."
-msgstr ""
+msgstr "Outra instância desta aplicação já está a ser executada."
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -956,6 +961,7 @@ msgstr ""
 #: setup/main.py:1701
 msgid "Do you really want to restore all default settings?"
 msgstr ""
+"Tem a certeza de que pretende restaurar todas as definições por defeito?"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -968,39 +974,41 @@ msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
 msgstr ""
+"Tem a certeza de que pretende apagar todos os dados aprendidos ao escrever e "
+"selecionar os candidatos?"
 
 #: setup/main.py:1926
 msgid "Select .wav sound file:"
-msgstr ""
+msgstr "Selecionar ficheiro de som .wav:"
 
 #: setup/main.py:2209
 #, python-format
 msgid "Edit key bindings for command “%s”"
-msgstr ""
+msgstr "Editar as teclas de atalho do comando “%s”"
 
 #. Translators: This is a tooltip for the button to add a
 #. key binding.
 #: setup/main.py:2239
 msgid "Add a key binding"
-msgstr ""
+msgstr "Adicionar uma tecla de atalho"
 
 #. Translators: This is a tooltip for the button to remove
 #. the selected key binding.
 #: setup/main.py:2253
 msgid "Remove selected key binding"
-msgstr ""
+msgstr "Remover a tecla de atalho selecionada"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
 #: setup/main.py:2268
 msgid "Move key binding up"
-msgstr ""
+msgstr "Mover a tecla de atalho para cima"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
 #: setup/main.py:2281
 msgid "Move key binding down"
-msgstr ""
+msgstr "Mover a tecla de atalho para baixo"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -1012,10 +1020,12 @@ msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
 msgstr ""
+"Tem a certeza de que pretende definir as teclas de atalho de todos os "
+"comandos para os valores por defeito?"
 
 #: setup/main.py:3166
 msgid "ibus is not running."
-msgstr ""
+msgstr "O ibus não está a ser executado."
 
 #~ msgid "IBUS_ENGINE_NAME environment variable is not set."
 #~ msgstr "A variável de ambiente IBUS_ENGINE_NAME não está definida."

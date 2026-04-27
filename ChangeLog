@@ -1,4 +1,120 @@
-commit 68c9c162c815a1d09c478a97b92a9cf0c2c5bccb
+commit 39b5ff752fa659b051c92510f902c876d59c7584
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 27 18:24:39 2026 +0200
+
+    Release 1.17.18
+
+commit 021440777e112fdf2cbbb5c0ddd0840a9799a948
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 27 18:05:02 2026 +0200
+
+    Add test case for cancelling suggestion mode with Escape and BackSpace
+    
+    See: https://github.com/mike-fabian/ibus-table/pull/215
+
+commit 603c814727f1fe0e6240aba5d46e98afe8cd27e4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 27 17:07:10 2026 +0200
+
+    Fix pylint warnings for Fedora 44
+
+commit 6f83e403f1efbe9d6052a54c34c74400967b8968
+Author: Oscar Kin-Chung Au <oscarkcau@gmail.com>
+Date:   Mon Mar 30 00:00:14 2026 +0800
+
+    Enhance TabEngine key handling cancelling logic when suggestion mode is active.
+
+commit 78b4aca33fcd8ae2d7ff39b2c4e3a2917cec771d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Apr 27 11:04:53 2026 +0200
+
+    Add .coderabbit.yaml
+
+commit ab85b7010c41168d71ddc5587f5a08c67a45cce5
+Author: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+Date:   Tue Mar 31 04:58:45 2026 +0000
+
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 69.2% (106 of 153 strings)
+    
+    Co-authored-by: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translation: ibus-table/app
+
+commit 863088dfac98de20c0e665054b86ba9dc251b43b
+Author: Pavel Borecki <pavel.borecki@gmail.com>
+Date:   Tue Mar 31 04:58:44 2026 +0000
+
+    Translated using Weblate (Czech)
+    
+    Currently translated at 98.0% (150 of 153 strings)
+    
+    Co-authored-by: Pavel Borecki <pavel.borecki@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/cs/
+    Translation: ibus-table/app
+
+commit 76777388ebfe18520f952fa00055a47c13a24712
+Author: Bernardo Bernardino <bernardoluisbernardino@gmail.com>
+Date:   Tue Mar 31 04:58:44 2026 +0000
+
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: Bernardo Bernardino <bernardoluisbernardino@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+    Translation: ibus-table/app
+
+commit b80e6df61f52deb8f1afcbbadbdfc3fd194c94bb
+Author: Jim Spentzos <jimspentzos2000@gmail.com>
+Date:   Tue Mar 31 04:58:44 2026 +0000
+
+    Translated using Weblate (Greek)
+    
+    Currently translated at 39.8% (61 of 153 strings)
+    
+    Co-authored-by: Jim Spentzos <jimspentzos2000@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translation: ibus-table/app
+
+commit 042b21ca13793d1dbe886860cf222dec920bfa0f
+Author: hsu zangmen <chzang55@gmail.com>
+Date:   Tue Mar 31 04:58:44 2026 +0000
+
+    Translated using Weblate (Chinese (Traditional) (zh_TW))
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: hsu zangmen <chzang55@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_TW/
+    Translation: ibus-table/app
+
+commit b50a2b83216909f0c3f3d1ba6f8cb76ffec9b7bc
+Author: Jim Spentzos <jimspentzos2000@gmail.com>
+Date:   Sun Feb 1 14:58:26 2026 +0000
+
+    Translated using Weblate (Greek)
+    
+    Currently translated at 28.1% (43 of 153 strings)
+    
+    Co-authored-by: Jim Spentzos <jimspentzos2000@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translation: ibus-table/app
+
+commit 773c97cbd2c41fc3276c0601a4b8681a201fd169
+Author: Hosted Weblate <hosted@weblate.org>
+Date:   Fri Jan 23 18:09:33 2026 +0000
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Hosted Weblate <hosted@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit c57b3c8e70cc45621e0c1f9c2a792cafb3ac695e
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Thu Jan 22 10:41:45 2026 +0100
 

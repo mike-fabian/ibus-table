@@ -82,7 +82,7 @@ from i18n import N_, _, init as i18n_init
 
 LOGGER = logging.getLogger('ibus-table')
 
-GLIB_MAIN_LOOP: Optional[GLib.MainLoop] = None
+glib_main_loop: Optional[GLib.MainLoop] = None
 
 # pylint: disable=no-value-for-parameter
 GTK_VERSION = (Gtk.get_major_version(),
@@ -1636,28 +1636,28 @@ class SetupUI(Gtk.Window): # type: ignore
     def _on_delete_event(*_args: Any) -> None:
         '''The window has been deleted, probably by the window manager.'''
         LOGGER.info('Window deleted by the window manager.')
-        if GLIB_MAIN_LOOP is not None:
-            GLIB_MAIN_LOOP.quit()
+        if glib_main_loop is not None:
+            glib_main_loop.quit()
         else:
-            raise RuntimeError("GLIB_MAIN_LOOP not initialized!")
+            raise RuntimeError("glib_main_loop not initialized!")
 
     @staticmethod
     def _on_destroy_event(*_args: Any) -> None:
         '''The window has been destroyed.'''
         LOGGER.info('Window destroyed.')
-        if GLIB_MAIN_LOOP is not None:
-            GLIB_MAIN_LOOP.quit()
+        if glib_main_loop is not None:
+            glib_main_loop.quit()
         else:
-            raise RuntimeError("GLIB_MAIN_LOOP not initialized!")
+            raise RuntimeError("glib_main_loop not initialized!")
 
     @staticmethod
     def _on_close_clicked(_button: Gtk.Button) -> None:
         '''The button to close the dialog has been clicked.'''
         LOGGER.info('Close button clicked.')
-        if GLIB_MAIN_LOOP is not None:
-            GLIB_MAIN_LOOP.quit()
+        if glib_main_loop is not None:
+            glib_main_loop.quit()
         else:
-            raise RuntimeError("GLIB_MAIN_LOOP not initialized!")
+            raise RuntimeError("glib_main_loop not initialized!")
 
     def _on_gsettings_value_changed(
             self, _settings: Gio.Settings, key: str) -> None:
@@ -3123,10 +3123,10 @@ def quit_glib_main_loop(
         except ValueError: # In case signum isn't in Signals enum
             signal_name = str(signum)
         LOGGER.info('Received signal %s (%s), exiting...', signum, signal_name)
-    if GLIB_MAIN_LOOP is not None:
-        GLIB_MAIN_LOOP.quit()
+    if glib_main_loop is not None:
+        glib_main_loop.quit()
     else:
-        raise RuntimeError("GLIB_MAIN_LOOP not initialized!")
+        raise RuntimeError("glib_main_loop not initialized!")
 
 if __name__ == '__main__':
     if _ARGS.no_debug:
@@ -3174,13 +3174,13 @@ if __name__ == '__main__':
     if not ENGINE_NAME:
         PARSER.print_help()
     SETUP_UI = SetupUI(engine_name=ENGINE_NAME)
-    GLIB_MAIN_LOOP = GLib.MainLoop()
+    glib_main_loop = GLib.MainLoop()
     signal.signal(signal.SIGTERM, quit_glib_main_loop) # kill <pid>
     # Ctrl+C (optional, can also use try/except KeyboardInterrupt)
     # signal.signal(signal.SIGINT, quit_glib_main_loop)
     try:
-        GLIB_MAIN_LOOP.run()
+        glib_main_loop.run()
     except KeyboardInterrupt:
         # SIGNINT (Control+C) received
         LOGGER.info('Control+C pressed, exiting ...')
-        GLIB_MAIN_LOOP.quit()
+        glib_main_loop.quit()

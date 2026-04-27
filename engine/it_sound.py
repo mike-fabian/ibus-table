@@ -32,7 +32,7 @@ import subprocess
 import mimetypes
 
 LOGGER = logging.getLogger('ibus-table')
-
+# pylint: disable=invalid-name
 IMPORT_PYGAME_MIXER_SUCCESSFUL = False
 try:
     import pygame.mixer
@@ -53,6 +53,7 @@ try:
     IMPORT_SIMPLEAUDIO_SUCCESSFUL = True
 except (ImportError,):
     IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
+# pylint: enable=invalid-name
 
 class SoundObject:
     '''

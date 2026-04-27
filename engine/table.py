@@ -4126,7 +4126,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             return True
 
         if key.val == IBus.KEY_BackSpace:
-            # When the preëdit is empty and suggestion mode is active, 
+            # When the preëdit is empty and suggestion mode is active,
             # we should exit suggestion mode and not pass the Backspace to the application.
             if (self.is_empty() and self._sg_mode_active):
                 self.reset()

@@ -75,12 +75,14 @@ import subprocess
 import shutil
 import threading
 import logging
+# pylint: disable=invalid-name
 IMPORT_PYATSPI_SUCCESSFUL = False
 try:
     import pyatspi # type: ignore
     IMPORT_PYATSPI_SUCCESSFUL = True
-except (ImportError,):
+except ImportError:
     IMPORT_PYATSPI_SUCCESSFUL = False
+# pylint: enable=invalid-name
 
 LOGGER = logging.getLogger('ibus-table')
 

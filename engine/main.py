@@ -61,11 +61,13 @@ def log_unhandled_exception(
 
 sys.excepthook = log_unhandled_exception
 
-DEBUG_LEVEL = int(0)
+# pylint: disable=invalid-name
+DEBUG_LEVEL = 0
 try:
-    DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
-except (TypeError, ValueError):
-    DEBUG_LEVEL = int(0)
+    DEBUG_LEVEL = int(os.getenv('IBUS_TABLE_DEBUG_LEVEL', '0'))
+except ValueError:
+    DEBUG_LEVEL = 0
+# pylint: enable=invalid-name
 
 DB_DIR = os.path.join(ibus_table_location.data(), 'tables')
 BYO_DB_DIR = os.path.join(ibus_table_location.data_home(), "byo-tables")

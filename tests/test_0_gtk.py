@@ -53,24 +53,26 @@ from gi.repository import IBus
 os.environ['IBUS_TABLE_DEBUG_LEVEL'] = '255'
 
 sys.path.insert(0, "../engine")
+# pylint: disable=invalid-name
 IMPORT_TABLE_SUCCESSFUL = False
 try:
     import table
     IMPORT_TABLE_SUCCESSFUL = True
 except (ImportError,):
-    pass
+    IMPORT_TABLE_SUCCESSFUL = False
 IMPORT_TABSQLITEDB_SUCCESSFUL = False
 try:
     import tabsqlitedb
     IMPORT_TABSQLITEDB_SUCCESSFUL = True
-except (ImportError,):
-    pass
+except ImportError:
+    IMPORT_TABSQLITEDB_SUCCESSFUL = False
+# pylint: enable=invalid-name
 sys.path.pop(0)
 
 DONE_EXIT = True
 ENGINE_NAME = 'wubi-jidian86'
 
-from gtkcases import TestCases # pylint: disable=import-error
+from gtkcases import TEST_CASES # pylint: disable=import-error
 
 # Need to flush the output against GLib.MainLoop()
 def printflush(sentence: str) -> None:
@@ -153,7 +155,6 @@ class SimpleGtkTestCase(unittest.TestCase):
         self.__bus = IBus.Bus()
         if not self.__bus.is_connected():
             self.fail('ibus-daemon is not running')
-            return False
         self.__bus.get_connection().signal_subscribe(
             'org.freedesktop.DBus',
             'org.freedesktop.DBus',
@@ -244,7 +245,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         return self.__engine
 
     def __engine_focus_in(self, _engine: IBus.Engine) -> None:
-        if self.__test_index == len(TestCases['tests']):
+        if self.__test_index >= len(TEST_CASES['tests']):
             if DONE_EXIT and self.__class__.glib_main_loop is not None:
                 self.__class__.glib_main_loop.quit()
             return
@@ -270,7 +271,7 @@ class SimpleGtkTestCase(unittest.TestCase):
             entry: Gtk.Entry,
             event: 'Gdk.EventFocus',  # pylint: disable=c-extension-no-member
     ) -> bool:
-        if self.__test_index == len(TestCases['tests']):
+        if self.__test_index >= len(TEST_CASES['tests']):
             if DONE_EXIT and self.__class__.glib_main_loop is not None:
                 self.__class__.glib_main_loop.quit()
             return False
@@ -287,7 +288,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         #self.__main_test()
 
     def __get_test_condition_length(self, tag: str) -> int:
-        tests: Dict[str, Any] = TestCases['tests'][self.__test_index]
+        tests: Dict[str, Any] = TEST_CASES['tests'][self.__test_index]
         try:
             cases = tests[tag]
         except KeyError:
@@ -299,7 +300,7 @@ class SimpleGtkTestCase(unittest.TestCase):
             self, entry: Gtk.Entry, preedit_str: str) -> None:
         if len(preedit_str) == 0:
             return
-        if self.__test_index == len(TestCases['tests']):
+        if self.__test_index >= len(TEST_CASES['tests']):
             if DONE_EXIT and self.__class__.glib_main_loop is not None:
                 self.__class__.glib_main_loop.quit()
             return
@@ -332,7 +333,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         self.__run_cases('commit')
 
     def __run_cases(self, tag: str, start: int = -1, end: int = -1) -> None:
-        tests: Dict[str, Any] = TestCases['tests'][self.__test_index]
+        tests: Dict[str, Any] = TEST_CASES['tests'][self.__test_index]
         if tests is None:
             return
         try:
@@ -375,7 +376,7 @@ class SimpleGtkTestCase(unittest.TestCase):
 
     def __buffer_inserted_text_cb(
             self, buffer: Gtk.EntryBuffer, position: int, chars: str, nchars: int) -> None:
-        tests: Dict[str, Any] = TestCases['tests'][self.__test_index]
+        tests: Dict[str, Any] = TEST_CASES['tests'][self.__test_index]
         cases = tests['commit']
         case_type = list(cases.keys())[0]
         if case_type == 'keys':
@@ -401,7 +402,7 @@ class SimpleGtkTestCase(unittest.TestCase):
                            f'"{str(cases["string"])}" "{self.__inserted_text}"')
         self.__inserted_text = ''
         self.__test_index += 1
-        if self.__test_index == len(TestCases['tests']):
+        if self.__test_index >= len(TEST_CASES['tests']):
             if DONE_EXIT and self.__class__.glib_main_loop is not None:
                 self.__class__.glib_main_loop.quit()
             return

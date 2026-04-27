@@ -934,6 +934,65 @@ class WubiJidian86TestCase(unittest.TestCase):
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '工工作人员啊呀爱因斯坦')
 
+    def test_suggestion_mode_cancel(self) -> None:
+        '''See: https://github.com/mike-fabian/ibus-table/pull/215'''
+        assert ENGINE is not None
+        if not ENGINE._ime_sg:
+            self.skipTest("This engine does not have a suggestion mode.")
+        # Suggestion mode is False by default:
+        self.assertEqual(ENGINE.get_suggestion_mode(), False)
+        self.assertEqual(ENGINE.get_pinyin_mode(), False)
+        ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
+        ENGINE.set_suggestion_mode(True)
+        ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工工')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+                         ['工作人员 673 0',
+                          '工作会议 310 0',
+                          '工作报告 267 0',
+                          '工人阶级 146 0',
+                          '工作重点 78 0',
+                          '工作小组 73 0',
+                          '工业企业 71 0',
+                          '工业大学 69 0',
+                          '工作单位 61 0',
+                          '工业生产 58 0'])
+        handled = ENGINE._do_process_key_event(IBus.KEY_Escape, 0, 0)
+        self.assertTrue(handled)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工工')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
+        ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '工')
+        ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工工工')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+                         ['工作人员 673 0',
+                          '工作会议 310 0',
+                          '工作报告 267 0',
+                          '工人阶级 146 0',
+                          '工作重点 78 0',
+                          '工作小组 73 0',
+                          '工业企业 71 0',
+                          '工业大学 69 0',
+                          '工作单位 61 0',
+                          '工业生产 58 0'])
+        handled = ENGINE._do_process_key_event(IBus.KEY_BackSpace, 0, 0)
+        self.assertTrue(handled)
+        self.assertEqual(ENGINE.mock_preedit_text, '')
+        self.assertEqual(ENGINE.mock_committed_text, '工工工')
+        self.assertEqual(ENGINE._lookup_table.mock_candidates, [])
+
+
     def test_commit_to_preedit_switching_to_pinyin_defining_a_phrase(self) -> None:
         assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)

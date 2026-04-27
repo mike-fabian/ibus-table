@@ -58,7 +58,7 @@ IMPORT_TABLE_SUCCESSFUL = False
 try:
     import table
     IMPORT_TABLE_SUCCESSFUL = True
-except (ImportError,):
+except ImportError:
     IMPORT_TABLE_SUCCESSFUL = False
 IMPORT_TABSQLITEDB_SUCCESSFUL = False
 try:

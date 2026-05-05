@@ -19,9 +19,11 @@
 '''
 Module to play simple error sounds
 '''
-
+from types import ModuleType
 from typing import Optional
 from typing import Any
+from typing import TYPE_CHECKING
+from typing import cast
 import sys
 import os
 import logging
@@ -30,30 +32,36 @@ import wave
 import shutil
 import subprocess
 import mimetypes
+import time
 
 LOGGER = logging.getLogger('ibus-table')
-# pylint: disable=invalid-name
-IMPORT_PYGAME_MIXER_SUCCESSFUL = False
-try:
-    import pygame.mixer
-    IMPORT_PYGAME_MIXER_SUCCESSFUL = True
-except ImportError:
-    IMPORT_PYGAME_MIXER_SUCCESSFUL = False
 
-IMPORT_PYAUDIO_SUCCESSFUL = False
+if TYPE_CHECKING:
+    import pygame.mixer as _pygame_mixer  # noqa: F401
 try:
-    import pyaudio # type: ignore
-    IMPORT_PYAUDIO_SUCCESSFUL = True
+    import pygame.mixer as _pygame_mixer_runtime
 except ImportError:
-    IMPORT_PYAUDIO_SUCCESSFUL = False
+    pygame_mixer: Optional[ModuleType] = None  # pylint: disable=invalid-name
+else:
+    pygame_mixer = _pygame_mixer_runtime
 
-IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
+if TYPE_CHECKING:
+    import pyaudio as _pyaudio  # type: ignore[import-not-found, import-untyped, unused-ignore]
 try:
-    import simpleaudio # type: ignore
-    IMPORT_SIMPLEAUDIO_SUCCESSFUL = True
+    import pyaudio as _pyaudio_runtime
 except ImportError:
-    IMPORT_SIMPLEAUDIO_SUCCESSFUL = False
-# pylint: enable=invalid-name
+    pyaudio: Optional[ModuleType] = None  # pylint: disable=invalid-name
+else:
+    pyaudio = _pyaudio_runtime
+
+if TYPE_CHECKING:
+    import simpleaudio as _simpleaudio  # type: ignore[import-not-found, import-untyped, unused-ignore]  # pylint: disable=line-too-long
+try:
+    import simpleaudio as _simpleaudio_runtime
+except ImportError:
+    simpleaudio: Optional[ModuleType] = None  # pylint: disable=invalid-name
+else:
+    simpleaudio = _simpleaudio_runtime
 
 class SoundObject:
     '''
@@ -67,11 +75,11 @@ class SoundObject:
                  audio_backend: str = 'automatic') -> None:
         self._path_to_sound_file: str = path_to_sound_file
         self._wav_file: Optional[wave.Wave_read] = None
-        self._paudio: Optional[pyaudio.PyAudio] = None
+        self._paudio: Optional['_pyaudio.PyAudio'] = None
         self._play_pyaudio_thread: Optional[threading.Thread] = None
         self._stop_event_paudio: Optional[threading.Event] = None
-        self._simpleaudio_wave_o: Optional[simpleaudio.WaveObject] = None
-        self._simpleaudio_play_o: Optional[simpleaudio.shiny.PlayObject] = None
+        self._simpleaudio_wave_o: Optional['_simpleaudio.WaveObject'] = None
+        self._simpleaudio_play_o: Optional['_simpleaudio.shiny.PlayObject'] = None
         self._aplay_binary: Optional[str] = None
         self._aplay_stdin = b''
         self._aplay_process: Optional[Any] = None
@@ -115,7 +123,7 @@ class SoundObject:
         # Broken for Python >= 3.10 if not updated to pyaudio >= 0.2.12
         # See: https://stackoverflow.com/questions/70344884)
         # Sometimes it seems to hang. Not often, but when this happens this is really bad
-        if (IMPORT_PYAUDIO_SUCCESSFUL
+        if (pyaudio is not None
             and
             (((sys.version_info.major,
                sys.version_info.minor,
@@ -130,7 +138,7 @@ class SoundObject:
         return ''
 
     def _init_pygame(self) -> str:
-        if not IMPORT_PYGAME_MIXER_SUCCESSFUL:
+        if pygame_mixer is None:
             return ''
         try:
             # pygame defaults to a low latency (small buffer) that is more
@@ -138,9 +146,9 @@ class SoundObject:
             # larger than default buffer to prevent audio issues in other
             # processes when the system is under load:
             # https://github.com/mike-fabian/ibus-typing-booster/issues/681
-            pygame.mixer.init(buffer=4096)
-            if pygame.mixer.get_init():
-                pygame.mixer.music.load(self._path_to_sound_file)
+            pygame_mixer.init(buffer=4096)
+            if pygame_mixer.get_init():
+                pygame_mixer.music.load(self._path_to_sound_file)
                 return 'pygame'
         except Exception as error: # pylint: disable=broad-except
             LOGGER.exception(
@@ -149,7 +157,7 @@ class SoundObject:
         return ''
 
     def _init_pyaudio(self) -> str:
-        if not IMPORT_PYAUDIO_SUCCESSFUL:
+        if pyaudio is None:
             return ''
         (mime_type, _encoding) = mimetypes.guess_type(self._path_to_sound_file)
         if mime_type not in ('audio/x-wav',):
@@ -171,7 +179,7 @@ class SoundObject:
         return ''
 
     def _init_simpleaudio(self) -> str:
-        if not IMPORT_SIMPLEAUDIO_SUCCESSFUL:
+        if simpleaudio is None:
             return ''
         (mime_type, _encoding) = mimetypes.guess_type(self._path_to_sound_file)
         if mime_type not in ('audio/x-wav',):
@@ -313,21 +321,25 @@ class SoundObject:
 
     @staticmethod
     def _play_pygame() -> None:
-        pygame.mixer.music.rewind()
-        pygame.mixer.music.play()
+        assert pygame_mixer is not None
+        pygame_mixer.music.rewind()
+        pygame_mixer.music.play()
 
     @staticmethod
     def _is_playing_pygame() -> bool:
-        return pygame.mixer.music.get_busy()
+        assert pygame_mixer is not None
+        return cast(bool, pygame_mixer.music.get_busy())
 
     @staticmethod
     def _stop_pygame() -> None:
-        pygame.mixer.music.stop()
+        assert pygame_mixer is not None
+        pygame_mixer.music.stop()
 
     @staticmethod
     def _wait_done_pygame() -> None:
-        while pygame.mixer.music.get_busy():
-            pass
+        assert pygame_mixer is not None
+        while pygame_mixer.music.get_busy():
+            time.sleep(0.01)
 
     def _play_aplay_thread_function(self) -> None:
         if not self._aplay_binary:
@@ -459,8 +471,6 @@ def run_tests() -> None:
     sound_object.wait_done()
 
     # Testing stopping in between with a longer sound file:
-
-    import time # pylint: disable=import-outside-toplevel
 
     sound_object = SoundObject(
         '/home/mfabian/sounds/japanese/今回もよろしくお願いします.wav',

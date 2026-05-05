@@ -26,7 +26,7 @@ This file implements the test cases using GTK GUI
 # pylint: disable=global-statement
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
-
+from types import ModuleType
 from typing import List
 from typing import Dict
 from typing import Any
@@ -53,20 +53,16 @@ from gi.repository import IBus
 os.environ['IBUS_TABLE_DEBUG_LEVEL'] = '255'
 
 sys.path.insert(0, "../engine")
-# pylint: disable=invalid-name
-IMPORT_TABLE_SUCCESSFUL = False
+table: Optional[ModuleType]
 try:
     import table
-    IMPORT_TABLE_SUCCESSFUL = True
 except ImportError:
-    IMPORT_TABLE_SUCCESSFUL = False
-IMPORT_TABSQLITEDB_SUCCESSFUL = False
+    table = None
+tabsqlitedb: Optional[ModuleType]
 try:
     import tabsqlitedb
-    IMPORT_TABSQLITEDB_SUCCESSFUL = True
 except ImportError:
-    IMPORT_TABSQLITEDB_SUCCESSFUL = False
-# pylint: enable=invalid-name
+    tabsqlitedb = None
 sys.path.pop(0)
 
 DONE_EXIT = True
@@ -214,8 +210,7 @@ class SimpleGtkTestCase(unittest.TestCase):
             self, factory: IBus.Factory, engine_name: str) -> Optional[Any]:
         if engine_name != ENGINE_NAME:
             return None
-        if (not IMPORT_TABLE_SUCCESSFUL
-            or not IMPORT_TABSQLITEDB_SUCCESSFUL):
+        if not table or not tabsqlitedb:
             with self.subTest(i='create-engine'):
                 self.fail('NG: ibus-table not installed?')
             self.__class__.glib_main_loop.quit()

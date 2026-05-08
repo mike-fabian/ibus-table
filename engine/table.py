@@ -46,16 +46,16 @@ import subprocess
 import gettext
 
 # pylint: disable=wrong-import-position
-from gi import require_version # type: ignore
+from gi import require_version
 require_version('IBus', '1.0')
-from gi.repository import IBus # type: ignore
+from gi.repository import IBus
 require_version('Gio', '2.0')
-from gi.repository import Gio
+from gi.repository import Gio  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 require_version('GLib', '2.0')
-from gi.repository import GLib
+from gi.repository import GLib  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 # pylint: enable=wrong-import-position
 #import tabsqlitedb
-from gi.repository import GObject
+from gi.repository import GObject  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 import it_util
 import it_active_window
 import it_sound
@@ -264,7 +264,7 @@ SAVE_USER_TIMEOUT = 30 # in seconds
 
 IBUS_VERSION = (IBus.MAJOR_VERSION, IBus.MINOR_VERSION, IBus.MICRO_VERSION)
 
-class TabEngine(IBus.EngineSimple): # type: ignore
+class TabEngine(IBus.EngineSimple):
     '''The IM Engine for Tables'''
 
     def __init__(
@@ -312,7 +312,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
 
         self._prop_dict: Dict[str, IBus.Property] = {}
         self._sub_props_dict: Dict[str, IBus.PropList] = {}
-        self.main_prop_list: List[IBus.Property] = []
+        self.main_prop_list: IBus.PropList = IBus.PropList()
         self.chinese_mode_menu: Dict[str, Any] = {}
         self.chinese_mode_properties: Dict[str, Any] = {}
         self.input_mode_menu: Dict[str, Any] = {}
@@ -3817,6 +3817,8 @@ class TabEngine(IBus.EngineSimple): # type: ignore
         if self._debug_level > 5:
             LOGGER.debug('self._hotkeys=%s\n', str(self._hotkeys))
 
+        if self._hotkeys is None:
+            return (False, False)
         if not commands:
             # If no specific command list to match is given, try to
             # match against all commands. Sorting shouldn’t really
@@ -3825,7 +3827,7 @@ class TabEngine(IBus.EngineSimple): # type: ignore
             # default in the setup tool.
             commands = sorted(self._keybindings.keys())
         for command in commands:
-            if (self._prev_key, key, command) in self._hotkeys: # type: ignore
+            if (self._prev_key, key, command) in self._hotkeys:
                 if self._debug_level > 1:
                     LOGGER.debug('matched command=%s', command)
                 command_function_name = f'_command_{command}'

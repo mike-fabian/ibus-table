@@ -32,9 +32,9 @@ import importlib
 from unittest import mock
 
 # pylint: disable=wrong-import-position
-from gi import require_version # type: ignore
+from gi import require_version
 require_version('IBus', '1.0')
-from gi.repository import IBus # type: ignore
+from gi.repository import IBus
 # pylint: enable=wrong-import-position
 
 LOGGER = logging.getLogger('ibus-table')
@@ -338,15 +338,15 @@ def set_up(engine_name: str) -> bool:
     PROPERTY_PATCHER.start()
     PROP_LIST_PATCHER.start()
     assert IBus.Engine is not IBUS_ENGINE
-    assert IBus.Engine is MockEngine
+    assert IBus.Engine is MockEngine  # type: ignore[comparison-overlap]
     assert IBus.EngineSimple is not IBUS_ENGINE_SIMPLE
-    assert IBus.EngineSimple is MockEngine
+    assert IBus.EngineSimple is MockEngine  # type: ignore[comparison-overlap]
     assert IBus.LookupTable is not IBUS_LOOKUP_TABLE
-    assert IBus.LookupTable is MockLookupTable
+    assert IBus.LookupTable is MockLookupTable  # type: ignore[comparison-overlap]
     assert IBus.Property is not IBUS_PROPERTY
-    assert IBus.Property is MockProperty
+    assert IBus.Property is MockProperty  # type: ignore[comparison-overlap]
     assert IBus.PropList is not IBUS_PROP_LIST
-    assert IBus.PropList is MockPropList
+    assert IBus.PropList is MockPropList  # type: ignore[comparison-overlap]
     # Reload the table module so that the patches
     # are applied to TabEngine:
     sys.path.insert(0, '../engine')
@@ -385,15 +385,15 @@ def tear_down() -> None:
     PROPERTY_PATCHER.stop()
     PROP_LIST_PATCHER.stop()
     assert IBus.Engine is IBUS_ENGINE
-    assert IBus.Engine is not MockEngine
+    assert IBus.Engine is not MockEngine  # type: ignore[comparison-overlap]
     assert IBus.EngineSimple is IBUS_ENGINE_SIMPLE
-    assert IBus.EngineSimple is not MockEngine
+    assert IBus.EngineSimple is not MockEngine  # type: ignore[comparison-overlap]
     assert IBus.LookupTable is IBUS_LOOKUP_TABLE
-    assert IBus.LookupTable is not MockLookupTable
+    assert IBus.LookupTable is not MockLookupTable  # type: ignore[comparison-overlap]
     assert IBus.Property is IBUS_PROPERTY
-    assert IBus.Property is not MockProperty
+    assert IBus.Property is not MockProperty  # type: ignore[comparison-overlap]
     assert IBus.PropList is IBUS_PROP_LIST
-    assert IBus.PropList is not MockPropList
+    assert IBus.PropList is not MockPropList  # type: ignore[comparison-overlap]
 
 def require_serial_number(required_serial_number: int) -> bool:
     if TABSQLITEDB is None:

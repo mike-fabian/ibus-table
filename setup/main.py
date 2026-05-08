@@ -42,15 +42,16 @@ import locale
 import copy
 import logging
 import logging.handlers
-import dbus # type: ignore
-import dbus.service # type: ignore
+import dbus  # type: ignore[import-untyped]
+import dbus.bus  # type: ignore[import-untyped]
+import dbus.service  # type: ignore[import-untyped]
 
 # pylint: disable=wrong-import-position
-from gi import require_version # type: ignore
+from gi import require_version
 require_version('Gio', '2.0')
-from gi.repository import Gio # type: ignore
+from gi.repository import Gio  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 require_version('GLib', '2.0')
-from gi.repository import GLib
+from gi.repository import GLib  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 
 # set_prgname before importing other modules to show the name in warning
 # messages when import modules are failed. E.g. Gtk.
@@ -59,11 +60,11 @@ GLib.set_application_name('IBus Table Preferences')
 GLib.set_prgname('ibus-setup-table')
 
 require_version('Gdk', '3.0')
-from gi.repository import Gdk
+from gi.repository import Gdk  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 require_version('Pango', '1.0')
-from gi.repository import Pango
+from gi.repository import Pango  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 require_version('IBus', '1.0')
 from gi.repository import IBus
 # pylint: enable=wrong-import-position
@@ -123,7 +124,7 @@ UNUSED_OLD_TRANSLATIONS = [
     N_('Table input'),
 ]
 
-class SetupUI(Gtk.Window): # type: ignore
+class SetupUI(Gtk.Window):  # type: ignore[misc]
     '''
     User interface of the setup tool
     '''
@@ -3056,7 +3057,7 @@ class SetupUI(Gtk.Window): # type: ignore
                     else:
                         button.set_active(False)
 
-class HelpWindow(Gtk.Window): # type: ignore
+class HelpWindow(Gtk.Window): # type: ignore[misc]
     '''
     A window to show help
 

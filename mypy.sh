@@ -8,25 +8,31 @@ RETVAL=0
 
 echo "running $SCRIPT_DIR/mypy.sh"
 
-cd $SCRIPT_DIR/engine
-echo "Checking $SCRIPT_DIR/engine"
-mypy --strict *.py
+export MYPYPATH="${SCRIPT_DIR}/stubs"
+MYPY=(mypy --strict --no-incremental --show-error-codes --pretty)
+
+echo cd $SCRIPT_DIR/engine
+cd $SCRIPT_DIR/engine || exit 1
+echo ${MYPY[@]} *.py
+${MYPY[@]} *.py
 ENGINE_RETVAL=$?
 if [ ${ENGINE_RETVAL} != 0 ] ; then
     RETVAL=$((${RETVAL} + ${ENGINE_RETVAL}))
 fi
 
-cd $SCRIPT_DIR/setup
-echo "Checking $SCRIPT_DIR/setup"
-mypy --strict ../engine/{tabsqlitedb,it_util}.py *.py
+echo cd $SCRIPT_DIR/setup
+cd $SCRIPT_DIR/setup || exit 1
+echo ${MYPY[@]} ../engine/{tabsqlitedb,it_util}.py ./*.py
+${MYPY[@]} ../engine/{tabsqlitedb,it_util}.py ./*.py
 SETUP_RETVAL=$?
 if [ ${SETUP_RETVAL} != 0 ] ; then
     RETVAL=$((${RETVAL} + ${SETUP_RETVAL}))
 fi
 
-cd $SCRIPT_DIR/tests
-echo "Checking $SCRIPT_DIR/tests"
-mypy --strict ../engine/{tabsqlitedb,it_util}.py test_*.py
+echo cd $SCRIPT_DIR/tests
+cd $SCRIPT_DIR/tests || exit 1
+echo ${MYPY[@]} ../engine/{tabsqlitedb,it_util}.py ./test_*.py
+${MYPY[@]} ../engine/{tabsqlitedb,it_util}.py ./test_*.py
 SETUP_RETVAL=$?
 if [ ${SETUP_RETVAL} != 0 ] ; then
     RETVAL=$((${RETVAL} + ${SETUP_RETVAL}))
@@ -34,6 +40,3 @@ fi
 
 cd $CURRENT_DIR
 exit $RETVAL
-
-
-

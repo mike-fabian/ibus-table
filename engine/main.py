@@ -34,10 +34,10 @@ import logging
 import logging.handlers
 from signal import signal, SIGTERM, SIGINT
 # pylint: disable=wrong-import-position
-from gi import require_version # type: ignore
+from gi import require_version
 require_version('IBus', '1.0')
-from gi.repository import IBus # type: ignore
-from gi.repository import GLib
+from gi.repository import IBus
+from gi.repository import GLib  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 # pylint: enable=wrong-import-position
 
 import tabsqlitedb

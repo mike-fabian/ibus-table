@@ -26,22 +26,23 @@ from typing import Any
 from typing import List
 from typing import Tuple
 from typing import Dict
-from enum import Enum, Flag
+from typing import Optional
+from enum import Enum, IntFlag
 # pylint: disable=wrong-import-position
 import sys
 import os
 import re
 import logging
 import gettext
-from gi import require_version # type: ignore
+from gi import require_version
 require_version('Gio', '2.0')
-from gi.repository import Gio # type: ignore
+from gi.repository import Gio  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 require_version('GLib', '2.0')
-from gi.repository import GLib
+from gi.repository import GLib  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 require_version('Gdk', '3.0')
-from gi.repository import Gdk
+from gi.repository import Gdk  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 require_version('IBus', '1.0')
 from gi.repository import IBus
 # pylint: enable=wrong-import-position
@@ -355,7 +356,7 @@ def dict_update_existing_keys(
         if key in pdict:
             pdict[key] = other_pdict[key]
 
-class Capabilite(Flag):
+class Capabilite(IntFlag):
     '''Compatibility class to handle IBus.Capabilite the same way no matter
     what version of ibus is used.
 
@@ -394,12 +395,12 @@ class Capabilite(Flag):
     >>> Capabilite.PREEDIT_TEXT == IBus.Capabilite.PREEDIT_TEXT
     True
     '''
-    def __new__(cls, attr: str) -> Any:
-        obj = object.__new__(cls)
+    def __new__(cls, attr: str, fallback: int = 0) -> Any:
+        value = fallback
         if hasattr(IBus, 'Capabilite') and hasattr(IBus.Capabilite, attr):
-            obj._value_ = int(getattr(IBus.Capabilite, attr))
-        else:
-            obj._value_ = 0
+            value = int(getattr(IBus.Capabilite, attr))
+        obj = int.__new__(cls, value)
+        obj._value_ = value
         return obj
 
     def __int__(self) -> int:
@@ -437,14 +438,14 @@ class Capabilite(Flag):
     def __rand__(self, other: Any) -> Any:
         return self.__and__(other)
 
-    PREEDIT_TEXT = 'PREEDIT_TEXT'
-    AUXILIARY_TEXT = 'AUXILIARY_TEXT'
-    LOOKUP_TABLE = 'LOOKUP_TABLE'
-    FOCUS = 'FOCUS'
-    PROPERTY = 'PROPERTY'
-    SURROUNDING_TEXT = 'SURROUNDING_TEXT'
-    OSK = 'OSK'
-    SYNC_PROCESS_KEY = 'SYNC_PROCESS_KEY'
+    PREEDIT_TEXT = ('PREEDIT_TEXT', 0)  # ty: ignore[invalid-assignment]
+    AUXILIARY_TEXT = ('AUXILIARY_TEXT', 0)  # ty: ignore[invalid-assignment]
+    LOOKUP_TABLE = ('LOOKUP_TABLE', 0)  # ty: ignore[invalid-assignment]
+    FOCUS = ('FOCUS', 0)  # ty: ignore[invalid-assignment]
+    PROPERTY = ('PROPERTY', 0)  # ty: ignore[invalid-assignment]
+    SURROUNDING_TEXT = ('SURROUNDING_TEXT', 0)  # ty: ignore[invalid-assignment]
+    OSK = ('OSK', 0)  # ty: ignore[invalid-assignment]
+    SYNC_PROCESS_KEY = ('SYNC_PROCESS_KEY', 0)  # ty: ignore[invalid-assignment]
 
 class InputPurpose(Enum):
     '''Compatibility class to handle InputPurpose the same way no matter
@@ -554,7 +555,7 @@ class InputPurpose(Enum):
     PIN = 'PIN'
     TERMINAL = 'TERMINAL'
 
-class InputHints(Flag):
+class InputHints(IntFlag):
     '''Compatibility class to handle InputHints the same way no matter
     what version of ibus is used.
 
@@ -606,12 +607,12 @@ class InputHints(Flag):
     >>> InputHints.SPELLCHECK == Gtk.InputHints.SPELLCHECK
     True
     '''
-    def __new__(cls, attr: str) -> Any:
-        obj = object.__new__(cls)
+    def __new__(cls, attr: str, fallback: int = 0) -> Any:
+        value = fallback
         if hasattr(Gtk, 'InputHints') and hasattr(Gtk.InputHints, attr):
-            obj._value_ = int(getattr(Gtk.InputHints, attr))
-        else:
-            obj._value_ = 0
+            value = int(getattr(Gtk.InputHints, attr))
+        obj = int.__new__(cls, value)
+        obj._value_ = value
         return obj
 
     def __int__(self) -> int:
@@ -652,19 +653,19 @@ class InputHints(Flag):
     def __rand__(self, other: Any) -> Any:
         return self.__and__(other)
 
-    NONE = 'NONE'
-    SPELLCHECK = 'SPELLCHECK'
-    NO_SPELLCHECK = 'NO_SPELLCHECK'
-    WORD_COMPLETION = 'WORD_COMPLETION'
-    LOWERCASE = 'LOWERCASE'
-    UPPERCASE_CHARS = 'UPPERCASE_CHARS'
-    UPPERCASE_WORDS = 'UPPERCASE_WORDS'
-    UPPERCASE_SENTENCES = 'UPPERCASE_SENTENCES'
-    INHIBIT_OSK = 'INHIBIT_OSK'
-    VERTICAL_WRITING = 'VERTICAL_WRITING'
-    EMOJI = 'EMOJI'
-    NO_EMOJI = 'NO_EMOJI'
-    PRIVATE = 'PRIVATE'
+    NONE = ('NONE', 0)  # ty: ignore[invalid-assignment]
+    SPELLCHECK = ('SPELLCHECK', 0)  # ty: ignore[invalid-assignment]
+    NO_SPELLCHECK = ('NO_SPELLCHECK', 0)  # ty: ignore[invalid-assignment]
+    WORD_COMPLETION = ('WORD_COMPLETION', 0)  # ty: ignore[invalid-assignment]
+    LOWERCASE = ('LOWERCASE', 0)  # ty: ignore[invalid-assignment]
+    UPPERCASE_CHARS = ('UPPERCASE_CHARS', 0)  # ty: ignore[invalid-assignment]
+    UPPERCASE_WORDS = ('UPPERCASE_WORDS', 0)  # ty: ignore[invalid-assignment]
+    UPPERCASE_SENTENCES = ('UPPERCASE_SENTENCES', 0)  # ty: ignore[invalid-assignment]
+    INHIBIT_OSK = ('INHIBIT_OSK', 0)  # ty: ignore[invalid-assignment]
+    VERTICAL_WRITING = ('VERTICAL_WRITING', 0)  # ty: ignore[invalid-assignment]
+    EMOJI = ('EMOJI', 0)  # ty: ignore[invalid-assignment]
+    NO_EMOJI = ('NO_EMOJI', 0)  # ty: ignore[invalid-assignment]
+    PRIVATE = ('PRIVATE', 0)  # ty: ignore[invalid-assignment]
 
 class KeyEvent:
     '''Key event class used to make the checking of details of the key
@@ -885,7 +886,7 @@ class HotKeys:
                     self._hotkeys[command] = [(val, state)]
 
     def __contains__(
-            self, command_key_tuple: Tuple[KeyEvent, KeyEvent, str]) -> bool:
+            self, command_key_tuple: Tuple[Optional[KeyEvent], KeyEvent, str]) -> bool:
         if not isinstance(command_key_tuple, tuple):
             return False
         command = command_key_tuple[2]
@@ -938,7 +939,7 @@ class HotKeys:
     def __str__(self) -> str:
         return repr(self._hotkeys)
 
-class ItKeyInputDialog(Gtk.MessageDialog): # type: ignore
+class ItKeyInputDialog(Gtk.MessageDialog): # type: ignore[misc]
     '''
     A dialog to enter a key or a key combination to be used as a
     key binding for a command.
@@ -986,7 +987,7 @@ class ItKeyInputDialog(Gtk.MessageDialog): # type: ignore
         widget.response(Gtk.ResponseType.OK)
         return True
 
-class ItAboutDialog(Gtk.AboutDialog): # type: ignore
+class ItAboutDialog(Gtk.AboutDialog): # type: ignore[misc]
     '''
     The “About” dialog for ibus-table
     '''

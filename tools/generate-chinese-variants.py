@@ -773,7 +773,7 @@ def main() -> None:
     else:
         logging.info('PASS: All tests passed.')
 
-    for phrase in generated_script.VARIANTS_TABLE: # type: ignore
+    for phrase in generated_script.VARIANTS_TABLE:
         compare_old_new_detection(phrase, generated_script)
 
 if __name__ == '__main__':

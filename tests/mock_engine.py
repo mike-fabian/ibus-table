@@ -25,9 +25,9 @@ from typing import Any
 from typing import List
 from typing import Optional
 # pylint: disable=wrong-import-position
-from gi import require_version # type: ignore
+from gi import require_version
 require_version('IBus', '1.0')
-from gi.repository import IBus # type: ignore
+from gi.repository import IBus
 # pylint: enable=wrong-import-position
 
 # pylint: disable=missing-function-docstring

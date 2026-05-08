@@ -31,22 +31,23 @@ from typing import List
 from typing import Dict
 from typing import Any
 from typing import Optional
+from typing import cast
 import argparse
 import os
 import signal
 import sys
 import unittest
 
-from gi import require_version as gi_require_version # type: ignore
+from gi import require_version as gi_require_version
 gi_require_version('GLib', '2.0')
 gi_require_version('Gdk', '3.0')
 gi_require_version('Gio', '2.0')
 gi_require_version('Gtk', '3.0')
 gi_require_version('IBus', '1.0')
-from gi.repository import GLib # type: ignore
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import Gtk
+from gi.repository import GLib  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
+from gi.repository import Gdk  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
+from gi.repository import Gio  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
+from gi.repository import Gtk  # type: ignore[attr-defined]  # ty: ignore[unresolved-import]
 from gi.repository import IBus
 
 # Get more verbose output in the test log:
@@ -55,12 +56,14 @@ os.environ['IBUS_TABLE_DEBUG_LEVEL'] = '255'
 sys.path.insert(0, "../engine")
 table: Optional[ModuleType]
 try:
-    import table
+    import table as _table
+    table = _table
 except ImportError:
     table = None
 tabsqlitedb: Optional[ModuleType]
 try:
-    import tabsqlitedb
+    import tabsqlitedb as _tabsqlitedb
+    tabsqlitedb = _tabsqlitedb
 except ImportError:
     tabsqlitedb = None
 sys.path.pop(0)
@@ -340,7 +343,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         if case_type == 'string':
             printflush(
                 f'test step: {tag} sequences: "{str(cases["string"])}"')
-            for character in cases['string']:
+            for character in cast(str, cases['string']):
                 if start >= 0 and i < start:
                     i += 1
                     continue
@@ -351,7 +354,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         if case_type == 'keys':
             if start == -1 and end == -1:
                 printflush(f'test step: {tag} sequences: {str(cases["keys"])}')
-            for key in cases['keys']:
+            for key in cast(List[List[int]], cases['keys']):
                 if start >= 0 and i < start:
                     i += 1
                     continue

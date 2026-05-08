@@ -27,10 +27,10 @@ import os
 import re
 import logging
 import gettext
-from gi import require_version # type: ignore
+from gi import require_version
 # pylint: disable=wrong-import-position
 require_version('IBus', '1.0')
-from gi.repository import IBus # type: ignore
+from gi.repository import IBus
 # pylint: enable=wrong-import-position
 import table
 import tabsqlitedb
@@ -52,7 +52,7 @@ def N_(text: str) -> str: # pylint: disable=invalid-name
     '''
     return text
 
-class EngineFactory(IBus.Factory): # type: ignore
+class EngineFactory(IBus.Factory):
     """Table IM Engine Factory"""
     def __init__(self, bus: IBus.Bus, db: str = '') -> None:
         global DEBUG_LEVEL # pylint: disable=global-statement

@@ -762,8 +762,13 @@ def main() -> None:
         logging.info("output file=%s", outputfile)
         write_variants_script(outputfile)
 
-    import imp
-    generated_script = imp.load_source('dummy', args.outputfilename)
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('dummy', args.outputfilename)
+    if spec and spec.loader:
+        generated_script = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(generated_script)
+    else:
+        raise ImportError(f"Could not load module from {args.outputfilename}")
 
     logging.info('Testing detection ...')
     error_count = test_detection(generated_script)

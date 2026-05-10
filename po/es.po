@@ -5,14 +5,14 @@
 # Emilio Herrera <ehespinosa57@gmail.com>, 2021, 2022.
 # N M <nm@users.noreply.translate.fedoraproject.org>, 2025.
 # Javier Francisco <fserrador@gmail.com>, 2025.
-# "Fco. Javier F. Serrador" <fserrador@gmail.com>, 2025.
+# "Fco. Javier F. Serrador" <fserrador@gmail.com>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
 "PO-Revision-Date: 2026-05-10 20:14+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"Last-Translator: \"Fco. Javier F. Serrador\" <fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/es/>\n"
 "Language: es\n"

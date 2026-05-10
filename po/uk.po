@@ -1,5 +1,5 @@
-# Yuri Chornoivan <yurchor@ukr.net>, 2015. #zanata, 2020, 2021, 2022, 2023, 2025.
-# Yuri Chornoivan <yurchor@ukr.net>, 2016. #zanata, 2020, 2021, 2022, 2023, 2025.
+# Yuri Chornoivan <yurchor@ukr.net>, 2015. #zanata, 2020, 2021, 2022, 2023, 2025, 2026.
+# Yuri Chornoivan <yurchor@ukr.net>, 2016. #zanata, 2020, 2021, 2022, 2023, 2025, 2026.
 # Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2025, 2026.
 msgid ""
 msgstr ""
@@ -7,7 +7,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
 "PO-Revision-Date: 2026-05-10 20:13+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/uk/>\n"
 "Language: uk\n"
@@ -828,8 +828,8 @@ msgid ""
 msgstr ""
 "Визначає, що трапиться, коли буде введено символ, якого немає у наборі "
 "коректних вхідних символів для цієї таблиці: якщо вибрати «надіслати поточну "
-"пропозицію», буде вставлено поточну позначену пропозицію. Якщо вибрати "
-"«надіслати введені символи», буде надіслано без обробки символи, які було "
+"пропозицію», буде вставлено поточну позначену пропозицію. Якщо вибрати «"
+"надіслати введені символи», буде надіслано без обробки символи, які було "
 "введено у процесі вибору пропозиції. За будь-яких умов, вибір пропозиції "
 "завершується, якщо введено некоректний символ, і відповідний символ буде "
 "негайно вставлено після тексту, який є результатом застосування параметрів з "

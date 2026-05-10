@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
 "PO-Revision-Date: 2026-05-10 20:14+0000\n"
-"Last-Translator: Julien Humbert <julroy67@gmail.com>\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/fr/>\n"
 "Language: fr\n"
@@ -681,8 +681,7 @@ msgstr "Réinitialiser"
 #. the key bindings for the selected command to the default.
 #: setup/main.py:795 setup/main.py:2293
 msgid "Set default key bindings for the selected command"
-msgstr ""
-"Remettre le raccourcis clavier par défaut pour la commande sélectionnée"
+msgstr "Remettre le raccourcis clavier par défaut pour la commande sélectionnée"
 
 #: setup/main.py:802
 msgid "Set all to default"

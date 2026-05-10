@@ -2,15 +2,15 @@
 # Anonymous <noreply@weblate.org>, 2019, 2020.
 # Mike FABIAN <mfabian@redhat.com>, 2019.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2024, 2025.
-# Tomas Longin Hoffmann <ask@tomek.wtf>, 2025.
+# Tomas Longin Hoffmann <ask@tomek.wtf>, 2025, 2026.
 # Pavel Borecki <pavel.borecki@gmail.com>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
-"PO-Revision-Date: 2026-03-27 12:58+0000\n"
-"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"PO-Revision-Date: 2026-05-10 20:16+0000\n"
+"Last-Translator: Tomas Longin Hoffmann <ask@tomek.wtf>\n"
 "Language-Team: Czech <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/cs/>\n"
 "Language: cs\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17.1\n"
 
 # auto translated by TM merge from project: System Administrator's Guide, version: master, DocId: Colophon
 #. Translators: This is the menu entry to select

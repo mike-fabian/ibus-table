@@ -1,7 +1,7 @@
 # Pany <geekpany@gmail.com>, 2014. #zanata
 # Tian Shixiong <tiansworld@fedoraproject.org>, 2014. #zanata
 # Anonymous <noreply@weblate.org>, 2019, 2020.
-# Boyuan Yang <073plan@gmail.com>, 2020.
+# Boyuan Yang <073plan@gmail.com>, 2020, 2026.
 # Dingzhong Chen <wsxy162@gmail.com>, 2021, 2025, 2026.
 # Mike FABIAN <mfabian@redhat.com>, 2021, 2025.
 # Liu Tao <lyuutau@outlook.com>, 2023.
@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
 "PO-Revision-Date: 2026-05-10 20:13+0000\n"
-"Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_CN/>\n"
 "Language: zh_CN\n"

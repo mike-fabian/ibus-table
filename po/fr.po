@@ -4,14 +4,14 @@
 # Julien Humbert <julroy67@gmail.com>, 2019, 2020, 2021, 2026.
 # Anonymous <noreply@weblate.org>, 2020.
 # Côme Borsoi <fedora@borsoi.fr>, 2020, 2026.
-# Léane GRASSER <leane.grasser@proton.me>, 2024.
+# Léane GRASSER <leane.grasser@proton.me>, 2024, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
 "PO-Revision-Date: 2026-05-10 20:14+0000\n"
-"Last-Translator: Côme Borsoi <fedora@borsoi.fr>\n"
+"Last-Translator: Léane GRASSER <leane.grasser@proton.me>\n"
 "Language-Team: French <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/fr/>\n"
 "Language: fr\n"

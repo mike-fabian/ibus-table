@@ -1,15 +1,15 @@
 # IBus-Table Translation file: de.po
 # Copyright (C) 2012 Mike FABIAN <mfabian@redhat.com>
 # This file is distributed under the same license as the ibus-table package.
-# Mike FABIAN <mfabian@redhat.com>, 2012, 2019, 2020, 2021, 2022, 2023, 2025.
-# Mike FABIAN <mfabian@redhat.com>, 2016. #zanata, 2019, 2020, 2021, 2022, 2023, 2025.
-# Mike FABIAN <mfabian@redhat.com>, 2017. #zanata, 2019, 2020, 2021, 2022, 2023, 2025.
+# Mike FABIAN <mfabian@redhat.com>, 2012, 2019, 2020, 2021, 2022, 2023, 2025, 2026.
+# Mike FABIAN <mfabian@redhat.com>, 2016. #zanata, 2019, 2020, 2021, 2022, 2023, 2025, 2026.
+# Mike FABIAN <mfabian@redhat.com>, 2017. #zanata, 2019, 2020, 2021, 2022, 2023, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
-"PO-Revision-Date: 2025-06-16 17:05+0000\n"
+"PO-Revision-Date: 2026-05-10 20:16+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/de/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -440,13 +440,12 @@ msgid ""
 "fullwidth and halfwidth may still happen in direct input mode."
 msgstr ""
 "Ob der zuletzt genutzte Eingabemodus gemerkt werden soll, oder ob ibus-table "
-"nach einem Neustart immer im “Tabelleneingabemodus” starten soll. "
-"“Tabelleneingabemodus” bedeutet, daß die Eingabemethode aktiv ist. "
-"“Direkteingabemodus” ist beinahe dasselbe als ob die Eingabemethode "
-"überhaupt nicht verwendet würde, die meisten Zeichen werden einfach an die "
-"Applikation durchgereicht. Aber auch im Direkteingabemodus werden Zeichen in "
-"voller Breite eventuell in Zeichen in halber Breite konvertiert oder "
-"umgekehrt."
+"nach einem Neustart immer im “Tabelleneingabemodus” starten soll. “"
+"Tabelleneingabemodus” bedeutet, daß die Eingabemethode aktiv ist. “"
+"Direkteingabemodus” ist beinahe dasselbe als ob die Eingabemethode überhaupt "
+"nicht verwendet würde, die meisten Zeichen werden einfach an die Applikation "
+"durchgereicht. Aber auch im Direkteingabemodus werden Zeichen in voller "
+"Breite eventuell in Zeichen in halber Breite konvertiert oder umgekehrt."
 
 #: setup/main.py:347
 msgid "No"

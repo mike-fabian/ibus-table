@@ -1,6 +1,6 @@
 # Ooyama Yosiyuki <qqke6wd9k@apricot.ocn.ne.jp>, 2015. #zanata
 # Anonymous <noreply@weblate.org>, 2019, 2020.
-# Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2021, 2023, 2025.
+# Mike FABIAN <mfabian@redhat.com>, 2019, 2020, 2021, 2023, 2025, 2026.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2024, 2025.
 msgid ""
 msgstr ""
@@ -8,7 +8,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
 "PO-Revision-Date: 2026-05-10 20:15+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Japanese <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ja/>\n"
 "Language: ja\n"
@@ -833,8 +833,8 @@ msgid ""
 "the simpleaudio module for Python3 is not installed, this option does "
 "nothing."
 msgstr ""
-"エラー音を再生するかどうか選択できます。Python3のsimpleaudioモジュールがイン"
-"ストールされていない場合、エラー音は再生されません。"
+"エラー音を再生するかどうか選択できます。Python3のsimpleaudioモジュールが"
+"インストールされていない場合、エラー音は再生されません。"
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and

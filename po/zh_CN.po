@@ -2,7 +2,7 @@
 # Tian Shixiong <tiansworld@fedoraproject.org>, 2014. #zanata
 # Anonymous <noreply@weblate.org>, 2019, 2020.
 # Boyuan Yang <073plan@gmail.com>, 2020.
-# Dingzhong Chen <wsxy162@gmail.com>, 2021, 2025.
+# Dingzhong Chen <wsxy162@gmail.com>, 2021, 2025, 2026.
 # Mike FABIAN <mfabian@redhat.com>, 2021, 2025.
 # Liu Tao <lyuutau@outlook.com>, 2023.
 msgid ""
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
-"PO-Revision-Date: 2025-10-05 13:54+0000\n"
+"PO-Revision-Date: 2026-05-10 20:13+0000\n"
 "Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_CN/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -895,8 +895,7 @@ msgstr "调试级别："
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
-msgstr ""
-"当大于 0 时，调试信息可以打印到日志文件，并且调试信息也可以图形方式显示。"
+msgstr "当大于 0 时，调试信息可以打印到日志文件，并且调试信息也可以图形方式显示。"
 
 #: setup/main.py:1594
 msgid "Are you sure?"

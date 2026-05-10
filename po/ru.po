@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # "Sergey A." <sw@atrus.ru>, 2023, 2024.
 # "Sergey A." <Ser82-png@yandex.ru>, 2025, 2026.
-# Mike FABIAN <mfabian@redhat.com>, 2025.
+# Mike FABIAN <mfabian@redhat.com>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
 "PO-Revision-Date: 2026-05-10 20:15+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Russian <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ru/>\n"
 "Language: ru\n"

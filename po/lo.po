@@ -7,14 +7,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-05-10 20:12+0000\n"
+"Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
+"Language-Team: Lao <https://translate.fedoraproject.org/projects/ibus-table/"
+"app/lo/>\n"
 "Language: lo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -22,11 +24,11 @@ msgstr ""
 #. simplified Chinese
 #: engine/table.py:683 setup/main.py:393
 msgid "Simplified Chinese"
-msgstr ""
+msgstr "ພາສາຈີນຕົວຫຍໍ້"
 
 #: engine/table.py:685
 msgid "Switch to “Simplified Chinese only”."
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ “ພາສາຈີນຕົວຫຍໍ້ເທົ່ານັ້ນ”."
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
@@ -34,11 +36,11 @@ msgstr ""
 #. traditional Chinese
 #: engine/table.py:692 setup/main.py:397
 msgid "Traditional Chinese"
-msgstr ""
+msgstr "ພາສາຈີນຕົວເຕັມ"
 
 #: engine/table.py:694
 msgid "Switch to “Traditional Chinese only”."
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ “ພາສາຈີນຕົວເຕັມເທົ່ານັ້ນ”."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -47,11 +49,11 @@ msgstr ""
 #. lists.
 #: engine/table.py:704
 msgid "Simplified Chinese first"
-msgstr ""
+msgstr "ພາສາຈີນຕົວຫຍໍ້ກ່ອນ"
 
 #: engine/table.py:706
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ “ພາສາຈີນຕົວຫຍໍ້ກ່ອນຕົວເຕັມ”."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -60,11 +62,11 @@ msgstr ""
 #. lists.
 #: engine/table.py:716
 msgid "Traditional Chinese first"
-msgstr ""
+msgstr "ພາສາຈີນຕົວເຕັມກ່ອນ"
 
 #: engine/table.py:718
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ “ພາສາຈີນຕົວເຕັມກ່ອນຕົວຫຍໍ້”."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -76,59 +78,59 @@ msgstr ""
 #. particular order
 #: engine/table.py:728 setup/main.py:412
 msgid "All Chinese characters"
-msgstr ""
+msgstr "ຕົວອັກສອນຈີນທັງໝົດ"
 
 #: engine/table.py:729
 msgid "Switch to “All Chinese characters”."
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ “ຕົວອັກສອນຈີນທັງໝົດ”."
 
 #: engine/table.py:733 setup/main.py:1196
 msgid "Chinese mode"
-msgstr ""
+msgstr "ໂໝດພາສາຈີນ"
 
 #: engine/table.py:734
 msgid "Switch Chinese mode"
-msgstr ""
+msgstr "ສະຫຼັບໂໝດພາສາຈີນ"
 
 #: engine/table.py:745
 msgid "English"
-msgstr ""
+msgstr "ພາສາອັງກິດ"
 
 #: engine/table.py:746
 msgid "Switch to English input"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ການປ້ອນຂໍ້ມູນພາສາອັງກິດ"
 
 #: engine/table.py:753
 msgid "Chinese"
-msgstr ""
+msgstr "ພາສາຈີນ"
 
 #: engine/table.py:754
 msgid "Switch to Chinese input"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ການປ້ອນຂໍ້ມູນພາສາຈີນ"
 
 #: engine/table.py:762 engine/table.py:910 setup/main.py:963
 msgid "Direct"
-msgstr ""
+msgstr "ໂດຍກົງ"
 
 #: engine/table.py:763
 msgid "Switch to direct input"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ການປ້ອນຂໍ້ມູນໂດຍກົງ"
 
 #: engine/table.py:768 engine/table.py:832
 msgid "Table"
-msgstr ""
+msgstr "ຕາຕະລາງ"
 
 #: engine/table.py:769
 msgid "Switch to table input"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ການປ້ອນຂໍ້ມູນແບບຕາຕະລາງ"
 
 #: engine/table.py:777
 msgid "Input mode"
-msgstr ""
+msgstr "ໂໝດການປ້ອນຂໍ້ມູນ"
 
 #: engine/table.py:778
 msgid "Switch Input mode"
-msgstr ""
+msgstr "ສະຫຼັບໂໝດການປ້ອນຂໍ້ມູນ"
 
 #. Translators: This is the mode to use half width letters
 #. while in “Table input” mode.
@@ -141,11 +143,11 @@ msgstr ""
 #: engine/table.py:788 engine/table.py:810 setup/main.py:449 setup/main.py:493
 #: setup/main.py:538 setup/main.py:583
 msgid "Half"
-msgstr ""
+msgstr "ເຄິ່ງຄວາມກວ້າງ"
 
 #: engine/table.py:789
 msgid "Switch to halfwidth letters"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ຕົວອັກສອນເຄິ່ງຄວາມກວ້າງ"
 
 #. Translators: This is the mode to use full width letters
 #. while in “Table input” mode.
@@ -158,143 +160,146 @@ msgstr ""
 #: engine/table.py:794 engine/table.py:816 setup/main.py:453 setup/main.py:497
 #: setup/main.py:542 setup/main.py:587
 msgid "Full"
-msgstr ""
+msgstr "ເຕັມຄວາມກວ້າງ"
 
 #: engine/table.py:795
 msgid "Switch to fullwidth letters"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ຕົວອັກສອນເຕັມຄວາມກວ້າງ"
 
 #: engine/table.py:799 setup/main.py:1197
 msgid "Letter width"
-msgstr ""
+msgstr "ຄວາມກວ້າງຂອງຕົວອັກສອນ"
 
 #: engine/table.py:800
 msgid "Switch letter width"
-msgstr ""
+msgstr "ສະຫຼັບຄວາມກວ້າງຂອງຕົວອັກສອນ"
 
 #: engine/table.py:811
 msgid "Switch to halfwidth punctuation"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ເຄື່ອງໝາຍວັກຕອນເຄິ່ງຄວາມກວ້າງ"
 
 #: engine/table.py:817
 msgid "Switch to fullwidth punctuation"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ເຄື່ອງໝາຍວັກຕອນເຕັມຄວາມກວ້າງ"
 
 #: engine/table.py:821 setup/main.py:1198
 msgid "Punctuation width"
-msgstr ""
+msgstr "ຄວາມກວ້າງຂອງເຄື່ອງໝາຍວັກຕອນ"
 
 #: engine/table.py:822
 msgid "Switch punctuation width"
-msgstr ""
+msgstr "ສະຫຼັບຄວາມກວ້າງຂອງເຄື່ອງໝາຍວັກຕອນ"
 
 #: engine/table.py:833
 msgid "Switch to table mode"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ໂໝດຕາຕະລາງ"
 
 #: engine/table.py:838
 msgid "Pinyin"
-msgstr ""
+msgstr "ພິນອິນ (Pinyin)"
 
 #: engine/table.py:839
 msgid "Switch to pinyin mode"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ໂໝດພິນອິນ"
 
 #: engine/table.py:843 setup/main.py:1199
 msgid "Pinyin mode"
-msgstr ""
+msgstr "ໂໝດພິນອິນ"
 
 #: engine/table.py:844
 msgid "Switch pinyin mode"
-msgstr ""
+msgstr "ສະຫຼັບໂໝດພິນອິນ"
 
 #: engine/table.py:854
 msgid "Suggestion disabled"
-msgstr ""
+msgstr "ປິດການແນະນຳຄຳສັບ"
 
 #: engine/table.py:855 engine/table.py:861
 msgid "Switch to suggestion mode"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ໂໝດການແນະນຳ"
 
 #: engine/table.py:860
 msgid "Suggestion enabled"
-msgstr ""
+msgstr "ເປີດການແນະນຳຄຳສັບ"
 
 #: engine/table.py:865 setup/main.py:1200
 msgid "Suggestion mode"
-msgstr ""
+msgstr "ໂໝດການແນະນຳ"
 
 #: engine/table.py:866
 msgid "Switch suggestion mode"
-msgstr ""
+msgstr "ສະຫຼັບໂໝດການແນະນຳ"
 
 #: engine/table.py:876
 msgid "Multiple character match"
-msgstr ""
+msgstr "ຈັບຄູ່ຫຼາຍຕົວອັກສອນ"
 
 #: engine/table.py:878
 msgid "Switch to matching multiple characters at once"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ການຈັບຄູ່ຫຼາຍຕົວອັກສອນພ້ອມກັນ"
 
 #: engine/table.py:883
 msgid "Single character match"
-msgstr ""
+msgstr "ຈັບຄູ່ຕົວອັກສອນດຽວ"
 
 #: engine/table.py:885
 msgid "Switch to matching only single characters"
-msgstr ""
+msgstr "ສະຫຼັບໄປໃຊ້ການຈັບຄູ່ສະເພາະຕົວອັກສອນດຽວ"
 
 #: engine/table.py:889 setup/main.py:1201
 msgid "Onechar mode"
-msgstr ""
+msgstr "ໂໝດຕົວອັກສອນດຽວ"
 
 #: engine/table.py:890
 msgid "Switch onechar mode"
-msgstr ""
+msgstr "ສະຫຼັບໂໝດຕົວອັກສອນດຽວ"
 
 #: engine/table.py:900 setup/main.py:961
 msgid "Normal"
-msgstr ""
+msgstr "ປົກກະຕິ"
 
 #: engine/table.py:902
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
 msgstr ""
+"ສະຫຼັບໄປໃຊ້ໂໝດການສົ່ງຄຳສັບແບບປົກກະຕິ (ການສົ່ງຄຳສັບອັດຕະໂນມັດຈະໄປຢູ່ທີ່ສ່ວນແກ້ໄຂກ່ອນ ແທນທີ່ຈະສົ່ງເຂົ້າໄປ"
+"ໃນແອັບພລິເຄຊັນໂດຍກົງ. ສິ່ງນີ້ຊ່ວຍໃຫ້ສາມາດກຳນົດປຸ່ມລັດໃໝ່ໄດ້ໂດຍອັດຕະໂນມັດ)"
 
 #: engine/table.py:912
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
 msgstr ""
+"ສະຫຼັບໄປໃຊ້ໂໝດການສົ່ງຄຳສັບໂດຍກົງ (ການສົ່ງຄຳສັບອັດຕະໂນມັດຈະສົ່ງເຂົ້າໄປໃນແອັບພລິເຄຊັນໂດຍກົງ)"
 
 #: engine/table.py:917 setup/main.py:1202
 msgid "Autocommit mode"
-msgstr ""
+msgstr "ໂໝດການສົ່ງຄຳສັບອັດຕະໂນມັດ"
 
 #: engine/table.py:918
 msgid "Switch autocommit mode"
-msgstr ""
+msgstr "ສະຫຼັບໂໝດການສົ່ງຄຳສັບອັດຕະໂນມັດ"
 
 #: engine/table.py:2951
 msgid "Setup"
-msgstr ""
+msgstr "ຕັ້ງຄ່າ"
 
 #: engine/table.py:2954
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
-msgstr ""
+msgstr "ຕັ້ງຄ່າ ibus-table “%(engine-name)s”"
 
 #. Translators: This is used in the title bar of a dialog window
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
 #: engine/it_util.py:951
 msgid "Key input"
-msgstr ""
+msgstr "ປ້ອນປຸ່ມກົດ"
 
 #: engine/it_util.py:957
 msgid "Cancel"
-msgstr ""
+msgstr "ຍົກເລີກ"
 
 #. pylint: disable=consider-using-f-string
 #. Translators: This is from the dialog to enter a key or a
@@ -302,37 +307,37 @@ msgstr ""
 #. command.
 #: engine/it_util.py:964
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "ກະລຸນາກົດປຸ່ມ (ຫຼື ກົດຫຼາຍປຸ່ມປະສົມກັນ)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:969
 msgid "The dialog will be closed when the key is released"
-msgstr ""
+msgstr "ໜ້າຕ່າງຈະປິດລົງເມື່ອທ່ານປ່ອຍປຸ່ມກົດ"
 
 #: engine/it_util.py:1006
 msgid "Table input method for IBus."
-msgstr ""
+msgstr "ວິທີການປ້ອນຂໍ້ມູນແບບຕາຕະລາງສຳລັບ IBus."
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
 #. will be displayed in the “About ibus-table” dialog.
 #: engine/it_util.py:1030
 msgid "translator-credits"
-msgstr ""
+msgstr "ລາຍຊື່ຜູ້ແປ"
 
 #: engine/it_util.py:1038
 msgid "Online documentation:"
-msgstr ""
+msgstr "ເອກະສານອອນໄລນ໌:"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:6
 msgid "Ibus Table"
-msgstr ""
+msgstr "Ibus Table"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:7
 msgid "Table based input method"
-msgstr ""
+msgstr "ວິທີການປ້ອນຂໍ້ມູນໂດຍອີງໃສ່ຕາຕະລາງ"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:9
 msgid ""
@@ -340,55 +345,58 @@ msgid ""
 "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
 "CangJie, …. But some tables for other languages are available as well."
 msgstr ""
+"Ibus-table ແມ່ນໂຄງຮ່າງວິທີການປ້ອນຂໍ້ມູນສຳລັບການປ້ອນຂໍ້ມູນແບບຕາຕະລາງ. ສ່ວນໃຫຍ່ແມ່ນໃຊ້ສຳລັບວິທີການປ້"
+"ອນຂໍ້ມູນພາສາຈີນ ເຊັ່ນ ZhengMa, WuBi, ErBi, CangJie, …. ແຕ່ກໍມີຕາຕະລາງສຳລັບພາສາອື່ນໆໃຫ້ໃຊ້ຄືກັ"
+"ນ."
 
 #: setup/ibus-setup-table.desktop.in.in:2
 msgid "IBus Table Preferences"
-msgstr ""
+msgstr "ການຕັ້ງຄ່າ IBus Table"
 
 #: setup/ibus-setup-table.desktop.in.in:3
 msgid "Set IBus Table Options"
-msgstr ""
+msgstr "ກຳນົດຕົວເລືອກ IBus Table"
 
 #: setup/main.py:121
 msgid "Initial state"
-msgstr ""
+msgstr "ສະຖານະເລີ່ມຕົ້ນ"
 
 #: setup/main.py:122
 msgid "Direct input"
-msgstr ""
+msgstr "ການປ້ອນຂໍ້ມູນໂດຍກົງ"
 
 #: setup/main.py:123
 msgid "Table input"
-msgstr ""
+msgstr "ການປ້ອນຂໍ້ມູນແບບຕາຕະລາງ"
 
 #: setup/main.py:137 setup/main.py:197
 msgid "Preferences"
-msgstr ""
+msgstr "ປັບແຕ່ງ"
 
 #: setup/main.py:220
 msgid "About"
-msgstr ""
+msgstr "ກ່ຽວກັບ"
 
 #: setup/main.py:228
 msgid "Restore all defaults"
-msgstr ""
+msgstr "ຄືນຄ່າເລີ່ມຕົ້ນທັງໝົດ"
 
 #: setup/main.py:237 setup/main.py:3099
 msgid "_Close"
-msgstr ""
+msgstr "ປິດ (_C)"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
 #. behaviour of ibus-table.
 #: setup/main.py:260
 msgid "Settings"
-msgstr ""
+msgstr "ການຕັ້ງຄ່າ"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some more advanced options.
 #: setup/main.py:275
 msgid "Details"
-msgstr ""
+msgstr "ລາຍລະອຽດ"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can customize the key bindings to execute
@@ -399,11 +407,11 @@ msgstr ""
 #. existing key bindings
 #: setup/main.py:291 setup/main.py:753
 msgid "Key bindings"
-msgstr ""
+msgstr "ການກຳນົດປຸ່ມກົດ"
 
 #: setup/main.py:304
 msgid "Menu Items"
-msgstr ""
+msgstr "ລາຍການເມນູ"
 
 #. Translators: A combobox to choose whether the input mode
 #. (“Direct input” or “Table input”) should be remembered
@@ -411,7 +419,7 @@ msgstr ""
 #. default after a restart.
 #: setup/main.py:327
 msgid "Remember input mode"
-msgstr ""
+msgstr "ຈື່ໂໝດການປ້ອນຂໍ້ມູນ"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the input mode (“Direct input” or “Table
@@ -427,20 +435,24 @@ msgid ""
 "characters just get passed to the application. But some conversion between "
 "fullwidth and halfwidth may still happen in direct input mode."
 msgstr ""
+"ເລືອກວ່າຈະໃຫ້ຈື່ໂໝດການປ້ອນຂໍ້ມູນຫຼ້າສຸດ ຫຼື ໃຫ້ ibus-table ເລີ່ມຕົ້ນດ້ວຍ “ໂໝດຕາຕະລາງ” ທຸກຄັ້ງຫຼັງຈາກເລີ່"
+"ມລະບົບໃໝ່. ໂໝດການປ້ອນຂໍ້ມູນມີສອງແບບ: “ການປ້ອນແບບຕາຕະລາງ” ໝາຍເຖິງເປີດໃຊ້ ວິທີການປ້ອນຂໍ້ມູນ. “ກາ"
+"ນປ້ອນໂດຍກົງ” ແມ່ນເກືອບຄືກັນກັບການປິດວິທີການປ້ອນຂໍ້ມູນ, ຕົວອັກສອນສ່ວນໃຫຍ່ຈະຖືກສົ່ງໄປຫາແອັບພລິເຄຊັນໂດຍກົ"
+"ງ, ແຕ່ອາດຈະຍັງມີການແປງລະຫວ່າງ ຄວາມກວ້າງເຕັມ ແລະ ຄວາມກວ້າງເຄິ່ງ ຢູ່."
 
 #: setup/main.py:347
 msgid "No"
-msgstr ""
+msgstr "ບໍ່"
 
 #: setup/main.py:349
 msgid "Yes"
-msgstr ""
+msgstr "ແມ່ນ"
 
 #. Translators: A combobox to choose the variant of
 #. Chinese which should be preferred.
 #: setup/main.py:373
 msgid "Chinese mode:"
-msgstr ""
+msgstr "ໂໝດພາສາຈີນ:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.
@@ -457,26 +469,32 @@ msgid ""
 "matches without any particular filtering on traditional\n"
 "versus simplified Chinese."
 msgstr ""
+"“ພາສາຈີນຕົວຫຍໍ້” ຈະສະແດງສະເພາະຕົວອັກສອນທີ່ໃຊ້ໃນພາສາຈີນຕົວຫຍໍ້. \n"
+"“ພາສາຈີນຕົວເຕັມ” ຈະສະແດງສະເພາະຕົວອັກສອນທີ່ໃຊ້ໃນພາສາຈີນຕົວເຕັມ.\n"
+"“ພາສາຈີນຕົວຫຍໍ້ກ່ອນຕົວເຕັມ” ສະແດງທຸກຕົວອັກສອນ ແຕ່ຈະເອົາຕົວຫຍໍ້ຂຶ້ນກ່ອນ\n"
+"ໃນລາຍການຕົວເລືອກ. “ພາສາຈີນຕົວເຕັມກ່ອນຕົວຫຍໍ້” ຈະເອົາຕົວເຕັມຂຶ້ນກ່ອນ\n"
+"ໃນລາຍການຕົວເລືອກ. “ຕົວອັກສອນທັງໝົດ” ຈະສະແດງທຸກຢ່າງທີ່ກົງກັນ \n"
+"ໂດຍບໍ່ມີການກັ່ນຕອງລະຫວ່າງຕົວຫຍໍ້ ຫຼື ຕົວເຕັມ."
 
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. simplified Chinese
 #: setup/main.py:402
 msgid "Simplified Chinese before traditional"
-msgstr ""
+msgstr "ພາສາຈີນຕົວຫຍໍ້ກ່ອນຕົວເຕັມ"
 
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. traditional Chinese
 #: setup/main.py:407
 msgid "Traditional Chinese before simplified"
-msgstr ""
+msgstr "ພາສາຈີນຕົວເຕັມກ່ອນຕົວຫຍໍ້"
 
 #. Translators: A combobox to choose the letter width
 #. while in “Table input” mode.
 #: setup/main.py:437
 msgid "Table input letter width:"
-msgstr ""
+msgstr "ຄວາມກວ້າງຕົວອັກສອນຂອງການປ້ອນແບບຕາຕະລາງ:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Table input” mode.
@@ -485,12 +503,14 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
+"ເລືອກວ່າຈະໃຊ້ຕົວອັກສອນແບບ ເຕັມຄວາມກວ້າງ ຫຼື ເຄິ່ງຄວາມກວ້າງ \n"
+"ໃນໂໝດການປ້ອນຂໍ້ມູນແບບຕາຕະລາງ."
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Table input” mode.
 #: setup/main.py:480
 msgid "Table input punctuation width:"
-msgstr ""
+msgstr "ຄວາມກວ້າງເຄື່ອງໝາຍວັກຕອນຂອງການປ້ອນແບບຕາຕະລາງ:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Table input” mode.
@@ -499,12 +519,14 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
+"ເລືອກວ່າຈະໃຊ້ເຄື່ອງໝາຍວັກຕອນແບບ ເຕັມຄວາມກວ້າງ ຫຼື ເຄິ່ງຄວາມກວ້າງ \n"
+"ໃນໂໝດການປ້ອນຂໍ້ມູນແບບຕາຕະລາງ."
 
 #. Translators: A combobox to choose the letter width
 #. while in “Direct input” mode.
 #: setup/main.py:526
 msgid "Direct input letter width:"
-msgstr ""
+msgstr "ຄວາມກວ້າງຕົວອັກສອນຂອງການປ້ອນໂດຍກົງ:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Direct input” mode.
@@ -513,12 +535,14 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
+"ເລືອກວ່າຈະໃຊ້ຕົວອັກສອນແບບ ເຕັມຄວາມກວ້າງ ຫຼື ເຄິ່ງຄວາມກວ້າງ \n"
+"ໃນໂໝດການປ້ອນຂໍ້ມູນໂດຍກົງ."
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Direct input” mode.
 #: setup/main.py:570
 msgid "Direct input punctuation width:"
-msgstr ""
+msgstr "ຄວາມກວ້າງເຄື່ອງໝາຍວັກຕອນຂອງການປ້ອນໂດຍກົງ:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Direct input” mode.
@@ -527,10 +551,12 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
 msgstr ""
+"ເລືອກວ່າຈະໃຊ້ເຄື່ອງໝາຍວັກຕອນແບບ ເຕັມຄວາມກວ້າງ ຫຼື ເຄິ່ງຄວາມກວ້າງ \n"
+"ໃນໂໝດການປ້ອນຂໍ້ມູນໂດຍກົງ."
 
 #: setup/main.py:614
 msgid "Candidate list"
-msgstr ""
+msgstr "ລາຍການຕົວເລືອກ"
 
 #. Translators: A combobox to choose whether
 #. a candidate list should be shown or hidden.
@@ -540,7 +566,7 @@ msgstr ""
 #. the candidate lists is better.
 #: setup/main.py:629
 msgid "Show candidate list"
-msgstr ""
+msgstr "ສະແດງລາຍການຕົວເລືອກ"
 
 #. Translit: A tooltip for the label of the combobox to
 #. choose whether a candidate list should be shown or
@@ -553,12 +579,16 @@ msgid ""
 "input methods like the Russian “translit”, hiding the\n"
 "candidate lists is better."
 msgstr ""
+"ເລືອກວ່າຈະສະແດງ ຫຼື ຊ່ອນລາຍການຕົວເລືອກ.\n"
+"ສຳລັບວິທີການປ້ອນພາສາຈີນ ປົກກະຕິແລ້ວຄວນຈະໃຫ້ສະແດງ. \n"
+"ແຕ່ສຳລັບບາງພາສາທີ່ບໍ່ແມ່ນພາສາຈີນ ເຊັ່ນ ລັດເຊຍ “translit”, \n"
+"ການຊ່ອນລາຍການຕົວເລືອກອາດຈະດີກວ່າ."
 
 #. Translators: A combobox to choose whether the candidate
 #. window should be drawn horizontally or vertically.
 #: setup/main.py:653
 msgid "Orientation:"
-msgstr ""
+msgstr "ທິດທາງ:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn
@@ -568,24 +598,26 @@ msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
 msgstr ""
+"ເລືອກວ່າຈະໃຫ້ຕາຕະລາງສະແດງຕົວເລືອກ\n"
+"ເປັນແນວຕັ້ງ ຫຼື ແນວນອນ."
 
 #: setup/main.py:664
 msgid "Horizontal"
-msgstr ""
+msgstr "ແນວນອນ"
 
 #: setup/main.py:666
 msgid "Vertical"
-msgstr ""
+msgstr "ແນວຕັ້ງ"
 
 #: setup/main.py:668
 msgid "System default"
-msgstr ""
+msgstr "ຄ່າເລີ່ມຕົ້ນຂອງລະບົບ"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
 #: setup/main.py:693
 msgid "Page size:"
-msgstr ""
+msgstr "ຂະໜາດໜ້າ:"
 
 #. Translators: A tooltip for the label of the adjustment
 #. for the number of candidates to show in one page of the
@@ -597,30 +629,33 @@ msgid ""
 "pages in the lookup table using the page up/down\n"
 "keys or the arrow up/down keys."
 msgstr ""
+"ຈຳນວນຕົວເລືອກສູງສຸດໃນໜຶ່ງໜ້າຂອງຕາຕະລາງຕົວເລືອກ. \n"
+"ທ່ານສາມາດສະຫຼັບໜ້າໄດ້ໂດຍການໃຊ້ປຸ່ມ Page Up/Down \n"
+"ຫຼື ປຸ່ມລູກສອນ ຂຶ້ນ/ລົງ."
 
 #: setup/main.py:720
 msgid "Current key bindings:"
-msgstr ""
+msgstr "ການກຳນົດປຸ່ມກົດໃນປະຈຸບັນ:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
 #: setup/main.py:745
 msgid "Command"
-msgstr ""
+msgstr "ຄຳສັ່ງ"
 
 #: setup/main.py:776
 msgid "Edit"
-msgstr ""
+msgstr "ແກ້ໄຂ"
 
 #. Translators: A tooltip for the button to edit
 #. the keybindings for the selected command.
 #: setup/main.py:782
 msgid "Edit the key bindings for the selected command"
-msgstr ""
+msgstr "ແກ້ໄຂການກຳນົດປຸ່ມກົດສຳລັບຄຳສັ່ງທີ່ເລືອກ"
 
 #: setup/main.py:789 setup/main.py:2286
 msgid "Set to default"
-msgstr ""
+msgstr "ຕັ້ງເປັນຄ່າເລີ່ມຕົ້ນ"
 
 #. Translators: A tooltip for the button to set
 #. the default key bindings for the selected command.
@@ -628,40 +663,41 @@ msgstr ""
 #. the key bindings for the selected command to the default.
 #: setup/main.py:795 setup/main.py:2293
 msgid "Set default key bindings for the selected command"
-msgstr ""
+msgstr "ຕັ້ງຄ່າປຸ່ມກົດເລີ່ມຕົ້ນສຳລັບຄຳສັ່ງທີ່ເລືອກ"
 
 #: setup/main.py:802
 msgid "Set all to default"
-msgstr ""
+msgstr "ຕັ້ງທັງໝົດເປັນຄ່າເລີ່ມຕົ້ນ"
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
 #: setup/main.py:808
 msgid "Set default key bindings for all commands"
-msgstr ""
+msgstr "ຕັ້ງຄ່າປຸ່ມກົດເລີ່ມຕົ້ນສຳລັບທຸກຄຳສັ່ງ"
 
 #. Translators: A checkbox where one can choose whether the
 #. order of the candidates is dynamically adjusted according
 #. to how often the candidates are used.
 #: setup/main.py:833
 msgid "Dynamic adjust"
-msgstr ""
+msgstr "ປັບປ່ຽນແບບໄດນາມິກ"
 
 #: setup/main.py:835
 msgid ""
 "Here you can choose whether the order of the candidates is dynamically "
 "adjusted according to how often the candidates are used."
 msgstr ""
+"ຢູ່ນີ້ທ່ານສາມາດເລືອກວ່າຈະໃຫ້ລຳດັບຂອງຕົວເລືອກປັບປ່ຽນໂດຍອັດຕະໂນມັດຕາມຄວາມຖີ່ຂອງການໃຊ້ງານຫຼືບໍ່."
 
 #: setup/main.py:848
 msgid "Delete all learned data"
-msgstr ""
+msgstr "ລຶບຂໍ້ມູນທີ່ຮຽນຮູ້ທັງໝົດ"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
 #: setup/main.py:873
 msgid "Compose:"
-msgstr ""
+msgstr "ການປະກອບຄຳ:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -673,20 +709,22 @@ msgid ""
 "set to “Phrase” candidates consisting of\n"
 "several characters may be shown."
 msgstr ""
+"ຖ້າຕັ້ງເປັນ “ຕົວອັກສອນດຽວ”, ຈະສະແດງສະເພາະຕົວເລືອກຕົວອັກສອນດຽວ. \n"
+"ຖ້າຕັ້ງເປັນ “ວະລີ”, ຈະສະແດງຕົວເລືອກທີ່ປະກອບດ້ວຍຫຼາຍຕົວອັກສອນ."
 
 #: setup/main.py:886
 msgid "Phrase"
-msgstr ""
+msgstr "ວະລີ"
 
 #: setup/main.py:888
 msgid "Single Char"
-msgstr ""
+msgstr "ຕົວອັກສອນດຽວ"
 
 #. Translators: A combobox to choose whether the first
 #. candidate will be automatically selected during typing.
 #: setup/main.py:913
 msgid "Auto select"
-msgstr ""
+msgstr "ເລືອກອັດຕະໂນມັດ"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
@@ -704,12 +742,19 @@ msgid ""
 "   (Mostly needed for non-Chinese input methods like\n"
 "   the Russian “translit”)"
 msgstr ""
+"ຖ້າຕັ້ງເປັນ “ແມ່ນ”, ຈະເຮັດ 4 ຢ່າງດັ່ງນີ້:\n"
+"1) ເມື່ອກົດ “Return”, ຈະສົ່ງຄຳສັບ + ຂຶ້ນແຖວໃໝ່\n"
+"2) ເມື່ອກົດ Tab, ຈະສົ່ງຄຳສັບທີ່ເລືອກ\n"
+"3) ເມື່ອສົ່ງຄຳສັບດ້ວຍປຸ່ມສົ່ງ, ຈະສົ່ງຄຳສັບ + “ຍະຫວ່າງ”\n"
+"4) ຖ້າພິມຕົວອັກສອນຖັດໄປແລ້ວບໍ່ກົງກັບຕົວເລືອກໃດເລີຍ, \n"
+"   ຈະສົ່ງຕົວເລືອກທຳອິດຂອງການຈັບຄູ່ກ່ອນໜ້ານັ້ນ.\n"
+"   (ສ່ວນໃຫຍ່ໃຊ້ສຳລັບພາສາທີ່ບໍ່ແມ່ນຈີນ ເຊັ່ນ ລັດເຊຍ “translit”)"
 
 #. Translators: A combobox to choose whether automatic
 #. commits go into the preëdit or into the application
 #: setup/main.py:943
 msgid "Autocommit mode:"
-msgstr ""
+msgstr "ໂໝດການສົ່ງຄຳສັບອັດຕະໂນມັດ:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether automatic commits go into the preëdit or
@@ -726,12 +771,17 @@ msgid ""
 "into the application, “Normal” means they get committed\n"
 "to preedit."
 msgstr ""
+"ການສົ່ງຄຳສັບດ້ວຍປຸ່ມກົດ ຫຼື ເມົ້າ ຈະສົ່ງເຂົ້າແອັບພລິເຄຊັນສະເໝີ. \n"
+"ຕົວເລືອກນີ້ແມ່ນກ່ຽວກັບການສົ່ງຄຳສັບແບບ “ອັດຕະໂນມັດ” ເຊິ່ງອາດຈະເກີດຂຶ້ນ\n"
+"ເມື່ອທ່ານພິມຕໍ່ເນື່ອງໂດຍບໍ່ໄດ້ກົດສົ່ງເອງ. \n"
+"“ໂດຍກົງ” ໝາຍເຖິງການສົ່ງອັດຕະໂນມັດຈະເຂົ້າແອັບພລິເຄຊັນທັນທີ, \n"
+"“ປົກກະຕິ” ໝາຍເຖິງຈະຖືກສົ່ງໄປທີ່ສ່ວນແກ້ໄຂກ່ອນ."
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
 #: setup/main.py:989
 msgid "Action when typing invalid character:"
-msgstr ""
+msgstr "ການກະທຳເມື່ອພິມຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -746,20 +796,25 @@ msgid ""
 "character is typed and the character in question is inserted immediately "
 "after the text that results from the options listed above."
 msgstr ""
+"ກຳນົດສິ່ງທີ່ຈະເກີດຂຶ້ນເມື່ອພິມຕົວອັກສອນທີ່ບໍ່ມີຢູ່ໃນຕາຕະລາງນີ້: \n"
+"ດ້ວຍ “ສົ່ງຕົວເລືອກປະຈຸບັນ”, ຕົວເລືອກທີ່ເລືອກຢູ່ຈະຖືກແຊກເຂົ້າໄປ. \n"
+"ດ້ວຍ “ສົ່ງປຸ່ມທີ່ພິມ”, ຕົວອັກສອນທີ່ທ່ານພິມມາທັງໝົດຈະຖືກແຊກເຂົ້າໄປແທນ. \n"
+"ໃນທຸກກໍລະນີ, ການເລືອກຕົວເລືອກຈະສິ້ນສຸດລົງເມື່ອມີການພິມຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ \n"
+"ແລະ ຕົວອັກສອນນັ້ນຈະຖືກແຊກຕໍ່ທ້າຍທັນທີ."
 
 #: setup/main.py:1007
 msgid "Commit current candidate"
-msgstr ""
+msgstr "ສົ່ງຕົວເລືອກປະຈຸບັນ"
 
 #: setup/main.py:1009
 msgid "Commit typed keys"
-msgstr ""
+msgstr "ສົ່ງປຸ່ມທີ່ພິມ"
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
 #: setup/main.py:1033
 msgid "Auto wildcard"
-msgstr ""
+msgstr "ຕົວແທນອັດຕະໂນມັດ"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether a wildcard should be automatically
@@ -769,12 +824,14 @@ msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
 msgstr ""
+"ຖ້າເລືອກ ແມ່ນ, ຕົວແທນແບບຫຼາຍຕົວອັກສອນຈະຖືກ\n"
+"ຕໍ່ທ້າຍຂໍ້ຄວາມທີ່ພິມໂດຍອັດຕະໂນມັດ."
 
 #. Translators: This single character is a placeholder
 #. to match a any single character
 #: setup/main.py:1055
 msgid "Single wildcard character:"
-msgstr ""
+msgstr "ຕົວແທນອັກສອນດຽວ:"
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match a
@@ -784,12 +841,14 @@ msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
+"ຕົວແທນສຳລັບແທນຕົວອັກສອນໃດໜຶ່ງພຽງຕົວດຽວ.\n"
+"ກົດ RETURN ຫຼື ENTER ເພື່ອຢືນຢັນຫຼັງຈາກປ່ຽນຕົວແທນ."
 
 #. Translators: This single character is a placeholder
 #. to match a any number of characters
 #: setup/main.py:1081
 msgid "Multi wildcard character:"
-msgstr ""
+msgstr "ຕົວແທນຫຼາຍອັກສອນ:"
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match any
@@ -799,25 +858,27 @@ msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
+"ຕົວແທນສຳລັບແທນຕົວອັກສອນຈຳນວນເທົ່າໃດກໍໄດ້.\n"
+"ກົດ RETURN ຫຼື ENTER ເພື່ອຢືນຢັນຫຼັງຈາກປ່ຽນຕົວແທນ."
 
 #. Translators: A combobox to choose whether
 #. the color scheme for a dark theme should be used.
 #: setup/main.py:1106
 msgid "Use dark theme"
-msgstr ""
+msgstr "ໃຊ້ຮູບແບບສີເຂັ້ມ (Dark theme)"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should
 #. be used.
 #: setup/main.py:1111
 msgid "If yes, the color scheme for a dark theme will be used."
-msgstr ""
+msgstr "ຖ້າເລືອກ ແມ່ນ, ຈະໃຊ້ຮູບແບບສີສຳລັບຮູບແບບສີເຂັ້ມ."
 
 #. Translators: A checkbox where one can choose whether a
 #. sound is played on error
 #: setup/main.py:1126
 msgid "Play sound file on error"
-msgstr ""
+msgstr "ຫຼິ້ນສຽງເມື່ອເກີດຂໍ້ຜິດພາດ"
 
 #: setup/main.py:1128
 msgid ""
@@ -825,13 +886,15 @@ msgid ""
 "the simpleaudio module for Python3 is not installed, this option does "
 "nothing."
 msgstr ""
+"ຢູ່ນີ້ທ່ານສາມາດເລືອກວ່າຈະໃຫ້ຫຼິ້ນສຽງຫຼືບໍ່ເມື່ອເກີດຂໍ້ຜິດພາດ. ຖ້າບໍ່ໄດ້ຕິດຕັ້ງ ໂມດູນ simpleaudio ສຳລັບ "
+"Python3, ຕົວເລືອກນີ້ຈະບໍ່ມີຜົນຫຍັງ."
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
 #. debug information may also be shown graphically.
 #: setup/main.py:1169
 msgid "Debug level:"
-msgstr ""
+msgstr "ລະດັບການກວດສອບຂໍ້ຜິດພາດ (Debug):"
 
 #. Translators: This is a tooltip for the label for the
 #. adjustment of the debug level.
@@ -840,29 +903,30 @@ msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
 msgstr ""
+"ເມື່ອຄ່າຫຼາຍກວ່າ 0, ຂໍ້ມູນການກວດສອບຈະຖືກບັນທຶກລົງໃນໄຟລ໌ log ແລະ ອາດຈະສະແດງຜົນໃນຮູບແບບກຣາຟິກ."
 
 #: setup/main.py:1594
 msgid "Are you sure?"
-msgstr ""
+msgstr "ທ່ານແນ່ໃຈບໍ່?"
 
 #: setup/main.py:1596 setup/main.py:1929
 msgid "_Cancel"
-msgstr ""
+msgstr "ຍົກເລີກ (_C)"
 
 #: setup/main.py:1597 setup/main.py:1930
 msgid "_OK"
-msgstr ""
+msgstr "ຕົກລົງ (_O)"
 
 #: setup/main.py:1629
 msgid "Another instance of this app is already running."
-msgstr ""
+msgstr "ມີແອັບພລິເຄຊັນນີ້ກຳລັງເຮັດວຽກຢູ່ແລ້ວ."
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
 #: setup/main.py:1701
 msgid "Do you really want to restore all default settings?"
-msgstr ""
+msgstr "ທ່ານຕ້ອງການຄືນຄ່າເລີ່ມຕົ້ນທັງໝົດແທ້ຫຼືບໍ່?"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -875,39 +939,40 @@ msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
 msgstr ""
+"ທ່ານຕ້ອງການລຶບຂໍ້ມູນທັງໝົດທີ່ລະບົບໄດ້ຮຽນຮູ້ຈາກການພິມ ແລະ ການເລືອກຄຳສັບແທ້ຫຼືບໍ່?"
 
 #: setup/main.py:1926
 msgid "Select .wav sound file:"
-msgstr ""
+msgstr "ເລືອກໄຟລ໌ສຽງ .wav:"
 
 #: setup/main.py:2209
 #, python-format
 msgid "Edit key bindings for command “%s”"
-msgstr ""
+msgstr "ແກ້ໄຂການກຳນົດປຸ່ມກົດສຳລັບຄຳສັ່ງ “%s”"
 
 #. Translators: This is a tooltip for the button to add a
 #. key binding.
 #: setup/main.py:2239
 msgid "Add a key binding"
-msgstr ""
+msgstr "ເພີ່ມການກຳນົດປຸ່ມກົດ"
 
 #. Translators: This is a tooltip for the button to remove
 #. the selected key binding.
 #: setup/main.py:2253
 msgid "Remove selected key binding"
-msgstr ""
+msgstr "ລຶບການກຳນົດປຸ່ມກົດທີ່ເລືອກ"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
 #: setup/main.py:2268
 msgid "Move key binding up"
-msgstr ""
+msgstr "ຍ້າຍປຸ່ມກົດຂຶ້ນ"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
 #: setup/main.py:2281
 msgid "Move key binding down"
-msgstr ""
+msgstr "ຍ້າຍປຸ່ມກົດລົງ"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -918,8 +983,8 @@ msgstr ""
 msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
-msgstr ""
+msgstr "ທ່ານຕ້ອງການຕັ້ງຄ່າປຸ່ມກົດສຳລັບທຸກຄຳສັ່ງໃຫ້ເປັນຄ່າເລີ່ມຕົ້ນແທ້ຫຼືບໍ່?"
 
 #: setup/main.py:3166
 msgid "ibus is not running."
-msgstr ""
+msgstr "ibus ບໍ່ໄດ້ເຮັດວຽກ."

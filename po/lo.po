@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
-"PO-Revision-Date: 2026-05-10 20:12+0000\n"
+"PO-Revision-Date: 2026-05-11 08:05+0000\n"
 "Last-Translator: Bone NI <bounkirdni@gmail.com>\n"
 "Language-Team: Lao <https://translate.fedoraproject.org/projects/ibus-table/"
 "app/lo/>\n"
@@ -325,7 +325,7 @@ msgstr "ວິທີການປ້ອນຂໍ້ມູນແບບຕາຕະ
 #. will be displayed in the “About ibus-table” dialog.
 #: engine/it_util.py:1030
 msgid "translator-credits"
-msgstr "ລາຍຊື່ຜູ້ແປ"
+msgstr "Bone NI <bounkirdni@gmail.com>"
 
 #: engine/it_util.py:1038
 msgid "Online documentation:"

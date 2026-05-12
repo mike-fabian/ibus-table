@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-01-22 19:03+0100\n"
-"PO-Revision-Date: 2026-05-10 20:14+0000\n"
+"PO-Revision-Date: 2026-05-12 07:26+0000\n"
 "Last-Translator: ButterflyOfFire "
 "<butterflyoffire@users.noreply.translate.fedoraproject.org>\n"
 "Language-Team: Kabyle <https://translate.fedoraproject.org/projects/ibus-"
@@ -145,7 +145,7 @@ msgstr ""
 #: engine/table.py:788 engine/table.py:810 setup/main.py:449 setup/main.py:493
 #: setup/main.py:538 setup/main.py:583
 msgid "Half"
-msgstr ""
+msgstr "Azgen"
 
 #: engine/table.py:789
 msgid "Switch to halfwidth letters"
@@ -214,7 +214,7 @@ msgstr ""
 
 #: engine/table.py:854
 msgid "Suggestion disabled"
-msgstr ""
+msgstr "Asumer d arurmid"
 
 #: engine/table.py:855 engine/table.py:861
 msgid "Switch to suggestion mode"
@@ -222,11 +222,11 @@ msgstr ""
 
 #: engine/table.py:860
 msgid "Suggestion enabled"
-msgstr ""
+msgstr "Asumer d urmid"
 
 #: engine/table.py:865 setup/main.py:1200
 msgid "Suggestion mode"
-msgstr ""
+msgstr "Askar n usumer"
 
 #: engine/table.py:866
 msgid "Switch suggestion mode"
@@ -665,7 +665,7 @@ msgstr "Kkes isefka yettwalemden"
 #. character candidates should be shown.
 #: setup/main.py:873
 msgid "Compose:"
-msgstr ""
+msgstr "Ssisger:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -680,7 +680,7 @@ msgstr ""
 
 #: setup/main.py:886
 msgid "Phrase"
-msgstr ""
+msgstr "Tafyirt"
 
 #: setup/main.py:888
 msgid "Single Char"

@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: 2026-05-10 20:15+0000\n"
+"PO-Revision-Date: 2026-05-12 07:45+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Portuguese (Portugal) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/pt_PT/>\n"
@@ -571,7 +571,7 @@ msgstr ""
 
 #: setup/main.py:615
 msgid "Candidate list"
-msgstr "<b>Lista de candidatos</b>"
+msgstr "Lista de candidatos"
 
 #. Translators: A combobox to choose whether
 #. a candidate list should be shown or hidden.

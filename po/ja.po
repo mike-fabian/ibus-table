@@ -7,9 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: 2026-05-10 20:15+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-05-12 07:45+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Japanese <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ja/>\n"
 "Language: ja\n"
@@ -913,18 +912,14 @@ msgstr "キー割り当てを削除する"
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
 #: setup/main.py:2269
-#, fuzzy
-#| msgid "Add a key binding"
 msgid "Move key binding up"
-msgstr "キー割り当てを追加する"
+msgstr "キー割り当てを上へ移動"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
 #: setup/main.py:2282
-#, fuzzy
-#| msgid "Add a key binding"
 msgid "Move key binding down"
-msgstr "キー割り当てを追加する"
+msgstr "キー割り当てを下へ移動"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is

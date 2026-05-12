@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: 2026-05-10 20:13+0000\n"
+"PO-Revision-Date: 2026-05-12 07:45+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_CN/>\n"
@@ -316,7 +316,7 @@ msgstr "请按下一个键盘按键（或者按键组合）"
 #. command.
 #: engine/it_util.py:970
 msgid "The dialog will be closed when the key is released"
-msgstr "当按键被按下，这个对话框将会自动关闭"
+msgstr "当按键被释放，这个对话框将会自动关闭"
 
 #: engine/it_util.py:1007
 msgid "Table input method for IBus."

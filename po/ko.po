@@ -3,13 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Junghee Lee <daemul72@gmail.com>, 2026.
 # 김인수 <simmon@nplob.com>, 2026.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: 2026-05-30 18:01+0000\n"
-"Last-Translator: 김인수 <simmon@nplob.com>\n"
+"PO-Revision-Date: 2026-06-02 08:14+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Korean <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ko/>\n"
 "Language: ko\n"
@@ -17,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -281,7 +283,7 @@ msgstr ""
 
 #: engine/table.py:2951
 msgid "Setup"
-msgstr ""
+msgstr "설정"
 
 #: engine/table.py:2954
 #, python-format
@@ -293,11 +295,11 @@ msgstr ""
 #. key binding for a command.
 #: engine/it_util.py:952
 msgid "Key input"
-msgstr ""
+msgstr "키 입력"
 
 #: engine/it_util.py:958
 msgid "Cancel"
-msgstr ""
+msgstr "취소"
 
 #. pylint: disable=consider-using-f-string
 #. Translators: This is from the dialog to enter a key or a
@@ -305,14 +307,14 @@ msgstr ""
 #. command.
 #: engine/it_util.py:965
 msgid "Please press a key (or a key combination)"
-msgstr ""
+msgstr "키 (또는 키 조합)를 누르세요"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
 #: engine/it_util.py:970
 msgid "The dialog will be closed when the key is released"
-msgstr ""
+msgstr "대화상자는 키를 놓으면 닫힐 것입니다"
 
 #: engine/it_util.py:1007
 msgid "Table input method for IBus."
@@ -324,10 +326,18 @@ msgstr ""
 #: engine/it_util.py:1031
 msgid "translator-credits"
 msgstr ""
+"Elex https://launchpad.net/~mysticzizone\n"
+"Valmantas Palikša https://launchpad.net/~walmis\n"
+"Yoo Duk Nam https://launchpad.net/~yoo2001818\n"
+"onlyeriko https://launchpad.net/~onlyeriko\n"
+"Seong-ho Cho <darkcircle.0426@gmail.com>\n"
+"JungHee Lee <daemul72@gmail.com>\n"
+"MATE Desktop Environment Team <https://www.transifex.com/mate/teams/13566/"
+"ko/>"
 
 #: engine/it_util.py:1039
 msgid "Online documentation:"
-msgstr ""
+msgstr "온라인 문서:"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:6
 msgid "Ibus Table"
@@ -366,32 +376,32 @@ msgstr ""
 
 #: setup/main.py:138 setup/main.py:198
 msgid "Preferences"
-msgstr ""
+msgstr "설정"
 
 #: setup/main.py:221
 msgid "About"
-msgstr ""
+msgstr "정보"
 
 #: setup/main.py:229
 msgid "Restore all defaults"
-msgstr ""
+msgstr "모든 설정 값을 복구합니다"
 
 #: setup/main.py:238 setup/main.py:3100
 msgid "_Close"
-msgstr ""
+msgstr "_닫기"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
 #. behaviour of ibus-table.
 #: setup/main.py:261
 msgid "Settings"
-msgstr ""
+msgstr "설정"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some more advanced options.
 #: setup/main.py:276
 msgid "Details"
-msgstr ""
+msgstr "상세정보"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can customize the key bindings to execute
@@ -402,7 +412,7 @@ msgstr ""
 #. existing key bindings
 #: setup/main.py:292 setup/main.py:754
 msgid "Key bindings"
-msgstr ""
+msgstr "키 조합"
 
 #: setup/main.py:305
 msgid "Menu Items"
@@ -414,7 +424,7 @@ msgstr ""
 #. default after a restart.
 #: setup/main.py:328
 msgid "Remember input mode"
-msgstr ""
+msgstr "입력 방식을 기억합니다"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the input mode (“Direct input” or “Table
@@ -437,13 +447,13 @@ msgstr ""
 
 #: setup/main.py:350
 msgid "Yes"
-msgstr ""
+msgstr "예"
 
 #. Translators: A combobox to choose the variant of
 #. Chinese which should be preferred.
 #: setup/main.py:374
 msgid "Chinese mode:"
-msgstr ""
+msgstr "중국어 방식"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.
@@ -466,14 +476,14 @@ msgstr ""
 #. simplified Chinese
 #: setup/main.py:403
 msgid "Simplified Chinese before traditional"
-msgstr ""
+msgstr "“중국어(번체) 이전의 중국어(간체)로 전환”."
 
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. traditional Chinese
 #: setup/main.py:408
 msgid "Traditional Chinese before simplified"
-msgstr ""
+msgstr "“중국어(간체) 이전에 중국어(번체)\"로 전환."
 
 #. Translators: A combobox to choose the letter width
 #. while in “Table input” mode.
@@ -561,7 +571,7 @@ msgstr ""
 #. window should be drawn horizontally or vertically.
 #: setup/main.py:654
 msgid "Orientation:"
-msgstr ""
+msgstr "용지 방향:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn
@@ -574,21 +584,21 @@ msgstr ""
 
 #: setup/main.py:665
 msgid "Horizontal"
-msgstr ""
+msgstr "수평선"
 
 #: setup/main.py:667
 msgid "Vertical"
-msgstr ""
+msgstr "수직선"
 
 #: setup/main.py:669
 msgid "System default"
-msgstr ""
+msgstr "시스템 기본값"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
 #: setup/main.py:694
 msgid "Page size:"
-msgstr ""
+msgstr "페이지 크기:"
 
 #. Translators: A tooltip for the label of the adjustment
 #. for the number of candidates to show in one page of the
@@ -603,27 +613,27 @@ msgstr ""
 
 #: setup/main.py:721
 msgid "Current key bindings:"
-msgstr ""
+msgstr "현재 키 조합:"
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
 #: setup/main.py:746
 msgid "Command"
-msgstr ""
+msgstr "명령"
 
 #: setup/main.py:777
 msgid "Edit"
-msgstr ""
+msgstr "편집"
 
 #. Translators: A tooltip for the button to edit
 #. the keybindings for the selected command.
 #: setup/main.py:783
 msgid "Edit the key bindings for the selected command"
-msgstr ""
+msgstr "선택한 명령을 위해 키 할당을 편집합니다"
 
 #: setup/main.py:790 setup/main.py:2287
 msgid "Set to default"
-msgstr ""
+msgstr "기본 값으로 설정합니다"
 
 #. Translators: A tooltip for the button to set
 #. the default key bindings for the selected command.
@@ -631,17 +641,17 @@ msgstr ""
 #. the key bindings for the selected command to the default.
 #: setup/main.py:796 setup/main.py:2294
 msgid "Set default key bindings for the selected command"
-msgstr ""
+msgstr "선택한 명령을 위해 기본 값 키 할당을 설정합니다"
 
 #: setup/main.py:803
 msgid "Set all to default"
-msgstr ""
+msgstr "모두 기본 값으로 설정합니다"
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
 #: setup/main.py:809
 msgid "Set default key bindings for all commands"
-msgstr ""
+msgstr "모든 명령을 위한 기본 키 할당을 설정합니다"
 
 #. Translators: A checkbox where one can choose whether the
 #. order of the candidates is dynamically adjusted according
@@ -658,7 +668,7 @@ msgstr ""
 
 #: setup/main.py:849
 msgid "Delete all learned data"
-msgstr ""
+msgstr "학습된 자료를 삭제"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
@@ -820,7 +830,7 @@ msgstr ""
 #. sound is played on error
 #: setup/main.py:1127
 msgid "Play sound file on error"
-msgstr ""
+msgstr "오류 발생시에 소리 파일을 재생합니다"
 
 #: setup/main.py:1129
 msgid ""
@@ -834,7 +844,7 @@ msgstr ""
 #. debug information may also be shown graphically.
 #: setup/main.py:1170
 msgid "Debug level:"
-msgstr ""
+msgstr "디버그 단계:"
 
 #. Translators: This is a tooltip for the label for the
 #. adjustment of the debug level.
@@ -843,29 +853,31 @@ msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
 msgstr ""
+"0 보다 클 때, 디버그 정보는 기록 파일에 출력 될 수 있고 디버그 정보가 "
+"그래픽으로도 출력 될 수 있습니다."
 
 #: setup/main.py:1595
 msgid "Are you sure?"
-msgstr ""
+msgstr "확실한가요?"
 
 #: setup/main.py:1597 setup/main.py:1930
 msgid "_Cancel"
-msgstr ""
+msgstr "취소(_C)"
 
 #: setup/main.py:1598 setup/main.py:1931
 msgid "_OK"
-msgstr ""
+msgstr "확인(_O)"
 
 #: setup/main.py:1630
 msgid "Another instance of this app is already running."
-msgstr ""
+msgstr "이 앱의 다른 예시가 이미 동작 중입니다."
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
 #: setup/main.py:1702
 msgid "Do you really want to restore all default settings?"
-msgstr ""
+msgstr "정말로 모든 기본값 설정으로 복구할까요?"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
@@ -881,24 +893,24 @@ msgstr ""
 
 #: setup/main.py:1927
 msgid "Select .wav sound file:"
-msgstr ""
+msgstr ".wav 소리 파일을 선택합니다:"
 
 #: setup/main.py:2210
 #, python-format
 msgid "Edit key bindings for command “%s”"
-msgstr ""
+msgstr "명령 “%s” 를 위한 키 할당 편집"
 
 #. Translators: This is a tooltip for the button to add a
 #. key binding.
 #: setup/main.py:2240
 msgid "Add a key binding"
-msgstr ""
+msgstr "키 할당을 추가합니다"
 
 #. Translators: This is a tooltip for the button to remove
 #. the selected key binding.
 #: setup/main.py:2254
 msgid "Remove selected key binding"
-msgstr ""
+msgstr "선택된 키 할당을 제거합니다"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
@@ -921,8 +933,8 @@ msgstr ""
 msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
-msgstr ""
+msgstr "정말로 모든 명령에 대한 키 할당을 기본 값으로 설정할까요?"
 
 #: setup/main.py:3167
 msgid "ibus is not running."
-msgstr ""
+msgstr "ibus가 동작하지 않습니다."

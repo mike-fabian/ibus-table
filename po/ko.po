@@ -4,14 +4,14 @@
 # Junghee Lee <daemul72@gmail.com>, 2026.
 # 김인수 <simmon@nplob.com>, 2026.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
+# Mike FABIAN <mfabian@redhat.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: 2026-06-02 08:14+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-06-02 08:47+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Korean <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ko/>\n"
 "Language: ko\n"
@@ -31,7 +31,7 @@ msgstr "중국어(간체)"
 
 #: engine/table.py:685
 msgid "Switch to “Simplified Chinese only”."
-msgstr "“중국어(간체) 전용”으로 전환\"."
+msgstr "“중국어(간체) 전용”으로 전환."
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
@@ -43,7 +43,7 @@ msgstr "중국어(번체)"
 
 #: engine/table.py:694
 msgid "Switch to “Traditional Chinese only”."
-msgstr "Switch to “중국어(번체) 전용”으로 전환."
+msgstr "“중국어(번체) 전용”으로 전환."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -69,7 +69,7 @@ msgstr "중국어(번체) 우선"
 
 #: engine/table.py:718
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr "“중국어(간체) 이전에 중국어(번체)\"로 전환."
+msgstr "“중국어(간체) 이전에 중국어(번체)”로 전환."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -85,7 +85,7 @@ msgstr "모든 중국어 문자"
 
 #: engine/table.py:729
 msgid "Switch to “All Chinese characters”."
-msgstr "“모든 중국어 문자”로 전환\"."
+msgstr "“모든 중국어 문자”로 전환”."
 
 #: engine/table.py:733 setup/main.py:1197
 msgid "Chinese mode"
@@ -191,7 +191,7 @@ msgstr "문장 부호 폭"
 
 #: engine/table.py:822
 msgid "Switch punctuation width"
-msgstr "분장 부호 폭 전환"
+msgstr "문장 부호 폭 전환"
 
 #: engine/table.py:833
 msgid "Switch to table mode"
@@ -453,7 +453,7 @@ msgstr "예"
 #. Chinese which should be preferred.
 #: setup/main.py:374
 msgid "Chinese mode:"
-msgstr "중국어 방식"
+msgstr "중국어 방식:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.
@@ -476,7 +476,7 @@ msgstr ""
 #. simplified Chinese
 #: setup/main.py:403
 msgid "Simplified Chinese before traditional"
-msgstr "“중국어(번체) 이전의 중국어(간체)로 전환”."
+msgstr "번체 이전에 간체"
 
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer

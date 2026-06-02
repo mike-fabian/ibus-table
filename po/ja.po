@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: 2026-05-12 07:45+0000\n"
+"PO-Revision-Date: 2026-06-02 09:25+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Japanese <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ja/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -24,7 +24,7 @@ msgstr ""
 #. simplified Chinese
 #: engine/table.py:683 setup/main.py:394
 msgid "Simplified Chinese"
-msgstr "中国語(簡体)"
+msgstr "中国語（簡体）"
 
 #: engine/table.py:685
 msgid "Switch to “Simplified Chinese only”."
@@ -36,7 +36,7 @@ msgstr ""
 #. traditional Chinese
 #: engine/table.py:692 setup/main.py:398
 msgid "Traditional Chinese"
-msgstr "中国語(繁体)"
+msgstr "中国語（繁体）"
 
 #: engine/table.py:694
 msgid "Switch to “Traditional Chinese only”."
@@ -49,7 +49,7 @@ msgstr ""
 #. lists.
 #: engine/table.py:704
 msgid "Simplified Chinese first"
-msgstr "中国語(簡体)"
+msgstr "中国語（簡体）優先"
 
 #: engine/table.py:706
 msgid "Switch to “Simplified Chinese before traditional”."
@@ -62,7 +62,7 @@ msgstr ""
 #. lists.
 #: engine/table.py:716
 msgid "Traditional Chinese first"
-msgstr "中国語(繁体)"
+msgstr "中国語（繁体）優先"
 
 #: engine/table.py:718
 msgid "Switch to “Traditional Chinese before simplified”."
@@ -110,7 +110,7 @@ msgstr ""
 
 #: engine/table.py:762 engine/table.py:910 setup/main.py:964
 msgid "Direct"
-msgstr "ダイレクト"
+msgstr "直接"
 
 #: engine/table.py:763
 msgid "Switch to direct input"
@@ -215,10 +215,8 @@ msgid "Suggestion disabled"
 msgstr ""
 
 #: engine/table.py:855 engine/table.py:861
-#, fuzzy
-#| msgid "Switch Input mode"
 msgid "Switch to suggestion mode"
-msgstr "入力モードを切り替えます"
+msgstr "候補提示モードに切り替える"
 
 #: engine/table.py:860
 msgid "Suggestion enabled"
@@ -229,10 +227,8 @@ msgid "Suggestion mode"
 msgstr ""
 
 #: engine/table.py:866
-#, fuzzy
-#| msgid "Switch Input mode"
 msgid "Switch suggestion mode"
-msgstr "入力モードを切り替えます"
+msgstr "候補提示モードを切り替える"
 
 #: engine/table.py:876
 msgid "Multiple character match"

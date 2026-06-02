@@ -2,19 +2,22 @@
 # Copyright (C) YEAR Yu Yuwei <acevery@gmail.com>
 # This file is distributed under the same license as the PACKAGE package.
 # Junghee Lee <daemul72@gmail.com>, 2026.
+# 김인수 <simmon@nplob.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-05-30 18:01+0000\n"
+"Last-Translator: 김인수 <simmon@nplob.com>\n"
+"Language-Team: Korean <https://translate.fedoraproject.org/projects/ibus-"
+"table/app/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2026.5\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -22,11 +25,11 @@ msgstr ""
 #. simplified Chinese
 #: engine/table.py:683 setup/main.py:394
 msgid "Simplified Chinese"
-msgstr ""
+msgstr "중국어(간체)"
 
 #: engine/table.py:685
 msgid "Switch to “Simplified Chinese only”."
-msgstr ""
+msgstr "“중국어(간체) 전용”으로 전환\"."
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
@@ -34,11 +37,11 @@ msgstr ""
 #. traditional Chinese
 #: engine/table.py:692 setup/main.py:398
 msgid "Traditional Chinese"
-msgstr ""
+msgstr "중국어(번체)"
 
 #: engine/table.py:694
 msgid "Switch to “Traditional Chinese only”."
-msgstr ""
+msgstr "Switch to “중국어(번체) 전용”으로 전환."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -47,11 +50,11 @@ msgstr ""
 #. lists.
 #: engine/table.py:704
 msgid "Simplified Chinese first"
-msgstr ""
+msgstr "중국어(간체) 우선"
 
 #: engine/table.py:706
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr ""
+msgstr "“중국어(번체) 이전의 중국어(간체)로 전환”."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -60,11 +63,11 @@ msgstr ""
 #. lists.
 #: engine/table.py:716
 msgid "Traditional Chinese first"
-msgstr ""
+msgstr "중국어(번체) 우선"
 
 #: engine/table.py:718
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr ""
+msgstr "“중국어(간체) 이전에 중국어(번체)\"로 전환."
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -76,59 +79,59 @@ msgstr ""
 #. particular order
 #: engine/table.py:728 setup/main.py:413
 msgid "All Chinese characters"
-msgstr ""
+msgstr "모든 중국어 문자"
 
 #: engine/table.py:729
 msgid "Switch to “All Chinese characters”."
-msgstr ""
+msgstr "“모든 중국어 문자”로 전환\"."
 
 #: engine/table.py:733 setup/main.py:1197
 msgid "Chinese mode"
-msgstr ""
+msgstr "중국어 방식"
 
 #: engine/table.py:734
 msgid "Switch Chinese mode"
-msgstr ""
+msgstr "중국어 방식으로 전환"
 
 #: engine/table.py:745
 msgid "English"
-msgstr ""
+msgstr "영어"
 
 #: engine/table.py:746
 msgid "Switch to English input"
-msgstr ""
+msgstr "영어 입력으로 전환"
 
 #: engine/table.py:753
 msgid "Chinese"
-msgstr ""
+msgstr "중국어"
 
 #: engine/table.py:754
 msgid "Switch to Chinese input"
-msgstr ""
+msgstr "중국어 입력으로 전환"
 
 #: engine/table.py:762 engine/table.py:910 setup/main.py:964
 msgid "Direct"
-msgstr ""
+msgstr "직접"
 
 #: engine/table.py:763
 msgid "Switch to direct input"
-msgstr ""
+msgstr "직접 입력으로 전환"
 
 #: engine/table.py:768 engine/table.py:832
 msgid "Table"
-msgstr ""
+msgstr "테이블"
 
 #: engine/table.py:769
 msgid "Switch to table input"
-msgstr ""
+msgstr "테이블 입력으로 전환"
 
 #: engine/table.py:777
 msgid "Input mode"
-msgstr ""
+msgstr "입력 방식"
 
 #: engine/table.py:778
 msgid "Switch Input mode"
-msgstr ""
+msgstr "입력 방식으로 전환"
 
 #. Translators: This is the mode to use half width letters
 #. while in “Table input” mode.
@@ -141,11 +144,11 @@ msgstr ""
 #: engine/table.py:788 engine/table.py:810 setup/main.py:450 setup/main.py:494
 #: setup/main.py:539 setup/main.py:584
 msgid "Half"
-msgstr ""
+msgstr "반"
 
 #: engine/table.py:789
 msgid "Switch to halfwidth letters"
-msgstr ""
+msgstr "반각 문자로 전환"
 
 #. Translators: This is the mode to use full width letters
 #. while in “Table input” mode.
@@ -158,103 +161,103 @@ msgstr ""
 #: engine/table.py:794 engine/table.py:816 setup/main.py:454 setup/main.py:498
 #: setup/main.py:543 setup/main.py:588
 msgid "Full"
-msgstr ""
+msgstr "전"
 
 #: engine/table.py:795
 msgid "Switch to fullwidth letters"
-msgstr ""
+msgstr "전각 문자로 전환"
 
 #: engine/table.py:799 setup/main.py:1198
 msgid "Letter width"
-msgstr ""
+msgstr "글자 폭"
 
 #: engine/table.py:800
 msgid "Switch letter width"
-msgstr ""
+msgstr "글자 폭 전환"
 
 #: engine/table.py:811
 msgid "Switch to halfwidth punctuation"
-msgstr ""
+msgstr "반각 문장 부호로 전환"
 
 #: engine/table.py:817
 msgid "Switch to fullwidth punctuation"
-msgstr ""
+msgstr "전각 문장 부호로 전환"
 
 #: engine/table.py:821 setup/main.py:1199
 msgid "Punctuation width"
-msgstr ""
+msgstr "문장 부호 폭"
 
 #: engine/table.py:822
 msgid "Switch punctuation width"
-msgstr ""
+msgstr "분장 부호 폭 전환"
 
 #: engine/table.py:833
 msgid "Switch to table mode"
-msgstr ""
+msgstr "테이블 방식으로 전환"
 
 #: engine/table.py:838
 msgid "Pinyin"
-msgstr ""
+msgstr "병음"
 
 #: engine/table.py:839
 msgid "Switch to pinyin mode"
-msgstr ""
+msgstr "병음 방식으로 전환"
 
 #: engine/table.py:843 setup/main.py:1200
 msgid "Pinyin mode"
-msgstr ""
+msgstr "병음 방식"
 
 #: engine/table.py:844
 msgid "Switch pinyin mode"
-msgstr ""
+msgstr "병음 방식 전환"
 
 #: engine/table.py:854
 msgid "Suggestion disabled"
-msgstr ""
+msgstr "제안 비활성화됨"
 
 #: engine/table.py:855 engine/table.py:861
 msgid "Switch to suggestion mode"
-msgstr ""
+msgstr "제안 방식으로 전환"
 
 #: engine/table.py:860
 msgid "Suggestion enabled"
-msgstr ""
+msgstr "제안 활성화됨"
 
 #: engine/table.py:865 setup/main.py:1201
 msgid "Suggestion mode"
-msgstr ""
+msgstr "제안 방식"
 
 #: engine/table.py:866
 msgid "Switch suggestion mode"
-msgstr ""
+msgstr "제안 방식 전환"
 
 #: engine/table.py:876
 msgid "Multiple character match"
-msgstr ""
+msgstr "다중 문자 일치"
 
 #: engine/table.py:878
 msgid "Switch to matching multiple characters at once"
-msgstr ""
+msgstr "한 번에 다중 문자 일치하기로 전환"
 
 #: engine/table.py:883
 msgid "Single character match"
-msgstr ""
+msgstr "단일 문자 일치"
 
 #: engine/table.py:885
 msgid "Switch to matching only single characters"
-msgstr ""
+msgstr "단일 문자만 일치하기로 전환"
 
 #: engine/table.py:889 setup/main.py:1202
 msgid "Onechar mode"
-msgstr ""
+msgstr "1문자 방식"
 
 #: engine/table.py:890
 msgid "Switch onechar mode"
-msgstr ""
+msgstr "1문자 방식 전환"
 
 #: engine/table.py:900 setup/main.py:962
 msgid "Normal"
-msgstr ""
+msgstr "보통"
 
 #: engine/table.py:902
 msgid ""

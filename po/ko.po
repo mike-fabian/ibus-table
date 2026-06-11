@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
 "PO-Revision-Date: 2026-06-09 17:33+0000\n"
-"Last-Translator: 김인수 <simmon@nplob.com>\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Korean <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ko/>\n"
 "Language: ko\n"
@@ -328,6 +328,15 @@ msgstr "IBus용 테이블 입력 방법."
 #: engine/it_util.py:1031
 msgid "translator-credits"
 msgstr ""
+"Elex https://launchpad.net/~mysticzizone\n"
+"Valmantas Palikša https://launchpad.net/~walmis\n"
+"Yoo Duk Nam https://launchpad.net/~yoo2001818\n"
+"onlyeriko https://launchpad.net/~onlyeriko\n"
+"Seong-ho Cho <darkcircle.0426@gmail.com>\n"
+"JungHee Lee <daemul72@gmail.com>\n"
+"MATE Desktop Environment Team <https://www.transifex.com/mate/teams/13566/"
+"ko/>\n"
+"김인수 <simmon@nplob.com>, 2026"
 
 #: engine/it_util.py:1039
 msgid "Online documentation:"
@@ -486,7 +495,7 @@ msgstr "번체 이전에 간체"
 #. traditional Chinese
 #: setup/main.py:408
 msgid "Traditional Chinese before simplified"
-msgstr "“중국어(간체) 이전에 중국어(번체)\"로 전환"
+msgstr "간체 이전에 번체"
 
 #. Translators: A combobox to choose the letter width
 #. while in “Table input” mode.

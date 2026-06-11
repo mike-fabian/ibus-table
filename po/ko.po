@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: 2026-06-02 08:47+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"PO-Revision-Date: 2026-06-09 17:33+0000\n"
+"Last-Translator: 김인수 <simmon@nplob.com>\n"
 "Language-Team: Korean <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ko/>\n"
 "Language: ko\n"
@@ -266,20 +266,22 @@ msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
 msgstr ""
+"정상 작업 방식으로 전환 (자동 작업은 응용프로그램 대신에 사전-편집으로 "
+"수행합니다. 이는 새로운 단축키의 자동으로 정의 할 수 있습니다)"
 
 #: engine/table.py:912
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
-msgstr ""
+msgstr "집적 수행 방식으로 전환 ( 자동 수행은 응용프로그램으로 직접 수행합니다)"
 
 #: engine/table.py:917 setup/main.py:1203
 msgid "Autocommit mode"
-msgstr ""
+msgstr "자동 작업 방식"
 
 #: engine/table.py:918
 msgid "Switch autocommit mode"
-msgstr ""
+msgstr "자동 작업 방식으로 전환"
 
 #: engine/table.py:2951
 msgid "Setup"
@@ -288,7 +290,7 @@ msgstr "설정"
 #: engine/table.py:2954
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
-msgstr ""
+msgstr "ibus-table의 “%(engine-name)s” 부분을 구성합니다"
 
 #. Translators: This is used in the title bar of a dialog window
 #. requesting that the user types a key to be used as a new
@@ -318,7 +320,7 @@ msgstr "대화상자는 키를 놓으면 닫힐 것입니다"
 
 #: engine/it_util.py:1007
 msgid "Table input method for IBus."
-msgstr ""
+msgstr "IBus용 테이블 입력 방법."
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
@@ -326,14 +328,6 @@ msgstr ""
 #: engine/it_util.py:1031
 msgid "translator-credits"
 msgstr ""
-"Elex https://launchpad.net/~mysticzizone\n"
-"Valmantas Palikša https://launchpad.net/~walmis\n"
-"Yoo Duk Nam https://launchpad.net/~yoo2001818\n"
-"onlyeriko https://launchpad.net/~onlyeriko\n"
-"Seong-ho Cho <darkcircle.0426@gmail.com>\n"
-"JungHee Lee <daemul72@gmail.com>\n"
-"MATE Desktop Environment Team <https://www.transifex.com/mate/teams/13566/"
-"ko/>"
 
 #: engine/it_util.py:1039
 msgid "Online documentation:"
@@ -341,11 +335,11 @@ msgstr "온라인 문서:"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:6
 msgid "Ibus Table"
-msgstr ""
+msgstr "Ibus 테이블"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:7
 msgid "Table based input method"
-msgstr ""
+msgstr "테이블 기반의 입력 방법"
 
 #: org.freedesktop.ibus.engine.table.metainfo.xml.in:9
 msgid ""
@@ -353,26 +347,29 @@ msgid ""
 "Mostly it is used for Chinese input methods such as ZhengMa, WuBi, ErBi, "
 "CangJie, …. But some tables for other languages are available as well."
 msgstr ""
+"Ibus-table은 테이블 기반의 입력 방법용 입력 방법 프레임워크입니다. 대부분 "
+"중국어 입력 방법 (ZhengMa, WuBi, ErBi, CangJie 등)에 사용되지만 다른 언어를 "
+"위한 테이블에서도 일부 제공됩니다."
 
 #: setup/ibus-setup-table.desktop.in.in:2
 msgid "IBus Table Preferences"
-msgstr ""
+msgstr "IBus 테이블 설정"
 
 #: setup/ibus-setup-table.desktop.in.in:3
 msgid "Set IBus Table Options"
-msgstr ""
+msgstr "IBus 테이블 옵션을 설정합니다"
 
 #: setup/main.py:122
 msgid "Initial state"
-msgstr ""
+msgstr "초기 상태"
 
 #: setup/main.py:123
 msgid "Direct input"
-msgstr ""
+msgstr "직접 입력"
 
 #: setup/main.py:124
 msgid "Table input"
-msgstr ""
+msgstr "테이블 입력"
 
 #: setup/main.py:138 setup/main.py:198
 msgid "Preferences"
@@ -416,7 +413,7 @@ msgstr "키 조합"
 
 #: setup/main.py:305
 msgid "Menu Items"
-msgstr ""
+msgstr "메뉴 항목"
 
 #. Translators: A combobox to choose whether the input mode
 #. (“Direct input” or “Table input”) should be remembered
@@ -440,10 +437,16 @@ msgid ""
 "characters just get passed to the application. But some conversion between "
 "fullwidth and halfwidth may still happen in direct input mode."
 msgstr ""
+"재시작한 후에 기본값으로 마지막에 사용된 입력 방식을 기억 할 것인지 또는 "
+"ibus-table이 \"Table mode\"로 시작 할 것인 여부. 두 가지 방식이 있습니다: "
+"\"Table input\"은 입력 방식이 활성화됨을 의미합니다. \"Direct input\"은 거의 "
+"입력 방식을 사용하지 않는 것과 동일합니다. 즉, 대부분의 문자는 "
+"응용프로그램으로 직접 전달됩니다. 하지만 직접 입력 방식에서 전각 및 반각 "
+"사이의 여러 전환에서 여전히 발생 할 수 있습니다."
 
 #: setup/main.py:348
 msgid "No"
-msgstr ""
+msgstr "아니오"
 
 #: setup/main.py:350
 msgid "Yes"
@@ -483,13 +486,13 @@ msgstr "번체 이전에 간체"
 #. traditional Chinese
 #: setup/main.py:408
 msgid "Traditional Chinese before simplified"
-msgstr "“중국어(간체) 이전에 중국어(번체)\"로 전환."
+msgstr "“중국어(간체) 이전에 중국어(번체)\"로 전환"
 
 #. Translators: A combobox to choose the letter width
 #. while in “Table input” mode.
 #: setup/main.py:438
 msgid "Table input letter width:"
-msgstr ""
+msgstr "테이블 입력 글자 폭:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Table input” mode.
@@ -498,12 +501,14 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
 msgstr ""
+"테이블 입력 방식에서\n"
+"전각 또는 반각 문자를 사용할지 여부."
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Table input” mode.
 #: setup/main.py:481
 msgid "Table input punctuation width:"
-msgstr ""
+msgstr "테이블 입력 구두점 폭:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Table input” mode.
@@ -512,12 +517,14 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
 msgstr ""
+"테이블 입력 방식에서 \n"
+"전각 또는 반각 구두점을 사용할지 여부."
 
 #. Translators: A combobox to choose the letter width
 #. while in “Direct input” mode.
 #: setup/main.py:527
 msgid "Direct input letter width:"
-msgstr ""
+msgstr "직접 입력 글자 폭:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Direct input” mode.
@@ -526,12 +533,14 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
 msgstr ""
+"직접 입력 방식에서\n"
+"전각 또는 반각 글자를 사용할지 여부."
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Direct input” mode.
 #: setup/main.py:571
 msgid "Direct input punctuation width:"
-msgstr ""
+msgstr "직접 입력 구두점 폭:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Direct input” mode.
@@ -540,10 +549,12 @@ msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
 msgstr ""
+"직접 입력 방식에서\n"
+"전각 및 반각 구두점을 사용할지 여부."
 
 #: setup/main.py:615
 msgid "Candidate list"
-msgstr ""
+msgstr "후보 목록"
 
 #. Translators: A combobox to choose whether
 #. a candidate list should be shown or hidden.
@@ -553,7 +564,7 @@ msgstr ""
 #. the candidate lists is better.
 #: setup/main.py:630
 msgid "Show candidate list"
-msgstr ""
+msgstr "후보 목록 표시"
 
 #. Translit: A tooltip for the label of the combobox to
 #. choose whether a candidate list should be shown or
@@ -581,6 +592,8 @@ msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
 msgstr ""
+"후보 항목을 표시하는 테이블 조회를\n"
+"수직 또는 수평으로 할지 여부."
 
 #: setup/main.py:665
 msgid "Horizontal"
@@ -610,6 +623,10 @@ msgid ""
 "pages in the lookup table using the page up/down\n"
 "keys or the arrow up/down keys."
 msgstr ""
+"조회 테이블의 한 페이지에서\n"
+"최대 후보의 수. 당신은 페이지 상/하 키\n"
+"또는 화살표 상/하 키를 사용하여 조회 테이블에서\n"
+"페이지를 전환 할 수 있습니다."
 
 #: setup/main.py:721
 msgid "Current key bindings:"
@@ -658,7 +675,7 @@ msgstr "모든 명령을 위한 기본 키 할당을 설정합니다"
 #. to how often the candidates are used.
 #: setup/main.py:834
 msgid "Dynamic adjust"
-msgstr ""
+msgstr "동적 조정"
 
 #: setup/main.py:836
 msgid ""
@@ -674,7 +691,7 @@ msgstr "학습된 자료를 삭제"
 #. character candidates should be shown.
 #: setup/main.py:874
 msgid "Compose:"
-msgstr ""
+msgstr "조합:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -689,17 +706,17 @@ msgstr ""
 
 #: setup/main.py:887
 msgid "Phrase"
-msgstr ""
+msgstr "구문"
 
 #: setup/main.py:889
 msgid "Single Char"
-msgstr ""
+msgstr "단일 문자"
 
 #. Translators: A combobox to choose whether the first
 #. candidate will be automatically selected during typing.
 #: setup/main.py:914
 msgid "Auto select"
-msgstr ""
+msgstr "자동 선택"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
@@ -722,7 +739,7 @@ msgstr ""
 #. commits go into the preëdit or into the application
 #: setup/main.py:944
 msgid "Autocommit mode:"
-msgstr ""
+msgstr "자동실행 방식:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether automatic commits go into the preëdit or
@@ -744,7 +761,7 @@ msgstr ""
 #. character candidates should be shown.
 #: setup/main.py:990
 msgid "Action when typing invalid character:"
-msgstr ""
+msgstr "잘못된 문자를 입력 할 때에 동작:"
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
@@ -762,17 +779,17 @@ msgstr ""
 
 #: setup/main.py:1008
 msgid "Commit current candidate"
-msgstr ""
+msgstr "현재 후보 실행"
 
 #: setup/main.py:1010
 msgid "Commit typed keys"
-msgstr ""
+msgstr "입력된 키를 수행합니다"
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
 #: setup/main.py:1034
 msgid "Auto wildcard"
-msgstr ""
+msgstr "자동 와일드카드"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether a wildcard should be automatically
@@ -782,12 +799,14 @@ msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
 msgstr ""
+"만약 네라면, 다중 와일드카드는 자동으로\n"
+"입력 문자열의 끝에 추가됩니다."
 
 #. Translators: This single character is a placeholder
 #. to match a any single character
 #: setup/main.py:1056
 msgid "Single wildcard character:"
-msgstr ""
+msgstr "단일 와일드카드 문자:"
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match a
@@ -797,12 +816,14 @@ msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
+"모든 단일 문자를 일치시키는 데 사용되는 와일드카드.\n"
+"와일드카드 변경 후에 RETURN 또는 ENTER를 입력하여 확인하세요."
 
 #. Translators: This single character is a placeholder
 #. to match a any number of characters
 #: setup/main.py:1082
 msgid "Multi wildcard character:"
-msgstr ""
+msgstr "다중 와일드카드 문자:"
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match any
@@ -812,19 +833,21 @@ msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
 msgstr ""
+"와일트카드는 모든 문자와 일치하도록 사용됩니다.\n"
+"와일드카드를 변경한 후에 RETURN 또는 ENTER 눌러 확인하세요."
 
 #. Translators: A combobox to choose whether
 #. the color scheme for a dark theme should be used.
 #: setup/main.py:1107
 msgid "Use dark theme"
-msgstr ""
+msgstr "어두운 테마 사용"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should
 #. be used.
 #: setup/main.py:1112
 msgid "If yes, the color scheme for a dark theme will be used."
-msgstr ""
+msgstr "만약 예라면, 어두운 테마를 위한 색상 구조가 사용됩니다."
 
 #. Translators: A checkbox where one can choose whether a
 #. sound is played on error
@@ -838,6 +861,9 @@ msgid ""
 "the simpleaudio module for Python3 is not installed, this option does "
 "nothing."
 msgstr ""
+"여기에서 만약 오류가 발생하면 소리 파일을 재생할지 여부를 선택 할 수 "
+"있습니다. 만약 파이썬3용 단순 오디오 모듈이 설치되어 있지 않으면, 이들 "
+"옵션은 실행되지 않습니다."
 
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
@@ -889,7 +915,7 @@ msgstr "정말로 모든 기본값 설정으로 복구할까요?"
 msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
-msgstr ""
+msgstr "정말로 입력 및 선택한 후보 항목에서 학습한 모든 자료를 삭제할까요?"
 
 #: setup/main.py:1927
 msgid "Select .wav sound file:"
@@ -916,13 +942,13 @@ msgstr "선택된 키 할당을 제거합니다"
 #. the selected key binding up (higher in priority).
 #: setup/main.py:2269
 msgid "Move key binding up"
-msgstr ""
+msgstr "이동 키 할당 높임"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
 #: setup/main.py:2282
 msgid "Move key binding down"
-msgstr ""
+msgstr "이동 키 할당 낮춤"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is

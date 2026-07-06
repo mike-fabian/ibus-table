@@ -4,14 +4,14 @@
 # Caius 'kaio' Chance <k@kaio.me>, 2009.05.21
 # Anonymous <noreply@weblate.org>, 2019, 2020.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2025, 2026.
+# Mike FABIAN <mfabian@redhat.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.1.20080819\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: 2026-07-03 08:17+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-07-06 16:27+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Chinese (Hong Kong) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_HK/>\n"
 "Language: zh_HK\n"
@@ -595,7 +595,7 @@ msgstr ""
 #. window should be drawn horizontally or vertically.
 #: setup/main.py:654
 msgid "Orientation:"
-msgstr "位置(_O):"
+msgstr "位置:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn

@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Hela Basa <r45xveza@pm.me>, 2021.
 # Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2025, 2026.
+# Mike FABIAN <mfabian@redhat.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: 2026-07-03 08:17+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-07-06 16:27+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Sinhala <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/si/>\n"
 "Language: si\n"
@@ -564,7 +564,7 @@ msgstr ""
 #. window should be drawn horizontally or vertically.
 #: setup/main.py:654
 msgid "Orientation:"
-msgstr "දිශනතිය (_O):"
+msgstr "දිශනතිය:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn

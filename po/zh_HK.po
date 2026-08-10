@@ -10,8 +10,9 @@ msgstr ""
 "Project-Id-Version: 0.1.20080819\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: 2026-07-06 16:27+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"PO-Revision-Date: 2026-07-30 03:17+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Chinese (Hong Kong) <https://translate.fedoraproject.org/"
 "projects/ibus-table/app/zh_HK/>\n"
 "Language: zh_HK\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.7.1.dev0\n"
+"X-Generator: Weblate 2026.7.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -117,7 +118,7 @@ msgstr "切換到中文模式"
 
 #: engine/table.py:762 engine/table.py:910 setup/main.py:964
 msgid "Direct"
-msgstr ""
+msgstr "方向"
 
 #: engine/table.py:763
 #, fuzzy
@@ -415,7 +416,7 @@ msgstr "關閉(_C)"
 #. behaviour of ibus-table.
 #: setup/main.py:261
 msgid "Settings"
-msgstr ""
+msgstr "X 設定值"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some more advanced options.
@@ -432,7 +433,7 @@ msgstr "詳細資料"
 #. existing key bindings
 #: setup/main.py:292 setup/main.py:754
 msgid "Key bindings"
-msgstr ""
+msgstr "組合鍵"
 
 #: setup/main.py:305
 msgid "Menu Items"
@@ -713,7 +714,7 @@ msgstr ""
 
 #: setup/main.py:887
 msgid "Phrase"
-msgstr ""
+msgstr "非拉"
 
 #: setup/main.py:889
 #, fuzzy

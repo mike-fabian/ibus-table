@@ -10,7 +10,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
 "PO-Revision-Date: 2026-08-10 10:20+0000\n"
-"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Kabyle <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/kab/>\n"
 "Language: kab\n"
@@ -230,7 +231,7 @@ msgstr "Askar n usumer"
 
 #: engine/table.py:866
 msgid "Switch suggestion mode"
-msgstr ""
+msgstr "Askar n usumer"
 
 #: engine/table.py:876
 msgid "Multiple character match"

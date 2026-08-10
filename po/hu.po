@@ -9,9 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-05-11 17:38+0200\n"
-"PO-Revision-Date: 2026-07-30 03:17+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"PO-Revision-Date: 2026-08-10 10:20+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Hungarian <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/hu/>\n"
 "Language: hu\n"
@@ -19,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.8.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -410,7 +409,7 @@ msgstr "Gyorsbillentyűk"
 
 #: setup/main.py:305
 msgid "Menu Items"
-msgstr "Menüelem"
+msgstr "Menüelemek"
 
 #. Translators: A combobox to choose whether the input mode
 #. (“Direct input” or “Table input”) should be remembered
@@ -437,7 +436,7 @@ msgstr ""
 
 #: setup/main.py:348
 msgid "No"
-msgstr "Tiltva"
+msgstr "Nem"
 
 #: setup/main.py:350
 msgid "Yes"
@@ -683,7 +682,7 @@ msgstr ""
 
 #: setup/main.py:887
 msgid "Phrase"
-msgstr "Phrae"
+msgstr ""
 
 #: setup/main.py:889
 msgid "Single Char"

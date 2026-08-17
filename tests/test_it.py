@@ -630,8 +630,11 @@ class WubiJidian86TestCase(unittest.TestCase):
     def test_next_and_previous_candidates_in_page(self) -> None:
         assert ENGINE is not None
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
-        print(ENGINE._lookup_table.mock_candidates)
-        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+        # Candidate results are capped to at most 100 entries (see
+        # best_candidates() in tabsqlitedb.py) and are all loaded into
+        # the lookup table immediately, not just the first page of 10.
+        self.assertEqual(len(ENGINE._lookup_table.mock_candidates), 100)
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[:10],
                          ['工  99454797 0',
                           '区 qi 1730000000 0',
                           '或 kg 1250000000 0',
@@ -744,7 +747,10 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE.set_pinyin_mode(True)
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '啊')
-        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+        # Capped to at most 100 entries (see best_candidates() in
+        # tabsqlitedb.py) and all loaded immediately, not just page 1.
+        self.assertEqual(len(ENGINE._lookup_table.mock_candidates), 100)
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[:10],
                          ['啊 ↑5   kbsk 464000000 0',
                           '阿 ↑1   bskg 319000000 0',
                           '阿 ↑3   bskg 319000000 0',
@@ -775,6 +781,8 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_a, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_numbersign, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '吗')
+        # All matching entries are loaded immediately now, not just
+        # the first page, so this list is longer than it used to be.
         self.assertEqual(ENGINE._lookup_table.mock_candidates,
                          ['吗    kcg 959000000 0',
                           '码    dcg 274000000 0',
@@ -785,7 +793,10 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '犸    qtcg 120000 0',
                           '鰢    qocy 36500 0',
                           '鷌    wvgc 25500 0',
-                          '㐷    wcg 9070 0'])
+                          '㐷    wcg 9070 0',
+                          '䣕    cbh 3340 0',
+                          '䣖    ckcn 3160 0',
+                          '𥉵    yfjh 0 0'])
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '吗')
@@ -804,7 +815,11 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '榪    scy 142000 0',
                           '獁    qtcy 41200 0',
                           '溤    icy 38700 0',
-                          '鰢    qocy 36500 0'])
+                          '鰢    qocy 36500 0',
+                          '鷌    wvgc 25500 0',
+                          '䣕    cbh 3340 0',
+                          '䣖    ckcn 3160 0',
+                          '𥉵    yfjh 0 0'])
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '吗嗎')
@@ -823,7 +838,19 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '犸    qtcg 120000 0',
                           '鰢    qocy 36500 0',
                           '鷌    wvgc 25500 0',
-                          '㐷    wcg 9070 0'])
+                          '㐷    wcg 9070 0',
+                          '䣕    cbh 3340 0',
+                          '䣖    ckcn 3160 0',
+                          '𥉵    yfjh 0 0',
+                          '嗎    kcy 148000000 0',
+                          '馬    cghy 99400000 0',
+                          '碼    dcy 38600000 0',
+                          '瑪    gcy 15900000 0',
+                          '鎷    qcy 1650000 0',
+                          '螞    jcy 662000 0',
+                          '榪    scy 142000 0',
+                          '獁    qtcy 41200 0',
+                          '溤    icy 38700 0'])
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '吗嗎吗')
@@ -842,7 +869,19 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '榪    scy 142000 0',
                           '獁    qtcy 41200 0',
                           '溤    icy 38700 0',
-                          '鰢    qocy 36500 0'])
+                          '鰢    qocy 36500 0',
+                          '鷌    wvgc 25500 0',
+                          '䣕    cbh 3340 0',
+                          '䣖    ckcn 3160 0',
+                          '𥉵    yfjh 0 0',
+                          '吗    kcg 959000000 0',
+                          '码    dcg 274000000 0',
+                          '马    cnng 236000000 0',
+                          '玛    gcg 51300000 0',
+                          '蚂    jcg 3110000 0',
+                          '杩    scg 1280000 0',
+                          '犸    qtcg 120000 0',
+                          '㐷    wcg 9070 0'])
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '吗嗎吗嗎')
@@ -861,7 +900,19 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '碼    dcy 38600000 0',
                           '瑪    gcy 15900000 0',
                           '蚂    jcg 3110000 0',
-                          '鎷    qcy 1650000 0'])
+                          '鎷    qcy 1650000 0',
+                          '杩    scg 1280000 0',
+                          '螞    jcy 662000 0',
+                          '榪    scy 142000 0',
+                          '犸    qtcg 120000 0',
+                          '獁    qtcy 41200 0',
+                          '溤    icy 38700 0',
+                          '鰢    qocy 36500 0',
+                          '鷌    wvgc 25500 0',
+                          '㐷    wcg 9070 0',
+                          '䣕    cbh 3340 0',
+                          '䣖    ckcn 3160 0',
+                          '𥉵    yfjh 0 0'])
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '吗嗎吗嗎吗')
@@ -885,7 +936,10 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '工工')
-        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+        # Capped to at most 100 entries (see select_suggestion_candidate()
+        # in tabsqlitedb.py) and all loaded immediately, not just page 1.
+        self.assertEqual(len(ENGINE._lookup_table.mock_candidates), 100)
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[:10],
                          ['工作人员 673 0',
                           '工作会议 310 0',
                           '工作报告 267 0',
@@ -919,7 +973,8 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '工工作人员啊呀爱')
-        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+        self.assertEqual(len(ENGINE._lookup_table.mock_candidates), 100)
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[:10],
                          ['爱因斯坦 1109 0',
                           '爱情故事 519 0',
                           '爱国主义 191 0',
@@ -954,7 +1009,8 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '工工')
-        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+        self.assertEqual(len(ENGINE._lookup_table.mock_candidates), 100)
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[:10],
                          ['工作人员 673 0',
                           '工作会议 310 0',
                           '工作报告 267 0',
@@ -975,7 +1031,8 @@ class WubiJidian86TestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_preedit_text, '')
         self.assertEqual(ENGINE.mock_committed_text, '工工工')
-        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+        self.assertEqual(len(ENGINE._lookup_table.mock_candidates), 100)
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[:10],
                          ['工作人员 673 0',
                           '工作会议 310 0',
                           '工作报告 267 0',
@@ -1183,6 +1240,8 @@ class WubiJidian86TestCase(unittest.TestCase):
             mode=0, update_gsettings=False) # show simplified Chinese only
         ENGINE._do_process_key_event(IBus.KEY_c, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_g, 0, 0)
+        # All matching entries are loaded immediately now, not just
+        # the first page, so these lists are longer than before.
         self.assertEqual(['对不起 fh 44400000 0',
                           '能不能 ce 21400000 0',
                           '又不是 jg 19000000 0',
@@ -1192,7 +1251,58 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '骊 my 5420000 0',
                           '邓丽君 vt 4160000 0',
                           '对不对 cf 2720000 0',
-                          '对不住 wy 2110000 0'],
+                          '对不住 wy 2110000 0',
+                          '难不成 dn 1990000 0',
+                          '马不停蹄 wk 1470000 0',
+                          '巴不得 tj 1420000 0',
+                          '马列主义 yy 1140000 0',
+                          '欢天喜地 ff 1100000 0',
+                          '马王堆 fw 552000 0',
+                          '马来亚 go 454000 0',
+                          '马到成功 da 294000 0',
+                          '参政党 ip 234000 0',
+                          '巴甫洛夫 if 232000 0',
+                          '骊歌 sk 137000 0',
+                          '馷 mh 36500 0',
+                          '駵 an 25800 0',
+                          '驑 al 24300 0',
+                          '驑 jl 24300 0',
+                          '难于登天 wg 14700 0',
+                          '䮥 kh 6060 0',
+                          '䭶 jh 4230 0',
+                          '䮋 qj 3670 0',
+                          '䮯 qt 3540 0',
+                          '䮊 xw 3530 0',
+                          '䮆 if 3450 0',
+                          '䮒 ey 3360 0',
+                          '䮏 kg 3280 0',
+                          '𩧩 t 0 0',
+                          '𦤵 cf 0 0',
+                          '𠫛 cu 0 0',
+                          '𨓔 ep 0 0',
+                          '𩤕 ey 0 0',
+                          '𩤃 hg 0 0',
+                          '𩤷 hh 0 0',
+                          '𠝌 ij 0 0',
+                          '𩣚 ik 0 0',
+                          '𩢩 jg 0 0',
+                          '𩣳 ji 0 0',
+                          '𩣬 kc 0 0',
+                          '𩦙 kd 0 0',
+                          '𩦣 kh 0 0',
+                          '𩨉 kj 0 0',
+                          '𩤬 kk 0 0',
+                          '𩧿 kl 0 0',
+                          '𢁑 km 0 0',
+                          '𩥹 kt 0 0',
+                          '𩤳 mc 0 0',
+                          '𩡸 mh 0 0',
+                          '𠫧 mw 0 0',
+                          '𠮔 mx 0 0',
+                          '𩣪 va 0 0',
+                          '𠚔 wb 0 0',
+                          '𢚥 yn 0 0',
+                          '𩢤 yy 0 0'],
                          ENGINE._lookup_table.mock_candidates,)
         ENGINE._do_process_key_event(IBus.KEY_BackSpace, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_BackSpace, 0, 0)
@@ -1210,7 +1320,59 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '对不对 cf 2720000 0',
                           '对不住 wy 2110000 0',
                           '难不成 dn 1990000 0',
-                          '巴不得 tj 1420000 0'],
+                          '巴不得 tj 1420000 0',
+                          '欢天喜地 ff 1100000 0',
+                          '驪 mx 283000 0',
+                          '参政党 ip 234000 0',
+                          '巴甫洛夫 if 232000 0',
+                          '駷 ki 54200 0',
+                          '馷 mh 36500 0',
+                          '駵 an 25800 0',
+                          '駓 ig 25600 0',
+                          '駤 cf 24500 0',
+                          '驑 al 24300 0',
+                          '驑 jl 24300 0',
+                          '駍 uh 24300 0',
+                          '难于登天 wg 14700 0',
+                          '䮠 kl 6390 0',
+                          '䮥 kh 6060 0',
+                          '䭶 jh 4230 0',
+                          '䮋 qj 3670 0',
+                          '䮯 qt 3540 0',
+                          '䮊 xw 3530 0',
+                          '䮆 if 3450 0',
+                          '䮒 ey 3360 0',
+                          '䮏 kg 3280 0',
+                          '𩢀 bn 0 0',
+                          '𦤵 cf 0 0',
+                          '𠫛 cu 0 0',
+                          '𨓔 ep 0 0',
+                          '𩤕 ey 0 0',
+                          '𩤃 hg 0 0',
+                          '𩤷 hh 0 0',
+                          '𠝌 ij 0 0',
+                          '𩣚 ik 0 0',
+                          '𩢩 jg 0 0',
+                          '𩣳 ji 0 0',
+                          '𩣬 kc 0 0',
+                          '𩦙 kd 0 0',
+                          '𩦣 kh 0 0',
+                          '𩤲 kj 0 0',
+                          '𩤬 kk 0 0',
+                          '𢁑 km 0 0',
+                          '𩢲 kq 0 0',
+                          '𩧐 ks 0 0',
+                          '𩥹 kt 0 0',
+                          '𩥲 kw 0 0',
+                          '𩤳 mc 0 0',
+                          '𩡸 mh 0 0',
+                          '𠫧 mw 0 0',
+                          '𠮔 mx 0 0',
+                          '𩢖 sy 0 0',
+                          '𩣪 va 0 0',
+                          '𠚔 wb 0 0',
+                          '𢚥 yn 0 0',
+                          '𩢤 yy 0 0'],
                          ENGINE._lookup_table.mock_candidates)
         ENGINE._do_process_key_event(IBus.KEY_BackSpace, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_BackSpace, 0, 0)
@@ -1228,7 +1390,73 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '骊 m 5420000 0',
                           '骊 my 5420000 0',
                           '邓丽君 vt 4160000 0',
-                          '对不对 cf 2720000 0'],
+                          '对不对 cf 2720000 0',
+                          '对不住 wy 2110000 0',
+                          '难不成 dn 1990000 0',
+                          '马不停蹄 wk 1470000 0',
+                          '巴不得 tj 1420000 0',
+                          '马列主义 yy 1140000 0',
+                          '欢天喜地 ff 1100000 0',
+                          '马王堆 fw 552000 0',
+                          '马来亚 go 454000 0',
+                          '马到成功 da 294000 0',
+                          '参政党 ip 234000 0',
+                          '巴甫洛夫 if 232000 0',
+                          '骊歌 sk 137000 0',
+                          '馷 mh 36500 0',
+                          '駵 an 25800 0',
+                          '驑 al 24300 0',
+                          '驑 jl 24300 0',
+                          '难于登天 wg 14700 0',
+                          '䮥 kh 6060 0',
+                          '䭶 jh 4230 0',
+                          '䮋 qj 3670 0',
+                          '䮯 qt 3540 0',
+                          '䮊 xw 3530 0',
+                          '䮆 if 3450 0',
+                          '䮒 ey 3360 0',
+                          '䮏 kg 3280 0',
+                          '𩧩 t 0 0',
+                          '𦤵 cf 0 0',
+                          '𠫛 cu 0 0',
+                          '𨓔 ep 0 0',
+                          '𩤕 ey 0 0',
+                          '𩤃 hg 0 0',
+                          '𩤷 hh 0 0',
+                          '𠝌 ij 0 0',
+                          '𩣚 ik 0 0',
+                          '𩢩 jg 0 0',
+                          '𩣳 ji 0 0',
+                          '𩣬 kc 0 0',
+                          '𩦙 kd 0 0',
+                          '𩦣 kh 0 0',
+                          '𩨉 kj 0 0',
+                          '𩤬 kk 0 0',
+                          '𩧿 kl 0 0',
+                          '𢁑 km 0 0',
+                          '𩥹 kt 0 0',
+                          '𩤳 mc 0 0',
+                          '𩡸 mh 0 0',
+                          '𠫧 mw 0 0',
+                          '𠮔 mx 0 0',
+                          '𩣪 va 0 0',
+                          '𠚔 wb 0 0',
+                          '𢚥 yn 0 0',
+                          '𩢤 yy 0 0',
+                          '馬 gy 99400000 0',
+                          '馬 hy 99400000 0',
+                          '驪 mx 283000 0',
+                          '駷 ki 54200 0',
+                          '駓 ig 25600 0',
+                          '駤 cf 24500 0',
+                          '駍 uh 24300 0',
+                          '䮠 kl 6390 0',
+                          '𩢀 bn 0 0',
+                          '𩤲 kj 0 0',
+                          '𩢲 kq 0 0',
+                          '𩧐 ks 0 0',
+                          '𩥲 kw 0 0',
+                          '𩢖 sy 0 0'],
                          ENGINE._lookup_table.mock_candidates)
         ENGINE._do_process_key_event(IBus.KEY_BackSpace, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_BackSpace, 0, 0)
@@ -1246,7 +1474,73 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '对不对 cf 2720000 0',
                           '对不住 wy 2110000 0',
                           '难不成 dn 1990000 0',
-                          '巴不得 tj 1420000 0'],
+                          '巴不得 tj 1420000 0',
+                          '欢天喜地 ff 1100000 0',
+                          '驪 mx 283000 0',
+                          '参政党 ip 234000 0',
+                          '巴甫洛夫 if 232000 0',
+                          '駷 ki 54200 0',
+                          '馷 mh 36500 0',
+                          '駵 an 25800 0',
+                          '駓 ig 25600 0',
+                          '駤 cf 24500 0',
+                          '驑 al 24300 0',
+                          '驑 jl 24300 0',
+                          '駍 uh 24300 0',
+                          '难于登天 wg 14700 0',
+                          '䮠 kl 6390 0',
+                          '䮥 kh 6060 0',
+                          '䭶 jh 4230 0',
+                          '䮋 qj 3670 0',
+                          '䮯 qt 3540 0',
+                          '䮊 xw 3530 0',
+                          '䮆 if 3450 0',
+                          '䮒 ey 3360 0',
+                          '䮏 kg 3280 0',
+                          '𩢀 bn 0 0',
+                          '𦤵 cf 0 0',
+                          '𠫛 cu 0 0',
+                          '𨓔 ep 0 0',
+                          '𩤕 ey 0 0',
+                          '𩤃 hg 0 0',
+                          '𩤷 hh 0 0',
+                          '𠝌 ij 0 0',
+                          '𩣚 ik 0 0',
+                          '𩢩 jg 0 0',
+                          '𩣳 ji 0 0',
+                          '𩣬 kc 0 0',
+                          '𩦙 kd 0 0',
+                          '𩦣 kh 0 0',
+                          '𩤲 kj 0 0',
+                          '𩤬 kk 0 0',
+                          '𢁑 km 0 0',
+                          '𩢲 kq 0 0',
+                          '𩧐 ks 0 0',
+                          '𩥹 kt 0 0',
+                          '𩥲 kw 0 0',
+                          '𩤳 mc 0 0',
+                          '𩡸 mh 0 0',
+                          '𠫧 mw 0 0',
+                          '𠮔 mx 0 0',
+                          '𩢖 sy 0 0',
+                          '𩣪 va 0 0',
+                          '𠚔 wb 0 0',
+                          '𢚥 yn 0 0',
+                          '𩢤 yy 0 0',
+                          '马来西亚 sg 14100000 0',
+                          '参与者 ft 6390000 0',
+                          '骊 m 5420000 0',
+                          '骊 my 5420000 0',
+                          '邓丽君 vt 4160000 0',
+                          '马不停蹄 wk 1470000 0',
+                          '马列主义 yy 1140000 0',
+                          '马王堆 fw 552000 0',
+                          '马来亚 go 454000 0',
+                          '马到成功 da 294000 0',
+                          '骊歌 sk 137000 0',
+                          '𩧩 t 0 0',
+                          '𩨉 kj 0 0',
+                          '𩧿 kl 0 0'],
                          ENGINE._lookup_table.mock_candidates)
         ENGINE._do_process_key_event(IBus.KEY_BackSpace, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_BackSpace, 0, 0)
@@ -1264,7 +1558,73 @@ class WubiJidian86TestCase(unittest.TestCase):
                           '马来西亚 sg 14100000 0',
                           '参与者 ft 6390000 0',
                           '骊 m 5420000 0',
-                          '骊 my 5420000 0'],
+                          '骊 my 5420000 0',
+                          '邓丽君 vt 4160000 0',
+                          '对不对 cf 2720000 0',
+                          '对不住 wy 2110000 0',
+                          '难不成 dn 1990000 0',
+                          '马不停蹄 wk 1470000 0',
+                          '巴不得 tj 1420000 0',
+                          '马列主义 yy 1140000 0',
+                          '欢天喜地 ff 1100000 0',
+                          '马王堆 fw 552000 0',
+                          '马来亚 go 454000 0',
+                          '马到成功 da 294000 0',
+                          '驪 mx 283000 0',
+                          '参政党 ip 234000 0',
+                          '巴甫洛夫 if 232000 0',
+                          '骊歌 sk 137000 0',
+                          '駷 ki 54200 0',
+                          '馷 mh 36500 0',
+                          '駵 an 25800 0',
+                          '駓 ig 25600 0',
+                          '駤 cf 24500 0',
+                          '驑 al 24300 0',
+                          '驑 jl 24300 0',
+                          '駍 uh 24300 0',
+                          '难于登天 wg 14700 0',
+                          '䮠 kl 6390 0',
+                          '䮥 kh 6060 0',
+                          '䭶 jh 4230 0',
+                          '䮋 qj 3670 0',
+                          '䮯 qt 3540 0',
+                          '䮊 xw 3530 0',
+                          '䮆 if 3450 0',
+                          '䮒 ey 3360 0',
+                          '䮏 kg 3280 0',
+                          '𩧩 t 0 0',
+                          '𩢀 bn 0 0',
+                          '𦤵 cf 0 0',
+                          '𠫛 cu 0 0',
+                          '𨓔 ep 0 0',
+                          '𩤕 ey 0 0',
+                          '𩤃 hg 0 0',
+                          '𩤷 hh 0 0',
+                          '𠝌 ij 0 0',
+                          '𩣚 ik 0 0',
+                          '𩢩 jg 0 0',
+                          '𩣳 ji 0 0',
+                          '𩣬 kc 0 0',
+                          '𩦙 kd 0 0',
+                          '𩦣 kh 0 0',
+                          '𩤲 kj 0 0',
+                          '𩨉 kj 0 0',
+                          '𩤬 kk 0 0',
+                          '𩧿 kl 0 0',
+                          '𢁑 km 0 0',
+                          '𩢲 kq 0 0',
+                          '𩧐 ks 0 0',
+                          '𩥹 kt 0 0',
+                          '𩥲 kw 0 0',
+                          '𩤳 mc 0 0',
+                          '𩡸 mh 0 0',
+                          '𠫧 mw 0 0',
+                          '𠮔 mx 0 0',
+                          '𩢖 sy 0 0',
+                          '𩣪 va 0 0',
+                          '𠚔 wb 0 0',
+                          '𢚥 yn 0 0',
+                          '𩢤 yy 0 0'],
                          ENGINE._lookup_table.mock_candidates)
         ENGINE._do_process_key_event(IBus.KEY_BackSpace, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_BackSpace, 0, 0)
@@ -1560,6 +1920,40 @@ class Cangjie5TestCase(unittest.TestCase):
             ENGINE._lookup_table.mock_candidates)
         self.assertEqual('', ENGINE.mock_preedit_text)
         self.assertEqual('怠怠怠怠怠怠怠', ENGINE.mock_committed_text)
+
+class QuickClassicTestCase(unittest.TestCase):
+    '''Test cases for the quick-classic table'''
+    def setUp(self) -> None:
+        engine_name = 'quick-classic'
+        if not set_up(engine_name):
+            self.skipTest(f'Could not setup “{engine_name}”, skipping test.')
+
+    def tearDown(self) -> None:
+        tear_down()
+
+    def test_dummy(self) -> None:
+        self.assertEqual(True, True)
+
+    def test_lookup_table_total_shown_immediately(self) -> None:
+        '''
+        Regression test: typing a code with more candidates than fit
+        on one page used to only fill one page of the lookup table at
+        a time, so the “x/y” page indicator’s “y” grew by one page
+        size on every page instead of showing the real total right
+        away (e.g. 1/9, 10/18, ..., ending on the real total only on
+        the last page).
+        '''
+        assert ENGINE is not None
+        # “of”: 人 (code “o”) + 火 (code “f”), 65 candidates in
+        # quick-classic, more than the page size of 9.
+        ENGINE._do_process_key_event(IBus.KEY_o, 0, 0)
+        ENGINE._do_process_key_event(IBus.KEY_f, 0, 0)
+        self.assertEqual(65, len(ENGINE._candidates))
+        self.assertEqual(9, ENGINE._lookup_table.get_page_size())
+        # All 65 candidates should already be in the lookup table,
+        # not just the first page of 9.
+        self.assertEqual(
+            65, len(ENGINE._lookup_table.mock_candidates))
 
 class IpaXSampaTestCase(unittest.TestCase):
     '''Test cases for the ipa-x-sampa table'''

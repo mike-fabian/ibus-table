@@ -1804,10 +1804,10 @@ class TabEngine(IBus.EngineSimple):
 
         looklen = self._lookup_table.get_number_of_candidates()
         psize = self._lookup_table.get_page_size()
+        total = len(self._candidates)
         if (self._lookup_table.get_cursor_pos() + psize >= looklen and
-                looklen < len(self._candidates)):
-            endpos = looklen + psize
-            batch = self._candidates[looklen:endpos]
+                looklen < total):
+            batch = self._candidates[looklen:total]
             for candidate in batch:
                 if (self._input_mode
                     and not self._py_mode and not self._sg_mode_active):

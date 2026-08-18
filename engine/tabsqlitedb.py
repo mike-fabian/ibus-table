@@ -159,6 +159,7 @@ class TabSqliteDb:
         self.old_phrases: List[Tuple[str, str, int, int]] = []
         self.filename = filename
         self._user_db = user_db
+        self._phrases_cache_dirty = False
         self.reset_phrases_cache()
 
         if create_database or os.path.isfile(self.filename):
@@ -471,7 +472,6 @@ class TabSqliteDb:
         '''
         Trigger a checkpoint operation.
         '''
-        self.save_phrases_cache()
         if self._user_db is None:
             return
         self.db.commit()
@@ -483,6 +483,8 @@ class TabSqliteDb:
         '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('reset_phrases_cache()')
+        if getattr(self, '_phrases_cache', None):
+            self._phrases_cache_dirty = True
         self._phrases_cache: Dict[str, Union[str, Iterable[Tuple[str, str, int, int]]]]= {}
 
     def invalidate_phrases_cache(self, tabkeys: str = '') -> None:
@@ -497,6 +499,7 @@ class TabSqliteDb:
         for i in range(1, self._mlen + 1):
             if self._phrases_cache.get(tabkeys[0:i]):
                 self._phrases_cache.pop(tabkeys[0:i])
+                self._phrases_cache_dirty = True
 
     def load_phrases_cache(self) -> None:
         '''
@@ -522,11 +525,19 @@ class TabSqliteDb:
             LOGGER.exception(
                 'Unknown error reading %s: %s: %s',
                 self.cache_path, error.__class__.__name__, error)
+        # Whatever happened above, _phrases_cache now matches what is
+        # (or should be, if unreadable/absent) on disk, so there is
+        # nothing new to write out yet.
+        self._phrases_cache_dirty = False
 
     def save_phrases_cache(self) -> None:
         '''
         Save phrases cache from disk
         '''
+        if not self._phrases_cache_dirty:
+            if DEBUG_LEVEL > 1:
+                LOGGER.debug('save_phrases_cache(): cache unchanged, skipping write')
+            return
         if DEBUG_LEVEL > 1:
             LOGGER.debug('save_phrases_cache()')
         try:
@@ -537,6 +548,7 @@ class TabSqliteDb:
             with open(_cache_path, 'w', encoding='utf-8') as f:
                 json.dump(self._phrases_cache, f)
             os.replace(_cache_path, self.cache_path)
+            self._phrases_cache_dirty = False
         except Exception as error: # pylint: disable=broad-except
             LOGGER.exception(
                 'Unexpected error in save_phrases_cache(): %s: %s',
@@ -1169,6 +1181,7 @@ class TabSqliteDb:
         if DEBUG_LEVEL > 1:
             LOGGER.debug('best=%s', repr(best))
         self._phrases_cache[tabkeys] = best
+        self._phrases_cache_dirty = True
         return best
 
     def select_chinese_characters_by_pinyin(

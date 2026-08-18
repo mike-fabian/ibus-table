@@ -1981,6 +1981,7 @@ class TabEngine(IBus.EngineSimple):
             self.sync_timeout_id = 0
         self.reset()
         self.do_focus_out()
+        self.database.save_phrases_cache()
         if self._save_user_count > 0:
             self.database.sync_usrdb()
             self._save_user_count = 0
@@ -3203,7 +3204,7 @@ class TabEngine(IBus.EngineSimple):
 
     def _sync_user_db(self) -> bool:
         """Save user db to disk"""
-        if self._save_user_count >= 0:
+        if self._save_user_count > 0:
             now = time.time()
             time_delta = now - self._save_user_start
             if (self._save_user_count > self._save_user_count_max or

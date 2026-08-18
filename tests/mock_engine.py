@@ -70,6 +70,9 @@ class MockEngine:
     def hide_preedit_text(self) -> None:
         pass
 
+    def destroy(self) -> None:
+        pass
+
     def commit_text(self, text: IBus.Text) -> None:
         self.mock_committed_text = (
             self.mock_committed_text[

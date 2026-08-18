@@ -27,6 +27,7 @@ import sys
 import os
 import logging
 import time
+import tempfile
 import unittest
 import importlib
 from unittest import mock
@@ -1794,6 +1795,111 @@ class LatexTestCase(unittest.TestCase):
         self.assertEqual(ENGINE._lookup_table.get_cursor_pos(), 15)
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, 'β⊞≬')
+
+class PhrasesCacheSyncTestCase(unittest.TestCase):
+    '''
+    Regression tests for the phrases-cache idle-rewrite bug:
+    _sync_user_db() used to trigger a full save_phrases_cache() every
+    30s even when nothing was typed (guard was “>= 0” instead of
+    “> 0”), and sync_usrdb() used to drag save_phrases_cache() along
+    on every 16th committed phrase while typing.
+    '''
+    def setUp(self) -> None:
+        engine_name = 'cangjie5'
+        if not set_up(engine_name):
+            self.skipTest(f'Could not setup “{engine_name}”, skipping test.')
+
+    def tearDown(self) -> None:
+        tear_down()
+
+    def test_idle_never_syncs(self) -> None:
+        '''5 minutes idle, zero keystrokes: sync_usrdb() must never fire.'''
+        assert ENGINE is not None
+        ENGINE._save_user_count = 0
+        ENGINE._save_user_start = 0.0
+        with mock.patch.object(ENGINE.database, 'sync_usrdb') as mock_sync:
+            with mock.patch.object(table.time, 'time') as mock_time:
+                for second in range(1, 301):
+                    mock_time.return_value = float(second)
+                    ENGINE._sync_user_db()
+        self.assertEqual(mock_sync.call_count, 0)
+
+    def test_typing_syncs_once_after_max_count(self) -> None:
+        '''
+        Committing more phrases than _save_user_count_max must still
+        trigger exactly one sync_usrdb() call (that part of the timer
+        is intentional and unchanged).
+        '''
+        assert ENGINE is not None
+        ENGINE._save_user_count = 0
+        ENGINE._save_user_start = 0.0
+        with mock.patch.object(ENGINE.database, 'sync_usrdb') as mock_sync:
+            with mock.patch.object(table.time, 'time') as mock_time:
+                fake_now = 0.0
+                for _unused in range(ENGINE._save_user_count_max + 1):
+                    fake_now += 0.5
+                    mock_time.return_value = fake_now
+                    if ENGINE._save_user_count <= 0:
+                        ENGINE._save_user_start = fake_now
+                    ENGINE._save_user_count += 1
+                    ENGINE._sync_user_db()
+        self.assertEqual(mock_sync.call_count, 1)
+
+    def test_sync_usrdb_no_longer_touches_cache(self) -> None:
+        '''sync_usrdb() must not call save_phrases_cache() anymore.'''
+        assert TABSQLITEDB is not None
+        with mock.patch.object(
+                TABSQLITEDB, 'save_phrases_cache') as mock_save:
+            TABSQLITEDB.sync_usrdb()
+        mock_save.assert_not_called()
+
+    def test_do_destroy_saves_cache_unconditionally(self) -> None:
+        '''
+        do_destroy() must always flush the phrases cache to disk, even
+        if nothing was typed (_save_user_count == 0), since
+        sync_usrdb() no longer does that implicitly.
+        '''
+        assert ENGINE is not None
+        ENGINE._save_user_count = 0
+        with mock.patch.object(
+                ENGINE.database, 'save_phrases_cache') as mock_save, \
+             mock.patch.object(ENGINE.database, 'sync_usrdb') as mock_sync:
+            ENGINE.do_destroy()
+        mock_save.assert_called_once()
+        mock_sync.assert_not_called()
+
+    def test_save_phrases_cache_skips_when_not_dirty(self) -> None:
+        '''
+        save_phrases_cache() must not touch disk at all if nothing was
+        added to or removed from the cache since the last save/load
+        (do_destroy() now calls it unconditionally, so this is what
+        keeps closing an engine that never did any lookups cheap).
+        '''
+        assert TABSQLITEDB is not None
+        TABSQLITEDB._phrases_cache_dirty = False
+        with mock.patch('builtins.open') as mock_open:
+            TABSQLITEDB.save_phrases_cache()
+        mock_open.assert_not_called()
+
+    def test_save_phrases_cache_writes_when_dirty(self) -> None:
+        '''
+        A real lookup must mark the cache dirty, and
+        save_phrases_cache() must then actually write it and clear
+        the flag again.
+        '''
+        assert TABSQLITEDB is not None
+        TABSQLITEDB._phrases_cache_dirty = False
+        TABSQLITEDB.select_words(tabkeys='a', chinese_mode=4)
+        self.assertTrue(TABSQLITEDB._phrases_cache_dirty)
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            original_cache_path = TABSQLITEDB.cache_path
+            TABSQLITEDB.cache_path = os.path.join(tmp_dir, 'test.cache')
+            try:
+                TABSQLITEDB.save_phrases_cache()
+                self.assertTrue(os.path.isfile(TABSQLITEDB.cache_path))
+            finally:
+                TABSQLITEDB.cache_path = original_cache_path
+        self.assertFalse(TABSQLITEDB._phrases_cache_dirty)
 
 if __name__ == '__main__':
     LOG_HANDLER = logging.StreamHandler(stream=sys.stderr)

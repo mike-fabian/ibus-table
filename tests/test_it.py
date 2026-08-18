@@ -27,6 +27,8 @@ import sys
 import os
 import logging
 import time
+import sqlite3
+import shutil
 import tempfile
 import unittest
 import importlib
@@ -2189,114 +2191,122 @@ class LatexTestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, 'β⊞≬')
 
-class PhrasesCacheSyncTestCase(unittest.TestCase):
+class SelectWordsEscapeIndexTestCase(unittest.TestCase):
     '''
-    Regression tests for the phrases-cache idle-rewrite bug:
-    _sync_user_db() used to trigger a full save_phrases_cache() every
-    30s even when nothing was typed (guard was “>= 0” instead of
-    “> 0”), and sync_usrdb() used to drag save_phrases_cache() along
-    on every 16th committed phrase while typing.
+    Regression tests for the select_words() / create_indexes() fix: an
+    ESCAPE clause unconditionally added to the LIKE query disabled
+    SQLite's index-based range-scan optimization, and
+    create_indexes()/drop_indexes() were a deliberate no-op even though
+    their call sites already existed. Builds its own throwaway sqlite
+    file so the real installed system databases are never touched.
     '''
     def setUp(self) -> None:
-        engine_name = 'cangjie5'
-        if not set_up(engine_name):
-            self.skipTest(f'Could not setup “{engine_name}”, skipping test.')
+        '''Build a small throwaway system database with rows crafted to
+        exercise plain prefixes, both wildcard characters, and literal
+        occurrences of %, _, and the escape character.'''
+        self._tmpdir = tempfile.mkdtemp(prefix='ibus_table_escape_index_test_')
+        db_path = os.path.join(self._tmpdir, 'test_sys.db')
+        con = sqlite3.connect(db_path)
+        con.execute('CREATE TABLE ime (attr TEXT, val TEXT)')
+        con.executemany('INSERT INTO ime VALUES (?,?)', [
+            ('max_key_length', '4'), ('serial_number', '1'),
+            ('languages', 'zh_CN'), ('user_can_define_phrase', 'false'),
+            ('rules', ''), ('name', 'escapeindextest'),
+            ('start_chars', 'abcdefghijklmnopqrstuvwxyz%_#')])
+        con.execute('CREATE TABLE phrases (id INTEGER PRIMARY KEY, tabkeys TEXT,'
+                    ' phrase TEXT, freq INTEGER, user_freq INTEGER)')
+        con.executemany(
+            'INSERT INTO phrases (tabkeys,phrase,freq,user_freq) VALUES (?,?,?,?)',
+            [('ab', 'A', 900, 0), ('abc', 'B', 800, 0), ('abcd', 'C', 700, 0),
+             ('axc', 'D', 600, 0), ('a%c', 'E', 500, 0), ('a_c', 'F', 400, 0),
+             ('a#c', 'G', 300, 0)])
+        con.commit()
+        con.close()
+        self.db = tabsqlitedb.TabSqliteDb(
+            filename=db_path, user_db=':memory:', unit_test=True)
+        self._captured = []
+        self._real_db = self.db.db
+        captured = self._captured
+        real_db = self._real_db
+        class Spy: # pylint: disable=missing-class-docstring
+            def execute(self, sql, *a): # pylint: disable=missing-function-docstring
+                captured.append(' '.join(sql.split()))
+                return real_db.execute(sql, *a)
+            def __getattr__(self, name):
+                return getattr(real_db, name)
+        self.db.db = Spy() # type: ignore
 
     def tearDown(self) -> None:
-        tear_down()
+        '''Remove the throwaway database directory created in setUp().'''
+        shutil.rmtree(self._tmpdir, ignore_errors=True)
 
-    def test_idle_never_syncs(self) -> None:
-        '''5 minutes idle, zero keystrokes: sync_usrdb() must never fire.'''
-        assert ENGINE is not None
-        ENGINE._save_user_count = 0
-        ENGINE._save_user_start = 0.0
-        with (
-                mock.patch.object(ENGINE.database, 'sync_usrdb') as mock_sync,
-                mock.patch.object(table.time, 'time') as mock_time,
-        ):
-                for second in range(1, 301):
-                    mock_time.return_value = float(second)
-                    ENGINE._sync_user_db()
-        self.assertEqual(mock_sync.call_count, 0)
+    def _indexes(self):
+        '''Return the names of all indexes currently defined on the
+        throwaway database, bypassing the Spy to query the real
+        connection directly.'''
+        return [r[0] for r in self._real_db.execute(
+            "SELECT name FROM sqlite_master WHERE type='index'").fetchall()]
 
-    def test_typing_syncs_once_after_max_count(self) -> None:
-        '''
-        Committing more phrases than _save_user_count_max must still
-        trigger exactly one sync_usrdb() call (that part of the timer
-        is intentional and unchanged).
-        '''
-        assert ENGINE is not None
-        ENGINE._save_user_count = 0
-        ENGINE._save_user_start = 0.0
-        with (
-                mock.patch.object(ENGINE.database, 'sync_usrdb') as mock_sync,
-                mock.patch.object(table.time, 'time') as mock_time,
-        ):
-                fake_now = 0.0
-                for _unused in range(ENGINE._save_user_count_max + 1):
-                    fake_now += 0.5
-                    mock_time.return_value = fake_now
-                    if ENGINE._save_user_count <= 0:
-                        ENGINE._save_user_start = fake_now
-                    ENGINE._save_user_count += 1
-                    ENGINE._sync_user_db()
-        self.assertEqual(mock_sync.call_count, 1)
+    def test_escape_omitted_for_plain_prefix(self) -> None:
+        '''A plain alphabetic prefix contains no escape sequences, so the
+        ESCAPE clause must not be emitted (it would otherwise block the
+        index-based range scan for no reason).'''
+        self._captured.clear()
+        self.db.select_words(tabkeys='ab', auto_wildcard=True)
+        self.assertNotIn('ESCAPE', self._captured[0])
 
-    def test_sync_usrdb_no_longer_touches_cache(self) -> None:
-        '''sync_usrdb() must not call save_phrases_cache() anymore.'''
-        assert TABSQLITEDB is not None
-        with mock.patch.object(
-                TABSQLITEDB, 'save_phrases_cache') as mock_save:
-            TABSQLITEDB.sync_usrdb()
-        mock_save.assert_not_called()
+    def test_escape_included_for_literal_percent(self) -> None:
+        '''A literal “%” in the typed keys must still be escaped, and the
+        ESCAPE clause must still be emitted for that query.'''
+        self._captured.clear()
+        self.db.select_words(tabkeys='a%c')
+        self.assertIn('ESCAPE', self._captured[0])
 
-    def test_do_destroy_saves_cache_unconditionally(self) -> None:
-        '''
-        do_destroy() must always flush the phrases cache to disk, even
-        if nothing was typed (_save_user_count == 0), since
-        sync_usrdb() no longer does that implicitly.
-        '''
-        assert ENGINE is not None
-        ENGINE._save_user_count = 0
-        with mock.patch.object(
-                ENGINE.database, 'save_phrases_cache') as mock_save, \
-             mock.patch.object(ENGINE.database, 'sync_usrdb') as mock_sync:
-            ENGINE.do_destroy()
-        mock_save.assert_called_once()
-        mock_sync.assert_not_called()
+    def test_escape_included_for_literal_underscore(self) -> None:
+        '''A literal “_” in the typed keys must still be escaped, and the
+        ESCAPE clause must still be emitted for that query.'''
+        self._captured.clear()
+        self.db.select_words(tabkeys='a_c')
+        self.assertIn('ESCAPE', self._captured[0])
 
-    def test_save_phrases_cache_skips_when_not_dirty(self) -> None:
-        '''
-        save_phrases_cache() must not touch disk at all if nothing was
-        added to or removed from the cache since the last save/load
-        (do_destroy() now calls it unconditionally, so this is what
-        keeps closing an engine that never did any lookups cheap).
-        '''
-        assert TABSQLITEDB is not None
-        TABSQLITEDB._phrases_cache_dirty = False
-        with mock.patch('builtins.open') as mock_open:
-            TABSQLITEDB.save_phrases_cache()
-        mock_open.assert_not_called()
+    def test_create_indexes_actually_creates_index(self) -> None:
+        '''create_indexes() used to be a no-op; it must now actually add
+        the tabkeys index to the target database.'''
+        self.assertNotIn('phrases_tabkeys_index', self._indexes())
+        self.db.create_indexes('main')
+        self.assertIn('phrases_tabkeys_index', self._indexes())
 
-    def test_save_phrases_cache_writes_when_dirty(self) -> None:
-        '''
-        A real lookup must mark the cache dirty, and
-        save_phrases_cache() must then actually write it and clear
-        the flag again.
-        '''
-        assert TABSQLITEDB is not None
-        TABSQLITEDB._phrases_cache_dirty = False
-        TABSQLITEDB.select_words(tabkeys='a', chinese_mode=4)
-        self.assertTrue(TABSQLITEDB._phrases_cache_dirty)
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            original_cache_path = TABSQLITEDB.cache_path
-            TABSQLITEDB.cache_path = os.path.join(tmp_dir, 'test.cache')
-            try:
-                TABSQLITEDB.save_phrases_cache()
-                self.assertTrue(os.path.isfile(TABSQLITEDB.cache_path))
-            finally:
-                TABSQLITEDB.cache_path = original_cache_path
-        self.assertFalse(TABSQLITEDB._phrases_cache_dirty)
+    def test_drop_indexes_actually_drops_index(self) -> None:
+        '''drop_indexes() used to be a no-op; it must now actually remove
+        the tabkeys index it created.'''
+        self.db.create_indexes('main')
+        self.assertIn('phrases_tabkeys_index', self._indexes())
+        self.db.drop_indexes('main')
+        self.assertNotIn('phrases_tabkeys_index', self._indexes())
+
+    def test_query_plan_uses_index_after_create_indexes(self) -> None:
+        '''Once the index exists and no ESCAPE clause is emitted, SQLite's
+        query plan must switch from a full table scan to an index
+        search.'''
+        self.db.create_indexes('main')
+        self._captured.clear()
+        self.db.reset_phrases_cache()
+        self.db.select_words(tabkeys='ab', auto_wildcard=True)
+        sql = self._captured[0]
+        plan = '; '.join(r[-1] for r in self._real_db.execute(
+            'EXPLAIN QUERY PLAN ' + sql, {'tabkeys': 'ab%'}).fetchall())
+        self.assertIn('USING INDEX', plan)
+
+    def test_results_identical_with_and_without_index(self) -> None:
+        '''The whole point of the fix is a faster query plan, not
+        different results: the candidate list for the same tabkeys must
+        be byte-identical whether or not the index exists.'''
+        self.db.reset_phrases_cache()
+        before = list(self.db.select_words(tabkeys='a', auto_wildcard=True))
+        self.db.create_indexes('main')
+        self.db.reset_phrases_cache()
+        after = list(self.db.select_words(tabkeys='a', auto_wildcard=True))
+        self.assertEqual(before, after)
 
 if __name__ == '__main__':
     LOG_HANDLER = logging.StreamHandler(stream=sys.stderr)

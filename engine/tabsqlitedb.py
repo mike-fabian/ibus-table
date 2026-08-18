@@ -954,31 +954,38 @@ class TabSqliteDb:
         self.db.executescript("VACUUM;")
         self.db.commit()
 
-    def drop_indexes( # pylint: disable=no-self-use
-            self, _database: str) -> None:
+    def drop_indexes(self, database: str) -> None:
         '''Drop the indexes in the database to reduce its size
 
-        We do not use any indexes at the moment, therefore this
-        function does nothing.
+        :param database: The database to drop the index in,
+                         “main” or “user_db”
         '''
         if DEBUG_LEVEL > 1:
-            LOGGER.debug('drop_indexes()')
+            LOGGER.debug('drop_indexes(%s)', database)
+        self.db.execute(
+            f'DROP INDEX IF EXISTS {database}.phrases_tabkeys_index;')
+        self.db.commit()
 
-    def create_indexes( # pylint: disable=no-self-use
-            self, _database: str, _commit: bool = True) -> None:
+    def create_indexes(self, database: str, commit: bool = True) -> None:
         '''Create indexes for the database.
 
-        We do not use any indexes at the moment, therefore
-        this function does nothing. We used indexes before,
-        but benchmarking showed that none of them was really
-        speeding anything up, therefore we deleted all of them
-        to get much smaller databases (about half the size).
+        The only index needed is on “tabkeys”, which is what
+        “select_words()” and “is_in_system_database()” match on. Without
+        it, both have to scan the whole phrases table on every lookup.
+        Note that this index can only be used if the query does not use
+        an ESCAPE clause, see the comment in “select_words()”.
 
-        If some index turns out to be very useful in future, it could
-        be created here (and dropped in “drop_indexes()”).
+        :param database: The database to create the index in,
+                         “main” or “user_db”
+        :param commit: Whether to commit after creating the index
         '''
         if DEBUG_LEVEL > 1:
-            LOGGER.debug('create_indexes()')
+            LOGGER.debug('create_indexes(%s)', database)
+        self.db.execute(
+            f'CREATE INDEX IF NOT EXISTS {database}.phrases_tabkeys_index '
+            'ON phrases (tabkeys);')
+        if commit:
+            self.db.commit()
 
     @staticmethod
     def _big5_code(phrase: str) -> bytes:
@@ -1091,22 +1098,6 @@ class TabSqliteDb:
             # for some users really like to select only single characters
             one_char_condition = ' AND length(phrase)=1 '
 
-        if self.user_can_define_phrase or dynamic_adjust:
-            sqlstr = f'''
-            SELECT tabkeys, phrase, freq, user_freq FROM
-            (
-                SELECT tabkeys, phrase, freq, user_freq FROM main.phrases
-                WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar {one_char_condition}
-                UNION ALL
-                SELECT tabkeys, phrase, freq, user_freq FROM user_db.phrases
-                WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar {one_char_condition}
-            )
-            '''
-        else:
-            sqlstr = f'''
-            SELECT tabkeys, phrase, freq, user_freq FROM main.phrases
-            WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar {one_char_condition}
-            '''
         escapechar = '☺'
         for char in '!@#':
             if char not in [single_wildcard_char, multi_wildcard_char]:
@@ -1126,7 +1117,37 @@ class TabSqliteDb:
                 multi_wildcard_char, '%')
         if auto_wildcard:
             tabkeys_for_like += '%'
-        sqlargs = {'tabkeys': tabkeys_for_like, 'escapechar': escapechar}
+        sqlargs = {'tabkeys': tabkeys_for_like}
+        # Only ask for an ESCAPE character when escaping actually happened.
+        # “escapechar” can appear in the pattern only if it was inserted
+        # above (a literal one typed by the user gets doubled), so its
+        # presence is an exact test for that. This matters because an
+        # ESCAPE clause disables SQLite’s optimization which rewrites
+        # “LIKE 'abc%'” into a range constraint usable by an index on
+        # “tabkeys”, i.e. with the clause every lookup is a full table
+        # scan. Without escape sequences in the pattern, omitting the
+        # clause matches exactly the same rows.
+        like_condition = 'tabkeys LIKE :tabkeys'
+        if escapechar in tabkeys_for_like:
+            like_condition = 'tabkeys LIKE :tabkeys ESCAPE :escapechar'
+            sqlargs['escapechar'] = escapechar
+
+        if self.user_can_define_phrase or dynamic_adjust:
+            sqlstr = f'''
+            SELECT tabkeys, phrase, freq, user_freq FROM
+            (
+                SELECT tabkeys, phrase, freq, user_freq FROM main.phrases
+                WHERE {like_condition} {one_char_condition}
+                UNION ALL
+                SELECT tabkeys, phrase, freq, user_freq FROM user_db.phrases
+                WHERE {like_condition} {one_char_condition}
+            )
+            '''
+        else:
+            sqlstr = f'''
+            SELECT tabkeys, phrase, freq, user_freq FROM main.phrases
+            WHERE {like_condition} {one_char_condition}
+            '''
         if DEBUG_LEVEL > 1:
             LOGGER.debug('sqlstr=%s sqlargs=%s', sqlstr, repr(sqlargs))
         unfiltered_results = self.db.execute(sqlstr, sqlargs).fetchall()

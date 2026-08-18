@@ -27,6 +27,9 @@ import sys
 import os
 import logging
 import time
+import sqlite3
+import shutil
+import tempfile
 import unittest
 import importlib
 from unittest import mock
@@ -1794,6 +1797,123 @@ class LatexTestCase(unittest.TestCase):
         self.assertEqual(ENGINE._lookup_table.get_cursor_pos(), 15)
         ENGINE._do_process_key_event(IBus.KEY_space, 0, 0)
         self.assertEqual(ENGINE.mock_committed_text, 'β⊞≬')
+
+class SelectWordsEscapeIndexTestCase(unittest.TestCase):
+    '''
+    Regression tests for the select_words() / create_indexes() fix: an
+    ESCAPE clause unconditionally added to the LIKE query disabled
+    SQLite's index-based range-scan optimization, and
+    create_indexes()/drop_indexes() were a deliberate no-op even though
+    their call sites already existed. Builds its own throwaway sqlite
+    file so the real installed system databases are never touched.
+    '''
+    def setUp(self) -> None:
+        '''Build a small throwaway system database with rows crafted to
+        exercise plain prefixes, both wildcard characters, and literal
+        occurrences of %, _, and the escape character.'''
+        self._tmpdir = tempfile.mkdtemp(prefix='ibus_table_escape_index_test_')
+        db_path = os.path.join(self._tmpdir, 'test_sys.db')
+        con = sqlite3.connect(db_path)
+        con.execute('CREATE TABLE ime (attr TEXT, val TEXT)')
+        con.executemany('INSERT INTO ime VALUES (?,?)', [
+            ('max_key_length', '4'), ('serial_number', '1'),
+            ('languages', 'zh_CN'), ('user_can_define_phrase', 'false'),
+            ('rules', ''), ('name', 'escapeindextest'),
+            ('start_chars', 'abcdefghijklmnopqrstuvwxyz%_#')])
+        con.execute('CREATE TABLE phrases (id INTEGER PRIMARY KEY, tabkeys TEXT,'
+                    ' phrase TEXT, freq INTEGER, user_freq INTEGER)')
+        con.executemany(
+            'INSERT INTO phrases (tabkeys,phrase,freq,user_freq) VALUES (?,?,?,?)',
+            [('ab', 'A', 900, 0), ('abc', 'B', 800, 0), ('abcd', 'C', 700, 0),
+             ('axc', 'D', 600, 0), ('a%c', 'E', 500, 0), ('a_c', 'F', 400, 0),
+             ('a#c', 'G', 300, 0)])
+        con.commit()
+        con.close()
+        self.db = tabsqlitedb.TabSqliteDb(
+            filename=db_path, user_db=':memory:', unit_test=True)
+        self._captured = []
+        self._real_db = self.db.db
+        captured = self._captured
+        real_db = self._real_db
+        class Spy: # pylint: disable=missing-class-docstring
+            def execute(self, sql, *a): # pylint: disable=missing-function-docstring
+                captured.append(' '.join(sql.split()))
+                return real_db.execute(sql, *a)
+            def __getattr__(self, name):
+                return getattr(real_db, name)
+        self.db.db = Spy() # type: ignore
+
+    def tearDown(self) -> None:
+        '''Remove the throwaway database directory created in setUp().'''
+        shutil.rmtree(self._tmpdir, ignore_errors=True)
+
+    def _indexes(self):
+        '''Return the names of all indexes currently defined on the
+        throwaway database, bypassing the Spy to query the real
+        connection directly.'''
+        return [r[0] for r in self._real_db.execute(
+            "SELECT name FROM sqlite_master WHERE type='index'").fetchall()]
+
+    def test_escape_omitted_for_plain_prefix(self) -> None:
+        '''A plain alphabetic prefix contains no escape sequences, so the
+        ESCAPE clause must not be emitted (it would otherwise block the
+        index-based range scan for no reason).'''
+        self._captured.clear()
+        self.db.select_words(tabkeys='ab', auto_wildcard=True)
+        self.assertNotIn('ESCAPE', self._captured[0])
+
+    def test_escape_included_for_literal_percent(self) -> None:
+        '''A literal “%” in the typed keys must still be escaped, and the
+        ESCAPE clause must still be emitted for that query.'''
+        self._captured.clear()
+        self.db.select_words(tabkeys='a%c')
+        self.assertIn('ESCAPE', self._captured[0])
+
+    def test_escape_included_for_literal_underscore(self) -> None:
+        '''A literal “_” in the typed keys must still be escaped, and the
+        ESCAPE clause must still be emitted for that query.'''
+        self._captured.clear()
+        self.db.select_words(tabkeys='a_c')
+        self.assertIn('ESCAPE', self._captured[0])
+
+    def test_create_indexes_actually_creates_index(self) -> None:
+        '''create_indexes() used to be a no-op; it must now actually add
+        the tabkeys index to the target database.'''
+        self.assertNotIn('phrases_tabkeys_index', self._indexes())
+        self.db.create_indexes('main')
+        self.assertIn('phrases_tabkeys_index', self._indexes())
+
+    def test_drop_indexes_actually_drops_index(self) -> None:
+        '''drop_indexes() used to be a no-op; it must now actually remove
+        the tabkeys index it created.'''
+        self.db.create_indexes('main')
+        self.assertIn('phrases_tabkeys_index', self._indexes())
+        self.db.drop_indexes('main')
+        self.assertNotIn('phrases_tabkeys_index', self._indexes())
+
+    def test_query_plan_uses_index_after_create_indexes(self) -> None:
+        '''Once the index exists and no ESCAPE clause is emitted, SQLite's
+        query plan must switch from a full table scan to an index
+        search.'''
+        self.db.create_indexes('main')
+        self._captured.clear()
+        self.db.reset_phrases_cache()
+        self.db.select_words(tabkeys='ab', auto_wildcard=True)
+        sql = self._captured[0]
+        plan = '; '.join(r[-1] for r in self._real_db.execute(
+            'EXPLAIN QUERY PLAN ' + sql, {'tabkeys': 'ab%'}).fetchall())
+        self.assertIn('USING INDEX', plan)
+
+    def test_results_identical_with_and_without_index(self) -> None:
+        '''The whole point of the fix is a faster query plan, not
+        different results: the candidate list for the same tabkeys must
+        be byte-identical whether or not the index exists.'''
+        self.db.reset_phrases_cache()
+        before = list(self.db.select_words(tabkeys='a', auto_wildcard=True))
+        self.db.create_indexes('main')
+        self.db.reset_phrases_cache()
+        after = list(self.db.select_words(tabkeys='a', auto_wildcard=True))
+        self.assertEqual(before, after)
 
 if __name__ == '__main__':
     LOG_HANDLER = logging.StreamHandler(stream=sys.stderr)

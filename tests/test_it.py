@@ -364,7 +364,7 @@ def set_up(engine_name: str) -> bool:
         tear_down()
         return False
     TABSQLITEDB = tabsqlitedb.TabSqliteDb(
-        filename=db_file, user_db=':memory:', unit_test=True)
+        filename=db_file, user_db=':memory:')
     ENGINE = table.TabEngine(
         bus,
         f'/com/redhat/IBus/engines/table/{engine_name}/engine/0',
@@ -1830,7 +1830,7 @@ class SelectWordsEscapeIndexTestCase(unittest.TestCase):
         con.commit()
         con.close()
         self.db = tabsqlitedb.TabSqliteDb(
-            filename=db_path, user_db=':memory:', unit_test=True)
+            filename=db_path, user_db=':memory:')
         self._captured = []
         self._real_db = self.db.db
         captured = self._captured
@@ -1897,7 +1897,6 @@ class SelectWordsEscapeIndexTestCase(unittest.TestCase):
         search.'''
         self.db.create_indexes('main')
         self._captured.clear()
-        self.db.reset_phrases_cache()
         self.db.select_words(tabkeys='ab', auto_wildcard=True)
         sql = self._captured[0]
         plan = '; '.join(r[-1] for r in self._real_db.execute(
@@ -1908,10 +1907,8 @@ class SelectWordsEscapeIndexTestCase(unittest.TestCase):
         '''The whole point of the fix is a faster query plan, not
         different results: the candidate list for the same tabkeys must
         be byte-identical whether or not the index exists.'''
-        self.db.reset_phrases_cache()
         before = list(self.db.select_words(tabkeys='a', auto_wildcard=True))
         self.db.create_indexes('main')
-        self.db.reset_phrases_cache()
         after = list(self.db.select_words(tabkeys='a', auto_wildcard=True))
         self.assertEqual(before, after)
 

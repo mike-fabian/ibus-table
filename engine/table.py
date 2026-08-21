@@ -2032,7 +2032,6 @@ class TabEngine(IBus.EngineSimple):
         if dynamic_adjust == self._dynamic_adjust:
             return
         self._dynamic_adjust = dynamic_adjust
-        self.database.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
                 'dynamicadjust',
@@ -2372,7 +2371,6 @@ class TabEngine(IBus.EngineSimple):
         self._onechar = mode
         self._init_or_update_property_menu(
             self.onechar_mode_menu, mode)
-        self.database.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
                 "onechar",
@@ -2486,7 +2484,6 @@ class TabEngine(IBus.EngineSimple):
         if mode == self._auto_wildcard:
             return
         self._auto_wildcard = mode
-        self.database.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
                 "autowildcard",
@@ -2511,7 +2508,6 @@ class TabEngine(IBus.EngineSimple):
         if char == self._single_wildcard_char:
             return
         self._single_wildcard_char = char
-        self.database.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
                 "singlewildcardchar",
@@ -2542,7 +2538,6 @@ class TabEngine(IBus.EngineSimple):
         if char == self._multi_wildcard_char:
             return
         self._multi_wildcard_char = char
-        self.database.reset_phrases_cache()
         if update_gsettings:
             self._gsettings.set_value(
                 "multiwildcardchar",
@@ -2742,7 +2737,6 @@ class TabEngine(IBus.EngineSimple):
         if mode == self._chinese_mode:
             return
         self._chinese_mode = mode
-        self.database.reset_phrases_cache()
         self._init_or_update_property_menu(
             self.chinese_mode_menu, mode)
         if update_gsettings:

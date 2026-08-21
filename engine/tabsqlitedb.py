@@ -36,7 +36,6 @@ import uuid
 import time
 import re
 import logging
-import json
 import chinese_variants
 import ibus_table_location
 
@@ -149,8 +148,7 @@ class TabSqliteDb:
             self,
             filename: str = '',
             user_db: str = '',
-            create_database: bool = False,
-            unit_test: bool = False) -> None:
+            create_database: bool = False) -> None:
         global DEBUG_LEVEL # pylint: disable=global-statement
         try:
             DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
@@ -159,7 +157,6 @@ class TabSqliteDb:
         self.old_phrases: List[Tuple[str, str, int, int]] = []
         self.filename = filename
         self._user_db = user_db
-        self.reset_phrases_cache()
 
         if create_database or os.path.isfile(self.filename):
             self.db: sqlite3.dbapi2.Connection = sqlite3.connect(self.filename)
@@ -257,10 +254,6 @@ class TabSqliteDb:
         self.startchars = self.get_start_chars()
 
         tables_path = os.path.join(ibus_table_location.data_home(), 'tables')
-        cache_name = os.path.basename(self.filename).replace('.db', '.cache')
-        self.cache_path = os.path.join(tables_path, cache_name)
-        if not unit_test:
-            self.load_phrases_cache()
 
         if not user_db or create_database:
             # No user database requested or we are
@@ -461,7 +454,6 @@ class TabSqliteDb:
             self.db.execute(sqlstr, sqlargs)
             if commit:
                 self.db.commit()
-            self.invalidate_phrases_cache(tabkeys)
         except sqlite3.Error as error:
             LOGGER.exception(
                 'Unexpected error updating phrase in user_db: %s: %s',
@@ -471,76 +463,10 @@ class TabSqliteDb:
         '''
         Trigger a checkpoint operation.
         '''
-        self.save_phrases_cache()
         if self._user_db is None:
             return
         self.db.commit()
         self.db.execute('PRAGMA wal_checkpoint;')
-
-    def reset_phrases_cache(self) -> None:
-        '''
-        Make the phrases cache empty
-        '''
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug('reset_phrases_cache()')
-        self._phrases_cache: Dict[str, Union[str, Iterable[Tuple[str, str, int, int]]]]= {}
-
-    def invalidate_phrases_cache(self, tabkeys: str = '') -> None:
-        '''
-        Delete all phrases starting with “tabkeys” from
-        the phrases cache.
-
-        :param tabkeys: The keys typed
-        '''
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug('invalidate_phrases_cache()')
-        for i in range(1, self._mlen + 1):
-            if self._phrases_cache.get(tabkeys[0:i]):
-                self._phrases_cache.pop(tabkeys[0:i])
-
-    def load_phrases_cache(self) -> None:
-        '''
-        Load phrases cache from disk
-        '''
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug('load_phrases_cache()')
-        try:
-            with open(self.cache_path, encoding='utf-8') as f:
-                self._phrases_cache = json.load(f)
-            snum = self._phrases_cache.get('serial_number')
-            if not snum or (snum != self._snum):
-                self._phrases_cache = {}
-        except FileNotFoundError:
-            if DEBUG_LEVEL > 1:
-                LOGGER.debug(
-                    'File %s not found', self.cache_path)
-        except PermissionError:
-            if DEBUG_LEVEL > 1:
-                LOGGER.debug(
-                    'Permission error reading %s', self.cache_path)
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception(
-                'Unknown error reading %s: %s: %s',
-                self.cache_path, error.__class__.__name__, error)
-
-    def save_phrases_cache(self) -> None:
-        '''
-        Save phrases cache from disk
-        '''
-        if DEBUG_LEVEL > 1:
-            LOGGER.debug('save_phrases_cache()')
-        try:
-            self._phrases_cache['serial_number'] = self._snum
-            _cache_path = self.cache_path + '.tmp'
-            # The system may be break during rebooting, so
-            # dump to temporary file and then replace it.
-            with open(_cache_path, 'w', encoding='utf-8') as f:
-                json.dump(self._phrases_cache, f)
-            os.replace(_cache_path, self.cache_path)
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception(
-                'Unexpected error in save_phrases_cache(): %s: %s',
-                error.__class__.__name__, error)
 
     def is_chinese(self) -> bool:
         '''
@@ -787,7 +713,6 @@ class TabSqliteDb:
                 'phrase': phrase,
                 'freq': freq,
                 'user_freq': user_freq})
-            self.invalidate_phrases_cache(tabkeys)
         self.db.executemany(insert_sqlstr, insert_sqlargs)
         self.db.commit()
         self.db.execute('PRAGMA wal_checkpoint;')
@@ -844,7 +769,6 @@ class TabSqliteDb:
             self.db.execute(insert_sqlstr, insert_sqlargs)
             if commit:
                 self.db.commit()
-            self.invalidate_phrases_cache(tabkeys)
         except Exception as error: # pylint: disable=broad-except
             LOGGER.exception(
                 'Unexpected error in add_phrase(): %s: %s',
@@ -1089,10 +1013,6 @@ class TabSqliteDb:
         '''
         if not tabkeys:
             return []
-        # query phrases cache first
-        best = self._phrases_cache.get(tabkeys)
-        if best:
-            return best # type: ignore
         one_char_condition = ''
         if onechar:
             # for some users really like to select only single characters
@@ -1189,7 +1109,6 @@ class TabSqliteDb:
             chinese_mode=chinese_mode)
         if DEBUG_LEVEL > 1:
             LOGGER.debug('best=%s', repr(best))
-        self._phrases_cache[tabkeys] = best
         return best
 
     def select_chinese_characters_by_pinyin(
@@ -1655,7 +1574,6 @@ class TabSqliteDb:
         self.db.execute(delete_sqlstr, delete_sqlargs)
         if commit:
             self.db.commit()
-        self.invalidate_phrases_cache(tabkeys)
 
     def remove_all_phrases_from_user_db(self) -> None:
         '''
@@ -1667,7 +1585,6 @@ class TabSqliteDb:
             self.db.execute('DELETE FROM user_db.phrases;')
             self.db.commit()
             self.db.execute('PRAGMA wal_checkpoint;')
-            self.reset_phrases_cache()
         except Exception as error: # pylint: disable=broad-except
             LOGGER.exception(
                 'Unexpected error removing all phrases from database: %s: %s',

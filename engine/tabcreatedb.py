@@ -507,6 +507,8 @@ def main() -> None:
                     'you should only activate this function '
                     'for distribution purposes.')
         db.drop_indexes('main')
+        debug_print('Optimizing database ')
+        db.optimize_database()
     debug_print('Done! :D')
 
 if __name__ == "__main__":

@@ -1912,6 +1912,29 @@ class SelectWordsEscapeIndexTestCase(unittest.TestCase):
         after = list(self.db.select_words(tabkeys='a', auto_wildcard=True))
         self.assertEqual(before, after)
 
+    def test_drop_indexes_then_optimize_compacts_database(self) -> None:
+        '''DROP INDEX only frees pages onto SQLite's internal freelist --
+        the file itself does not shrink until something VACUUMs it.
+        tabcreatedb.py's --no-create-index path must run
+        optimize_database() (which VACUUMs) after drop_indexes(), not
+        only before, or a distributed database keeps the index-sized
+        allocation despite ending up with no index.'''
+        self.db.create_tables('main')
+        self._real_db.executemany(
+            'INSERT INTO phrases (tabkeys, phrase, freq, user_freq) '
+            'VALUES (?, ?, ?, 0)',
+            [(f'zz{i:04d}', f'P{i}', 1) for i in range(2000)])
+        self._real_db.commit()
+        self.db.create_indexes('main')
+        self._real_db.execute('VACUUM')
+        with_index_pages = self._real_db.execute(
+            'PRAGMA page_count').fetchone()[0]
+        self.db.drop_indexes('main')
+        self.db.optimize_database()
+        without_index_pages = self._real_db.execute(
+            'PRAGMA page_count').fetchone()[0]
+        self.assertLess(without_index_pages, with_index_pages)
+
 if __name__ == '__main__':
     LOG_HANDLER = logging.StreamHandler(stream=sys.stderr)
     LOGGER.setLevel(logging.DEBUG)

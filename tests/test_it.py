@@ -1949,6 +1949,7 @@ class QuickClassicTestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_o, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_f, 0, 0)
         self.assertEqual(65, len(ENGINE._candidates))
+        self.assertIn('(1 / 65)', ENGINE.mock_auxiliary_text)
         self.assertEqual(9, ENGINE._lookup_table.get_page_size())
         # All 65 candidates should already be in the lookup table,
         # not just the first page of 9.

@@ -23,7 +23,6 @@ Main program of ibus-table
 '''
 from typing import Any
 from typing import Union
-from typing import Type
 from typing import Optional
 import types
 import os
@@ -46,7 +45,7 @@ import ibus_table_location
 LOGGER = logging.getLogger('ibus-table')
 
 def log_unhandled_exception(
-    exc_type: Type[BaseException],
+    exc_type: type[BaseException],
     exc_value: BaseException,
     exc_traceback: Optional[types.TracebackType]
 ) -> None:
@@ -324,10 +323,10 @@ def write_xml() -> None:
         if not _locale:
             _locale = 'en'
         _longname.text = _sq_db.ime_properties.get(
-            '.'.join(['name', _locale]))
+            f'name.{_locale}')
         if not _longname.text:
             _longname.text = _sq_db.ime_properties.get(
-                '.'.join(['name', _locale.split('_')[0]]))
+                f'name.{_locale.split("_")[0]}')
         if not _longname.text:
             _longname.text = _sq_db.ime_properties.get('name')
         if not _longname.text:

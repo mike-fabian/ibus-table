@@ -23,10 +23,8 @@ Utility functions used in ibus-table
 '''
 
 from typing import Any
-from typing import List
-from typing import Tuple
-from typing import Dict
 from typing import Optional
+from typing import cast
 from enum import Enum, IntFlag
 # pylint: disable=wrong-import-position
 import sys
@@ -205,21 +203,20 @@ def get_default_chinese_mode(database: tabsqlitedb.TabSqliteDb) -> int:
                 'get_default_chinese_mode(): last fallback, '
                 'database is not Chinese, returning 4.')
         return 4 # show all Chinese characters
-    except Exception as error: # pylint: disable=broad-except
+    except Exception: # pylint: disable=broad-except
         LOGGER.exception(
-            'Exception in get_default_chinese_mode(), returning 4: %s: %s',
-            error.__class__.__name__, error)
+            'Exception in get_default_chinese_mode(), returning 4')
         return 4
 
 def get_default_keybindings(
         gsettings: Gio.Settings,
-        database: tabsqlitedb.TabSqliteDb) -> Dict[str, List[str]]:
+        database: tabsqlitedb.TabSqliteDb) -> dict[str, list[str]]:
     '''Get the default keybindings, first from gsettings, then
     override the gsettings values with the default from the database
     if the database has a default for that setting.
 
     '''
-    default_keybindings: Dict[str, List[str]] = {}
+    default_keybindings: dict[str, list[str]] = {}
     default_keybindings = variant_to_value(
         gsettings.get_default_value('keybindings'))
     # Now update the default keybindings from gsettings with
@@ -329,7 +326,7 @@ def get_default_keybindings(
     return default_keybindings
 
 def dict_update_existing_keys(
-        pdict: Dict[Any, Any], other_pdict: Dict[Any, Any]) -> None:
+        pdict: dict[Any, Any], other_pdict: dict[Any, Any]) -> None:
     '''Update values of existing keys in a Python dict from another Python dict
 
     Using pdict.update(other_pdict) would add keys and values from other_pdict
@@ -352,9 +349,9 @@ def dict_update_existing_keys(
     >>> old_pdict
     {'a': 1, 'b': 3, 'c': 4}
     '''
-    for key in other_pdict:
+    for key, value in other_pdict.items():
         if key in pdict:
-            pdict[key] = other_pdict[key]
+            pdict[key] = value
 
 class Capabilite(IntFlag):
     '''Compatibility class to handle IBus.Capabilite the same way no matter
@@ -406,10 +403,10 @@ class Capabilite(IntFlag):
     def __int__(self) -> int:
         return int(self._value_)
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if (self.__class__ is other.__class__
             or other.__class__ is IBus.Capabilite):
-            return bool(int(self) == int(other))
+            return bool(int(self) == int(cast(int, other)))
         if other.__class__ is int or other.__class__ is float:
             return bool(int(self) == other)
         return NotImplemented
@@ -498,11 +495,11 @@ class InputPurpose(Enum):
     def __int__(self) -> int:
         return int(self._value_)
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if (self.__class__ is other.__class__
             or other.__class__ is Gtk.InputPurpose
             or other.__class__ is IBus.InputPurpose):
-            return int(self) == int(other)
+            return int(self) == int(cast(int, other))
         if other.__class__ is int or other.__class__ is float:
             return bool(int(self) == other)
         return NotImplemented
@@ -618,11 +615,11 @@ class InputHints(IntFlag):
     def __int__(self) -> int:
         return int(self._value_)
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if (self.__class__ is other.__class__
             or other.__class__ is Gtk.InputHints
             or other.__class__ is IBus.InputHints):
-            return bool(int(self) == int(other))
+            return bool(int(self) == int(cast(int, other)))
         if other.__class__ is int or other.__class__ is float:
             return bool(int(self) == other)
         return NotImplemented
@@ -690,7 +687,7 @@ class KeyEvent:
             #
             # to make it possible for me to always work
             # with the same names, no matter the ibus version
-            self.name = f'0x{0x1000000  + int(self.name[2:], 16):x}'
+            self.name = f'0x{0x1000000  + int(self.name[2:], 16):x}'  # noqa: FURB166
         self.unicode = IBus.keyval_to_unicode(self.val)
         self.shift = self.state & IBus.ModifierType.SHIFT_MASK != 0
         self.lock = self.state & IBus.ModifierType.LOCK_MASK != 0
@@ -720,20 +717,16 @@ class KeyEvent:
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, KeyEvent):
             return NotImplemented
-        if (self.val == other.val
+        return (self.val == other.val
                 and self.code == other.code
-                and self.state == other.state):
-            return True
-        return False
+                and self.state == other.state)
 
     def __ne__(self, other: object) -> bool:
         if not isinstance(other, KeyEvent):
             return NotImplemented
-        if (self.val != other.val
+        return (self.val != other.val
                 or self.code != other.code
-                or self.state != other.state):
-            return True
-        return False
+                or self.state != other.state)
 
     def __str__(self) -> str:
         return repr(
@@ -843,7 +836,7 @@ def keybinding_to_keyevent(keybinding: str) -> KeyEvent:
     name = keybinding.split('+')[-1]
     keyval = IBus.keyval_from_name(name)
     if keyval == IBus.KEY_VoidSymbol and re.match(r'0x10[0-9a-fA-F]{5}', name):
-        keyval = int(name[2:], 16)
+        keyval = int(name, 0)
     state = 0
     if 'Shift+' in keybinding:
         state |= IBus.ModifierType.SHIFT_MASK
@@ -873,10 +866,10 @@ class HotKeys:
     '''Class to make checking whether a key matches a hotkey for a certain
     command easy
     '''
-    def __init__(self, keybindings: Dict[str, List[str]]) -> None:
-        self._hotkeys: Dict[str, List[Tuple[int, int]]] = {}
-        for command in keybindings:
-            for keybinding in keybindings[command]:
+    def __init__(self, keybindings: dict[str, list[str]]) -> None:
+        self._hotkeys: dict[str, list[tuple[int, int]]] = {}
+        for command, value in keybindings.items():
+            for keybinding in value:
                 key = keybinding_to_keyevent(keybinding)
                 val = key.val
                 state = key.state & KEYBINDING_STATE_MASK
@@ -886,7 +879,7 @@ class HotKeys:
                     self._hotkeys[command] = [(val, state)]
 
     def __contains__(
-            self, command_key_tuple: Tuple[Optional[KeyEvent], KeyEvent, str]) -> bool:
+            self, command_key_tuple: tuple[Optional[KeyEvent], KeyEvent, str]) -> bool:
         if not isinstance(command_key_tuple, tuple):
             return False
         command = command_key_tuple[2]
@@ -957,12 +950,11 @@ class ItKeyInputDialog(Gtk.MessageDialog): # type: ignore[misc]
             parent=parent)
         self.add_button(_('Cancel'), Gtk.ResponseType.CANCEL)
         self.set_modal(True)
-        self.set_markup(
-            '<big><b>%s</b></big>' # pylint: disable=consider-using-f-string
-            # Translators: This is from the dialog to enter a key or a
-            # key combination to be used as a key binding for a
-            # command.
-            % _('Please press a key (or a key combination)'))
+        # Translators: This is from the dialog to enter a key or a
+        # key combination to be used as a key binding for a
+        # command.
+        text = _('Please press a key (or a key combination)')
+        self.set_markup(f'<big><b>{GLib.markup_escape_text(text)}</b></big>')
         self.format_secondary_text(
             # Translators: This is from the dialog to enter a key or a
             # key combination to be used as a key binding for a

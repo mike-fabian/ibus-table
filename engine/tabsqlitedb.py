@@ -22,13 +22,10 @@
 '''
 Module for ibus-table to access the sqlite3 databases
 '''
-from typing import List
-from typing import Tuple
-from typing import Iterable
-from typing import Dict
 from typing import Union
 from typing import Optional
 from typing import Callable
+from collections.abc import Iterable
 import os
 import shutil
 import sqlite3
@@ -41,7 +38,7 @@ import ibus_table_location
 
 LOGGER = logging.getLogger('ibus-table')
 
-DEBUG_LEVEL = int(0)
+DEBUG_LEVEL = 0
 
 DATABASE_VERSION = '1.00'
 
@@ -84,7 +81,7 @@ class ImeProperties:
     def __init__(
             self,
             db: Optional[sqlite3.dbapi2.Connection] = None,
-            default_properties: Optional[Dict[str, str]] = None) -> None:
+            default_properties: Optional[dict[str, str]] = None) -> None:
         '''
         “db” is the handle of the sqlite3 database file obtained by
         sqlite3.connect().
@@ -97,10 +94,8 @@ class ImeProperties:
         sqlstr = 'SELECT attr, val FROM main.ime;'
         try:
             results = db.execute(sqlstr).fetchall()
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception(
-                'Cannot get ime properties from database: %s: %s',
-                error.__class__.__name__, error)
+        except Exception: # pylint: disable=broad-except
+            LOGGER.exception('Cannot get ime properties from database')
         for result in results:
             self.ime_property_cache[result[0]] = result[1]
 
@@ -115,7 +110,7 @@ class ImeProperties:
         return ''
 
     def __str__(self) -> str:
-        return f'ime_property_cache = {repr(self.ime_property_cache)}'
+        return f'ime_property_cache = {self.ime_property_cache!r}'
 
 class TabSqliteDb:
     '''Phrase database for tables
@@ -153,8 +148,8 @@ class TabSqliteDb:
         try:
             DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
         except (TypeError, ValueError):
-            DEBUG_LEVEL = int(0)
-        self.old_phrases: List[Tuple[str, str, int, int]] = []
+            DEBUG_LEVEL = 0
+        self.old_phrases: list[tuple[str, str, int, int]] = []
         self.filename = filename
         self._user_db = user_db
 
@@ -172,10 +167,8 @@ class TabSqliteDb:
             self.db.execute('PRAGMA journal_size_limit = 1000000;')
             self.db.execute('PRAGMA synchronous = NORMAL;')
             self.db.execute('PRAGMA busy_timeout = 5000;')
-        except Exception as error: # pylint: disable=broad-except:
-            LOGGER.exception(
-                'Error while initializing database: %s: %s',
-                error.__class__.__name__, error)
+        except Exception: # pylint: disable=broad-except:
+            LOGGER.exception('Error while initializing database')
         # create IME property table
         self.db.executescript(
             'CREATE TABLE IF NOT EXISTS main.ime (attr TEXT, val TEXT);')
@@ -356,10 +349,8 @@ class TabSqliteDb:
                     else:
                         LOGGER.debug(
                             'Compatible database %s found.', user_db)
-                except Exception as error: # pylint: disable=broad-except
-                    LOGGER.exception(
-                        'Unexpected error trying to find user database: %s: %s',
-                        error.__class__.__name__, error)
+                except Exception: # pylint: disable=broad-except
+                    LOGGER.exception('Unexpected error trying to find user database')
 
         # open user phrase database
         try:
@@ -377,10 +368,8 @@ class TabSqliteDb:
                 PRAGMA user_db.synchronous = NORMAL;
                 PRAGMA busy_timeout = 5000;
             ''')
-        except Exception as error:  # pylint: disable=broad-except
-            LOGGER.exception(
-                'Could not open the database %s: %s: %s',
-                user_db, error.__class__.__name__, error)
+        except Exception:  # pylint: disable=broad-except
+            LOGGER.exception('Could not open the database %s', user_db)
             timestamp = time.strftime('-%Y-%m-%d_%H:%M:%S')
             LOGGER.debug('Renaming the incompatible database to "%s".',
                          user_db+timestamp)
@@ -406,7 +395,7 @@ class TabSqliteDb:
             ''')
         self.create_tables("user_db")
         if self.old_phrases:
-            sqlargs_old_phrases: List[Dict[str, Union[str, int]]] = []
+            sqlargs_old_phrases: list[dict[str, Union[str, int]]] = []
             for phrase in self.old_phrases:
                 sqlargs_old_phrases.append(
                     {'tabkeys': phrase[0],
@@ -419,9 +408,8 @@ class TabSqliteDb:
             '''
             try:
                 self.db.executemany(sqlstr, sqlargs_old_phrases)
-            except sqlite3.Error as error:
-                LOGGER.exception('Error inserting old phrases: %s: %s',
-                                  error.__class__.__name__, error)
+            except sqlite3.Error:
+                LOGGER.exception('Error inserting old phrases')
             self.db.commit()
             self.db.execute('PRAGMA wal_checkpoint;')
 
@@ -454,10 +442,8 @@ class TabSqliteDb:
             self.db.execute(sqlstr, sqlargs)
             if commit:
                 self.db.commit()
-        except sqlite3.Error as error:
-            LOGGER.exception(
-                'Unexpected error updating phrase in user_db: %s: %s',
-                error.__class__.__name__, error)
+        except sqlite3.Error:
+            LOGGER.exception('Unexpected error updating phrase in user_db')
 
     def sync_usrdb(self) -> None:
         '''
@@ -556,7 +542,7 @@ class TabSqliteDb:
         self.db.execute(sqlstr)
         self.db.commit()
 
-    def update_ime(self, attrs: Iterable[Tuple[str, str]]) -> None:
+    def update_ime(self, attrs: Iterable[tuple[str, str]]) -> None:
         '''Update or insert attributes in ime table, attrs is a iterable object
         Like [(attr,val), (attr,val), ...]
 
@@ -584,7 +570,7 @@ class TabSqliteDb:
             'user_can_define_phrase').lower() == 'true')
         self.rules = self.get_rules()
 
-    def get_rules(self) -> Dict[Union[str, int], Union[int, List[Tuple[int, int]]]]:
+    def get_rules(self) -> dict[Union[str, int], Union[int, list[tuple[int, int]]]]:
         '''Get phrase construct rules
 
         Example:
@@ -600,14 +586,14 @@ class TabSqliteDb:
          'above': 4,
          4: [(1, 1), (2, 1), (3, 1), (-1, 1)]}
         '''
-        rules: Dict[Union[str, int], Union[int, List[Tuple[int, int]]]] = {}
+        rules: dict[Union[str, int], Union[int, list[tuple[int, int]]]] = {}
         patt_r = re.compile(r'c([ea])(\d):(.*)')
         patt_p = re.compile(r'p(-{0,1}\d)(-{0,1}\d)')
         if not self.user_can_define_phrase:
             return {}
         try:
             _rules_str = self.ime_properties.get('rules')
-            _rules: List[str] = []
+            _rules: list[str] = []
             if _rules_str:
                 _rules = _rules_str.strip().split(';')
             for rule in _rules:
@@ -628,13 +614,12 @@ class TabSqliteDb:
                     rules[int(res.group(2))] = cms
                 else:
                     print(f'not a legal rule: "{rule}"')
-        except Exception as error: # pylint: disable=broad-except
+        except Exception: # pylint: disable=broad-except
             LOGGER.exception(
-                'Unexpected error in get_rules(): %s: %s',
-                error.__class__.__name__, error)
+                'Unexpected error in get_rules()')
         return rules
 
-    def get_possible_tabkeys_lengths(self) -> List[int]:
+    def get_possible_tabkeys_lengths(self) -> list[int]:
         '''Return a list of the possible lengths for tabkeys in this table.
 
         Example:
@@ -681,7 +666,7 @@ class TabSqliteDb:
 
     def add_phrases(
             self,
-            phrases: Iterable[Tuple[str, str, int, int]],
+            phrases: Iterable[tuple[str, str, int, int]],
             database: str = 'main') -> None:
         '''Add many phrases to database fast. Used by tabcreatedb.py when
         creating the system database from scratch.
@@ -769,12 +754,10 @@ class TabSqliteDb:
             self.db.execute(insert_sqlstr, insert_sqlargs)
             if commit:
                 self.db.commit()
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception(
-                'Unexpected error in add_phrase(): %s: %s',
-                error.__class__.__name__, error)
+        except Exception: # pylint: disable=broad-except
+            LOGGER.exception('Unexpected error in add_phrase()')
 
-    def add_goucima(self, goucimas: Iterable[Tuple[str, str]]) -> None:
+    def add_goucima(self, goucimas: Iterable[tuple[str, str]]) -> None:
         '''Add goucima into database, goucimas is iterable object
         Like goucimas = [(zi,goucima), (zi,goucima), ...]
         '''
@@ -789,14 +772,13 @@ class TabSqliteDb:
             self.db.executemany(sqlstr, sqlargs)
             self.db.commit()
             self.db.execute('PRAGMA wal_checkpoint;')
-        except sqlite3.Error as error:
+        except sqlite3.Error:
             LOGGER.exception(
-                'Unexpected error in add_goucima(): %s: %s',
-                error.__class__.__name__, error)
+                'Unexpected error in add_goucima()')
 
     def add_pinyin(
             self,
-            pinyins: Iterable[Tuple[str, str, int]],
+            pinyins: Iterable[tuple[str, str, int]],
             database: str = 'main') -> None:
         '''Add pinyin to database, pinyins is a iterable object
         Like: [(zi,pinyin, freq), (zi, pinyin, freq), ...]
@@ -805,9 +787,7 @@ class TabSqliteDb:
         INSERT INTO {database}.pinyin (pinyin, zi, freq)
         VALUES (:pinyin, :zi, :freq);
         '''
-        count = 0
-        for pinyin, zi, freq in pinyins:
-            count += 1
+        for count, (pinyin, zi, freq) in enumerate(pinyins, start=1):
             pinyin = pinyin.replace(
                 '1', '!').replace(
                     '2', '@').replace(
@@ -817,18 +797,16 @@ class TabSqliteDb:
             try:
                 self.db.execute(
                     sqlstr, {'pinyin': pinyin, 'zi': zi, 'freq': freq})
-            except sqlite3.Error as error:
+            except sqlite3.Error:
                 LOGGER.exception(
                     'Error when inserting into pinyin table. '
-                    'count=%s pinyin=%s zi=%s freq=%s: '
-                    '%s: %s',
-                    count, pinyin, zi, freq,
-                    error.__class__.__name__, error)
+                    'count=%s pinyin=%s zi=%s freq=%s',
+                    count, pinyin, zi, freq)
         self.db.commit()
 
     def add_suggestion(
             self,
-            suggestions: Iterable[Tuple[str, int]],
+            suggestions: Iterable[tuple[str, int]],
             database: str = 'main') -> None:
         '''Add suggestion phrase to database, suggestions is a iterable object
         Like: [(phrase, freq), (phrase, freq), ...]
@@ -836,18 +814,14 @@ class TabSqliteDb:
         sqlstr = f'''
         INSERT INTO {database}.suggestion (phrase, freq) VALUES (:phrase, :freq);
         '''
-        count = 0
-        for phrase, freq in suggestions:
-            count += 1
+        for count, (phrase, freq) in enumerate(suggestions, start=1):
             try:
                 self.db.execute(
                     sqlstr, {'phrase': phrase, 'freq': freq})
-            except sqlite3.Error as error:
+            except sqlite3.Error:
                 LOGGER.exception(
-                    'Error when inserting into suggestion table. '
-                    'count=%s phrase=%s freq=%s: %s: %s',
-                    count, phrase, freq,
-                    error.__class__.__name__, error)
+                    'Error when inserting into suggestion table. count=%s phrase=%s freq=%s',
+                    count, phrase, freq)
         self.db.commit()
 
     def optimize_database(self) -> None:
@@ -936,8 +910,8 @@ class TabSqliteDb:
     def best_candidates(
             self,
             typed_tabkeys: str = '',
-            candidates: Iterable[Tuple[str, str, int, int]] = (),
-            chinese_mode: int = 4) -> Iterable[Tuple[str, str, int, int]]:
+            candidates: Iterable[tuple[str, str, int, int]] = (),
+            chinese_mode: int = 4) -> Iterable[tuple[str, str, int, int]]:
         '''
         “candidates” is an array containing something like:
         [(tabkeys, phrase, freq, user_freq), ...]
@@ -1007,7 +981,7 @@ class TabSqliteDb:
             single_wildcard_char: str = '',
             multi_wildcard_char: str = '',
             auto_wildcard: bool = False,
-            dynamic_adjust: bool = False) -> Iterable[Tuple[str, str, int, int]]:
+            dynamic_adjust: bool = False) -> Iterable[tuple[str, str, int, int]]:
         '''
         Get matching phrases for tabkeys from the database.
         '''
@@ -1116,7 +1090,7 @@ class TabSqliteDb:
             tabkeys: str = '',
             chinese_mode: int = 4,
             single_wildcard_char: str = '',
-            multi_wildcard_char: str = '') -> Iterable[Tuple[str, str, int, int]]:
+            multi_wildcard_char: str = '') -> Iterable[tuple[str, str, int, int]]:
         '''
         Get Chinese characters matching the pinyin given by tabkeys
         from the database.
@@ -1144,7 +1118,7 @@ class TabSqliteDb:
             bitmask = 1 << 0 # simplified only
         elif chinese_mode == 1:
             bitmask = 1 << 1 # traditional only
-        phrase_frequencies: List[Tuple[str, str, int, int]] = []
+        phrase_frequencies: list[tuple[str, str, int, int]] = []
         for (pinyin, zi, freq) in results:
             if not bitmask:
                 phrase_frequencies.append((pinyin, zi, freq, 0))
@@ -1157,7 +1131,7 @@ class TabSqliteDb:
             chinese_mode=chinese_mode)
 
     def select_suggestion_candidate(
-            self, prefix: str = '') -> List[Tuple[str, int]]:
+            self, prefix: str = '') -> list[tuple[str, int]]:
         '''
         Get Chinese phrase matching the prefix from the database.
         '''
@@ -1193,7 +1167,7 @@ class TabSqliteDb:
 
         return sorted(candidates,
                       key=lambda x: (
-                          - int(len(x[0])), # longest matches first!
+                          - len(x[0]), # longest matches first!
                           -1*x[1],   # freq descending
                           code_point_function(x[0][0]),
                           code_point_function(x[0][1]),
@@ -1222,10 +1196,8 @@ class TabSqliteDb:
                 "VALUES ('create-time', DATETIME('now', 'localtime'));")
             self.db.execute(sqlstring)
             self.db.commit()
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception(
-                'Unexpected error adding description to user_db: %s: %s',
-                 error.__class__.__name__, error)
+        except Exception: # pylint: disable=broad-except
+            LOGGER.exception('Unexpected error adding description to user_db')
 
     @staticmethod
     def _init_user_db(db_file: str) -> None:
@@ -1254,7 +1226,7 @@ class TabSqliteDb:
             db.commit()
 
     @classmethod
-    def get_database_desc(cls, db_file: str) -> Optional[Dict[str, str]]:
+    def get_database_desc(cls, db_file: str) -> Optional[dict[str, str]]:
         '''
         Get the description table from the database
 
@@ -1271,10 +1243,8 @@ class TabSqliteDb:
                 desc[row[0]] = row[1]
             db.close()
             return desc
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception(
-                'Unexpected error getting database description: %s: %s',
-                 error.__class__.__name__, error)
+        except Exception: # pylint: disable=broad-except
+            LOGGER.exception('Unexpected error getting database description')
             return None
 
     @classmethod
@@ -1313,11 +1283,8 @@ class TabSqliteDb:
                 tp = res.group(1).split(',')
                 return len(tp)
             return 0
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception(
-                'Unexpected error getting number of columns '
-                'of database: %s: %s',
-                 error.__class__.__name__, error)
+        except Exception: # pylint: disable=broad-except
+            LOGGER.exception('Unexpected error getting number of columns of database')
             return 0
 
     def get_goucima(self, zi: str) -> str:
@@ -1527,7 +1494,7 @@ class TabSqliteDb:
                         tabkeys=tabkeys, phrase=phrase, freq=-1, user_freq=1,
                         database='user_db')
 
-    def find_zi_code(self, phrase: str) -> List[str]:
+    def find_zi_code(self, phrase: str) -> list[str]:
         '''
         Return the list of possible tabkeys for a phrase.
 
@@ -1585,16 +1552,14 @@ class TabSqliteDb:
             self.db.execute('DELETE FROM user_db.phrases;')
             self.db.commit()
             self.db.execute('PRAGMA wal_checkpoint;')
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception(
-                'Unexpected error removing all phrases from database: %s: %s',
-                 error.__class__.__name__, error)
+        except Exception: # pylint: disable=broad-except
+            LOGGER.exception('Unexpected error removing all phrases from database')
 
     def extract_user_phrases(
             self,
             database_file: str = '',
             old_database_version: str = '0.0'
-    ) -> List[Tuple[str, str, int, int]]:
+    ) -> list[tuple[str, str, int, int]]:
         '''extract user phrases from database'''
         LOGGER.debug(
             'Trying to recover the phrases from the old, '
@@ -1654,8 +1619,6 @@ class TabSqliteDb:
                 'Recovered phrases from the very old database: '
                 'phrases=%s', repr(phrases))
             return phrases[:]
-        except Exception as error: # pylint: disable=broad-except:
-            LOGGER.exception(
-                'Unexpected error extracting user phrases: %s: %s',
-                 error.__class__.__name__, error)
+        except Exception: # pylint: disable=broad-except:
+            LOGGER.exception('Unexpected error extracting user phrases')
             return []

@@ -27,8 +27,6 @@ This file implements the test cases using GTK GUI
 # pylint: disable=wrong-import-order
 # pylint: disable=wrong-import-position
 from types import ModuleType
-from typing import List
-from typing import Dict
 from typing import Any
 from typing import Optional
 from typing import cast
@@ -109,7 +107,7 @@ class SimpleGtkTestCase(unittest.TestCase):
             schema='org.freedesktop.ibus.engine.table',
             path=f'/org/freedesktop/ibus/engine/table/{ENGINE_NAME}/')
         cls._orig_chinesemode = cls._gsettings.get_int('chinesemode')
-        signums: List[Optional[signal.Signals]] = [
+        signums: list[Optional[signal.Signals]] = [
             getattr(signal, s, None) for s in ['SIGINT', 'SIGTERM', 'SIGHUP']]
         for signum in filter(None, signums):
             original_handler = signal.getsignal(signum)
@@ -286,7 +284,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         #self.__main_test()
 
     def __get_test_condition_length(self, tag: str) -> int:
-        tests: Dict[str, Any] = TEST_CASES['tests'][self.__test_index]
+        tests: dict[str, Any] = TEST_CASES['tests'][self.__test_index]
         try:
             cases = tests[tag]
         except KeyError:
@@ -331,7 +329,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         self.__run_cases('commit')
 
     def __run_cases(self, tag: str, start: int = -1, end: int = -1) -> None:
-        tests: Dict[str, Any] = TEST_CASES['tests'][self.__test_index]
+        tests: dict[str, Any] = TEST_CASES['tests'][self.__test_index]
         if tests is None:
             return
         try:
@@ -354,7 +352,7 @@ class SimpleGtkTestCase(unittest.TestCase):
         if case_type == 'keys':
             if start == -1 and end == -1:
                 printflush(f'test step: {tag} sequences: {cases["keys"]!s}')
-            for key in cast(List[List[int]], cases['keys']):
+            for key in cast(list[list[int]], cases['keys']):
                 if start >= 0 and i < start:
                     i += 1
                     continue
@@ -374,7 +372,7 @@ class SimpleGtkTestCase(unittest.TestCase):
 
     def __buffer_inserted_text_cb(
             self, buffer: Gtk.EntryBuffer, position: int, chars: str, nchars: int) -> None:
-        tests: Dict[str, Any] = TEST_CASES['tests'][self.__test_index]
+        tests: dict[str, Any] = TEST_CASES['tests'][self.__test_index]
         cases = tests['commit']
         case_type = next(iter(cases.keys()))
         if case_type == 'keys':

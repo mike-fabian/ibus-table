@@ -22,7 +22,6 @@ Define some mock classes for the unittests.
 '''
 
 from typing import Any
-from typing import List
 from typing import Optional
 # pylint: disable=wrong-import-position
 from gi import require_version
@@ -116,7 +115,7 @@ class MockEngine:
         self.mock_preedit_focus_mode = focus_mode
         self.update_preedit_text(text, cursor_pos, visible)
 
-    def register_properties(self, property_list: List[IBus.Property]) -> None:
+    def register_properties(self, property_list: list[IBus.Property]) -> None:
         pass
 
     def update_property(self, _property: IBus.Property) -> None:
@@ -144,8 +143,8 @@ class MockLookupTable:
         self.mock_cursor_visible = cursor_visible
         self.cursor_visible = cursor_visible
         self.mock_wrap_around = wrap_around
-        self.mock_candidates: List[str] = []
-        self.mock_labels: List[str]  = []
+        self.mock_candidates: list[str] = []
+        self.mock_labels: list[str]  = []
         self.mock_page_number = 0
         self.mock_orientation = 0
 
@@ -216,7 +215,7 @@ class MockLookupTable:
 
 class MockPropList:
     def __init__(self, *_args: Any, **_kwargs: Any) -> None:
-        self._mock_proplist: List[IBus.Property] = []
+        self._mock_proplist: list[IBus.Property] = []
 
     def append(self, new_property: IBus.Property) ->  None:
         self._mock_proplist.append(new_property)
@@ -240,7 +239,7 @@ class MockProperty:
                  sensitive: bool = True,
                  visible: bool = True,
                  state: IBus.PropState = IBus.PropState.UNCHECKED,
-                 sub_props: Optional[List[IBus.Property]] = None) -> None:
+                 sub_props: Optional[list[IBus.Property]] = None) -> None:
         self.mock_property_key = key
         self.mock_property_prop_type = prop_type
         self.mock_property_label = label.get_text() if label is not None else ''
@@ -273,7 +272,7 @@ class MockProperty:
     def set_state(self, state: IBus.PropState) -> None:
         self.mock_property_state = state
 
-    def set_sub_props(self, proplist: List[IBus.Property]) -> None:
+    def set_sub_props(self, proplist: list[IBus.Property]) -> None:
         self.mock_property_sub_props = proplist
 
     def get_key(self) -> str:

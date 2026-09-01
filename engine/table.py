@@ -1799,9 +1799,17 @@ class TabEngine(IBus.EngineSimple):
     def fill_lookup_table(self) -> None:
         '''Fill more entries to self._lookup_table if needed.
 
-        If the cursor in _lookup_table moved beyond current length,
-        add more entries from _candidiate[0] to _lookup_table.'''
-
+        The lookup table used to be filled one page at a time and grew
+        by one page each time the cursor was moved down into the next
+        page.  This was confusing as it did not show the real total
+        number of candidates right away. Apparently this delayed
+        filling of the lookup table was done for performance reasons,
+        but as the maximum number of candidates is limited to 100
+        anyway, there is no real performance gained by delaying to
+        fill the lookup table.  It just caused confusion because the
+        real number of candidates was not shown correctly in the
+        auxiliary text until one scrolled down to the last page.
+        '''
         looklen = self._lookup_table.get_number_of_candidates()
         psize = self._lookup_table.get_page_size()
         total = len(self._candidates)

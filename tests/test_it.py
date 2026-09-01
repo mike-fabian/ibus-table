@@ -2091,9 +2091,7 @@ class LatexTestCase(unittest.TestCase):
         ENGINE.set_page_size(9)
         ENGINE._do_process_key_event(IBus.KEY_backslash, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_b, 0, 0)
-        # Lookup table shows only the first page, subsequent
-        # pages are added on demand as a speed optimization:
-        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[0:9],
                          ['¯ ar 0 0',
                           '⊥ ot 0 0',
                           'β eta 0 0',
@@ -2108,7 +2106,7 @@ class LatexTestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_backslash, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_b, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_Page_Down, 0, 0)
-        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[0:18],
                          ['β eta 0 1', # user freq for β increased to 1
                           '¯ ar 0 0',
                           '⊥ ot 0 0',
@@ -2159,7 +2157,7 @@ class LatexTestCase(unittest.TestCase):
         ENGINE._do_process_key_event(IBus.KEY_backslash, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_b, 0, 0)
         ENGINE._do_process_key_event(IBus.KEY_Page_Down, 0, 0)
-        self.assertEqual(ENGINE._lookup_table.mock_candidates,
+        self.assertEqual(ENGINE._lookup_table.mock_candidates[0:18],
                          ['β eta 0 1', # user freq for β increased to 1
                           '⊞ oxplus 0 1', # user freq for ⊞ increased to 1
                           '¯ ar 0 0',

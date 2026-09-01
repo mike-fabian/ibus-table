@@ -18,8 +18,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from typing import Any
+import sys
 import re
 import logging
+
+LOGGER = logging.getLogger(__name__)
 
 # Unihan_Variants.txt contains the following 2 lines:
 #
@@ -87,7 +90,7 @@ def read_unihan_variants(unihan_variants_file) -> None:
                         category = 1 # simplified only
                     elif re.search('kSimplifiedVariant', line):
                         category = 1 << 1 # traditional only
-                    logging.debug(
+                    LOGGER.debug(
                         'char=%s category=%d line=%s',
                         char, category, line)
                     if char not in VARIANTS_TABLE_ORIG:
@@ -124,7 +127,7 @@ def detect_chinese_category_old(phrase: str) -> int:
     try:
         tmp_phrase.encode('gb2312')
         category |= 1
-    except Exception:
+    except UnicodeEncodeError:
         if '〇' in tmp_phrase:
             # we add '〇' into SC as well
             category |= 1
@@ -132,7 +135,7 @@ def detect_chinese_category_old(phrase: str) -> int:
     try:
         tmp_phrase.encode('big5hkscs')
         category |= 1 << 1
-    except Exception:
+    except UnicodeEncodeError:
         # then check whether in gbk,
         if category & 1:
             # already know in SC
@@ -142,7 +145,7 @@ def detect_chinese_category_old(phrase: str) -> int:
             try:
                 tmp_phrase.encode('gbk')
                 category |= 1
-            except Exception:
+            except UnicodeEncodeError:
                 # not in gbk
                 pass
     # then set for 3rd bit, if not in SC and TC
@@ -188,9 +191,7 @@ VARIANTS_TABLE = {
 ''')
 
     for phrase in sorted(VARIANTS_TABLE_ORIG):
-        script_file.write(
-            "    '" + phrase + "': "
-            + "%s" %VARIANTS_TABLE_ORIG[phrase] + ",\n")
+        script_file.write(f"    '{phrase}': {VARIANTS_TABLE_ORIG[phrase]},\n")
 
     script_file.write('''    }
 ''')
@@ -688,22 +689,22 @@ def test_detection(generated_script) -> int:
 
     Returns the number of errors found.
     '''
-    logging.info('Testing detection ...')
+    LOGGER.info('Testing detection ...')
     error_count = 0
-    for phrase in TEST_DATA:
-        if (generated_script.detect_chinese_category(phrase)
-                != TEST_DATA[phrase]):
+    for phrase, value in TEST_DATA.items():
+        detected = generated_script.detect_chinese_category(phrase)
+        if detected != value:
             print('phrase', phrase, repr(phrase),
                   'detected as',
-                  generated_script.detect_chinese_category(phrase),
-                  'should have been', TEST_DATA[phrase],
+                  detected,
+                  'should have been', value,
                   'FAIL.')
             error_count += 1
         else:
-            logging.info('phrase=%s %s detected as %d PASS.',
+            LOGGER.info('phrase=%s %s detected as %d PASS.',
                          phrase,
                          repr(phrase),
-                         TEST_DATA[phrase])
+                         value)
     return error_count
 
 def compare_old_new_detection(phrase, generated_script) -> None:
@@ -715,14 +716,14 @@ def compare_old_new_detection(phrase, generated_script) -> None:
     '''
     if (detect_chinese_category_old(phrase)
             != generated_script.detect_chinese_category(phrase)):
-        logging.debug(
+        LOGGER.debug(
             '%s %s old=%d new=%d',
             phrase.encode('utf-8'),
             repr(phrase),
             detect_chinese_category_old(phrase),
             generated_script.detect_chinese_category(phrase))
         if phrase in VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED:
-            logging.debug(
+            LOGGER.debug(
                 VARIANTS_TABLE_ORIG_UNIHAN_VARIANTS_ENTRY_USED[phrase])
 
 def parse_args() -> Any:
@@ -756,10 +757,10 @@ def main() -> None:
         log_level = logging.DEBUG
     logging.basicConfig(format="%(levelname)s: %(message)s", level=log_level)
     with open(args.inputfilename) as inputfile:
-        logging.info("input file=%s", inputfile)
+        LOGGER.info("input file=%s", inputfile)
         read_unihan_variants(inputfile)
     with open(args.outputfilename, 'w') as outputfile:
-        logging.info("output file=%s", outputfile)
+        LOGGER.info("output file=%s", outputfile)
         write_variants_script(outputfile)
 
     import importlib.util
@@ -770,13 +771,13 @@ def main() -> None:
     else:
         raise ImportError(f"Could not load module from {args.outputfilename}")
 
-    logging.info('Testing detection ...')
+    LOGGER.info('Testing detection ...')
     error_count = test_detection(generated_script)
     if error_count:
-        logging.info('FAIL: %s tests failed, exiting ...', error_count)
-        exit(1)
+        LOGGER.info('FAIL: %s tests failed, exiting ...', error_count)
+        sys.exit(1)
     else:
-        logging.info('PASS: All tests passed.')
+        LOGGER.info('PASS: All tests passed.')
 
     for phrase in generated_script.VARIANTS_TABLE:
         compare_old_new_detection(phrase, generated_script)

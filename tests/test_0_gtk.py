@@ -110,7 +110,7 @@ class SimpleGtkTestCase(unittest.TestCase):
             path=f'/org/freedesktop/ibus/engine/table/{ENGINE_NAME}/')
         cls._orig_chinesemode = cls._gsettings.get_int('chinesemode')
         signums: List[Optional[signal.Signals]] = [
-            getattr(signal, s, None) for s in 'SIGINT SIGTERM SIGHUP'.split()]
+            getattr(signal, s, None) for s in ['SIGINT', 'SIGTERM', 'SIGHUP']]
         for signum in filter(None, signums):
             original_handler = signal.getsignal(signum)
             GLib.unix_signal_add(GLib.PRIORITY_HIGH,
@@ -291,7 +291,7 @@ class SimpleGtkTestCase(unittest.TestCase):
             cases = tests[tag]
         except KeyError:
             return -1
-        case_type = list(cases.keys())[0]
+        case_type = next(iter(cases.keys()))
         return len(cases[case_type])
 
     def __entry_preedit_changed_cb(
@@ -338,11 +338,11 @@ class SimpleGtkTestCase(unittest.TestCase):
             cases = tests[tag]
         except KeyError:
             return
-        case_type = list(cases.keys())[0]
+        case_type = next(iter(cases.keys()))
         i = 0
         if case_type == 'string':
             printflush(
-                f'test step: {tag} sequences: "{str(cases["string"])}"')
+                f'test step: {tag} sequences: "{cases["string"]!s}"')
             for character in cast(str, cases['string']):
                 if start >= 0 and i < start:
                     i += 1
@@ -353,7 +353,7 @@ class SimpleGtkTestCase(unittest.TestCase):
                 i += 1
         if case_type == 'keys':
             if start == -1 and end == -1:
-                printflush(f'test step: {tag} sequences: {str(cases["keys"])}')
+                printflush(f'test step: {tag} sequences: {cases["keys"]!s}')
             for key in cast(List[List[int]], cases['keys']):
                 if start >= 0 and i < start:
                     i += 1
@@ -376,7 +376,7 @@ class SimpleGtkTestCase(unittest.TestCase):
             self, buffer: Gtk.EntryBuffer, position: int, chars: str, nchars: int) -> None:
         tests: Dict[str, Any] = TEST_CASES['tests'][self.__test_index]
         cases = tests['commit']
-        case_type = list(cases.keys())[0]
+        case_type = next(iter(cases.keys()))
         if case_type == 'keys':
             # space key is sent separatedly later
             if cases['keys'][0] == [IBus.KEY_space, 0, 0]:
@@ -397,7 +397,7 @@ class SimpleGtkTestCase(unittest.TestCase):
                 self.__class__.glib_main_loop.quit()
             with self.subTest(i=self.__test_index):
                 self.fail(f'NG: {self.__test_index:d} '
-                           f'"{str(cases["string"])}" "{self.__inserted_text}"')
+                           f'"{cases["string"]!s}" "{self.__inserted_text}"')
         self.__inserted_text = ''
         self.__test_index += 1
         if self.__test_index >= len(TEST_CASES['tests']):

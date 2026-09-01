@@ -29,12 +29,9 @@ __all__ = (
 )
 
 from typing import Any
-from typing import List
-from typing import Tuple
-from typing import Iterable
-from typing import Dict
 from typing import Union
 from typing import Optional
+from collections.abc import Iterable
 import sys
 import os
 import re
@@ -126,7 +123,7 @@ def ascii_ispunct(character: str) -> bool:
     '''
     return bool(character in '''!"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~''')
 
-THEME: Dict[str, Union[bool, int]] = {
+THEME: dict[str, Union[bool, int]] = {
         "dark": False,
         "candidate_text": it_util.color_string_to_argb('#1973a2'),
         "system_phrase": it_util.color_string_to_argb('#000000'),
@@ -139,7 +136,7 @@ THEME: Dict[str, Union[bool, int]] = {
         "aux_text": it_util.color_string_to_argb('#9515b5'),
 }
 
-THEME_DARK: Dict[str, Union[bool, int]] = {
+THEME_DARK: dict[str, Union[bool, int]] = {
         "dark": True,
         "candidate_text": it_util.color_string_to_argb('#7bc8f0'),
         "system_phrase": it_util.color_string_to_argb('#ffffff'),
@@ -152,7 +149,7 @@ THEME_DARK: Dict[str, Union[bool, int]] = {
         "aux_text": it_util.color_string_to_argb('#dd70f9'),
 }
 
-__HALF_FULL_TABLE: List[Tuple[int, int, int]] = [
+__HALF_FULL_TABLE: list[tuple[int, int, int]] = [
     (0x0020, 0x3000, 1),
     (0x0021, 0xFF01, 0x5E),
     (0x00A2, 0xFFE0, 2),
@@ -310,30 +307,30 @@ class TabEngine(IBus.EngineSimple):
             path=f'/org/freedesktop/ibus/engine/table/{self._engine_name}/')
         self._gsettings.connect('changed', self.on_gsettings_value_changed)
 
-        self._prop_dict: Dict[str, IBus.Property] = {}
-        self._sub_props_dict: Dict[str, IBus.PropList] = {}
+        self._prop_dict: dict[str, IBus.Property] = {}
+        self._sub_props_dict: dict[str, IBus.PropList] = {}
         self.main_prop_list: IBus.PropList = IBus.PropList()
-        self.chinese_mode_menu: Dict[str, Any] = {}
-        self.chinese_mode_properties: Dict[str, Any] = {}
-        self.input_mode_menu: Dict[str, Any] = {}
-        self.input_mode_properties: Dict[str, Any] = {}
-        self.letter_width_menu: Dict[str, Any] = {}
-        self.letter_width_properties: Dict[str, Any] = {}
-        self.punctuation_width_menu: Dict[str, Any] = {}
-        self.punctuation_width_properties: Dict[str, Any] = {}
-        self.pinyin_mode_menu: Dict[str, Any] = {}
-        self.pinyin_mode_properties: Dict[str, Any] = {}
-        self.suggestion_mode_menu: Dict[str, Any] = {}
-        self.suggestion_mode_properties: Dict[str, Any] = {}
-        self.onechar_mode_menu: Dict[str, Any] = {}
-        self.onechar_mode_properties: Dict[str, Any] = {}
-        self.autocommit_mode_menu: Dict[str, Any] = {}
-        self.autocommit_mode_properties: Dict[str, Any] = {}
+        self.chinese_mode_menu: dict[str, Any] = {}
+        self.chinese_mode_properties: dict[str, Any] = {}
+        self.input_mode_menu: dict[str, Any] = {}
+        self.input_mode_properties: dict[str, Any] = {}
+        self.letter_width_menu: dict[str, Any] = {}
+        self.letter_width_properties: dict[str, Any] = {}
+        self.punctuation_width_menu: dict[str, Any] = {}
+        self.punctuation_width_properties: dict[str, Any] = {}
+        self.pinyin_mode_menu: dict[str, Any] = {}
+        self.pinyin_mode_properties: dict[str, Any] = {}
+        self.suggestion_mode_menu: dict[str, Any] = {}
+        self.suggestion_mode_properties: dict[str, Any] = {}
+        self.onechar_mode_menu: dict[str, Any] = {}
+        self.onechar_mode_properties: dict[str, Any] = {}
+        self.autocommit_mode_menu: dict[str, Any] = {}
+        self.autocommit_mode_properties: dict[str, Any] = {}
         self._setup_property: Optional[IBus.Property] = None
         self._im_client: str = ''
         self.theme = THEME
 
-        self._keybindings: Dict[str, List[str]] = {}
+        self._keybindings: dict[str, list[str]] = {}
         self._hotkeys: Optional[it_util.HotKeys] = None
 
         # self._ime_py: Indicates whether this table supports pinyin mode
@@ -476,7 +473,7 @@ class TabEngine(IBus.EngineSimple):
         self._sg_mode = False
         self._sg_mode_active = False
 
-        self._full_width_letter: List[Optional[bool]] = [None, None]
+        self._full_width_letter: list[Optional[bool]] = [None, None]
         self._full_width_letter = [
             it_util.variant_to_value(
                 self._gsettings.get_value('endeffullwidthletter')),
@@ -491,7 +488,7 @@ class TabEngine(IBus.EngineSimple):
             self._full_width_letter[1] = it_util.variant_to_value(
                 self._gsettings.get_value('tabdeffullwidthletter'))
 
-        self._full_width_punct: List[Optional[bool]] = [None, None]
+        self._full_width_punct: list[Optional[bool]] = [None, None]
         self._full_width_punct = [
             it_util.variant_to_value(
                 self._gsettings.get_value('endeffullwidthpunct')),
@@ -561,13 +558,13 @@ class TabEngine(IBus.EngineSimple):
         self._chars_invalid_update_candidates_last = ''
         # self._candidates holds the “best” candidates matching the user input
         # [(tabkeys, phrase, freq, user_freq), ...]
-        self._candidates: List[Tuple[str, str, int, int]] = []
-        self._candidates_previous: List[Tuple[str, str, int, int]] = []
+        self._candidates: list[tuple[str, str, int, int]] = []
+        self._candidates_previous: list[tuple[str, str, int, int]] = []
 
         # self._u_chars: holds the user input of the phrases which
         # have been automatically committed to preedit (but not yet
         # “really” committed).
-        self._u_chars: List[str] = []
+        self._u_chars: list[str] = []
         # self._strings: holds the phrases which have been
         # automatically committed to preedit (but not yet “really”
         # committed).
@@ -593,7 +590,7 @@ class TabEngine(IBus.EngineSimple):
         # back from self._u_chars into self._chars_valid again and
         # the same candidate list is shown as before the last 'g' had
         # been entered.
-        self._strings: List[str] = []
+        self._strings: list[str] = []
         # self._cursor_precommit: The cursor
         # position in the array of strings which have already been
         # committed to preëdit but not yet “really” committed.
@@ -636,11 +633,11 @@ class TabEngine(IBus.EngineSimple):
             self._auto_select = it_util.variant_to_value(
                 self._gsettings.get_value('autoselect'))
 
-        self._default_keybindings: Dict[str, List[str]] = {}
+        self._default_keybindings: dict[str, list[str]] = {}
         self._default_keybindings = it_util.get_default_keybindings(
             self._gsettings, self.database)
 
-        self._input_method_menu: List[str] = []
+        self._input_method_menu: list[str] = []
         self._input_method_menu = self._gsettings.get_strv('inputmethodmenu')
 
         self._page_size: int = it_util.variant_to_value(
@@ -947,7 +944,7 @@ class TabEngine(IBus.EngineSimple):
         lookup_table.set_orientation(self._orientation)
         lookup_table.set_cursor_visible(True)
         lookup_table.set_round(True)
-        for index in range(0, 10):
+        for index in range(10):
             label = ''
             if self._keybindings[f'commit_candidate_{index + 1}']:
                 keybinding = self._keybindings[
@@ -1108,7 +1105,7 @@ class TabEngine(IBus.EngineSimple):
         self._strings.pop(self._cursor_precommit)
 
     def get_preedit_tabkeys_parts(
-            self) -> Tuple[Tuple[str, ...], str, Tuple[str, ...]]:
+            self) -> tuple[tuple[str, ...], str, tuple[str, ...]]:
         '''Returns the tabkeys which were used to type the parts
         of the preëdit string.
 
@@ -1132,9 +1129,9 @@ class TabEngine(IBus.EngineSimple):
 
         when the wubi-jidian86 table is used.
         '''
-        left_of_current_edit: Tuple[str, ...] = ()
+        left_of_current_edit: tuple[str, ...] = ()
         current_edit = ''
-        right_of_current_edit: Tuple[str, ...] = ()
+        right_of_current_edit: tuple[str, ...] = ()
         if self.get_input_chars():
             current_edit = self.get_input_chars()
         if self._u_chars:
@@ -1156,7 +1153,7 @@ class TabEngine(IBus.EngineSimple):
                  + ''.join(right_tabkeys))
 
     def get_preedit_string_parts(
-            self) -> Tuple[Tuple[str, ...], str, Tuple[str, ...]]:
+            self) -> tuple[tuple[str, ...], str, tuple[str, ...]]:
         '''Returns the phrases which are parts of the preëdit string.
 
         Such as “(left_of_current_edit, current_edit, right_of_current_edit)”
@@ -1177,9 +1174,9 @@ class TabEngine(IBus.EngineSimple):
 
         when the wubi-jidian86 table is used.
         '''
-        left_of_current_edit: Tuple[str, ...] = ()
+        left_of_current_edit: tuple[str, ...] = ()
         current_edit = ''
-        right_of_current_edit: Tuple[str, ...] = ()
+        right_of_current_edit: tuple[str, ...] = ()
         if self._candidates:
             current_edit = self._candidates[
                 int(self._lookup_table.get_cursor_pos())][1]
@@ -1362,7 +1359,7 @@ class TabEngine(IBus.EngineSimple):
         self._lookup_table.set_cursor_visible(True)
 
     @staticmethod
-    def get_common_prefix_sorted_list(asc_table_codes: List[str]) -> List[int]:
+    def get_common_prefix_sorted_list(asc_table_codes: list[str]) -> list[int]:
         # pylint: disable=line-too-long
         '''
         (branch from, node index of branch from), (code, asc table codes index, same prefix count), ...
@@ -1377,7 +1374,7 @@ class TabEngine(IBus.EngineSimple):
 
         '''
         # pylint: enable=line-too-long
-        prefix_tree: List[List[Tuple[Any, ...]]] = []
+        prefix_tree: list[list[tuple[Any, ...]]] = []
         for code_idx, code in enumerate(asc_table_codes):
             branch_count = len(prefix_tree)
 
@@ -1428,8 +1425,8 @@ class TabEngine(IBus.EngineSimple):
 
     def select_best_idx_from_prefix_list(
             self,
-            asc_table_codes: List[str],
-            sorted_idx_list: List[int]) -> int:
+            asc_table_codes: list[str],
+            sorted_idx_list: list[int]) -> int:
         '''Select the best index from a prefix list'''
         if self._engine_name == 'erbi-qs':
             # for erbi-qs, code start with i/u/v is auxiliary
@@ -1736,10 +1733,10 @@ class TabEngine(IBus.EngineSimple):
             aux_string = input_chars
             if self._debug_level > 0 and self._u_chars:
                 (tabkeys_left,
-                 dummy_tabkeys_current,
+                 _dummy_tabkeys_current,
                  tabkeys_right) = self.get_preedit_tabkeys_parts()
                 (strings_left,
-                 dummy_string_current,
+                 _dummy_string_current,
                  strings_right) = self.get_preedit_string_parts()
                 aux_string = ''
                 for i, string in enumerate(strings_left):
@@ -2143,7 +2140,7 @@ class TabEngine(IBus.EngineSimple):
         return self._sound_backend
 
     def set_keybindings(self,
-                        keybindings: Union[Dict[str, List[str]], Any],
+                        keybindings: Union[dict[str, list[str]], Any],
                         update_gsettings: bool = True) -> None:
         '''Set current key bindings
 
@@ -2217,7 +2214,7 @@ class TabEngine(IBus.EngineSimple):
                 'keybindings',
                 variant_dict.end())
 
-    def get_keybindings(self) -> Dict[str, List[str]]:
+    def get_keybindings(self) -> dict[str, list[str]]:
         '''Get current key bindings'''
         # It is important to return a copy, we do not want to change
         # the private member variable directly.
@@ -2681,7 +2678,7 @@ class TabEngine(IBus.EngineSimple):
                     "endeffullwidthletter",
                     GLib.Variant.new_boolean(mode))
 
-    def get_letter_width(self) -> List[Optional[bool]]:
+    def get_letter_width(self) -> list[Optional[bool]]:
         '''Return the current full width letter modes: [Boolean, Boolean]'''
         return self._full_width_letter
 
@@ -2718,7 +2715,7 @@ class TabEngine(IBus.EngineSimple):
                     "endeffullwidthpunct",
                     GLib.Variant.new_boolean(mode))
 
-    def get_punctuation_width(self) -> List[Optional[bool]]:
+    def get_punctuation_width(self) -> list[Optional[bool]]:
         '''Return the current full width punctuation modes: [Boolean, Boolean]
         '''
         return self._full_width_punct
@@ -2766,7 +2763,7 @@ class TabEngine(IBus.EngineSimple):
 
     def set_input_method_menu(
             self,
-            input_method_menu: Optional[List[str]] = None,
+            input_method_menu: Optional[list[str]] = None,
             update_gsettings: bool = True) -> None:
         '''Sets the visible input method menu items.
 
@@ -2791,7 +2788,7 @@ class TabEngine(IBus.EngineSimple):
                 "inputmethodmenu",
                 GLib.Variant.new_strv(input_method_menu))
 
-    def get_input_method_menu(self) -> List[str]:
+    def get_input_method_menu(self) -> list[str]:
         '''
         Return the visible input method menu items.
         '''
@@ -2799,7 +2796,7 @@ class TabEngine(IBus.EngineSimple):
 
     def _init_or_update_property_menu(
             self,
-            menu: Dict[str, Any],
+            menu: dict[str, Any],
             current_mode: Union[int, bool, None] = 0) -> None:
         '''
         Initialize or update a ibus property menu
@@ -2853,7 +2850,7 @@ class TabEngine(IBus.EngineSimple):
     def _init_or_update_sub_properties(
             self,
             menu_key: str,
-            modes: Dict[str, Any],
+            modes: dict[str, Any],
             current_mode: int = 0) -> None:
         '''
         Initialize or update the sub-properties of a property menu entry.
@@ -3043,10 +3040,8 @@ class TabEngine(IBus.EngineSimple):
         try:
             self._setup_process = subprocess.Popen( # pylint: disable=consider-using-with
                 cmd)
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception(
-                'Exception when starting setup tools: %s: %s',
-                error.__class__.__name__, error)
+        except Exception: # pylint: disable=broad-except
+            LOGGER.exception('Exception when starting setup tools')
             self._setup_process = None
 
     def _is_setup_running(self) -> bool:
@@ -3067,9 +3062,8 @@ class TabEngine(IBus.EngineSimple):
         if self._error_sound and self._error_sound_object:
             try:
                 self._error_sound_object.play()
-            except Exception as error: # pylint: disable=broad-except
-                LOGGER.exception('Playing error sound failed: %s: %s',
-                                 error.__class__.__name__, error)
+            except Exception: # pylint: disable=broad-except
+                LOGGER.exception('Playing error sound failed')
 
     def _update_preedit(self) -> None:
         '''Update Preedit String in UI'''
@@ -3801,7 +3795,7 @@ class TabEngine(IBus.EngineSimple):
     def _handle_hotkeys(
             self,
             key: it_util.KeyEvent,
-            commands: Iterable[str] = ()) -> Tuple[bool, bool]:
+            commands: Iterable[str] = ()) -> tuple[bool, bool]:
         '''Handle hotkey commands
 
         :return: True if the key was completely handled, False if not.
@@ -3835,7 +3829,7 @@ class TabEngine(IBus.EngineSimple):
                 command_function_name = f'_command_{command}'
                 try:
                     command_function = getattr(self, command_function_name)
-                except (AttributeError,):
+                except AttributeError:
                     LOGGER.exception('There is no function %s',
                                      command_function_name)
                     return (False, False)

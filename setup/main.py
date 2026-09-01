@@ -27,9 +27,6 @@ The setup tool for ibus-table.
 
 from typing import Union
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Tuple
 from typing import Optional
 from types import FrameType
 import sys
@@ -1192,8 +1189,8 @@ class SetupUI(Gtk.Window):  # type: ignore[misc]
             self._debug_level_adjustment, 1, _options_details_grid_row, 1, 1)
 
         # name, label, check button
-        self._input_method_menu_tuple: Tuple[
-            List[Union[str, Optional[Gtk.CheckButton]]], ...] = (
+        self._input_method_menu_tuple: tuple[
+            list[Union[str, Optional[Gtk.CheckButton]]], ...] = (
             (["chinese_mode", _("Chinese mode"), None],
              ["letter_width", _("Letter width"), None],
              ["punctuation_width", _("Punctuation width"), None],
@@ -1702,7 +1699,7 @@ class SetupUI(Gtk.Window):  # type: ignore[misc]
             _('Do you really want to restore all default settings?'))
         if response == Gtk.ResponseType.OK:
             LOGGER.info('Restoring all defaults.')
-            for _key, value in self._settings_dict.items():
+            for value in self._settings_dict.values():
                 value['set_function'](value['default'], update_gsettings=True)
                 # Call it again with update_gsettings=False to make
                 # sure the active state of checkbuttons etc.  is
@@ -2927,9 +2924,8 @@ class SetupUI(Gtk.Window):  # type: ignore[misc]
         if self._error_sound_object:
             try:
                 self._error_sound_object.play()
-            except Exception as error: # pylint: disable=broad-except
-                LOGGER.exception('Playing error sound failed: %s: %s',
-                                 error.__class__.__name__, error)
+            except Exception: # pylint: disable=broad-except
+                LOGGER.exception('Playing error sound failed')
 
     def set_sound_backend(
             self,
@@ -2985,7 +2981,7 @@ class SetupUI(Gtk.Window):  # type: ignore[misc]
 
     def set_keybindings(
             self,
-            keybindings: Union[Dict[str, List[str]], Any],
+            keybindings: Union[dict[str, list[str]], Any],
             update_gsettings: bool = True) -> None:
         '''Set current key bindings
 
@@ -3030,7 +3026,7 @@ class SetupUI(Gtk.Window):  # type: ignore[misc]
 
     def set_input_method_menu(
             self,
-            input_method_menu: List[str],
+            input_method_menu: list[str],
             update_gsettings: bool = True) -> None:
         '''Sets the visible input method menu items
 

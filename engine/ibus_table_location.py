@@ -22,11 +22,9 @@ The directories used are according to the
 “XDG Base Directory Specification”,
 see: http://standards.freedesktop.org/basedir-spec/latest/index.html
 '''
-
-from typing import Dict
 import os
 
-IBUS_TABLE_LOCATION: Dict[str, str] = {
+IBUS_TABLE_LOCATION: dict[str, str] = {
     'data': '',
     'lib': '',
     'data_home': '',

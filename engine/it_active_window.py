@@ -66,16 +66,14 @@ seen in the terminal shows correctly which window is currently active
 (This works only with AT-SPI).
 
 '''
-from types import ModuleType
-from typing import Optional
-from typing import Any
-from typing import Tuple
-import sys
-import os
-import subprocess
-import shutil
-import threading
 import logging
+import os
+import shutil
+import subprocess
+import sys
+import threading
+from types import ModuleType
+from typing import Any, Optional
 
 pyatspi: Optional[ModuleType]
 try:
@@ -105,9 +103,8 @@ class AtspiMonitor:
                 self._on_window_deactivate, 'window:deactivate')
             self._events_registered = True
             LOGGER.info('AtspiMonitor events registered.')
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception('%s: %s ', error.__class__.__name__, error)
-
+        except Exception: # pylint: disable=broad-except
+            LOGGER.exception('Exception registering AtspiMonitor events')
 
     def start(self) -> None:
         '''Starts the monitoring'''
@@ -117,7 +114,7 @@ class AtspiMonitor:
             LOGGER.info('Starting AtspiMonitor.')
             pyatspi.Registry.start() # pylint: disable=no-value-for-parameter
 
-    def get_active_window(self) -> Tuple[str, str]:
+    def get_active_window(self) -> tuple[str, str]:
         '''
         Gets information about the currently active window.
 
@@ -132,8 +129,8 @@ class AtspiMonitor:
         try:
             self._active_program_name = event.host_application.name
             self._active_window_title = event.source_name
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception('%s: %s', error.__class__.__name__, error)
+        except Exception: # pylint: disable=broad-except
+            LOGGER.exception('Exception activating winwow')
         LOGGER.info('window activated: %s currently active: %s title: %s',
                     self._active_program_name,
                     self._active_program_name,
@@ -145,8 +142,8 @@ class AtspiMonitor:
         program_name = ''
         try:
             program_name = event.host_application.name
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception('%s: %s', error.__class__.__name__, error)
+        except Exception: # pylint: disable=broad-except
+            LOGGER.exception('Exception setting program_name')
         # There are some windows where the 'window:activate',
         # 'window:deactivate' signals do not work, for example windows
         # containing old X11 programs like xterm behave like that.
@@ -189,7 +186,7 @@ class AtspiMonitor:
                     self._active_program_name,
                     self._active_window_title)
 
-_ACTIVE_WINDOW: Tuple[str, str] = ('', '')
+_ACTIVE_WINDOW: tuple[str, str] = ('', '')
 
 def _get_active_window_atspi() -> None:
     '''
@@ -210,11 +207,11 @@ def _get_active_window_atspi() -> None:
                 if window.get_state_set().contains(pyatspi.STATE_ACTIVE):
                     _ACTIVE_WINDOW = (application.name, window.name)
                     return
-    except Exception as error: # pylint: disable=broad-except
-        LOGGER.exception('%s: %s', error.__class__.__name__, error)
+    except Exception: # pylint: disable=broad-except
+        LOGGER.exception('Exception getting active window')
     _ACTIVE_WINDOW = ('', '')
 
-def get_active_window_atspi() -> Tuple[str, str]:
+def get_active_window_atspi() -> tuple[str, str]:
     '''
     Get information about the currently active window.
 
@@ -234,7 +231,7 @@ def get_active_window_atspi() -> Tuple[str, str]:
         return ('', '')
     return _ACTIVE_WINDOW
 
-def get_active_window_xprop() -> Tuple[str, str]:
+def get_active_window_xprop() -> tuple[str, str]:
     '''
     Gets information about the currently active window.
 
@@ -255,13 +252,10 @@ def get_active_window_xprop() -> Tuple[str, str]:
         result = subprocess.run(
             [xprop_binary, '-root', '-f',
              '_NET_ACTIVE_WINDOW', '0x', ' $0', '_NET_ACTIVE_WINDOW'],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             check=True, encoding='utf-8')
     except subprocess.CalledProcessError as error:
-        LOGGER.exception(
-            'Exception when calling xprop: %s: %s stderr: %s',
-             error.__class__.__name__, error, error.stderr)
+        LOGGER.exception('Exception when calling xprop; stderr: %s', error.stderr)
         return (program_name, window_title)
     # result now looks like in this example:
     #
@@ -276,13 +270,10 @@ def get_active_window_xprop() -> Tuple[str, str]:
         result = subprocess.run(
             [xprop_binary,
              '-id', window_id, '-f', 'WM_CLASS', '0s', 'WM_CLASS'],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             check=True, encoding='utf-8')
     except subprocess.CalledProcessError as error:
-        LOGGER.exception(
-            'Exception when calling xprop: %s: %s stderr: %s',
-             error.__class__.__name__, error,  error.stderr)
+        LOGGER.exception('Exception when calling xprop; stderr: %s', error.stderr)
         return (program_name, window_title)
     # result now looks like in this example
     #
@@ -297,13 +288,10 @@ def get_active_window_xprop() -> Tuple[str, str]:
         result = subprocess.run(
             [xprop_binary,
              '-id', window_id, '-f', '_NET_WM_NAME', '0t', '_NET_WM_NAME'],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             check=True, encoding='utf-8')
     except subprocess.CalledProcessError as error:
-        LOGGER.exception(
-            'Exception when calling xprop: %s: %s stderr: %s',
-             error.__class__.__name__, error, error.stderr)
+        LOGGER.exception('Calling xprop failed; stderr: %s', error.stderr)
         return (program_name, window_title)
     # result now looks like in this example
     #
@@ -315,7 +303,7 @@ def get_active_window_xprop() -> Tuple[str, str]:
     return (program_name, window_title)
 
 
-def get_active_window() -> Tuple[str, str]:
+def get_active_window() -> tuple[str, str]:
     '''
     Gets information about the currently active window.
 

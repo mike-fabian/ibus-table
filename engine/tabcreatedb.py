@@ -22,12 +22,8 @@
 '''
 Program to create sqlite databases from the table sources
 '''
-
-from typing import Tuple
-from typing import List
-from typing import Iterable
-from typing import Dict
 from typing import Any
+from collections.abc import Iterable
 import os
 import sys
 import bz2
@@ -69,7 +65,7 @@ class InvalidTableName(Exception):
 
     def __str__(self) -> str:
         return (f'Value of NAME attribute ({self.table_name}) '
-                f'cannot contain any of {repr(_INVALID_KEYNAME_CHARS)} '
+                f'cannot contain any of {_INVALID_KEYNAME_CHARS!r} '
                 'and must be all ascii')
 
 def parse_args() -> Any:
@@ -214,11 +210,11 @@ def main() -> None:
                                  create_database=True)
 
     def parse_source(
-            f: Iterable[str]) -> Tuple[List[str], List[str], List[str]]:
-        _attri: List[str] = []
-        _table: List[str] = []
-        _table_extra: List[str] = []
-        _gouci: List[str] = []
+            f: Iterable[str]) -> tuple[list[str], list[str], list[str]]:
+        _attri: list[str] = []
+        _table: list[str] = []
+        _table_extra: list[str] = []
+        _gouci: list[str] = []
         patt_com = re.compile(r'^###.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_conf = re.compile(r'[^\t]*=[^\t]*')
@@ -265,7 +261,7 @@ def main() -> None:
             # character is “aaaa”.  Therefore, the goucima of 工 is
             # “aaaa” (There is one other character with the same goucima
             # in  wubi-jidian86.txt, 㠭 also has the goucima “aaaa”).
-            gouci_dict: Dict[str, str] = {}
+            gouci_dict: dict[str, str] = {}
             for line in _table:
                 res = patt_table.match(line)
                 if res and len(res.group(2)) == 1:
@@ -279,8 +275,8 @@ def main() -> None:
         _table += _table_extra
         return (_attri, _table, _gouci)
 
-    def parse_pinyin(f: Iterable[str]) -> List[str]:
-        _pinyins: List[str] = []
+    def parse_pinyin(f: Iterable[str]) -> list[str]:
+        _pinyins: list[str] = []
         patt_com = re.compile(r'^#.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_py = re.compile(r'(.*)\t(.*)\t(.*)')
@@ -295,8 +291,8 @@ def main() -> None:
                         _pinyins.append(f'{res.group(1)}\t{yin}\t{res.group(3)}')
         return _pinyins[:]
 
-    def parse_suggestion(f: Iterable[str]) -> List[str]:
-        _suggestions: List[str] = []
+    def parse_suggestion(f: Iterable[str]) -> list[str]:
+        _suggestions: list[str] = []
         patt_com = re.compile(r'^#.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_sg = re.compile(r'(.*)\s+(.*)')
@@ -310,8 +306,8 @@ def main() -> None:
                     _suggestions.append(f'{phrase} {freq}')
         return _suggestions[:]
 
-    def parse_extra(f: Iterable[str]) -> List[str]:
-        _extra: List[str] = []
+    def parse_extra(f: Iterable[str]) -> list[str]:
+        _extra: list[str] = []
         patt_com = re.compile(r'^###.*')
         patt_blank = re.compile(r'^[ \t]*$')
         patt_extra = re.compile(r'(.*)\t(.*)')
@@ -323,18 +319,18 @@ def main() -> None:
 
         return _extra
 
-    def pinyin_parser(f: Iterable[str]) -> Iterable[Tuple[str, str, int]]:
+    def pinyin_parser(f: Iterable[str]) -> Iterable[tuple[str, str, int]]:
         for pinyin_line in f:
             _zi, _pinyin, _freq = pinyin_line.strip().split()
             yield (_pinyin, _zi, int(_freq))
 
-    def suggestion_parser(f: Iterable[str]) -> Iterable[Tuple[str, int]]:
+    def suggestion_parser(f: Iterable[str]) -> Iterable[tuple[str, int]]:
         for suggestion_line in f:
             _phrase, _freq = suggestion_line.strip().split()
             yield (_phrase, int(_freq))
 
-    def phrase_parser(f: Iterable[str]) -> List[Tuple[str, str, int, int]]:
-        phrase_list: List[Tuple[str, str, int, int]] = []
+    def phrase_parser(f: Iterable[str]) -> list[tuple[str, str, int, int]]:
+        phrase_list: list[tuple[str, str, int, int]] = []
         for line in f:
             xingma, phrase, freq = line.split('\t')[:3]
             if phrase == 'NOSYMBOL':
@@ -342,12 +338,12 @@ def main() -> None:
             phrase_list.append((xingma, phrase, int(freq), 0))
         return phrase_list
 
-    def goucima_parser(f: Iterable[str]) -> Iterable[Tuple[str, str]]:
+    def goucima_parser(f: Iterable[str]) -> Iterable[tuple[str, str]]:
         for line in f:
             zi, gcm = line.strip().split()
             yield (zi, gcm)
 
-    def attribute_parser(f: Iterable[str]) -> Iterable[Tuple[str, str]]:
+    def attribute_parser(f: Iterable[str]) -> Iterable[tuple[str, str]]:
         for line in f:
             match = re.fullmatch(r'(.*?)==?(.*)', line)
             if match is None:
@@ -357,8 +353,8 @@ def main() -> None:
             val = val.strip()
             yield (attr, val)
 
-    def extra_parser(f: Iterable[str]) -> List[Tuple[str, str, int, int]]:
-        extra_list: List[Tuple[str, str, int, int]] = []
+    def extra_parser(f: Iterable[str]) -> list[tuple[str, str, int, int]]:
+        extra_list: list[tuple[str, str, int, int]] = []
         for line in f:
             phrase, freq = line.strip().split()
             _tabkey = db.parse_phrase(phrase)
@@ -368,7 +364,7 @@ def main() -> None:
                 print(f'No tabkeys found for “{phrase}”, not adding.\n')
         return extra_list
 
-    def get_char_prompts(f: Iterable[str]) -> Tuple[str, str]:
+    def get_char_prompts(f: Iterable[str]) -> tuple[str, str]:
         '''
         Returns something like
 
@@ -377,7 +373,7 @@ def main() -> None:
         i.e. the attribute name "char_prompts" and as its value
         the string representation of a Python dictionary.
         '''
-        char_prompts: Dict[str, str] = {}
+        char_prompts: dict[str, str] = {}
         start = False
         for line in f:
             if re.match(r'^BEGIN_CHAR_PROMPTS_DEFINITION', line):
@@ -450,7 +446,7 @@ def main() -> None:
             db.add_pinyin(pinyin)
 
     if db.ime_properties.get('suggestion_mode').lower() == 'true':
-        debug_print(f'\tLoad suggestion source {repr(_ARGS.suggestion)}')
+        debug_print(f'\tLoad suggestion source {_ARGS.suggestion!r}')
         _bz2s = patt_s.match(_ARGS.suggestion)
         open_func = bz2.open if _bz2s else open
         with open_func(_ARGS.suggestion, mode="rt", encoding='UTF-8') as suggestion_s:
@@ -468,7 +464,7 @@ def main() -> None:
             and _ARGS.extra):
         debug_print('\tPreparing for adding extra words')
         db.create_indexes('main')
-        debug_print(f'\tLoad extra words source {repr(_ARGS.extra)}')
+        debug_print(f'\tLoad extra words source {_ARGS.extra!r}')
         _bz2e = patt_s.match(_ARGS.extra)
         open_func = bz2.open if _bz2e else open
         with open_func(_ARGS.extra, mode='rt', encoding='UTF-8') as extra_s:

@@ -21,7 +21,6 @@
 '''
 TabEngine Factory
 '''
-from typing import Dict
 from typing import Optional
 import os
 import re
@@ -37,7 +36,7 @@ import tabsqlitedb
 
 LOGGER = logging.getLogger('ibus-table')
 
-DEBUG_LEVEL = int(0)
+DEBUG_LEVEL = 0
 
 DOMAINNAME = 'ibus-table'
 
@@ -59,11 +58,11 @@ class EngineFactory(IBus.Factory):
         try:
             DEBUG_LEVEL = int(str(os.getenv('IBUS_TABLE_DEBUG_LEVEL')))
         except (TypeError, ValueError):
-            DEBUG_LEVEL = int(0)
+            DEBUG_LEVEL = 0
         if DEBUG_LEVEL > 1:
             LOGGER.debug('EngineFactory.__init__(bus=%s, db=%s)\n', bus, db)
         self.db: Optional[tabsqlitedb.TabSqliteDb] = None
-        self.dbdict: Dict[str, tabsqlitedb.TabSqliteDb] = {}
+        self.dbdict: dict[str, tabsqlitedb.TabSqliteDb] = {}
         # db is the full path to the sql database
         if db:
             self.dbusname = os.path.basename(db).replace('.db', '')
@@ -112,11 +111,9 @@ class EngineFactory(IBus.Factory):
             self.engine_id += 1
             #return engine.get_dbus_object()
             return engine
-        except Exception as error: # pylint: disable=broad-except
-            LOGGER.exception(
-                'Failed to create engine %s: %s: %s',
-                engine_name, error.__class__.__name__, error)
-            raise Exception from error # pylint: disable=broad-exception-raised
+        except Exception: # pylint: disable=broad-except
+            LOGGER.exception('Failed to create engine %s', engine_name)
+            raise
 
     def do_destroy(self) -> None: # pylint: disable=arguments-differ
         '''Destructor, which finish some task for IME'''

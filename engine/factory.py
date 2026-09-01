@@ -126,6 +126,7 @@ class EngineFactory(IBus.Factory):
         ## we need to sync the temp userdb in memory to the user_db on disk
         for key, database in self.dbdict.items():
             LOGGER.info('Syncing %s %s', key, database)
+            database.save_phrases_cache()
             database.sync_usrdb()
         ##print "Have synced user db\n"
         super().destroy()

@@ -1799,15 +1799,23 @@ class TabEngine(IBus.EngineSimple):
     def fill_lookup_table(self) -> None:
         '''Fill more entries to self._lookup_table if needed.
 
-        If the cursor in _lookup_table moved beyond current length,
-        add more entries from _candidiate[0] to _lookup_table.'''
-
+        The lookup table used to be filled one page at a time and grew
+        by one page each time the cursor was moved down into the next
+        page.  This was confusing as it did not show the real total
+        number of candidates right away. Apparently this delayed
+        filling of the lookup table was done for performance reasons,
+        but as the maximum number of candidates is limited to 100
+        anyway, there is no real performance gained by delaying to
+        fill the lookup table.  It just caused confusion because the
+        real number of candidates was not shown correctly in the
+        auxiliary text until one scrolled down to the last page.
+        '''
         looklen = self._lookup_table.get_number_of_candidates()
         psize = self._lookup_table.get_page_size()
+        total = len(self._candidates)
         if (self._lookup_table.get_cursor_pos() + psize >= looklen and
-                looklen < len(self._candidates)):
-            endpos = looklen + psize
-            batch = self._candidates[looklen:endpos]
+                looklen < total):
+            batch = self._candidates[looklen:total]
             for candidate in batch:
                 if (self._input_mode
                     and not self._py_mode and not self._sg_mode_active):
@@ -1981,6 +1989,7 @@ class TabEngine(IBus.EngineSimple):
             self.sync_timeout_id = 0
         self.reset()
         self.do_focus_out()
+        self.database.save_phrases_cache()
         if self._save_user_count > 0:
             self.database.sync_usrdb()
             self._save_user_count = 0
@@ -3197,7 +3206,7 @@ class TabEngine(IBus.EngineSimple):
 
     def _sync_user_db(self) -> bool:
         """Save user db to disk"""
-        if self._save_user_count >= 0:
+        if self._save_user_count > 0:
             now = time.time()
             time_delta = now - self._save_user_start
             if (self._save_user_count > self._save_user_count_max or

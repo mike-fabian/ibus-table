@@ -2229,7 +2229,7 @@ class SelectWordsEscapeIndexTestCase(unittest.TestCase):
         captured = self._captured
         real_db = self._real_db
         class Spy: # pylint: disable=missing-class-docstring
-            def execute(self, sql, *a): # pylint: disable=missing-function-docstring
+            def execute(self, sql, *a): # pylint: disable=missing-function-docstring,no-self-use
                 captured.append(' '.join(sql.split()))
                 return real_db.execute(sql, *a)
             def __getattr__(self, name):

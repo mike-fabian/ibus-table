@@ -1,1 +1,10 @@
-lint.ignore = ["E402"] # Module level import not at top of file
+target-version = "py39"
+lint.ignore = [
+    "E402",   # Module level import not at top of file
+    "SIM102", # Nested if can be clearer than a combined condition
+    "FA100", # Keep typing.Optional/Union; Python 3.9 is the minimum
+    "UP045", # Keep typing.Optional/Union; Python 3.9 is the minimum
+    "S110", # Sometimes "catch and pass" is intentional.
+    "S112", # Sometimes "catch and continue" is intentional.
+    "I001", # Import ordering needs to be handled separately.
+]

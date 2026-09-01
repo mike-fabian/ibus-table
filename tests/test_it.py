@@ -2210,8 +2210,10 @@ class PhrasesCacheSyncTestCase(unittest.TestCase):
         assert ENGINE is not None
         ENGINE._save_user_count = 0
         ENGINE._save_user_start = 0.0
-        with mock.patch.object(ENGINE.database, 'sync_usrdb') as mock_sync:
-            with mock.patch.object(table.time, 'time') as mock_time:
+        with (
+                mock.patch.object(ENGINE.database, 'sync_usrdb') as mock_sync,
+                mock.patch.object(table.time, 'time') as mock_time,
+        ):
                 for second in range(1, 301):
                     mock_time.return_value = float(second)
                     ENGINE._sync_user_db()
@@ -2226,8 +2228,10 @@ class PhrasesCacheSyncTestCase(unittest.TestCase):
         assert ENGINE is not None
         ENGINE._save_user_count = 0
         ENGINE._save_user_start = 0.0
-        with mock.patch.object(ENGINE.database, 'sync_usrdb') as mock_sync:
-            with mock.patch.object(table.time, 'time') as mock_time:
+        with (
+                mock.patch.object(ENGINE.database, 'sync_usrdb') as mock_sync,
+                mock.patch.object(table.time, 'time') as mock_time,
+        ):
                 fake_now = 0.0
                 for _unused in range(ENGINE._save_user_count_max + 1):
                     fake_now += 0.5

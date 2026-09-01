@@ -233,20 +233,20 @@ class MockProperty:
     def __init__(self,
                  key: str = '',
                  prop_type: IBus.PropType = IBus.PropType.RADIO,
-                 label: IBus.Text = IBus.Text.new_from_string(''),
-                 symbol: IBus.Text = IBus.Text.new_from_string(''),
+                 label: Optional[IBus.Text] = None,
+                 symbol: Optional[IBus.Text] = None,
                  icon: str = '',
-                 tooltip: IBus.Text = IBus.Text.new_from_string(''),
+                 tooltip: Optional[IBus.Text] = None,
                  sensitive: bool = True,
                  visible: bool = True,
                  state: IBus.PropState = IBus.PropState.UNCHECKED,
                  sub_props: Optional[List[IBus.Property]] = None) -> None:
         self.mock_property_key = key
         self.mock_property_prop_type = prop_type
-        self.mock_property_label = label.get_text()
-        self.mock_property_symbol = symbol.get_text()
+        self.mock_property_label = label.get_text() if label is not None else ''
+        self.mock_property_symbol = symbol.get_text() if symbol is not None else ''
         self.mock_property_icon = icon
-        self.mock_property_tooltip = tooltip.get_text()
+        self.mock_property_tooltip = tooltip.get_text() if tooltip is not None else ''
         self.mock_property_sensitive = sensitive
         self.mock_property_visible = visible
         self.mock_property_state = state

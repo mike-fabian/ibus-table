@@ -22,7 +22,7 @@
 '''
 This file implements the test cases for the unit tests of ibus-table
 '''
-
+from typing import Any
 import sys
 import os
 import logging
@@ -2224,15 +2224,17 @@ class SelectWordsEscapeIndexTestCase(unittest.TestCase):
         con.close()
         self.db = tabsqlitedb.TabSqliteDb(
             filename=db_path, user_db=':memory:')
-        self._captured = []
+        self._captured: list[str] = []
         self._real_db = self.db.db
         captured = self._captured
         real_db = self._real_db
         class Spy: # pylint: disable=missing-class-docstring
-            def execute(self, sql, *a): # pylint: disable=missing-function-docstring,no-self-use
+            def execute(self,
+                        sql: str,
+                        *args: Any) -> sqlite3.Cursor: # pylint: disable=missing-function-docstring,no-self-use
                 captured.append(' '.join(sql.split()))
-                return real_db.execute(sql, *a)
-            def __getattr__(self, name):
+                return real_db.execute(sql, *args)
+            def __getattr__(self, name: str) -> Any:
                 return getattr(real_db, name)
         self.db.db = Spy() # type: ignore
 
@@ -2240,7 +2242,7 @@ class SelectWordsEscapeIndexTestCase(unittest.TestCase):
         '''Remove the throwaway database directory created in setUp().'''
         shutil.rmtree(self._tmpdir, ignore_errors=True)
 
-    def _indexes(self):
+    def _indexes(self) -> list[str]:
         '''Return the names of all indexes currently defined on the
         throwaway database, bypassing the Spy to query the real
         connection directly.'''

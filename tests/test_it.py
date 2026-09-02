@@ -2229,9 +2229,9 @@ class SelectWordsEscapeIndexTestCase(unittest.TestCase):
         captured = self._captured
         real_db = self._real_db
         class Spy: # pylint: disable=missing-class-docstring
-            def execute(self,
+            def execute(self, # pylint: disable=missing-function-docstring,no-self-use
                         sql: str,
-                        *args: Any) -> sqlite3.Cursor: # pylint: disable=missing-function-docstring,no-self-use
+                        *args: Any) -> sqlite3.Cursor:
                 captured.append(' '.join(sql.split()))
                 return real_db.execute(sql, *args)
             def __getattr__(self, name: str) -> Any:

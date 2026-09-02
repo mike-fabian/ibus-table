@@ -1,4 +1,704 @@
-commit 83a0138175c161bfd2b8b7fd591b202221c8f1f4
+commit e8ae2d6b427213e4db0c4cd74b96775f89dbb9a6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 2 18:11:27 2026 +0200
+
+    Release 1.18.0
+
+commit 36d7344658f65abccdbe46c293012e5c160a09a2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 2 18:27:50 2026 +0200
+
+    Update ibus-table.pot (Only line number changes)
+
+commit 77cb152104df459938d9e56438591754bb81267a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 2 18:30:42 2026 +0200
+
+    Silence pylint-3 warning again, forgot to move line when adding type hints
+
+commit 7411f90564e46eb7e8b1b2784a646dc52c4e93b4
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 2 14:27:29 2026 +0000
+
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 54.9% (84 of 153 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translation: ibus-table/app
+
+commit 0d1e69962d6b319260e8ee9a7332177f79683fa6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Sep 2 12:32:43 2026 +0200
+
+    Add missing type hints to SelectWordsEscapeIndexTestCase
+    
+    See: https://github.com/mike-fabian/ibus-table/pull/235
+
+commit 3eb566290c62da065fe007540dc21a03e2bd090a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 1 18:31:33 2026 +0200
+
+    Fix some ruff warnings
+
+commit f4f6530d39b8d61565ee0a9420a59b6c8db78ab7
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 1 18:28:04 2026 +0200
+
+    Require Python 3.9+
+
+commit b131de59af1a5f60fceb3dde2365db49ff1136fb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 1 18:15:47 2026 +0200
+
+    Silence a pylint-3 warning
+
+commit f7120b74a1db2c40320bfa7933d9d59fd9ef56ec
+Author: ivan <4957816+iravan@users.noreply.github.com>
+Date:   Mon Aug 31 15:29:22 2026 +0800
+
+    Compact database after dropping distribution indexes
+    
+    DROP INDEX only frees pages onto SQLite's internal freelist; the
+    file itself does not shrink until something VACUUMs it. In the
+    --no-create-index path, tabcreatedb.py ran optimize_database()
+    (which VACUUMs) before drop_indexes('main'), so a distributed
+    database kept the index-sized allocation despite ending up with
+    no index.
+    
+    Run optimize_database() again after drop_indexes('main') so the
+    freed pages are actually reclaimed.
+    
+    Adds test_drop_indexes_then_optimize_compacts_database to
+    SelectWordsEscapeIndexTestCase: builds an indexed throwaway
+    database, records its VACUUMed page_count, then drops the index
+    and re-optimizes, asserting page_count decreases.
+
+commit aa4227f3fa2c8add827ad6a4d9ee69f9d7ef2bec
+Author: ivan <4957816+iravan@users.noreply.github.com>
+Date:   Fri Aug 21 23:51:52 2026 +0800
+
+    Remove _phrases_cache; index makes it unnecessary
+    
+    With the tabkeys index and conditional ESCAPE clause (previous
+    commit), select_words() already hits an index search instead of
+    a full table scan, at ~0.3-2ms per lookup. _phrases_cache existed
+    specifically to avoid that scan cost, so remove it: its reason
+    for being is gone, and it was pure overhead on an already-fast
+    query.
+    
+    Removed entirely:
+    - TabSqliteDb._phrases_cache and cache_path
+    - reset/invalidate/load/save_phrases_cache()
+    - the cache read/write in select_words()
+    - the six TabEngine call sites that reset the cache after a
+      setting change -- with no cache, select_words() already
+      reflects current settings
+    - the unused "unit_test" constructor parameter on TabSqliteDb
+      and the "json" import
+    
+    Measured on a real 137k-row table: 0.44ms/lookup average with no
+    cache at all -- faster than a cache-plus-scan setup would have
+    needed for even a single uncached lookup.
+    
+    Side benefit: "Delete all learned data" now takes effect
+    immediately in a running engine instead of requiring a restart,
+    since there's no stale in-memory cache left to overwrite the
+    now-empty database.
+    
+    Requires the tabkeys index and ESCAPE fix from the previous
+    commit -- reverting that one without this one reintroduces full
+    table scans with nothing left to absorb the cost.
+    
+    Full test suite passes (36 passed, 14 pre-existing skips).
+
+commit b7650ab00cd29b761dea8ef0858ea0ff68aca33f
+Author: ivan <4957816+iravan@users.noreply.github.com>
+Date:   Tue Aug 18 16:55:07 2026 +0800
+
+    Drop unneeded ESCAPE clause, add tabkeys index
+    
+    select_words() matches typed keys with:
+    
+        WHERE tabkeys LIKE :tabkeys ESCAPE :escapechar
+    
+    SQLite can normally rewrite a LIKE prefix match into an indexed
+    range scan, and ibus-table already meets the preconditions
+    (case_sensitive_like, BINARY collation) -- but the mere presence
+    of an ESCAPE clause disables that optimization, forcing a full
+    table scan regardless of any index. is_in_system_database() has
+    the same problem.
+    
+    The escape character is only needed when typed keys contain '%',
+    '_', or the escape character itself -- close to never for
+    ordinary tables. Build the LIKE pattern first and add ESCAPE only
+    when escaping actually happened.
+    
+    Measured on a real 137k-row table: 13.6ms/lookup unindexed or
+    indexed-but-scanning, 1.2ms once ESCAPE is also dropped. End to
+    end through select_words() on a 400k-row table: 32.3ms before,
+    1.9ms after, with the query plan flipping from SCAN to SEARCH.
+    
+    create_indexes()/drop_indexes() already existed as a deliberate
+    no-op ("benchmarking showed no speedup") -- that benchmark was
+    almost certainly run against this same ESCAPE clause, which
+    guarantees an index goes unused regardless of the outcome.
+    
+    Cost: +21% database size (varies by table). Only newly built
+    tables gain the index; existing installed system tables keep
+    scanning until rebuilt.
+    
+    Adds tests/test_it.py::SelectWordsEscapeIndexTestCase (7 tests):
+    ESCAPE omitted/included correctly, indexes actually mutate the
+    schema, the query plan flips to an index search, and results are
+    byte-identical with and without the index.
+    
+    Verified live on Ubuntu 24.04: full test suite passes (36
+    passed, 14 pre-existing skips).
+
+commit 613430e78b9b8d7fc79b3144c4f88fe1dcb7e9a6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 1 11:42:53 2026 +0200
+
+    Fix some ruff warnings, starting to prepare to require Python >= 3.9
+
+commit 3c2cfe2783a623e98a81cb48742f3cd24d96c755
+Author: ivan <4957816+iravan@users.noreply.github.com>
+Date:   Tue Aug 18 14:24:39 2026 +0800
+
+    Stop rewriting phrases cache every 30s while idle
+    
+    TabEngine._sync_user_db() guards its periodic sync with
+    `self._save_user_count >= 0`, which is always true, so it fires
+    save_phrases_cache() every 30s all session even with zero
+    keystrokes. do_destroy() guards the same counter correctly
+    (`> 0`), suggesting this is a latent regression from when
+    save_phrases_cache() was added to sync_usrdb() in 2017.
+    
+    Fix:
+    1. table.py: `>= 0` -> `> 0` in _sync_user_db(), so the periodic
+       sync only runs when something was actually typed.
+    2. tabsqlitedb.py: decouple save_phrases_cache() from
+       sync_usrdb() entirely, and call it explicitly instead from
+       EngineFactory.do_destroy() (daemon shutdown) and
+       TabEngine.do_destroy() (per-engine shutdown), unconditionally,
+       since the cache is populated by lookups, not commits.
+    3. Add a _phrases_cache_dirty flag so do_destroy() can skip the
+       write when nothing actually changed.
+    
+    Confirmed live: idle cache rewrites happened every ~10-30s before
+    this change, zero after. Full test suite passes (35 passed, 14
+    pre-existing skips).
+    
+    Fixes #223
+
+commit 9b11fa78fbac38c4018d7380454f43319636c1b0
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 1 09:26:49 2026 +0200
+
+    Fix ty warnings
+
+commit d201053a673d78409b7e0a1d4e652afff64a6c9a
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 1 09:23:44 2026 +0200
+
+    Improve description of fill_lookup_table(self)
+    
+    See: https://github.com/mike-fabian/ibus-table/pull/232
+
+commit 132546f7ed502b455b22c107fe88d8f6331a05f3
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 1 09:13:56 2026 +0200
+
+    Add assert to QuickClassicTest.test_lookup_table_total_shown_immediately suggested by coderabbitai
+    
+    See: https://github.com/mike-fabian/ibus-table/pull/232#pullrequestreview-4950737115
+
+commit e8e3780b1029cdaf0d695ecc1c3bdc726bbfb11d
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Sep 1 09:07:30 2026 +0200
+
+    Fix LatexTestCase.test_single_char_commit_with_f3: lookup table is filled in one go now
+    
+    See: https://github.com/mike-fabian/ibus-table/pull/232
+
+commit e5358918fd6f3614ad14e73f04e2d253e1bb065f
+Author: ivan <4957816+iravan@users.noreply.github.com>
+Date:   Mon Aug 17 17:47:24 2026 +0800
+
+    Fill the lookup table in one pass, not per page
+    
+    fill_lookup_table() only appended one page size worth of candidates
+    at a time, so the "x/y" page indicator's "y" grew by one page size
+    on every page down instead of showing the real total right away
+    (e.g. 1/9, 10/18, ..., landing on the real total only on the last
+    page). Candidate results are already capped to at most 100 entries
+    by best_candidates()/select_suggestion_candidate() in tabsqlitedb.py,
+    so filling them all in one go is cheap.
+    
+    Updated the handful of existing tests that hard-coded the old
+    one-page-at-a-time fill as their expected candidate list.
+
+commit 608eb3b41f330ae1b8eb4bc183b3228a4477f8d8
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Mon Aug 10 10:20:38 2026 +0000
+
+    Translated using Weblate (Hungarian)
+    
+    Currently translated at 50.9% (78 of 153 strings)
+    
+    Translated using Weblate (Kabyle)
+    
+    Currently translated at 41.8% (64 of 153 strings)
+    
+    Translated using Weblate (Greek)
+    
+    Currently translated at 41.8% (64 of 153 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/hu/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/kab/
+    Translation: ibus-table/app
+
+commit 15c96f30061c136eb34a0cd4ff4517c2d3e72a32
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Aug 10 10:20:38 2026 +0000
+
+    Translated using Weblate (Hungarian)
+    
+    Currently translated at 50.9% (78 of 153 strings)
+    
+    Translated using Weblate (Hungarian)
+    
+    Currently translated at 50.9% (78 of 153 strings)
+    
+    Translated using Weblate (Kabyle)
+    
+    Currently translated at 41.8% (64 of 153 strings)
+    
+    Translated using Weblate (Greek)
+    
+    Currently translated at 41.8% (64 of 153 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/hu/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/kab/
+    Translation: ibus-table/app
+
+commit 0cfe63cb8d2a9d247f9c7eab3cdf369c1a5fcedb
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Mon Aug 10 10:20:37 2026 +0000
+
+    Translated using Weblate (Sinhala)
+    
+    Currently translated at 15.0% (23 of 153 strings)
+    
+    Translated using Weblate (Persian)
+    
+    Currently translated at 17.6% (27 of 153 strings)
+    
+    Translated using Weblate (Chinese (Hong Kong) (zh_HK))
+    
+    Currently translated at 26.7% (41 of 153 strings)
+    
+    Translated using Weblate (Greek)
+    
+    Currently translated at 41.8% (64 of 153 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fa/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/si/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_HK/
+    Translation: ibus-table/app
+
+commit 637ccb318d0a59ead043c8288f767a8c70d7fb82
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Aug 10 10:20:37 2026 +0000
+
+    Translated using Weblate (Sinhala)
+    
+    Currently translated at 15.0% (23 of 153 strings)
+    
+    Translated using Weblate (Sinhala)
+    
+    Currently translated at 15.0% (23 of 153 strings)
+    
+    Translated using Weblate (Sinhala)
+    
+    Currently translated at 15.0% (23 of 153 strings)
+    
+    Translated using Weblate (Persian)
+    
+    Currently translated at 17.6% (27 of 153 strings)
+    
+    Translated using Weblate (Chinese (Hong Kong) (zh_HK))
+    
+    Currently translated at 26.7% (41 of 153 strings)
+    
+    Translated using Weblate (Chinese (Hong Kong) (zh_HK))
+    
+    Currently translated at 26.7% (41 of 153 strings)
+    
+    Translated using Weblate (Chinese (Hong Kong) (zh_HK))
+    
+    Currently translated at 26.7% (41 of 153 strings)
+    
+    Translated using Weblate (Greek)
+    
+    Currently translated at 41.8% (64 of 153 strings)
+    
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 54.2% (83 of 153 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fa/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/si/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_HK/
+    Translation: ibus-table/app
+
+commit a6b7a721d3f56cabbf221fbedf3ee294111ebb5b
+Author: Andrei Stepanov <adem4ik@gmail.com>
+Date:   Mon Aug 10 10:20:37 2026 +0000
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: Andrei Stepanov <adem4ik@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translation: ibus-table/app
+
+commit ccbdf38a66b35594e8cface964bb78d6ab3b602f
+Author: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+Date:   Mon Aug 10 10:20:37 2026 +0000
+
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 69.9% (107 of 153 strings)
+    
+    Co-authored-by: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translation: ibus-table/app
+
+commit 50727c7a8dfa5029be5a27e4bed4fcd1d845ed2b
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Mon Aug 10 10:20:36 2026 +0000
+
+    Translated using Weblate (Hungarian)
+    
+    Currently translated at 50.9% (78 of 153 strings)
+    
+    Translated using Weblate (Kabyle)
+    
+    Currently translated at 41.8% (64 of 153 strings)
+    
+    Translated using Weblate (Greek)
+    
+    Currently translated at 41.8% (64 of 153 strings)
+    
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 69.9% (107 of 153 strings)
+    
+    Translated using Weblate (Sinhala)
+    
+    Currently translated at 15.0% (23 of 153 strings)
+    
+    Translated using Weblate (Persian)
+    
+    Currently translated at 17.6% (27 of 153 strings)
+    
+    Translated using Weblate (Chinese (Hong Kong) (zh_HK))
+    
+    Currently translated at 26.7% (41 of 153 strings)
+    
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 54.2% (83 of 153 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fa/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/hu/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/kab/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/si/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_HK/
+    Translation: ibus-table/app
+
+commit 18c4eb8d6325adc3f21d980520e04b431f659aca
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 6 16:37:02 2026 +0000
+
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 52.9% (81 of 153 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translation: ibus-table/app
+
+commit ae59e37a607d08ab28be3f072d23abf1e94f6864
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Jul 6 16:27:57 2026 +0000
+
+    Translated using Weblate (Greek)
+    
+    Currently translated at 40.5% (62 of 153 strings)
+    
+    Translated using Weblate (Sinhala)
+    
+    Currently translated at 13.0% (20 of 153 strings)
+    
+    Translated using Weblate (Persian)
+    
+    Currently translated at 16.9% (26 of 153 strings)
+    
+    Translated using Weblate (Chinese (Hong Kong) (zh_HK))
+    
+    Currently translated at 24.1% (37 of 153 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fa/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/si/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_HK/
+    Translation: ibus-table/app
+
+commit 1297dd62452f93522ad9a9910fa7f5e2348d3376
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Mon Jul 6 16:27:57 2026 +0000
+
+    Translated using Weblate (Greek)
+    
+    Currently translated at 40.5% (62 of 153 strings)
+    
+    Translated using Weblate (Sinhala)
+    
+    Currently translated at 13.0% (20 of 153 strings)
+    
+    Translated using Weblate (Persian)
+    
+    Currently translated at 16.9% (26 of 153 strings)
+    
+    Translated using Weblate (Chinese (Hong Kong) (zh_HK))
+    
+    Currently translated at 24.1% (37 of 153 strings)
+    
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 52.9% (81 of 153 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/fa/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/si/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_HK/
+    Translation: ibus-table/app
+
+commit 52481972aacd3fdf74f515228fc11f35b8f574b8
+Author: 김인수 <simmon@nplob.com>
+Date:   Thu Jun 11 08:27:03 2026 +0000
+
+    Translated using Weblate (Korean)
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Translated using Weblate (Korean)
+    
+    Currently translated at 98.0% (150 of 153 strings)
+    
+    Co-authored-by: 김인수 <simmon@nplob.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ko/
+    Translation: ibus-table/app
+
+commit 5f494ee8c7828d4c43aa6c01f0cc25962e0c410f
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Thu Jun 11 08:27:03 2026 +0000
+
+    Translated using Weblate (Korean)
+    
+    Currently translated at 95.4% (146 of 153 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ko/
+    Translation: ibus-table/app
+
+commit 3f353e54afa7980108a2c272753be33382f182cc
+Author: 김인수 <simmon@nplob.com>
+Date:   Thu Jun 11 08:27:03 2026 +0000
+
+    Translated using Weblate (Korean)
+    
+    Currently translated at 95.4% (146 of 153 strings)
+    
+    Translated using Weblate (Korean)
+    
+    Currently translated at 62.0% (95 of 153 strings)
+    
+    Co-authored-by: 김인수 <simmon@nplob.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ko/
+    Translation: ibus-table/app
+
+commit f1fc7158ce8500893b030a5a7773f200834c0211
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue Jun 2 09:25:56 2026 +0000
+
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 52.2% (80 of 153 strings)
+    
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Translated using Weblate (Korean)
+    
+    Currently translated at 62.7% (96 of 153 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ko/
+    Translation: ibus-table/app
+
+commit 144efffe9c3526043057898d9912693bf245ec7c
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Tue Jun 2 09:25:56 2026 +0000
+
+    Translated using Weblate (Chinese (Hong Kong) (zh_HK))
+    
+    Currently translated at 21.5% (33 of 153 strings)
+    
+    Translated using Weblate (Korean)
+    
+    Currently translated at 62.7% (96 of 153 strings)
+    
+    Translated using Weblate (Sinhala)
+    
+    Currently translated at 11.7% (18 of 153 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ko/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/si/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_HK/
+    Translation: ibus-table/app
+
+commit 4e937b71ac10cf10e5517a66e941be7b85c603de
+Author: Andrei Stepanov <adem4ik@gmail.com>
+Date:   Tue Jun 2 09:25:56 2026 +0000
+
+    Translated using Weblate (Russian)
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: Andrei Stepanov <adem4ik@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ru/
+    Translation: ibus-table/app
+
+commit 67b04d1f6647f6f84c983723f02b496472554945
+Author: Fco. Javier F. Serrador <fserrador@gmail.com>
+Date:   Tue Jun 2 09:25:55 2026 +0000
+
+    Translated using Weblate (Spanish)
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: Fco. Javier F. Serrador <fserrador@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/es/
+    Translation: ibus-table/app
+
+commit 83d2ec4d56399f6db9f8b5ab30fea10b75a28d43
+Author: 김인수 <simmon@nplob.com>
+Date:   Tue Jun 2 09:25:55 2026 +0000
+
+    Translated using Weblate (Korean)
+    
+    Currently translated at 32.0% (49 of 153 strings)
+    
+    Co-authored-by: 김인수 <simmon@nplob.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ko/
+    Translation: ibus-table/app
+
+commit fbe147ed455bf799f67641f5ce796d74494221e8
+Author: Junghee Lee <daemul72@gmail.com>
+Date:   Tue May 26 16:55:42 2026 +0000
+
+    Added translation using Weblate (Korean)
+    
+    Co-authored-by: Junghee Lee <daemul72@gmail.com>
+
+commit 0b01ac032225861d5bbec020af9e29ee2c4a14e6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Tue May 12 07:45:47 2026 +0000
+
+    Translated using Weblate (German)
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 50.9% (78 of 153 strings)
+    
+    Translated using Weblate (Portuguese (Portugal))
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Translated using Weblate (Hungarian)
+    
+    Currently translated at 49.0% (75 of 153 strings)
+    
+    Translated using Weblate (Portuguese (Brazil))
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Translated using Weblate (Chinese (Simplified) (zh_CN))
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/de/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/hu/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_BR/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/pt_PT/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_CN/
+    Translation: ibus-table/app
+
+commit ea74e14cc83f312bd39601fb37825d1fbb85f26a
+Author: Hosted Weblate <hosted@weblate.org>
+Date:   Tue May 12 07:45:47 2026 +0000
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Hosted Weblate <hosted@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit a4e5246b9954bd3f27e7901f2d0a86df444dba53
+Author: ButterflyOfFire <butterflyoffire@users.noreply.translate.fedoraproject.org>
+Date:   Tue May 12 07:45:46 2026 +0000
+
+    Translated using Weblate (Kabyle)
+    
+    Currently translated at 41.1% (63 of 153 strings)
+    
+    Co-authored-by: ButterflyOfFire <butterflyoffire@users.noreply.translate.fedoraproject.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/kab/
+    Translation: ibus-table/app
+
+commit 873e49be611e067522334f6ca61b391ee9d7ce7c
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Mon May 11 17:38:04 2026 +0200
 

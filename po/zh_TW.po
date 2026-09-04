@@ -240,7 +240,7 @@ msgstr "切換至一次比對多字元"
 
 #: engine/table.py:883
 msgid "Single character match"
-msgstr "切換字元比對"
+msgstr "單一字元比對"
 
 #: engine/table.py:885
 msgid "Switch to matching only single characters"

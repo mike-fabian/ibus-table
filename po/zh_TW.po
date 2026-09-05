@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2026-05-11 17:38+0200\n"
+"POT-Creation-Date: 2026-09-02 18:19+0200\n"
 "PO-Revision-Date: 2026-05-10 20:16+0000\n"
 "Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
@@ -22,11 +22,11 @@ msgstr ""
 #. when one wants to input only Simplified Chinese.
 #. Translators: This is the setting to use only
 #. simplified Chinese
-#: engine/table.py:683 setup/main.py:394
+#: engine/table.py:680 setup/main.py:391
 msgid "Simplified Chinese"
 msgstr "簡體字中文"
 
-#: engine/table.py:685
+#: engine/table.py:682
 msgid "Switch to “Simplified Chinese only”."
 msgstr "切換至「僅簡體字中文」"
 
@@ -34,11 +34,11 @@ msgstr "切換至「僅簡體字中文」"
 #. when one wants to input only Traditonal Chinese
 #. Translators: This is the setting to use only
 #. traditional Chinese
-#: engine/table.py:692 setup/main.py:398
+#: engine/table.py:689 setup/main.py:395
 msgid "Traditional Chinese"
 msgstr "正體字中文"
 
-#: engine/table.py:694
+#: engine/table.py:691
 msgid "Switch to “Traditional Chinese only”."
 msgstr "切換至「正體字中文」"
 
@@ -47,11 +47,11 @@ msgstr "切換至「正體字中文」"
 #. Chinese but wants the Simplified Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:704
+#: engine/table.py:701
 msgid "Simplified Chinese first"
 msgstr "簡體字中文優先"
 
-#: engine/table.py:706
+#: engine/table.py:703
 msgid "Switch to “Simplified Chinese before traditional”."
 msgstr "切換至「簡體字中文先於正體字」"
 
@@ -60,11 +60,11 @@ msgstr "切換至「簡體字中文先於正體字」"
 #. Chinese but wants the Traditional Chinese to be
 #. preferred, i.e. shown higher up in the candidate
 #. lists.
-#: engine/table.py:716
+#: engine/table.py:713
 msgid "Traditional Chinese first"
 msgstr "正體字中文優先"
 
-#: engine/table.py:718
+#: engine/table.py:715
 msgid "Switch to “Traditional Chinese before simplified”."
 msgstr "切換至「正體字中文先於簡體字」"
 
@@ -76,59 +76,59 @@ msgstr "切換至「正體字中文先於簡體字」"
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese in no
 #. particular order
-#: engine/table.py:728 setup/main.py:413
+#: engine/table.py:725 setup/main.py:410
 msgid "All Chinese characters"
 msgstr "所有中文字元"
 
-#: engine/table.py:729
+#: engine/table.py:726
 msgid "Switch to “All Chinese characters”."
 msgstr "切換至「所有中文字元」"
 
-#: engine/table.py:733 setup/main.py:1197
+#: engine/table.py:730 setup/main.py:1194
 msgid "Chinese mode"
 msgstr "中文模式"
 
-#: engine/table.py:734
+#: engine/table.py:731
 msgid "Switch Chinese mode"
 msgstr "切換中文模式"
 
-#: engine/table.py:745
+#: engine/table.py:742
 msgid "English"
 msgstr "英文"
 
-#: engine/table.py:746
+#: engine/table.py:743
 msgid "Switch to English input"
 msgstr "切換至英文輸入"
 
-#: engine/table.py:753
+#: engine/table.py:750
 msgid "Chinese"
 msgstr "中文"
 
-#: engine/table.py:754
+#: engine/table.py:751
 msgid "Switch to Chinese input"
 msgstr "切換至中文輸入"
 
-#: engine/table.py:762 engine/table.py:910 setup/main.py:964
+#: engine/table.py:759 engine/table.py:907 setup/main.py:961
 msgid "Direct"
 msgstr "直接"
 
-#: engine/table.py:763
+#: engine/table.py:760
 msgid "Switch to direct input"
 msgstr "切換至直接輸入"
 
-#: engine/table.py:768 engine/table.py:832
+#: engine/table.py:765 engine/table.py:829
 msgid "Table"
 msgstr "表格"
 
-#: engine/table.py:769
+#: engine/table.py:766
 msgid "Switch to table input"
 msgstr "切換至表格輸入"
 
-#: engine/table.py:777
+#: engine/table.py:774
 msgid "Input mode"
 msgstr "輸入模式"
 
-#: engine/table.py:778
+#: engine/table.py:775
 msgid "Switch Input mode"
 msgstr "切換輸入模式"
 
@@ -140,12 +140,12 @@ msgstr "切換輸入模式"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use half width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:788 engine/table.py:810 setup/main.py:450 setup/main.py:494
-#: setup/main.py:539 setup/main.py:584
+#: engine/table.py:785 engine/table.py:807 setup/main.py:447 setup/main.py:491
+#: setup/main.py:536 setup/main.py:581
 msgid "Half"
 msgstr "半形"
 
-#: engine/table.py:789
+#: engine/table.py:786
 msgid "Switch to halfwidth letters"
 msgstr "切換至半形字母"
 
@@ -157,108 +157,108 @@ msgstr "切換至半形字母"
 #. while in “Direct input” mode.
 #. Translators: This is the mode to use full width punctuation
 #. while in “Direct input” mode.
-#: engine/table.py:794 engine/table.py:816 setup/main.py:454 setup/main.py:498
-#: setup/main.py:543 setup/main.py:588
+#: engine/table.py:791 engine/table.py:813 setup/main.py:451 setup/main.py:495
+#: setup/main.py:540 setup/main.py:585
 msgid "Full"
 msgstr "全形"
 
-#: engine/table.py:795
+#: engine/table.py:792
 msgid "Switch to fullwidth letters"
 msgstr "切換至全形字母"
 
-#: engine/table.py:799 setup/main.py:1198
+#: engine/table.py:796 setup/main.py:1195
 msgid "Letter width"
 msgstr "字母寬"
 
-#: engine/table.py:800
+#: engine/table.py:797
 msgid "Switch letter width"
 msgstr "切換字母寬度"
 
-#: engine/table.py:811
+#: engine/table.py:808
 msgid "Switch to halfwidth punctuation"
 msgstr "切換至半形標點"
 
-#: engine/table.py:817
+#: engine/table.py:814
 msgid "Switch to fullwidth punctuation"
 msgstr "切換至全形標點"
 
-#: engine/table.py:821 setup/main.py:1199
+#: engine/table.py:818 setup/main.py:1196
 msgid "Punctuation width"
 msgstr "標點寬"
 
-#: engine/table.py:822
+#: engine/table.py:819
 msgid "Switch punctuation width"
 msgstr "切換標點寬度"
 
-#: engine/table.py:833
+#: engine/table.py:830
 msgid "Switch to table mode"
 msgstr "切換至表格模式"
 
-#: engine/table.py:838
+#: engine/table.py:835
 msgid "Pinyin"
 msgstr "拼音"
 
-#: engine/table.py:839
+#: engine/table.py:836
 msgid "Switch to pinyin mode"
 msgstr "切換至拼音模式"
 
-#: engine/table.py:843 setup/main.py:1200
+#: engine/table.py:840 setup/main.py:1197
 msgid "Pinyin mode"
 msgstr "拼音模式"
 
-#: engine/table.py:844
+#: engine/table.py:841
 msgid "Switch pinyin mode"
 msgstr "切換拼音模式"
 
-#: engine/table.py:854
+#: engine/table.py:851
 msgid "Suggestion disabled"
 msgstr "建議停用"
 
-#: engine/table.py:855 engine/table.py:861
+#: engine/table.py:852 engine/table.py:858
 msgid "Switch to suggestion mode"
 msgstr "切換至建議模式"
 
-#: engine/table.py:860
+#: engine/table.py:857
 msgid "Suggestion enabled"
 msgstr "建議啟用"
 
-#: engine/table.py:865 setup/main.py:1201
+#: engine/table.py:862 setup/main.py:1198
 msgid "Suggestion mode"
 msgstr "建議模式"
 
-#: engine/table.py:866
+#: engine/table.py:863
 msgid "Switch suggestion mode"
 msgstr "切換至建議模式"
 
-#: engine/table.py:876
+#: engine/table.py:873
 msgid "Multiple character match"
 msgstr "多字元比對"
 
-#: engine/table.py:878
+#: engine/table.py:875
 msgid "Switch to matching multiple characters at once"
 msgstr "切換至一次比對多字元"
 
-#: engine/table.py:883
+#: engine/table.py:880
 msgid "Single character match"
 msgstr "切換字元比對"
 
-#: engine/table.py:885
+#: engine/table.py:882
 msgid "Switch to matching only single characters"
 msgstr "切換至僅比對單一字元"
 
-#: engine/table.py:889 setup/main.py:1202
+#: engine/table.py:886 setup/main.py:1199
 msgid "Onechar mode"
 msgstr "一字模式"
 
-#: engine/table.py:890
+#: engine/table.py:887
 msgid "Switch onechar mode"
 msgstr "切換一字模式"
 
-#: engine/table.py:900 setup/main.py:962
+#: engine/table.py:897 setup/main.py:959
 msgid "Normal"
 msgstr "一般"
 
-#: engine/table.py:902
+#: engine/table.py:899
 msgid ""
 "Switch to normal commit mode (automatic commits go into the preedit instead "
 "of into the application. This enables automatic definitions of new shortcuts)"
@@ -266,25 +266,25 @@ msgstr ""
 "切換至一般提交模式 (自動提入預先編輯區內而非程式內。這會啟用新快捷鍵的自動定"
 "義)"
 
-#: engine/table.py:912
+#: engine/table.py:909
 msgid ""
 "Switch to direct commit mode (automatic commits go directly into the "
 "application)"
 msgstr "切換至直接提交模式 (直接自動提入程式內)"
 
-#: engine/table.py:917 setup/main.py:1203
+#: engine/table.py:914 setup/main.py:1200
 msgid "Autocommit mode"
 msgstr "自動提交模式"
 
-#: engine/table.py:918
+#: engine/table.py:915
 msgid "Switch autocommit mode"
 msgstr "切換自動提交模式"
 
-#: engine/table.py:2951
+#: engine/table.py:2950
 msgid "Setup"
 msgstr "設置"
 
-#: engine/table.py:2954
+#: engine/table.py:2953
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr "設定 ibus-table「%(engine-name)s」"
@@ -292,37 +292,36 @@ msgstr "設定 ibus-table「%(engine-name)s」"
 #. Translators: This is used in the title bar of a dialog window
 #. requesting that the user types a key to be used as a new
 #. key binding for a command.
-#: engine/it_util.py:952
+#: engine/it_util.py:945
 msgid "Key input"
 msgstr "按鍵輸入"
 
-#: engine/it_util.py:958
+#: engine/it_util.py:951
 msgid "Cancel"
 msgstr "取消"
 
-#. pylint: disable=consider-using-f-string
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:965
+#: engine/it_util.py:956
 msgid "Please press a key (or a key combination)"
 msgstr "請按鍵盤按鍵 (或是按鍵組合)"
 
 #. Translators: This is from the dialog to enter a key or a
 #. key combination to be used as a key binding for a
 #. command.
-#: engine/it_util.py:970
+#: engine/it_util.py:962
 msgid "The dialog will be closed when the key is released"
 msgstr "釋放按鍵時，對話框將會關閉"
 
-#: engine/it_util.py:1007
+#: engine/it_util.py:999
 msgid "Table input method for IBus."
 msgstr "IBus 的表格輸入方式。"
 
 #. Translators: put your names here, one name per line.
 #. The list of names of the translators for the current locale
 #. will be displayed in the “About ibus-table” dialog.
-#: engine/it_util.py:1031
+#: engine/it_util.py:1023
 msgid "translator-credits"
 msgstr ""
 "Whired Planck <fungdaat31@outlook.com>, 2020\n"
@@ -330,7 +329,7 @@ msgstr ""
 "Cheng-chia Tseng <pswo10680@gmail.com>, 2013\n"
 "neko0xff <chzang55@gmail.com>,2025"
 
-#: engine/it_util.py:1039
+#: engine/it_util.py:1031
 msgid "Online documentation:"
 msgstr "線上文件:"
 
@@ -359,44 +358,44 @@ msgstr "IBus 表格偏好設定"
 msgid "Set IBus Table Options"
 msgstr "設定 IBus 表格選項"
 
-#: setup/main.py:122
+#: setup/main.py:119
 msgid "Initial state"
 msgstr "初始狀態"
 
-#: setup/main.py:123
+#: setup/main.py:120
 msgid "Direct input"
 msgstr "直接輸入"
 
-#: setup/main.py:124
+#: setup/main.py:121
 msgid "Table input"
 msgstr "表格輸入"
 
-#: setup/main.py:138 setup/main.py:198
+#: setup/main.py:135 setup/main.py:195
 msgid "Preferences"
 msgstr "偏好設定"
 
-#: setup/main.py:221
+#: setup/main.py:218
 msgid "About"
 msgstr "關於"
 
-#: setup/main.py:229
+#: setup/main.py:226
 msgid "Restore all defaults"
 msgstr "全部還原至預設值"
 
-#: setup/main.py:238 setup/main.py:3100
+#: setup/main.py:235 setup/main.py:3096
 msgid "_Close"
 msgstr "關閉 (_C)"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some options which influence the
 #. behaviour of ibus-table.
-#: setup/main.py:261
+#: setup/main.py:258
 msgid "Settings"
 msgstr "設定"
 
 #. Translators: This is the label of a tab in the setup tool.
 #. Here the user can set up some more advanced options.
-#: setup/main.py:276
+#: setup/main.py:273
 msgid "Details"
 msgstr "詳情"
 
@@ -407,11 +406,11 @@ msgstr "詳情"
 #. etc...
 #. Translators: Column heading of the table listing the
 #. existing key bindings
-#: setup/main.py:292 setup/main.py:754
+#: setup/main.py:289 setup/main.py:751
 msgid "Key bindings"
 msgstr "按鍵綁定"
 
-#: setup/main.py:305
+#: setup/main.py:302
 msgid "Menu Items"
 msgstr "選單項目"
 
@@ -419,7 +418,7 @@ msgstr "選單項目"
 #. (“Direct input” or “Table input”) should be remembered
 #. or whether ibus-table should always use “Table input” by
 #. default after a restart.
-#: setup/main.py:328
+#: setup/main.py:325
 msgid "Remember input mode"
 msgstr "記住輸入模式"
 
@@ -428,7 +427,7 @@ msgstr "記住輸入模式"
 #. input”) should be remembered or whether ibus-table
 #. should always use “Table input” by default after a
 #. restart.
-#: setup/main.py:335
+#: setup/main.py:332
 msgid ""
 "Whether the last used input mode should be remembered or whether ibus-table "
 "should start in “Table mode” by default after a restart. There are two input "
@@ -442,23 +441,23 @@ msgstr ""
 "啟。「直接輸入」幾乎與輸入法關閉相同，也就是完全不使用，大部分字元只是傳給應"
 "用程式。但在直接輸入模式下，仍可能發生一些全寬與半寬之間的轉換。"
 
-#: setup/main.py:348
+#: setup/main.py:345
 msgid "No"
 msgstr "否"
 
-#: setup/main.py:350
+#: setup/main.py:347
 msgid "Yes"
 msgstr "是"
 
 #. Translators: A combobox to choose the variant of
 #. Chinese which should be preferred.
-#: setup/main.py:374
+#: setup/main.py:371
 msgid "Chinese mode:"
 msgstr "中文模式："
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose which variant of Chinese should be preferred.
-#: setup/main.py:378
+#: setup/main.py:375
 msgid ""
 "“Simplified Chinese” shows only characters \n"
 "used in simplified Chinese. “Traditional Chinese”\n"
@@ -481,26 +480,26 @@ msgstr ""
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. simplified Chinese
-#: setup/main.py:403
+#: setup/main.py:400
 msgid "Simplified Chinese before traditional"
 msgstr "簡體字中文先於正體字"
 
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
 #. traditional Chinese
-#: setup/main.py:408
+#: setup/main.py:405
 msgid "Traditional Chinese before simplified"
 msgstr "繁體字中文先於簡體字"
 
 #. Translators: A combobox to choose the letter width
 #. while in “Table input” mode.
-#: setup/main.py:438
+#: setup/main.py:435
 msgid "Table input letter width:"
 msgstr "表格輸入字母寬度："
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Table input” mode.
-#: setup/main.py:442
+#: setup/main.py:439
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in table input mode."
@@ -510,13 +509,13 @@ msgstr ""
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Table input” mode.
-#: setup/main.py:481
+#: setup/main.py:478
 msgid "Table input punctuation width:"
 msgstr "表格輸入標點寬度："
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Table input” mode.
-#: setup/main.py:485
+#: setup/main.py:482
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
@@ -526,13 +525,13 @@ msgstr ""
 
 #. Translators: A combobox to choose the letter width
 #. while in “Direct input” mode.
-#: setup/main.py:527
+#: setup/main.py:524
 msgid "Direct input letter width:"
 msgstr "直接輸入字母寬度："
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the letter width while in “Direct input” mode.
-#: setup/main.py:531
+#: setup/main.py:528
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
@@ -542,13 +541,13 @@ msgstr ""
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Direct input” mode.
-#: setup/main.py:571
+#: setup/main.py:568
 msgid "Direct input punctuation width:"
 msgstr "直接輸入標點寬度："
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose the punctuation width while in “Direct input” mode.
-#: setup/main.py:575
+#: setup/main.py:572
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in direct input mode."
@@ -556,7 +555,7 @@ msgstr ""
 "直接輸入模式要使用全形標點\n"
 "或半形標點。"
 
-#: setup/main.py:615
+#: setup/main.py:612
 msgid "Candidate list"
 msgstr "候選字清單"
 
@@ -566,14 +565,14 @@ msgstr "候選字清單"
 #. candidate list to be shown. But for some non-Chinese
 #. input methods like the Russian “translit”, hiding
 #. the candidate lists is better.
-#: setup/main.py:630
+#: setup/main.py:627
 msgid "Show candidate list"
 msgstr "顯示候選字清單"
 
 #. Translit: A tooltip for the label of the combobox to
 #. choose whether a candidate list should be shown or
 #. hidden.
-#: setup/main.py:635
+#: setup/main.py:632
 msgid ""
 "Whether candidate lists should be shown or hidden.\n"
 "For Chinese input methods one usually wants the\n"
@@ -589,14 +588,14 @@ msgstr ""
 
 #. Translators: A combobox to choose whether the candidate
 #. window should be drawn horizontally or vertically.
-#: setup/main.py:654
+#: setup/main.py:651
 msgid "Orientation:"
 msgstr "方向："
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the candidate window should be drawn
 #. horizontally or vertically.
-#: setup/main.py:659
+#: setup/main.py:656
 msgid ""
 "Whether the lookup table showing the candidates\n"
 "should be vertical or horizontal."
@@ -604,28 +603,28 @@ msgstr ""
 "顯示候選字詞的查詢表格是要\n"
 "垂直排列或水平排列。"
 
-#: setup/main.py:665
+#: setup/main.py:662
 msgid "Horizontal"
 msgstr "水平"
 
-#: setup/main.py:667
+#: setup/main.py:664
 msgid "Vertical"
 msgstr "垂直"
 
-#: setup/main.py:669
+#: setup/main.py:666
 msgid "System default"
 msgstr "系統預設值"
 
 #. Translators: Here one can choose how many suggestion
 #. candidates to show in one page of the candidate list.
-#: setup/main.py:694
+#: setup/main.py:691
 msgid "Page size:"
 msgstr "頁面大小:"
 
 #. Translators: A tooltip for the label of the adjustment
 #. for the number of candidates to show in one page of the
 #. candidate list.
-#: setup/main.py:699
+#: setup/main.py:696
 msgid ""
 "The maximum number of candidates in\n"
 "one page of the lookup table. You can switch\n"
@@ -637,27 +636,27 @@ msgstr ""
 "或者按下向上/向下箭頭鍵，\n"
 "來切換查詢列表中的頁。"
 
-#: setup/main.py:721
+#: setup/main.py:718
 msgid "Current key bindings:"
 msgstr "目前的按鍵綁定："
 
 #. Translators: Column heading of the table listing the
 #. existing key bindings
-#: setup/main.py:746
+#: setup/main.py:743
 msgid "Command"
 msgstr "指令"
 
-#: setup/main.py:777
+#: setup/main.py:774
 msgid "Edit"
 msgstr "編輯"
 
 #. Translators: A tooltip for the button to edit
 #. the keybindings for the selected command.
-#: setup/main.py:783
+#: setup/main.py:780
 msgid "Edit the key bindings for the selected command"
 msgstr "編輯選取指令的按鍵綁定"
 
-#: setup/main.py:790 setup/main.py:2287
+#: setup/main.py:787 setup/main.py:2284
 msgid "Set to default"
 msgstr "設定為預設值"
 
@@ -665,47 +664,47 @@ msgstr "設定為預設值"
 #. the default key bindings for the selected command.
 #. Translators: This is a tooltip for the button to set
 #. the key bindings for the selected command to the default.
-#: setup/main.py:796 setup/main.py:2294
+#: setup/main.py:793 setup/main.py:2291
 msgid "Set default key bindings for the selected command"
 msgstr "為選取的指令設定預設按鍵綁定"
 
-#: setup/main.py:803
+#: setup/main.py:800
 msgid "Set all to default"
 msgstr "全部設定為預設值"
 
 #. Translators: A tooltip for the button to set the
 #. key bindings to default for all commands.
-#: setup/main.py:809
+#: setup/main.py:806
 msgid "Set default key bindings for all commands"
 msgstr "設定所有指令的預設按鍵綁定"
 
 #. Translators: A checkbox where one can choose whether the
 #. order of the candidates is dynamically adjusted according
 #. to how often the candidates are used.
-#: setup/main.py:834
+#: setup/main.py:831
 msgid "Dynamic adjust"
 msgstr "動態調整"
 
-#: setup/main.py:836
+#: setup/main.py:833
 msgid ""
 "Here you can choose whether the order of the candidates is dynamically "
 "adjusted according to how often the candidates are used."
 msgstr "在此您可以選擇是否根據候選字的使用頻率動態調整其順序。"
 
-#: setup/main.py:849
+#: setup/main.py:846
 msgid "Delete all learned data"
 msgstr "刪除所有已學習資料"
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
-#: setup/main.py:874
+#: setup/main.py:871
 msgid "Compose:"
 msgstr "編寫："
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
 #. be shown.
-#: setup/main.py:879
+#: setup/main.py:876
 msgid ""
 "If this is set to “single char”, only single\n"
 "character candidates will be shown. If it is\n"
@@ -717,24 +716,24 @@ msgstr ""
 "如果設為「Phrase」，\n"
 "則可能會顯示由多個字元組成的候選字。"
 
-#: setup/main.py:887
+#: setup/main.py:884
 msgid "Phrase"
 msgstr "詞彙"
 
-#: setup/main.py:889
+#: setup/main.py:886
 msgid "Single Char"
 msgstr "一字"
 
 #. Translators: A combobox to choose whether the first
 #. candidate will be automatically selected during typing.
-#: setup/main.py:914
+#: setup/main.py:911
 msgid "Auto select"
 msgstr "自動選擇"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the first candidate will be automatically
 #. select during typing.
-#: setup/main.py:919
+#: setup/main.py:916
 msgid ""
 "If set to “Yes”, this does the following 4 things:\n"
 "1) When typing “Return”, commit the \n"
@@ -760,14 +759,14 @@ msgstr ""
 
 #. Translators: A combobox to choose whether automatic
 #. commits go into the preëdit or into the application
-#: setup/main.py:944
+#: setup/main.py:941
 msgid "Autocommit mode:"
 msgstr "自動提交模式:"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether automatic commits go into the preëdit or
 #. into the application.
-#: setup/main.py:949
+#: setup/main.py:946
 msgid ""
 "Committing with the commit keys or with the mouse\n"
 "always commits to the application. This option is about\n"
@@ -790,14 +789,14 @@ msgstr ""
 
 #. Translators: A combobox to choose whether only single
 #. character candidates should be shown.
-#: setup/main.py:990
+#: setup/main.py:987
 msgid "Action when typing invalid character:"
 msgstr "輸入無效字元時的動作："
 
 #. Translators: A tooltip for label of the combobox to
 #. choose whether only single character candidates should
 #. be shown.
-#: setup/main.py:995
+#: setup/main.py:992
 msgid ""
 "Determines what happens when a character which is not in the set of valid "
 "input characters for this table is typed: With “commit current candidate”, "
@@ -813,24 +812,24 @@ msgstr ""
 "的原始字元。在所有情況下，當輸入無效字元時，候選人選擇就會結束，而有問題的字"
 "元會緊接在上述選項所產生的文字之後插入。"
 
-#: setup/main.py:1008
+#: setup/main.py:1005
 msgid "Commit current candidate"
 msgstr "提交目前候選字"
 
-#: setup/main.py:1010
+#: setup/main.py:1007
 msgid "Commit typed keys"
 msgstr "提交輸入的按鍵"
 
 #. Translators: A combobox to choose whether a wildcard
 #. should be automatically appended to the input.
-#: setup/main.py:1034
+#: setup/main.py:1031
 msgid "Auto wildcard"
 msgstr "自動萬用字元"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether a wildcard should be automatically
 #. appended to the input.
-#: setup/main.py:1039
+#: setup/main.py:1036
 msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
@@ -840,14 +839,14 @@ msgstr ""
 
 #. Translators: This single character is a placeholder
 #. to match a any single character
-#: setup/main.py:1056
+#: setup/main.py:1053
 msgid "Single wildcard character:"
 msgstr "單一萬用字元："
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match a
 #. single character.
-#: setup/main.py:1061
+#: setup/main.py:1058
 msgid ""
 "The wildcard to match any single character.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
@@ -857,14 +856,14 @@ msgstr ""
 
 #. Translators: This single character is a placeholder
 #. to match a any number of characters
-#: setup/main.py:1082
+#: setup/main.py:1079
 msgid "Multi wildcard character:"
 msgstr "多個萬用字元："
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match any
 #. number of candidates.
-#: setup/main.py:1087
+#: setup/main.py:1084
 msgid ""
 "The wildcard used to match any number of characters.\n"
 "Type RETURN or ENTER to confirm after changing the wildcard."
@@ -874,24 +873,24 @@ msgstr ""
 
 #. Translators: A combobox to choose whether
 #. the color scheme for a dark theme should be used.
-#: setup/main.py:1107
+#: setup/main.py:1104
 msgid "Use dark theme"
 msgstr "使用深色主題"
 
 #. Translators: A tooltip for the label of the combobox to
 #. choose whether the color scheme for a dark theme should
 #. be used.
-#: setup/main.py:1112
+#: setup/main.py:1109
 msgid "If yes, the color scheme for a dark theme will be used."
 msgstr "如果是，則會使用深色主題的配色方案。"
 
 #. Translators: A checkbox where one can choose whether a
 #. sound is played on error
-#: setup/main.py:1127
+#: setup/main.py:1124
 msgid "Play sound file on error"
 msgstr "發生錯誤時，則會直接播放聲音檔"
 
-#: setup/main.py:1129
+#: setup/main.py:1126
 msgid ""
 "Here you can choose whether a sound file is played if an error occurs. If "
 "the simpleaudio module for Python3 is not installed, this option does "
@@ -903,38 +902,38 @@ msgstr ""
 #. Translators: When the debug level is greater than 0,
 #. debug information may be printed to the log file and
 #. debug information may also be shown graphically.
-#: setup/main.py:1170
+#: setup/main.py:1167
 msgid "Debug level:"
 msgstr "除錯層級："
 
 #. Translators: This is a tooltip for the label for the
 #. adjustment of the debug level.
-#: setup/main.py:1174
+#: setup/main.py:1171
 msgid ""
 "When greater than 0, debug information may be printed to the log file and "
 "debug information may also be shown graphically."
 msgstr "當大於 0 時，除錯資訊可能會列印到記錄檔，或者可能以圖形介面方式顯示。"
 
-#: setup/main.py:1595
+#: setup/main.py:1592
 msgid "Are you sure?"
 msgstr "你確定嗎？"
 
-#: setup/main.py:1597 setup/main.py:1930
+#: setup/main.py:1594 setup/main.py:1927
 msgid "_Cancel"
 msgstr "取消(_C)"
 
-#: setup/main.py:1598 setup/main.py:1931
+#: setup/main.py:1595 setup/main.py:1928
 msgid "_OK"
 msgstr "確定(_O)"
 
-#: setup/main.py:1630
+#: setup/main.py:1627
 msgid "Another instance of this app is already running."
 msgstr "此應用程式的另一個實例已經正在執行中。"
 
 #. Translators: This is the text in the centre of a small
 #. dialog window, trying to confirm whether the user is
 #. really sure to restore all default settings.
-#: setup/main.py:1702
+#: setup/main.py:1699
 msgid "Do you really want to restore all default settings?"
 msgstr "您真的想要還原所有預設設定嗎？"
 
@@ -944,42 +943,42 @@ msgstr "您真的想要還原所有預設設定嗎？"
 #. ibus-table has learned from typing and selecting candidates.
 #. Deleting this learned data cannot be reversed. So
 #. the user should be really sure he really wants to do that.
-#: setup/main.py:1905
+#: setup/main.py:1902
 msgid ""
 "Do you really want to delete all data learned from typing and selecting "
 "candidates?"
 msgstr "您真的想要刪除所有從輸入字元和選擇候選字中，所學習到的資料嗎？"
 
-#: setup/main.py:1927
+#: setup/main.py:1924
 msgid "Select .wav sound file:"
 msgstr "請選擇副檔名為 .wav 的音效檔案："
 
-#: setup/main.py:2210
+#: setup/main.py:2207
 #, python-format
 msgid "Edit key bindings for command “%s”"
 msgstr "編輯指令 \"%s\" 的按鍵綁定"
 
 #. Translators: This is a tooltip for the button to add a
 #. key binding.
-#: setup/main.py:2240
+#: setup/main.py:2237
 msgid "Add a key binding"
 msgstr "新增按鍵綁定"
 
 #. Translators: This is a tooltip for the button to remove
 #. the selected key binding.
-#: setup/main.py:2254
+#: setup/main.py:2251
 msgid "Remove selected key binding"
 msgstr "移除選取的按鍵綁定"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding up (higher in priority).
-#: setup/main.py:2269
+#: setup/main.py:2266
 msgid "Move key binding up"
 msgstr "朝上移動按鍵綁定"
 
 #. Translators: This is a tooltip for the button to move
 #. the selected key binding down (lower in priority).
-#: setup/main.py:2282
+#: setup/main.py:2279
 msgid "Move key binding down"
 msgstr "朝下移動按鍵綁定"
 
@@ -988,13 +987,13 @@ msgstr "朝下移動按鍵綁定"
 #. really sure to reset the key bindings for *all* commands
 #. to their defaults. This cannot be reversed so the user
 #. should be really sure he wants to do that.
-#: setup/main.py:2349
+#: setup/main.py:2346
 msgid ""
 "Do you really want to set the key bindings for all commands to their "
 "defaults?"
 msgstr "您真的要將所有指令的按鍵綁定設定為預設值？"
 
-#: setup/main.py:3167
+#: setup/main.py:3163
 msgid "ibus is not running."
 msgstr "ibus 未執行。"
 

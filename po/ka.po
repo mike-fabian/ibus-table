@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-09-02 18:19+0200\n"
-"PO-Revision-Date: 2026-09-04 07:18+0000\n"
+"PO-Revision-Date: 2026-09-07 08:43+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/ibus-"
 "table/app/ka/>\n"
@@ -793,7 +793,7 @@ msgstr ""
 #. to match a any number of characters
 #: setup/main.py:1079
 msgid "Multi wildcard character:"
-msgstr "ერთზე მეტი ვაილდკარდის სიმბოლო:"
+msgstr "ნებისმიერი რაოდენობის სიმბოლოების დამთხვევის სიმბოლო:"
 
 #. Translators: This is a tooltip for the label of the
 #. entry where one can choose the wildcard to match any

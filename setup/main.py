@@ -1075,12 +1075,12 @@ class SetupUI(Gtk.Window):  # type: ignore[misc]
         self._multi_wildcard_char_label = Gtk.Label()
         self._multi_wildcard_char_label.set_text(
             # Translators: This single character is a placeholder
-            # to match a any number of characters
+            # to match any number of characters
             _('Multi wildcard character:'))
         self._multi_wildcard_char_label.set_tooltip_text(
             # Translators: This is a tooltip for the label of the
-            # entry where one can choose the wildcard to match any
-            # number of candidates.
+            # entry where one can choose the wildcard character to
+            # match any number of characters.
             _('The wildcard used to match any number of characters.\n'
               'Type RETURN or ENTER to confirm after changing the wildcard.'))
         self._multi_wildcard_char_label.set_xalign(0)

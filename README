@@ -23,16 +23,25 @@ Authors and contributors:
 
 You can report bugs here:
 
-https://github.com/kaio/ibus-table/issues
+https://github.com/mike-fabian/ibus-table/issues
+
+Translation
+
+You can contribute translations for ibus-table using the online translation platform weblate:
+
+https://translate.fedoraproject.org/projects/ibus-table/.
+
+If you cannot use weblate, you can also create a pull request for new or updated translations.
+I’ll help then to merge the pull request into weblate somehow.
 
 Online documentation can be found here:
 
-http://kaio.github.io/ibus-table/
-http://kaio.github.io/ibus-table/documentation.html
+https://mike-fabian.github.io/ibus-table/
+https://mike-fabian.github.io/ibus-table/documentation.html
 
 The keybindings are documented here:
 
-http://kaio.github.io/ibus-table/documentation.html#key-bindings
+https://mike-fabian.github.io/ibus-table/documentation.html#key-bindings
 
 A  copy of that key-bindings documentation is included here for
 convenience:

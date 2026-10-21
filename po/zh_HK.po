@@ -11,16 +11,16 @@ msgstr ""
 "Project-Id-Version: 0.1.20080819\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
 "POT-Creation-Date: 2026-09-02 18:19+0200\n"
-"PO-Revision-Date: 2026-09-20 13:18+0000\n"
-"Last-Translator: ivan ho <personal@live.hk>\n"
-"Language-Team: Chinese (Hong Kong) <https://translate.fedoraproject.org/"
-"projects/ibus-table/app/zh_HK/>\n"
+"PO-Revision-Date: 2026-10-21 16:19+0000\n"
+"Last-Translator: Mike FABIAN <mfabian@redhat.com>\n"
+"Language-Team: Chinese (Traditional Han script, Hong Kong) <https://"
+"translate.fedoraproject.org/projects/ibus-table/app/zh_Hant_HK/>\n"
 "Language: zh_HK\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.9.1\n"
+"X-Generator: Weblate 2026.10.1\n"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Simplified Chinese.
@@ -32,7 +32,7 @@ msgstr "簡體中文"
 
 #: engine/table.py:682
 msgid "Switch to “Simplified Chinese only”."
-msgstr "切換到唯獨簡體模式"
+msgstr "切換到唯獨簡體模式。"
 
 #. Translators: This is the menu entry to select
 #. when one wants to input only Traditonal Chinese
@@ -44,7 +44,7 @@ msgstr "繁體中文"
 
 #: engine/table.py:691
 msgid "Switch to “Traditional Chinese only”."
-msgstr "切換至唯獨繁體模式"
+msgstr "切換至唯獨繁體模式。"
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -57,7 +57,7 @@ msgstr "簡體中文"
 
 #: engine/table.py:703
 msgid "Switch to “Simplified Chinese before traditional”."
-msgstr "切換成簡體優先模式"
+msgstr "切換成簡體優先模式。"
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -70,7 +70,7 @@ msgstr "繁體中文優先"
 
 #: engine/table.py:715
 msgid "Switch to “Traditional Chinese before simplified”."
-msgstr "切換成繁體優先模式"
+msgstr "切換成繁體優先模式。"
 
 #. Translators: This is the menu entry to select when
 #. one wants to input both Simplified and Traditional
@@ -86,7 +86,7 @@ msgstr "所有中文字元"
 
 #: engine/table.py:726
 msgid "Switch to “All Chinese characters”."
-msgstr "切換成「所有中文字元」模式"
+msgstr "切換成「所有中文字元」模式。"
 
 #: engine/table.py:730 setup/main.py:1194
 msgid "Chinese mode"
@@ -130,11 +130,11 @@ msgstr "切換字集"
 
 #: engine/table.py:774
 msgid "Input mode"
-msgstr "輸出模式"
+msgstr "輸入模式"
 
 #: engine/table.py:775
 msgid "Switch Input mode"
-msgstr "切換輸出模式"
+msgstr "切換輸入模式"
 
 #. Translators: This is the mode to use half width letters
 #. while in “Table input” mode.
@@ -176,7 +176,7 @@ msgstr "全或半字形"
 
 #: engine/table.py:797
 msgid "Switch letter width"
-msgstr "切換半或全形標點"
+msgstr "切換字母寬度"
 
 #: engine/table.py:808
 msgid "Switch to halfwidth punctuation"
@@ -316,7 +316,7 @@ msgstr "請按快捷鍵"
 #. command.
 #: engine/it_util.py:962
 msgid "The dialog will be closed when the key is released"
-msgstr "對話方塊將會關閉如放開按鍵後"
+msgstr "放開按鍵後，對話方塊將會關閉"
 
 #: engine/it_util.py:999
 msgid "Table input method for IBus."
@@ -479,7 +479,7 @@ msgstr ""
 "「簡體中文優先於繁體中文」顯示所有字符，但將簡體字在候選清單中優先顯示\n"
 "「繁體中文優先於\n"
 "簡體字」將繁體字在候選清單中優先顯示\n"
-"「所有字元」僅顯示所有符合項，不區分繁體中文和簡體中文"
+"「所有字元」僅顯示所有符合項，不區分繁體中文和簡體中文。"
 
 #. Translators: This is the setting to use both
 #. simplified and traditional Chinese but prefer
@@ -521,7 +521,7 @@ msgstr "字集輸入標點符號寬度："
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "punctuation in table input mode."
-msgstr "表格輸入模式下，是否使用全角標點符號或半角標點符號"
+msgstr "表格輸入模式下，是否使用全角標點符號或半角標點符號。"
 
 #. Translators: A combobox to choose the letter width
 #. while in “Direct input” mode.
@@ -535,7 +535,7 @@ msgstr "直接輸入的字母寬度："
 msgid ""
 "Whether to use fullwidth or halfwidth\n"
 "letters in direct input mode."
-msgstr "直接輸入模式下，字母應使用全角還是半角"
+msgstr "直接輸入模式下，字母應使用全角還是半角。"
 
 #. Translators: A combobox to choose the punctuation width
 #. while in “Direct input” mode.
@@ -596,7 +596,7 @@ msgid ""
 "should be vertical or horizontal."
 msgstr ""
 "顯示候選清單的查找表\n"
-"應該採用垂直排還是橫排"
+"應該採用垂直排還是橫排。"
 
 #: setup/main.py:662
 msgid "Horizontal"
@@ -627,7 +627,7 @@ msgid ""
 "keys or the arrow up/down keys."
 msgstr ""
 "查找表格每頁最多可顯示候選字數\n"
-"您可以使用上下翻頁鍵或上下箭頭鍵在查找表中切換頁面"
+"您可以使用上下翻頁鍵或上下箭頭鍵在查找表中切換頁面。"
 
 #: setup/main.py:718
 msgid "Current key bindings:"
@@ -705,7 +705,7 @@ msgid ""
 "several characters may be shown."
 msgstr ""
 "如果設定為“單一字元”，則僅顯示單一字元的候選詞\n"
-"如果設定為“短語”，則可能顯示由多個字元組成的候選詞"
+"如果設定為“短語”，則可能顯示由多個字元組成的候選詞。"
 
 #: setup/main.py:884
 msgid "Phrase"
@@ -820,7 +820,7 @@ msgstr "自動通配符"
 msgid ""
 "If yes, a multi wildcard will be automatically\n"
 "appended to the end of the input string."
-msgstr "如果選擇“是”，則會自動在輸入字串末尾新增一個多重通配符"
+msgstr "如果選擇“是”，則會自動在輸入字串末尾新增一個多重通配符。"
 
 #. Translators: This single character is a placeholder
 #. to match a any single character
@@ -873,7 +873,7 @@ msgstr "如果答案是肯定的，則會使用深色主題的配色方案。"
 #. sound is played on error
 #: setup/main.py:1124
 msgid "Play sound file on error"
-msgstr "播放音訊檔案時出錯"
+msgstr "發生錯誤時播放音訊檔案"
 
 #: setup/main.py:1126
 msgid ""

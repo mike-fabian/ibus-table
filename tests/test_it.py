@@ -22,7 +22,7 @@
 '''
 This file implements the test cases for the unit tests of ibus-table
 '''
-from typing import Any
+from typing import Any, Optional
 import sys
 import os
 import logging
@@ -82,27 +82,27 @@ IBUS_LOOKUP_TABLE = IBus.LookupTable
 IBUS_PROPERTY = IBus.Property
 IBUS_PROP_LIST = IBus.PropList
 
-ENGINE = None
+ENGINE: Optional[table.TabEngine] = None
 TABSQLITEDB = None
-ORIG_INPUT_MODE = None
-ORIG_CHINESE_MODE = None
-ORIG_LETTER_WIDTH = None
-ORIG_PUNCTUATION_WIDTH = None
-ORIG_ALWAYS_SHOW_LOOKUP = None
-ORIG_LOOKUP_TABLE_ORIENTATION = None
-ORIG_PAGE_SIZE = None
-ORIG_ONECHAR_MODE = None
-ORIG_AUTOSELECT_MODE = None
-ORIG_AUTOCOMMIT_MODE = None
-ORIG_COMMIT_INVALID_MODE = None
-ORIG_AUTOWILDCARD_MODE = None
-ORIG_SINGLE_WILDCARD_CHAR = None
-ORIG_MULTI_WILDCARD_CHAR = None
-ORIG_PINYIN_MODE = None
-ORIG_SUGGESTION_MODE = None
+ORIG_INPUT_MODE: Optional[int] = None
+ORIG_CHINESE_MODE: Optional[int] = None
+ORIG_LETTER_WIDTH: Optional[list[Optional[bool]]] = None
+ORIG_PUNCTUATION_WIDTH: Optional[list[Optional[bool]]] = None
+ORIG_ALWAYS_SHOW_LOOKUP: Optional[bool] = None
+ORIG_LOOKUP_TABLE_ORIENTATION: Optional[int] = None
+ORIG_PAGE_SIZE: Optional[int] = None
+ORIG_ONECHAR_MODE: Optional[bool] = None
+ORIG_AUTOSELECT_MODE: Optional[bool] = None
+ORIG_AUTOCOMMIT_MODE: Optional[bool] = None
+ORIG_COMMIT_INVALID_MODE: Optional[int] = None
+ORIG_AUTOWILDCARD_MODE: Optional[bool] = None
+ORIG_SINGLE_WILDCARD_CHAR: Optional[str] = None
+ORIG_MULTI_WILDCARD_CHAR: Optional[str] = None
+ORIG_PINYIN_MODE: Optional[bool] = None
+ORIG_SUGGESTION_MODE: Optional[bool] = None
 ORIG_KEYBINDINGS = None
-ORIG_DYNAMIC_ADJUST = None
-ORIG_DEBUG_LEVEL = None
+ORIG_DYNAMIC_ADJUST: Optional[bool] = None
+ORIG_DEBUG_LEVEL: Optional[int] = None
 
 def backup_original_settings() -> None:
     global ORIG_KEYBINDINGS
@@ -149,39 +149,61 @@ def restore_original_settings() -> None:
     assert ENGINE is not None
     ENGINE.set_keybindings(
         ORIG_KEYBINDINGS, update_gsettings=False)
+    assert ORIG_INPUT_MODE is not None
     ENGINE.set_input_mode(ORIG_INPUT_MODE)
+    assert ORIG_CHINESE_MODE is not None
     ENGINE.set_chinese_mode(
         ORIG_CHINESE_MODE, update_gsettings=False)
+    assert ORIG_LETTER_WIDTH is not None
+    assert ORIG_LETTER_WIDTH[0] is not None
+    assert ORIG_LETTER_WIDTH[1] is not None
     ENGINE.set_letter_width(
         ORIG_LETTER_WIDTH[0], input_mode=0, update_gsettings=False)
     ENGINE.set_letter_width(
         ORIG_LETTER_WIDTH[1], input_mode=1, update_gsettings=False)
+    assert ORIG_PUNCTUATION_WIDTH is not None
+    assert ORIG_PUNCTUATION_WIDTH[0] is not None
+    assert ORIG_PUNCTUATION_WIDTH[1] is not None
     ENGINE.set_punctuation_width(
         ORIG_PUNCTUATION_WIDTH[0], input_mode=0, update_gsettings=False)
     ENGINE.set_punctuation_width(
         ORIG_PUNCTUATION_WIDTH[1], input_mode=1, update_gsettings=False)
+    assert ORIG_ALWAYS_SHOW_LOOKUP is not None
     ENGINE.set_always_show_lookup(
         ORIG_ALWAYS_SHOW_LOOKUP, update_gsettings=False)
+    assert ORIG_LOOKUP_TABLE_ORIENTATION is not None
     ENGINE.set_lookup_table_orientation(
         ORIG_LOOKUP_TABLE_ORIENTATION, update_gsettings=False)
+    assert ORIG_PAGE_SIZE is not None
     ENGINE.set_page_size(
         ORIG_PAGE_SIZE, update_gsettings=False)
+    assert ORIG_ONECHAR_MODE is not None
     ENGINE.set_onechar_mode(ORIG_ONECHAR_MODE, update_gsettings=False)
+    assert ORIG_AUTOSELECT_MODE is not None
     ENGINE.set_autoselect_mode(
         ORIG_AUTOSELECT_MODE, update_gsettings=False)
+    assert ORIG_AUTOCOMMIT_MODE is not None
     ENGINE.set_autocommit_mode(
         ORIG_AUTOCOMMIT_MODE, update_gsettings=False)
+    assert ORIG_COMMIT_INVALID_MODE is not None
     ENGINE.set_commit_invalid_mode(
         ORIG_COMMIT_INVALID_MODE, update_gsettings=False)
+    assert ORIG_AUTOWILDCARD_MODE is not None
     ENGINE.set_autowildcard_mode(
         ORIG_AUTOWILDCARD_MODE, update_gsettings=False)
+    assert ORIG_SINGLE_WILDCARD_CHAR is not None
     ENGINE.set_single_wildcard_char(
         ORIG_SINGLE_WILDCARD_CHAR, update_gsettings=False)
+    assert ORIG_MULTI_WILDCARD_CHAR is not None
     ENGINE.set_multi_wildcard_char(
         ORIG_MULTI_WILDCARD_CHAR, update_gsettings=False)
+    assert ORIG_PINYIN_MODE is not None
     ENGINE.set_pinyin_mode(ORIG_PINYIN_MODE)
+    assert ORIG_SUGGESTION_MODE is not None
     ENGINE.set_suggestion_mode(ORIG_SUGGESTION_MODE)
+    assert ORIG_DYNAMIC_ADJUST is not None
     ENGINE.set_dynamic_adjust(ORIG_DYNAMIC_ADJUST)
+    assert ORIG_DEBUG_LEVEL is not None
     ENGINE.set_debug_level(ORIG_DEBUG_LEVEL, update_gsettings=False)
 
 # pylint: disable=too-many-branches

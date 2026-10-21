@@ -1315,7 +1315,6 @@ class TabEngine(IBus.EngineSimple):
                 'remaining_tabkeys=%s '
                 'self._chars_valid=%s phrase=%s',
                 remaining_tabkeys, self._chars_valid, phrase)
-        table_code = ''
 
         if not self._py_mode:
             remaining_tabkeys_new = ''
@@ -1327,8 +1326,6 @@ class TabEngine(IBus.EngineSimple):
             remaining_tabkeys = remaining_tabkeys_new
         candidate_text = phrase + ' ' + remaining_tabkeys
 
-        if table_code:
-            candidate_text = candidate_text + '   ' + table_code
         attrs = IBus.AttrList()
         attrs.append(IBus.attr_foreground_new(
             self.theme["candidate_text"], 0, len(candidate_text)))
@@ -3815,6 +3812,7 @@ class TabEngine(IBus.EngineSimple):
 
         if self._hotkeys is None:
             return (False, False)
+        commands = list(commands)
         if not commands:
             # If no specific command list to match is given, try to
             # match against all commands. Sorting shouldn’t really

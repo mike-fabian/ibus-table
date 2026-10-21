@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/mike-fabian/ibus-table/issues\n"
-"POT-Creation-Date: 2026-09-02 18:19+0200\n"
+"POT-Creation-Date: 2026-10-21 19:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -277,11 +277,11 @@ msgstr ""
 msgid "Switch autocommit mode"
 msgstr ""
 
-#: engine/table.py:2950
+#: engine/table.py:2947
 msgid "Setup"
 msgstr ""
 
-#: engine/table.py:2953
+#: engine/table.py:2950
 #, python-format
 msgid "Configure ibus-table “%(engine-name)s”"
 msgstr ""
@@ -786,14 +786,14 @@ msgid ""
 msgstr ""
 
 #. Translators: This single character is a placeholder
-#. to match a any number of characters
+#. to match any number of characters
 #: setup/main.py:1079
 msgid "Multi wildcard character:"
 msgstr ""
 
 #. Translators: This is a tooltip for the label of the
-#. entry where one can choose the wildcard to match any
-#. number of candidates.
+#. entry where one can choose the wildcard character to
+#. match any number of characters.
 #: setup/main.py:1084
 msgid ""
 "The wildcard used to match any number of characters.\n"

@@ -1,16 +1,136 @@
-commit e8ae2d6b427213e4db0c4cd74b96775f89dbb9a6
+commit ffb31bcc3d4923160970d0f378351d990b44c7de
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 21 19:30:24 2026 +0200
+
+    Release 1.8.1
+
+commit babb8cd776be7f5492e20ad0345bdb8a2754e3d9
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 21 19:34:07 2026 +0200
+
+    Update ibus-table.pot (Only line number changes)
+
+commit cee83d90a4e23be3ab5a890ff19369c5f48e8336
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 21 19:30:41 2026 +0200
+
+    Fix ty warnings
+
+commit 9651c1a73e8947d8dc7b1ea477f2a0321c1ec2bb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Wed Oct 21 16:19:07 2026 +0000
+
+    Translated using Weblate (Chinese (Traditional Han script, Hong Kong))
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: Mike FABIAN <mfabian@redhat.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_Hant_HK/
+    Translation: ibus-table/app
+
+commit 485848a9c0777677f9dd84f8bea20fedc61805c5
+Author: ivan ho <personal@live.hk>
+Date:   Sun Sep 20 13:18:04 2026 +0000
+
+    Translated using Weblate (Chinese (Hong Kong) (zh_HK))
+    
+    Currently translated at 100.0% (153 of 153 strings)
+    
+    Co-authored-by: ivan ho <personal@live.hk>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/zh_HK/
+    Translation: ibus-table/app
+
+commit 2616236e92df812a24ebade1cd2e7013234fcbc2
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Sep 21 11:45:04 2026 +0200
+
+    Update README
+    
+    - add information on how to contribute translations
+    - update links I think pointing to my repo is more useful now even though I keep the
+      “kaio” and “mike-fabian” github repos always in sync.
+
+commit 578bcdfcabe8733a95df1d30bae27a56605e75d5
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Sep 18 20:08:24 2026 +0200
+
+    Update Unihan_Variants.txt and regenerate engine/chinese_variants.py for Unicode 18.0.0 release
+    
+    - Update Unihan_Variants.txt from “2025-07-24 Unicode Version 17.0.0” to “2026-07-31 Unicode Version 18.0.0”
+    - Regenerate engine/chinese_variants.py for Unihan_Variants.txt
+
+commit 97c7d359f7049a92b1236dacd2324d86dc3ac654
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Mon Sep 7 10:52:42 2026 +0200
+
+    Improve hints for Translators for the multiple wildcard characters
+
+commit ab7c068d939efd838c3e13b0e88ba73ddac22840
+Author: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+Date:   Mon Sep 7 08:43:42 2026 +0000
+
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 75.8% (116 of 153 strings)
+    
+    Co-authored-by: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translation: ibus-table/app
+
+commit d29b78d0068efc58088d7f67e2a5c90dee73b5a5
+Author: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+Date:   Sat Sep 5 08:18:03 2026 +0000
+
+    Translated using Weblate (Greek)
+    
+    Currently translated at 43.1% (66 of 153 strings)
+    
+    Translated using Weblate (Japanese)
+    
+    Currently translated at 55.5% (85 of 153 strings)
+    
+    Co-authored-by: Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/el/
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ja/
+    Translation: ibus-table/app
+
+commit e20df1b629e96d2944adf4ebd4cae0253b285470
+Author: Hosted Weblate <hosted@weblate.org>
+Date:   Sat Sep 5 08:18:03 2026 +0000
+
+    Update translation files
+    
+    Updated by "Update PO files to match POT (msgmerge)" hook in Weblate.
+    
+    Co-authored-by: Hosted Weblate <hosted@weblate.org>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/
+    Translation: ibus-table/app
+
+commit dc6796a8a1bdbb125074f95f9dc00c50da1678d6
+Author: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+Date:   Sat Sep 5 08:18:02 2026 +0000
+
+    Translated using Weblate (Georgian)
+    
+    Currently translated at 75.8% (116 of 153 strings)
+    
+    Co-authored-by: Temuri Doghonadze <temuri.doghonadze@gmail.com>
+    Translate-URL: https://translate.fedoraproject.org/projects/ibus-table/app/ka/
+    Translation: ibus-table/app
+
+commit 468c17d22f1b4b45677fb90fe221dd67fe2aabbc
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Sep 2 18:11:27 2026 +0200
 
     Release 1.18.0
 
-commit 36d7344658f65abccdbe46c293012e5c160a09a2
+commit 66cea3972d16c9d33dcf43f4d62bcc6736433806
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Sep 2 18:27:50 2026 +0200
 
     Update ibus-table.pot (Only line number changes)
 
-commit 77cb152104df459938d9e56438591754bb81267a
+commit a84f4e78943eb4adb15212b5bde5a4bb7565cc53
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Sep 2 18:30:42 2026 +0200
 

@@ -33,6 +33,7 @@ from gi.repository import IBus
 # pylint: enable=wrong-import-position
 import table
 import tabsqlitedb
+import ibus_table_location
 
 LOGGER = logging.getLogger('ibus-table')
 
@@ -99,7 +100,7 @@ class EngineFactory(IBus.Factory):
                     db = os.path.join(db_dir, engine_name+'.db')
                     udb = engine_name+'-user.db'
                     if not os.path.exists(db):
-                        byo_db_dir = os.path.expanduser('~/.ibus/byo-tables')
+                        byo_db_dir = os.path.join(ibus_table_location.data_home(), 'byo-tables')
                         db = os.path.join(byo_db_dir, engine_name + '.db')
                     _sq_db = tabsqlitedb.TabSqliteDb(filename=db, user_db=udb)
                     _sq_db.db.commit()

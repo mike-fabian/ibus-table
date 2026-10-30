@@ -11,6 +11,7 @@
     <textdomain>ibus-table</textdomain>
     <observed-paths>
         <path>${pkgdatadir}/tables/</path>
+        <path>~/.local/share/ibus-table/byo-tables/</path>
     </observed-paths>
     <engines exec='${libexecdir}/ibus-engine-table --xml'/>
 </component>

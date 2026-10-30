@@ -40,6 +40,30 @@
   <url type="translate">https://translate.fedoraproject.org/projects/ibus-table/</url>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="1.18.2" date="2026-10-30" urgency="medium">
+      <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.18.2</url>
+      <description>
+        <p>This new stable release includes these changes:</p>
+        <ul>
+          <li>
+            Use the correct directory for custom tables in do_create_engine()
+            (Resolves: github-mike-fabian-issue#252)
+          </li>
+          <li>
+            Fix RuntimeError when deduplicating extra phrases
+            (Resolves: github-kaio-pull#88)
+          </li>
+        </ul>
+      </description>
+      <issues>
+        <issue url="https://github.com/mike-fabian/ibus-table/issues/252">
+          github-mike-fabian-issue#252
+        </issue>
+        <issue url="https://github.com/kaio/ibus-table/pull/88">
+          github-kaio-pull#88
+        </issue>
+      </issues>
+    </release>
     <release version="1.18.1" date="2026-10-21" urgency="medium">
       <url>https://github.com/mike-fabian/ibus-table/releases/tag/1.18.1</url>
       <description>

@@ -1,4 +1,67 @@
-commit 2726c5186697ca3e52a1f79ecd330c38310bebd0
+commit 34c78a9cda721d854c2c5f14003b17c3267131bb
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Oct 30 22:24:48 2026 +0100
+
+    Release 1.18.2
+
+commit dd0062021cf005927ea0c87da76579c99ae38bc6
+Author: Mike FABIAN <mfabian@redhat.com>
+Date:   Fri Oct 30 19:59:46 2026 +0100
+
+    Use the correct directory for custom tables in do_create_engine()
+    
+    Resolves: https://github.com/mike-fabian/ibus-table/issues/252
+    
+    byo-tables are user defined custom tables (byo = Bring Your Own).
+
+commit c94af3731627d1e86f389e53344c70341440abaf
+Author: uzvg <uzvg@qq.com>
+Date:   Mon Oct 19 17:18:50 2026 +0800
+
+    Fix RuntimeError when deduplicating extra phrases
+    
+    tabcreatedb.py removes entries from the extra phrase source that
+    already exist in the base table with:
+    
+        for extra_phrase in extra_phrases:
+            if extra_phrase in orig_phrases:
+                extra_phrases.pop(extra_phrase)
+    
+    Iterating over a dict while mutating it changes the dict size, which
+    makes CPython raise:
+    
+        RuntimeError: dictionary changed size during iteration
+    
+    This happens as soon as the extra phrase file shares at least one
+    code+phrase key with the table being built, which is the normal case
+    when using --enable-extra-phrases. For example, building
+    ibus-table-zhengma with the system extra_phrase.txt aborts after the
+    base phrases have already been written to zhengma.db. Because that
+    partially written database is newer than the source file, a second
+    make considers it up to date and silently skips the rebuild, so the
+    extra phrases never make it into the installed database.
+    
+    Build a new dict from the non-duplicated entries instead:
+    
+        extra_phrases = {
+            extra_phrase: entry
+            for extra_phrase, entry in extra_phrases.items()
+            if extra_phrase not in orig_phrases
+        }
+    
+    The deduplication result is unchanged, but the source dict is never
+    mutated while it is being iterated.
+    
+    Reproducer:
+      ./autogen.sh --enable-extra-phrases
+      make
+      # RuntimeError: dictionary changed size during iteration
+    
+    Tested by building ibus-table-zhengma with the system extra_phrase.txt:
+    314685 extra phrases parsed, 288408 added, 411886 phrases in the
+    resulting database.
+
+commit c43cedaaf88b95f379ca633bd6a861af393caa81
 Author: Mike FABIAN <mfabian@redhat.com>
 Date:   Wed Oct 21 19:30:24 2026 +0200
 
